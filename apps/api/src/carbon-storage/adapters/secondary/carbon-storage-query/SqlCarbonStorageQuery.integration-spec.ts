@@ -2,10 +2,6 @@ import knex, { type Knex } from "knex";
 import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 
-import {
-  LocalisationCategoryType,
-  ReservoirType,
-} from "src/carbon-storage/core/models/carbonStorage";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
 import { SqlCarbonStorageQuery } from "./SqlCarbonStorageQuery";
@@ -29,27 +25,25 @@ describe("SqlCarbonStorageQuery integration", () => {
 
   it("returns values for all soil categories if no category is provided", async () => {
     const result = await sqlCarbonStorageQuery.getCarbonStorageForCity("01027", []);
-    const soilStorageValues = result.filter(({ reservoir }) => reservoir === ReservoirType.SOIL);
+    const soilStorageValues = result.filter(({ reservoir }) => reservoir === "soil");
     assert.strictEqual(soilStorageValues.length, 15);
 
     const nonForestBiomassStorageValues = result.filter(
-      ({ reservoir }) => reservoir === ReservoirType.NON_FOREST_BIOMASS,
+      ({ reservoir }) => reservoir === "non_forest_biomass",
     );
     assert.strictEqual(nonForestBiomassStorageValues.length, 6);
 
     const deadForestBiomassStorageValues = result.filter(
-      ({ reservoir }) => reservoir === ReservoirType.DEAD_FOREST_BIOMASS,
+      ({ reservoir }) => reservoir === "dead_forest_biomass",
     );
     assert.strictEqual(deadForestBiomassStorageValues.length, 4);
 
     const liveForestBiomassStorageValues = result.filter(
-      ({ reservoir }) => reservoir === ReservoirType.LIVE_FOREST_BIOMASS,
+      ({ reservoir }) => reservoir === "live_forest_biomass",
     );
     assert.strictEqual(liveForestBiomassStorageValues.length, 4);
 
-    const litterForestStorageValues = result.filter(
-      ({ reservoir }) => reservoir === ReservoirType.LITTER,
-    );
+    const litterForestStorageValues = result.filter(({ reservoir }) => reservoir === "litter");
     assert.strictEqual(litterForestStorageValues.length, 4);
   });
 
@@ -62,15 +56,14 @@ describe("SqlCarbonStorageQuery integration", () => {
 
     // RESERVOIR SOIL
     const carbonStorageInSoilForForest = result.filter(
-      ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.SOIL && soilCategory === "forest_deciduous",
+      ({ reservoir, soilCategory }) => reservoir === "soil" && soilCategory === "forest_deciduous",
     );
 
     assert.strictEqual(carbonStorageInSoilForForest.length, 1);
 
     const carbonStorageInSoilForArtificialTreeFilled = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.SOIL && soilCategory === "artificial_tree_filled",
+        reservoir === "soil" && soilCategory === "artificial_tree_filled",
     );
 
     // RESERVOIR NON FOREST BIOMASS
@@ -78,7 +71,7 @@ describe("SqlCarbonStorageQuery integration", () => {
 
     const carbonStorageInNonForestBiomassForArtificialTreeFilled = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.NON_FOREST_BIOMASS && soilCategory === "artificial_tree_filled",
+        reservoir === "non_forest_biomass" && soilCategory === "artificial_tree_filled",
     );
 
     // RESERVOIR FOREST BIOMASS
@@ -86,21 +79,21 @@ describe("SqlCarbonStorageQuery integration", () => {
 
     const carbonStorageInDeadForestBiomassForForest = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.DEAD_FOREST_BIOMASS && soilCategory === "forest_deciduous",
+        reservoir === "dead_forest_biomass" && soilCategory === "forest_deciduous",
     );
 
     assert.strictEqual(carbonStorageInDeadForestBiomassForForest.length, 1);
 
     const carbonStorageInLiveForestBiomassForForest = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.LIVE_FOREST_BIOMASS && soilCategory === "forest_deciduous",
+        reservoir === "live_forest_biomass" && soilCategory === "forest_deciduous",
     );
 
     assert.strictEqual(carbonStorageInLiveForestBiomassForForest.length, 1);
 
     const carbonStorageInLitterForForest = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.LITTER && soilCategory === "forest_deciduous",
+        reservoir === "litter" && soilCategory === "forest_deciduous",
     );
 
     // RESERVOIR FOREST LITTER
@@ -124,29 +117,26 @@ describe("SqlCarbonStorageQuery integration", () => {
 
     // RESERVOIR SOIL
     const carbonStorageInSoilForForest = result.filter(
-      ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.SOIL && soilCategory === "forest_conifer",
+      ({ reservoir, soilCategory }) => reservoir === "soil" && soilCategory === "forest_conifer",
     );
 
     assert.strictEqual(carbonStorageInSoilForForest.length, 1);
 
     const carbonStorageInSoilForArtificialTreeFilled = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.SOIL && soilCategory === "artificial_tree_filled",
+        reservoir === "soil" && soilCategory === "artificial_tree_filled",
     );
 
     assert.strictEqual(carbonStorageInSoilForArtificialTreeFilled.length, 1);
 
     const carbonStorageInSoilForPrairie = result.filter(
-      ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.SOIL && soilCategory === "prairie_bushes",
+      ({ reservoir, soilCategory }) => reservoir === "soil" && soilCategory === "prairie_bushes",
     );
 
     assert.strictEqual(carbonStorageInSoilForPrairie.length, 1);
 
     const carbonStorageInSoilForWetLand = result.filter(
-      ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.SOIL && soilCategory === "wet_land",
+      ({ reservoir, soilCategory }) => reservoir === "soil" && soilCategory === "wet_land",
     );
 
     assert.strictEqual(carbonStorageInSoilForWetLand.length, 1);
@@ -154,14 +144,14 @@ describe("SqlCarbonStorageQuery integration", () => {
     // RESERVOIR NF BIOMASS
     const carbonStorageInNonForestBiomassForArtificialTreeFilled = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.NON_FOREST_BIOMASS && soilCategory === "artificial_tree_filled",
+        reservoir === "non_forest_biomass" && soilCategory === "artificial_tree_filled",
     );
 
     assert.strictEqual(carbonStorageInNonForestBiomassForArtificialTreeFilled.length, 1);
 
     const carbonStorageInNonForestBiomassForPrairie = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.NON_FOREST_BIOMASS && soilCategory === "prairie_bushes",
+        reservoir === "non_forest_biomass" && soilCategory === "prairie_bushes",
     );
 
     assert.strictEqual(carbonStorageInNonForestBiomassForPrairie.length, 1);
@@ -169,25 +159,24 @@ describe("SqlCarbonStorageQuery integration", () => {
     // RESERVOIR FOREST BIOMASS
     const carbonStorageInDeadForestBiomassForForest = result.filter(
       ({ reservoir, soilCategory, localisationCategory }) =>
-        reservoir === ReservoirType.DEAD_FOREST_BIOMASS &&
+        reservoir === "dead_forest_biomass" &&
         soilCategory === "forest_conifer" &&
-        localisationCategory === LocalisationCategoryType.REGION,
+        localisationCategory === "region",
     );
 
     assert.strictEqual(carbonStorageInDeadForestBiomassForForest.length, 1);
 
     const carbonStorageInLiveForestBiomassForForest = result.filter(
       ({ reservoir, soilCategory, localisationCategory }) =>
-        reservoir === ReservoirType.LIVE_FOREST_BIOMASS &&
+        reservoir === "live_forest_biomass" &&
         soilCategory === "forest_conifer" &&
-        localisationCategory === LocalisationCategoryType.REGION,
+        localisationCategory === "region",
     );
 
     assert.strictEqual(carbonStorageInLiveForestBiomassForForest.length, 1);
 
     const carbonStorageInLitterForForest = result.filter(
-      ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.LITTER && soilCategory === "forest_conifer",
+      ({ reservoir, soilCategory }) => reservoir === "litter" && soilCategory === "forest_conifer",
     );
 
     assert.strictEqual(carbonStorageInLitterForForest.length, 1);
@@ -204,22 +193,20 @@ describe("SqlCarbonStorageQuery integration", () => {
 
     // RESERVOIR SOIL
     const carbonStorageInSoilForForest = result.filter(
-      ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.SOIL && soilCategory === "forest_mixed",
+      ({ reservoir, soilCategory }) => reservoir === "soil" && soilCategory === "forest_mixed",
     );
 
     assert.strictEqual(carbonStorageInSoilForForest.length, 1);
 
     const carbonStorageInSoilForArtificialTreeFilled = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.SOIL && soilCategory === "artificial_tree_filled",
+        reservoir === "soil" && soilCategory === "artificial_tree_filled",
     );
 
     assert.strictEqual(carbonStorageInSoilForArtificialTreeFilled.length, 1);
 
     const carbonStorageInSoilForPrairie = result.filter(
-      ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.SOIL && soilCategory === "prairie_bushes",
+      ({ reservoir, soilCategory }) => reservoir === "soil" && soilCategory === "prairie_bushes",
     );
 
     assert.strictEqual(carbonStorageInSoilForPrairie.length, 1);
@@ -227,14 +214,14 @@ describe("SqlCarbonStorageQuery integration", () => {
     // RESERVOIR NF BIOMASS
     const carbonStorageInNonForestBiomassForArtificialTreeFilled = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.NON_FOREST_BIOMASS && soilCategory === "artificial_tree_filled",
+        reservoir === "non_forest_biomass" && soilCategory === "artificial_tree_filled",
     );
 
     assert.strictEqual(carbonStorageInNonForestBiomassForArtificialTreeFilled.length, 1);
 
     const carbonStorageInNonForestBiomassForPrairie = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.NON_FOREST_BIOMASS && soilCategory === "prairie_bushes",
+        reservoir === "non_forest_biomass" && soilCategory === "prairie_bushes",
     );
 
     assert.strictEqual(carbonStorageInNonForestBiomassForPrairie.length, 1);
@@ -242,21 +229,20 @@ describe("SqlCarbonStorageQuery integration", () => {
     // RESERVOIR FOREST BIOMASS
     const carbonStorageInDeadForestBiomassForForest = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.DEAD_FOREST_BIOMASS && soilCategory === "forest_mixed",
+        reservoir === "dead_forest_biomass" && soilCategory === "forest_mixed",
     );
 
     assert.strictEqual(carbonStorageInDeadForestBiomassForForest.length, 1);
 
     const carbonStorageInLiveForestBiomassForForest = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.LIVE_FOREST_BIOMASS && soilCategory === "forest_mixed",
+        reservoir === "live_forest_biomass" && soilCategory === "forest_mixed",
     );
 
     assert.strictEqual(carbonStorageInLiveForestBiomassForForest.length, 1);
 
     const carbonStorageInLitterForForest = result.filter(
-      ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.LITTER && soilCategory === "forest_mixed",
+      ({ reservoir, soilCategory }) => reservoir === "litter" && soilCategory === "forest_mixed",
     );
 
     assert.strictEqual(carbonStorageInLitterForForest.length, 1);

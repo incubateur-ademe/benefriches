@@ -5,9 +5,7 @@ import { CarbonStorageQuery } from "src/carbon-storage/core/gateways/CarbonStora
 import {
   CarbonStorage,
   CarbonStorageProps,
-  LocalisationCategoryType,
   RepositorySoilCategoryType,
-  ReservoirType,
 } from "src/carbon-storage/core/models/carbonStorage";
 import { City, CityProps } from "src/carbon-storage/core/models/city";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
@@ -22,13 +20,7 @@ const FOREST_CATEGORIES = [
 type ForestCategory = (typeof FOREST_CATEGORIES)[number];
 
 const filterCarbonStorageByLocalisationPriority = (carbonStorage: CarbonStorage[]) => {
-  const localisationPriorityOrder = [
-    LocalisationCategoryType.SER_GROUP,
-    LocalisationCategoryType.GRECO,
-    LocalisationCategoryType.REGION,
-    LocalisationCategoryType.POPLAR_POOL,
-    LocalisationCategoryType.COUNTRY,
-  ];
+  const localisationPriorityOrder = ["groupeser", "greco", "region", "bassin_populicole", "pays"];
 
   return carbonStorage.reduce((result: CarbonStorage[], entry) => {
     // Check if there is already an entry for this category
@@ -61,10 +53,10 @@ const getForestLitterCarbonStorage = (soilCategories: RepositorySoilCategoryType
     (category) =>
       ({
         localisationCode: "France",
-        localisationCategory: LocalisationCategoryType.COUNTRY,
+        localisationCategory: "pays",
         soilCategory: category,
         carbonStorageInTonByHectare: 9,
-        reservoir: ReservoirType.LITTER,
+        reservoir: "litter",
       }) as CarbonStorage,
   );
 };
@@ -107,12 +99,12 @@ export class SqlCarbonStorageQuery implements CarbonStorageQuery {
         // Search in reservoir "soil"
         .orWhere({
           localisation_code: city.zpc,
-          localisation_category: LocalisationCategoryType.ZPC,
+          localisation_category: "zpc",
         })
         // Search in reservoir "non_forest_biomass" and "forest_biomass"
         .orWhere({
           localisation_code: city.region,
-          localisation_category: LocalisationCategoryType.REGION,
+          localisation_category: "region",
         });
 
       if (hasForest || !hasSoilsCategory) {
@@ -120,14 +112,14 @@ export class SqlCarbonStorageQuery implements CarbonStorageQuery {
         if (city.codeSerGroup.length > 0) {
           void localisationClause.orWhere((build) => {
             void build
-              .where("localisation_category", LocalisationCategoryType.SER_GROUP)
+              .where("localisation_category", "groupeser")
               .whereIn("localisation_code", city.codeSerGroup);
           });
         }
         if (city.codeGreco.length > 0) {
           void localisationClause.orWhere((build) => {
             void build
-              .where("localisation_category", LocalisationCategoryType.GRECO)
+              .where("localisation_category", "greco")
               .whereIn("localisation_code", city.codeGreco);
           });
         }
@@ -135,32 +127,32 @@ export class SqlCarbonStorageQuery implements CarbonStorageQuery {
         if (city.codePoplarPool) {
           void localisationClause.orWhere({
             localisation_code: city.codePoplarPool,
-            localisation_category: LocalisationCategoryType.POPLAR_POOL,
+            localisation_category: "bassin_populicole",
           });
         }
 
         void localisationClause.orWhere({
           localisation_code: "France",
-          localisation_category: LocalisationCategoryType.COUNTRY,
+          localisation_category: "pays",
         });
       }
     });
 
     const result = (await query).map((element) => CarbonStorage.create(element));
 
-    const soilsStorage = result.filter(({ reservoir }) => reservoir === ReservoirType.SOIL);
+    const soilsStorage = result.filter(({ reservoir }) => reservoir === "soil");
     const nonForestBiomassStorage = result.filter(
-      ({ reservoir }) => reservoir === ReservoirType.NON_FOREST_BIOMASS,
+      ({ reservoir }) => reservoir === "non_forest_biomass",
     );
 
     // There is several value in db for forest_biomass with different level
     // of precision. We want to use the best value we can found.
     // See data/README.md
     const deadForestBiomass = filterCarbonStorageByLocalisationPriority(
-      result.filter(({ reservoir }) => reservoir === ReservoirType.DEAD_FOREST_BIOMASS),
+      result.filter(({ reservoir }) => reservoir === "dead_forest_biomass"),
     );
     const liveForestBiomass = filterCarbonStorageByLocalisationPriority(
-      result.filter(({ reservoir }) => reservoir === ReservoirType.LIVE_FOREST_BIOMASS),
+      result.filter(({ reservoir }) => reservoir === "live_forest_biomass"),
     );
 
     // Litter biomass for forest is a constant value standing for the average value in France

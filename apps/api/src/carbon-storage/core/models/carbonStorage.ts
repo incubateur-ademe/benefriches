@@ -16,22 +16,20 @@ export type RepositorySoilCategoryType =
   | "wet_land"
   | "water";
 
-export enum ReservoirType {
-  SOIL = "soil",
-  NON_FOREST_BIOMASS = "non_forest_biomass",
-  DEAD_FOREST_BIOMASS = "dead_forest_biomass",
-  LIVE_FOREST_BIOMASS = "live_forest_biomass",
-  LITTER = "litter",
-}
+export type ReservoirType =
+  | "soil"
+  | "non_forest_biomass"
+  | "dead_forest_biomass"
+  | "live_forest_biomass"
+  | "litter";
 
-export enum LocalisationCategoryType {
-  ZPC = "zpc",
-  REGION = "region",
-  SER_GROUP = "groupeser",
-  GRECO = "greco",
-  POPLAR_POOL = "bassin_populicole",
-  COUNTRY = "pays",
-}
+export type LocalisationCategoryType =
+  | "zpc"
+  | "region"
+  | "groupeser"
+  | "greco"
+  | "bassin_populicole"
+  | "pays";
 
 export type CarbonStorageProps = {
   reservoir: ReservoirType;

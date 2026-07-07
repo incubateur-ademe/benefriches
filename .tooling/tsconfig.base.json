@@ -9,6 +9,7 @@
       "noFallthroughCasesInSwitch": true,
       "noUnusedLocals": true,
       "noUnusedParameters": true,
+      "erasableSyntaxOnly": true /* Disallow non-erasable TS syntax (enums, namespaces, parameter properties). */,
   
       /* Completeness */
       "skipLibCheck": true /* Skip type checking all .d.ts files. */
