@@ -30,30 +30,29 @@ export function mapAdemeProjectToProject(
   );
   const installationScheduledEndDate = addMonths(
     installationScheduledStartDate,
-    Number(csvRow["Durée estimée des travaux (en mois)"]),
+    csvRow["Durée estimée des travaux (en mois)"],
   );
 
   const buildingsUsesDistribution: BuildingsUseDistribution = {
-    RESIDENTIAL: Number(csvRow["dont logements (m² SDP)"] ?? 0),
+    RESIDENTIAL: csvRow["dont logements (m² SDP)"] ?? 0,
 
     ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES:
-      Number(
-        csvRow["dont locaux d'artisanat ou commerciaux (hors pied d'immeuble) (m² SDP)"] ?? 0,
-      ) + Number(csvRow["dont locaux industriels ou logistiques (m² SDP)"] ?? 0),
+      (csvRow["dont locaux d'artisanat ou commerciaux (hors pied d'immeuble) (m² SDP)"] ?? 0) +
+      (csvRow["dont locaux industriels ou logistiques (m² SDP)"] ?? 0),
 
-    LOCAL_SERVICES: Number(csvRow["dont services et équipements de proximité (m² SDP)"] ?? 0),
+    LOCAL_SERVICES: csvRow["dont services et équipements de proximité (m² SDP)"] ?? 0,
 
-    LOCAL_STORE: Number(csvRow["dont commerce pied d'immeuble (m² SDP)"] ?? 0),
+    LOCAL_STORE: csvRow["dont commerce pied d'immeuble (m² SDP)"] ?? 0,
 
-    OFFICES: Number(csvRow["dont bureaux (m² SDP)"] ?? 0),
+    OFFICES: csvRow["dont bureaux (m² SDP)"] ?? 0,
 
-    OTHER_CULTURAL_PLACE: Number(csvRow["dont Lieux culturels (m² SDP)"] ?? 0),
+    OTHER_CULTURAL_PLACE: csvRow["dont Lieux culturels (m² SDP)"] ?? 0,
 
-    SPORTS_FACILITIES: Number(csvRow["dont Équipements sportifs (m² SDP)"] ?? 0),
+    SPORTS_FACILITIES: csvRow["dont Équipements sportifs (m² SDP)"] ?? 0,
 
-    PUBLIC_FACILITIES: Number(csvRow["dont équipements publics (m² SDP)"] ?? 0),
+    PUBLIC_FACILITIES: csvRow["dont équipements publics (m² SDP)"] ?? 0,
 
-    MULTI_STORY_PARKING: Number(csvRow["dont parking silo (m² SDP)"] ?? 0),
+    MULTI_STORY_PARKING: csvRow["dont parking silo (m² SDP)"] ?? 0,
   };
 
   // column 'Espaces verts publics (m²)' includes 'Plan d'eau', so we need to compute the difference
@@ -146,7 +145,7 @@ export function mapAdemeProjectToProject(
       costs: csvRow["Total des dépenses sur l’opération globale (€ HT)"]
         ? [
             {
-              amount: Number(csvRow["Total des dépenses sur l’opération globale (€ HT)"]),
+              amount: csvRow["Total des dépenses sur l’opération globale (€ HT)"],
               purpose: "development_works",
             },
           ]

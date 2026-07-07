@@ -56,7 +56,7 @@
     "no-shadow": "off",
     "no-useless-assignment": "error",
     "typescript/no-unnecessary-condition": "off",
-    "typescript/no-unnecessary-type-conversion": "off",
+    "typescript/no-unnecessary-type-conversion": "error",
     "typescript/consistent-return": "off",
     "typescript/no-useless-default-assignment": "error"
   },
