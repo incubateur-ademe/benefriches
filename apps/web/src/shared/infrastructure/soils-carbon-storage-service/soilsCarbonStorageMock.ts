@@ -7,10 +7,13 @@ import {
 export class SoilsCarbonStorageMock
   implements ProjectSoilsCarbonStorageGateway, SiteSoilsCarbonStorageGateway
 {
-  constructor(
-    private result: SoilsCarbonStorageResult,
-    private shouldFail: boolean = false,
-  ) {}
+  private result: SoilsCarbonStorageResult;
+  private shouldFail: boolean;
+
+  constructor(result: SoilsCarbonStorageResult, shouldFail: boolean = false) {
+    this.result = result;
+    this.shouldFail = shouldFail;
+  }
 
   async getForCityCodeAndSoils() {
     if (this.shouldFail) {

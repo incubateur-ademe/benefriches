@@ -2,10 +2,13 @@ import { SiteEvaluationGateway } from "../../application/evaluationsList.actions
 import { UserSiteEvaluation } from "../../domain/types";
 
 export class InMemorySiteEvaluationService implements SiteEvaluationGateway {
-  constructor(
-    private readonly siteEvaluations: UserSiteEvaluation[],
-    private readonly shouldFail = false,
-  ) {}
+  private readonly siteEvaluations: UserSiteEvaluation[];
+  private readonly shouldFail: boolean;
+
+  constructor(siteEvaluations: UserSiteEvaluation[], shouldFail = false) {
+    this.siteEvaluations = siteEvaluations;
+    this.shouldFail = shouldFail;
+  }
 
   getUserList(): Promise<UserSiteEvaluation[]> {
     if (this.shouldFail) throw new Error("Intended error");

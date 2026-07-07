@@ -4,7 +4,11 @@ import { User } from "../../core/user";
 export class InMemoryCreateUserService implements CreateUserGateway {
   _users: User[] = [];
 
-  constructor(private readonly shouldFail: boolean = false) {}
+  private readonly shouldFail: boolean;
+
+  constructor(shouldFail: boolean = false) {
+    this.shouldFail = shouldFail;
+  }
 
   async save(newUser: User) {
     if (this.shouldFail) throw new Error("Intended error");

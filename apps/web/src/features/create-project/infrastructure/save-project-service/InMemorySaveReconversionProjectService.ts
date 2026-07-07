@@ -6,7 +6,11 @@ import {
 export class InMemorySaveReconversionProjectService implements SaveReconversionProjectGateway {
   _reconversionProjects: SaveProjectPayload[] = [];
 
-  constructor(private readonly shouldFail: boolean = false) {}
+  private readonly shouldFail: boolean;
+
+  constructor(shouldFail: boolean = false) {
+    this.shouldFail = shouldFail;
+  }
 
   async save(newProject: SaveProjectPayload) {
     if (this.shouldFail) throw new Error("Intended error");

@@ -49,6 +49,7 @@
     "typescript/no-unnecessary-type-conversion": "error",
     "typescript/no-useless-default-assignment": "error",
     "typescript/no-unnecessary-type-parameters": "error",
+    "typescript/parameter-properties": "error",
     "unicorn/no-array-sort": "off",
     "react/react-compiler": "off",
     "react/no-object-type-as-default-prop": "off",

@@ -7,7 +7,11 @@ import { AuthenticationGateway } from "./AuthenticationGateway";
 import { authenticateWithToken } from "./authenticateWithToken.action";
 
 class FailingAuthService implements AuthenticationGateway {
-  constructor(private readonly errorCode: string) {}
+  private readonly errorCode: string;
+
+  constructor(errorCode: string) {
+    this.errorCode = errorCode;
+  }
 
   async authenticateWithToken(): Promise<void> {
     throw new Error(this.errorCode);

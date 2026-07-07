@@ -18,10 +18,13 @@ export const MOCK_RESULT = {
 };
 
 export class ExpectedPhotovoltaicPerformanceMock implements PhotovoltaicPerformanceGateway {
-  constructor(
-    private result: PhotovoltaicPerformanceApiResult,
-    private shouldFail: boolean = false,
-  ) {}
+  private result: PhotovoltaicPerformanceApiResult;
+  private shouldFail: boolean;
+
+  constructor(result: PhotovoltaicPerformanceApiResult, shouldFail: boolean = false) {
+    this.result = result;
+    this.shouldFail = shouldFail;
+  }
 
   async getExpectedPhotovoltaicPerformance() {
     if (this.shouldFail) {

@@ -2,7 +2,11 @@ import { CurrentUserGateway } from "../../core/initCurrentUser.action";
 import { AuthenticatedUser } from "../../core/user";
 
 export class InMemoryCurrentUserService implements CurrentUserGateway {
-  constructor(private readonly shouldFail: boolean = false) {}
+  private readonly shouldFail: boolean;
+
+  constructor(shouldFail: boolean = false) {
+    this.shouldFail = shouldFail;
+  }
 
   async get() {
     if (this.shouldFail) throw new Error("Intended error");

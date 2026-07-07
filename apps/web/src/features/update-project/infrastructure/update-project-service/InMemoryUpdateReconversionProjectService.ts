@@ -8,7 +8,11 @@ export class InMemoryUpdateReconversionProjectService implements UpdateProjectSe
   _reconversionProjects: UpdateProjectSavePayload[] = [];
   _reconversionProjectView: UpdateProjectView | undefined = undefined;
 
-  constructor(private readonly shouldFail: boolean = false) {}
+  private readonly shouldFail: boolean;
+
+  constructor(shouldFail: boolean = false) {
+    this.shouldFail = shouldFail;
+  }
 
   async getById(_: string) {
     return await Promise.resolve(this._reconversionProjectView);

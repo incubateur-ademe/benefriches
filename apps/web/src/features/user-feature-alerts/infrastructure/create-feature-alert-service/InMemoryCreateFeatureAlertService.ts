@@ -8,7 +8,11 @@ import { getNewFeatureAlerts } from "./CreateFeatureAlertService";
 export class InMemoryCreateFeatureAlertService implements CreateFeatureAlertGateway {
   _featureAlerts: UserFeatureAlertsResult = {};
 
-  constructor(private readonly shouldFail: boolean = false) {}
+  private readonly shouldFail: boolean;
+
+  constructor(shouldFail: boolean = false) {
+    this.shouldFail = shouldFail;
+  }
 
   async save(newAlert: UserFeatureAlert) {
     if (this.shouldFail) throw new Error("Intended error");
