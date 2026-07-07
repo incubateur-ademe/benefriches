@@ -13,6 +13,7 @@
     "typescript/no-dynamic-delete": "error",
     "typescript/no-empty-object-type": "error",
     "typescript/no-explicit-any": "error",
+    "typescript/parameter-properties": "error",
     "typescript/no-extraneous-class": "error",
     "typescript/no-non-null-asserted-nullish-coalescing": "error",
     "typescript/no-non-null-asserted-optional-chain": "error",

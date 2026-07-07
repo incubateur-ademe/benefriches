@@ -1,7 +1,11 @@
 import { IDateProvider } from "../../../adapters/IDateProvider";
 
 export class DeterministicDateProvider implements IDateProvider {
-  constructor(private readonly fakeNow: Date) {}
+  private readonly fakeNow: Date;
+
+  constructor(fakeNow: Date) {
+    this.fakeNow = fakeNow;
+  }
 
   now(): Date {
     return this.fakeNow;

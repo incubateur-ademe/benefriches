@@ -15,14 +15,20 @@ import { BuildingsUseDistribution } from "../uses/urbanProjectUse";
 export class UrbanProjectGenerator extends DefaultProjectGenerator {
   name;
   developmentType;
+  private readonly reconversionProjectId: string;
+  private readonly createdBy: string;
+  override readonly siteData: SiteData & { address: { city: string } };
 
   constructor(
     dateProvider: IDateProvider,
-    private readonly reconversionProjectId: string,
-    private readonly createdBy: string,
-    override readonly siteData: SiteData & { address: { city: string } },
+    reconversionProjectId: string,
+    createdBy: string,
+    siteData: SiteData & { address: { city: string } },
   ) {
     super(dateProvider, siteData);
+    this.reconversionProjectId = reconversionProjectId;
+    this.createdBy = createdBy;
+    this.siteData = siteData;
     this.name = "";
     this.developmentType = "URBAN_PROJECT" as const;
   }

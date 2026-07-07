@@ -11,10 +11,13 @@ import {
 import { SiteData } from "./types";
 
 export class DefaultProjectGenerator {
-  constructor(
-    readonly dateProvider: IDateProvider,
-    readonly siteData: SiteData,
-  ) {}
+  readonly dateProvider: IDateProvider;
+  readonly siteData: SiteData;
+
+  constructor(dateProvider: IDateProvider, siteData: SiteData) {
+    this.dateProvider = dateProvider;
+    this.siteData = siteData;
+  }
 
   get projectSoilsDistribution(): ReconversionProjectSoilsDistribution {
     return [];
