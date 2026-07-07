@@ -5,7 +5,7 @@ export const getProjectSoilDistributionByType = (
   projectSoilsDistribution: ReconversionProjectSoilsDistribution,
 ) => {
   return projectSoilsDistribution.reduce<SoilDistributionByType>(
-    (result, { soilType, surfaceArea = 0 }) =>
+    (result, { soilType, surfaceArea }) =>
       surfaceArea
         ? {
             ...result,

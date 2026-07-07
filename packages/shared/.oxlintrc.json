@@ -40,7 +40,7 @@
     "no-shadow": "off",
     "typescript/no-unnecessary-condition": "off",
     "typescript/consistent-return": "off",
-    "typescript/no-useless-default-assignment": "off"
+    "typescript/no-useless-default-assignment": "error"
   },
   "overrides": [
     {
