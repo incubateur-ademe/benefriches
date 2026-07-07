@@ -95,8 +95,7 @@
       "rules": {
         "typescript/no-unsafe-assignment": "off",
         "typescript/no-unsafe-call": "off",
-        // Disabled pending per-rule evaluation after oxlint 1.43->1.72 upgrade (vitest rules didn't exist in 1.43)
-        "vitest/expect-expect": "off",
+        "vitest/expect-expect": ["error", { "assertFunctionNames": ["expect*"] }],
         "vitest/require-mock-type-parameters": "off",
         "vitest/no-identical-title": "error",
         "vitest/no-commented-out-tests": "error",
@@ -104,13 +103,7 @@
         "vitest/valid-describe-callback": "error",
         "vitest/require-local-test-context-for-concurrent-snapshots": "error",
         "vitest/no-import-node-test": "error",
-        "vitest/no-conditional-tests": "error",
-        "jest/expect-expect": [
-          "error",
-          {
-            "assertFunctionNames": ["expect*"]
-          }
-        ]
+        "vitest/no-conditional-tests": "error"
       },
       "globals": {
         "suite": "writeable",
@@ -126,7 +119,7 @@
         "beforeEach": "writeable",
         "afterEach": "writeable"
       },
-      "plugins": ["vitest", "jest"]
+      "plugins": ["vitest"]
     }
   ]
 }
