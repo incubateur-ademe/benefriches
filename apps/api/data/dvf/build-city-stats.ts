@@ -632,13 +632,14 @@ class DVFCommuneAnalyzer {
     // Trier par année décroissante, puis essayer les 3 années les plus récentes
     transactions.sort((a, b) => (b.annee ?? 0) - (a.annee ?? 0));
 
-    let selectedTransactions: DVFTransaction[] = [];
     const recentYears = new Set(
       [...new Set(transactions.map((t) => t.annee).filter(Boolean))].slice(0, 3),
     );
 
     // Prendre les transactions des 3 années les plus récentes
-    selectedTransactions = transactions.filter((t) => t.annee && recentYears.has(t.annee));
+    let selectedTransactions: DVFTransaction[] = transactions.filter(
+      (t) => t.annee && recentYears.has(t.annee),
+    );
 
     // Si pas assez de transactions (moins de 5), prendre plus d'années
     if (selectedTransactions.length < 5 && transactions.length >= 5) {

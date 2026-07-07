@@ -273,7 +273,7 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           });
 
           let expectedBuildingsFloorAreaDistribution: BuildingsUseDistribution = {};
-          let expectedSoilsDistribution: ReconversionProjectSoilsDistribution = [];
+          let expectedSoilsDistribution: ReconversionProjectSoilsDistribution;
 
           if (template === "RESIDENTIAL_TENSE_AREA") {
             expectedSoilsDistribution = [

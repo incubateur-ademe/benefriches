@@ -54,7 +54,7 @@
     // Disabled pending per-rule evaluation after oxlint 1.43->1.72 upgrade (newly-triggered rules)
     "no-underscore-dangle": "off",
     "no-shadow": "off",
-    "no-useless-assignment": "off",
+    "no-useless-assignment": "error",
     "typescript/no-unnecessary-condition": "off",
     "typescript/no-unnecessary-type-conversion": "off",
     "typescript/consistent-return": "off",
@@ -81,7 +81,8 @@
       "rules": {
         "no-console": "off",
         "typescript/no-unsafe-assignment": "off",
-        "typescript/no-useless-default-assignment": "off"
+        "typescript/no-useless-default-assignment": "off",
+        "no-useless-assignment": "off"
       }
     },
     {
