@@ -18,7 +18,7 @@
     "test": "pnpm test:unit && pnpm test:integration",
     "test:unit": "node --import ./test/swc-esm-loader.mjs --test 'src/**/*.spec.ts'",
     "test:integration": "node --import ./test/swc-esm-loader.mjs --import ./test/integration-per-test-hooks.ts --test-global-setup=./test/integration-global-setup.mts --test-concurrency=1 --test 'src/**/*.integration-spec.ts'",
-    "lint": "oxlint --type-aware",
+    "lint": "oxlint",
     "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
     "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
     "knex": "tsx node_modules/knex/bin/cli.js",

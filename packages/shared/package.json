@@ -16,7 +16,7 @@
     "dev": "tsdown --watch",
     "test": "node --import=tsx --test 'src/**/*.spec.ts'",
     "typecheck": "tsc --noEmit",
-    "lint": "oxlint --type-aware",
+    "lint": "oxlint",
     "format": "prettier --write --cache \"./**/*.{js,ts,md,json}\" src/",
     "format:check": "prettier --check --cache  \"./**/*.{js,ts,md,json}\" src/"
   },
