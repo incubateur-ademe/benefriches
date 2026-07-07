@@ -53,7 +53,7 @@
     "react/react-compiler": "off",
     "react/no-object-type-as-default-prop": "off",
     "react/no-array-index-key": "off",
-    "react/jsx-no-constructed-context-values": "off",
+    "react/jsx-no-constructed-context-values": "error",
     "react/no-unstable-nested-components": "off"
   },
   "overrides": [

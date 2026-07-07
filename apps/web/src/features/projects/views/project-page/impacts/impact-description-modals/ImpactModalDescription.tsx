@@ -1,5 +1,5 @@
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
-import { Suspense, useLayoutEffect, useState } from "react";
+import { Suspense, useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { GetReconversionProjectImpactsResultDto } from "shared";
 
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -48,9 +48,19 @@ function ImpactModalDescription({
     },
   );
 
-  const updateModalContent = (args: UpdateModalContentArgs) => {
+  const updateModalContent = useCallback((args: UpdateModalContentArgs) => {
     setContentState(args);
-  };
+  }, []);
+
+  const impactModalDescriptionContextValue = useMemo(
+    () => ({
+      contentState,
+      updateModalContent,
+      dialogTitleId,
+      dialogId,
+    }),
+    [contentState, updateModalContent, dialogTitleId, dialogId],
+  );
 
   useLayoutEffect(() => {
     const domModalBody = document.querySelector(`#${dialogId} .fr-modal__body`);
@@ -66,14 +76,7 @@ function ImpactModalDescription({
       className="fr-modal"
       data-fr-concealing-backdrop={true}
     >
-      <ImpactModalDescriptionContext.Provider
-        value={{
-          contentState,
-          updateModalContent,
-          dialogTitleId,
-          dialogId,
-        }}
-      >
+      <ImpactModalDescriptionContext.Provider value={impactModalDescriptionContextValue}>
         <Suspense fallback={<LoadingSpinner classes={{ text: "text-grey-light" }} />}>
           {(() => {
             if (!isOpen) {

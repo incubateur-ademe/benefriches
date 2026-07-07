@@ -1,5 +1,5 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ReactNode, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 
 import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
@@ -13,6 +13,11 @@ type SidebarProps = {
 function Sidebar({ children }: SidebarProps) {
   const [isExpandedOnSmallScreen, setExpandedOnSmallScreen] = useState(false);
   const [currentStepLabel, setCurrentStepLabel] = useState("");
+
+  const sidebarCurrentStepContextValue = useMemo(
+    () => ({ setCurrentStepLabel }),
+    [setCurrentStepLabel],
+  );
 
   return (
     <aside
@@ -55,7 +60,7 @@ function Sidebar({ children }: SidebarProps) {
         id="barre-laterale-contenu"
         className={classNames(isExpandedOnSmallScreen ? "block" : "hidden", "lg:block")}
       >
-        <SidebarCurrentStepContext.Provider value={{ setCurrentStepLabel }}>
+        <SidebarCurrentStepContext.Provider value={sidebarCurrentStepContextValue}>
           {children}
         </SidebarCurrentStepContext.Provider>
       </div>

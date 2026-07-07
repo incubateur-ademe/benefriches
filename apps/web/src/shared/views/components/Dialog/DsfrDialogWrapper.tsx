@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { createPortal } from "react-dom";
 
 import classNames from "../../clsx";
@@ -25,8 +25,13 @@ const DsfrDialogWrapper = ({
     { onDisclose, onConceal },
   );
 
+  const dsfrDialogContextValue = useMemo(
+    () => ({ isOpened, dialogId, dialogTitleId: `${dialogId}-title` }),
+    [isOpened, dialogId],
+  );
+
   return createPortal(
-    <DsfrDialogContext.Provider value={{ isOpened, dialogId, dialogTitleId: `${dialogId}-title` }}>
+    <DsfrDialogContext.Provider value={dsfrDialogContextValue}>
       <dialog aria-labelledby={`${dialogId}-title`} id={dialogId} className={fr.cx("fr-modal")}>
         <div className={fr.cx("fr-container", "fr-container--fluid", "fr-container-md")}>
           <div className={fr.cx("fr-grid-row", "fr-grid-row--center")}>
