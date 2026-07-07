@@ -231,10 +231,8 @@ export type ProjectStepGroups = Record<
   StepGroupId,
   { stepId: UrbanProjectCreationStep; subGroupId?: StepSubGroupId; isStepCompleted: boolean }[]
 >;
-export const buildStepGroupsFromSequence = <
-  T extends UrbanProjectCreationStep = UrbanProjectCreationStep,
->(
-  stepSequence: { stepId: T; isCompleted: boolean }[],
+export const buildStepGroupsFromSequence = (
+  stepSequence: { stepId: UrbanProjectCreationStep; isCompleted: boolean }[],
 ) => {
   const stepGroups = {} as ProjectStepGroups;
 

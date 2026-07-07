@@ -14,7 +14,7 @@ type FormReducerConfig<S extends ProjectFormState> = {
 
 // Helper to cast Immer draft state to ProjectFormState for helper functions
 // This is safe because S extends ProjectFormState and Immer drafts are mutable versions
-const asFormState = <S extends ProjectFormState>(state: S): ProjectFormState => {
+const asFormState = (state: ProjectFormState): ProjectFormState => {
   return state as unknown as ProjectFormState;
 };
 
