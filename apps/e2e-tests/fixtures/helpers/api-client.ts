@@ -7,11 +7,13 @@ import { request, type APIRequestContext, type APIResponse } from "@playwright/t
 
 export class ApiClient {
   private apiContext: APIRequestContext | null = null;
+  private readonly baseURL: string;
+  private readonly cookieHeader: string;
 
-  constructor(
-    private readonly baseURL: string,
-    private readonly cookieHeader: string,
-  ) {}
+  constructor(baseURL: string, cookieHeader: string) {
+    this.baseURL = baseURL;
+    this.cookieHeader = cookieHeader;
+  }
 
   private async getContext(): Promise<APIRequestContext> {
     if (!this.apiContext) {
