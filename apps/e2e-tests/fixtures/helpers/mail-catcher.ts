@@ -22,7 +22,7 @@ type MailCatcherMessage = {
 async function getMessages(): Promise<MailCatcherMessage[]> {
   const apiContext = await request.newContext({ baseURL: MAIL_CATCHER_URL });
   const response = await apiContext.get("/messages");
-  const messages = await response.json();
+  const messages = (await response.json()) as MailCatcherMessage[];
   await apiContext.dispose();
   return messages;
 }

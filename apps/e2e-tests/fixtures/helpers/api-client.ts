@@ -23,7 +23,7 @@ export class ApiClient {
     return this.apiContext;
   }
 
-  async post<T>(endpoint: string, data: T): Promise<APIResponse> {
+  async post(endpoint: string, data: unknown): Promise<APIResponse> {
     const ctx = await this.getContext();
     return ctx.post(endpoint, {
       headers: { "Content-Type": "application/json" },

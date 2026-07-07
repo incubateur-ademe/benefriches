@@ -2,6 +2,9 @@
   "$schema": "../../node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "unicorn", "node", "oxc", "import"],
   "jsPlugins": ["eslint-plugin-playwright"],
+  "options": {
+    "typeAware": true
+  },
   "categories": {
     "correctness": "error",
     "nursery": "error",
@@ -11,7 +14,7 @@
   "env": {
     "node": true
   },
-  "ignorePatterns": ["node_modules/", "playwright-report/", "test-results/"],
+  "ignorePatterns": ["node_modules/", "playwright-report/", "test-results/", "scripts/"],
   "rules": {
     "typescript/ban-types": "error",
     "no-await-in-loop": "off",
@@ -43,6 +46,7 @@
     "no-empty-function": "error",
     "typescript/non-nullable-type-assertion-style": "error",
     "typescript/prefer-ts-expect-error": "error",
+    "typescript/consistent-return": "off",
     "playwright/missing-playwright-await": "error",
     "playwright/no-conditional-expect": "error",
     "playwright/no-conditional-in-test": "error",
@@ -64,5 +68,13 @@
     "playwright/prefer-to-be": "off",
     "playwright/prefer-to-have-length": "off",
     "playwright/require-top-level-describe": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.spec.ts"],
+      "rules": {
+        "typescript/no-non-null-assertion": "off"
+      }
+    }
+  ]
 }

@@ -71,7 +71,7 @@ test.describe("login with email", () => {
     expect(authLink, "Authentication link should be found in email").toBeDefined();
 
     // Navigate to the authentication link
-    await page.goto(authLink as string);
+    await page.goto(authLink!);
 
     // Expect to be logged in and redirected to "Mes évaluations" page
     await expect(page).toHaveURL((url) => url.pathname === "/mes-evaluations");

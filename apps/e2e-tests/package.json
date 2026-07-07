@@ -7,7 +7,7 @@
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "typecheck": "tsc --noEmit",
-    "lint": "oxlint .",
+    "lint": "oxlint",
     "format:check": "prettier --check --cache \"./**/*.{js,ts,json}\" .",
     "format": "prettier --write --cache \"./**/*.{js,ts,json}\" ."
   },
