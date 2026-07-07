@@ -30,10 +30,7 @@ export class GetCityCarbonStoragePerSoilsCategoryUseCase implements UseCase<
 > {
   constructor(private readonly carbonStorageQuery: CarbonStorageQuery) {}
 
-  async execute({
-    cityCode,
-    soils = [],
-  }: Request): Promise<GetCityCarbonStoragePerSoilsCategoryResult> {
+  async execute({ cityCode, soils }: Request): Promise<GetCityCarbonStoragePerSoilsCategoryResult> {
     const carbonStorage = await this.carbonStorageQuery.getCarbonStorageForCity(
       cityCode,
       soils.map(({ type }) => mapSoilTypeToRepositorySoilCategory(type)),

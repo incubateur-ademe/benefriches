@@ -20,7 +20,7 @@ export class GetCarbonStorageFromSoilDistributionService {
     private readonly logger: AppLogger,
   ) {}
 
-  async execute({ cityCode, soilsDistribution = {} }: Request): Promise<Response | undefined> {
+  async execute({ cityCode, soilsDistribution }: Request): Promise<Response | undefined> {
     try {
       const soilsTypes = Object.keys(soilsDistribution) as SoilType[];
       const carbonStorage = await this.carbonStorageQuery.getCarbonStorageForCity(

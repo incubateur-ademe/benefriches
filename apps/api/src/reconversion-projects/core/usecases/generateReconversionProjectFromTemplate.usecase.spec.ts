@@ -494,7 +494,7 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
 
           assert.strictEqual(result.isSuccess(), true);
           const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
-          const { developmentPlan, soilsDistribution = [] } = data;
+          const { developmentPlan, soilsDistribution } = data;
           const { buildingsFloorAreaDistribution } =
             developmentPlan.features as UrbanProjectFeatures;
 

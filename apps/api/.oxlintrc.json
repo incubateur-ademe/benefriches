@@ -58,7 +58,7 @@
     "typescript/no-unnecessary-condition": "off",
     "typescript/no-unnecessary-type-conversion": "off",
     "typescript/consistent-return": "off",
-    "typescript/no-useless-default-assignment": "off"
+    "typescript/no-useless-default-assignment": "error"
   },
   "overrides": [
     {
@@ -80,7 +80,8 @@
       ],
       "rules": {
         "no-console": "off",
-        "typescript/no-unsafe-assignment": "off"
+        "typescript/no-unsafe-assignment": "off",
+        "typescript/no-useless-default-assignment": "off"
       }
     },
     {
