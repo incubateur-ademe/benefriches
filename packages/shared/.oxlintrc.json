@@ -34,13 +34,20 @@
     "typescript/no-confusing-non-null-assertion": "error",
     "no-empty-function": "error",
     "typescript/non-nullable-type-assertion-style": "error",
-    "typescript/prefer-ts-expect-error": "error"
+    "typescript/prefer-ts-expect-error": "error",
+    // Disabled pending per-rule evaluation after oxlint 1.43->1.72 upgrade (newly-triggered rules)
+    "no-underscore-dangle": "off",
+    "no-shadow": "off",
+    "typescript/no-unnecessary-condition": "off",
+    "typescript/consistent-return": "off",
+    "typescript/no-useless-default-assignment": "off"
   },
   "overrides": [
     {
       "files": ["*.spec.ts"],
       "rules": {
         "typescript/no-unsafe-type-assertion": "off",
+        "typescript/no-unsafe-assignment": "off",
         "typescript/no-floating-promises": "off"
       }
     }

@@ -20,8 +20,8 @@
     "@vitest/coverage-v8": "^4.1.4",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "oxlint": "^1.43.0",
-    "oxlint-tsgolint": "^0.11.4",
+    "oxlint": "^1.72.0",
+    "oxlint-tsgolint": "^0.23.0",
     "prettier": "~3.8.3",
     "typescript": "~5.9.3",
     "vitest": "~4.1.4"

@@ -50,9 +50,26 @@
     "typescript/no-confusing-non-null-assertion": "error",
     "no-empty-function": "error",
     "typescript/non-nullable-type-assertion-style": "error",
-    "typescript/prefer-ts-expect-error": "error"
+    "typescript/prefer-ts-expect-error": "error",
+    // Disabled pending per-rule evaluation after oxlint 1.43->1.72 upgrade (newly-triggered rules)
+    "no-underscore-dangle": "off",
+    "no-shadow": "off",
+    "no-useless-assignment": "off",
+    "typescript/no-unnecessary-condition": "off",
+    "typescript/no-unnecessary-type-conversion": "off",
+    "typescript/consistent-return": "off",
+    "typescript/no-useless-default-assignment": "off"
   },
   "overrides": [
+    {
+      // Node ESM loader hook: inherently untyped module APIs
+      "files": ["test/swc-esm-loader.mjs"],
+      "rules": {
+        "typescript/no-unsafe-call": "off",
+        "typescript/no-unsafe-assignment": "off",
+        "typescript/no-unsafe-return": "off"
+      }
+    },
     {
       "files": [
         "src/shared-kernel/adapters/sql-knex/migrations/**/*.ts",
