@@ -17,6 +17,7 @@
     "build": "pnpm run -r build"
   },
   "devDependencies": {
+    "@upstash/context7-mcp": "3.2.2",
     "@vitest/coverage-v8": "^4.1.4",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",

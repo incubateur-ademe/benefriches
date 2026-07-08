@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "pnpm",
+      "args": ["exec", "context7-mcp", "--transport", "stdio"]
+    }
+  }
+}
