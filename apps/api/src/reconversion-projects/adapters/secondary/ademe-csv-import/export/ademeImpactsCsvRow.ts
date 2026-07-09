@@ -1,4 +1,6 @@
-import type { ReconversionProjectImpacts, SocioEconomicImpact } from "shared";
+import type { SocioEconomicImpact } from "shared";
+
+import type { ComputedImpacts } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 
 function findSocioEconomicImpact(
   impacts: SocioEconomicImpact[],
@@ -41,6 +43,7 @@ export function escapeCsvValue(value: string | number): string {
 
 export const ADEME_IMPACTS_CSV_HEADERS = [
   "Friche",
+  "Surface du site (m²)",
   "Projet",
   "Emplois mobilisés (ETP)",
   "CO2-eq stocké dans les sols friche (t)",
@@ -50,9 +53,9 @@ export const ADEME_IMPACTS_CSV_HEADERS = [
   "Surface perméable friche (m²)",
   "Surface perméable projet (m²)",
   "Surface perméable variation (%)",
-  "Surface non contaminée avant (m²)",
-  "Surface non contaminée après (m²)",
-  "Surface non contaminée diff (m²)",
+  "Surface polluée avant (m²)",
+  "Surface polluée après (m²)",
+  "Surface polluée diff (m²)",
   "Services écosystémiques total (€)",
   "SE - Bien-être et loisirs liés à la nature (€)",
   "SE - Produits forestiers (€)",
@@ -79,12 +82,17 @@ export const ADEME_IMPACTS_CSV_HEADERS = [
 export function buildAdemeImpactsCsvRow(
   siteName: string,
   projectName: string,
-  impacts: ReconversionProjectImpacts,
+  computedImpacts: Pick<
+    ComputedImpacts,
+    "impacts" | "relatedSiteSurfaceArea" | "contaminatedSurfaceArea"
+  >,
 ): string[] {
+  const { impacts, relatedSiteSurfaceArea, contaminatedSurfaceArea } = computedImpacts;
   const socio = impacts.socioeconomic.impacts;
 
   return [
     siteName,
+    String(relatedSiteSurfaceArea),
     projectName,
     String(impacts.social.fullTimeJobs?.difference ?? ""),
     String(impacts.environmental.soilsCo2eqStorage?.base ?? ""),
@@ -102,9 +110,9 @@ export function buildAdemeImpactsCsvRow(
       impacts.environmental.permeableSurfaceArea.base,
       impacts.environmental.permeableSurfaceArea.forecast,
     ),
-    String(impacts.environmental.nonContaminatedSurfaceArea?.base ?? ""),
-    String(impacts.environmental.nonContaminatedSurfaceArea?.forecast ?? ""),
-    String(impacts.environmental.nonContaminatedSurfaceArea?.difference ?? ""),
+    String(contaminatedSurfaceArea?.base ?? ""),
+    String(contaminatedSurfaceArea?.forecast ?? ""),
+    String(contaminatedSurfaceArea?.difference ?? ""),
     String(getSocioEconomicAmount(socio, "ecosystem_services")),
     String(getEcosystemServiceDetail(socio, "nature_related_wellness_and_leisure")),
     String(getEcosystemServiceDetail(socio, "forest_related_product")),

@@ -67,7 +67,7 @@ if (!userId) {
         const row = buildAdemeImpactsCsvRow(
           resultData.relatedSiteName,
           project.name as string,
-          resultData.impacts,
+          resultData,
         );
         csvLines.push(row.map(escapeCsvValue).join(";"));
         successCount++;

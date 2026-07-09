@@ -72,7 +72,7 @@ function logProgress(message: string): void {
         const impactsRow = buildAdemeImpactsCsvRow(
           resultData.relatedSiteName,
           projectName,
-          resultData.impacts,
+          resultData,
         );
         const fullRow = [projectId, createdBy, createdAt, ...impactsRow];
         process.stdout.write(`${fullRow.map(escapeCsvValue).join(";")}\n`);

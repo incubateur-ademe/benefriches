@@ -53,6 +53,12 @@ export type ComputedImpacts = {
   evaluationPeriodInYears: number;
   relatedSiteId: string;
   relatedSiteName: string;
+  relatedSiteSurfaceArea: number;
+  contaminatedSurfaceArea?: {
+    base: number;
+    forecast: number;
+    difference: number;
+  };
   impacts: ReconversionProjectImpacts;
 };
 
@@ -235,6 +241,15 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<
       evaluationPeriodInYears,
       relatedSiteId: relatedSite.id,
       relatedSiteName: relatedSite.name,
+      relatedSiteSurfaceArea: relatedSite.surfaceArea,
+      contaminatedSurfaceArea:
+        contaminatedSurface || decontaminatedSurface
+          ? {
+              base: contaminatedSurface,
+              forecast: contaminatedSurface - decontaminatedSurface,
+              difference: -decontaminatedSurface,
+            }
+          : undefined,
       impacts: {
         economicBalance: formatEconomicBalanceImpact(
           impacts.projectEconomicBalance,
