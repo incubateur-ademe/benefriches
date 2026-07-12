@@ -203,7 +203,7 @@ Tests use `node:test` + `node:assert/strict` (not Vitest). Runner: `node --impor
 
 - `assert.deepStrictEqual` treats `{key: undefined}` ≠ `{}` — unlike Vitest's `toEqual`. Tests that spread `{...obj, KEY: undefined}` must explicitly omit removed keys instead.
 - `describe`/`it` return Promises in node:test (unlike Vitest) — `no-floating-promises` is disabled for spec files in `.oxlintrc.json`.
-- No `.each()` — replace `it.each(arr)` with a plain `for...of` loop.
+- No `.each()` — replace `it.each(arr)` with a plain `for...of` loop that generates one `it()` per case (loop outside `it()`, never inside it around the assertions), so a failing case is identifiable from the test name alone.
 - `tsx` loader is required (`--import=tsx`) because `--experimental-strip-types` alone doesn't handle extensionless or directory imports.
 
 ---
