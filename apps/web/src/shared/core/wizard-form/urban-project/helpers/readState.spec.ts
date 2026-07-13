@@ -1,12 +1,12 @@
 import { describe, it, expect } from "vitest";
 
-import { ProjectFormState } from "../../projectForm.reducer";
+import { WizardFormState } from "../../wizardForm.reducer";
 import { ReadStateHelper } from "./readState";
 
 describe("ReadStateHelper", () => {
   describe("getStep", () => {
     it("should return the step when it exists", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_NAMING: {
           completed: true,
           payload: { name: "Test Project", description: "Test Description" },
@@ -22,7 +22,7 @@ describe("ReadStateHelper", () => {
     });
 
     it("should return undefined when step does not exist", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {};
+      const steps: WizardFormState["urbanProject"]["steps"] = {};
 
       const result = ReadStateHelper.getStep(steps, "URBAN_PROJECT_NAMING");
 
@@ -32,7 +32,7 @@ describe("ReadStateHelper", () => {
 
   describe("getStepAnswers", () => {
     it("should return the payload when step exists", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_NAMING: {
           completed: true,
           payload: { name: "Test Project", description: "Test Description" },
@@ -45,7 +45,7 @@ describe("ReadStateHelper", () => {
     });
 
     it("should return undefined when step has no payload", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_NAMING: {
           completed: false,
         },
@@ -59,7 +59,7 @@ describe("ReadStateHelper", () => {
 
   describe("getDefaultAnswers", () => {
     it("should return default values when they exist", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_NAMING: {
           completed: true,
           defaultValues: { name: "Default Name", description: "Default Description" },
@@ -72,7 +72,7 @@ describe("ReadStateHelper", () => {
     });
 
     it("should return undefined when no default values exist", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_NAMING: {
           completed: true,
         },

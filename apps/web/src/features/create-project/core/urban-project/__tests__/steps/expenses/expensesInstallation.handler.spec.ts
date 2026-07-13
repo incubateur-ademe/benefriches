@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { UrbanProjectInstallationExpensesHandler } from "@/shared/core/wizard-form/urban-project/step-handlers/expenses/expenses-installation/expensesInstallation.handler";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 describe("UrbanProjectInstallationExpensesHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION when developer will build the new buildings", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -34,14 +34,15 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       };
 
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION");
     });
 
     it("should return URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION when buildings are reused", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -65,14 +66,15 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       };
 
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION");
     });
 
     it("should return URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES when project has buildings but no buildings resale planned", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -86,14 +88,15 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       };
 
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES");
     });
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when project has buildings and buildings resale is planned", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -107,14 +110,15 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       };
 
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
     });
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when project has no buildings", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
@@ -122,7 +126,8 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       };
 
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
@@ -130,7 +135,8 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when steps state is empty", () => {
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
-        stepsState: {},
+        answers: {},
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
@@ -140,22 +146,24 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
   describe("getPreviousStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_REINSTATEMENT when site is a friche", () => {
       const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId({
-        stepsState: {},
-        siteData: {
-          id: "test-site",
-          name: "Test Site",
-          nature: "FRICHE",
-          surfaceArea: 10000,
-          soilsDistribution: {},
-          isExpressSite: false,
-          owner: { name: "Test Owner", structureType: "company" },
-          address: {
-            city: "Test City",
-            cityCode: "12345",
-            value: "Test Address",
-            postCode: "12345",
-            long: 0,
-            lat: 0,
+        answers: {},
+        context: {
+          siteData: {
+            id: "test-site",
+            name: "Test Site",
+            nature: "FRICHE",
+            surfaceArea: 10000,
+            soilsDistribution: {},
+            isExpressSite: false,
+            owner: { name: "Test Owner", structureType: "company" },
+            address: {
+              city: "Test City",
+              cityCode: "12345",
+              value: "Test Address",
+              postCode: "12345",
+              long: 0,
+              lat: 0,
+            },
           },
         },
       });
@@ -165,22 +173,24 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
 
     it("should return URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS when site is not a friche", () => {
       const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId({
-        stepsState: {},
-        siteData: {
-          id: "test-site",
-          name: "Test Site",
-          nature: "AGRICULTURAL_OPERATION",
-          surfaceArea: 10000,
-          soilsDistribution: {},
-          isExpressSite: false,
-          owner: { name: "Test Owner", structureType: "company" },
-          address: {
-            city: "Test City",
-            cityCode: "12345",
-            value: "Test Address",
-            postCode: "12345",
-            long: 0,
-            lat: 0,
+        answers: {},
+        context: {
+          siteData: {
+            id: "test-site",
+            name: "Test Site",
+            nature: "AGRICULTURAL_OPERATION",
+            surfaceArea: 10000,
+            soilsDistribution: {},
+            isExpressSite: false,
+            owner: { name: "Test Owner", structureType: "company" },
+            address: {
+              city: "Test City",
+              cityCode: "12345",
+              value: "Test Address",
+              postCode: "12345",
+              long: 0,
+              lat: 0,
+            },
           },
         },
       });
@@ -190,8 +200,8 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
 
     it("should return URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS when siteData is undefined", () => {
       const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId({
-        stepsState: {},
-        siteData: undefined,
+        answers: {},
+        context: { siteData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS");
@@ -201,22 +211,24 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
   describe("getDefaultAnswers", () => {
     it("should return default installation expenses based on site surface area", () => {
       const defaultAnswers = UrbanProjectInstallationExpensesHandler.getDefaultAnswers({
-        stepsState: {},
-        siteData: {
-          id: "test-site",
-          name: "Test Site",
-          nature: "FRICHE",
-          surfaceArea: 10000,
-          soilsDistribution: {},
-          isExpressSite: false,
-          owner: { name: "Test Owner", structureType: "company" },
-          address: {
-            city: "Test City",
-            cityCode: "12345",
-            value: "Test Address",
-            postCode: "12345",
-            long: 0,
-            lat: 0,
+        answers: {},
+        context: {
+          siteData: {
+            id: "test-site",
+            name: "Test Site",
+            nature: "FRICHE",
+            surfaceArea: 10000,
+            soilsDistribution: {},
+            isExpressSite: false,
+            owner: { name: "Test Owner", structureType: "company" },
+            address: {
+              city: "Test City",
+              cityCode: "12345",
+              value: "Test Address",
+              postCode: "12345",
+              long: 0,
+              lat: 0,
+            },
           },
         },
       });
@@ -237,8 +249,8 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
 
     it("should return undefined when site surface area is not available", () => {
       const defaultAnswers = UrbanProjectInstallationExpensesHandler.getDefaultAnswers({
-        stepsState: {},
-        siteData: undefined,
+        answers: {},
+        context: { siteData: undefined },
       });
 
       expect(defaultAnswers).toBeUndefined();

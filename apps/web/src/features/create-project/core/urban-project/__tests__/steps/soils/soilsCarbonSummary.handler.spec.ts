@@ -6,15 +6,17 @@ describe("SoilsCarbonSummaryHandler", () => {
   describe("getNextStepId", () => {
     it("routes to BUILDINGS_INTRODUCTION when project will have buildings", () => {
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
-        stepsState: {
+        answers: {
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL"] },
           },
         },
-        siteData: {
-          soilsDistribution: { BUILDINGS: 0 },
-          hasContaminatedSoils: false,
+        context: {
+          siteData: {
+            soilsDistribution: { BUILDINGS: 0 },
+            hasContaminatedSoils: false,
+          },
         } as never,
       });
 
@@ -23,15 +25,17 @@ describe("SoilsCarbonSummaryHandler", () => {
 
     it("routes to BUILDINGS_DEMOLITION_INFO when site has existing buildings but willHaveBuildings is false (OTHER_PUBLIC_SPACES use) on non-contaminated site", () => {
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
-        stepsState: {
+        answers: {
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["OTHER_PUBLIC_SPACES"] },
           },
         },
-        siteData: {
-          soilsDistribution: { BUILDINGS: 1200 },
-          hasContaminatedSoils: false,
+        context: {
+          siteData: {
+            soilsDistribution: { BUILDINGS: 1200 },
+            hasContaminatedSoils: false,
+          },
         } as never,
       });
 
@@ -40,15 +44,17 @@ describe("SoilsCarbonSummaryHandler", () => {
 
     it("routes to BUILDINGS_DEMOLITION_INFO when site has existing buildings but willHaveBuildings is false (PUBLIC_GREEN_SPACES use) on non-contaminated site", () => {
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
-        stepsState: {
+        answers: {
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
           },
         },
-        siteData: {
-          soilsDistribution: { BUILDINGS: 1200 },
-          hasContaminatedSoils: false,
+        context: {
+          siteData: {
+            soilsDistribution: { BUILDINGS: 1200 },
+            hasContaminatedSoils: false,
+          },
         } as never,
       });
 
@@ -57,15 +63,17 @@ describe("SoilsCarbonSummaryHandler", () => {
 
     it("skips buildings chapter and routes to INVOLVES_REINSTATEMENT when site is a FRICHE with no buildings", () => {
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
-        stepsState: {
+        answers: {
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["OTHER_PUBLIC_SPACES"] },
           },
         },
-        siteData: {
-          soilsDistribution: { BUILDINGS: 0 },
-          nature: "FRICHE",
+        context: {
+          siteData: {
+            soilsDistribution: { BUILDINGS: 0 },
+            nature: "FRICHE",
+          },
         } as never,
       });
 
@@ -74,16 +82,18 @@ describe("SoilsCarbonSummaryHandler", () => {
 
     it("skips buildings chapter and routes to SOILS_DECONTAMINATION_INTRODUCTION when a non-friche site has contaminated soils and no buildings", () => {
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
-        stepsState: {
+        answers: {
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["OTHER_PUBLIC_SPACES"] },
           },
         },
-        siteData: {
-          soilsDistribution: { BUILDINGS: 0 },
-          nature: "AGRICULTURAL_OPERATION",
-          hasContaminatedSoils: true,
+        context: {
+          siteData: {
+            soilsDistribution: { BUILDINGS: 0 },
+            nature: "AGRICULTURAL_OPERATION",
+            hasContaminatedSoils: true,
+          },
         } as never,
       });
 
@@ -92,15 +102,17 @@ describe("SoilsCarbonSummaryHandler", () => {
 
     it("skips buildings chapter and routes to SITE_RESALE_INTRODUCTION when site has no buildings and willHaveBuildings is false on non-contaminated site", () => {
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
-        stepsState: {
+        answers: {
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["OTHER_PUBLIC_SPACES"] },
           },
         },
-        siteData: {
-          soilsDistribution: { BUILDINGS: 0 },
-          hasContaminatedSoils: false,
+        context: {
+          siteData: {
+            soilsDistribution: { BUILDINGS: 0 },
+            hasContaminatedSoils: false,
+          },
         } as never,
       });
 

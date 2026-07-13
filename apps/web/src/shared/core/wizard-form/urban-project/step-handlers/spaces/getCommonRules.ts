@@ -1,11 +1,11 @@
 import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
 import { BUILDINGS_STEPS } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 
-import { StepContext, StepInvalidationRule } from "../stepHandler.type";
+import { StepHandlerParams, StepInvalidationRule } from "../stepHandler.type";
 
-export const getDeleteBuildingsRules = (context: StepContext) => {
+export const getDeleteBuildingsRules = (params: StepHandlerParams) => {
   return BUILDINGS_STEPS.reduce<StepInvalidationRule[]>((rules, stepId) => {
-    if (ReadStateHelper.getStep(context.stepsState, stepId)) {
+    if (ReadStateHelper.getStep(params.answers, stepId)) {
       return [...rules, { stepId, action: "delete" }];
     }
     return rules;
@@ -13,10 +13,10 @@ export const getDeleteBuildingsRules = (context: StepContext) => {
 };
 
 export const getReinstatementCostsRecomputationRules = (
-  context: StepContext,
+  params: StepHandlerParams,
 ): StepInvalidationRule[] => {
   const reinstatementExpensesStep = ReadStateHelper.getStep(
-    context.stepsState,
+    params.answers,
     "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
   );
   if (reinstatementExpensesStep) {

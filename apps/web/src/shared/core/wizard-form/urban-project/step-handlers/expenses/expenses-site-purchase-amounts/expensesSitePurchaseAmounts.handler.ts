@@ -9,9 +9,9 @@ export const ExpensesSitePurchaseAmountsHandler = {
     return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
   },
 
-  getNextStepId(context) {
+  getNextStepId({ answers, context }) {
     const involvesReinstatement = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      answers,
       "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
     )?.involvesReinstatement;
 

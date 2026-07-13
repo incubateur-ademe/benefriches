@@ -5,8 +5,8 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 export const RevenueBuildingsResaleHandler = {
   stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
 
-  getPreviousStepId(context) {
-    if (isSiteResalePlannedAfterDevelopment(context.stepsState)) {
+  getPreviousStepId(params) {
+    if (isSiteResalePlannedAfterDevelopment(params.answers)) {
       return "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
     }
 

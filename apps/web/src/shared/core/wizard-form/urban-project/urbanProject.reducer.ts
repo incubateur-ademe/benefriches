@@ -2,33 +2,49 @@ import { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
 
 import { stepHandlerRegistry } from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
 
-import { ProjectFormState } from "../projectForm.reducer";
-import { applyStepChanges, computeStepChanges } from "./helpers/completeStep";
+import { WizardFormDefinition, WizardFormState } from "../wizardForm.reducer";
+import { applyStepChanges, computeStepChanges, StepUpdateResult } from "./helpers/completeStep";
 import { navigateToAndLoadStep } from "./helpers/navigateToStep";
+import { UrbanStepHandlerContext } from "./step-handlers/stepHandler.type";
 import { UrbanProjectFormReducerActions } from "./urbanProject.actions";
+import { AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
-type FormReducerConfig<S extends ProjectFormState> = {
-  stepChangesNextMode: "step_order" | "next_empty";
-  onPreviousStepFallback?: (state: Draft<S>) => void;
+// Helper to cast Immer draft state to WizardFormState for helper functions
+// This is safe because S extends WizardFormState and Immer drafts are mutable versions
+const asFormState = (state: WizardFormState): WizardFormState => {
+  return state as unknown as WizardFormState;
 };
 
-// Helper to cast Immer draft state to ProjectFormState for helper functions
-// This is safe because S extends ProjectFormState and Immer drafts are mutable versions
-const asFormState = (state: ProjectFormState): ProjectFormState => {
-  return state as unknown as ProjectFormState;
-};
+type UrbanWizardFormDefinition<S extends WizardFormState> = Pick<
+  WizardFormDefinition<
+    UrbanProjectCreationStep,
+    UrbanStepHandlerContext,
+    Draft<S>["urbanProject"]["steps"],
+    Draft<S>,
+    StepUpdateResult<AnswerStepId>
+  >,
+  "config" | "selectForm" | "buildContext"
+>;
 
-export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
+const defaultDefinition = <S extends WizardFormState>(): UrbanWizardFormDefinition<S> => ({
+  config: { stepChangesNextMode: "step_order" },
+  selectForm: (state) => state.urbanProject,
+  buildContext: (state) => ({ siteData: state.siteData }),
+});
+
+export const addUrbanProjectFormCasesToBuilder = <S extends WizardFormState>(
   builder: ActionReducerMapBuilder<S>,
   actions: UrbanProjectFormReducerActions,
-  config: FormReducerConfig<S> = { stepChangesNextMode: "step_order" },
+  definition: UrbanWizardFormDefinition<S> = defaultDefinition<S>(),
 ) => {
+  const { config, selectForm, buildContext } = definition;
+
   builder.addCase(actions.stepCompletionRequested, (state, action) => {
     const formState = asFormState(state);
     const changes = computeStepChanges(formState, action.payload);
 
     if (changes.cascadingChanges && changes.cascadingChanges.length > 0) {
-      state.urbanProject.pendingStepCompletion = {
+      selectForm(state).pendingStepCompletion = {
         changes,
         showAlert: true,
       };
@@ -39,28 +55,28 @@ export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
 
   builder.addCase(actions.stepCompletionConfirmed, (state) => {
     const formState = asFormState(state);
-    const pending = state.urbanProject.pendingStepCompletion;
+    const pending = selectForm(state).pendingStepCompletion;
     if (pending) {
       applyStepChanges(formState, pending.changes, { nextMode: config.stepChangesNextMode });
-      state.urbanProject.pendingStepCompletion = undefined;
+      selectForm(state).pendingStepCompletion = undefined;
     }
   });
 
   builder.addCase(actions.stepCompletionCancelled, (state) => {
-    state.urbanProject.pendingStepCompletion = undefined;
+    selectForm(state).pendingStepCompletion = undefined;
   });
 
   builder.addCase(actions.previousStepRequested, (state) => {
     const formState = asFormState(state);
-    const stepId = state.urbanProject.currentStep;
+    const stepId = selectForm(state).currentStep;
     const handler = stepHandlerRegistry[stepId];
 
     if (handler.getPreviousStepId) {
       navigateToAndLoadStep(
         formState,
         handler.getPreviousStepId({
-          siteData: state.siteData,
-          stepsState: state.urbanProject.steps,
+          context: buildContext(state),
+          answers: selectForm(state).steps,
         }),
       );
     } else {
@@ -70,23 +86,24 @@ export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
 
   builder.addCase(actions.nextStepRequested, (state) => {
     const formState = asFormState(state);
-    const stepId = state.urbanProject.currentStep;
+    const form = selectForm(state);
+    const stepId = form.currentStep;
     const handler = stepHandlerRegistry[stepId];
 
-    if (!state.urbanProject.steps[stepId]) {
-      state.urbanProject.steps[stepId] = {
+    if (!form.steps[stepId]) {
+      form.steps[stepId] = {
         completed: true,
       };
     } else {
-      state.urbanProject.steps[stepId].completed = true;
+      form.steps[stepId].completed = true;
     }
 
     if (handler.getNextStepId) {
       navigateToAndLoadStep(
         formState,
         handler.getNextStepId({
-          siteData: state.siteData,
-          stepsState: state.urbanProject.steps,
+          context: buildContext(state),
+          answers: selectForm(state).steps,
         }),
       );
     }
@@ -98,25 +115,28 @@ export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
   });
 
   builder.addCase(actions.fetchSoilsCarbonStorageDifference.pending, (state) => {
-    if (!state.urbanProject.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY) {
-      state.urbanProject.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY = { completed: false };
+    const form = selectForm(state);
+    if (!form.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY) {
+      form.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY = { completed: false };
     }
-    state.urbanProject.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY.loadingState = "loading";
+    form.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY.loadingState = "loading";
   });
   builder.addCase(actions.fetchSoilsCarbonStorageDifference.fulfilled, (state, action) => {
-    if (!state.urbanProject.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY) {
-      state.urbanProject.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY = { completed: false };
+    const form = selectForm(state);
+    if (!form.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY) {
+      form.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY = { completed: false };
     }
-    state.urbanProject.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY.loadingState = "success";
-    state.urbanProject.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY.data = {
+    form.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY.loadingState = "success";
+    form.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY.data = {
       current: action.payload.current,
       projected: action.payload.projected,
     };
   });
   builder.addCase(actions.fetchSoilsCarbonStorageDifference.rejected, (state) => {
-    if (!state.urbanProject.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY) {
-      state.urbanProject.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY = { completed: false };
+    const form = selectForm(state);
+    if (!form.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY) {
+      form.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY = { completed: false };
     }
-    state.urbanProject.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY.loadingState = "error";
+    form.steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY.loadingState = "error";
   });
 };

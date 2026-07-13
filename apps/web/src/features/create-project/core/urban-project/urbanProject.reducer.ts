@@ -13,10 +13,14 @@ import { customUrbanProjectSaved } from "./urbanProjectCustomSaved.action";
 const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
   // Form actions
   addUrbanProjectFormCasesToBuilder(builder, creationProjectFormUrbanActions, {
-    stepChangesNextMode: "step_order",
-    onPreviousStepFallback: (state) => {
-      state.currentProjectFlow = "USE_CASE_SELECTION";
+    config: {
+      stepChangesNextMode: "step_order",
+      onPreviousStepFallback: (state) => {
+        state.currentProjectFlow = "USE_CASE_SELECTION";
+      },
     },
+    selectForm: (state) => state.urbanProject,
+    buildContext: (state) => ({ siteData: state.siteData }),
   });
 
   // Custom create Save

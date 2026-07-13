@@ -2,8 +2,6 @@ import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 
-import { ProjectFormReducerActions } from "./projectForm.actions";
-import { LocalAuthorities, ProjectSiteView } from "./projectForm.types";
 import { StepUpdateResult } from "./urban-project/helpers/completeStep";
 import { computeProjectStepsSequence } from "./urban-project/helpers/stepsSequence";
 import {
@@ -13,6 +11,8 @@ import {
   IntroductionStep,
   SummaryStep,
 } from "./urban-project/urbanProjectSteps";
+import { WizardFormReducerActions } from "./wizardForm.actions";
+import { LocalAuthorities, ProjectSiteView } from "./wizardForm.types";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -32,7 +32,7 @@ type InformationalStepState = {
   completed: boolean;
 };
 
-export interface ProjectFormState<T extends UrbanProjectCreationStep = UrbanProjectCreationStep> {
+export interface WizardFormState<T extends UrbanProjectCreationStep = UrbanProjectCreationStep> {
   siteData?: ProjectSiteView;
   siteDataLoadingState: LoadingState;
   siteRelatedLocalAuthorities: {
@@ -60,11 +60,11 @@ export interface ProjectFormState<T extends UrbanProjectCreationStep = UrbanProj
   };
 }
 
-export const getProjectFormInitialState = <
+export const getWizardFormInitialState = <
   T extends UrbanProjectCreationStep = UrbanProjectCreationStep,
 >(
   initialStep: T,
-): ProjectFormState<T> => {
+): WizardFormState<T> => {
   return {
     siteData: undefined,
     siteDataLoadingState: "idle",
@@ -78,7 +78,7 @@ export const getProjectFormInitialState = <
       steps: {},
       firstSequenceStep: initialStep,
       stepsSequence: computeProjectStepsSequence(
-        { siteData: undefined, stepsState: {} },
+        { context: { siteData: undefined }, answers: {} },
         initialStep,
       ),
       pendingStepCompletion: undefined,
@@ -86,9 +86,51 @@ export const getProjectFormInitialState = <
   };
 };
 
-export const addProjectFormCasesToBuilder = <S extends ProjectFormState>(
+/**
+ * Generic shape of a wizard-form instance's own sub-state, as lensed out of a consumer's
+ * slice via `WizardFormDefinition.selectForm` (see ADR-0015). Urban nests this under its
+ * own `urbanProject` key; other consumers may nest it under their own key — the engine
+ * never hardcodes the key name, only this shape.
+ */
+export type WizardFormSubState<StepId, TAnswers, TPendingChanges = unknown> = {
+  currentStep: StepId;
+  saveState: "idle" | "dirty" | "loading" | "success" | "error";
+  pendingStepCompletion?: {
+    changes: TPendingChanges;
+    showAlert: boolean;
+  };
+  stepsSequence: StepId[];
+  firstSequenceStep: StepId;
+  steps: TAnswers;
+};
+
+/**
+ * Definition a consumer supplies to wire its own wizard-form instance onto the generic
+ * engine (see ADR-0015). `selectForm`/`buildContext` are the injected lens: they let the
+ * engine locate a consumer's sub-state and eager context without hardcoding property names
+ * like `state.urbanProject`/`state.siteData`.
+ */
+export type WizardFormDefinition<
+  StepId,
+  TContext,
+  TAnswers,
+  RootDraftState,
+  TPendingChanges = unknown,
+> = {
+  prefix: string;
+  registry: Record<string, unknown>;
+  initialStep: StepId;
+  config: {
+    stepChangesNextMode: "step_order" | "next_empty";
+    onPreviousStepFallback?: (state: RootDraftState) => void;
+  };
+  selectForm: (state: RootDraftState) => WizardFormSubState<StepId, TAnswers, TPendingChanges>;
+  buildContext: (state: RootDraftState) => TContext;
+};
+
+export const addWizardFormCasesToBuilder = <S extends WizardFormState>(
   builder: ActionReducerMapBuilder<S>,
-  actions: ProjectFormReducerActions,
+  actions: WizardFormReducerActions,
 ) => {
   builder
     .addCase(actions.fetchSiteRelatedLocalAuthorities.pending, (state) => {

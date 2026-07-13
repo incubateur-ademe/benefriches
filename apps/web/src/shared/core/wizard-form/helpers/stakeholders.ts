@@ -11,7 +11,7 @@ import {
 } from "@/features/create-project/core/project.types";
 import { UserStructureActivity, UserStructureType } from "@/features/onboarding/core/user";
 
-import { ProjectFormState } from "../projectForm.reducer";
+import { WizardFormState } from "../wizardForm.reducer";
 
 export const DEFAULT_FUTURE_SITE_OWNER = {
   name: "Futur propriétaire inconnu",
@@ -102,7 +102,7 @@ export type AvailableLocalAuthorityStakeholder = {
 };
 
 export const getAvailableLocalAuthoritiesStakeholders = (
-  siteRelatedLocalAuthorities: ProjectFormState["siteRelatedLocalAuthorities"],
+  siteRelatedLocalAuthorities: WizardFormState["siteRelatedLocalAuthorities"],
   projectAvailableStakeholders: AvailableProjectStakeholder[],
 ) => {
   const projectLocalAuthorities = projectAvailableStakeholders.filter((element) =>

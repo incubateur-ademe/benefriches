@@ -1,12 +1,12 @@
 import { describe, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
-const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
+const INITIAL_STEPS: WizardFormState["urbanProject"]["steps"] = {
   URBAN_PROJECT_USES_SELECTION: {
     completed: true,
     payload: { usesSelection: ["RESIDENTIAL"] },
@@ -25,7 +25,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
     );
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       ...INITIAL_STEPS,
       URBAN_PROJECT_SITE_RESALE_SELECTION: {
@@ -51,7 +51,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
 
     const state = store.getState().projectCreation.urbanProject;
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       ...INITIAL_STEPS,
       URBAN_PROJECT_SITE_RESALE_SELECTION: {
@@ -88,7 +88,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
 
     const state = store.getState().projectCreation.urbanProject;
 
-    expect(state.steps).toEqual<ProjectFormState["urbanProject"]["steps"]>({
+    expect(state.steps).toEqual<WizardFormState["urbanProject"]["steps"]>({
       URBAN_PROJECT_SITE_RESALE_SELECTION: {
         completed: true,
         payload: { siteResaleSelection: "yes" },
@@ -127,7 +127,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
 
     const state = store.getState().projectCreation.urbanProject;
 
-    expect(state.steps).toEqual<ProjectFormState["urbanProject"]["steps"]>({
+    expect(state.steps).toEqual<WizardFormState["urbanProject"]["steps"]>({
       URBAN_PROJECT_SITE_RESALE_SELECTION: {
         completed: true,
         payload: { siteResaleSelection: "no" },
@@ -173,7 +173,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
 
     const state = store.getState().projectCreation.urbanProject;
 
-    expect(state.steps).toEqual<ProjectFormState["urbanProject"]["steps"]>({
+    expect(state.steps).toEqual<WizardFormState["urbanProject"]["steps"]>({
       ...INITIAL_STEPS,
       URBAN_PROJECT_SITE_RESALE_SELECTION: {
         completed: true,
@@ -218,7 +218,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       ...INITIAL_STEPS,
       URBAN_PROJECT_SITE_RESALE_SELECTION: {

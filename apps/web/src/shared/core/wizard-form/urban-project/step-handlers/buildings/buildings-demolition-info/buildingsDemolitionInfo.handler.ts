@@ -9,19 +9,19 @@ import {
 
 export const BuildingsDemolitionInfoHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO",
-  getPreviousStepId(context) {
-    if (!willHaveBuildings(context.stepsState)) {
+  getPreviousStepId(params) {
+    if (!willHaveBuildings(params.answers)) {
       return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
     }
     return "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE";
   },
-  getNextStepId(context) {
-    if (hasBothReuseAndNewConstruction(context.stepsState)) {
+  getNextStepId(params) {
+    if (hasBothReuseAndNewConstruction(params.answers)) {
       return "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA";
     }
-    if (willConstructNewBuildings(context.stepsState)) {
+    if (willConstructNewBuildings(params.answers)) {
       return "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO";
     }
-    return getNextStepAfterBuildings(context);
+    return getNextStepAfterBuildings(params);
   },
 };

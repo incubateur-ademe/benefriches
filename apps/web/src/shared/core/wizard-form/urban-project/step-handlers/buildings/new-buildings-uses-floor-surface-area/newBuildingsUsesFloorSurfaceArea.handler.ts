@@ -8,7 +8,7 @@ export const NewBuildingsUsesFloorSurfaceAreaHandler: AnswerStepHandler<typeof S
   getPreviousStepId() {
     return "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO";
   },
-  getNextStepId(context) {
-    return getNextStepAfterBuildings(context);
+  getNextStepId(params) {
+    return getNextStepAfterBuildings(params);
   },
 };

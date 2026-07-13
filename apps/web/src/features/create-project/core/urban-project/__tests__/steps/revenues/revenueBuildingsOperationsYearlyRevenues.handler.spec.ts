@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { RevenueBuildingsOperationsYearlyRevenuesHandler } from "@/shared/core/wizard-form/urban-project/step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.handler";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
   describe("getNextStepId", () => {
@@ -14,7 +14,7 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
 
   describe("getPreviousStepId", () => {
     it("should return URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE when site resale is planned (yes)", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "yes" },
@@ -22,14 +22,15 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
       };
 
       const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
     });
 
     it("should return URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE when site resale is unknown", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "unknown" },
@@ -37,14 +38,15 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
       };
 
       const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
     });
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when site resale is not planned", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "no" },
@@ -52,7 +54,8 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
       };
 
       const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
@@ -60,7 +63,8 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when steps state is empty", () => {
       const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId({
-        stepsState: {},
+        answers: {},
+        context: { siteData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");

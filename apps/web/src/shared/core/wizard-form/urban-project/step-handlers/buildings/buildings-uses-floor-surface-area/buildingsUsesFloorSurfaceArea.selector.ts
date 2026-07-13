@@ -3,8 +3,8 @@ import type { Selector } from "@reduxjs/toolkit";
 import type { UrbanProjectUse, UrbanProjectUseDistribution } from "shared";
 
 import type { RootState } from "@/app/store/store";
-import type { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 type UsesFloorSurfaceAreaViewData = {
   usesFloorSurfaceAreaDistribution: UrbanProjectUseDistribution | undefined;
@@ -13,7 +13,7 @@ type UsesFloorSurfaceAreaViewData = {
 };
 
 export const createSelectUsesFloorSurfaceAreaViewData = (
-  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
 ) =>
   createSelector([selectStepState], (steps): UsesFloorSurfaceAreaViewData => {
     const floorAnswers =

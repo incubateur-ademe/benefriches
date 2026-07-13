@@ -2,8 +2,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
-import type { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 type PublicGreenSpacesSurfaceAreaViewData = {
   publicGreenSpacesSurfaceArea: number | undefined;
@@ -11,7 +11,7 @@ type PublicGreenSpacesSurfaceAreaViewData = {
 };
 
 export const createSelectPublicGreenSpacesSurfaceAreaViewData = (
-  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
   selectSiteSurfaceArea: Selector<RootState, number>,
 ) =>
   createSelector(

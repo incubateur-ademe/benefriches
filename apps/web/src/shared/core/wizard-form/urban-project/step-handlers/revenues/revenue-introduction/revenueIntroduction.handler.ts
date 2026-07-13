@@ -11,31 +11,25 @@ import type { InfoStepHandler } from "../../stepHandler.type";
 export const RevenueIntroductionHandler = {
   stepId: "URBAN_PROJECT_REVENUE_INTRODUCTION",
 
-  getPreviousStepId(context) {
-    if (
-      willHaveBuildings(context.stepsState) &&
-      !hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
-    ) {
+  getPreviousStepId({ answers }) {
+    if (willHaveBuildings(answers) && !hasBuildingsResalePlannedAfterDevelopment(answers)) {
       return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
     }
 
-    if (
-      isDeveloperBuildingsConstructor(context.stepsState) ||
-      willReuseExistingBuildings(context.stepsState)
-    ) {
+    if (isDeveloperBuildingsConstructor(answers) || willReuseExistingBuildings(answers)) {
       return "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION";
     }
 
     return "URBAN_PROJECT_EXPENSES_INSTALLATION";
   },
 
-  getNextStepId(context) {
-    if (isSiteResalePlannedAfterDevelopment(context.stepsState)) {
+  getNextStepId({ answers }) {
+    if (isSiteResalePlannedAfterDevelopment(answers)) {
       return "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
     }
 
-    if (willHaveBuildings(context.stepsState)) {
-      if (hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
+    if (willHaveBuildings(answers)) {
+      if (hasBuildingsResalePlannedAfterDevelopment(answers)) {
         return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
       }
       return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";

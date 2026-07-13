@@ -8,9 +8,9 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 export const SoilsDecontaminationSelectionHandler = {
   stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
 
-  getDependencyRules(context, newAnswers) {
+  getDependencyRules(params, newAnswers) {
     const existingAnswers = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      params.answers,
       "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
     );
 
@@ -21,14 +21,14 @@ export const SoilsDecontaminationSelectionHandler = {
       return [];
     }
 
-    const reinstatementRules = getReinstatementCostsRecomputationRules(context);
+    const reinstatementRules = getReinstatementCostsRecomputationRules(params);
     if (newAnswers.decontaminationPlan === "partial") {
       return [
         ...reinstatementRules,
         { stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA", action: "delete" },
       ];
     }
-    return getReinstatementCostsRecomputationRules(context);
+    return getReinstatementCostsRecomputationRules(params);
   },
 
   getPreviousStepId() {
@@ -39,12 +39,12 @@ export const SoilsDecontaminationSelectionHandler = {
     return "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA";
   },
 
-  getShortcut(context, answers) {
+  getShortcut(params, answers) {
     const nextStep = "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
 
     const hasChanged =
       ReadStateHelper.getStepAnswers(
-        context.stepsState,
+        params.answers,
         "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
       )?.decontaminationPlan !== answers.decontaminationPlan;
 
@@ -61,7 +61,7 @@ export const SoilsDecontaminationSelectionHandler = {
     }
 
     if (answers.decontaminationPlan === "unknown" && hasChanged) {
-      const contaminatedSoilSurface = context.siteData?.contaminatedSoilSurface ?? 0;
+      const contaminatedSoilSurface = params.context?.siteData?.contaminatedSoilSurface ?? 0;
       return {
         complete: [
           {

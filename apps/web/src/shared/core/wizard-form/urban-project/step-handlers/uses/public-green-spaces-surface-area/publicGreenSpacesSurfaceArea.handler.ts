@@ -15,8 +15,8 @@ export const PublicGreenSpacesSurfaceAreaHandler = {
     return "URBAN_PROJECT_SPACES_INTRODUCTION";
   },
 
-  getDependencyRules(context, newAnswers) {
-    const previousAnswers = ReadStateHelper.getStepAnswers(context.stepsState, STEP_ID);
+  getDependencyRules(params, newAnswers) {
+    const previousAnswers = ReadStateHelper.getStepAnswers(params.answers, STEP_ID);
 
     if (previousAnswers?.publicGreenSpacesSurfaceArea === newAnswers.publicGreenSpacesSurfaceArea) {
       return [];
@@ -26,7 +26,7 @@ export const PublicGreenSpacesSurfaceAreaHandler = {
 
     if (
       ReadStateHelper.getStep(
-        context.stepsState,
+        params.answers,
         "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
       )
     ) {

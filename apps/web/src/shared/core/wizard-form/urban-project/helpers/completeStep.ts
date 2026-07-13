@@ -1,5 +1,9 @@
-import { ProjectFormState } from "../../projectForm.reducer";
-import { ShortcutResult, StepInvalidationRule } from "../step-handlers/stepHandler.type";
+import { WizardFormState } from "../../wizardForm.reducer";
+import {
+  ShortcutResult,
+  StepInvalidationRule,
+  UrbanStepHandlerContext,
+} from "../step-handlers/stepHandler.type";
 import { answerStepHandlers } from "../step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
 import { AnswerStepId, isAnswersStep, UrbanProjectCreationStep } from "../urbanProjectSteps";
@@ -16,9 +20,9 @@ export type StepUpdateResult<T extends AnswerStepId> = {
 };
 
 function processShortcutInvalidations(
-  handlerContext: {
-    siteData: ProjectFormState["siteData"];
-    stepsState: ProjectFormState["urbanProject"]["steps"];
+  handlerParams: {
+    context: UrbanStepHandlerContext;
+    answers: WizardFormState["urbanProject"]["steps"];
   },
   shortcutsComplete: ShortcutResult["complete"],
   dependencyRules: StepInvalidationRule[],
@@ -30,7 +34,7 @@ function processShortcutInvalidations(
 
       const shortcutHandler = answerStepHandlers[completeStepShortcut.stepId];
       const shortcutDependencyRules = shortcutHandler.getDependencyRules?.(
-        handlerContext,
+        handlerParams,
         completeStepShortcut.answers,
       );
 
@@ -60,32 +64,35 @@ function processShortcutInvalidations(
  * - On navigue vers l'étape suivante
  */
 export function computeStepChanges<T extends AnswerStepId>(
-  state: ProjectFormState,
+  state: WizardFormState,
   payload: StepCompletionPayload<T>,
 ): StepUpdateResult<T> {
   const handler = answerStepHandlers[payload.stepId];
-  const handlerContext = { siteData: state.siteData, stepsState: state.urbanProject.steps };
+  const handlerParams = {
+    context: { siteData: state.siteData },
+    answers: state.urbanProject.steps,
+  };
 
   const newPayload = {
     stepId: payload.stepId,
     answers: handler.updateAnswersMiddleware
-      ? handler.updateAnswersMiddleware(handlerContext, payload.answers)
+      ? handler.updateAnswersMiddleware(handlerParams, payload.answers)
       : payload.answers,
   };
 
   const dependencyRules = handler.getDependencyRules
-    ? handler.getDependencyRules(handlerContext, newPayload.answers)
+    ? handler.getDependencyRules(handlerParams, newPayload.answers)
     : [];
 
   if (handler.getShortcut) {
-    const shortcut = handler.getShortcut(handlerContext, newPayload.answers);
+    const shortcut = handler.getShortcut(handlerParams, newPayload.answers);
 
     if (shortcut) {
       return {
         payload: newPayload,
         shortcutComplete: shortcut.complete,
         cascadingChanges: processShortcutInvalidations(
-          handlerContext,
+          handlerParams,
           shortcut.complete,
           dependencyRules,
         ),
@@ -96,13 +103,7 @@ export function computeStepChanges<T extends AnswerStepId>(
   return {
     payload: newPayload,
     cascadingChanges: dependencyRules,
-    navigationTarget: handler.getNextStepId(
-      {
-        siteData: state.siteData,
-        stepsState: state.urbanProject.steps,
-      },
-      payload.answers,
-    ),
+    navigationTarget: handler.getNextStepId(handlerParams, payload.answers),
   };
 }
 
@@ -110,7 +111,7 @@ type StepChangesConfig = {
   nextMode: "step_order" | "next_empty";
 };
 export function applyStepChanges<T extends AnswerStepId>(
-  state: ProjectFormState,
+  state: WizardFormState,
   changes: StepUpdateResult<T>,
   config: StepChangesConfig,
 ): void {
@@ -132,8 +133,8 @@ export function applyStepChanges<T extends AnswerStepId>(
         break;
       case "recompute": {
         const newValue = answerStepHandlers[stepId].getRecomputedStepAnswers?.({
-          siteData: state.siteData,
-          stepsState: state.urbanProject.steps,
+          context: { siteData: state.siteData },
+          answers: state.urbanProject.steps,
         });
         if (newValue) {
           MutateStateHelper.recomputeStep(state, stepId, newValue);
@@ -144,7 +145,7 @@ export function applyStepChanges<T extends AnswerStepId>(
 
   // mets à jour les étapes à compléter dans l'ordre pour finaliser le formulaire
   state.urbanProject.stepsSequence = computeProjectStepsSequence(
-    { siteData: state.siteData, stepsState: state.urbanProject.steps },
+    { context: { siteData: state.siteData }, answers: state.urbanProject.steps },
     state.urbanProject.firstSequenceStep,
   );
 

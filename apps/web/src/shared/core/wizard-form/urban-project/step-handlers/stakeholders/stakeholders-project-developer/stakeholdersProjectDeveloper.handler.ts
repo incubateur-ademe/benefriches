@@ -10,13 +10,13 @@ export const StakeholdersProjectDeveloperHandler = {
     return "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
   },
 
-  getNextStepId(context) {
-    if (willConstructNewBuildings(context.stepsState)) {
+  getNextStepId({ answers, context }) {
+    if (willConstructNewBuildings(answers)) {
       return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
     }
 
     const involvesReinstatement = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      answers,
       "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
     )?.involvesReinstatement;
 

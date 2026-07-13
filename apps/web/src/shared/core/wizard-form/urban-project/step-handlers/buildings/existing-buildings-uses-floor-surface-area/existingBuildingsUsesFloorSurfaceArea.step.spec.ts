@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { StoreBuilder } from "@/features/create-project/core/urban-project/__tests__/_testStoreHelpers";
 import { creationProjectFormUrbanActions } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import type { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 const makeSiteData = () => ({
   id: "test-site",
@@ -23,7 +23,7 @@ const makeSiteData = () => ({
   },
 });
 
-const makeBaseSteps = (spacesBuildings: number): ProjectFormState["urbanProject"]["steps"] => ({
+const makeBaseSteps = (spacesBuildings: number): WizardFormState["urbanProject"]["steps"] => ({
   URBAN_PROJECT_USES_SELECTION: {
     completed: true,
     payload: { usesSelection: ["RESIDENTIAL"] },
@@ -40,7 +40,7 @@ describe("URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA han
   describe("getDependencyRules", () => {
     it("given both existing and new buildings uses steps are completed, when existing allocation changes, then new buildings uses step is invalidated", () => {
       // site=2000, project=3000, reuse=2000 → new=1000
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         ...makeBaseSteps(3000),
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,
@@ -82,7 +82,7 @@ describe("URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA han
 
     it("given new buildings uses step is not yet completed, when existing allocation changes, then no invalidation rule is emitted", () => {
       // site=2000, project=3000, reuse=2000 → new=1000
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         ...makeBaseSteps(3000),
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,

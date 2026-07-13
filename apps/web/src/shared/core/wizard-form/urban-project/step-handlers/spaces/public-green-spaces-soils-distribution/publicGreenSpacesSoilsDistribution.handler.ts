@@ -10,7 +10,7 @@ const STEP_ID = "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION";
 export const PublicGreenSpacesSoilsDistributionHandler = {
   stepId: STEP_ID,
 
-  getPreviousStepId(context) {
+  getPreviousStepId({ context }) {
     const siteSoilsDistribution = context.siteData?.soilsDistribution ?? {};
     const hasExistingNaturalSoils = typedObjectKeys(siteSoilsDistribution).some(isNaturalSoil);
 
@@ -21,10 +21,9 @@ export const PublicGreenSpacesSoilsDistributionHandler = {
     return "URBAN_PROJECT_SPACES_INTRODUCTION";
   },
 
-  getNextStepId(context) {
+  getNextStepId({ answers }) {
     const selectedUses =
-      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
-        ?.usesSelection ?? [];
+      ReadStateHelper.getStepAnswers(answers, "URBAN_PROJECT_USES_SELECTION")?.usesSelection ?? [];
 
     const isOnlyPublicGreenSpaces =
       selectedUses.length === 1 && selectedUses[0] === "PUBLIC_GREEN_SPACES";
@@ -36,7 +35,7 @@ export const PublicGreenSpacesSoilsDistributionHandler = {
     return "URBAN_PROJECT_SPACES_SELECTION";
   },
 
-  getDefaultAnswers(context) {
+  getDefaultAnswers({ context }) {
     const siteSoilsDistribution = context.siteData?.soilsDistribution ?? {};
 
     const existingNaturalSoilsDistribution = typedObjectEntries(siteSoilsDistribution).filter(

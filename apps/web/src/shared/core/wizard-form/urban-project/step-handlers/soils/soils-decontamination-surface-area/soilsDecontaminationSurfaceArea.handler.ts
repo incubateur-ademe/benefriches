@@ -6,15 +6,15 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 export const SoilsDecontaminationSurfaceAreaHandler = {
   stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
 
-  getDependencyRules(context, newAnswers) {
+  getDependencyRules(params, newAnswers) {
     const currentValue = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      params.answers,
       "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
     )?.decontaminatedSurfaceArea;
     if (currentValue === newAnswers.decontaminatedSurfaceArea) {
       return [];
     }
-    return getReinstatementCostsRecomputationRules(context);
+    return getReinstatementCostsRecomputationRules(params);
   },
 
   getPreviousStepId() {

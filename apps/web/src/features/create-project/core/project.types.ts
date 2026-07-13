@@ -14,7 +14,7 @@ import {
 
 import { UserStructureType } from "@/features/onboarding/core/user";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
-import { ProjectSiteView } from "@/shared/core/wizard-form/projectForm.types";
+import { ProjectSiteView } from "@/shared/core/wizard-form/wizardForm.types";
 
 export type PhotovoltaicKeyParameter = "POWER" | "SURFACE";
 

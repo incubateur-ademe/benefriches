@@ -3,7 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "@/app/store/store";
 import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper/stepperConfig";
 
-import { createProjectFormSelectors } from "../projectForm.selectors";
+import { createWizardFormSelectors } from "../wizardForm.selectors";
 import { getProjectSummary } from "./helpers/projectSummary";
 import { ReadStateHelper } from "./helpers/readState";
 import {
@@ -48,7 +48,7 @@ import {
 export const createUrbanProjectFormSelectors = (
   entityName: "projectCreation" | "projectUpdate",
 ) => {
-  const selectors = createProjectFormSelectors(entityName);
+  const selectors = createWizardFormSelectors(entityName);
   const selectSelf = (state: RootState) => state[entityName];
 
   const selectStepState = createSelector(selectSelf, (state) => state.urbanProject.steps);

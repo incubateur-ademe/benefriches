@@ -1,4 +1,4 @@
-import { StepContext } from "../step-handlers/stepHandler.type";
+import { StepHandlerParams } from "../step-handlers/stepHandler.type";
 import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import {
   ANSWER_STEPS,
@@ -9,7 +9,7 @@ import {
 
 const MAX_STEPS_NUMBER = ANSWER_STEPS.length + INTRODUCTION_STEPS.length + SUMMARY_STEPS.length;
 export const computeProjectStepsSequence = (
-  { siteData, stepsState }: StepContext,
+  { context, answers }: StepHandlerParams,
   initialStep: UrbanProjectCreationStep,
 ) => {
   const stepsSequence: UrbanProjectCreationStep[] = [];
@@ -23,7 +23,7 @@ export const computeProjectStepsSequence = (
     if (!getNextStepId) {
       break;
     }
-    currentStep = getNextStepId({ siteData, stepsState });
+    currentStep = getNextStepId({ context, answers });
 
     iterationCount++;
   }

@@ -6,10 +6,10 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 export const ExpensesProjectedBuildingsOperatingExpensesHandler = {
   stepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
 
-  getPreviousStepId(context) {
+  getPreviousStepId(params) {
     if (
-      isDeveloperBuildingsConstructor(context.stepsState) ||
-      willReuseExistingBuildings(context.stepsState)
+      isDeveloperBuildingsConstructor(params.answers) ||
+      willReuseExistingBuildings(params.answers)
     ) {
       return "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION";
     }

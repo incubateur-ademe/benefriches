@@ -12,9 +12,9 @@ export const RevenueExpectedSiteResaleHandler = {
     return "URBAN_PROJECT_REVENUE_INTRODUCTION";
   },
 
-  getNextStepId(context) {
-    if (willHaveBuildings(context.stepsState)) {
-      if (hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
+  getNextStepId(params) {
+    if (willHaveBuildings(params.answers)) {
+      if (hasBuildingsResalePlannedAfterDevelopment(params.answers)) {
         return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
       }
       return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";

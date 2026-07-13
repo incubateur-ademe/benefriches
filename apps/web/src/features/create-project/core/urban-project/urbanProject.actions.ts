@@ -1,5 +1,5 @@
-import { createProjectFormActions } from "@/shared/core/wizard-form/projectForm.actions";
 import { createUrbanProjectFormActions } from "@/shared/core/wizard-form/urban-project/urbanProject.actions";
+import { createWizardFormActions } from "@/shared/core/wizard-form/wizardForm.actions";
 
 import {
   makeProjectCreationActionType,
@@ -8,7 +8,7 @@ import {
 import { selectSiteAddress, selectSiteSoilsDistribution } from "../createProject.selectors";
 import { selectProjectSoilsDistributionByType } from "./urbanProject.selectors";
 
-export const creationProjectFormActions = createProjectFormActions(PROJECT_CREATION_ACTION_PREFIX);
+export const creationProjectFormActions = createWizardFormActions(PROJECT_CREATION_ACTION_PREFIX);
 export const creationProjectFormUrbanActions = createUrbanProjectFormActions(
   PROJECT_CREATION_ACTION_PREFIX,
   {

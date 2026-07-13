@@ -1,14 +1,14 @@
 import { useMemo } from "react";
 
 import { routes, useRoute } from "@/app/router";
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 import { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 type Props = {
   projectId?: string;
   siteId?: string;
   onSave: () => void;
-  saveState: ProjectFormState["urbanProject"]["saveState"];
+  saveState: WizardFormState["urbanProject"]["saveState"];
   isFormValid: boolean;
 };
 export const useSidebarActions = ({ projectId, siteId, onSave, saveState, isFormValid }: Props) => {

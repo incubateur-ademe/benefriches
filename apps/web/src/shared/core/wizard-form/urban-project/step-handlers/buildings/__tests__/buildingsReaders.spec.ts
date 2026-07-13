@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import {
   getBuildingsFootprintToConstruct,
@@ -16,8 +16,8 @@ import {
   willReuseExistingBuildings,
 } from "../buildingsReaders";
 
-type SiteData = NonNullable<ProjectFormState["siteData"]>;
-type StepsState = ProjectFormState["urbanProject"]["steps"];
+type SiteData = NonNullable<WizardFormState["siteData"]>;
+type StepsState = WizardFormState["urbanProject"]["steps"];
 
 const makeSiteData = (soilsDistribution: Partial<Record<string, number>>): SiteData =>
   ({ soilsDistribution }) as SiteData;

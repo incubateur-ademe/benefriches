@@ -24,7 +24,7 @@ export const UsesSelectionHandler = {
     return "URBAN_PROJECT_SPACES_INTRODUCTION";
   },
 
-  getShortcut(context, answers) {
+  getShortcut(params, answers) {
     const selectedUses = answers.usesSelection ?? [];
     const isOnlyPublicGreenSpaces =
       selectedUses.length === 1 && selectedUses[0] === "PUBLIC_GREEN_SPACES";
@@ -33,7 +33,7 @@ export const UsesSelectionHandler = {
       return undefined;
     }
 
-    const siteSurfaceArea = context.siteData?.surfaceArea ?? 0;
+    const siteSurfaceArea = params.context.siteData?.surfaceArea ?? 0;
 
     return {
       complete: [
@@ -46,9 +46,9 @@ export const UsesSelectionHandler = {
     };
   },
 
-  getDependencyRules(context, newAnswers) {
+  getDependencyRules(params, newAnswers) {
     const previousUses =
-      ReadStateHelper.getStepAnswers(context.stepsState, STEP_ID)?.usesSelection ?? [];
+      ReadStateHelper.getStepAnswers(params.answers, STEP_ID)?.usesSelection ?? [];
     const newUses = newAnswers.usesSelection ?? [];
     const hadBuildings = previousUses.some(doesUseIncludeBuildings);
     const willHaveBuildings = newUses.some(doesUseIncludeBuildings);
@@ -65,9 +65,7 @@ export const UsesSelectionHandler = {
     const rules: StepInvalidationRule[] = [];
 
     // If public green spaces surface area step exists, delete it when selection changes
-    if (
-      ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA")
-    ) {
+    if (ReadStateHelper.getStep(params.answers, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA")) {
       rules.push({
         stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
         action: "delete",
@@ -77,7 +75,7 @@ export const UsesSelectionHandler = {
     // If public green spaces soils distribution step exists, delete it when selection changes
     if (
       ReadStateHelper.getStep(
-        context.stepsState,
+        params.answers,
         "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
       )
     ) {
@@ -89,7 +87,7 @@ export const UsesSelectionHandler = {
 
     // If floor area step exists, delete it when selection changes
     if (
-      ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA")
+      ReadStateHelper.getStep(params.answers, "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA")
     ) {
       rules.push({
         stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
@@ -98,7 +96,7 @@ export const UsesSelectionHandler = {
     }
 
     if (hadBuildings && !willHaveBuildings) {
-      getDeleteBuildingsRules(context).forEach((rule) => {
+      getDeleteBuildingsRules(params).forEach((rule) => {
         if (!rules.some((existingRule) => existingRule.stepId === rule.stepId)) {
           rules.push(rule);
         }

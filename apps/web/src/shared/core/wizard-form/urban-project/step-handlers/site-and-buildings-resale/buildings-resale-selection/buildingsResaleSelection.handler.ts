@@ -13,24 +13,24 @@ export const BuildingsResaleSelectionHandler = {
     return "URBAN_PROJECT_SITE_RESALE_SELECTION";
   },
 
-  getDependencyRules(state, newAnswers) {
+  getDependencyRules({ answers }, newAnswers) {
     const rules: StepInvalidationRule[] = [];
     const hasBuildingResale = newAnswers.buildingsResalePlannedAfterDevelopment;
 
-    if (state.stepsState.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE) {
+    if (answers.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE) {
       rules.push({
         stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
         action: hasBuildingResale ? "invalidate" : "delete",
       });
     }
 
-    if (state.stepsState.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES) {
+    if (answers.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES) {
       rules.push({
         stepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
         action: hasBuildingResale ? "delete" : "invalidate",
       });
     }
-    if (state.stepsState.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES) {
+    if (answers.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES) {
       rules.push({
         stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
         action: hasBuildingResale ? "delete" : "invalidate",

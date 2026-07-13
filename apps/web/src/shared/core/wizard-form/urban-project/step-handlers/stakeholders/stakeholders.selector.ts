@@ -6,15 +6,15 @@ import type {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
 } from "@/shared/core/wizard-form/helpers/stakeholders";
-import type { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
 import {
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   getUrbanProjectAvailableStakeholders,
 } from "@/shared/core/wizard-form/urban-project/helpers/stakeholders";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 const createSelectProjectDeveloper = (
-  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
 ) =>
   createSelector(
     [selectStepState],
@@ -24,7 +24,7 @@ const createSelectProjectDeveloper = (
   );
 
 const createSelectReinstatementContractOwner = (
-  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
 ) =>
   createSelector(
     [selectStepState],
@@ -36,7 +36,7 @@ const createSelectReinstatementContractOwner = (
   );
 
 export const createSelectUrbanProjectAvailableStakeholders = (
-  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
   selectProjectAvailableStakeholders: Selector<RootState, AvailableProjectStakeholder[]>,
 ) => {
   const selectProjectDeveloper = createSelectProjectDeveloper(selectStepState);
@@ -54,7 +54,7 @@ export const createSelectUrbanProjectAvailableStakeholders = (
 };
 
 export const createSelectUrbanProjectAvailableLocalAuthoritiesStakeholders = (
-  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
   selectAvailableLocalAuthoritiesStakeholders: Selector<
     RootState,
     AvailableLocalAuthorityStakeholder[]

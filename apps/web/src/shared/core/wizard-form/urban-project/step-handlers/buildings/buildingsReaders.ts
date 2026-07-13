@@ -1,12 +1,12 @@
-import type { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { willHaveBuildings } from "@/shared/core/wizard-form/urban-project/helpers/readers/buildingsReaders";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { ReadStateHelper } from "../../helpers/readState";
 import type { UrbanProjectCreationStep } from "../../urbanProjectSteps";
-import type { StepContext } from "../stepHandler.type";
+import type { StepHandlerParams } from "../stepHandler.type";
 
-type StepsState = ProjectFormState["urbanProject"]["steps"];
-type SiteData = NonNullable<ProjectFormState["siteData"]>;
+type StepsState = WizardFormState["urbanProject"]["steps"];
+type SiteData = NonNullable<WizardFormState["siteData"]>;
 
 export function siteHasBuildings(siteData: SiteData): boolean {
   return getSiteBuildingsFootprint(siteData) > 0;
@@ -74,25 +74,28 @@ export function shouldRouteToNewBuildingsUsesFloorSurfaceArea(stepsState: StepsS
   );
 }
 
-export function getNextStepAfterBuildings(context: StepContext): UrbanProjectCreationStep {
-  if (context.siteData?.nature === "FRICHE") {
+export function getNextStepAfterBuildings(params: StepHandlerParams): UrbanProjectCreationStep {
+  if (params.context?.siteData?.nature === "FRICHE") {
     return "URBAN_PROJECT_INVOLVES_REINSTATEMENT";
   }
-  if (context.siteData?.hasContaminatedSoils) {
+  if (params.context?.siteData?.hasContaminatedSoils) {
     return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
   }
   return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
 }
 
-export function shouldEnterBuildingsChapter(context: StepContext): boolean {
-  const willProjectHaveBuildings = willHaveBuildings(context.stepsState);
-  const hasSiteBuildings = context.siteData ? siteHasBuildings(context.siteData) : false;
+export function shouldEnterBuildingsChapter(params: StepHandlerParams): boolean {
+  const willProjectHaveBuildings = willHaveBuildings(params.answers);
+  const hasSiteBuildings = params.context?.siteData
+    ? siteHasBuildings(params.context?.siteData)
+    : false;
 
   return willProjectHaveBuildings || hasSiteBuildings;
 }
 
-export function getLastBuildingsChapterStep(context: StepContext): UrbanProjectCreationStep {
-  const { siteData, stepsState } = context;
+export function getLastBuildingsChapterStep(params: StepHandlerParams): UrbanProjectCreationStep {
+  const { context, answers: stepsState } = params;
+  const siteData = context?.siteData;
   if (!siteData || !siteHasBuildings(siteData)) {
     return "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION";
   }

@@ -1,9 +1,9 @@
-import { ProjectFormState } from "../../projectForm.reducer";
+import { WizardFormState } from "../../wizardForm.reducer";
 import { AnswersByStep, AnswerStepId } from "../urbanProjectSteps";
 
 export const ReadStateHelper = {
   getStep<K extends AnswerStepId = AnswerStepId>(
-    steps: ProjectFormState["urbanProject"]["steps"],
+    steps: WizardFormState["urbanProject"]["steps"],
     stepId: K,
   ) {
     return steps[stepId] as
@@ -16,14 +16,14 @@ export const ReadStateHelper = {
   },
 
   getStepAnswers<K extends AnswerStepId = AnswerStepId>(
-    steps: ProjectFormState["urbanProject"]["steps"],
+    steps: WizardFormState["urbanProject"]["steps"],
     stepId: K,
   ) {
     return this.getStep(steps, stepId)?.payload;
   },
 
   getDefaultAnswers<K extends AnswerStepId = AnswerStepId>(
-    steps: ProjectFormState["urbanProject"]["steps"],
+    steps: WizardFormState["urbanProject"]["steps"],
     stepId: K,
   ) {
     return this.getStep(steps, stepId)?.defaultValues;

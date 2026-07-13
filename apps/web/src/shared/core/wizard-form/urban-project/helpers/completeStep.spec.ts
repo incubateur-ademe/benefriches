@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-import type { ProjectFormState } from "../../projectForm.reducer";
+import type { WizardFormState } from "../../wizardForm.reducer";
 import type { StepInvalidationRule } from "../step-handlers/stepHandler.type";
 import type { AnswerStepId, AnswersByStep } from "../urbanProjectSteps";
 
@@ -19,12 +19,12 @@ function makeHandler<T extends AnswerStepId>(
   stepId: T,
   options: {
     getNextStepId?: () => string;
-    getDependencyRules?: (context: unknown, answers: AnswersByStep[T]) => StepInvalidationRule[];
+    getDependencyRules?: (params: unknown, answers: AnswersByStep[T]) => StepInvalidationRule[];
     getShortcut?: (
-      context: unknown,
+      params: unknown,
       answers: AnswersByStep[T],
     ) => { complete: { stepId: AnswerStepId; answers: unknown }[]; next: string } | undefined;
-    updateAnswersMiddleware?: (context: unknown, answers: AnswersByStep[T]) => AnswersByStep[T];
+    updateAnswersMiddleware?: (params: unknown, answers: AnswersByStep[T]) => AnswersByStep[T];
   } = {},
 ) {
   return {
@@ -34,7 +34,7 @@ function makeHandler<T extends AnswerStepId>(
   };
 }
 
-function makeState(steps: ProjectFormState["urbanProject"]["steps"] = {}): ProjectFormState {
+function makeState(steps: WizardFormState["urbanProject"]["steps"] = {}): WizardFormState {
   return {
     siteData: undefined,
     siteDataLoadingState: "idle",
@@ -47,7 +47,7 @@ function makeState(steps: ProjectFormState["urbanProject"]["steps"] = {}): Proje
       firstSequenceStep: "URBAN_PROJECT_CREATE_MODE_SELECTION",
       steps,
     },
-  } as unknown as ProjectFormState;
+  } as unknown as WizardFormState;
 }
 
 describe("computeStepChanges", () => {

@@ -9,9 +9,9 @@ import {
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
 } from "./helpers/stakeholders";
-import { ProjectSiteView } from "./projectForm.types";
+import { ProjectSiteView } from "./wizardForm.types";
 
-export type ProjectFormSelectors = {
+export type WizardFormSelectors = {
   selectSiteData: (state: RootState) => ProjectSiteView | undefined;
   selectSiteAddress: (state: RootState) => ProjectSiteView["address"] | undefined;
   selectSiteSoilsDistribution: (state: RootState) => SoilsDistribution;
@@ -24,7 +24,7 @@ export type ProjectFormSelectors = {
   selectIsSiteFriche: (state: RootState) => boolean;
 };
 
-export const createProjectFormSelectors = (entityName: "projectCreation" | "projectUpdate") => {
+export const createWizardFormSelectors = (entityName: "projectCreation" | "projectUpdate") => {
   const selectSelf = (state: RootState) => state[entityName];
 
   const selectSiteData = createSelector(selectSelf, (state) => state.siteData);

@@ -7,10 +7,9 @@ import type { InfoStepHandler } from "../../stepHandler.type";
 export const SpacesIntroductionHandler = {
   stepId: "URBAN_PROJECT_SPACES_INTRODUCTION",
 
-  getPreviousStepId(context) {
+  getPreviousStepId({ answers }) {
     const selectedUses =
-      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
-        ?.usesSelection ?? [];
+      ReadStateHelper.getStepAnswers(answers, "URBAN_PROJECT_USES_SELECTION")?.usesSelection ?? [];
 
     if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
       return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA";
@@ -19,10 +18,9 @@ export const SpacesIntroductionHandler = {
     return "URBAN_PROJECT_USES_SELECTION";
   },
 
-  getNextStepId(context) {
+  getNextStepId({ answers, context }) {
     const selectedUses =
-      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
-        ?.usesSelection ?? [];
+      ReadStateHelper.getStepAnswers(answers, "URBAN_PROJECT_USES_SELECTION")?.usesSelection ?? [];
 
     if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
       const siteSoilsDistribution = context.siteData?.soilsDistribution ?? {};

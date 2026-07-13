@@ -1,8 +1,8 @@
-import type { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { ReadStateHelper } from "../../helpers/readState";
 
-type StepsState = ProjectFormState["urbanProject"]["steps"];
+type StepsState = WizardFormState["urbanProject"]["steps"];
 
 export function isDeveloperBuildingsConstructor(stepsState: StepsState): boolean {
   return (

@@ -5,8 +5,8 @@ import { BuildingsUsesFloorSurfaceAreaHandler } from "@/shared/core/wizard-form/
 describe("BuildingsUsesFloorSurfaceAreaHandler", () => {
   it("routes to BUILDINGS_REUSE_INTRODUCTION when site has existing buildings", () => {
     const nextStep = BuildingsUsesFloorSurfaceAreaHandler.getNextStepId({
-      stepsState: {},
-      siteData: { soilsDistribution: { BUILDINGS: 2500 } } as never,
+      answers: {},
+      context: { siteData: { soilsDistribution: { BUILDINGS: 2500 } } as never },
     });
 
     expect(nextStep).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
@@ -14,8 +14,8 @@ describe("BuildingsUsesFloorSurfaceAreaHandler", () => {
 
   it("routes to BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION when site has no buildings", () => {
     const nextStep = BuildingsUsesFloorSurfaceAreaHandler.getNextStepId({
-      stepsState: {},
-      siteData: { soilsDistribution: { BUILDINGS: 0 } } as never,
+      answers: {},
+      context: { siteData: { soilsDistribution: { BUILDINGS: 0 } } as never },
     });
 
     expect(nextStep).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { mockSiteData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { computeProjectStepsSequence } from "@/shared/core/wizard-form/urban-project/helpers/stepsSequence";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { updateProjectFormUrbanActions } from "./updateProject.actions";
 import updateProjectReducer from "./updateProject.reducer";
@@ -10,7 +10,7 @@ import updateProjectReducer from "./updateProject.reducer";
 describe("update project reducer", () => {
   it("redirects to buildings footprint to reuse when project building footprint changes", () => {
     const initialState = updateProjectReducer(undefined, { type: "@@INIT" });
-    const steps: ProjectFormState["urbanProject"]["steps"] = {
+    const steps: WizardFormState["urbanProject"]["steps"] = {
       URBAN_PROJECT_USES_SELECTION: {
         completed: true,
         payload: { usesSelection: ["RESIDENTIAL"] },
@@ -53,8 +53,8 @@ describe("update project reducer", () => {
     state.urbanProject.steps = steps;
     state.urbanProject.stepsSequence = computeProjectStepsSequence(
       {
-        siteData: state.siteData,
-        stepsState: steps,
+        context: { siteData: state.siteData },
+        answers: steps,
       },
       state.urbanProject.firstSequenceStep,
     );
@@ -89,7 +89,7 @@ describe("update project reducer", () => {
 
   it("redirects to new buildings uses when an updated reuse footprint removes all reused buildings", () => {
     const initialState = updateProjectReducer(undefined, { type: "@@INIT" });
-    const steps: ProjectFormState["urbanProject"]["steps"] = {
+    const steps: WizardFormState["urbanProject"]["steps"] = {
       URBAN_PROJECT_USES_SELECTION: {
         completed: true,
         payload: { usesSelection: ["RESIDENTIAL"] },
@@ -136,8 +136,8 @@ describe("update project reducer", () => {
     state.urbanProject.steps = steps;
     state.urbanProject.stepsSequence = computeProjectStepsSequence(
       {
-        siteData: state.siteData,
-        stepsState: steps,
+        context: { siteData: state.siteData },
+        answers: steps,
       },
       state.urbanProject.firstSequenceStep,
     );

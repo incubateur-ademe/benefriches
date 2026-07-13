@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { ProjectFormState } from "../../projectForm.reducer";
+import { WizardFormState } from "../../wizardForm.reducer";
 import { getProjectSummary } from "./projectSummary";
 
 describe("getProjectSummary", () => {
   describe("buildingsFootprintToReuse", () => {
     it("should return the buildingsFootprintToReuse value from step payload", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,
           payload: { buildingsFootprintToReuse: 1500 },
@@ -27,7 +27,7 @@ describe("getProjectSummary", () => {
 
   describe("existingBuildingsUsesFloorSurfaceArea", () => {
     it("should return the existingBuildingsUsesFloorSurfaceArea value from step payload", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
           completed: true,
           payload: { existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1200, OFFICES: 300 } },
@@ -51,7 +51,7 @@ describe("getProjectSummary", () => {
 
   describe("newBuildingsUsesFloorSurfaceArea", () => {
     it("should return the newBuildingsUsesFloorSurfaceArea value from step payload", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
           completed: true,
           payload: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 800, OFFICES: 200 } },

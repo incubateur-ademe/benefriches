@@ -112,13 +112,13 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
 
   it("should compute installationSchedule without reinstatement when involvesReinstatement is false on a FRICHE", () => {
     const defaults = UrbanProjectScheduleProjectionHandler.getDefaultAnswers({
-      stepsState: {
+      answers: {
         URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
           completed: true,
           payload: { involvesReinstatement: false },
         },
       },
-      siteData: { nature: "FRICHE" } as never,
+      context: { nature: "FRICHE" } as never,
     });
 
     expect(defaults?.reinstatementSchedule).toBeUndefined();

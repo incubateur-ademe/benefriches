@@ -10,16 +10,16 @@ export const ExpensesIntroductionHandler = {
     return "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS";
   },
 
-  getPreviousStepId(context) {
+  getPreviousStepId({ answers, context }) {
     const involvesReinstatement = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      answers,
       "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
     )?.involvesReinstatement;
 
     if (involvesReinstatement !== false && context.siteData?.nature === "FRICHE") {
       return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
     }
-    if (willConstructNewBuildings(context.stepsState)) {
+    if (willConstructNewBuildings(answers)) {
       return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
     }
     return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";

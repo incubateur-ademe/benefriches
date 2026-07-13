@@ -9,8 +9,8 @@ export const SoilsCarbonSummaryHandler = {
     return "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
   },
 
-  getNextStepId(context) {
-    if (willHaveBuildings(context.stepsState)) {
+  getNextStepId({ answers, context }) {
+    if (willHaveBuildings(answers)) {
       return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
     }
 

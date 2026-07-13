@@ -1,13 +1,13 @@
-import { ProjectFormState } from "../../projectForm.reducer";
+import { WizardFormState } from "../../wizardForm.reducer";
 import type { StepCompletionPayload } from "../urbanProject.actions";
 import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 
 export const MutateStateHelper = {
-  navigateToStep: (state: ProjectFormState, stepId: UrbanProjectCreationStep) => {
+  navigateToStep: (state: WizardFormState, stepId: UrbanProjectCreationStep) => {
     state.urbanProject.currentStep = stepId;
   },
 
-  ensureStepExists(state: ProjectFormState, stepId: AnswerStepId, defaultCompleted = false) {
+  ensureStepExists(state: WizardFormState, stepId: AnswerStepId, defaultCompleted = false) {
     if (!state.urbanProject.steps[stepId]) {
       state.urbanProject.steps[stepId] = { completed: defaultCompleted };
     }
@@ -15,7 +15,7 @@ export const MutateStateHelper = {
   },
 
   setDefaultValues<K extends AnswerStepId>(
-    state: ProjectFormState,
+    state: WizardFormState,
     stepId: K,
     answers: AnswersByStep[K],
   ) {
@@ -24,7 +24,7 @@ export const MutateStateHelper = {
   },
 
   completeStep<K extends AnswerStepId>(
-    state: ProjectFormState,
+    state: WizardFormState,
     stepId: K,
     answers: AnswersByStep[K],
   ) {
@@ -33,7 +33,7 @@ export const MutateStateHelper = {
     step.payload = answers;
   },
 
-  invalidateStep(state: ProjectFormState, stepId: AnswerStepId) {
+  invalidateStep(state: WizardFormState, stepId: AnswerStepId) {
     const step = state.urbanProject.steps[stepId];
     if (!step) {
       return;
@@ -44,7 +44,7 @@ export const MutateStateHelper = {
   },
 
   recomputeStep<K extends AnswerStepId>(
-    state: ProjectFormState,
+    state: WizardFormState,
     stepId: K,
     answers: AnswersByStep[K],
   ) {
@@ -55,7 +55,7 @@ export const MutateStateHelper = {
     };
   },
 
-  deleteStep(state: ProjectFormState, stepId: AnswerStepId) {
+  deleteStep(state: WizardFormState, stepId: AnswerStepId) {
     const step = state.urbanProject.steps[stepId];
     if (!step) {
       return;
@@ -63,7 +63,7 @@ export const MutateStateHelper = {
     state.urbanProject.steps[stepId] = undefined;
   },
 
-  completeStepFromPayload(state: ProjectFormState, payload: StepCompletionPayload) {
+  completeStepFromPayload(state: WizardFormState, payload: StepCompletionPayload) {
     const step = this.ensureStepExists(state, payload.stepId, true);
     step.completed = true;
     step.payload = payload.answers;

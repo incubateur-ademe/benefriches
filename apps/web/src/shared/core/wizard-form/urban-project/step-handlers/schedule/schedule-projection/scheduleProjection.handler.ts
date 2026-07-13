@@ -7,9 +7,9 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 export const UrbanProjectScheduleProjectionHandler = {
   stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION",
 
-  getDefaultAnswers(context) {
+  getDefaultAnswers(params) {
     const involvesReinstatement = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      params.answers,
       "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
     )?.involvesReinstatement;
 

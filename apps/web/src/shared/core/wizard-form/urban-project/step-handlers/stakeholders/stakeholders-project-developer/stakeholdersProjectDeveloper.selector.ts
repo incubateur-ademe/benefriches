@@ -7,8 +7,8 @@ import type {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
 } from "@/shared/core/wizard-form/helpers/stakeholders";
-import type { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 type ProjectDeveloperViewData = {
   availableStakeholdersList: AvailableProjectStakeholder[];
@@ -17,7 +17,7 @@ type ProjectDeveloperViewData = {
 };
 
 export const createSelectProjectDeveloperViewData = (
-  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
   selectUrbanProjectAvailableStakeholders: Selector<RootState, AvailableProjectStakeholder[]>,
   selectUrbanProjectAvailableLocalAuthoritiesStakeholders: Selector<
     RootState,

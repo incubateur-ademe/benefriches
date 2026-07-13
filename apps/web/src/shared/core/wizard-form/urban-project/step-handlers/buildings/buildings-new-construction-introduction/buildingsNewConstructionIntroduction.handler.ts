@@ -6,7 +6,7 @@ export const BuildingsNewConstructionIntroductionHandler: InfoStepHandler = {
   getPreviousStepId() {
     return "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA";
   },
-  getNextStepId(context) {
-    return getNextStepAfterBuildings(context);
+  getNextStepId(params) {
+    return getNextStepAfterBuildings(params);
   },
 };

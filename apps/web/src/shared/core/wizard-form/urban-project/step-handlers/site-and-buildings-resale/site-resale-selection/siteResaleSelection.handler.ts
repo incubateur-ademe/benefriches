@@ -7,8 +7,8 @@ const STEP_ID = "URBAN_PROJECT_SITE_RESALE_SELECTION";
 export const SiteResaleSelectionHandler = {
   stepId: STEP_ID,
 
-  getNextStepId(context) {
-    if (willHaveBuildings(context.stepsState)) {
+  getNextStepId({ answers }) {
+    if (willHaveBuildings(answers)) {
       return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
 
@@ -19,10 +19,10 @@ export const SiteResaleSelectionHandler = {
     return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
   },
 
-  getDependencyRules(state, newAnswers) {
+  getDependencyRules({ answers }, newAnswers) {
     const siteResalePlanned = newAnswers.siteResaleSelection !== "no";
 
-    if (state.stepsState.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE) {
+    if (answers.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE) {
       return [
         {
           action: siteResalePlanned ? "invalidate" : "delete",

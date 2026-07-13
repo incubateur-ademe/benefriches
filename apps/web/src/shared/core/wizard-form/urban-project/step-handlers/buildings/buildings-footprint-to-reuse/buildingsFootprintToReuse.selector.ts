@@ -3,8 +3,8 @@ import type { Selector } from "@reduxjs/toolkit";
 import type { SoilsDistribution } from "shared";
 
 import type { RootState } from "@/app/store/store";
-import type { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 type BuildingsFootprintToReuseViewData = {
   siteBuildingsFootprint: number;
@@ -13,7 +13,7 @@ type BuildingsFootprintToReuseViewData = {
 };
 
 export const createSelectBuildingsFootprintToReuseViewData = (
-  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
   selectSiteSoilsDistribution: Selector<RootState, SoilsDistribution>,
 ) =>
   createSelector(

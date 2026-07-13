@@ -1,14 +1,14 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { DevelopmentPlanType, ProjectPhase } from "shared";
 
-import {
-  addProjectFormCasesToBuilder,
-  getProjectFormInitialState,
-  ProjectFormState,
-} from "@/shared/core/wizard-form/projectForm.reducer";
 import { computeProjectStepsSequence } from "@/shared/core/wizard-form/urban-project/helpers/stepsSequence";
 import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/wizard-form/urban-project/urbanProject.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
+import {
+  addWizardFormCasesToBuilder,
+  getWizardFormInitialState,
+  WizardFormState,
+} from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { convertProjectDataToSteps } from "./helpers/convertProjectDataToSteps";
 import {
@@ -27,7 +27,7 @@ export type UrbanProjectUpdateStep = Exclude<
   | "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION"
 >;
 
-type ProjectUpdateState = ProjectFormState<UrbanProjectUpdateStep> & {
+type ProjectUpdateState = WizardFormState<UrbanProjectUpdateStep> & {
   projectData: {
     id?: string;
     loadingState: "idle" | "success" | "error" | "loading";
@@ -44,15 +44,17 @@ const getInitialState = (): ProjectUpdateState => {
     projectData: {
       loadingState: "idle",
     },
-    ...getProjectFormInitialState<UrbanProjectUpdateStep>("URBAN_PROJECT_USES_INTRODUCTION"),
+    ...getWizardFormInitialState<UrbanProjectUpdateStep>("URBAN_PROJECT_USES_INTRODUCTION"),
   };
 };
 
 const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
-  addProjectFormCasesToBuilder(builder, updateProjectFormActions);
+  addWizardFormCasesToBuilder(builder, updateProjectFormActions);
 
   addUrbanProjectFormCasesToBuilder(builder, updateProjectFormUrbanActions, {
-    stepChangesNextMode: "next_empty",
+    config: { stepChangesNextMode: "next_empty" },
+    selectForm: (state) => state.urbanProject,
+    buildContext: (state) => ({ siteData: state.siteData }),
   });
 
   builder
@@ -83,7 +85,10 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       state.urbanProject.saveState = "idle";
 
       state.urbanProject.stepsSequence = computeProjectStepsSequence(
-        { siteData: action.payload.siteData, stepsState: state.urbanProject.steps },
+        {
+          context: { siteData: action.payload.siteData },
+          answers: state.urbanProject.steps,
+        },
         state.urbanProject.firstSequenceStep,
       );
     })

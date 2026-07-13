@@ -9,8 +9,8 @@ export const StakeholdersIntroductionHandler = {
     return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";
   },
 
-  getPreviousStepId(context) {
-    if (willHaveBuildings(context.stepsState)) {
+  getPreviousStepId(params) {
+    if (willHaveBuildings(params.answers)) {
       return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
     return "URBAN_PROJECT_SITE_RESALE_SELECTION";

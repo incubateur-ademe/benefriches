@@ -2,11 +2,11 @@ import { describe, it, expect, beforeEach } from "vitest";
 
 import { mockSiteData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
 
-import { ProjectFormState } from "../../projectForm.reducer";
+import { WizardFormState } from "../../wizardForm.reducer";
 import { MutateStateHelper } from "./mutateState";
 
 describe("MutateStateHelper", () => {
-  let state: ProjectFormState;
+  let state: WizardFormState;
 
   beforeEach(() => {
     state = {

@@ -9,25 +9,25 @@ import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.
 export const InvolvesReinstatementHandler = {
   stepId: "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
 
-  getPreviousStepId(context) {
-    if (shouldEnterBuildingsChapter(context)) {
-      return getLastBuildingsChapterStep(context);
+  getPreviousStepId(params) {
+    if (shouldEnterBuildingsChapter(params)) {
+      return getLastBuildingsChapterStep(params);
     }
     return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
   },
 
-  getNextStepId(context) {
-    if (context.siteData?.hasContaminatedSoils) {
+  getNextStepId(params) {
+    if (params.context?.siteData?.hasContaminatedSoils) {
       return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
     }
     return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
   },
 
-  getDependencyRules(context, answers) {
+  getDependencyRules(params, answers) {
     // oxlint-disable-next-line @typescript-eslint/unbound-method
     const getStep = ReadStateHelper.getStep;
     const previousAnswer = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      params.answers,
       "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
     )?.involvesReinstatement;
 
@@ -35,16 +35,16 @@ export const InvolvesReinstatementHandler = {
     if (answers.involvesReinstatement === false && previousAnswer !== false) {
       const rules: StepInvalidationRule[] = [];
 
-      if (getStep(context.stepsState, "URBAN_PROJECT_EXPENSES_REINSTATEMENT")) {
+      if (getStep(params.answers, "URBAN_PROJECT_EXPENSES_REINSTATEMENT")) {
         rules.push({ stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT", action: "delete" });
       }
-      if (getStep(context.stepsState, "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER")) {
+      if (getStep(params.answers, "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER")) {
         rules.push({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
           action: "delete",
         });
       }
-      if (getStep(context.stepsState, "URBAN_PROJECT_SCHEDULE_PROJECTION")) {
+      if (getStep(params.answers, "URBAN_PROJECT_SCHEDULE_PROJECTION")) {
         rules.push({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION", action: "invalidate" });
       }
       return rules;

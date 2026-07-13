@@ -9,9 +9,10 @@ import type { InfoStepHandler } from "../../stepHandler.type";
 export const SiteResaleIntroductionHandler = {
   stepId: "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
 
-  getPreviousStepId(context) {
+  getPreviousStepId(params) {
+    const { answers, context } = params;
     const decontaminationPlan = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      answers,
       "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
     )?.decontaminationPlan;
 
@@ -27,8 +28,8 @@ export const SiteResaleIntroductionHandler = {
       return "URBAN_PROJECT_INVOLVES_REINSTATEMENT";
     }
 
-    if (shouldEnterBuildingsChapter(context)) {
-      return getLastBuildingsChapterStep(context);
+    if (shouldEnterBuildingsChapter(params)) {
+      return getLastBuildingsChapterStep(params);
     }
 
     return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";

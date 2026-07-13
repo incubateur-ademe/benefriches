@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { RevenueExpectedSiteResaleHandler } from "@/shared/core/wizard-form/urban-project/step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.handler";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 describe("RevenueExpectedSiteResaleHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_REVENUE_BUILDINGS_RESALE when project has buildings and buildings resale is planned", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -20,14 +20,15 @@ describe("RevenueExpectedSiteResaleHandler", () => {
       };
 
       const nextStep = RevenueExpectedSiteResaleHandler.getNextStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
     });
 
     it("should return URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES when project has buildings but no buildings resale planned", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -41,14 +42,15 @@ describe("RevenueExpectedSiteResaleHandler", () => {
       };
 
       const nextStep = RevenueExpectedSiteResaleHandler.getNextStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES");
     });
 
     it("should return URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE when project has no buildings", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
@@ -56,7 +58,8 @@ describe("RevenueExpectedSiteResaleHandler", () => {
       };
 
       const nextStep = RevenueExpectedSiteResaleHandler.getNextStepId({
-        stepsState,
+        answers,
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
@@ -64,7 +67,8 @@ describe("RevenueExpectedSiteResaleHandler", () => {
 
     it("should return URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE when steps state is empty", () => {
       const nextStep = RevenueExpectedSiteResaleHandler.getNextStepId({
-        stepsState: {},
+        answers: {},
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");

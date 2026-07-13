@@ -5,7 +5,7 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/urban-project/__tests__/_testStoreHelpers";
 import { creationProjectFormUrbanActions } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import type { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 const makeSiteData = (
   overrides: Partial<{
@@ -32,7 +32,7 @@ const makeSiteData = (
   },
 });
 
-const makeBaseSteps = (spacesBuildings: number): ProjectFormState["urbanProject"]["steps"] => ({
+const makeBaseSteps = (spacesBuildings: number): WizardFormState["urbanProject"]["steps"] => ({
   URBAN_PROJECT_USES_SELECTION: {
     completed: true,
     payload: { usesSelection: ["RESIDENTIAL"] },
@@ -49,7 +49,7 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
   describe("getNextStepId", () => {
     it("navigates to DEMOLITION_INFO when demolished > 0", () => {
       // site=2000, project=3000, reuse=1500 → demolished=500
-      const steps: ProjectFormState["urbanProject"]["steps"] = makeBaseSteps(3000);
+      const steps: WizardFormState["urbanProject"]["steps"] = makeBaseSteps(3000);
       const store = new StoreBuilder()
         .withSiteData(makeSiteData())
         .withSteps(steps)
@@ -133,7 +133,7 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
 
   describe("getDependencyRules", () => {
     it("does not trigger cascading confirmation when no dependent steps have been answered yet", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = makeBaseSteps(3000);
+      const steps: WizardFormState["urbanProject"]["steps"] = makeBaseSteps(3000);
 
       const store = new StoreBuilder()
         .withSiteData(makeSiteData())
@@ -157,7 +157,7 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
     it("deletes existing/new uses steps and stakeholder builder when new construction becomes 0", () => {
       // site=2000, project=2000, reuse=2000 → new=0
       // Previously had uses steps completed
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         ...makeBaseSteps(2000),
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,
@@ -213,7 +213,7 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
     it("invalidates existing uses and expenses when reuse changes but still has both", () => {
       // site=2000, project=3000
       // Change reuse from 1500 to 1000 → still hasBoth (reuse=1000, new=2000)
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         ...makeBaseSteps(3000),
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,
@@ -267,7 +267,7 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
 
     it("always invalidates expenses step", () => {
       // Even when reuse stays the same (but is resubmitted)
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         ...makeBaseSteps(2000),
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,

@@ -9,9 +9,9 @@ export const StakeholdersBuildingsDeveloperHandler: AnswerStepHandler<typeof STE
   getPreviousStepId() {
     return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";
   },
-  getNextStepId(context) {
+  getNextStepId({ answers, context }) {
     const involvesReinstatement = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      answers,
       "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
     )?.involvesReinstatement;
 
@@ -20,8 +20,8 @@ export const StakeholdersBuildingsDeveloperHandler: AnswerStepHandler<typeof STE
     }
     return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
   },
-  getDependencyRules(context) {
-    if (!context.stepsState.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION) {
+  getDependencyRules({ answers }) {
+    if (!answers.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION) {
       return [];
     }
 

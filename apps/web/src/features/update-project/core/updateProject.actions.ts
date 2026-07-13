@@ -2,9 +2,9 @@ import { httpUpdateReconversionProjectPropsSchema } from "shared";
 import z from "zod";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
-import { createProjectFormActions } from "@/shared/core/wizard-form/projectForm.actions";
 import { getProjectData } from "@/shared/core/wizard-form/urban-project/helpers/readers/projectDataReaders";
 import { createUrbanProjectFormActions } from "@/shared/core/wizard-form/urban-project/urbanProject.actions";
+import { createWizardFormActions } from "@/shared/core/wizard-form/wizardForm.actions";
 
 import {
   selectProjectSoilsDistributionByType,
@@ -19,7 +19,7 @@ const makeProjectUpdateActionType = (actionName: string) => {
   return `${UPDATE_PROJECT_STORE_KEY}/${actionName}`;
 };
 
-export const updateProjectFormActions = createProjectFormActions(UPDATE_PROJECT_STORE_KEY);
+export const updateProjectFormActions = createWizardFormActions(UPDATE_PROJECT_STORE_KEY);
 export const updateProjectFormUrbanActions = createUrbanProjectFormActions(
   UPDATE_PROJECT_STORE_KEY,
   {

@@ -6,22 +6,24 @@ describe("ExpensesSitePurchaseAmountsHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_REINSTATEMENT when site is a friche", () => {
       const nextStep = ExpensesSitePurchaseAmountsHandler.getNextStepId({
-        stepsState: {},
-        siteData: {
-          id: "test-site",
-          name: "Test Site",
-          nature: "FRICHE",
-          surfaceArea: 10000,
-          soilsDistribution: {},
-          isExpressSite: false,
-          owner: { name: "Test Owner", structureType: "company" },
-          address: {
-            city: "Test City",
-            cityCode: "12345",
-            value: "Test Address",
-            postCode: "12345",
-            long: 0,
-            lat: 0,
+        answers: {},
+        context: {
+          siteData: {
+            id: "test-site",
+            name: "Test Site",
+            nature: "FRICHE",
+            surfaceArea: 10000,
+            soilsDistribution: {},
+            isExpressSite: false,
+            owner: { name: "Test Owner", structureType: "company" },
+            address: {
+              city: "Test City",
+              cityCode: "12345",
+              value: "Test Address",
+              postCode: "12345",
+              long: 0,
+              lat: 0,
+            },
           },
         },
       });
@@ -31,22 +33,24 @@ describe("ExpensesSitePurchaseAmountsHandler", () => {
 
     it("should return URBAN_PROJECT_EXPENSES_INSTALLATION when site is not a friche", () => {
       const nextStep = ExpensesSitePurchaseAmountsHandler.getNextStepId({
-        stepsState: {},
-        siteData: {
-          id: "test-site",
-          name: "Test Site",
-          nature: "AGRICULTURAL_OPERATION",
-          surfaceArea: 10000,
-          soilsDistribution: {},
-          isExpressSite: false,
-          owner: { name: "Test Owner", structureType: "company" },
-          address: {
-            city: "Test City",
-            cityCode: "12345",
-            value: "Test Address",
-            postCode: "12345",
-            long: 0,
-            lat: 0,
+        answers: {},
+        context: {
+          siteData: {
+            id: "test-site",
+            name: "Test Site",
+            nature: "AGRICULTURAL_OPERATION",
+            surfaceArea: 10000,
+            soilsDistribution: {},
+            isExpressSite: false,
+            owner: { name: "Test Owner", structureType: "company" },
+            address: {
+              city: "Test City",
+              cityCode: "12345",
+              value: "Test Address",
+              postCode: "12345",
+              long: 0,
+              lat: 0,
+            },
           },
         },
       });
@@ -56,8 +60,8 @@ describe("ExpensesSitePurchaseAmountsHandler", () => {
 
     it("should return URBAN_PROJECT_EXPENSES_INSTALLATION when siteData is undefined", () => {
       const nextStep = ExpensesSitePurchaseAmountsHandler.getNextStepId({
-        stepsState: {},
-        siteData: undefined,
+        answers: {},
+        context: { siteData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");

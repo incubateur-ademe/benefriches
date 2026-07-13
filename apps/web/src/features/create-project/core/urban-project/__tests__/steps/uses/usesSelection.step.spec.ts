@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { AnswersByStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
@@ -20,7 +20,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     );
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       URBAN_PROJECT_USES_SELECTION: {
         completed: true,
@@ -43,7 +43,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     );
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       URBAN_PROJECT_USES_SELECTION: {
         completed: true,
@@ -98,7 +98,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     );
 
     expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toEqual<
-      ProjectFormState["urbanProject"]["pendingStepCompletion"]
+      WizardFormState["urbanProject"]["pendingStepCompletion"]
     >({
       showAlert: true,
       changes: {
@@ -116,7 +116,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       URBAN_PROJECT_USES_SELECTION: {
         completed: true,
@@ -172,7 +172,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     );
 
     expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toEqual<
-      ProjectFormState["urbanProject"]["pendingStepCompletion"]
+      WizardFormState["urbanProject"]["pendingStepCompletion"]
     >({
       showAlert: true,
       changes: {

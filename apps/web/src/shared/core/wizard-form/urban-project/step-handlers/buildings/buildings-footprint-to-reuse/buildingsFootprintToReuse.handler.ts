@@ -16,13 +16,13 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
     return "URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION";
   },
 
-  getNextStepId(context, answers) {
-    const siteData = context.siteData;
-    if (!siteData) return getNextStepAfterBuildings(context);
+  getNextStepId(params, answers) {
+    const siteData = params.context?.siteData;
+    if (!siteData) return getNextStepAfterBuildings(params);
 
     // Use answers (not stepsState) because state hasn't been updated yet when this runs
     const siteBuildings = getSiteBuildingsFootprint(siteData);
-    const projectBuildings = getProjectBuildingsFootprint(context.stepsState);
+    const projectBuildings = getProjectBuildingsFootprint(params.answers);
     const reuse = answers?.buildingsFootprintToReuse ?? 0;
     const demolished = siteBuildings - reuse;
     const newConstruction = Math.max(0, projectBuildings - reuse);
@@ -37,22 +37,22 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
     if (newConstruction > 0) {
       return "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO";
     }
-    return getNextStepAfterBuildings(context);
+    return getNextStepAfterBuildings(params);
   },
 
-  getDependencyRules(context, answers) {
-    const siteData = context.siteData;
+  getDependencyRules(params, answers) {
+    const siteData = params.context?.siteData;
     if (!siteData) return [];
 
     const rules: StepInvalidationRule[] = [];
-    const projectBuildingsFootprint = getProjectBuildingsFootprint(context.stepsState);
+    const projectBuildingsFootprint = getProjectBuildingsFootprint(params.answers);
     const newReuse = answers.buildingsFootprintToReuse ?? 0;
     const newConstruction = Math.max(0, projectBuildingsFootprint - newReuse);
     const hasBoth = newReuse > 0 && newConstruction > 0;
 
     if (
       ReadStateHelper.getStep(
-        context.stepsState,
+        params.answers,
         "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
       )
     ) {
@@ -64,7 +64,7 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
 
     if (
       ReadStateHelper.getStep(
-        context.stepsState,
+        params.answers,
         "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
       )
     ) {
@@ -76,7 +76,7 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
 
     if (
       ReadStateHelper.getStep(
-        context.stepsState,
+        params.answers,
         "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
       )
     ) {
@@ -88,7 +88,7 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
 
     if (
       newConstruction === 0 &&
-      ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER")
+      ReadStateHelper.getStep(params.answers, "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER")
     ) {
       rules.push({
         stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",

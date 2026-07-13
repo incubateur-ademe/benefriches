@@ -9,15 +9,15 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 export const RevenueFinancialAssistanceHandler = {
   stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
 
-  getPreviousStepId(context) {
-    if (willHaveBuildings(context.stepsState)) {
-      if (hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
+  getPreviousStepId({ answers }) {
+    if (willHaveBuildings(answers)) {
+      if (hasBuildingsResalePlannedAfterDevelopment(answers)) {
         return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
       }
       return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";
     }
 
-    if (isSiteResalePlannedAfterDevelopment(context.stepsState)) {
+    if (isSiteResalePlannedAfterDevelopment(answers)) {
       return "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
     }
 

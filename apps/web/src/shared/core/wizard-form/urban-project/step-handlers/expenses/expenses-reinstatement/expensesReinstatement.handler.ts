@@ -4,17 +4,17 @@ import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers
 import { getProjectSoilDistributionBySoilType } from "@/shared/core/wizard-form/urban-project/helpers/readers/soilsReaders";
 import { AnswersByStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 
-import { type AnswerStepHandler, type StepContext } from "../../stepHandler.type";
+import { type AnswerStepHandler, type StepHandlerParams } from "../../stepHandler.type";
 
-const getDefaultReinstatementExpenses = (context: StepContext) => {
-  const soilsDistribution = getProjectSoilDistributionBySoilType(context.stepsState);
+const getDefaultReinstatementExpenses = (params: StepHandlerParams) => {
+  const soilsDistribution = getProjectSoilDistributionBySoilType(params.answers);
   const decontaminatedSurface = ReadStateHelper.getStepAnswers(
-    context.stepsState,
+    params.answers,
     "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
   )?.decontaminatedSurfaceArea;
 
   return computeProjectReinstatementExpenses(
-    context.siteData?.soilsDistribution ?? {},
+    params.context?.siteData?.soilsDistribution ?? {},
     soilsDistribution,
     decontaminatedSurface ?? 0,
   );
@@ -40,16 +40,16 @@ const formatDefaultValue = (
 export const UrbanProjectReinstatementExpensesHandler = {
   stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
 
-  getDefaultAnswers(context) {
-    return formatDefaultValue(getDefaultReinstatementExpenses(context));
+  getDefaultAnswers(params) {
+    return formatDefaultValue(getDefaultReinstatementExpenses(params));
   },
 
-  getRecomputedStepAnswers(context) {
+  getRecomputedStepAnswers(params) {
     const oldStepState = ReadStateHelper.getStep(
-      context.stepsState,
+      params.answers,
       "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
     );
-    const expenses = getDefaultReinstatementExpenses(context);
+    const expenses = getDefaultReinstatementExpenses(params);
 
     if (!oldStepState) {
       return formatDefaultValue(expenses);

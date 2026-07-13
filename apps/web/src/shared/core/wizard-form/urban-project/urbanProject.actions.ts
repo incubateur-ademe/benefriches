@@ -9,13 +9,13 @@ import { SoilsDistribution } from "shared";
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { RootState } from "@/app/store/store";
 
-import { makeProjectFormActionType } from "../projectForm.actions";
-import { ProjectFormSelectors } from "../projectForm.selectors";
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "../soilsCarbonStorage.action";
+import { makeWizardFormActionType } from "../wizardForm.actions";
+import { WizardFormSelectors } from "../wizardForm.selectors";
 import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
 const makeUrbanProjectFormActionType = (prefix: string, actionName: string) =>
-  makeProjectFormActionType(prefix, `urbanProject/${actionName}`);
+  makeWizardFormActionType(prefix, `urbanProject/${actionName}`);
 
 const createUrbanProjectFormAction = <TPayload = void>(prefix: string, actionName: string) =>
   createAction<TPayload>(makeUrbanProjectFormActionType(prefix, actionName));
@@ -43,7 +43,7 @@ export type UrbanProjectFormReducerActions = {
   >;
 };
 
-type Selectors = Pick<ProjectFormSelectors, "selectSiteAddress" | "selectSiteSoilsDistribution"> & {
+type Selectors = Pick<WizardFormSelectors, "selectSiteAddress" | "selectSiteSoilsDistribution"> & {
   selectProjectSoilsDistributionByType: (state: RootState) => SoilsDistribution;
 };
 

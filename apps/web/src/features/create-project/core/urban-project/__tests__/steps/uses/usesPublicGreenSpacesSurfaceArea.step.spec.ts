@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
@@ -26,7 +26,7 @@ describe("Urban project creation - Steps - public green spaces surface area", ()
     );
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       URBAN_PROJECT_USES_SELECTION: {
         completed: true,

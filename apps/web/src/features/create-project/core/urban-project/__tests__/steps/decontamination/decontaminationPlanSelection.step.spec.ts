@@ -1,6 +1,6 @@
 import { describe, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
@@ -19,7 +19,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
     );
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
         completed: true,
@@ -46,7 +46,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
     );
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
         completed: true,
@@ -73,7 +73,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
     );
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
         completed: true,
@@ -107,7 +107,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
     );
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
         completed: true,
@@ -145,7 +145,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
     );
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
         completed: true,
@@ -217,7 +217,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
             decontaminationPlan: "partial",
           },
         },
-      } satisfies ProjectFormState["urbanProject"]["steps"];
+      } satisfies WizardFormState["urbanProject"]["steps"];
 
       const store = new StoreBuilder().withSteps(initialSteps).build();
 
@@ -259,7 +259,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
             decontaminationPlan: "partial",
           },
         },
-      } satisfies ProjectFormState["urbanProject"]["steps"];
+      } satisfies WizardFormState["urbanProject"]["steps"];
 
       const store = new StoreBuilder().withSteps(initialSteps).build();
 

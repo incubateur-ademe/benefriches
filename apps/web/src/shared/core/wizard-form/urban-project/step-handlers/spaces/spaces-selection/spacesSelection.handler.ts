@@ -10,9 +10,9 @@ const STEP_ID = "URBAN_PROJECT_SPACES_SELECTION";
 export const SpacesSelectionHandler = {
   stepId: STEP_ID,
 
-  getPreviousStepId(context) {
+  getPreviousStepId(params) {
     const selectedUses =
-      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
+      ReadStateHelper.getStepAnswers(params.answers, "URBAN_PROJECT_USES_SELECTION")
         ?.usesSelection ?? [];
 
     if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
@@ -26,9 +26,9 @@ export const SpacesSelectionHandler = {
     return "URBAN_PROJECT_SPACES_SURFACE_AREA";
   },
 
-  getDefaultAnswers(context) {
+  getDefaultAnswers(params) {
     const selectedUses =
-      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
+      ReadStateHelper.getStepAnswers(params.answers, "URBAN_PROJECT_USES_SELECTION")
         ?.usesSelection ?? [];
 
     return {
@@ -36,9 +36,9 @@ export const SpacesSelectionHandler = {
     };
   },
 
-  getDependencyRules(context, newAnswers) {
+  getDependencyRules(params, newAnswers) {
     const previousSpaces =
-      ReadStateHelper.getStepAnswers(context.stepsState, STEP_ID)?.spacesSelection ?? [];
+      ReadStateHelper.getStepAnswers(params.answers, STEP_ID)?.spacesSelection ?? [];
     const newSpaces = newAnswers.spacesSelection ?? [];
     const hadBuildings = previousSpaces.includes("BUILDINGS");
     const willHaveBuildings = newSpaces.includes("BUILDINGS");
@@ -55,7 +55,7 @@ export const SpacesSelectionHandler = {
     const rules: StepInvalidationRule[] = [];
 
     // If surface area step exists, delete it when selection changes
-    if (ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_SPACES_SURFACE_AREA")) {
+    if (ReadStateHelper.getStep(params.answers, "URBAN_PROJECT_SPACES_SURFACE_AREA")) {
       rules.push({
         stepId: "URBAN_PROJECT_SPACES_SURFACE_AREA",
         action: "delete",
@@ -63,7 +63,7 @@ export const SpacesSelectionHandler = {
     }
 
     if (hadBuildings && !willHaveBuildings) {
-      getDeleteBuildingsRules(context).forEach((rule) => {
+      getDeleteBuildingsRules(params).forEach((rule) => {
         if (!rules.some((existingRule) => existingRule.stepId === rule.stepId)) {
           rules.push(rule);
         }

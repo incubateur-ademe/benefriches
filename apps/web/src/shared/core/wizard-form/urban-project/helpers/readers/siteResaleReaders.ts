@@ -1,7 +1,7 @@
-import type { ProjectFormState } from "../../../projectForm.reducer";
+import type { WizardFormState } from "../../../wizardForm.reducer";
 import { ReadStateHelper } from "../readState";
 
-type Steps = ProjectFormState["urbanProject"]["steps"];
+type Steps = WizardFormState["urbanProject"]["steps"];
 
 export function getSiteResaleSelection(steps: Steps) {
   return ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SITE_RESALE_SELECTION")

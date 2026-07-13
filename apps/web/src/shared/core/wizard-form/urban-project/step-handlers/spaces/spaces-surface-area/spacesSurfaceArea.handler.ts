@@ -15,9 +15,9 @@ export const SpacesSurfaceAreaHandler = {
     return "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
   },
 
-  getDependencyRules(context, newAnswers) {
+  getDependencyRules(params, newAnswers) {
     const previousBuildingsFootprint =
-      ReadStateHelper.getStepAnswers(context.stepsState, STEP_ID)?.spacesSurfaceAreaDistribution
+      ReadStateHelper.getStepAnswers(params.answers, STEP_ID)?.spacesSurfaceAreaDistribution
         ?.BUILDINGS ?? 0;
     const newBuildingsFootprint = newAnswers.spacesSurfaceAreaDistribution?.BUILDINGS ?? 0;
 
@@ -26,7 +26,7 @@ export const SpacesSurfaceAreaHandler = {
     }
 
     const buildingsFootprintToReuseStep = ReadStateHelper.getStep(
-      context.stepsState,
+      params.answers,
       "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
     );
 

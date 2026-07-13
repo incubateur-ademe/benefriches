@@ -4,8 +4,8 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 export const StakeholdersReinstatementContractOwnerHandler = {
   stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
 
-  getPreviousStepId(context) {
-    if (willConstructNewBuildings(context.stepsState)) {
+  getPreviousStepId(params) {
+    if (willConstructNewBuildings(params.answers)) {
       return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
     }
 

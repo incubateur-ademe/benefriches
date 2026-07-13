@@ -5,9 +5,9 @@ import type { InfoStepHandler } from "../../stepHandler.type";
 export const SoilsSummaryHandler = {
   stepId: "URBAN_PROJECT_SPACES_SOILS_SUMMARY",
 
-  getPreviousStepId(context) {
+  getPreviousStepId(params) {
     const selectedUses =
-      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
+      ReadStateHelper.getStepAnswers(params.answers, "URBAN_PROJECT_USES_SELECTION")
         ?.usesSelection ?? [];
 
     const isOnlyPublicGreenSpaces =

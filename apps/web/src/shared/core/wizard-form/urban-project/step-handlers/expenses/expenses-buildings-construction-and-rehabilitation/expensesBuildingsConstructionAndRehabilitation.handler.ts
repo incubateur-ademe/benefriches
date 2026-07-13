@@ -14,10 +14,10 @@ export const ExpensesBuildingsConstructionAndRehabilitationHandler: AnswerStepHa
   getPreviousStepId() {
     return "URBAN_PROJECT_EXPENSES_INSTALLATION";
   },
-  getNextStepId(context) {
+  getNextStepId(params) {
     if (
-      willHaveBuildings(context.stepsState) &&
-      !hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
+      willHaveBuildings(params.answers) &&
+      !hasBuildingsResalePlannedAfterDevelopment(params.answers)
     ) {
       return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
     }

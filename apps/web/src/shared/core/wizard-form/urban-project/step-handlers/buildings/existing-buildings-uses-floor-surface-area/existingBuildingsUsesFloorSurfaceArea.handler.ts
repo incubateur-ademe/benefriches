@@ -7,8 +7,8 @@ const STEP_ID = "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_A
 
 export const ExistingBuildingsUsesFloorSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,
-  getPreviousStepId(context) {
-    if (context.siteData && willDemolishBuildings(context.siteData, context.stepsState)) {
+  getPreviousStepId({ answers, context }) {
+    if (context.siteData && willDemolishBuildings(context.siteData, answers)) {
       return "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO";
     }
     return "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE";
@@ -19,12 +19,12 @@ export const ExistingBuildingsUsesFloorSurfaceAreaHandler: AnswerStepHandler<typ
   // When a user updates a project or navigates back during creation, they may change the
   // existing buildings use allocation. Since new buildings uses = overall - existing,
   // the previously completed new buildings allocation becomes stale and must be re-entered.
-  getDependencyRules(context) {
+  getDependencyRules(params) {
     const rules: StepInvalidationRule[] = [];
 
     if (
       ReadStateHelper.getStep(
-        context.stepsState,
+        params.answers,
         "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
       )
     ) {

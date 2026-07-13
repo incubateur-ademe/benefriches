@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { UrbanProjectReinstatementExpensesHandler } from "@/shared/core/wizard-form/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 describe("UrbanProjectReinstatementExpensesHandler", () => {
   describe("getNextStepId", () => {
@@ -21,7 +21,7 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
 
   describe("getDefaultAnswers", () => {
     it("should return default reinstatement expenses based on soils distribution", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -34,7 +34,7 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
         },
       };
 
-      const siteData: ProjectFormState["siteData"] = {
+      const siteData: WizardFormState["siteData"] = {
         id: "test-site",
         name: "Test Site",
         nature: "FRICHE",
@@ -56,8 +56,8 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
       };
 
       const defaultAnswers = UrbanProjectReinstatementExpensesHandler.getDefaultAnswers({
-        stepsState,
-        siteData,
+        answers,
+        context: { siteData },
       });
 
       expect(defaultAnswers).toBeDefined();
@@ -75,22 +75,24 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
 
     it("should return default values with zero amounts when no soils distribution", () => {
       const defaultAnswers = UrbanProjectReinstatementExpensesHandler.getDefaultAnswers({
-        stepsState: {},
-        siteData: {
-          id: "test-site",
-          name: "Test Site",
-          nature: "FRICHE",
-          surfaceArea: 10000,
-          soilsDistribution: {},
-          isExpressSite: false,
-          owner: { name: "Test Owner", structureType: "company" },
-          address: {
-            city: "Test City",
-            cityCode: "12345",
-            value: "Test Address",
-            postCode: "12345",
-            long: 0,
-            lat: 0,
+        answers: {},
+        context: {
+          siteData: {
+            id: "test-site",
+            name: "Test Site",
+            nature: "FRICHE",
+            surfaceArea: 10000,
+            soilsDistribution: {},
+            isExpressSite: false,
+            owner: { name: "Test Owner", structureType: "company" },
+            address: {
+              city: "Test City",
+              cityCode: "12345",
+              value: "Test Address",
+              postCode: "12345",
+              long: 0,
+              lat: 0,
+            },
           },
         },
       });

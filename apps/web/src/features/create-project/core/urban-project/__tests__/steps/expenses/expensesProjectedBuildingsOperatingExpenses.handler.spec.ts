@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { stepHandlerRegistry } from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
   describe("getNextStepId", () => {
@@ -9,7 +9,7 @@ describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
       // Arrange
       const nextStep =
         stepHandlerRegistry.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES.getNextStepId?.(
-          { stepsState: {} },
+          { answers: {}, context: { siteData: undefined } },
         );
 
       // Assert
@@ -20,7 +20,7 @@ describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
   describe("getPreviousStepId", () => {
     it("returns construction and rehabilitation when going back from projected operating expenses after reuse", () => {
       // Arrange
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -34,7 +34,7 @@ describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
       // Act
       const previousStep =
         stepHandlerRegistry.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES.getPreviousStepId?.(
-          { stepsState },
+          { answers, context: { siteData: undefined } },
         );
 
       // Assert
@@ -43,7 +43,7 @@ describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
 
     it("returns installation when going back from projected operating expenses without reuse or buildings constructor", () => {
       // Arrange
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+      const answers: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -57,7 +57,7 @@ describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
       // Act
       const previousStep =
         stepHandlerRegistry.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES.getPreviousStepId?.(
-          { stepsState },
+          { answers, context: { siteData: undefined } },
         );
 
       // Assert

@@ -7,12 +7,12 @@ import {
 } from "shared";
 
 import { DEFAULT_FUTURE_SITE_OWNER, getFutureOperator } from "../../helpers/stakeholders";
-import { ProjectFormState } from "../../projectForm.reducer";
+import { WizardFormState } from "../../wizardForm.reducer";
 import { UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { isSiteResalePlannedAfterDevelopment } from "./readers/siteResaleReaders";
 
 export const getProjectSummary = (
-  steps: ProjectFormState["urbanProject"]["steps"],
+  steps: WizardFormState["urbanProject"]["steps"],
   stepsSequence: UrbanProjectCreationStep[],
   projectPhase?: ProjectPhase,
   soilsDistribution: ReconversionProjectSoilsDistribution = [],

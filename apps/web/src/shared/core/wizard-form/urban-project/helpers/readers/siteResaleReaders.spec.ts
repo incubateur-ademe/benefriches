@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { ProjectFormState } from "../../../projectForm.reducer";
+import { WizardFormState } from "../../../wizardForm.reducer";
 import {
   isSiteResalePlannedAfterDevelopment,
   shouldSiteResalePriceBeEstimated,
@@ -9,7 +9,7 @@ import {
 describe("siteResaleReaders", () => {
   describe("isSiteResalePlannedAfterDevelopment", () => {
     it("should return true when siteResaleSelection is 'yes'", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "yes" },
@@ -20,7 +20,7 @@ describe("siteResaleReaders", () => {
     });
 
     it("should return true when siteResaleSelection is 'unknown'", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "unknown" },
@@ -31,7 +31,7 @@ describe("siteResaleReaders", () => {
     });
 
     it("should return false when siteResaleSelection is 'no'", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "no" },
@@ -44,7 +44,7 @@ describe("siteResaleReaders", () => {
 
   describe("shouldSiteResalePriceBeEstimated", () => {
     it("should return true when siteResaleSelection is 'unknown'", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "unknown" },
@@ -55,7 +55,7 @@ describe("siteResaleReaders", () => {
     });
 
     it("should return false when siteResaleSelection is 'yes'", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
+      const steps: WizardFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "yes" },

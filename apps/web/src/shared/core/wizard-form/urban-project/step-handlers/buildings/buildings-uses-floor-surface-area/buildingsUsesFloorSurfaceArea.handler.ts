@@ -10,7 +10,7 @@ export const BuildingsUsesFloorSurfaceAreaHandler = {
     return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
   },
 
-  getNextStepId(context) {
+  getNextStepId({ context }) {
     if (context.siteData && siteHasBuildings(context.siteData)) {
       return "URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION";
     }

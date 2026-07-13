@@ -2,11 +2,11 @@ import { AsyncThunk, AsyncThunkConfig } from "@reduxjs/toolkit";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
-export const makeProjectFormActionType = (prefix: string, actionName: string) => {
-  return `${prefix}/projectForm/${actionName}`;
+export const makeWizardFormActionType = (prefix: string, actionName: string) => {
+  return `${prefix}/wizardForm/${actionName}`;
 };
 
-export type ProjectFormReducerActions = {
+export type WizardFormReducerActions = {
   fetchSiteRelatedLocalAuthorities: AsyncThunk<
     GetMunicipalityDataResult["localAuthorities"],
     void,
@@ -40,14 +40,14 @@ export interface SiteMunicipalityDataGateway {
   getMunicipalityData(cityCode: string): Promise<GetMunicipalityDataResult>;
 }
 
-export const createProjectFormActions = (
+export const createWizardFormActions = (
   prefix: "projectCreation" | "projectUpdate",
-): ProjectFormReducerActions => {
+): WizardFormReducerActions => {
   return {
     fetchSiteRelatedLocalAuthorities: createAppAsyncThunk<
       GetMunicipalityDataResult["localAuthorities"]
     >(
-      makeProjectFormActionType(prefix, "fetchSiteRelatedLocalAuthorities"),
+      makeWizardFormActionType(prefix, "fetchSiteRelatedLocalAuthorities"),
       async (_, { extra, getState }) => {
         const state = getState();
         const siteAddress = state[prefix].siteData?.address;

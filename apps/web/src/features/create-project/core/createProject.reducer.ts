@@ -2,12 +2,12 @@ import { createReducer } from "@reduxjs/toolkit";
 import reduceReducers from "reduce-reducers";
 import { v4 as uuid } from "uuid";
 
-import {
-  addProjectFormCasesToBuilder,
-  getProjectFormInitialState,
-  ProjectFormState,
-} from "@/shared/core/wizard-form/projectForm.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
+import {
+  addWizardFormCasesToBuilder,
+  getWizardFormInitialState,
+  WizardFormState,
+} from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { currentProjectFlowUpdated } from "./actions/currentProjectFlowUpdated.action";
 import { fetchSiteRelatedLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
@@ -39,7 +39,7 @@ export type CurrentProjectFlow =
   | "PHOTOVOLTAIC_POWER_PLANT"
   | "URBAN_PROJECT";
 
-export type ProjectCreationState = ProjectFormState & {
+export type ProjectCreationState = WizardFormState & {
   projectId: string;
   currentProjectFlow: CurrentProjectFlow;
   useCaseSelection: UseCaseSelectionState;
@@ -62,12 +62,12 @@ export const getInitialState = (): ProjectCreationState => {
     demoProject: DEMO_INITIAL_STATE,
     renewableEnergyProject: renenewableEnergyProjectInitialState,
     surfaceAreaInputMode: "percentage",
-    ...getProjectFormInitialState("URBAN_PROJECT_USES_INTRODUCTION"),
+    ...getWizardFormInitialState("URBAN_PROJECT_USES_INTRODUCTION"),
   };
 };
 
 const projectCreationReducer = createReducer(getInitialState(), (builder) => {
-  addProjectFormCasesToBuilder(builder, { fetchSiteRelatedLocalAuthorities });
+  addWizardFormCasesToBuilder(builder, { fetchSiteRelatedLocalAuthorities });
 
   builder
     .addCase(reconversionProjectCreationInitiated.pending, (_state, action) => {

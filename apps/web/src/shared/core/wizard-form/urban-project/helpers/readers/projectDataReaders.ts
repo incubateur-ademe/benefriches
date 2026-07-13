@@ -1,13 +1,13 @@
 import { BuildingsConstructionExpense, typedObjectEntries } from "shared";
 
 import { DEFAULT_FUTURE_SITE_OWNER, getFutureOperator } from "../../../helpers/stakeholders";
-import type { ProjectFormState } from "../../../projectForm.reducer";
+import type { WizardFormState } from "../../../wizardForm.reducer";
 import { EXPENSE_FIELD_TO_PURPOSE } from "../../step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
 import type { UrbanProjectFormData } from "../../urbanProjectSteps";
 import { isSiteResalePlannedAfterDevelopment } from "./siteResaleReaders";
 import { getProjectSoilDistribution } from "./soilsReaders";
 
-type Steps = ProjectFormState["urbanProject"]["steps"];
+type Steps = WizardFormState["urbanProject"]["steps"];
 
 function getBuildingsConstructionExpenses(
   steps: Steps,

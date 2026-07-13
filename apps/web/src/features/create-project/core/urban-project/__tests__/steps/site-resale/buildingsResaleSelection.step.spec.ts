@@ -1,11 +1,11 @@
 import { describe, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
-const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
+const INITIAL_STEPS: WizardFormState["urbanProject"]["steps"] = {
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
     completed: true,
     payload: { projectDeveloper: { structureType: "municipality", name: "Mairie d'angers" } },
@@ -34,7 +34,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
     );
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      ProjectFormState["urbanProject"]["steps"]
+      WizardFormState["urbanProject"]["steps"]
     >({
       ...INITIAL_STEPS,
       URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
@@ -69,7 +69,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
 
     const state = store.getState().projectCreation.urbanProject;
 
-    expect(state.steps).toEqual<ProjectFormState["urbanProject"]["steps"]>({
+    expect(state.steps).toEqual<WizardFormState["urbanProject"]["steps"]>({
       ...INITIAL_STEPS,
       URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
         completed: true,
@@ -133,7 +133,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
 
     const state = store.getState().projectCreation.urbanProject;
 
-    expect(state.steps).toEqual<ProjectFormState["urbanProject"]["steps"]>({
+    expect(state.steps).toEqual<WizardFormState["urbanProject"]["steps"]>({
       ...INITIAL_STEPS,
       URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
         completed: true,
@@ -204,7 +204,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
 
     const state = store.getState().projectCreation.urbanProject;
 
-    expect(state.steps).toEqual<ProjectFormState["urbanProject"]["steps"]>({
+    expect(state.steps).toEqual<WizardFormState["urbanProject"]["steps"]>({
       ...INITIAL_STEPS,
       URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
         completed: true,
