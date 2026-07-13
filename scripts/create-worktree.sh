@@ -2,27 +2,26 @@
 set -euo pipefail
 
 # Git Worktree Setup Script
-# Creates a new worktree as a sibling directory and primes the environment
+# Creates a worktree under .claude/worktrees/ (same location convention as
+# `claude --worktree`, gitignored so it never pollutes status/diff/search)
+# and primes the environment.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-REPO_NAME="$(basename "$REPO_ROOT")"
-PARENT_DIR="$(dirname "$REPO_ROOT")"
 
 usage() {
-    echo "Usage: $0 <branch-name> [--new-branch]"
+    echo "Usage: $0 <branch-name>"
     echo ""
-    echo "Creates a git worktree and sets up the development environment."
+    echo "Creates a new branch from current HEAD, a git worktree for it,"
+    echo "and sets up the development environment."
     echo ""
     echo "Arguments:"
-    echo "  branch-name    Name of the branch (existing or new)"
-    echo "  --new-branch   Create a new branch from current HEAD (optional)"
+    echo "  branch-name    Name of the new branch to create"
     echo ""
-    echo "Examples:"
-    echo "  $0 feat/new-feature --new-branch   # Create new branch and worktree"
-    echo "  $0 existing-branch                  # Create worktree for existing branch"
+    echo "Example:"
+    echo "  $0 feat/new-feature"
     echo ""
-    echo "The worktree will be created at: $PARENT_DIR/${REPO_NAME}-<branch-name>"
+    echo "The worktree will be created at: .claude/worktrees/<branch-name>"
     exit 1
 }
 
@@ -31,15 +30,15 @@ if [[ $# -lt 1 ]]; then
 fi
 
 BRANCH_NAME="$1"
-NEW_BRANCH=false
 
-if [[ $# -ge 2 && "$2" == "--new-branch" ]]; then
-    NEW_BRANCH=true
-fi
-
-# Sanitize branch name for directory (replace / with -)
-DIR_SUFFIX="${BRANCH_NAME//\//-}"
-WORKTREE_PATH="$PARENT_DIR/${REPO_NAME}-${DIR_SUFFIX}"
+# Sanitize branch name for directory: drop a conventional type prefix
+# (feat/, fix/, refactor/, chore/) then replace remaining / with -
+DIR_SUFFIX="${BRANCH_NAME#feat/}"
+DIR_SUFFIX="${DIR_SUFFIX#fix/}"
+DIR_SUFFIX="${DIR_SUFFIX#refactor/}"
+DIR_SUFFIX="${DIR_SUFFIX#chore/}"
+DIR_SUFFIX="${DIR_SUFFIX//\//-}"
+WORKTREE_PATH="$REPO_ROOT/.claude/worktrees/${DIR_SUFFIX}"
 
 echo "=== Git Worktree Setup ==="
 echo "Branch:    $BRANCH_NAME"
@@ -55,40 +54,22 @@ fi
 # Create the worktree
 echo "Creating worktree..."
 cd "$REPO_ROOT"
+mkdir -p "$REPO_ROOT/.claude/worktrees"
 
-if $NEW_BRANCH; then
-    git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH"
-else
-    git worktree add "$WORKTREE_PATH" "$BRANCH_NAME"
-fi
+git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH"
 
 echo "Worktree created."
 echo ""
 
-# Change to worktree directory
-cd "$WORKTREE_PATH"
-
-# Install dependencies and build shared package
-echo "Installing root dependencies..."
-pnpm install
-echo "Installing and building shared package..."
-pnpm --filter shared install
-pnpm --filter shared build
-echo "Installing all workspace dependencies..."
-pnpm install -r
-echo "Dependencies installed."
+# git worktree add here runs as a plain shell command, not through Claude
+# Code's own worktree-creation paths (--worktree / EnterWorktree / subagent
+# isolation), so the WorktreeCreate hook does NOT fire for it. Invoke the
+# shared priming script directly so /worktree stays self-contained.
+echo "Priming worktree (pnpm install + shared build + env files)..."
+"$REPO_ROOT/scripts/prime-worktree.sh" "$WORKTREE_PATH"
+echo "  see $WORKTREE_PATH/.claude-worktree-setup.log for details"
 echo ""
 
-# Copy environment files and generate env vars
-echo "Setting up environment files..."
-cp apps/web/.env.example apps/web/.env
-echo "  Created apps/web/.env"
-cp apps/api/.env.example apps/api/.env
-echo "  Created apps/api/.env"
-echo "  Generating web env-vars.js..."
-pnpm --filter web setup-env-vars
-
-echo ""
 echo "=== Setup Complete ==="
 echo ""
 echo "Worktree ready at: $WORKTREE_PATH"

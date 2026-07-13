@@ -14,19 +14,14 @@ Create a new git worktree for isolated feature development.
 ## Instructions
 
 1. Parse the branch name from arguments
-2. Determine if this is a new branch or existing branch
-3. Run the worktree creation script
-4. Report the result and next steps
+2. Run the worktree creation script
+3. Report the result and next steps
 
 ## Execution
 
-Run the following command based on the arguments:
+The script always creates a new branch from current HEAD, places the worktree under `.claude/worktrees/<name>` (gitignored, so it never pollutes `git status`/diff/search), and primes it (pnpm install, shared build, env files):
 
 ```bash
-# For new branches (default behavior)
-scripts/create-worktree.sh <branch-name> --new-branch
-
-# For existing branches (if user specifies --existing)
 scripts/create-worktree.sh <branch-name>
 ```
 
