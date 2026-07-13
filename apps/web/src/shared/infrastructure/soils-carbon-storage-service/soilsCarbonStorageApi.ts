@@ -8,7 +8,7 @@ import {
   GetSoilsCarbonStoragePayload,
   SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway,
   SoilsCarbonStorageResult,
-} from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
+} from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 
 export class SoilsCarbonStorageApi
   implements SiteSoilsCarbonStorageGateway, ProjectSoilsCarbonStorageGateway

@@ -9,7 +9,7 @@ import {
 import {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
-} from "@/shared/core/reducers/project-form/helpers/stakeholders";
+} from "@/shared/core/wizard-form/helpers/stakeholders";
 
 import { useProjectForm } from "../../useProjectForm";
 import StakeholderForm, { FormValues } from "./StakeholderForm";

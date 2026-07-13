@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
-import { StepCompletionPayload } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
-import { createUrbanProjectFormSelectors } from "@/shared/core/reducers/project-form/urban-project/urbanProject.selectors";
-import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+import { StepCompletionPayload } from "@/shared/core/wizard-form/urban-project/urbanProject.actions";
+import { createUrbanProjectFormSelectors } from "@/shared/core/wizard-form/urban-project/urbanProject.selectors";
+import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 
 import { StepGroupId } from "./stepper/stepperConfig";
 

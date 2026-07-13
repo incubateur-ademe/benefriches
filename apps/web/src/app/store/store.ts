@@ -23,8 +23,8 @@ import type { SupportChatGateway } from "@/features/support/core/gateways/Suppor
 import { UpdateProjectServiceGateway } from "@/features/update-project/core/updateProject.types";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 import { RealEstateValuationGateway } from "@/shared/core/gateways/RealEstateValuationGateway";
-import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/shared/core/reducers/project-form/projectForm.actions";
-import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
+import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/shared/core/wizard-form/projectForm.actions";
+import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 
 import { getListener, setupAllListeners } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";

@@ -1,7 +1,7 @@
 import { httpSaveReconversionProjectPropsSchema } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
-import { getProjectData } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/projectDataReaders";
+import { getProjectData } from "@/shared/core/wizard-form/urban-project/helpers/readers/projectDataReaders";
 
 import { makeUrbanProjectCreationActionType } from "./urbanProject.actions";
 

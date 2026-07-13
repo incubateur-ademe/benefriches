@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { AnswerStepId } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+import { AnswerStepId } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 
 import { ProjectCreationState } from "../../createProject.reducer";
 import { creationProjectFormSelectors } from "../urbanProject.selectors";

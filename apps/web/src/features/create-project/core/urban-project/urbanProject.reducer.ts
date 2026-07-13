@@ -1,7 +1,7 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 
-import { MutateStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/mutateState";
-import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/reducers/project-form/urban-project/urbanProject.reducer";
+import { MutateStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/mutateState";
+import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/wizard-form/urban-project/urbanProject.reducer";
 
 import { ProjectCreationState } from "../createProject.reducer";
 import { fetchEstimatedSiteResalePrice } from "./fetchEstimatedSiteResalePrice.action";

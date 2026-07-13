@@ -2,7 +2,7 @@ import { buildUser } from "@/features/onboarding/core/user.mock";
 import {
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
-} from "@/shared/core/reducers/project-form/helpers/stakeholders";
+} from "@/shared/core/wizard-form/helpers/stakeholders";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import {

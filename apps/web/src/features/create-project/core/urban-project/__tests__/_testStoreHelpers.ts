@@ -1,5 +1,5 @@
 import { AppDependencies, createStore, RootState } from "@/app/store/store";
-import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState, ProjectCreationState } from "../../createProject.reducer";

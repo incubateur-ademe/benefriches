@@ -1,6 +1,6 @@
 import { rootReducer } from "@/app/store/rootReducer";
 import type { RootState } from "@/app/store/store";
-import { getProjectFormInitialState } from "@/shared/core/reducers/project-form/projectForm.reducer";
+import { getProjectFormInitialState } from "@/shared/core/wizard-form/projectForm.reducer";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import { DEMO_INITIAL_STATE } from "../../demo/demoProject.reducer";

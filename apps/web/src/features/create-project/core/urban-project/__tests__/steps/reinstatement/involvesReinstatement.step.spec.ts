@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { UrbanProjectScheduleProjectionHandler } from "@/shared/core/reducers/project-form/urban-project/step-handlers/schedule/schedule-projection/scheduleProjection.handler";
+import { UrbanProjectScheduleProjectionHandler } from "@/shared/core/wizard-form/urban-project/step-handlers/schedule/schedule-projection/scheduleProjection.handler";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";

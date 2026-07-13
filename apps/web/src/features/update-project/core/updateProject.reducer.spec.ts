@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { mockSiteData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
-import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
-import { computeProjectStepsSequence } from "@/shared/core/reducers/project-form/urban-project/helpers/stepsSequence";
+import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import { computeProjectStepsSequence } from "@/shared/core/wizard-form/urban-project/helpers/stepsSequence";
 
 import { updateProjectFormUrbanActions } from "./updateProject.actions";
 import updateProjectReducer from "./updateProject.reducer";

@@ -6,8 +6,8 @@ import {
   addProjectFormCasesToBuilder,
   getProjectFormInitialState,
   ProjectFormState,
-} from "@/shared/core/reducers/project-form/projectForm.reducer";
-import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+} from "@/shared/core/wizard-form/projectForm.reducer";
+import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 
 import { currentProjectFlowUpdated } from "./actions/currentProjectFlowUpdated.action";
 import { fetchSiteRelatedLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";

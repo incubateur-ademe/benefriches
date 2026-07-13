@@ -6,7 +6,7 @@ import {
   getLabelForFinancialAssistanceRevenueSource,
   getLabelForRecurringRevenueSource,
 } from "@/shared/core/reconversionProject";
-import { getProjectSummary } from "@/shared/core/reducers/project-form/urban-project/helpers/projectSummary";
+import { getProjectSummary } from "@/shared/core/wizard-form/urban-project/helpers/projectSummary";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 

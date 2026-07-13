@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { AvailableProjectStakeholder } from "@/shared/core/reducers/project-form/helpers/stakeholders";
+import type { AvailableProjectStakeholder } from "@/shared/core/wizard-form/helpers/stakeholders";
 
 import {
   selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,

@@ -1,6 +1,6 @@
 import { describe, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
+import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";

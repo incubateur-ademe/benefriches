@@ -1,3 +1,3 @@
-import { createProjectFormActions } from "@/shared/core/reducers/project-form/projectForm.actions";
+import { createProjectFormActions } from "@/shared/core/wizard-form/projectForm.actions";
 
 export const { fetchSiteRelatedLocalAuthorities } = createProjectFormActions("projectCreation");

@@ -1,5 +1,5 @@
-import { createProjectFormActions } from "@/shared/core/reducers/project-form/projectForm.actions";
-import { createUrbanProjectFormActions } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
+import { createProjectFormActions } from "@/shared/core/wizard-form/projectForm.actions";
+import { createUrbanProjectFormActions } from "@/shared/core/wizard-form/urban-project/urbanProject.actions";
 
 import {
   makeProjectCreationActionType,

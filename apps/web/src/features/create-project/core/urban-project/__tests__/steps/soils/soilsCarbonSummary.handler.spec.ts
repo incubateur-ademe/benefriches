@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { SoilsCarbonSummaryHandler } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-carbon-summary/soilsCarbonSummary.handler";
+import { SoilsCarbonSummaryHandler } from "@/shared/core/wizard-form/urban-project/step-handlers/soils/soils-carbon-summary/soilsCarbonSummary.handler";
 
 describe("SoilsCarbonSummaryHandler", () => {
   describe("getNextStepId", () => {

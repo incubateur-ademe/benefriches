@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
-import { stepHandlerRegistry } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stepHandlerRegistry";
+import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
+import { stepHandlerRegistry } from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
 
 describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
   describe("getNextStepId", () => {

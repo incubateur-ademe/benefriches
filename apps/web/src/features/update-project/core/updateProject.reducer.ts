@@ -5,10 +5,10 @@ import {
   addProjectFormCasesToBuilder,
   getProjectFormInitialState,
   ProjectFormState,
-} from "@/shared/core/reducers/project-form/projectForm.reducer";
-import { computeProjectStepsSequence } from "@/shared/core/reducers/project-form/urban-project/helpers/stepsSequence";
-import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/reducers/project-form/urban-project/urbanProject.reducer";
-import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+} from "@/shared/core/wizard-form/projectForm.reducer";
+import { computeProjectStepsSequence } from "@/shared/core/wizard-form/urban-project/helpers/stepsSequence";
+import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/wizard-form/urban-project/urbanProject.reducer";
+import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 
 import { convertProjectDataToSteps } from "./helpers/convertProjectDataToSteps";
 import {

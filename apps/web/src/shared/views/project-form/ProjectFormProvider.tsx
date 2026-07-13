@@ -13,8 +13,8 @@ import {
   updateProjectFormUrbanActions,
 } from "@/features/update-project/core/updateProject.actions";
 import { updateUrbanProjectFormSelectors } from "@/features/update-project/core/updateProject.selectors";
-import { StepCompletionPayload } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
-import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+import { StepCompletionPayload } from "@/shared/core/wizard-form/urban-project/urbanProject.actions";
+import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 
 import { ProjectFormContext, ProjectFormContextValue } from "./ProjectFormContext";
 import { StepGroupId } from "./stepper/stepperConfig";

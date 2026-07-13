@@ -13,9 +13,9 @@ import { getLabelForDevelopmentPlanCategory } from "@/features/create-project/vi
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getLabelForProjectPhase } from "@/shared/core/projectPhase";
-import { getProjectSummary } from "@/shared/core/reducers/project-form/urban-project/helpers/projectSummary";
-import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
+import { getProjectSummary } from "@/shared/core/wizard-form/urban-project/helpers/projectSummary";
+import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";

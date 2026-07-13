@@ -1,6 +1,6 @@
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
-import { CurrentAndProjectedSoilsCarbonStorageResult } from "../../../../../shared/core/reducers/project-form/soilsCarbonStorage.action";
+import { CurrentAndProjectedSoilsCarbonStorageResult } from "../../../../../shared/core/wizard-form/soilsCarbonStorage.action";
 import { selectSiteAddress, selectSiteSoilsDistribution } from "../../createProject.selectors";
 import { makeRenewableEnergyProjectCreationActionType } from "../renewableEnergy.actions";
 import { selectProjectSoilsDistribution } from "../selectors/renewableEnergy.selector";

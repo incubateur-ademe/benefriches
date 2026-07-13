@@ -1,6 +1,6 @@
 import { describe, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
+import { ProjectFormState } from "@/shared/core/wizard-form/projectForm.reducer";
 import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";

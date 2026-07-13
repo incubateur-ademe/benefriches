@@ -1,4 +1,4 @@
-import type { ProjectSiteView } from "@/shared/core/reducers/project-form/projectForm.types";
+import type { ProjectSiteView } from "@/shared/core/wizard-form/projectForm.types";
 
 import type {
   AnswersByStep,

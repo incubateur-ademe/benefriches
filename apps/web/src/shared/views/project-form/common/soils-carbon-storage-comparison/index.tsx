@@ -1,6 +1,6 @@
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
 
-import { SoilsCarbonStorageResult } from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
+import { SoilsCarbonStorageResult } from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";

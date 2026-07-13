@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createReducer } from "@reduxjs/toolkit";
 
-import { SoilsCarbonStorageResult } from "../../../../shared/core/reducers/project-form/soilsCarbonStorage.action";
+import { SoilsCarbonStorageResult } from "../../../../shared/core/wizard-form/soilsCarbonStorage.action";
 import { ProjectCreationState } from "../createProject.reducer";
 import { saveReconversionProject } from "./actions/customProjectSaved.action";
 import { fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation } from "./actions/getPhotovoltaicExpectedPerformance.action";

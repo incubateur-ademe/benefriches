@@ -25,7 +25,7 @@ import {
   getLabelForReinstatementExpensePurpose,
   RenewableEnergyDevelopmentPlanType,
 } from "@/shared/core/reconversionProject";
-import { SoilsCarbonStorageResult } from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
+import { SoilsCarbonStorageResult } from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";

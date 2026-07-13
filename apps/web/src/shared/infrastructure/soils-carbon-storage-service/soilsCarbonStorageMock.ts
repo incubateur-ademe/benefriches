@@ -2,7 +2,7 @@ import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "@/fe
 import {
   SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway,
   SoilsCarbonStorageResult,
-} from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
+} from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 
 export class SoilsCarbonStorageMock
   implements ProjectSoilsCarbonStorageGateway, SiteSoilsCarbonStorageGateway

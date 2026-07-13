@@ -1,0 +1,75 @@
+import { doesUseIncludeBuildings } from "shared";
+
+import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
+
+import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
+import { getDeleteBuildingsRules } from "../getCommonRules";
+
+const STEP_ID = "URBAN_PROJECT_SPACES_SELECTION";
+
+export const SpacesSelectionHandler = {
+  stepId: STEP_ID,
+
+  getPreviousStepId(context) {
+    const selectedUses =
+      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
+        ?.usesSelection ?? [];
+
+    if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
+      return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION";
+    }
+
+    return "URBAN_PROJECT_SPACES_INTRODUCTION";
+  },
+
+  getNextStepId() {
+    return "URBAN_PROJECT_SPACES_SURFACE_AREA";
+  },
+
+  getDefaultAnswers(context) {
+    const selectedUses =
+      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
+        ?.usesSelection ?? [];
+
+    return {
+      spacesSelection: selectedUses.some(doesUseIncludeBuildings) ? ["BUILDINGS"] : undefined,
+    };
+  },
+
+  getDependencyRules(context, newAnswers) {
+    const previousSpaces =
+      ReadStateHelper.getStepAnswers(context.stepsState, STEP_ID)?.spacesSelection ?? [];
+    const newSpaces = newAnswers.spacesSelection ?? [];
+    const hadBuildings = previousSpaces.includes("BUILDINGS");
+    const willHaveBuildings = newSpaces.includes("BUILDINGS");
+
+    const noChanges =
+      previousSpaces.length === newSpaces.length &&
+      newSpaces.every((space) => previousSpaces.includes(space)) &&
+      previousSpaces.every((space) => newSpaces.includes(space));
+
+    if (noChanges) {
+      return [];
+    }
+
+    const rules: StepInvalidationRule[] = [];
+
+    // If surface area step exists, delete it when selection changes
+    if (ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_SPACES_SURFACE_AREA")) {
+      rules.push({
+        stepId: "URBAN_PROJECT_SPACES_SURFACE_AREA",
+        action: "delete",
+      });
+    }
+
+    if (hadBuildings && !willHaveBuildings) {
+      getDeleteBuildingsRules(context).forEach((rule) => {
+        if (!rules.some((existingRule) => existingRule.stepId === rule.stepId)) {
+          rules.push(rule);
+        }
+      });
+    }
+
+    return rules;
+  },
+} satisfies AnswerStepHandler<typeof STEP_ID>;

@@ -2,9 +2,9 @@ import { httpUpdateReconversionProjectPropsSchema } from "shared";
 import z from "zod";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
-import { createProjectFormActions } from "@/shared/core/reducers/project-form/projectForm.actions";
-import { getProjectData } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/projectDataReaders";
-import { createUrbanProjectFormActions } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
+import { createProjectFormActions } from "@/shared/core/wizard-form/projectForm.actions";
+import { getProjectData } from "@/shared/core/wizard-form/urban-project/helpers/readers/projectDataReaders";
+import { createUrbanProjectFormActions } from "@/shared/core/wizard-form/urban-project/urbanProject.actions";
 
 import {
   selectProjectSoilsDistributionByType,
