@@ -1,6 +1,6 @@
 import {
   GetReconversionProjectImpactsResultDto,
-  ImpactDataView,
+  ProjectIndirectImpactItemView,
   IndirectEconomicImpactName,
   LOCAL_AUTHORITIES,
   ProjectOperatingEconomicBalanceItem,
@@ -179,7 +179,7 @@ const EMPTY_BEARER_STATE: IndirectEconomicImpactsByBearer = {
 };
 export const groupIndirectEconomicImpactsByBearer = (
   indirectEconomicImpacts: (
-    | ImpactDataView
+    | ProjectIndirectImpactItemView
     | ProjectOperatingEconomicBalanceItem
     | SiteStatuQuoEconomicImpact
   )[],

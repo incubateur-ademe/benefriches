@@ -4,7 +4,7 @@ import {
   BuildingsUseDistribution,
   DevelopmentPlanFeatures,
   ProjectOnSiteImpactMetric,
-  ReconversionProjectOnSiteIndirectEconomicImpact,
+  ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "shared";
 
 import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
@@ -224,16 +224,17 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const travelEconomicImpactNames: ReconversionProjectOnSiteIndirectEconomicImpact["name"][] = [
-        "avoidedPropertyDamageExpenses",
-        "avoidedCarRelatedExpenses",
-        "travelTimeSavedPerTravelerExpenses",
-        "avoidedTrafficCo2EqEmissions",
-        "avoidedAirPollutionHealthExpenses",
-        "avoidedAccidentsMinorInjuriesExpenses",
-        "avoidedAccidentsSevereInjuriesExpenses",
-        "avoidedAccidentsDeathsExpenses",
-      ] as const;
+      const travelEconomicImpactNames: ReconversionProjectOnSiteIndirectEconomicImpactItemView["name"][] =
+        [
+          "avoidedPropertyDamageExpenses",
+          "avoidedCarRelatedExpenses",
+          "travelTimeSavedPerTravelerExpenses",
+          "avoidedTrafficCo2EqEmissions",
+          "avoidedAirPollutionHealthExpenses",
+          "avoidedAccidentsMinorInjuriesExpenses",
+          "avoidedAccidentsSevereInjuriesExpenses",
+          "avoidedAccidentsDeathsExpenses",
+        ] as const;
 
       travelEconomicImpactNames.forEach((name) => {
         assert.ok(result.economicImpacts.find((r) => r.name === name) !== undefined);

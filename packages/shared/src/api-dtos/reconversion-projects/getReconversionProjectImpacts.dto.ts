@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 import {
-  AggregatedReconversionIndirectEconomicImpacts,
+  AggregatedReconversionIndirectEconomicImpactsDataView,
   AggregatedProjectImpactMetric,
   ProjectEconomicBalance,
-  ReconversionProjectOnSiteIndirectEconomicImpacts,
+  ReconversionProjectOnSiteIndirectEconomicImpactsDataView,
   ReconversionStakeholders,
   ProjectOnSiteImpactMetric,
 } from "../../reconversion-project-impacts";
@@ -47,14 +47,14 @@ export type GetReconversionProjectImpactsResultDto = {
       breakEvenYear?: string;
       breakEvenIndex?: number;
       cumulativeBalanceByYear: number[];
-      indirectEconomicImpacts: AggregatedReconversionIndirectEconomicImpacts;
+      indirectEconomicImpacts: AggregatedReconversionIndirectEconomicImpactsDataView;
       impactsMetrics: AggregatedProjectImpactMetric[];
     };
     reconversionImpactsBreakdown: {
       siteStatuQuoIndirectEconomicImpactsData: z.infer<
         typeof siteStatuQuoImpactsSchema.shape.economicImpacts
       >;
-      projectOnSiteIndirectEconomicImpactsData: ReconversionProjectOnSiteIndirectEconomicImpacts;
+      projectOnSiteIndirectEconomicImpactsData: ReconversionProjectOnSiteIndirectEconomicImpactsDataView;
       projectIndirectImpactMetrics: ProjectOnSiteImpactMetric[];
       siteStatuQuoImpactMetrics: z.infer<typeof siteStatuQuoImpactsSchema.shape.impactMetrics>;
     };

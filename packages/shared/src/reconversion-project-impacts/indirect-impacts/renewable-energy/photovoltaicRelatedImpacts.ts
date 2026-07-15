@@ -8,7 +8,7 @@ import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/Su
 import { computeCumulativeByYear } from "../../../sum-on-evolution-period/computeCumulativeByYear";
 import {
   ProjectOnSiteImpactMetric,
-  ReconversionProjectOnSiteIndirectEconomicImpact,
+  ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "../../projectImpacts.types";
 import { DevelopmentPlanFeatures } from "../../projectImpactsDataView.types";
 import {
@@ -23,7 +23,7 @@ const getPhotovoltaicProductionRelatedImpacts = (props: {
   expectedAnnualProduction: number;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 }): {
-  economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[];
+  economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[];
   impactMetrics: ProjectOnSiteImpactMetric[];
 } => {
   const avoidedCO2TonsWithEnergyProductionPerYear = computeAvoidedCO2TonsWithEnergyProductionImpact(
@@ -79,7 +79,7 @@ const getNewPhotovoltaicTaxesIncomeImpact = ({
 }: {
   yearlyProjectedExpenses: RecurringExpense[];
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-}): ReconversionProjectOnSiteIndirectEconomicImpact | undefined => {
+}): ReconversionProjectOnSiteIndirectEconomicImpactItemView | undefined => {
   const projectedTaxesAmount =
     yearlyProjectedExpenses.find(({ purpose }) => purpose === "taxes")?.amount ?? 0;
 
@@ -110,10 +110,10 @@ export const getPhotovoltaicPowerPlantProjectImpacts = ({
   reconversionProject,
   sumOnEvolutionPeriodService,
 }: PhotovoltaicImpactsProps): {
-  economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[];
+  economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[];
   impactMetrics: ProjectOnSiteImpactMetric[];
 } => {
-  const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+  const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[] = [];
   const impactMetrics: ProjectOnSiteImpactMetric[] = [];
 
   if (!reconversionProject.developmentPlan.features.expectedAnnualProduction) {

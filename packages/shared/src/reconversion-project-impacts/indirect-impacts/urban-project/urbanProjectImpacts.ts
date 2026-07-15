@@ -8,7 +8,7 @@ import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/Su
 import { computeCumulativeByYear } from "../../../sum-on-evolution-period/computeCumulativeByYear";
 import {
   ProjectOnSiteImpactMetric,
-  ReconversionProjectOnSiteIndirectEconomicImpact,
+  ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "../../projectImpacts.types";
 import { DevelopmentPlanFeatures } from "../../projectImpactsDataView.types";
 import { InputReconversionProjectData, InputSiteData } from "../projectIndirectImpacts";
@@ -25,8 +25,8 @@ export const getNewUsagesTaxesIncomeImpact = ({
 }: {
   buildingsFloorAreaDistribution: BuildingsUseDistribution;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-}): ReconversionProjectOnSiteIndirectEconomicImpact[] => {
-  const impacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+}): ReconversionProjectOnSiteIndirectEconomicImpactItemView[] => {
+  const impacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[] = [];
 
   const newHousesSurfaceArea = buildingsFloorAreaDistribution.RESIDENTIAL ?? 0;
 
@@ -84,14 +84,14 @@ export const getUrbanProjectImpacts = ({
   siteCityData,
   sumOnEvolutionPeriodService,
 }: UrbanProjectImpactsProps): {
-  economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[];
+  economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[];
   impactMetrics: ProjectOnSiteImpactMetric[];
 } => {
-  const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+  const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[] = [];
   const impactsMetrics: ProjectOnSiteImpactMetric[] = [];
 
   const pushEconomicImpact = (
-    name: ReconversionProjectOnSiteIndirectEconomicImpact["name"],
+    name: ReconversionProjectOnSiteIndirectEconomicImpactItemView["name"],
     yearlyValue: number | undefined,
     weights: ("discount" | "gdp_evolution" | "co2_value" | "co2_emitted_per_vehicule")[],
   ) => {

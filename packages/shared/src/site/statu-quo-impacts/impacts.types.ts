@@ -79,6 +79,7 @@ export const siteIndirectEconomicImpactSchema = z.discriminatedUnion("name", [
     detailsByYear: z.array(z.number()),
     cumulativeByYear: z.array(z.number()),
     name: socioEconomicMonetaryImpactNameSchema,
+    details: z.string().optional(),
   }),
   taxesIncomeImpactsSchema,
   fricheCostsIndirectEconomicImpactsSchema,

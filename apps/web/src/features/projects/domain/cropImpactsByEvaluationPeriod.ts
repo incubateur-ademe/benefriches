@@ -1,17 +1,22 @@
 import {
   AggregatedProjectImpactMetric,
+  AggregatedReconversionProjectOnSiteImpactItemView,
   GetReconversionProjectImpactsResultDto,
-  ImpactDataView,
   ProjectOnSiteImpactMetric,
   ProjectOperatingEconomicBalanceItem,
   SiteStatuQuoEconomicImpact,
   sumList,
   sumListWithKey,
+  UrbanSprawlComparisonIndirectEconomicImpactItemView,
   UrbanSprawlImpactsComparisonResultDto,
 } from "shared";
 
 const cropAndSumEconomicImpact = <
-  T extends ProjectOperatingEconomicBalanceItem | SiteStatuQuoEconomicImpact | ImpactDataView,
+  T extends
+    | SiteStatuQuoEconomicImpact
+    | ProjectOperatingEconomicBalanceItem
+    | AggregatedReconversionProjectOnSiteImpactItemView
+    | UrbanSprawlComparisonIndirectEconomicImpactItemView,
 >(
   item: T,
   evaluationPeriodInYears: number,

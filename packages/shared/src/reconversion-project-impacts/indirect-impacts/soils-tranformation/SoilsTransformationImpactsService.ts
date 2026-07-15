@@ -27,7 +27,7 @@ import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/Su
 import { computeCumulativeByYear } from "../../../sum-on-evolution-period/computeCumulativeByYear";
 import {
   ProjectOnSiteImpactMetric,
-  ReconversionProjectOnSiteIndirectEconomicImpact,
+  ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "../../projectImpacts.types";
 
 type Props = {
@@ -193,7 +193,7 @@ export class SoilsTransformationImpactsService {
   }
 
   getEconomicImpacts() {
-    const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+    const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[] = [];
 
     if (this.storedCo2EqDifference) {
       const co2eqDetailsByYear = this.sumOnEvolutionPeriodService.getWeightedYearlyValues(
