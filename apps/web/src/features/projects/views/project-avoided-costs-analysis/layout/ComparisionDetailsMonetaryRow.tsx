@@ -1,17 +1,4 @@
-import { sumListWithKey } from "shared";
-
-import {
-  HumanityCategory,
-  LocalAuthorityCategory,
-  LocalPeopleOrCompanyCategory,
-} from "@/features/projects/domain/groupIndirectImpactsByBearer";
-
 import ComparisonMonetaryRow from "./ComparisonMonetaryRow";
-
-type ImpactDetail = {
-  name: LocalPeopleOrCompanyCategory | HumanityCategory | LocalAuthorityCategory;
-  amount: number;
-};
 
 const ComparisionDetailsMonetaryRow = ({
   label,
@@ -19,17 +6,12 @@ const ComparisionDetailsMonetaryRow = ({
   right,
 }: {
   label: string;
-  left: ImpactDetail[];
-  right: ImpactDetail[];
+  left: number;
+  right: number;
 }) => {
-  if (left.length === 0 && right.length === 0) return null;
+  if (left === 0 && right === 0) return null;
   return (
-    <ComparisonMonetaryRow
-      label={label}
-      labelBold
-      projectValue={sumListWithKey(left, "amount")}
-      scenarioValue={sumListWithKey(right, "amount")}
-    />
+    <ComparisonMonetaryRow label={label} labelBold projectValue={left} scenarioValue={right} />
   );
 };
 

@@ -1,67 +1,45 @@
 import { useMemo } from "react";
-import { sumListWithKey } from "shared";
+import { sumListWithKey, typedObjectEntries } from "shared";
 
-import {
-  HumanityCategory,
-  IndirectEconomicImpactsByBearer,
-} from "@/features/projects/domain/groupIndirectImpactsByBearer";
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 
 import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
-  localAuthorityIndirectEconomicImpacts: IndirectEconomicImpactsByBearer["humanity"];
+  humanityIndirectEconomicImpacts: IndirectEconomicImpactsByBearerAndGroupCategory["humanity"];
 };
 
-const CATEGORIES: { label: string; color: string; impacts: HumanityCategory[] }[] = [
-  {
+type HumanityImpactCategory = Exclude<keyof Props["humanityIndirectEconomicImpacts"], "total">;
+
+const CATEGORIES: Record<HumanityImpactCategory, { label: string; color: string }> = {
+  avoidedHealthExpenses: {
     label: "🫀 Économies sur les dépenses de santé",
-    impacts: [
-      "avoidedAccidentsDeathsExpenses",
-      "avoidedAccidentsMinorInjuriesExpenses",
-      "avoidedAccidentsSevereInjuriesExpenses",
-      "avoidedAirPollutionHealthExpenses",
-    ],
     color: "#D0E24B",
   },
-  {
+  environmentalAction: {
     label: "🌿 Valeur de l’action environnementale",
-    impacts: [
-      "avoidedAirConditioningCo2eqEmissions",
-      "avoidedCo2eqWithEnergyProduction",
-      "avoidedTrafficCo2EqEmissions",
-      "newStoredCo2Eq",
-      "storedCo2Eq",
-      "forestRelatedProduct",
-      "invasiveSpeciesRegulation",
-      "natureRelatedWelnessAndLeisure",
-      "nitrogenCycle",
-      "pollination",
-      "soilErosion",
-      "waterCycle",
-    ],
     color: "#6CE24B",
   },
-];
+};
 
 export default function HumanityIndirectEconomicImpactsCharts({
-  localAuthorityIndirectEconomicImpacts,
+  humanityIndirectEconomicImpacts,
 }: Props) {
+  const { total, ...impacts } = humanityIndirectEconomicImpacts;
+
   const data = useMemo(() => {
-    return CATEGORIES.map(({ label, color, impacts }) => ({
-      name: label,
-      y: sumListWithKey(
-        localAuthorityIndirectEconomicImpacts.details.filter(({ name }) => impacts.includes(name)),
-        "amount",
-      ),
-      color,
-    })).filter(({ y }) => y !== 0);
-  }, [localAuthorityIndirectEconomicImpacts]);
+    return typedObjectEntries(impacts).map(([category, items = []]) => ({
+      name: CATEGORIES[category].label,
+      y: sumListWithKey(items, "total"),
+      color: CATEGORIES[category].color,
+    }));
+  }, [impacts]);
 
   return (
     <EconomicColumnChart
       title="🌍️ Impacts économiques pour la société française et mondiale"
       legendText="Impact total pour la société"
-      legendTotal={localAuthorityIndirectEconomicImpacts.total}
+      legendTotal={total}
       data={data}
     />
   );

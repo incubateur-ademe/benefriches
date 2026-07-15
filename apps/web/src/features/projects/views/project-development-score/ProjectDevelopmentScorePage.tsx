@@ -198,10 +198,7 @@ export default function ProjectDevelopmentScore({
 
         <div className="md:col-start-5 md:col-span-8 highcharts-no-xaxis">
           <LocalAuthorityIndirectEconomicImpactsCharts
-            localAuthorityIndirectEconomicImpacts={{
-              total: localAuthorityEconomicScore.value,
-              details: localAuthorityEconomicScore.metrics,
-            }}
+            localAuthorityIndirectEconomicImpacts={localAuthorityEconomicScore.metrics}
           />
         </div>
       </div>
@@ -228,7 +225,7 @@ export default function ProjectDevelopmentScore({
             data={[
               {
                 name: "Impact économique pour les riverains",
-                y: macroEconomicScore.metrics.local_people_or_company.total,
+                y: macroEconomicScore.metrics.localPeopleOrCompany.total,
                 color: "#038141",
               },
               {

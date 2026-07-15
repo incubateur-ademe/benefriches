@@ -5,8 +5,8 @@ import { RootState } from "@/app/store/store";
 
 import { cropImpactsByEvaluationPeriod } from "../../../domain/cropImpactsByEvaluationPeriod";
 import {
-  groupIndirectEconomicImpactsByBearer,
-  IndirectEconomicImpactsByBearer,
+  groupIndirectEconomicImpactsByBearerAndCategory,
+  IndirectEconomicImpactsByBearerAndGroupCategory,
 } from "../../../domain/groupIndirectImpactsByBearer";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
@@ -17,27 +17,18 @@ export const selectImpactsCroppedByEvaluationPeriod = createSelector([selectSelf
     : undefined,
 );
 
-const EMPTY_BEARER_STATE: IndirectEconomicImpactsByBearer = {
-  local_authority: { total: 0, details: [] },
-  local_people_or_company: { total: 0, details: [] },
-  humanity: { total: 0, details: [] },
-};
 export const selectIndirectEconomicImpactsByBearer = createSelector(
   selectImpactsCroppedByEvaluationPeriod,
-  (impacts): IndirectEconomicImpactsByBearer => {
-    if (!impacts) {
-      return EMPTY_BEARER_STATE;
-    }
-    return groupIndirectEconomicImpactsByBearer(
-      impacts.aggregatedReconversionImpacts.indirectEconomicImpacts.details,
-      impacts.stakeholders,
-    );
-  },
+  (impacts): IndirectEconomicImpactsByBearerAndGroupCategory =>
+    groupIndirectEconomicImpactsByBearerAndCategory(
+      impacts?.aggregatedReconversionImpacts.indirectEconomicImpacts,
+      impacts?.stakeholders,
+    ),
 );
 
 export type BreakEvenLevelTabDataView =
   | (GetReconversionProjectImpactsResultDto["impacts"] & {
-      indirectEconomicImpactsByBearer: IndirectEconomicImpactsByBearer;
+      indirectEconomicImpactsByBearer: IndirectEconomicImpactsByBearerAndGroupCategory;
     })
   | undefined;
 export const selectBreakEvenLevelTabDataView = createSelector(

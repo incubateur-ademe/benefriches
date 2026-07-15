@@ -3,7 +3,7 @@ import { sumListWithKey } from "shared";
 
 import { RootState } from "@/app/store/store";
 
-import { IndirectEconomicImpactsByBearer } from "../../../domain/groupIndirectImpactsByBearer";
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "../../../domain/groupIndirectImpactsByBearer";
 import {
   selectImpactsCroppedByEvaluationPeriod,
   selectIndirectEconomicImpactsByBearer,
@@ -15,7 +15,7 @@ type Score = { isSuccess: boolean; value: number };
 export type DevelopmentScoreDataView = {
   evaluationPeriodInYears: number;
   localAuthorityEconomicScore: Score & {
-    metrics: IndirectEconomicImpactsByBearer["local_authority"]["details"];
+    metrics: IndirectEconomicImpactsByBearerAndGroupCategory["localAuthority"];
   };
   fullTimeJobsScore: Score & { metrics: { base: number; forecast: number; difference: number } };
   environmentScore: Score & {
@@ -33,7 +33,7 @@ export type DevelopmentScoreDataView = {
       zanCompliance: boolean;
     };
   };
-  macroEconomicScore: Score & { metrics: IndirectEconomicImpactsByBearer };
+  macroEconomicScore: Score & { metrics: IndirectEconomicImpactsByBearerAndGroupCategory };
   localPeopleAndCompanyScore: Score & {
     metrics: {
       localPropertyValueIncrease?: number;
@@ -145,8 +145,7 @@ export const selectDevelopmentScoreDataView = createSelector(
       "total",
     );
 
-    const localAuthorityEconomicImpacts =
-      indirectEconomicImpactsByBearer.local_authority.total ?? 0;
+    const localAuthorityEconomicImpacts = indirectEconomicImpactsByBearer.localAuthority.total ?? 0;
 
     const avoidedCo2eqEmissions = sumListWithKey(
       breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.filter(
@@ -190,7 +189,7 @@ export const selectDevelopmentScoreDataView = createSelector(
       localAuthorityEconomicScore: {
         isSuccess: localAuthorityEconomicImpacts > 0,
         value: localAuthorityEconomicImpacts,
-        metrics: indirectEconomicImpactsByBearer.local_authority.details,
+        metrics: indirectEconomicImpactsByBearer.localAuthority,
       },
       fullTimeJobsScore: {
         isSuccess: Boolean(newFullTimeJobs && newFullTimeJobs > 0),

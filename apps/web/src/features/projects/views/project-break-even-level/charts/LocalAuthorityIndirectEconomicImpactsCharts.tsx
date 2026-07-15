@@ -1,72 +1,58 @@
 import { useMemo } from "react";
-import { sumListWithKey } from "shared";
+import { sumListWithKey, typedObjectEntries } from "shared";
 
-import {
-  IndirectEconomicImpactsByBearer,
-  LocalAuthorityCategory,
-} from "@/features/projects/domain/groupIndirectImpactsByBearer";
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 
 import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
-  localAuthorityIndirectEconomicImpacts: IndirectEconomicImpactsByBearer["local_authority"];
+  localAuthorityIndirectEconomicImpacts: IndirectEconomicImpactsByBearerAndGroupCategory["localAuthority"];
 };
 
-const CATEGORIES: { label: string; color: string; impacts: LocalAuthorityCategory[] }[] = [
-  {
+type LocalAuthorityImpactCategory = Exclude<
+  keyof Props["localAuthorityIndirectEconomicImpacts"],
+  "total"
+>;
+const CATEGORIES: Record<LocalAuthorityImpactCategory, { label: string; color: string }> = {
+  fricheCosts: {
     label: "🏚️ Économies réalisées grâce à la suppression de la friche",
-    impacts: [
-      "avoidedFricheMaintenanceAndSecuringCostsForOwner",
-      "avoidedFricheMaintenanceAndSecuringCostsForTenant",
-    ],
     color: "#25CB7B",
   },
-  {
+  taxesIncome: {
     label: "🏛️ Recettes fiscales",
-    impacts: [
-      "localTransferDutiesIncrease",
-      "projectNewCompanyTaxationIncome",
-      "projectNewHousesTaxesIncome",
-      "projectPhotovoltaicTaxesIncome",
-      "propertyTransferDutiesIncome",
-    ],
     color: "#1D5DA2",
   },
-  {
+  operatingEconomicBalance: {
     label: "💰‍️ Bénéfices d'exploitation",
-    impacts: ["previousSiteOperationBenefitLoss", "projectOperatingEconomicBalance"],
     color: "#1BBB36",
   },
-  {
+  rentalIncome: {
     label: "🔑 Revenus locatifs communaux",
-    impacts: ["oldRentalIncomeLoss", "projectedRentalIncome"],
     color: "#B4D21E",
   },
-  {
+  municipalityExpenses: {
     label: "👷 Dépenses communales",
-    impacts: ["waterRegulation", "fricheRoadsAndUtilitiesExpenses"],
     color: "#6145DE",
   },
-];
+};
 
 export default function LocalAuthorityIndirectEconomicImpactsCharts({
   localAuthorityIndirectEconomicImpacts,
 }: Props) {
+  const { total, ...impacts } = localAuthorityIndirectEconomicImpacts;
+
   const data = useMemo(() => {
-    return CATEGORIES.map(({ label, color, impacts }) => ({
-      name: label,
-      y: sumListWithKey(
-        localAuthorityIndirectEconomicImpacts.details.filter(({ name }) => impacts.includes(name)),
-        "amount",
-      ),
-      color,
-    })).filter(({ y }) => y !== 0);
-  }, [localAuthorityIndirectEconomicImpacts]);
+    return typedObjectEntries(impacts).map(([category, items = []]) => ({
+      name: CATEGORIES[category].label,
+      y: sumListWithKey(items, "total"),
+      color: CATEGORIES[category].color,
+    }));
+  }, [impacts]);
 
   return (
     <EconomicColumnChart
       legendText="Impact total pour la collectivité locale"
-      legendTotal={localAuthorityIndirectEconomicImpacts.total}
+      legendTotal={total}
       data={data}
       title="🏛️ Impacts économiques pour la collectivité locale"
     />

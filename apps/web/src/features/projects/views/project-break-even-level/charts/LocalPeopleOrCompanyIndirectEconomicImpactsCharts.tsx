@@ -1,67 +1,54 @@
 import { useId, useMemo } from "react";
-import { sumListWithKey } from "shared";
+import { sumListWithKey, typedObjectEntries } from "shared";
 
-import {
-  IndirectEconomicImpactsByBearer,
-  LocalPeopleOrCompanyCategory,
-} from "@/features/projects/domain/groupIndirectImpactsByBearer";
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 
 import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
-  localAuthorityIndirectEconomicImpacts: IndirectEconomicImpactsByBearer["local_people_or_company"];
+  localPeopleOrCompanyIndirectEconomicImpacts: IndirectEconomicImpactsByBearerAndGroupCategory["localPeopleOrCompany"];
 };
 
-const CATEGORIES: { label: string; color: string; impacts: LocalPeopleOrCompanyCategory[] }[] = [
-  {
+type LocalPeopleOrCompanyImpactCategory = Exclude<
+  keyof Props["localPeopleOrCompanyIndirectEconomicImpacts"],
+  "total"
+>;
+const CATEGORIES: Record<LocalPeopleOrCompanyImpactCategory, { label: string; color: string }> = {
+  fricheCosts: {
     label: "🏚️ Économies réalisées grâce à la suppression de la friche",
-    impacts: [
-      "avoidedFricheMaintenanceAndSecuringCostsForOwner",
-      "avoidedFricheMaintenanceAndSecuringCostsForTenant",
-    ],
     color: "#25CB7B",
   },
-  {
+  purchasingPowerIncrease: {
     label: "👛 Pouvoir d’achat des riverains",
-    impacts: [
-      "travelTimeSavedPerTravelerExpenses",
-      "avoidedCarRelatedExpenses",
-      "avoidedPropertyDamageExpenses",
-      "avoidedAirConditioningExpenses",
-    ],
     color: "#F57CFD",
   },
-  {
+  operatingEconomicBalance: {
     label: "💰‍️ Bénéfices d'exploitation",
-    impacts: ["previousSiteOperationBenefitLoss", "projectOperatingEconomicBalance"],
     color: "#1BBB36",
   },
-  {
+  rentalIncome: {
     label: "🔑 Revenus locatifs",
-    impacts: ["oldRentalIncomeLoss", "projectedRentalIncome"],
     color: "#B4D21E",
   },
-  {
+  localPropertyValueIncrease: {
     label: "🏡 Valeur patrimoniale autour de la friche",
-    impacts: ["localPropertyValueIncrease"],
     color: "#FD7C85",
   },
-];
+};
 
 export default function LocalPeopleOrCompanyIndirectEconomicImpactsCharts({
-  localAuthorityIndirectEconomicImpacts,
+  localPeopleOrCompanyIndirectEconomicImpacts,
 }: Props) {
+  const { total, ...impacts } = localPeopleOrCompanyIndirectEconomicImpacts;
+
   const data = useMemo(() => {
-    return CATEGORIES.map(({ label, color, impacts }) => ({
-      name: label,
-      y: sumListWithKey(
-        localAuthorityIndirectEconomicImpacts.details.filter(({ name }) => impacts.includes(name)),
-        "amount",
-      ),
-      color,
-    })).filter(({ y }) => y !== 0);
-  }, [localAuthorityIndirectEconomicImpacts]);
+    return typedObjectEntries(impacts).map(([category, items = []]) => ({
+      name: CATEGORIES[category].label,
+      y: sumListWithKey(items, "total"),
+      color: CATEGORIES[category].color,
+    }));
+  }, [impacts]);
 
   const chartContainerId = useId();
 
@@ -72,7 +59,7 @@ export default function LocalPeopleOrCompanyIndirectEconomicImpactsCharts({
   return (
     <EconomicColumnChart
       legendText="Impact total pour les riverains"
-      legendTotal={localAuthorityIndirectEconomicImpacts.total}
+      legendTotal={total}
       data={data}
       title="🏘️ Impacts économiques pour les riverains"
     />
