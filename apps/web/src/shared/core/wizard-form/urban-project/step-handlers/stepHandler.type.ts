@@ -1,4 +1,12 @@
 import {
+  AnswerStepHandler as GenericAnswerStepHandler,
+  InfoStepHandler as GenericInfoStepHandler,
+  ShortcutResult as GenericShortcutResult,
+  StepHandlerParams as GenericStepHandlerParams,
+  StepHandlerRegistry as GenericStepHandlerRegistry,
+  StepInvalidationRule as GenericStepInvalidationRule,
+} from "@/shared/core/wizard-form/stepHandler.type";
+import {
   AnswersByStep,
   AnswerStepId,
   SummaryStep,
@@ -8,58 +16,41 @@ import {
 
 import { WizardFormState } from "../../wizardForm.reducer";
 
-// Generic decision-encoding shape handed to every step handler method (see ADR-0015):
-// `context` is the eager situational data, wrapping the site as `siteData` so the context can
-// grow further eager data later without reshaping every handler signature. `context` itself is
-// always present (never `undefined`); `siteData` is optional because the engine computes the
-// step sequence once before any site is loaded (see `getWizardFormInitialState`). `answers` is
-// the accumulated per-step answers state. Urban is still the engine's only consumer, so this is
-// defaulted to urban's concrete types rather than threaded generically end-to-end.
+// Urban's eager, guaranteed-loaded situational data (see ADR-0015): `context` wraps the site
+// as `siteData` so the context can grow further eager data later without reshaping every
+// handler signature. Urban is the generic contract's sole consumer today, so this file
+// instantiates it with urban's concrete step/answers types rather than threading generics
+// end-to-end.
 export type UrbanStepHandlerContext = {
   siteData: WizardFormState["siteData"];
 };
 
 export type StepHandlerParams<
   TContext = UrbanStepHandlerContext,
-  TAnswers = WizardFormState["urbanProject"]["steps"],
-> = {
-  context: TContext;
-  answers: TAnswers;
-};
+  TAnswers = AnswersByStep,
+> = GenericStepHandlerParams<TContext, TAnswers>;
 
-interface StepHandler {
-  readonly stepId: UrbanProjectCreationStep;
-  getNextStepId?(params: StepHandlerParams): UrbanProjectCreationStep;
-  getPreviousStepId?(params: StepHandlerParams): UrbanProjectCreationStep;
-}
+export type InfoStepHandler = GenericInfoStepHandler<
+  UrbanProjectCreationStep,
+  SummaryStep | IntroductionStep,
+  UrbanStepHandlerContext,
+  AnswersByStep
+>;
 
-export interface InfoStepHandler extends StepHandler {
-  readonly stepId: SummaryStep | IntroductionStep;
-}
+export type AnswerStepHandler<T extends AnswerStepId> = GenericAnswerStepHandler<
+  UrbanProjectCreationStep,
+  UrbanStepHandlerContext,
+  AnswersByStep,
+  T
+>;
 
-export interface AnswerStepHandler<T extends AnswerStepId> extends StepHandler {
-  readonly stepId: T;
-  getNextStepId(params: StepHandlerParams, answers?: AnswersByStep[T]): UrbanProjectCreationStep;
-  getPreviousStepId?(params: StepHandlerParams): UrbanProjectCreationStep;
-  getDefaultAnswers?(params: StepHandlerParams): AnswersByStep[T] | undefined;
-  getRecomputedStepAnswers?(params: StepHandlerParams): AnswersByStep[T] | undefined;
-  getDependencyRules?(params: StepHandlerParams, answers: AnswersByStep[T]): StepInvalidationRule[];
-  getShortcut?(params: StepHandlerParams, answers: AnswersByStep[T]): ShortcutResult | undefined;
-  updateAnswersMiddleware?(params: StepHandlerParams, answers: AnswersByStep[T]): AnswersByStep[T];
-}
+export type StepHandlerRegistry = GenericStepHandlerRegistry<
+  UrbanProjectCreationStep,
+  SummaryStep | IntroductionStep,
+  UrbanStepHandlerContext,
+  AnswersByStep
+>;
 
-type StepAnswerPayload<K extends AnswerStepId = AnswerStepId> = {
-  [P in K]: {
-    stepId: P;
-    answers: AnswersByStep[P];
-  };
-}[K];
-export type ShortcutResult = {
-  complete: StepAnswerPayload[];
-  next: UrbanProjectCreationStep;
-};
+export type ShortcutResult = GenericShortcutResult<UrbanProjectCreationStep, AnswersByStep>;
 
-export type StepInvalidationRule = {
-  action: "delete" | "invalidate" | "recompute";
-  stepId: AnswerStepId;
-};
+export type StepInvalidationRule = GenericStepInvalidationRule<AnswerStepId>;

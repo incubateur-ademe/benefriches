@@ -40,7 +40,7 @@ import { StakeholdersBuildingsDeveloperHandler } from "./stakeholders/stakeholde
 import { StakeholdersIntroductionHandler } from "./stakeholders/stakeholders-introduction/stakeholdersIntroduction.handler";
 import { StakeholdersProjectDeveloperHandler } from "./stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.handler";
 import { StakeholdersReinstatementContractOwnerHandler } from "./stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.handler";
-import type { AnswerStepHandler, InfoStepHandler } from "./stepHandler.type";
+import type { AnswerStepHandler, InfoStepHandler, StepHandlerRegistry } from "./stepHandler.type";
 import { FinalSummaryHandler } from "./summary/final-summary/finalSummary.handler";
 import { UsesIntroductionHandler } from "./uses/introduction/usesIntroduction.handler";
 import { PublicGreenSpacesSurfaceAreaHandler } from "./uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.handler";
@@ -126,10 +126,7 @@ const infoStepHandlers: InfoStepHandlerMap = {
 };
 
 // Combined registry for navigation (step sequence walk, back navigation)
-export const stepHandlerRegistry: Record<
-  UrbanProjectCreationStep,
-  InfoStepHandler | AnswerStepHandler<AnswerStepId>
-> = {
+export const stepHandlerRegistry: StepHandlerRegistry = {
   ...answerStepHandlers,
   ...infoStepHandlers,
 };
