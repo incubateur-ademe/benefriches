@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
-  AvoidedFricheCostsIndirectEconomicImpacts,
+  AvoidedFricheCostsIndirectEconomicImpactItemView,
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
   sumList,
@@ -468,7 +468,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         );
       const ownerInAggregateResult =
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
-          (item): item is AvoidedFricheCostsIndirectEconomicImpacts =>
+          (item): item is AvoidedFricheCostsIndirectEconomicImpactItemView =>
             item.name === "avoidedFricheMaintenanceAndSecuringCostsForOwner",
         );
       assert.strictEqual(ownerInAggregateResult.length, 2);
@@ -496,12 +496,12 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
 
       const tenantInAggregateResult =
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
-          (item): item is AvoidedFricheCostsIndirectEconomicImpacts =>
+          (item): item is AvoidedFricheCostsIndirectEconomicImpactItemView =>
             item.name === "avoidedFricheMaintenanceAndSecuringCostsForTenant",
         );
       const ownerInAggregateResult =
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
-          (item): item is AvoidedFricheCostsIndirectEconomicImpacts =>
+          (item): item is AvoidedFricheCostsIndirectEconomicImpactItemView =>
             item.name === "avoidedFricheMaintenanceAndSecuringCostsForOwner",
         );
       assert.strictEqual(ownerInAggregateResult.length, 0);

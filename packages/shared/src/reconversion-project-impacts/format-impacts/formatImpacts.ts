@@ -2,7 +2,7 @@ import { GetReconversionProjectImpactsResultDto } from "../../api-dtos";
 import { RecurringExpensePurpose } from "../../reconversion-projects";
 import { roundToInteger, sumListWithKey } from "../../services";
 import {
-  AvoidedFricheCostsIndirectEconomicImpacts,
+  AvoidedFricheCostsIndirectEconomicImpactItemView,
   ProjectDevelopmentEconomicBalanceItem,
   ProjectOperatingEconomicBalanceItem,
 } from "../projectImpacts.types";
@@ -445,7 +445,7 @@ export const formatAsSocioEconomicImpacts = (
 
   const frichesCostsForOwner =
     impactsData?.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
-      (item): item is AvoidedFricheCostsIndirectEconomicImpacts =>
+      (item): item is AvoidedFricheCostsIndirectEconomicImpactItemView =>
         "avoidedFricheMaintenanceAndSecuringCostsForOwner" === item.name,
     );
   if (frichesCostsForOwner && frichesCostsForOwner?.length > 0) {
@@ -496,7 +496,7 @@ export const formatAsSocioEconomicImpacts = (
 
   const frichesCostsForTenant =
     impactsData?.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
-      (item): item is AvoidedFricheCostsIndirectEconomicImpacts =>
+      (item): item is AvoidedFricheCostsIndirectEconomicImpactItemView =>
         "avoidedFricheMaintenanceAndSecuringCostsForTenant" === item.name,
     );
   if (frichesCostsForTenant && frichesCostsForTenant?.length > 0) {

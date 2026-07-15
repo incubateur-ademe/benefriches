@@ -14,16 +14,17 @@ import { computeAvoidedRoadsAndUtilitiesConstructionExpensesWithFriche } from ".
 import { computeAvoidedWithFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } from "./indirect-impacts/urban-project/roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
 import {
   AggregatedProjectImpactMetric,
-  AggregatedReconversionIndirectEconomicImpact,
-  AggregatedReconversionIndirectEconomicImpacts,
+  AggregatedReconversionIndirectEconomicImpactsDataView,
+  AggregatedReconversionProjectOnSiteImpactItemView,
+  IndirectEconomicImpactDataView,
   isSameStakeholders,
   isStakeholderLocalAuthority,
   ProjectEconomicBalance,
   ProjectOnSiteImpactMetric,
   ProjectOperatingEconomicBalanceItem,
-  ReconversionProjectOnSiteIndirectEconomicImpacts,
-  UrbanSprawlComparisonIndirectEconomicImpact,
-  UrbanSprawlComparisonProjectImpacts,
+  ReconversionProjectOnSiteIndirectEconomicImpactsDataView,
+  UrbanSprawlComparisonIndirectEconomicImpactItemView,
+  UrbanSprawlComparisonProjectImpactsDataView,
 } from "./projectImpacts.types";
 import { ReconversionProjectImpactsDataView } from "./projectImpactsDataView.types";
 
@@ -99,7 +100,7 @@ export const computeBreakEvenLevel = ({
   stakeholders: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
   operationsFirstYear: number;
   evaluationPeriodInYears: number;
-  aggregatedIndirectEconomicImpacts: AggregatedReconversionIndirectEconomicImpacts["details"];
+  aggregatedIndirectEconomicImpacts: IndirectEconomicImpactDataView["details"];
   projectEconomicBalance: GetReconversionProjectImpactsResultDto["impacts"]["projectEconomicBalance"];
 }) => {
   const cumulativeBalanceByYear = [
@@ -138,11 +139,14 @@ const handleRoadsAndUtilitiesExpenses = ({
   projectOnSiteIndirectEconomicImpactsData,
   sumOnEvolutionPeriodService,
 }: {
-  projectOnSiteIndirectEconomicImpactsData: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["projectOnSiteIndirectEconomicImpactsData"]["details"];
+  projectOnSiteIndirectEconomicImpactsData: ReconversionProjectOnSiteIndirectEconomicImpactsDataView["details"];
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
   isFriche: boolean;
   siteSurfaceArea: number;
-}): (UrbanSprawlComparisonIndirectEconomicImpact | ProjectOperatingEconomicBalanceItem)[] => {
+}): (
+  | UrbanSprawlComparisonIndirectEconomicImpactItemView
+  | ProjectOperatingEconomicBalanceItem
+)[] => {
   const projectOnSimulationSiteImpactsDataDetails = projectOnSiteIndirectEconomicImpactsData.filter(
     (item) => item.name !== "fricheRoadsAndUtilitiesExpenses",
   );
@@ -207,7 +211,7 @@ export const computeProjectImpactsBreakdownAndEconomicBalance = ({
   projectIndirectImpactMetrics: ProjectOnSiteImpactMetric[];
   siteStatuQuoIndirectEconomicImpactsData: SiteStatuQuoImpacts["economicImpacts"];
   siteStatuQuoImpactMetrics: SiteStatuQuoImpacts["impactMetrics"];
-  projectOnSiteIndirectEconomicImpactsData: ReconversionProjectOnSiteIndirectEconomicImpacts;
+  projectOnSiteIndirectEconomicImpactsData: ReconversionProjectOnSiteIndirectEconomicImpactsDataView;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 } => {
   const { operationsFirstYear } = reconversionProject;
@@ -338,7 +342,7 @@ export const computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalan
 }): {
   projectEconomicBalance: ProjectEconomicBalance;
   siteStatuQuoIndirectEconomicImpactsData: SiteStatuQuoImpacts["economicImpacts"];
-  projectOnSiteIndirectEconomicImpactsData: UrbanSprawlComparisonProjectImpacts;
+  projectOnSiteIndirectEconomicImpactsData: UrbanSprawlComparisonProjectImpactsDataView;
   siteStatuQuoImpactMetrics: SiteStatuQuoImpactMetric[];
   projectIndirectImpactMetrics: ProjectOnSiteImpactMetric[];
 } => {
@@ -374,25 +378,40 @@ export const computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalan
   };
 };
 
-export const computeAggregatedReconversionImpacts = ({
+type ProjectOnSiteIndirectEconomicImpactsData =
+  | UrbanSprawlComparisonProjectImpactsDataView
+  | ReconversionProjectOnSiteIndirectEconomicImpactsDataView;
+
+type ComputeAggregatedReconversionImpactsResult<
+  T extends ProjectOnSiteIndirectEconomicImpactsData,
+> = {
+  input: {
+    siteStatuQuoIndirectEconomicImpactsData: SiteStatuQuoImpacts["economicImpacts"];
+    projectOnSiteIndirectEconomicImpactsData: T;
+    projectIndirectImpactMetrics: ProjectOnSiteImpactMetric[];
+    siteStatuQuoImpactMetrics: SiteStatuQuoImpacts["impactMetrics"];
+  };
+  result: {
+    economicImpacts: (
+      | AggregatedReconversionIndirectEconomicImpactsDataView["details"][number]
+      | T["details"][number]
+    )[];
+    impactMetrics: AggregatedProjectImpactMetric[];
+  };
+};
+export const computeAggregatedReconversionImpacts = <
+  T extends ProjectOnSiteIndirectEconomicImpactsData =
+    ReconversionProjectOnSiteIndirectEconomicImpactsDataView,
+>({
   siteStatuQuoIndirectEconomicImpactsData,
   projectOnSiteIndirectEconomicImpactsData,
   projectIndirectImpactMetrics,
   siteStatuQuoImpactMetrics,
-}: {
-  siteStatuQuoIndirectEconomicImpactsData: SiteStatuQuoImpacts["economicImpacts"];
-  projectOnSiteIndirectEconomicImpactsData:
-    | UrbanSprawlComparisonProjectImpacts
-    | ReconversionProjectOnSiteIndirectEconomicImpacts;
-  projectIndirectImpactMetrics: ProjectOnSiteImpactMetric[];
-  siteStatuQuoImpactMetrics: SiteStatuQuoImpacts["impactMetrics"];
-}): {
-  economicImpacts: AggregatedReconversionIndirectEconomicImpacts["details"];
-  impactMetrics: AggregatedProjectImpactMetric[];
-} => {
-  const siteReconversionIndirectEconomicImpacts: AggregatedReconversionIndirectEconomicImpacts["details"] =
+}: ComputeAggregatedReconversionImpactsResult<T>["input"]): ComputeAggregatedReconversionImpactsResult<T>["result"] => {
+  const siteReconversionIndirectEconomicImpacts: ComputeAggregatedReconversionImpactsResult<T>["result"]["economicImpacts"] =
     [];
-  const siteReconversionIndirectImpactMetrics: AggregatedProjectImpactMetric[] = [];
+  const siteReconversionIndirectImpactMetrics: ComputeAggregatedReconversionImpactsResult<T>["result"]["impactMetrics"] =
+    [];
 
   const operatingEconomicBalance = siteStatuQuoIndirectEconomicImpactsData.details.filter(
     ({ name }) => name === "operatingEconomicBalance",
@@ -422,7 +441,7 @@ export const computeAggregatedReconversionImpacts = ({
 
   siteReconversionIndirectEconomicImpacts.push(
     ...siteStatuQuoIndirectEconomicImpactsData.details.reduce<
-      AggregatedReconversionIndirectEconomicImpact[]
+      AggregatedReconversionProjectOnSiteImpactItemView[]
     >((siteReconversionIndirectImpacts, item) => {
       if (item.name === "rentalIncome") {
         return siteReconversionIndirectImpacts.concat({

@@ -12,6 +12,8 @@ import {
   computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance,
   formatStakeholders,
   ReconversionProjectImpactsWithBreakEvenLevelInput,
+  ReconversionProjectOnSiteIndirectEconomicImpactsDataView,
+  UrbanSprawlComparisonProjectImpactsDataView,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -244,7 +246,10 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
     });
 
     const { economicImpacts: aggregatedIndirectEconomicImpacts } =
-      computeAggregatedReconversionImpacts({
+      computeAggregatedReconversionImpacts<
+        | UrbanSprawlComparisonProjectImpactsDataView
+        | ReconversionProjectOnSiteIndirectEconomicImpactsDataView
+      >({
         siteStatuQuoIndirectEconomicImpactsData,
         projectOnSiteIndirectEconomicImpactsData: projectOnSiteIndirectEconomicImpactsData,
         siteStatuQuoImpactMetrics,

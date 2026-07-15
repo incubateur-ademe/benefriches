@@ -19,7 +19,7 @@ import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOn
 import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
 import {
   ProjectOnSiteImpactMetric,
-  ReconversionProjectOnSiteIndirectEconomicImpact,
+  ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "../projectImpacts.types";
 import { DevelopmentPlanFeatures } from "../projectImpactsDataView.types";
 import { Schedule } from "./fullTimeJobs.helper";
@@ -77,7 +77,7 @@ export const getProjectMetricsAndEconomicImpacts = ({
     reconversionProject.soilsDistribution,
   );
 
-  const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+  const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[] = [];
   const impactMetrics: ProjectOnSiteImpactMetric[] = [];
 
   const propertyTransferDutiesIncome = sumList([

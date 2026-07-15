@@ -7,7 +7,7 @@ import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/Su
 import { computeCumulativeByYear } from "../../../sum-on-evolution-period/computeCumulativeByYear";
 import {
   ProjectOnSiteImpactMetric,
-  ReconversionProjectOnSiteIndirectEconomicImpact,
+  ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "../../projectImpacts.types";
 import {
   getDurationFromScheduleInYears,
@@ -23,7 +23,7 @@ export const getFricheRoadsAndUtilitiesExpensesImpact = ({
 }: {
   siteSurfaceArea: number;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-}): ReconversionProjectOnSiteIndirectEconomicImpact => {
+}): ReconversionProjectOnSiteIndirectEconomicImpactItemView => {
   const yearlyMaintenanceAmount =
     computeFricheYearlyRoadsAndUtilitiesMaintenanceExpenses(siteSurfaceArea);
   const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
@@ -53,7 +53,7 @@ export const getLocalPropertyIncreaseWithFricheRemovalImpacts = ({
     cityPropertyValuePerSquareMeter: number;
   };
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-}): ReconversionProjectOnSiteIndirectEconomicImpact[] => {
+}): ReconversionProjectOnSiteIndirectEconomicImpactItemView[] => {
   const {
     propertyValueIncrease,
     propertyTransferDutiesIncrease,

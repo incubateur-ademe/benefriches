@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import {
-  UrbanSprawlComparisonProjectImpacts,
+  UrbanSprawlComparisonProjectImpactsDataView,
   SiteImpactsDataView,
   ProjectEconomicBalance,
   ReconversionStakeholders,
@@ -17,7 +17,7 @@ export type UrbanSprawlImpactsComparisonResultDto = {
     typeof siteStatuQuoImpactsSchema.shape.economicImpacts
   >;
   projectEconomicBalance: ProjectEconomicBalance;
-  projectOnSimulationSiteImpactsData: UrbanSprawlComparisonProjectImpacts;
+  projectOnSimulationSiteImpactsData: UrbanSprawlComparisonProjectImpactsDataView;
   breakEvenYear?: string;
   breakEvenIndex?: number;
   cumulativeBalanceByYear: number[];
