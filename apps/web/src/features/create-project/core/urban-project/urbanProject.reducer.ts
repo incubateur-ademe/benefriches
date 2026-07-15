@@ -1,6 +1,6 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 
-import { MutateStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/mutateState";
+import { MutateStateHelper } from "@/shared/core/wizard-form/helpers/mutateState";
 import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/wizard-form/urban-project/urbanProject.reducer";
 
 import { ProjectCreationState } from "../createProject.reducer";
@@ -39,10 +39,14 @@ const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (bui
   });
   builder.addCase(fetchEstimatedSiteResalePrice.fulfilled, (state, action) => {
     state.urbanProject.siteResaleEstimationLoadingState = "success";
-    MutateStateHelper.setDefaultValues(state, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE", {
-      siteResaleExpectedSellingPrice: action.payload.sellingPrice,
-      siteResaleExpectedPropertyTransferDuties: action.payload.propertyTransferDuties,
-    });
+    MutateStateHelper.setDefaultValues(
+      state.urbanProject,
+      "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
+      {
+        siteResaleExpectedSellingPrice: action.payload.sellingPrice,
+        siteResaleExpectedPropertyTransferDuties: action.payload.propertyTransferDuties,
+      },
+    );
   });
   builder.addCase(fetchEstimatedSiteResalePrice.rejected, (state) => {
     state.urbanProject.siteResaleEstimationLoadingState = "error";

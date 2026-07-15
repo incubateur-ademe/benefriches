@@ -1,7 +1,7 @@
+import { MutateStateHelper } from "../../helpers/mutateState";
 import { WizardFormState } from "../../wizardForm.reducer";
 import { answerStepHandlers } from "../step-handlers/stepHandlerRegistry";
-import { isAnswersStep, UrbanProjectCreationStep } from "../urbanProjectSteps";
-import { MutateStateHelper } from "./mutateState";
+import { AnswersByStep, isAnswersStep, UrbanProjectCreationStep } from "../urbanProjectSteps";
 
 export const navigateToAndLoadStep = (state: WizardFormState, stepId: UrbanProjectCreationStep) => {
   if (isAnswersStep(stepId)) {
@@ -13,10 +13,14 @@ export const navigateToAndLoadStep = (state: WizardFormState, stepId: UrbanProje
       });
 
       if (defaults) {
-        MutateStateHelper.setDefaultValues<typeof stepId>(state, stepId, defaults);
+        MutateStateHelper.setDefaultValues<UrbanProjectCreationStep, AnswersByStep, typeof stepId>(
+          state.urbanProject,
+          stepId,
+          defaults,
+        );
       }
     }
   }
 
-  MutateStateHelper.navigateToStep(state, stepId);
+  MutateStateHelper.navigateToStep(state.urbanProject, stepId);
 };

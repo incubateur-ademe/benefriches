@@ -1,3 +1,4 @@
+import { MutateStateHelper } from "../../helpers/mutateState";
 import { WizardFormState } from "../../wizardForm.reducer";
 import {
   ShortcutResult,
@@ -6,8 +7,12 @@ import {
 } from "../step-handlers/stepHandler.type";
 import { answerStepHandlers } from "../step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
-import { AnswerStepId, isAnswersStep, UrbanProjectCreationStep } from "../urbanProjectSteps";
-import { MutateStateHelper } from "./mutateState";
+import {
+  AnswersByStep,
+  AnswerStepId,
+  isAnswersStep,
+  UrbanProjectCreationStep,
+} from "../urbanProjectSteps";
 import { navigateToAndLoadStep } from "./navigateToStep";
 import { ReadStateHelper } from "./readState";
 import { computeProjectStepsSequence } from "./stepsSequence";
@@ -117,19 +122,25 @@ export function applyStepChanges<T extends AnswerStepId>(
 ): void {
   const { cascadingChanges, payload, shortcutComplete } = changes;
 
-  MutateStateHelper.completeStep(state, payload.stepId, payload.answers);
+  MutateStateHelper.completeStep(state.urbanProject, payload.stepId, payload.answers);
 
   shortcutComplete?.forEach((stepShortcut) => {
-    MutateStateHelper.completeStepFromPayload(state, stepShortcut);
+    MutateStateHelper.completeStepFromPayload(state.urbanProject, stepShortcut);
   });
 
   cascadingChanges?.forEach(({ stepId, action }) => {
     switch (action) {
       case "delete":
-        MutateStateHelper.deleteStep(state, stepId);
+        MutateStateHelper.deleteStep<UrbanProjectCreationStep, AnswersByStep>(
+          state.urbanProject,
+          stepId,
+        );
         break;
       case "invalidate":
-        MutateStateHelper.invalidateStep(state, stepId);
+        MutateStateHelper.invalidateStep<UrbanProjectCreationStep, AnswersByStep>(
+          state.urbanProject,
+          stepId,
+        );
         break;
       case "recompute": {
         const newValue = answerStepHandlers[stepId].getRecomputedStepAnswers?.({
@@ -137,7 +148,7 @@ export function applyStepChanges<T extends AnswerStepId>(
           answers: state.urbanProject.steps,
         });
         if (newValue) {
-          MutateStateHelper.recomputeStep(state, stepId, newValue);
+          MutateStateHelper.recomputeStep(state.urbanProject, stepId, newValue);
         }
       }
     }
