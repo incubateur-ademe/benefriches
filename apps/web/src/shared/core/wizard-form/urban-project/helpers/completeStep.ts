@@ -1,11 +1,11 @@
+import {
+  computeStepChanges as genericComputeStepChanges,
+  StepUpdateResult as GenericStepUpdateResult,
+} from "../../helpers/computeStepChanges";
 import { MutateStateHelper } from "../../helpers/mutateState";
 import { ReadStateHelper } from "../../helpers/readState";
 import { WizardFormState } from "../../wizardForm.reducer";
-import {
-  ShortcutResult,
-  StepInvalidationRule,
-  UrbanStepHandlerContext,
-} from "../step-handlers/stepHandler.type";
+import { UrbanStepHandlerContext } from "../step-handlers/stepHandler.type";
 import { answerStepHandlers } from "../step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
 import {
@@ -17,45 +17,11 @@ import {
 import { navigateToAndLoadStep } from "./navigateToStep";
 import { computeProjectStepsSequence } from "./stepsSequence";
 
-export type StepUpdateResult<T extends AnswerStepId> = {
-  payload: StepCompletionPayload<T>;
-  shortcutComplete?: StepCompletionPayload[];
-  cascadingChanges?: StepInvalidationRule[];
-  navigationTarget?: UrbanProjectCreationStep;
-};
-
-function processShortcutInvalidations(
-  handlerParams: {
-    context: UrbanStepHandlerContext;
-    answers: WizardFormState["urbanProject"]["steps"];
-  },
-  shortcutsComplete: ShortcutResult["complete"],
-  dependencyRules: StepInvalidationRule[],
-) {
-  return shortcutsComplete.reduce(
-    (rules, completeStepShortcut) => {
-      // replace or remove current completed step from invalidation rules
-      const newRules = rules.filter((r) => r.stepId !== completeStepShortcut.stepId);
-
-      const shortcutHandler = answerStepHandlers[completeStepShortcut.stepId];
-      const shortcutDependencyRules = shortcutHandler.getDependencyRules?.(
-        handlerParams,
-        completeStepShortcut.answers,
-      );
-
-      if (shortcutDependencyRules) {
-        return [
-          ...newRules.filter(
-            (r) => !shortcutDependencyRules.find((sdr) => sdr.stepId === r.stepId),
-          ),
-          ...shortcutDependencyRules,
-        ];
-      }
-      return newRules;
-    },
-    [...dependencyRules],
-  );
-}
+export type StepUpdateResult<T extends AnswerStepId> = GenericStepUpdateResult<
+  UrbanProjectCreationStep,
+  AnswersByStep,
+  T
+>;
 
 /**
  * La validation d'une étape entraîne plusieurs conséquences :
@@ -72,44 +38,8 @@ export function computeStepChanges<T extends AnswerStepId>(
   state: WizardFormState,
   payload: StepCompletionPayload<T>,
 ): StepUpdateResult<T> {
-  const handler = answerStepHandlers[payload.stepId];
-  const handlerParams = {
-    context: { siteData: state.siteData },
-    answers: state.urbanProject.steps,
-  };
-
-  const newPayload = {
-    stepId: payload.stepId,
-    answers: handler.updateAnswersMiddleware
-      ? handler.updateAnswersMiddleware(handlerParams, payload.answers)
-      : payload.answers,
-  };
-
-  const dependencyRules = handler.getDependencyRules
-    ? handler.getDependencyRules(handlerParams, newPayload.answers)
-    : [];
-
-  if (handler.getShortcut) {
-    const shortcut = handler.getShortcut(handlerParams, newPayload.answers);
-
-    if (shortcut) {
-      return {
-        payload: newPayload,
-        shortcutComplete: shortcut.complete,
-        cascadingChanges: processShortcutInvalidations(
-          handlerParams,
-          shortcut.complete,
-          dependencyRules,
-        ),
-        navigationTarget: shortcut.next,
-      };
-    }
-  }
-  return {
-    payload: newPayload,
-    cascadingChanges: dependencyRules,
-    navigationTarget: handler.getNextStepId(handlerParams, payload.answers),
-  };
+  const context: UrbanStepHandlerContext = { siteData: state.siteData };
+  return genericComputeStepChanges(answerStepHandlers, context, state.urbanProject.steps, payload);
 }
 
 type StepChangesConfig = {

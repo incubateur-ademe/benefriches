@@ -24,7 +24,7 @@ export type StepInvalidationRule<StepId> = {
   stepId: StepId;
 };
 
-type StepAnswerPayload<TAnswers, K extends keyof TAnswers = keyof TAnswers> = {
+export type StepAnswerPayload<TAnswers, K extends keyof TAnswers = keyof TAnswers> = {
   [P in K]: { stepId: P; answers: TAnswers[P] };
 }[K];
 
