@@ -2,8 +2,8 @@ import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 
+import { StepUpdateResult } from "./helpers/computeStepChanges";
 import { computeStepsSequence } from "./helpers/stepsSequence";
-import { StepUpdateResult } from "./urban-project/helpers/completeStep";
 import { stepHandlerRegistry } from "./urban-project/step-handlers/stepHandlerRegistry";
 import {
   AnswersByStep,
@@ -44,7 +44,7 @@ export interface WizardFormState<T extends UrbanProjectCreationStep = UrbanProje
     saveState: "idle" | "dirty" | "loading" | "success" | "error";
     siteResaleEstimationLoadingState: LoadingState;
     pendingStepCompletion?: {
-      changes: StepUpdateResult<AnswerStepId>;
+      changes: StepUpdateResult<UrbanProjectCreationStep, AnswersByStep, AnswerStepId>;
       showAlert: boolean;
     };
     stepsSequence: UrbanProjectCreationStep[];
@@ -124,6 +124,7 @@ export type WizardFormDefinition<
   initialStep: StepId;
   config: {
     stepChangesNextMode: "step_order" | "next_empty";
+    finalSummaryFallbackStep: StepId;
     onPreviousStepFallback?: (state: RootDraftState) => void;
   };
   selectForm: (state: RootDraftState) => WizardFormSubState<StepId, TAnswers, TPendingChanges>;

@@ -2,7 +2,10 @@ import { createReducer } from "@reduxjs/toolkit";
 import { DevelopmentPlanType, ProjectPhase } from "shared";
 
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
-import { stepHandlerRegistry } from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
+import {
+  answerStepHandlers,
+  stepHandlerRegistry,
+} from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
 import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/wizard-form/urban-project/urbanProject.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 import {
@@ -53,7 +56,11 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
   addWizardFormCasesToBuilder(builder, updateProjectFormActions);
 
   addUrbanProjectFormCasesToBuilder(builder, updateProjectFormUrbanActions, {
-    config: { stepChangesNextMode: "next_empty" },
+    config: {
+      stepChangesNextMode: "next_empty",
+      finalSummaryFallbackStep: "URBAN_PROJECT_FINAL_SUMMARY",
+    },
+    registry: answerStepHandlers,
     selectForm: (state) => state.urbanProject,
     buildContext: (state) => ({ siteData: state.siteData }),
   });

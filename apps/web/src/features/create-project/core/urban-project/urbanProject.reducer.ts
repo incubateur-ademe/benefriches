@@ -1,6 +1,7 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 
 import { MutateStateHelper } from "@/shared/core/wizard-form/helpers/mutateState";
+import { answerStepHandlers } from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
 import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/wizard-form/urban-project/urbanProject.reducer";
 
 import { ProjectCreationState } from "../createProject.reducer";
@@ -15,10 +16,12 @@ const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (bui
   addUrbanProjectFormCasesToBuilder(builder, creationProjectFormUrbanActions, {
     config: {
       stepChangesNextMode: "step_order",
+      finalSummaryFallbackStep: "URBAN_PROJECT_FINAL_SUMMARY",
       onPreviousStepFallback: (state) => {
         state.currentProjectFlow = "USE_CASE_SELECTION";
       },
     },
+    registry: answerStepHandlers,
     selectForm: (state) => state.urbanProject,
     buildContext: (state) => ({ siteData: state.siteData }),
   });

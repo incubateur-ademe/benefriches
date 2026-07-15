@@ -1,19 +1,18 @@
 import { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
 
+import { applyStepChanges } from "@/shared/core/wizard-form/helpers/applyStepChanges";
+import { computeStepChanges } from "@/shared/core/wizard-form/helpers/computeStepChanges";
 import { navigateToAndLoadStep } from "@/shared/core/wizard-form/helpers/navigateToStep";
-import { stepHandlerRegistry } from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
+import {
+  answerStepHandlers,
+  stepHandlerRegistry,
+} from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
 
+import { StepUpdateResult } from "../helpers/computeStepChanges";
 import { WizardFormDefinition, WizardFormState } from "../wizardForm.reducer";
-import { applyStepChanges, computeStepChanges, StepUpdateResult } from "./helpers/completeStep";
 import { UrbanStepHandlerContext } from "./step-handlers/stepHandler.type";
 import { UrbanProjectFormReducerActions } from "./urbanProject.actions";
-import { AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
-
-// Helper to cast Immer draft state to WizardFormState for helper functions
-// This is safe because S extends WizardFormState and Immer drafts are mutable versions
-const asFormState = (state: WizardFormState): WizardFormState => {
-  return state as unknown as WizardFormState;
-};
+import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
 type UrbanWizardFormDefinition<S extends WizardFormState> = Pick<
   WizardFormDefinition<
@@ -21,13 +20,19 @@ type UrbanWizardFormDefinition<S extends WizardFormState> = Pick<
     UrbanStepHandlerContext,
     Draft<S>["urbanProject"]["steps"],
     Draft<S>,
-    StepUpdateResult<AnswerStepId>
+    StepUpdateResult<UrbanProjectCreationStep, AnswersByStep, AnswerStepId>
   >,
   "config" | "selectForm" | "buildContext"
->;
+> & {
+  registry: typeof answerStepHandlers;
+};
 
 const defaultDefinition = <S extends WizardFormState>(): UrbanWizardFormDefinition<S> => ({
-  config: { stepChangesNextMode: "step_order" },
+  config: {
+    stepChangesNextMode: "step_order",
+    finalSummaryFallbackStep: "URBAN_PROJECT_FINAL_SUMMARY",
+  },
+  registry: answerStepHandlers,
   selectForm: (state) => state.urbanProject,
   buildContext: (state) => ({ siteData: state.siteData }),
 });
@@ -37,11 +42,16 @@ export const addUrbanProjectFormCasesToBuilder = <S extends WizardFormState>(
   actions: UrbanProjectFormReducerActions,
   definition: UrbanWizardFormDefinition<S> = defaultDefinition<S>(),
 ) => {
-  const { config, selectForm, buildContext } = definition;
+  const { config, registry: answerRegistry, selectForm, buildContext } = definition;
 
   builder.addCase(actions.stepCompletionRequested, (state, action) => {
-    const formState = asFormState(state);
-    const changes = computeStepChanges(formState, action.payload);
+    const context = buildContext(state);
+    const changes = computeStepChanges<
+      UrbanProjectCreationStep,
+      UrbanStepHandlerContext,
+      AnswersByStep,
+      AnswerStepId
+    >(answerRegistry, context, selectForm(state).steps, action.payload);
 
     if (changes.cascadingChanges && changes.cascadingChanges.length > 0) {
       selectForm(state).pendingStepCompletion = {
@@ -49,15 +59,27 @@ export const addUrbanProjectFormCasesToBuilder = <S extends WizardFormState>(
         showAlert: true,
       };
     } else {
-      applyStepChanges(formState, changes, { nextMode: config.stepChangesNextMode });
+      applyStepChanges(selectForm(state), context, changes, stepHandlerRegistry, answerRegistry, {
+        nextMode: config.stepChangesNextMode,
+        finalSummaryFallbackStep: config.finalSummaryFallbackStep,
+      });
     }
   });
 
   builder.addCase(actions.stepCompletionConfirmed, (state) => {
-    const formState = asFormState(state);
     const pending = selectForm(state).pendingStepCompletion;
     if (pending) {
-      applyStepChanges(formState, pending.changes, { nextMode: config.stepChangesNextMode });
+      applyStepChanges(
+        selectForm(state),
+        buildContext(state),
+        pending.changes,
+        stepHandlerRegistry,
+        answerRegistry,
+        {
+          nextMode: config.stepChangesNextMode,
+          finalSummaryFallbackStep: config.finalSummaryFallbackStep,
+        },
+      );
       selectForm(state).pendingStepCompletion = undefined;
     }
   });
