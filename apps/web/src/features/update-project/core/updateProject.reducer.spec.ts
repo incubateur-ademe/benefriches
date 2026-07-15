@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { mockSiteData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
-import { computeProjectStepsSequence } from "@/shared/core/wizard-form/urban-project/helpers/stepsSequence";
+import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
+import { stepHandlerRegistry } from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
 import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { updateProjectFormUrbanActions } from "./updateProject.actions";
@@ -51,12 +52,13 @@ describe("update project reducer", () => {
     state.siteDataLoadingState = "success";
     state.urbanProject.currentStep = "URBAN_PROJECT_SPACES_SURFACE_AREA";
     state.urbanProject.steps = steps;
-    state.urbanProject.stepsSequence = computeProjectStepsSequence(
+    state.urbanProject.stepsSequence = computeStepsSequence(
       {
         context: { siteData: state.siteData },
         answers: steps,
       },
       state.urbanProject.firstSequenceStep,
+      stepHandlerRegistry,
     );
 
     const pendingState = updateProjectReducer(
@@ -134,12 +136,13 @@ describe("update project reducer", () => {
     state.siteDataLoadingState = "success";
     state.urbanProject.currentStep = "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE";
     state.urbanProject.steps = steps;
-    state.urbanProject.stepsSequence = computeProjectStepsSequence(
+    state.urbanProject.stepsSequence = computeStepsSequence(
       {
         context: { siteData: state.siteData },
         answers: steps,
       },
       state.urbanProject.firstSequenceStep,
+      stepHandlerRegistry,
     );
 
     const pendingState = updateProjectReducer(

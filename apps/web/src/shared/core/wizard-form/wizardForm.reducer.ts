@@ -2,8 +2,9 @@ import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 
+import { computeStepsSequence } from "./helpers/stepsSequence";
 import { StepUpdateResult } from "./urban-project/helpers/completeStep";
-import { computeProjectStepsSequence } from "./urban-project/helpers/stepsSequence";
+import { stepHandlerRegistry } from "./urban-project/step-handlers/stepHandlerRegistry";
 import {
   AnswersByStep,
   AnswerStepId,
@@ -77,9 +78,10 @@ export const getWizardFormInitialState = <
       siteResaleEstimationLoadingState: "idle",
       steps: {},
       firstSequenceStep: initialStep,
-      stepsSequence: computeProjectStepsSequence(
+      stepsSequence: computeStepsSequence(
         { context: { siteData: undefined }, answers: {} },
         initialStep,
+        stepHandlerRegistry,
       ),
       pendingStepCompletion: undefined,
     },

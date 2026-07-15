@@ -4,9 +4,10 @@ import {
 } from "../../helpers/computeStepChanges";
 import { MutateStateHelper } from "../../helpers/mutateState";
 import { ReadStateHelper } from "../../helpers/readState";
+import { computeStepsSequence } from "../../helpers/stepsSequence";
 import { WizardFormState } from "../../wizardForm.reducer";
 import { UrbanStepHandlerContext } from "../step-handlers/stepHandler.type";
-import { answerStepHandlers } from "../step-handlers/stepHandlerRegistry";
+import { answerStepHandlers, stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
 import {
   AnswersByStep,
@@ -15,7 +16,6 @@ import {
   UrbanProjectCreationStep,
 } from "../urbanProjectSteps";
 import { navigateToAndLoadStep } from "./navigateToStep";
-import { computeProjectStepsSequence } from "./stepsSequence";
 
 export type StepUpdateResult<T extends AnswerStepId> = GenericStepUpdateResult<
   UrbanProjectCreationStep,
@@ -85,9 +85,10 @@ export function applyStepChanges<T extends AnswerStepId>(
   });
 
   // mets à jour les étapes à compléter dans l'ordre pour finaliser le formulaire
-  state.urbanProject.stepsSequence = computeProjectStepsSequence(
+  state.urbanProject.stepsSequence = computeStepsSequence(
     { context: { siteData: state.siteData }, answers: state.urbanProject.steps },
     state.urbanProject.firstSequenceStep,
+    stepHandlerRegistry,
   );
 
   if (config.nextMode == "step_order" && changes.navigationTarget) {

@@ -1,7 +1,8 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { DevelopmentPlanType, ProjectPhase } from "shared";
 
-import { computeProjectStepsSequence } from "@/shared/core/wizard-form/urban-project/helpers/stepsSequence";
+import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
+import { stepHandlerRegistry } from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
 import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/wizard-form/urban-project/urbanProject.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 import {
@@ -84,12 +85,13 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       state.urbanProject.currentStep = "URBAN_PROJECT_FINAL_SUMMARY";
       state.urbanProject.saveState = "idle";
 
-      state.urbanProject.stepsSequence = computeProjectStepsSequence(
+      state.urbanProject.stepsSequence = computeStepsSequence(
         {
           context: { siteData: action.payload.siteData },
           answers: state.urbanProject.steps,
         },
         state.urbanProject.firstSequenceStep,
+        stepHandlerRegistry,
       );
     })
     .addCase(reconversionProjectUpdateInitiated.rejected, (state) => {
