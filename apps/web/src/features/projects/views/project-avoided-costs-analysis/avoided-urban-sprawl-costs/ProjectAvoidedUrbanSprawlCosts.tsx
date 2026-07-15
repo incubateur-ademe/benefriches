@@ -1,4 +1,4 @@
-import { SiteNature } from "shared";
+import { SiteNature, sumListWithKey } from "shared";
 
 import { AvoidedCostsUrbanSprawlAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
 import classNames from "@/shared/views/clsx";
@@ -14,17 +14,6 @@ import ComparisonGrid from "../layout/ComparisonGrid";
 import ComparisonMonetaryRow from "../layout/ComparisonMonetaryRow";
 import ScenarioHeader from "../layout/ScenarioHeader";
 import SectionHeader from "../layout/SectionHeader";
-import {
-  AVOIDED_HEALTH_EXPENSE_NAMES,
-  BUYING_POWER_NAMES,
-  ECOSYSTEM_SERVICE_NAMES,
-  ENVIRONMENTAL_ACTION_NAMES,
-  extractByName,
-  FRICHE_COST_NAMES,
-  PROJECT_MUNICIPALITY_EXPENSE_NAMES,
-  SITE_STATU_QUO_MUNICIPALITY_EXPENSE_NAMES,
-  TAX_INCOME_NAMES,
-} from "../layout/byBearer.helper";
 
 type Props = {
   projectType: ProjectDevelopmentPlanType;
@@ -40,6 +29,10 @@ const getTextForSiteNature = (siteNature: SiteNature) => {
     case "NATURAL_AREA":
       return "l'espace de nature";
   }
+};
+
+const getTotal = (arr1: { total: number }[] = [], arr2: { total: number }[] = []) => {
+  return sumListWithKey(arr1.concat(arr2), "total");
 };
 
 const UrbanSprawlBadge = () => (
@@ -123,13 +116,11 @@ export default function ProjectAvoidedUrbanSprawlCosts({
 
   const isFriche = siteNature === "FRICHE";
 
-  const isBearerSectionVisible = (
-    bearer: "local_authority" | "local_people_or_company" | "humanity",
-  ) =>
-    pi.projectOnSiteImpactsbyBearer[bearer].total !== 0 ||
-    uss.projectOnSimulationSiteImpactsbyBearer[bearer].total !== 0 ||
-    pi.siteStatuQuoImpactsByBearer[bearer].total !== 0 ||
-    uss.simulationSiteStatuQuoImpactsByBearer[bearer].total !== 0;
+  const isBearerSectionVisible = (bearer: "localAuthority" | "localPeopleOrCompany" | "humanity") =>
+    pi.projectOnSiteImpactsByBearerAndCategory[bearer].total !== 0 ||
+    uss.projectOnSimulationSiteImpactsByBearerAndCategory[bearer].total !== 0 ||
+    pi.siteStatuQuoImpactsByBearerAndCategory[bearer].total !== 0 ||
+    uss.simulationSiteStatuQuoImpactsByBearerAndCategory[bearer].total !== 0;
 
   return (
     <ComparisonGrid>
@@ -235,12 +226,12 @@ export default function ProjectAvoidedUrbanSprawlCosts({
         label="🏛️ Pour la collectivité locale"
         labelBold
         projectValue={
-          pi.projectOnSiteImpactsbyBearer.local_authority.total +
-          uss.simulationSiteStatuQuoImpactsByBearer.local_authority.total
+          pi.projectOnSiteImpactsByBearerAndCategory.localAuthority.total +
+          uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localAuthority.total
         }
         scenarioValue={
-          uss.projectOnSimulationSiteImpactsbyBearer.local_authority.total +
-          pi.siteStatuQuoImpactsByBearer.local_authority.total
+          uss.projectOnSimulationSiteImpactsByBearerAndCategory.localAuthority.total +
+          pi.siteStatuQuoImpactsByBearerAndCategory.localAuthority.total
         }
       />
 
@@ -248,12 +239,12 @@ export default function ProjectAvoidedUrbanSprawlCosts({
         label="🏘 Pour les riverains"
         labelBold
         projectValue={
-          pi.projectOnSiteImpactsbyBearer.local_people_or_company.total +
-          uss.simulationSiteStatuQuoImpactsByBearer.local_people_or_company.total
+          pi.projectOnSiteImpactsByBearerAndCategory.localPeopleOrCompany.total +
+          uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localPeopleOrCompany.total
         }
         scenarioValue={
-          uss.projectOnSimulationSiteImpactsbyBearer.local_people_or_company.total +
-          pi.siteStatuQuoImpactsByBearer.local_people_or_company.total
+          uss.projectOnSimulationSiteImpactsByBearerAndCategory.localPeopleOrCompany.total +
+          pi.siteStatuQuoImpactsByBearerAndCategory.localPeopleOrCompany.total
         }
       />
 
@@ -261,108 +252,80 @@ export default function ProjectAvoidedUrbanSprawlCosts({
         label="🌍 Pour la société"
         labelBold
         projectValue={
-          pi.projectOnSiteImpactsbyBearer.humanity.total +
-          uss.simulationSiteStatuQuoImpactsByBearer.humanity.total
+          pi.projectOnSiteImpactsByBearerAndCategory.humanity.total +
+          uss.simulationSiteStatuQuoImpactsByBearerAndCategory.humanity.total
         }
         scenarioValue={
-          uss.projectOnSimulationSiteImpactsbyBearer.humanity.total +
-          pi.siteStatuQuoImpactsByBearer.humanity.total
+          uss.projectOnSimulationSiteImpactsByBearerAndCategory.humanity.total +
+          pi.siteStatuQuoImpactsByBearerAndCategory.humanity.total
         }
       />
 
-      {isBearerSectionVisible("local_authority") && (
+      {isBearerSectionVisible("localAuthority") && (
         <>
           <SectionHeader>Impacts économiques pour la collectivité locale</SectionHeader>
 
           <ComparisionDetailsMonetaryRow
             label="🏚️ Dépenses liées à la friche"
-            left={extractByName(
-              uss.simulationSiteStatuQuoImpactsByBearer.local_authority.details,
-              FRICHE_COST_NAMES,
+            left={sumListWithKey(
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localAuthority.fricheCosts ?? [],
+              "total",
             )}
-            right={extractByName(
-              pi.siteStatuQuoImpactsByBearer.local_authority.details,
-              FRICHE_COST_NAMES,
+            right={sumListWithKey(
+              pi.siteStatuQuoImpactsByBearerAndCategory.localAuthority.fricheCosts ?? [],
+              "total",
             )}
           />
 
           <ComparisionDetailsMonetaryRow
             label="🔧 Dépenses communales"
-            left={extractByName(
-              pi.projectOnSiteImpactsbyBearer.local_authority.details,
-              PROJECT_MUNICIPALITY_EXPENSE_NAMES,
-            ).concat(
-              extractByName(
-                uss.simulationSiteStatuQuoImpactsByBearer.local_authority.details,
-                SITE_STATU_QUO_MUNICIPALITY_EXPENSE_NAMES,
-              ),
+            left={getTotal(
+              pi.projectOnSiteImpactsByBearerAndCategory.localAuthority.municipalityExpenses,
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localAuthority
+                .municipalityExpenses,
             )}
-            right={extractByName(
-              uss.projectOnSimulationSiteImpactsbyBearer.local_authority.details,
-              PROJECT_MUNICIPALITY_EXPENSE_NAMES,
-            ).concat(
-              extractByName(
-                pi.siteStatuQuoImpactsByBearer.local_authority.details,
-                SITE_STATU_QUO_MUNICIPALITY_EXPENSE_NAMES,
-              ),
+            right={getTotal(
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.localAuthority
+                .municipalityExpenses,
+              pi.siteStatuQuoImpactsByBearerAndCategory.localAuthority.municipalityExpenses,
             )}
           />
 
           <ComparisionDetailsMonetaryRow
             label="🏛 Recettes fiscales"
-            left={extractByName(
-              pi.projectOnSiteImpactsbyBearer.local_authority.details,
-              TAX_INCOME_NAMES,
-            ).concat(
-              extractByName(uss.simulationSiteStatuQuoImpactsByBearer.local_authority.details, [
-                "taxesIncome",
-              ]),
+            left={getTotal(
+              pi.projectOnSiteImpactsByBearerAndCategory.localAuthority.taxesIncome,
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localAuthority.taxesIncome,
             )}
-            right={extractByName(
-              uss.projectOnSimulationSiteImpactsbyBearer.local_authority.details,
-              TAX_INCOME_NAMES,
-            ).concat(
-              extractByName(pi.siteStatuQuoImpactsByBearer.local_authority.details, [
-                "taxesIncome",
-              ]),
+            right={getTotal(
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.localAuthority.taxesIncome,
+              pi.siteStatuQuoImpactsByBearerAndCategory.localAuthority.taxesIncome,
             )}
           />
 
           <ComparisionDetailsMonetaryRow
             label="💰 Bénéfice d'exploitation"
-            left={extractByName(pi.projectOnSiteImpactsbyBearer.local_authority.details, [
-              "projectOperatingEconomicBalance",
-            ]).concat(
-              extractByName(uss.simulationSiteStatuQuoImpactsByBearer.local_authority.details, [
-                "operatingEconomicBalance",
-              ]),
+            left={getTotal(
+              pi.projectOnSiteImpactsByBearerAndCategory.localAuthority.operatingEconomicBalance,
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localAuthority
+                .operatingEconomicBalance,
             )}
-            right={extractByName(
-              uss.projectOnSimulationSiteImpactsbyBearer.local_authority.details,
-              ["projectOperatingEconomicBalance"],
-            ).concat(
-              extractByName(pi.siteStatuQuoImpactsByBearer.local_authority.details, [
-                "operatingEconomicBalance",
-              ]),
+            right={getTotal(
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.localAuthority
+                .operatingEconomicBalance,
+              pi.siteStatuQuoImpactsByBearerAndCategory.localAuthority.operatingEconomicBalance,
             )}
           />
 
           <ComparisionDetailsMonetaryRow
             label="🔑 Revenu locatif"
-            left={extractByName(pi.projectOnSiteImpactsbyBearer.local_authority.details, [
-              "projectedRentalIncome",
-            ]).concat(
-              extractByName(uss.simulationSiteStatuQuoImpactsByBearer.local_authority.details, [
-                "rentalIncome",
-              ]),
+            left={getTotal(
+              pi.projectOnSiteImpactsByBearerAndCategory.localAuthority.rentalIncome,
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localAuthority.rentalIncome,
             )}
-            right={extractByName(
-              uss.projectOnSimulationSiteImpactsbyBearer.local_authority.details,
-              ["projectedRentalIncome"],
-            ).concat(
-              extractByName(pi.siteStatuQuoImpactsByBearer.local_authority.details, [
-                "rentalIncome",
-              ]),
+            right={getTotal(
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.localAuthority.rentalIncome,
+              pi.siteStatuQuoImpactsByBearerAndCategory.localAuthority.rentalIncome,
             )}
           />
 
@@ -371,93 +334,89 @@ export default function ProjectAvoidedUrbanSprawlCosts({
             labelBold
             totalRow
             projectValue={
-              pi.projectOnSiteImpactsbyBearer.local_authority.total +
-              uss.simulationSiteStatuQuoImpactsByBearer.local_authority.total
+              pi.projectOnSiteImpactsByBearerAndCategory.localAuthority.total +
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localAuthority.total
             }
             scenarioValue={
-              pi.siteStatuQuoImpactsByBearer.local_authority.total +
-              uss.projectOnSimulationSiteImpactsbyBearer.local_authority.total
+              pi.siteStatuQuoImpactsByBearerAndCategory.localAuthority.total +
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.localAuthority.total
             }
           />
         </>
       )}
 
-      {isBearerSectionVisible("local_people_or_company") && (
+      {isBearerSectionVisible("localPeopleOrCompany") && (
         <>
           <SectionHeader>Impacts économiques pour les riverains</SectionHeader>
 
           <ComparisionDetailsMonetaryRow
             label="🏚️ Dépenses liées à la friche"
-            left={extractByName(
-              uss.simulationSiteStatuQuoImpactsByBearer.local_people_or_company.details,
-              FRICHE_COST_NAMES,
+            left={sumListWithKey(
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localPeopleOrCompany
+                .fricheCosts ?? [],
+              "total",
             )}
-            right={extractByName(
-              pi.siteStatuQuoImpactsByBearer.local_people_or_company.details,
-              FRICHE_COST_NAMES,
+            right={sumListWithKey(
+              pi.siteStatuQuoImpactsByBearerAndCategory.localPeopleOrCompany.fricheCosts ?? [],
+              "total",
             )}
           />
 
           <ComparisionDetailsMonetaryRow
             label="👛 Pouvoir d'achat supplémentaire"
-            left={extractByName(
-              pi.projectOnSiteImpactsbyBearer.local_people_or_company.details,
-              BUYING_POWER_NAMES,
+            left={sumListWithKey(
+              pi.projectOnSiteImpactsByBearerAndCategory.localPeopleOrCompany
+                .purchasingPowerIncrease ?? [],
+              "total",
             )}
-            right={extractByName(
-              uss.projectOnSimulationSiteImpactsbyBearer.local_people_or_company.details,
-              BUYING_POWER_NAMES,
+            right={sumListWithKey(
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.localPeopleOrCompany
+                .purchasingPowerIncrease ?? [],
+              "total",
             )}
           />
 
           <ComparisionDetailsMonetaryRow
             label="💰 Bénéfice d'exploitation"
-            left={extractByName(pi.projectOnSiteImpactsbyBearer.local_people_or_company.details, [
-              "projectOperatingEconomicBalance",
-            ]).concat(
-              extractByName(
-                uss.simulationSiteStatuQuoImpactsByBearer.local_people_or_company.details,
-                ["operatingEconomicBalance"],
-              ),
+            left={getTotal(
+              pi.projectOnSiteImpactsByBearerAndCategory.localPeopleOrCompany
+                .operatingEconomicBalance,
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localPeopleOrCompany
+                .operatingEconomicBalance,
             )}
-            right={extractByName(
-              uss.projectOnSimulationSiteImpactsbyBearer.local_people_or_company.details,
-              ["projectOperatingEconomicBalance"],
-            ).concat(
-              extractByName(pi.siteStatuQuoImpactsByBearer.local_people_or_company.details, [
-                "operatingEconomicBalance",
-              ]),
+            right={getTotal(
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.localPeopleOrCompany
+                .operatingEconomicBalance,
+              pi.siteStatuQuoImpactsByBearerAndCategory.localPeopleOrCompany
+                .operatingEconomicBalance,
             )}
           />
 
           <ComparisionDetailsMonetaryRow
             label="🔑 Revenu locatif"
-            left={extractByName(pi.projectOnSiteImpactsbyBearer.local_people_or_company.details, [
-              "projectedRentalIncome",
-            ]).concat(
-              extractByName(
-                uss.simulationSiteStatuQuoImpactsByBearer.local_people_or_company.details,
-                ["rentalIncome"],
-              ),
+            left={getTotal(
+              pi.projectOnSiteImpactsByBearerAndCategory.localPeopleOrCompany.rentalIncome,
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localPeopleOrCompany
+                .rentalIncome,
             )}
-            right={extractByName(
-              uss.projectOnSimulationSiteImpactsbyBearer.local_people_or_company.details,
-              ["projectedRentalIncome"],
-            ).concat(
-              extractByName(pi.siteStatuQuoImpactsByBearer.local_people_or_company.details, [
-                "rentalIncome",
-              ]),
+            right={getTotal(
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.localPeopleOrCompany
+                .rentalIncome,
+              pi.siteStatuQuoImpactsByBearerAndCategory.localPeopleOrCompany.rentalIncome,
             )}
           />
 
           <ComparisionDetailsMonetaryRow
             label="🏡 Valeur patrimoniale supplémentaire autour de la friche"
-            left={extractByName(pi.projectOnSiteImpactsbyBearer.local_people_or_company.details, [
-              "localPropertyValueIncrease",
-            ])}
-            right={extractByName(
-              uss.projectOnSimulationSiteImpactsbyBearer.local_people_or_company.details,
-              ["localPropertyValueIncrease"],
+            left={sumListWithKey(
+              pi.projectOnSiteImpactsByBearerAndCategory.localPeopleOrCompany
+                .localPropertyValueIncrease ?? [],
+              "total",
+            )}
+            right={sumListWithKey(
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.localPeopleOrCompany
+                .localPropertyValueIncrease ?? [],
+              "total",
             )}
           />
 
@@ -466,12 +425,12 @@ export default function ProjectAvoidedUrbanSprawlCosts({
             labelBold
             totalRow
             projectValue={
-              pi.projectOnSiteImpactsbyBearer.local_people_or_company.total +
-              uss.simulationSiteStatuQuoImpactsByBearer.local_people_or_company.total
+              pi.projectOnSiteImpactsByBearerAndCategory.localPeopleOrCompany.total +
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.localPeopleOrCompany.total
             }
             scenarioValue={
-              pi.siteStatuQuoImpactsByBearer.local_people_or_company.total +
-              uss.projectOnSimulationSiteImpactsbyBearer.local_people_or_company.total
+              pi.siteStatuQuoImpactsByBearerAndCategory.localPeopleOrCompany.total +
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.localPeopleOrCompany.total
             }
           />
         </>
@@ -483,35 +442,26 @@ export default function ProjectAvoidedUrbanSprawlCosts({
 
           <ComparisionDetailsMonetaryRow
             label="🫀 Économies sur les dépenses de santé"
-            left={extractByName(
-              pi.projectOnSiteImpactsbyBearer.humanity.details,
-              AVOIDED_HEALTH_EXPENSE_NAMES,
+            left={sumListWithKey(
+              pi.projectOnSiteImpactsByBearerAndCategory.humanity.avoidedHealthExpenses ?? [],
+              "total",
             )}
-            right={extractByName(
-              uss.projectOnSimulationSiteImpactsbyBearer.humanity.details,
-              AVOIDED_HEALTH_EXPENSE_NAMES,
+            right={sumListWithKey(
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.humanity
+                .avoidedHealthExpenses ?? [],
+              "total",
             )}
           />
 
           <ComparisionDetailsMonetaryRow
             label="🌿 Valeur de l'action environnementale"
-            left={extractByName(
-              pi.projectOnSiteImpactsbyBearer.humanity.details,
-              ENVIRONMENTAL_ACTION_NAMES,
-            ).concat(
-              extractByName(
-                uss.simulationSiteStatuQuoImpactsByBearer.humanity.details,
-                ECOSYSTEM_SERVICE_NAMES,
-              ),
+            left={getTotal(
+              pi.projectOnSiteImpactsByBearerAndCategory.humanity.environmentalAction,
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.humanity.environmentalAction,
             )}
-            right={extractByName(
-              uss.projectOnSimulationSiteImpactsbyBearer.humanity.details,
-              ENVIRONMENTAL_ACTION_NAMES,
-            ).concat(
-              extractByName(
-                pi.siteStatuQuoImpactsByBearer.humanity.details,
-                ECOSYSTEM_SERVICE_NAMES,
-              ),
+            right={getTotal(
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.humanity.environmentalAction,
+              pi.siteStatuQuoImpactsByBearerAndCategory.humanity.environmentalAction,
             )}
           />
 
@@ -520,12 +470,12 @@ export default function ProjectAvoidedUrbanSprawlCosts({
             labelBold
             totalRow
             projectValue={
-              pi.projectOnSiteImpactsbyBearer.humanity.total +
-              uss.simulationSiteStatuQuoImpactsByBearer.humanity.total
+              pi.projectOnSiteImpactsByBearerAndCategory.humanity.total +
+              uss.simulationSiteStatuQuoImpactsByBearerAndCategory.humanity.total
             }
             scenarioValue={
-              pi.siteStatuQuoImpactsByBearer.humanity.total +
-              uss.projectOnSimulationSiteImpactsbyBearer.humanity.total
+              pi.siteStatuQuoImpactsByBearerAndCategory.humanity.total +
+              uss.projectOnSimulationSiteImpactsByBearerAndCategory.humanity.total
             }
           />
         </>

@@ -1,31 +1,33 @@
 import { useMemo } from "react";
 import { typedObjectEntries } from "shared";
 
-import { IndirectEconomicImpactsByBearer } from "@/features/projects/domain/groupIndirectImpactsByBearer";
-
 import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
-  indirectEconomicImpactsByBearer: IndirectEconomicImpactsByBearer;
+  indirectEconomicImpactsTotalByBearer: {
+    localAuthority: number;
+    localPeopleOrCompany: number;
+    humanity: number;
+  };
   indirectEconomicImpactsTotal: number;
 };
 
-const getLabelForBearer = (name: keyof IndirectEconomicImpactsByBearer) => {
+const getLabelForBearer = (name: keyof Props["indirectEconomicImpactsTotalByBearer"]) => {
   switch (name) {
-    case "local_authority":
+    case "localAuthority":
       return "Collectivité";
-    case "local_people_or_company":
+    case "localPeopleOrCompany":
       return "Riverains";
     case "humanity":
       return "Société française et mondiale";
   }
 };
 
-const getColorForBearer = (name: keyof IndirectEconomicImpactsByBearer) => {
+const getColorForBearer = (name: keyof Props["indirectEconomicImpactsTotalByBearer"]) => {
   switch (name) {
-    case "local_authority":
+    case "localAuthority":
       return "#1D5DA2";
-    case "local_people_or_company":
+    case "localPeopleOrCompany":
       return "#FD7CC5";
     case "humanity":
       return "#9EE24B";
@@ -33,18 +35,18 @@ const getColorForBearer = (name: keyof IndirectEconomicImpactsByBearer) => {
 };
 
 export default function IndirectEconomicImpactsChart({
-  indirectEconomicImpactsByBearer,
+  indirectEconomicImpactsTotalByBearer,
   indirectEconomicImpactsTotal,
 }: Props) {
   const data = useMemo(() => {
-    return typedObjectEntries(indirectEconomicImpactsByBearer)
-      .map(([bearer, { total }]) => ({
+    return typedObjectEntries(indirectEconomicImpactsTotalByBearer)
+      .map(([bearer, total]) => ({
         name: getLabelForBearer(bearer),
         y: total,
         color: getColorForBearer(bearer),
       }))
       .filter(({ y }) => y !== 0);
-  }, [indirectEconomicImpactsByBearer]);
+  }, [indirectEconomicImpactsTotalByBearer]);
 
   return (
     <EconomicColumnChart

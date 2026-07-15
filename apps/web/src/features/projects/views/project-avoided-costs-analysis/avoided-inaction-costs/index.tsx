@@ -13,17 +13,15 @@ type Props = {
 
 export default function ProjectAvoidedInactionCostsContainer({ projectType, siteNature }: Props) {
   const {
-    projectOnSiteIndirectEconomicImpactsData,
-    siteStatuQuoIndirectEconomicImpactsData,
-    stakeholders,
+    projectOnSiteIndirectEconomicImpactsByBearerAndCategory,
+    siteStatuQuoIndirectEconomicImpactsByBearerAndCategory,
     projectEconomicBalance,
   } = useAppSelector(selectAvoidedInactionCostsAnalysisDataView);
 
   if (
     !projectEconomicBalance ||
-    !projectOnSiteIndirectEconomicImpactsData ||
-    !siteStatuQuoIndirectEconomicImpactsData ||
-    !stakeholders
+    !projectOnSiteIndirectEconomicImpactsByBearerAndCategory ||
+    !siteStatuQuoIndirectEconomicImpactsByBearerAndCategory
   ) {
     return null;
   }
@@ -33,9 +31,10 @@ export default function ProjectAvoidedInactionCostsContainer({ projectType, site
       projectType={projectType}
       siteNature={siteNature}
       projectEconomicBalance={projectEconomicBalance}
-      projectImpacts={projectOnSiteIndirectEconomicImpactsData}
-      siteStatuQuoImpacts={siteStatuQuoIndirectEconomicImpactsData}
-      stakeholders={stakeholders}
+      projectImpactsByBearerAndCategory={projectOnSiteIndirectEconomicImpactsByBearerAndCategory}
+      siteStatuQuoImpactsByBearerAndCategory={
+        siteStatuQuoIndirectEconomicImpactsByBearerAndCategory
+      }
     />
   );
 }

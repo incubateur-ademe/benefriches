@@ -5,8 +5,8 @@ import { RootState } from "@/app/store/store";
 
 import { cropUrbanSprawlSimulationByEvaluationPeriod } from "../../../domain/cropImpactsByEvaluationPeriod";
 import {
-  groupIndirectEconomicImpactsByBearer,
-  IndirectEconomicImpactsByBearer,
+  groupIndirectEconomicImpactsByBearerAndCategory,
+  IndirectEconomicImpactsByBearerAndGroupCategory,
 } from "../../../domain/groupIndirectImpactsByBearer";
 import { ProjectDevelopmentPlanType } from "../../../domain/projects.types";
 import { ProjectImpactsState } from "../projectImpacts.reducer";
@@ -33,20 +33,24 @@ export const selectAvoidedCostsAnalysisDataView = createSelector(
 );
 
 export type AvoidedInactionCostsAnalysisDataView = {
-  siteStatuQuoIndirectEconomicImpactsData?: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["siteStatuQuoIndirectEconomicImpactsData"];
-  projectOnSiteIndirectEconomicImpactsData?: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["projectOnSiteIndirectEconomicImpactsData"];
+  siteStatuQuoIndirectEconomicImpactsByBearerAndCategory?: IndirectEconomicImpactsByBearerAndGroupCategory;
+  projectOnSiteIndirectEconomicImpactsByBearerAndCategory?: IndirectEconomicImpactsByBearerAndGroupCategory;
   siteId?: string;
-  stakeholders?: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
   projectEconomicBalance?: GetReconversionProjectImpactsResultDto["impacts"]["projectEconomicBalance"];
 };
 export const selectAvoidedInactionCostsAnalysisDataView = createSelector(
   [selectSelf, selectImpactsCroppedByEvaluationPeriod],
   (state, impacts): AvoidedInactionCostsAnalysisDataView => ({
-    stakeholders: state.impacts?.stakeholders,
-    siteStatuQuoIndirectEconomicImpactsData:
-      impacts?.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData,
-    projectOnSiteIndirectEconomicImpactsData:
-      impacts?.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData,
+    siteStatuQuoIndirectEconomicImpactsByBearerAndCategory:
+      groupIndirectEconomicImpactsByBearerAndCategory(
+        impacts?.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData,
+        impacts?.stakeholders,
+      ),
+    projectOnSiteIndirectEconomicImpactsByBearerAndCategory:
+      groupIndirectEconomicImpactsByBearerAndCategory(
+        impacts?.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData,
+        impacts?.stakeholders,
+      ),
     siteId: state.contextData?.relatedSiteId,
     projectEconomicBalance: impacts?.projectEconomicBalance,
   }),
@@ -73,12 +77,12 @@ export type AvoidedCostsUrbanSprawlAnalysisDataView =
     }
   | {
       projectImpacts: Exclude<ProjectImpactsState["impacts"], undefined> & {
-        siteStatuQuoImpactsByBearer: IndirectEconomicImpactsByBearer;
-        projectOnSiteImpactsbyBearer: IndirectEconomicImpactsByBearer;
+        siteStatuQuoImpactsByBearerAndCategory: IndirectEconomicImpactsByBearerAndGroupCategory;
+        projectOnSiteImpactsByBearerAndCategory: IndirectEconomicImpactsByBearerAndGroupCategory;
       };
       urbanSprawlSimulation: Exclude<ProjectImpactsState["urbanSprawlSimulation"], undefined> & {
-        simulationSiteStatuQuoImpactsByBearer: IndirectEconomicImpactsByBearer;
-        projectOnSimulationSiteImpactsbyBearer: IndirectEconomicImpactsByBearer;
+        simulationSiteStatuQuoImpactsByBearerAndCategory: IndirectEconomicImpactsByBearerAndGroupCategory;
+        projectOnSimulationSiteImpactsByBearerAndCategory: IndirectEconomicImpactsByBearerAndGroupCategory;
       };
       dataLoadingState: "success";
       contextData: ProjectImpactsState["contextData"];
@@ -131,27 +135,27 @@ export const selectAvoidedUrbanSprawlCostsAnalysisDataView = createSelector(
       return {
         urbanSprawlSimulation: {
           ...urbanSprawlSimulationImpactsByEvaluationPeriod,
-          simulationSiteStatuQuoImpactsByBearer: groupIndirectEconomicImpactsByBearer(
-            urbanSprawlSimulationImpactsByEvaluationPeriod.simulationSiteStatuQuoImpactsData
-              .details,
-            impactsByEvaluationPeriod?.stakeholders,
-          ),
-          projectOnSimulationSiteImpactsbyBearer: groupIndirectEconomicImpactsByBearer(
-            urbanSprawlSimulationImpactsByEvaluationPeriod.projectOnSimulationSiteImpactsData
-              .details,
-            impactsByEvaluationPeriod?.stakeholders,
-          ),
+          simulationSiteStatuQuoImpactsByBearerAndCategory:
+            groupIndirectEconomicImpactsByBearerAndCategory(
+              urbanSprawlSimulationImpactsByEvaluationPeriod.simulationSiteStatuQuoImpactsData,
+              impactsByEvaluationPeriod?.stakeholders,
+            ),
+          projectOnSimulationSiteImpactsByBearerAndCategory:
+            groupIndirectEconomicImpactsByBearerAndCategory(
+              urbanSprawlSimulationImpactsByEvaluationPeriod.projectOnSimulationSiteImpactsData,
+              impactsByEvaluationPeriod?.stakeholders,
+            ),
         },
         projectImpacts: {
           ...impactsByEvaluationPeriod,
-          siteStatuQuoImpactsByBearer: groupIndirectEconomicImpactsByBearer(
+          siteStatuQuoImpactsByBearerAndCategory: groupIndirectEconomicImpactsByBearerAndCategory(
             impactsByEvaluationPeriod.reconversionImpactsBreakdown
-              .siteStatuQuoIndirectEconomicImpactsData.details,
+              .siteStatuQuoIndirectEconomicImpactsData,
             impactsByEvaluationPeriod?.stakeholders,
           ),
-          projectOnSiteImpactsbyBearer: groupIndirectEconomicImpactsByBearer(
+          projectOnSiteImpactsByBearerAndCategory: groupIndirectEconomicImpactsByBearerAndCategory(
             impactsByEvaluationPeriod.reconversionImpactsBreakdown
-              .projectOnSiteIndirectEconomicImpactsData.details,
+              .projectOnSiteIndirectEconomicImpactsData,
             impactsByEvaluationPeriod?.stakeholders,
           ),
         },

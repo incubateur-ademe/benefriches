@@ -75,28 +75,32 @@ export default function ProjectBreakEvenLevelTab({
         chart={
           <IndirectEconomicImpactsChart
             indirectEconomicImpactsTotal={indirectEconomicImpacts.total}
-            indirectEconomicImpactsByBearer={indirectEconomicImpactsByBearer}
+            indirectEconomicImpactsTotalByBearer={{
+              humanity: indirectEconomicImpactsByBearer.humanity.total,
+              localAuthority: indirectEconomicImpactsByBearer.localAuthority.total,
+              localPeopleOrCompany: indirectEconomicImpactsByBearer.localPeopleOrCompany.total,
+            }}
           />
         }
       />
 
       <ProjectBreakEvenLevelSection
         title="pour la collectivité locale"
-        total={indirectEconomicImpactsByBearer.local_authority.total}
+        total={indirectEconomicImpactsByBearer.localAuthority.total}
         chart={
           <LocalAuthorityIndirectEconomicImpactsCharts
-            localAuthorityIndirectEconomicImpacts={indirectEconomicImpactsByBearer.local_authority}
+            localAuthorityIndirectEconomicImpacts={indirectEconomicImpactsByBearer.localAuthority}
           />
         }
       />
 
       <ProjectBreakEvenLevelSection
         title="pour les riverains"
-        total={indirectEconomicImpactsByBearer.local_people_or_company.total}
+        total={indirectEconomicImpactsByBearer.localPeopleOrCompany.total}
         chart={
           <LocalPeopleOrCompanyIndirectEconomicImpactsCharts
-            localAuthorityIndirectEconomicImpacts={
-              indirectEconomicImpactsByBearer.local_people_or_company
+            localPeopleOrCompanyIndirectEconomicImpacts={
+              indirectEconomicImpactsByBearer.localPeopleOrCompany
             }
           />
         }
@@ -107,7 +111,7 @@ export default function ProjectBreakEvenLevelTab({
         total={indirectEconomicImpactsByBearer.humanity.total}
         chart={
           <HumanityIndirectEconomicImpactsCharts
-            localAuthorityIndirectEconomicImpacts={indirectEconomicImpactsByBearer.humanity}
+            humanityIndirectEconomicImpacts={indirectEconomicImpactsByBearer.humanity}
           />
         }
       />
