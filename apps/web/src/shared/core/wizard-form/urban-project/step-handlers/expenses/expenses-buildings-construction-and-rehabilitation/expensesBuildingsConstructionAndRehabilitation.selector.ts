@@ -4,7 +4,7 @@ import type { Selector } from "@reduxjs/toolkit";
 import type { RootState } from "@/app/store/store";
 import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
-import { ReadStateHelper } from "../../../helpers/readState";
+import { ReadStateHelper } from "../../../../helpers/readState";
 import {
   willConstructNewBuildings,
   willReuseExistingBuildings,

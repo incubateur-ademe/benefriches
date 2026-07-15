@@ -3,9 +3,9 @@ import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "@/app/store/store";
 import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper/stepperConfig";
 
+import { ReadStateHelper } from "../helpers/readState";
 import { createWizardFormSelectors } from "../wizardForm.selectors";
 import { getProjectSummary } from "./helpers/projectSummary";
-import { ReadStateHelper } from "./helpers/readState";
 import {
   getProjectSoilDistribution,
   getProjectSoilDistributionBySoilType,

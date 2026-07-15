@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { WizardFormState } from "../../wizardForm.reducer";
+import { WizardFormState } from "../wizardForm.reducer";
 import { ReadStateHelper } from "./readState";
 
 describe("ReadStateHelper", () => {

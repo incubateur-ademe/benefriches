@@ -1,4 +1,4 @@
-import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
+import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
 import {

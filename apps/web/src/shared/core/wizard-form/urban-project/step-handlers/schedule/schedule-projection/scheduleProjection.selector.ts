@@ -3,7 +3,7 @@ import type { Selector } from "@reduxjs/toolkit";
 import type z from "zod";
 
 import type { RootState } from "@/app/store/store";
-import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
+import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import type { scheduleProjectionSchema } from "./scheduleProjection.schema";

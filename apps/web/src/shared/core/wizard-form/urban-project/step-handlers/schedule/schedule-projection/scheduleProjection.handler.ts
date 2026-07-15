@@ -1,6 +1,6 @@
 import { getDefaultScheduleForProject } from "shared";
 
-import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
+import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import type { AnswerStepHandler } from "../../stepHandler.type";
 

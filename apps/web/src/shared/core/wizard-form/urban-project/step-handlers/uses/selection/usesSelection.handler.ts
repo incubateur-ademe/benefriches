@@ -1,6 +1,6 @@
 import { doesUseIncludeBuildings } from "shared";
 
-import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
+import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import { getDeleteBuildingsRules } from "../../spaces/getCommonRules";
 import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";

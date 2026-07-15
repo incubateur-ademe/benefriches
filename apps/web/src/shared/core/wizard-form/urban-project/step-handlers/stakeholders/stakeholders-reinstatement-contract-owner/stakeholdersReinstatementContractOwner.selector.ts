@@ -3,11 +3,11 @@ import type { Selector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
+import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 import type {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
 } from "@/shared/core/wizard-form/helpers/stakeholders";
-import { ReadStateHelper } from "@/shared/core/wizard-form/urban-project/helpers/readState";
 import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 type ReinstatementContractOwnerViewData = {

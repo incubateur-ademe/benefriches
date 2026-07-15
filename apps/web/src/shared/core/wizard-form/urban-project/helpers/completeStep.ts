@@ -1,4 +1,5 @@
 import { MutateStateHelper } from "../../helpers/mutateState";
+import { ReadStateHelper } from "../../helpers/readState";
 import { WizardFormState } from "../../wizardForm.reducer";
 import {
   ShortcutResult,
@@ -14,7 +15,6 @@ import {
   UrbanProjectCreationStep,
 } from "../urbanProjectSteps";
 import { navigateToAndLoadStep } from "./navigateToStep";
-import { ReadStateHelper } from "./readState";
 import { computeProjectStepsSequence } from "./stepsSequence";
 
 export type StepUpdateResult<T extends AnswerStepId> = {
