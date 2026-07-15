@@ -3,6 +3,7 @@ import {
   StepUpdateResult as GenericStepUpdateResult,
 } from "../../helpers/computeStepChanges";
 import { MutateStateHelper } from "../../helpers/mutateState";
+import { navigateToAndLoadStep } from "../../helpers/navigateToStep";
 import { ReadStateHelper } from "../../helpers/readState";
 import { computeStepsSequence } from "../../helpers/stepsSequence";
 import { WizardFormState } from "../../wizardForm.reducer";
@@ -15,7 +16,6 @@ import {
   isAnswersStep,
   UrbanProjectCreationStep,
 } from "../urbanProjectSteps";
-import { navigateToAndLoadStep } from "./navigateToStep";
 
 export type StepUpdateResult<T extends AnswerStepId> = GenericStepUpdateResult<
   UrbanProjectCreationStep,
@@ -92,14 +92,24 @@ export function applyStepChanges<T extends AnswerStepId>(
   );
 
   if (config.nextMode == "step_order" && changes.navigationTarget) {
-    navigateToAndLoadStep(state, changes.navigationTarget);
+    navigateToAndLoadStep(
+      state.urbanProject,
+      { siteData: state.siteData },
+      changes.navigationTarget,
+      stepHandlerRegistry,
+    );
   } else {
     const nextEmptyStep = state.urbanProject.stepsSequence.find(
       (stepId) =>
         isAnswersStep(stepId) &&
         !ReadStateHelper.getStep(state.urbanProject.steps, stepId)?.completed,
     );
-    navigateToAndLoadStep(state, nextEmptyStep ?? "URBAN_PROJECT_FINAL_SUMMARY");
+    navigateToAndLoadStep(
+      state.urbanProject,
+      { siteData: state.siteData },
+      nextEmptyStep ?? "URBAN_PROJECT_FINAL_SUMMARY",
+      stepHandlerRegistry,
+    );
   }
 
   state.urbanProject.saveState = "dirty";

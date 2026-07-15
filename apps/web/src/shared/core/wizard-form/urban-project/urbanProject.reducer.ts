@@ -1,10 +1,10 @@
 import { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
 
+import { navigateToAndLoadStep } from "@/shared/core/wizard-form/helpers/navigateToStep";
 import { stepHandlerRegistry } from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
 
 import { WizardFormDefinition, WizardFormState } from "../wizardForm.reducer";
 import { applyStepChanges, computeStepChanges, StepUpdateResult } from "./helpers/completeStep";
-import { navigateToAndLoadStep } from "./helpers/navigateToStep";
 import { UrbanStepHandlerContext } from "./step-handlers/stepHandler.type";
 import { UrbanProjectFormReducerActions } from "./urbanProject.actions";
 import { AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
@@ -67,17 +67,18 @@ export const addUrbanProjectFormCasesToBuilder = <S extends WizardFormState>(
   });
 
   builder.addCase(actions.previousStepRequested, (state) => {
-    const formState = asFormState(state);
     const stepId = selectForm(state).currentStep;
     const handler = stepHandlerRegistry[stepId];
 
     if (handler.getPreviousStepId) {
       navigateToAndLoadStep(
-        formState,
+        selectForm(state),
+        buildContext(state),
         handler.getPreviousStepId({
           context: buildContext(state),
           answers: selectForm(state).steps,
         }),
+        stepHandlerRegistry,
       );
     } else {
       config.onPreviousStepFallback?.(state);
@@ -85,7 +86,6 @@ export const addUrbanProjectFormCasesToBuilder = <S extends WizardFormState>(
   });
 
   builder.addCase(actions.nextStepRequested, (state) => {
-    const formState = asFormState(state);
     const form = selectForm(state);
     const stepId = form.currentStep;
     const handler = stepHandlerRegistry[stepId];
@@ -100,18 +100,24 @@ export const addUrbanProjectFormCasesToBuilder = <S extends WizardFormState>(
 
     if (handler.getNextStepId) {
       navigateToAndLoadStep(
-        formState,
+        selectForm(state),
+        buildContext(state),
         handler.getNextStepId({
           context: buildContext(state),
           answers: selectForm(state).steps,
         }),
+        stepHandlerRegistry,
       );
     }
   });
 
   builder.addCase(actions.stepNavigationRequested, (state, action) => {
-    const formState = asFormState(state);
-    navigateToAndLoadStep(formState, action.payload.stepId);
+    navigateToAndLoadStep(
+      selectForm(state),
+      buildContext(state),
+      action.payload.stepId,
+      stepHandlerRegistry,
+    );
   });
 
   builder.addCase(actions.fetchSoilsCarbonStorageDifference.pending, (state) => {
