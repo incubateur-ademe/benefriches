@@ -1,6 +1,19 @@
 import { AsyncThunk, AsyncThunkConfig } from "@reduxjs/toolkit";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
+import { RootState } from "@/app/store/store";
+
+import type { WizardFormState } from "./wizardForm.reducer";
+
+/**
+ * Lens injected by each consumer so this factory can read the site data it needs without
+ * indexing `RootState` by the (now opaque) action prefix. The read fields (`siteData`,
+ * `siteRelatedLocalAuthorities`) are domain and the whole `fetchSiteRelatedLocalAuthorities`
+ * thunk relocates to the project-form base in ticket 05, at which point this lens disappears.
+ */
+type SelectWizardFormState = (
+  state: RootState,
+) => Pick<WizardFormState, "siteData" | "siteRelatedLocalAuthorities">;
 
 export const makeWizardFormActionType = (prefix: string, actionName: string) => {
   return `${prefix}/wizardForm/${actionName}`;
@@ -41,7 +54,8 @@ export interface SiteMunicipalityDataGateway {
 }
 
 export const createWizardFormActions = (
-  prefix: "projectCreation" | "projectUpdate",
+  prefix: string,
+  selectWizardFormState: SelectWizardFormState,
 ): WizardFormReducerActions => {
   return {
     fetchSiteRelatedLocalAuthorities: createAppAsyncThunk<
@@ -49,9 +63,9 @@ export const createWizardFormActions = (
     >(
       makeWizardFormActionType(prefix, "fetchSiteRelatedLocalAuthorities"),
       async (_, { extra, getState }) => {
-        const state = getState();
-        const siteAddress = state[prefix].siteData?.address;
-        const localAuthoritiesData = state[prefix].siteRelatedLocalAuthorities;
+        const formState = selectWizardFormState(getState());
+        const siteAddress = formState.siteData?.address;
+        const localAuthoritiesData = formState.siteRelatedLocalAuthorities;
 
         const cityCode = siteAddress?.cityCode;
         if (!cityCode) {

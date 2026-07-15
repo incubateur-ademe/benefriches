@@ -19,7 +19,10 @@ const makeProjectUpdateActionType = (actionName: string) => {
   return `${UPDATE_PROJECT_STORE_KEY}/${actionName}`;
 };
 
-export const updateProjectFormActions = createWizardFormActions(UPDATE_PROJECT_STORE_KEY);
+export const updateProjectFormActions = createWizardFormActions(
+  UPDATE_PROJECT_STORE_KEY,
+  (state) => state.projectUpdate,
+);
 export const updateProjectFormUrbanActions = createUrbanProjectFormActions(
   UPDATE_PROJECT_STORE_KEY,
   {

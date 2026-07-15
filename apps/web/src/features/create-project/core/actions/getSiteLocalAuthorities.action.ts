@@ -1,3 +1,6 @@
 import { createWizardFormActions } from "@/shared/core/wizard-form/wizardForm.actions";
 
-export const { fetchSiteRelatedLocalAuthorities } = createWizardFormActions("projectCreation");
+export const { fetchSiteRelatedLocalAuthorities } = createWizardFormActions(
+  "projectCreation",
+  (state) => state.projectCreation,
+);

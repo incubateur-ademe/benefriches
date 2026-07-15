@@ -8,7 +8,10 @@ import {
 import { selectSiteAddress, selectSiteSoilsDistribution } from "../createProject.selectors";
 import { selectProjectSoilsDistributionByType } from "./urbanProject.selectors";
 
-export const creationProjectFormActions = createWizardFormActions(PROJECT_CREATION_ACTION_PREFIX);
+export const creationProjectFormActions = createWizardFormActions(
+  PROJECT_CREATION_ACTION_PREFIX,
+  (state) => state.projectCreation,
+);
 export const creationProjectFormUrbanActions = createUrbanProjectFormActions(
   PROJECT_CREATION_ACTION_PREFIX,
   {
