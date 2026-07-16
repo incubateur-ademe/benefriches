@@ -1,7 +1,9 @@
+import {
+  AvailableProjectStakeholder,
+  hasStakeholder,
+} from "@/features/create-project/core/project-form/stakeholders";
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
-
-import { AvailableProjectStakeholder, hasStakeholder } from "../../helpers/stakeholders";
 
 type Props = {
   projectAvailableStakeholders: AvailableProjectStakeholder[];

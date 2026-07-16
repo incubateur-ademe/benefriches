@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { generateRenewableEnergyProjectName } from "../../../../../../../shared/core/wizard-form/helpers/projectName";
+import { generateRenewableEnergyProjectName } from "../../../../project-form/projectName";
 import { ReadStateHelper } from "../../../helpers/readState";
 import { selectSteps } from "../../../selectors/renewableEnergy.selector";
 

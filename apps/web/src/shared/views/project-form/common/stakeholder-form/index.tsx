@@ -3,13 +3,13 @@ import { LocalAuthority } from "shared";
 
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 import {
+  AvailableLocalAuthorityStakeholder,
+  AvailableProjectStakeholder,
+} from "@/features/create-project/core/project-form/stakeholders";
+import {
   ProjectStakeholder,
   ProjectStakeholderStructure,
 } from "@/features/create-project/core/project.types";
-import {
-  AvailableLocalAuthorityStakeholder,
-  AvailableProjectStakeholder,
-} from "@/shared/core/wizard-form/helpers/stakeholders";
 
 import { useProjectForm } from "../../useProjectForm";
 import StakeholderForm, { FormValues } from "./StakeholderForm";

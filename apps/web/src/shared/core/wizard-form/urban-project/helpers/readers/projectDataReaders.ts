@@ -1,6 +1,10 @@
 import { BuildingsConstructionExpense, typedObjectEntries } from "shared";
 
-import { DEFAULT_FUTURE_SITE_OWNER, getFutureOperator } from "../../../helpers/stakeholders";
+import {
+  DEFAULT_FUTURE_SITE_OWNER,
+  getFutureOperator,
+} from "@/features/create-project/core/project-form/stakeholders";
+
 import type { WizardFormState } from "../../../wizardForm.reducer";
 import { EXPENSE_FIELD_TO_PURPOSE } from "../../step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
 import type { UrbanProjectFormData } from "../../urbanProjectSteps";

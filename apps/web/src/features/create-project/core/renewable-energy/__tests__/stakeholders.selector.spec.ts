@@ -1,8 +1,8 @@
-import { buildUser } from "@/features/onboarding/core/user.mock";
 import {
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
-} from "@/shared/core/wizard-form/helpers/stakeholders";
+} from "@/features/create-project/core/project-form/stakeholders";
+import { buildUser } from "@/features/onboarding/core/user.mock";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import {

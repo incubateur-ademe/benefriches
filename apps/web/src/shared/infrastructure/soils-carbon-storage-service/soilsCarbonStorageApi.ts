@@ -1,14 +1,14 @@
 import {
+  GetSoilsCarbonStoragePayload,
+  SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway,
+  SoilsCarbonStorageResult,
+} from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
+import {
   GetSiteSoilsCarbonStoragePayload,
   SiteSoilsCarbonStorageResult,
   SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway,
 } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
 import { objectToQueryParams } from "@/shared/core/object-query-parameters/objectToQueryParameters";
-import {
-  GetSoilsCarbonStoragePayload,
-  SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway,
-  SoilsCarbonStorageResult,
-} from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 
 export class SoilsCarbonStorageApi
   implements SiteSoilsCarbonStorageGateway, ProjectSoilsCarbonStorageGateway

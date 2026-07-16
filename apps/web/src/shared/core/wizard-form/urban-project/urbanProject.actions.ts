@@ -8,10 +8,10 @@ import { SoilsDistribution } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { RootState } from "@/app/store/store";
+import { WizardFormSelectors } from "@/features/create-project/core/project-form/projectForm.selectors";
+import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
 
-import { CurrentAndProjectedSoilsCarbonStorageResult } from "../soilsCarbonStorage.action";
 import { makeWizardFormActionType } from "../wizardForm.actions";
-import { WizardFormSelectors } from "../wizardForm.selectors";
 import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
 const makeUrbanProjectFormActionType = (prefix: string, actionName: string) =>

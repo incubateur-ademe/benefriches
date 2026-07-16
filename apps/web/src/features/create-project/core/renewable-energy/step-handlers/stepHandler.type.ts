@@ -1,4 +1,4 @@
-import type { ProjectSiteView } from "@/shared/core/wizard-form/wizardForm.types";
+import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
 
 import type {
   AnswersByStep,

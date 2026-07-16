@@ -4,7 +4,6 @@ import { v4 as uuid } from "uuid";
 
 import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 import {
-  addWizardFormCasesToBuilder,
   getWizardFormInitialState,
   WizardFormState,
 } from "@/shared/core/wizard-form/wizardForm.reducer";
@@ -19,6 +18,7 @@ import {
   DemoProjectCreationState,
 } from "./demo/demoProject.reducer";
 import { DemoProjectCreationStep } from "./demo/demoSteps";
+import { addWizardFormCasesToBuilder } from "./project-form/siteRelatedLocalAuthorities.action";
 import {
   RenewableEnergyProjectState,
   INITIAL_STATE as renenewableEnergyProjectInitialState,

@@ -1,4 +1,5 @@
-import { generateUrbanProjectName } from "../../../../helpers/projectName";
+import { generateUrbanProjectName } from "@/features/create-project/core/project-form/projectName";
+
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const UrbanProjectNamingHandler = {

@@ -2,8 +2,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
+import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
 import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
-import type { ProjectSiteView } from "@/shared/core/wizard-form/wizardForm.types";
 
 import { getBuildingsFootprintToDemolish } from "../buildingsReaders";
 

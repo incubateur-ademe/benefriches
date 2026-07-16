@@ -1,5 +1,5 @@
+import { createWizardFormActions } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
 import { createUrbanProjectFormActions } from "@/shared/core/wizard-form/urban-project/urbanProject.actions";
-import { createWizardFormActions } from "@/shared/core/wizard-form/wizardForm.actions";
 
 import {
   makeProjectCreationActionType,

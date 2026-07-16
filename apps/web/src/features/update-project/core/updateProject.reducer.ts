@@ -1,6 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { DevelopmentPlanType, ProjectPhase } from "shared";
 
+import { addWizardFormCasesToBuilder } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 import {
   answerStepHandlers,
@@ -9,7 +10,6 @@ import {
 import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/wizard-form/urban-project/urbanProject.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 import {
-  addWizardFormCasesToBuilder,
   getWizardFormInitialState,
   WizardFormState,
 } from "@/shared/core/wizard-form/wizardForm.reducer";

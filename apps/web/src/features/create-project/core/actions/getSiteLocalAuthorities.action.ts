@@ -1,4 +1,4 @@
-import { createWizardFormActions } from "@/shared/core/wizard-form/wizardForm.actions";
+import { createWizardFormActions } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
 
 export const { fetchSiteRelatedLocalAuthorities } = createWizardFormActions(
   "projectCreation",

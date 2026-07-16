@@ -9,8 +9,8 @@ import type {
 } from "shared";
 
 import { RootState } from "@/app/store/store";
+import type { SoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
 import type { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
-import type { SoilsCarbonStorageResult } from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 
 import { selectSiteData } from "../../../../createProject.selectors";
 import type { Schedule } from "../../../../project.types";

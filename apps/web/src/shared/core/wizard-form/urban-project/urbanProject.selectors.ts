@@ -1,10 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/store/store";
+import { createWizardFormSelectors } from "@/features/create-project/core/project-form/projectForm.selectors";
 import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper/stepperConfig";
 
 import { ReadStateHelper } from "../helpers/readState";
-import { createWizardFormSelectors } from "../wizardForm.selectors";
 import { getProjectSummary } from "./helpers/projectSummary";
 import {
   getProjectSoilDistribution,

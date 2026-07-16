@@ -3,13 +3,13 @@ import { Address, SoilsDistribution } from "shared";
 
 import { RootState } from "@/app/store/store";
 
+import { ProjectSiteView } from "./projectSite.types";
 import {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
-} from "./helpers/stakeholders";
-import { ProjectSiteView } from "./wizardForm.types";
+} from "./stakeholders";
 
 export type WizardFormSelectors = {
   selectSiteData: (state: RootState) => ProjectSiteView | undefined;

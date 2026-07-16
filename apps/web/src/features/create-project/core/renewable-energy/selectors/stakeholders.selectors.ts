@@ -6,7 +6,7 @@ import {
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
   hasStakeholder,
-} from "@/shared/core/wizard-form/helpers/stakeholders";
+} from "@/features/create-project/core/project-form/stakeholders";
 
 import { selectSiteData } from "../../createProject.selectors";
 import type { ProjectStakeholder } from "../../project.types";

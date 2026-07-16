@@ -6,7 +6,11 @@ import {
   UrbanProjectDevelopmentExpense,
 } from "shared";
 
-import { DEFAULT_FUTURE_SITE_OWNER, getFutureOperator } from "../../helpers/stakeholders";
+import {
+  DEFAULT_FUTURE_SITE_OWNER,
+  getFutureOperator,
+} from "@/features/create-project/core/project-form/stakeholders";
+
 import { WizardFormState } from "../../wizardForm.reducer";
 import { UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { isSiteResalePlannedAfterDevelopment } from "./readers/siteResaleReaders";

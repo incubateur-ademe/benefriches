@@ -5,6 +5,8 @@ import { AppSettingsGateway } from "@/features/app-settings/core/AppSettingsGate
 import { GetSitesByIdGateway } from "@/features/create-project/core/actions/reconversionProjectCreationInitiated.action";
 import { SaveReconversionProjectGateway } from "@/features/create-project/core/actions/saveReconversionProject.action";
 import { CreateExpressReconversionProjectGateway } from "@/features/create-project/core/demo/demoProject.actions";
+import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
+import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
@@ -23,8 +25,6 @@ import type { SupportChatGateway } from "@/features/support/core/gateways/Suppor
 import { UpdateProjectServiceGateway } from "@/features/update-project/core/updateProject.types";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 import { RealEstateValuationGateway } from "@/shared/core/gateways/RealEstateValuationGateway";
-import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "@/shared/core/wizard-form/soilsCarbonStorage.action";
-import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/shared/core/wizard-form/wizardForm.actions";
 
 import { getListener, setupAllListeners } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";

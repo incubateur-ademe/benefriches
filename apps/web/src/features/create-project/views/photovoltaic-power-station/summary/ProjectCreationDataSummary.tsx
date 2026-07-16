@@ -10,6 +10,7 @@ import {
   sumListWithKey,
 } from "shared";
 
+import { SoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
 import { Schedule } from "@/features/create-project/core/project.types";
 import { formatCarbonStorage } from "@/shared/core/format-number/formatCarbonStorage";
 import {
@@ -25,7 +26,6 @@ import {
   getLabelForReinstatementExpensePurpose,
   RenewableEnergyDevelopmentPlanType,
 } from "@/shared/core/reconversionProject";
-import { SoilsCarbonStorageResult } from "@/shared/core/wizard-form/soilsCarbonStorage.action";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";

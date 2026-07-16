@@ -5,13 +5,10 @@ import {
   type TenantStructureType,
 } from "shared";
 
-import {
-  ProjectStakeholder,
-  ProjectStakeholderStructure,
-} from "@/features/create-project/core/project.types";
 import { UserStructureActivity, UserStructureType } from "@/features/onboarding/core/user";
+import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
-import { WizardFormState } from "../wizardForm.reducer";
+import { ProjectStakeholder, ProjectStakeholderStructure } from "../project.types";
 
 export const DEFAULT_FUTURE_SITE_OWNER = {
   name: "Futur propriétaire inconnu",

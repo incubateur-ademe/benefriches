@@ -1,6 +1,8 @@
-import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
-
-import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/shared/core/wizard-form/soilsCarbonStorage.action";
+import {
+  LocalAuthorities,
+  ProjectSiteView,
+} from "@/features/create-project/core/project-form/projectSite.types";
+import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
 
 import { StepUpdateResult } from "./helpers/computeStepChanges";
 import { computeStepsSequence } from "./helpers/stepsSequence";
@@ -12,8 +14,6 @@ import {
   IntroductionStep,
   SummaryStep,
 } from "./urban-project/urbanProjectSteps";
-import { WizardFormReducerActions } from "./wizardForm.actions";
-import { LocalAuthorities, ProjectSiteView } from "./wizardForm.types";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -129,23 +129,4 @@ export type WizardFormDefinition<
   };
   selectForm: (state: RootDraftState) => WizardFormSubState<StepId, TAnswers, TPendingChanges>;
   buildContext: (state: RootDraftState) => TContext;
-};
-
-export const addWizardFormCasesToBuilder = <S extends WizardFormState>(
-  builder: ActionReducerMapBuilder<S>,
-  actions: WizardFormReducerActions,
-) => {
-  builder
-    .addCase(actions.fetchSiteRelatedLocalAuthorities.pending, (state) => {
-      state.siteRelatedLocalAuthorities.loadingState = "loading";
-    })
-    .addCase(actions.fetchSiteRelatedLocalAuthorities.fulfilled, (state, action) => {
-      state.siteRelatedLocalAuthorities = {
-        loadingState: "success",
-        ...action.payload,
-      };
-    })
-    .addCase(actions.fetchSiteRelatedLocalAuthorities.rejected, (state) => {
-      state.siteRelatedLocalAuthorities.loadingState = "error";
-    });
 };
