@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BuildingsUsesFloorSurfaceAreaHandler } from "@/shared/core/wizard-form/urban-project/step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.handler";
+import { BuildingsUsesFloorSurfaceAreaHandler } from "@/features/create-project/core/urban-project/step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.handler";
 
 describe("BuildingsUsesFloorSurfaceAreaHandler", () => {
   it("routes to BUILDINGS_REUSE_INTRODUCTION when site has existing buildings", () => {

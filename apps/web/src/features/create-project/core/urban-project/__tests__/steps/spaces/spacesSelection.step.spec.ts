@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 
-import type { AnswersByStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
-import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
+import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { AnswersByStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";

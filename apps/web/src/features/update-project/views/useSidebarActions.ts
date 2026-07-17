@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import { routes, useRoute } from "@/app/router";
-import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
+import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
 import { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 type Props = {

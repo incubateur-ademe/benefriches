@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
+import { getSurfaceAreaDistributionWithUnit } from "@/features/create-project/core/urban-project/helpers/surfaceAreaDistribution";
 import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
-import { getSurfaceAreaDistributionWithUnit } from "@/shared/core/wizard-form/urban-project/helpers/surfaceAreaDistribution";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import PublicGreenSpacesSoilsDistribution from "./PublicGreenSpacesSoilsDistribution";

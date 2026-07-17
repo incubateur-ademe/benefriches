@@ -3,8 +3,8 @@ import z from "zod";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { createWizardFormActions } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
-import { getProjectData } from "@/shared/core/wizard-form/urban-project/helpers/readers/projectDataReaders";
-import { createUrbanProjectFormActions } from "@/shared/core/wizard-form/urban-project/urbanProject.actions";
+import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
+import { createUrbanProjectFormActions } from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
 
 import {
   selectProjectSoilsDistributionByType,

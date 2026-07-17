@@ -2,8 +2,8 @@ import { ActionReducerMapBuilder, AsyncThunk, AsyncThunkConfig } from "@reduxjs/
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { RootState } from "@/app/store/store";
+import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
 import { makeWizardFormActionType } from "@/shared/core/wizard-form/wizardForm.actions";
-import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 type SelectWizardFormState = (
   state: RootState,

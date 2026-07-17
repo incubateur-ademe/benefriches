@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { RevenueBuildingsOperationsYearlyRevenuesHandler } from "@/shared/core/wizard-form/urban-project/step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.handler";
-import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
+import { RevenueBuildingsOperationsYearlyRevenuesHandler } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.handler";
+import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
 
 describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
   describe("getNextStepId", () => {

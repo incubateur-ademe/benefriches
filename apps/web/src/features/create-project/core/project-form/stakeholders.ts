@@ -5,8 +5,8 @@ import {
   type TenantStructureType,
 } from "shared";
 
+import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
 import { UserStructureActivity, UserStructureType } from "@/features/onboarding/core/user";
-import type { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { ProjectStakeholder, ProjectStakeholderStructure } from "../project.types";
 

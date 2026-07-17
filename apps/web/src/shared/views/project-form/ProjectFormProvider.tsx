@@ -7,14 +7,14 @@ import {
 } from "@/features/create-project/core/urban-project/urbanProject.actions";
 import { creationProjectFormSelectors } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project/urbanProjectCustomSaved.action";
+import { StepCompletionPayload } from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import {
   reconversionProjectUpdateSaved,
   updateProjectFormActions,
   updateProjectFormUrbanActions,
 } from "@/features/update-project/core/updateProject.actions";
 import { updateUrbanProjectFormSelectors } from "@/features/update-project/core/updateProject.selectors";
-import { StepCompletionPayload } from "@/shared/core/wizard-form/urban-project/urbanProject.actions";
-import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 
 import { ProjectFormContext, ProjectFormContextValue } from "./ProjectFormContext";
 import { StepGroupId } from "./stepper/stepperConfig";

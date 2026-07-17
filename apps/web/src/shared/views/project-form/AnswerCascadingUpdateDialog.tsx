@@ -3,7 +3,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import { AnswerStepId } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
+import { AnswerStepId } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import classNames from "@/shared/views/clsx";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 

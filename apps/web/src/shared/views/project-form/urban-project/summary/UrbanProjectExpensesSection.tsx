@@ -11,6 +11,7 @@ import {
   URBAN_PROJECT_EURO_PER_SQUARE_METERS_FOR_TECHNICAL_STUDIES,
 } from "shared";
 
+import { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForRecurringExpense,
@@ -20,7 +21,6 @@ import {
   getLabelForBuildingsConstructionExpense,
   getLabelForUrbanProjectDevelopmentExpense,
 } from "@/shared/core/urbanProject";
-import { getProjectSummary } from "@/shared/core/wizard-form/urban-project/helpers/projectSummary";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 

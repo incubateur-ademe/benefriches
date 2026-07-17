@@ -11,13 +11,13 @@ import {
 import type { UrbanProjectUse } from "shared";
 
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
-import { EXPENSE_PURPOSE_TO_FIELD } from "@/shared/core/wizard-form/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
+import { EXPENSE_PURPOSE_TO_FIELD } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
+import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
 import {
   ANSWER_STEPS,
   INTRODUCTION_STEPS,
   SUMMARY_STEPS,
-} from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
-import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
+} from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 import { UpdateProjectView } from "../updateProject.types";
 

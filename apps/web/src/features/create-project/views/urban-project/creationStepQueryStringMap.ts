@@ -1,4 +1,4 @@
-import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   // Uses flow (new)

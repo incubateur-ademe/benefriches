@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { typedObjectEntries } from "shared";
 
-import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 import { StepVariant } from "../../layout/WizardFormLayout/FormBaseStepperStep";
 import { ProjectStepGroups, STEP_GROUP_LABELS, STEP_TO_GROUP_MAPPING } from "./stepperConfig";

@@ -1,8 +1,7 @@
 // Generic wizard-form step-handler contract (ADR-0015), parameterized over
-// <StepId, TContext, TAnswers>. Each consumer (e.g. urban) aliases these with its own
-// concrete step/context/answers types. TAnswers is a map from step id to answer payload
-// (e.g. urban's AnswersByStep); `WizardFormStepsState` wraps it into the accumulated,
-// per-step state handlers actually read.
+// <StepId, TContext, TAnswers>. Each consumer aliases these with its own concrete
+// step/context/answers types. TAnswers is a map from step id to answer payload;
+// `WizardFormStepsState` wraps it into the accumulated, per-step state handlers actually read.
 
 export type WizardStepState<TPayload> = {
   completed: boolean;

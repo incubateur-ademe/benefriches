@@ -93,7 +93,7 @@ describe("MutateStateHelper", () => {
 
   describe("completeStep", () => {
     it("should mark step as completed and set payload", () => {
-      const answers = { name: "Project Name", description: "Project Description" };
+      const answers = { name: "Sample Name", description: "Sample Description" };
 
       MutateStateHelper.completeStep(form, "STEP_A", answers);
 
@@ -102,7 +102,7 @@ describe("MutateStateHelper", () => {
     });
 
     it("should create step if it does not exist", () => {
-      const answers = { name: "Project Name", description: "Project Description" };
+      const answers = { name: "Sample Name", description: "Sample Description" };
 
       MutateStateHelper.completeStep(form, "STEP_A", answers);
 
@@ -199,12 +199,12 @@ describe("MutateStateHelper", () => {
     it("should mark step as completed and set payload from bundled payload", () => {
       MutateStateHelper.completeStepFromPayload(form, {
         stepId: "STEP_A",
-        answers: { name: "Project Name", description: "Project Description" },
+        answers: { name: "Sample Name", description: "Sample Description" },
       });
 
       expect(form.steps.STEP_A).toEqual({
         completed: true,
-        payload: { name: "Project Name", description: "Project Description" },
+        payload: { name: "Sample Name", description: "Sample Description" },
       });
     });
 

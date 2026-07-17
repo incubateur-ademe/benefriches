@@ -2,11 +2,11 @@ import { createReducer } from "@reduxjs/toolkit";
 import reduceReducers from "reduce-reducers";
 import { v4 as uuid } from "uuid";
 
-import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 import {
   getWizardFormInitialState,
   WizardFormState,
-} from "@/shared/core/wizard-form/wizardForm.reducer";
+} from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 import { currentProjectFlowUpdated } from "./actions/currentProjectFlowUpdated.action";
 import { fetchSiteRelatedLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";

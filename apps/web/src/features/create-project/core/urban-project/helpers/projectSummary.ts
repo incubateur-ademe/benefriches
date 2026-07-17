@@ -1,0 +1,284 @@
+import {
+  ProjectPhase,
+  ReconversionProjectSoilsDistribution,
+  ReinstatementExpensePurpose,
+  sumObjectValues,
+  UrbanProjectDevelopmentExpense,
+} from "shared";
+
+import {
+  DEFAULT_FUTURE_SITE_OWNER,
+  getFutureOperator,
+} from "@/features/create-project/core/project-form/stakeholders";
+
+import { WizardFormState } from "../urbanProjectForm.state";
+import { UrbanProjectCreationStep } from "../urbanProjectSteps";
+import { isSiteResalePlannedAfterDevelopment } from "./readers/siteResaleReaders";
+
+export const getProjectSummary = (
+  steps: WizardFormState["urbanProject"]["steps"],
+  stepsSequence: UrbanProjectCreationStep[],
+  projectPhase?: ProjectPhase,
+  soilsDistribution: ReconversionProjectSoilsDistribution = [],
+) => {
+  const totalBuildingsFootprint =
+    soilsDistribution.find(({ soilType }) => soilType === "BUILDINGS")?.surfaceArea ?? 0;
+  const buildingsFootprintToReuse =
+    steps.URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE?.payload?.buildingsFootprintToReuse;
+  const autoReinstatementCostsValues =
+    steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload?.reinstatementExpenses?.reduce<
+      ReinstatementExpensePurpose[]
+    >((autos, expense) => {
+      const defaultValue =
+        steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.defaultValues?.reinstatementExpenses?.find(
+          (e) => e.purpose === expense.purpose,
+        );
+      return expense.amount === defaultValue?.amount ? [...autos, expense.purpose] : autos;
+    }, []);
+
+  const autoInstallationCostsValues =
+    steps.URBAN_PROJECT_EXPENSES_INSTALLATION?.payload?.installationExpenses?.reduce<
+      UrbanProjectDevelopmentExpense["purpose"][]
+    >((autos, expense) => {
+      const defaultValue =
+        steps.URBAN_PROJECT_EXPENSES_INSTALLATION?.defaultValues?.installationExpenses?.find(
+          (e) => e.purpose === expense.purpose,
+        );
+      return expense.amount === defaultValue?.amount ? [...autos, expense.purpose] : autos;
+    }, []);
+
+  const { sitePurchaseSellingPrice, sitePurchasePropertyTransferDuties = 0 } =
+    steps.URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS?.payload ?? {};
+  const sitePurchaseTotalAmount = sitePurchaseSellingPrice
+    ? sitePurchaseSellingPrice + sitePurchasePropertyTransferDuties
+    : undefined;
+
+  return {
+    name: {
+      value: steps.URBAN_PROJECT_NAMING?.payload?.name,
+      isAuto:
+        steps.URBAN_PROJECT_NAMING?.payload?.name ===
+        steps.URBAN_PROJECT_NAMING?.defaultValues?.name,
+    },
+    description: {
+      value: steps.URBAN_PROJECT_NAMING?.payload?.description,
+      isAuto:
+        steps.URBAN_PROJECT_NAMING?.payload?.description ===
+        steps.URBAN_PROJECT_NAMING?.defaultValues?.description,
+    },
+    reinstatementContractOwner: {
+      value:
+        steps.URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER?.payload
+          ?.reinstatementContractOwner,
+      isAuto:
+        steps.URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER?.payload
+          ?.reinstatementContractOwner ===
+        steps.URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER?.defaultValues
+          ?.reinstatementContractOwner,
+      shouldDisplay: stepsSequence.includes(
+        "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
+      ),
+    },
+    reinstatementCosts: {
+      value: steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload?.reinstatementExpenses,
+      isAuto: autoReinstatementCostsValues?.length !== 0,
+      autoValues: autoReinstatementCostsValues,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_EXPENSES_REINSTATEMENT"),
+    },
+    sitePurchaseTotalAmount: {
+      value: sitePurchaseTotalAmount,
+      isAuto:
+        sitePurchaseSellingPrice ===
+        steps.URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS?.defaultValues?.sitePurchaseSellingPrice,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS"),
+    },
+    sitePurchasePropertyTransferDuties: {
+      value:
+        steps.URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS?.payload
+          ?.sitePurchasePropertyTransferDuties,
+      isAuto:
+        steps.URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS?.payload
+          ?.sitePurchasePropertyTransferDuties ===
+        steps.URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS?.defaultValues
+          ?.sitePurchasePropertyTransferDuties,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS"),
+    },
+    siteResaleExpectedSellingPrice: {
+      value:
+        steps.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE?.payload?.siteResaleExpectedSellingPrice,
+      isAuto:
+        steps.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE?.payload
+          ?.siteResaleExpectedSellingPrice ===
+        steps.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE?.defaultValues
+          ?.siteResaleExpectedSellingPrice,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"),
+    },
+    financialAssistanceRevenues: {
+      value: steps.URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE?.payload?.financialAssistanceRevenues,
+      isAuto:
+        steps.URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE?.payload?.financialAssistanceRevenues ===
+        steps.URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE?.defaultValues
+          ?.financialAssistanceRevenues,
+    },
+    yearlyProjectedCosts: {
+      value:
+        steps.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES?.payload
+          ?.yearlyProjectedBuildingsOperationsExpenses ?? [],
+      isAuto:
+        steps.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES?.payload
+          ?.yearlyProjectedBuildingsOperationsExpenses ===
+        steps.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES?.defaultValues
+          ?.yearlyProjectedBuildingsOperationsExpenses,
+    },
+    yearlyProjectedRevenues: {
+      value:
+        steps.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES?.payload
+          ?.yearlyProjectedRevenues ?? [],
+      isAuto:
+        steps.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES?.payload
+          ?.yearlyProjectedRevenues ===
+        steps.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES?.defaultValues
+          ?.yearlyProjectedRevenues,
+    },
+    reinstatementSchedule: {
+      value: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.reinstatementSchedule,
+      isAuto:
+        steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.reinstatementSchedule ===
+        steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.defaultValues?.reinstatementSchedule,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_SCHEDULE_PROJECTION"),
+    },
+    operationsFirstYear: {
+      value: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.firstYearOfOperation,
+      isAuto:
+        steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.firstYearOfOperation ===
+        steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.defaultValues?.firstYearOfOperation,
+    },
+    futureOperator: {
+      value:
+        steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION?.payload
+          ?.buildingsResalePlannedAfterDevelopment !== undefined
+          ? getFutureOperator(
+              steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION.payload
+                .buildingsResalePlannedAfterDevelopment,
+              steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload?.projectDeveloper,
+            )
+          : undefined,
+      isAuto: true, // Always auto-derived from resale selection + project developer
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION"),
+    },
+    futureSiteOwner: {
+      // when resale is planned, future owner is unknown
+      value: isSiteResalePlannedAfterDevelopment(steps) ? DEFAULT_FUTURE_SITE_OWNER : undefined,
+      isAuto: true, // Always auto-derived from selection
+    },
+    developer: {
+      value: steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload?.projectDeveloper,
+      isAuto:
+        steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload?.projectDeveloper ===
+        steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.defaultValues?.projectDeveloper,
+    },
+    buildingsContractorName: {
+      value:
+        steps.URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER?.payload
+          ?.developerWillBeBuildingsConstructor === true
+          ? steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload?.projectDeveloper?.name
+          : undefined,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER"),
+    },
+    installationCosts: {
+      value: steps.URBAN_PROJECT_EXPENSES_INSTALLATION?.payload?.installationExpenses ?? [],
+      isAuto: autoInstallationCostsValues?.length !== 0,
+      autoValues: autoInstallationCostsValues,
+    },
+    buildingsConstructionAndRehabilitationCosts: {
+      value: steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION?.payload,
+      shouldDisplay: stepsSequence.includes(
+        "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
+      ),
+    },
+    installationSchedule: {
+      value: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.installationSchedule,
+      isAuto:
+        steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.installationSchedule ===
+        steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.defaultValues?.installationSchedule,
+    },
+    buildingsUsesDistribution: {
+      value:
+        steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+          ?.usesFloorSurfaceAreaDistribution,
+      isAuto:
+        steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+          ?.usesFloorSurfaceAreaDistribution ===
+        steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.defaultValues
+          ?.usesFloorSurfaceAreaDistribution,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA"),
+    },
+    buildingsFloorSurfaceArea: {
+      value: steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+        ?.usesFloorSurfaceAreaDistribution
+        ? sumObjectValues(
+            steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA.payload
+              .usesFloorSurfaceAreaDistribution,
+          )
+        : undefined,
+      isAuto:
+        steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+          ?.usesFloorSurfaceAreaDistribution ===
+        steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.defaultValues
+          ?.usesFloorSurfaceAreaDistribution,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA"),
+    },
+    buildingsResaleExpectedSellingPrice: {
+      value: steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.payload?.buildingsResaleSellingPrice,
+      isAuto:
+        steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.payload?.buildingsResaleSellingPrice ===
+        steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.defaultValues?.buildingsResaleSellingPrice,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE"),
+    },
+    decontaminatedSoilSurface: {
+      value:
+        steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload?.decontaminatedSurfaceArea,
+      isAuto:
+        steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload?.decontaminationPlan ===
+        "unknown",
+      shouldDisplay:
+        stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA") &&
+        !!steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload
+          ?.decontaminatedSurfaceArea,
+    },
+    selectedUses: {
+      value: steps.URBAN_PROJECT_USES_SELECTION?.payload?.usesSelection ?? [],
+    },
+    publicGreenSpacesSurfaceArea: {
+      value:
+        steps.URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA?.payload?.publicGreenSpacesSurfaceArea,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA"),
+    },
+    decontaminationPlan: {
+      value: steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload?.decontaminationPlan,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"),
+    },
+    buildingsFootprintToReuse: {
+      value: buildingsFootprintToReuse,
+    },
+    newBuildingsFootprint: {
+      value:
+        totalBuildingsFootprint > 0
+          ? totalBuildingsFootprint - (buildingsFootprintToReuse ?? 0)
+          : undefined,
+    },
+    existingBuildingsUsesFloorSurfaceArea: {
+      value:
+        steps.URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+          ?.existingBuildingsUsesFloorSurfaceArea,
+    },
+    newBuildingsUsesFloorSurfaceArea: {
+      value:
+        steps.URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+          ?.newBuildingsUsesFloorSurfaceArea,
+    },
+    projectPhase: {
+      value: projectPhase,
+    },
+  };
+};

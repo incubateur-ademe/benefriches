@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import { mockSiteData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
+import { stepHandlerRegistry } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
+import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
-import { stepHandlerRegistry } from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
-import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { updateProjectFormUrbanActions } from "./updateProject.actions";
 import updateProjectReducer from "./updateProject.reducer";

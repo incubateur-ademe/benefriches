@@ -1,7 +1,7 @@
 import { lazy, ReactNode, Suspense, useEffect } from "react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 

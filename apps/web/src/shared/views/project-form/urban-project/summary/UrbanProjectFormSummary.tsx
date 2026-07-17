@@ -7,15 +7,15 @@ import {
   typedObjectEntries,
 } from "shared";
 
+import { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
 import { getLabelForUrbanProjectUse } from "@/features/create-project/core/urban-project/urbanProject";
 import { getLabelForSpace } from "@/features/create-project/core/urban-project/urbanProject";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { getLabelForDevelopmentPlanCategory } from "@/features/create-project/views/projectTypeLabelMapping";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getLabelForProjectPhase } from "@/shared/core/projectPhase";
 import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
-import { getProjectSummary } from "@/shared/core/wizard-form/urban-project/helpers/projectSummary";
-import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";

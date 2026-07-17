@@ -2,17 +2,17 @@ import { createReducer } from "@reduxjs/toolkit";
 import { DevelopmentPlanType, ProjectPhase } from "shared";
 
 import { addWizardFormCasesToBuilder } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
-import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 import {
   answerStepHandlers,
   stepHandlerRegistry,
-} from "@/shared/core/wizard-form/urban-project/step-handlers/stepHandlerRegistry";
-import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/wizard-form/urban-project/urbanProject.reducer";
-import { UrbanProjectCreationStep } from "@/shared/core/wizard-form/urban-project/urbanProjectSteps";
+} from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
+import { addUrbanProjectFormCasesToBuilder } from "@/features/create-project/core/urban-project/urbanProjectForm.reducer";
 import {
   getWizardFormInitialState,
   WizardFormState,
-} from "@/shared/core/wizard-form/wizardForm.reducer";
+} from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 
 import { convertProjectDataToSteps } from "./helpers/convertProjectDataToSteps";
 import {

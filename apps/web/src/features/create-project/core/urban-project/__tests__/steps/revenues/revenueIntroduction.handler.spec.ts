@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { RevenueIntroductionHandler } from "@/shared/core/wizard-form/urban-project/step-handlers/revenues/revenue-introduction/revenueIntroduction.handler";
-import { WizardFormState } from "@/shared/core/wizard-form/wizardForm.reducer";
+import { RevenueIntroductionHandler } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-introduction/revenueIntroduction.handler";
+import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
 
 describe("RevenueIntroductionHandler", () => {
   describe("getNextStepId", () => {
