@@ -313,6 +313,9 @@ export class UrbanProjectCreationPage {
   }
 }
 
+// Playwright collapses whitespace when computing an element's accessible name, turning the
+// narrow no-break space in `asSquareMeters` output into a regular space — match any whitespace
+// run instead of the exact separator character.
 function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
 }
