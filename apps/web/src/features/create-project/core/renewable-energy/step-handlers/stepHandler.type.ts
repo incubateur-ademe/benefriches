@@ -1,4 +1,11 @@
 import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
+import {
+  AnswerStepHandler as GenericAnswerStepHandler,
+  InfoStepHandler as GenericInfoStepHandler,
+  StepHandlerParams as GenericStepHandlerParams,
+  StepHandlerRegistry as GenericStepHandlerRegistry,
+  WizardFormStepsState,
+} from "@/shared/core/wizard-form/stepHandler.type";
 
 import type {
   AnswersByStep,
@@ -8,33 +15,37 @@ import type {
   SummaryStep,
 } from "../renewableEnergySteps";
 
-export type RenewableEnergyStepsState = Partial<{
-  [K in AnswerStepId]: {
-    completed: boolean;
-    payload?: AnswersByStep[K];
-    defaultValues?: AnswersByStep[K];
-  };
-}>;
-
-export type StepContext = {
-  siteData?: ProjectSiteView;
-  stepsState: RenewableEnergyStepsState;
+// Photovoltaic's eager, guaranteed-loaded situational data (see ADR-0015), mirroring urban's
+// context shape: `context` wraps the site as `siteData` so it can grow further eager data
+// later without reshaping every handler signature.
+export type RenewableEnergyStepHandlerContext = {
+  siteData: ProjectSiteView | undefined;
 };
 
-type StepHandler = {
-  readonly stepId: RenewableEnergyCreationStep;
-  getNextStepId?(context: StepContext): RenewableEnergyCreationStep;
-  getPreviousStepId?(context: StepContext): RenewableEnergyCreationStep;
-};
+export type RenewableEnergyStepsState = WizardFormStepsState<AnswersByStep>;
 
-export type InfoStepHandler = StepHandler & {
-  readonly stepId: SummaryStep | IntroductionStep;
-};
+export type StepHandlerParams<
+  TContext = RenewableEnergyStepHandlerContext,
+  TAnswers = AnswersByStep,
+> = GenericStepHandlerParams<TContext, TAnswers>;
 
-export type AnswerStepHandler<T extends AnswerStepId> = Omit<StepHandler, "getNextStepId"> & {
-  readonly stepId: T;
-  getNextStepId(context: StepContext, answers?: AnswersByStep[T]): RenewableEnergyCreationStep;
-  getPreviousStepId?(context: StepContext): RenewableEnergyCreationStep;
-  getDefaultAnswers?(context: StepContext): AnswersByStep[T] | undefined;
-  updateAnswersMiddleware?(context: StepContext, answers: AnswersByStep[T]): AnswersByStep[T];
-};
+export type InfoStepHandler = GenericInfoStepHandler<
+  RenewableEnergyCreationStep,
+  SummaryStep | IntroductionStep,
+  RenewableEnergyStepHandlerContext,
+  AnswersByStep
+>;
+
+export type AnswerStepHandler<T extends AnswerStepId> = GenericAnswerStepHandler<
+  RenewableEnergyCreationStep,
+  RenewableEnergyStepHandlerContext,
+  AnswersByStep,
+  T
+>;
+
+export type StepHandlerRegistry = GenericStepHandlerRegistry<
+  RenewableEnergyCreationStep,
+  SummaryStep | IntroductionStep,
+  RenewableEnergyStepHandlerContext,
+  AnswersByStep
+>;

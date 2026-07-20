@@ -5,20 +5,18 @@ import { SoilsCarbonStorageResult } from "../project-form/soilsCarbonStorage.typ
 import { saveReconversionProject } from "./actions/customProjectSaved.action";
 import { fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation } from "./actions/getPhotovoltaicExpectedPerformance.action";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./actions/soilsCarbonStorage.actions";
-import { applyStepChanges, computeStepChanges } from "./helpers/completeStep";
-import { navigateToAndLoadStep } from "./helpers/navigateToStep";
 import {
   nextStepRequested,
   previousStepRequested,
   stepCompletionRequested,
 } from "./renewableEnergy.actions";
+import { addRenewableEnergyFormCasesToBuilder } from "./renewableEnergyForm.reducer";
 import type { RenewableEnergyCreationStep } from "./renewableEnergySteps";
 import type { RenewableEnergyStepsState } from "./step-handlers/stepHandler.type";
-import { stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
 
 export type RenewableEnergyProjectState = {
   createMode: "express" | "custom" | undefined;
-  saveState: "idle" | "loading" | "success" | "error";
+  saveState: "idle" | "dirty" | "loading" | "success" | "error";
   currentStep: RenewableEnergyCreationStep;
   stepsSequence: RenewableEnergyCreationStep[];
   firstSequenceStep: RenewableEnergyCreationStep;
@@ -59,51 +57,6 @@ export const INITIAL_STATE: RenewableEnergyProjectState = {
     loadingState: "idle",
     expectedPerformanceMwhPerYear: undefined,
   },
-};
-
-// Step handler pattern: generic step completion + navigation
-const addStepHandlerCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
-  builder.addCase(stepCompletionRequested, (state, action) => {
-    const changes = computeStepChanges(state, action.payload);
-    applyStepChanges(state, changes);
-  });
-
-  builder.addCase(previousStepRequested, (state) => {
-    const currentStep = state.renewableEnergyProject.currentStep;
-    const handler = stepHandlerRegistry[currentStep];
-
-    if (handler.getPreviousStepId) {
-      const previousStep = handler.getPreviousStepId({
-        siteData: state.siteData,
-        stepsState: state.renewableEnergyProject.steps,
-      });
-      navigateToAndLoadStep(state, previousStep);
-    } else {
-      // Use stepsSequence for backward navigation in the custom flow
-      const stepsSequence = state.renewableEnergyProject.stepsSequence;
-      const currentIndex = stepsSequence.indexOf(currentStep);
-      const previousStep = currentIndex > 0 ? stepsSequence[currentIndex - 1] : undefined;
-      if (previousStep) {
-        navigateToAndLoadStep(state, previousStep);
-      } else {
-        state.currentProjectFlow = "USE_CASE_SELECTION";
-      }
-    }
-  });
-
-  builder.addCase(nextStepRequested, (state) => {
-    const currentStep = state.renewableEnergyProject.currentStep;
-    const handler = stepHandlerRegistry[currentStep];
-    const context = {
-      siteData: state.siteData,
-      stepsState: state.renewableEnergyProject.steps,
-    };
-
-    if (handler.getNextStepId) {
-      const nextStep = handler.getNextStepId(context);
-      navigateToAndLoadStep(state, nextStep);
-    }
-  });
 };
 
 // Save thunk
@@ -160,7 +113,11 @@ const addAsyncThunkCases = (builder: ActionReducerMapBuilder<ProjectCreationStat
 export const renewableEnergyProjectReducer = createReducer(
   {} as ProjectCreationState,
   (builder) => {
-    addStepHandlerCases(builder);
+    addRenewableEnergyFormCasesToBuilder(builder, {
+      stepCompletionRequested,
+      previousStepRequested,
+      nextStepRequested,
+    });
     addSaveReconversionProjectCases(builder);
     addAsyncThunkCases(builder);
   },

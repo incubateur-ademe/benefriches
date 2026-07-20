@@ -2,17 +2,17 @@ import { ComputedReinstatementExpenses, computeProjectReinstatementExpenses } fr
 
 import { ReadStateHelper } from "../../../helpers/readState";
 import { AnswersByStep } from "../../../renewableEnergySteps";
-import type { AnswerStepHandler, StepContext } from "../../stepHandler.type";
+import type { AnswerStepHandler, StepHandlerParams } from "../../stepHandler.type";
 
-function getProjectSoilDistribution(context: StepContext) {
+function getProjectSoilDistribution(params: StepHandlerParams) {
   const customAllocation = ReadStateHelper.getStepAnswers(
-    context.stepsState,
+    params.answers,
     "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
   );
   if (customAllocation?.soilsDistribution) return customAllocation.soilsDistribution;
 
   const projectSelection = ReadStateHelper.getStepAnswers(
-    context.stepsState,
+    params.answers,
     "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
   );
   if (projectSelection?.soilsDistribution) return projectSelection.soilsDistribution;
@@ -20,15 +20,15 @@ function getProjectSoilDistribution(context: StepContext) {
   return {};
 }
 
-const getDefaultReinstatementExpenses = (context: StepContext) => {
-  const soilsDistribution = getProjectSoilDistribution(context);
+const getDefaultReinstatementExpenses = (params: StepHandlerParams) => {
+  const soilsDistribution = getProjectSoilDistribution(params);
   const decontaminatedSurface = ReadStateHelper.getStepAnswers(
-    context.stepsState,
+    params.answers,
     "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
   )?.decontaminatedSurfaceArea;
 
   return computeProjectReinstatementExpenses(
-    context.siteData?.soilsDistribution ?? {},
+    params.context.siteData?.soilsDistribution ?? {},
     soilsDistribution,
     decontaminatedSurface ?? 0,
   );
@@ -55,13 +55,13 @@ export const ReinstatementExpensesHandler: AnswerStepHandler<"RENEWABLE_ENERGY_E
   {
     stepId: "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
 
-    getDefaultAnswers(context) {
-      return formatDefaultValue(getDefaultReinstatementExpenses(context));
+    getDefaultAnswers(params) {
+      return formatDefaultValue(getDefaultReinstatementExpenses(params));
     },
 
-    getPreviousStepId(context) {
+    getPreviousStepId(params) {
       const willSiteBePurchased = ReadStateHelper.getStepAnswers(
-        context.stepsState,
+        params.answers,
         "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
       )?.willSiteBePurchased;
 

@@ -5,9 +5,9 @@ export const SitePurchaseAmountsHandler: AnswerStepHandler<"RENEWABLE_ENERGY_EXP
   {
     stepId: "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS",
 
-    getNextStepId(context) {
+    getNextStepId(params) {
       const involvesReinstatement = ReadStateHelper.getStepAnswers(
-        context.stepsState,
+        params.answers,
         "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
       )?.involvesReinstatement;
       return involvesReinstatement === true

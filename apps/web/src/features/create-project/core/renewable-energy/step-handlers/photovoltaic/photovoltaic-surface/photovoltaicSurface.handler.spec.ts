@@ -16,7 +16,8 @@ describe("SurfaceHandler", () => {
   describe("getNextStepId", () => {
     it("goes to the expected annual production step when the key parameter is POWER", () => {
       const nextStep = SurfaceHandler.getNextStepId({
-        stepsState: stepsStateWithKeyParameter("POWER"),
+        context: { siteData: undefined },
+        answers: stepsStateWithKeyParameter("POWER"),
       });
 
       expect(nextStep).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION");
@@ -24,7 +25,8 @@ describe("SurfaceHandler", () => {
 
     it("goes to the power step when the key parameter is SURFACE", () => {
       const nextStep = SurfaceHandler.getNextStepId({
-        stepsState: stepsStateWithKeyParameter("SURFACE"),
+        context: { siteData: undefined },
+        answers: stepsStateWithKeyParameter("SURFACE"),
       });
 
       expect(nextStep).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER");
@@ -34,7 +36,8 @@ describe("SurfaceHandler", () => {
   describe("getPreviousStepId", () => {
     it("goes back to the power step when the key parameter is POWER", () => {
       const previousStep = SurfaceHandler.getPreviousStepId!({
-        stepsState: stepsStateWithKeyParameter("POWER"),
+        context: { siteData: undefined },
+        answers: stepsStateWithKeyParameter("POWER"),
       });
 
       expect(previousStep).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER");
@@ -42,7 +45,8 @@ describe("SurfaceHandler", () => {
 
     it("goes back to the key parameter step when the key parameter is SURFACE", () => {
       const previousStep = SurfaceHandler.getPreviousStepId!({
-        stepsState: stepsStateWithKeyParameter("SURFACE"),
+        context: { siteData: undefined },
+        answers: stepsStateWithKeyParameter("SURFACE"),
       });
 
       expect(previousStep).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER");

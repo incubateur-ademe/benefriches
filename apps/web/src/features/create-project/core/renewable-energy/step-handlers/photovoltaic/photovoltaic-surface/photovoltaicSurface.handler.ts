@@ -4,9 +4,9 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 export const SurfaceHandler: AnswerStepHandler<"RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE"> = {
   stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE",
 
-  getPreviousStepId(context) {
+  getPreviousStepId(params) {
     const keyParameter = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      params.answers,
       "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
     )?.photovoltaicKeyParameter;
 
@@ -15,9 +15,9 @@ export const SurfaceHandler: AnswerStepHandler<"RENEWABLE_ENERGY_PHOTOVOLTAIC_SU
       : "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER";
   },
 
-  getNextStepId(context) {
+  getNextStepId(params) {
     const keyParameter = ReadStateHelper.getStepAnswers(
-      context.stepsState,
+      params.answers,
       "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
     )?.photovoltaicKeyParameter;
 

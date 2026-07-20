@@ -5,9 +5,9 @@ export const FutureOperatorHandler: AnswerStepHandler<"RENEWABLE_ENERGY_STAKEHOL
   {
     stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
 
-    getNextStepId(context) {
+    getNextStepId(params) {
       const involvesReinstatement = ReadStateHelper.getStepAnswers(
-        context.stepsState,
+        params.answers,
         "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
       )?.involvesReinstatement;
       return involvesReinstatement === true

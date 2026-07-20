@@ -4,7 +4,7 @@ import { selectCommonResultViewData } from "@/features/create-project/core/creat
 import ProjectCreationResult from "./ProjectCreationResult";
 
 type Props = {
-  saveState: "idle" | "loading" | "success" | "error";
+  saveState: "idle" | "dirty" | "loading" | "success" | "error";
   projectName: string;
   onBack: () => void;
 };

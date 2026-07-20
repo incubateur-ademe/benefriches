@@ -15,49 +15,49 @@ export const ProjectSelectionHandler: AnswerStepHandler<"RENEWABLE_ENERGY_SOILS_
   {
     stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
 
-    getPreviousStepId(context) {
+    getPreviousStepId(params) {
       const surfaceArea =
-        ReadStateHelper.getStepAnswers(context.stepsState, "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE")
+        ReadStateHelper.getStepAnswers(params.answers, "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE")
           ?.photovoltaicInstallationSurfaceSquareMeters ?? 0;
 
       return canSiteAccomodatePhotovoltaicPanels(
-        context.siteData?.soilsDistribution ?? {},
+        params.context.siteData?.soilsDistribution ?? {},
         surfaceArea,
       )
         ? "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION"
         : "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE";
     },
 
-    getNextStepId(context, answers) {
+    getNextStepId(params, answers) {
       if (answers?.soilsTransformationProject === "custom") {
         return "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION";
       }
 
       const nextStep = hasSiteSignificantBiodiversityAndClimateSensibleSoils(
-        context.siteData?.soilsDistribution ?? {},
+        params.context.siteData?.soilsDistribution ?? {},
       )
         ? "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE"
         : "RENEWABLE_ENERGY_SOILS_SUMMARY";
       return nextStep;
     },
 
-    updateAnswersMiddleware(context, answers) {
+    updateAnswersMiddleware(params, answers) {
       if (answers.soilsTransformationProject === "custom") {
         return answers;
       }
 
       const nonSuitableSoilsSurfaceAnswers = ReadStateHelper.getStepAnswers(
-        context.stepsState,
+        params.answers,
         "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE",
       );
 
       const baseSoilsDistribution: SoilsDistribution =
         nonSuitableSoilsSurfaceAnswers?.baseSoilsDistributionForTransformation ??
-        context.siteData?.soilsDistribution ??
+        params.context.siteData?.soilsDistribution ??
         {};
 
       const electricalPowerKWc =
-        ReadStateHelper.getStepAnswers(context.stepsState, "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER")
+        ReadStateHelper.getStepAnswers(params.answers, "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER")
           ?.photovoltaicInstallationElectricalPowerKWc ?? 0;
 
       const recommendedImpermeableSurfaceArea =

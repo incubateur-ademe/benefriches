@@ -10,7 +10,7 @@ const selectSaveState = (state: RootState) =>
 
 type CreationResultViewData = {
   projectName: string;
-  saveState: "idle" | "loading" | "success" | "error";
+  saveState: "idle" | "dirty" | "loading" | "success" | "error";
 };
 
 export const selectCreationResultViewData = createSelector(

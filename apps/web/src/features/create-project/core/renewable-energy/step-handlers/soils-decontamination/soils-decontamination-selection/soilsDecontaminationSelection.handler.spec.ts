@@ -7,7 +7,7 @@ describe("SoilsDecontaminationSelectionHandler", () => {
   describe("getNextStepId", () => {
     it("goes to the surface-area step when decontamination is partial", () => {
       const nextStep = SoilsDecontaminationSelectionHandler.getNextStepId(
-        { stepsState: {} },
+        { context: { siteData: undefined }, answers: {} },
         { decontaminationPlan: "partial" },
       );
 
@@ -16,7 +16,7 @@ describe("SoilsDecontaminationSelectionHandler", () => {
 
     it("skips to the soils transformation introduction when decontamination is none", () => {
       const nextStep = SoilsDecontaminationSelectionHandler.getNextStepId(
-        { stepsState: {} },
+        { context: { siteData: undefined }, answers: {} },
         { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
       );
 
@@ -25,7 +25,7 @@ describe("SoilsDecontaminationSelectionHandler", () => {
 
     it("skips to the soils transformation introduction when decontamination is unknown", () => {
       const nextStep = SoilsDecontaminationSelectionHandler.getNextStepId(
-        { stepsState: {} },
+        { context: { siteData: undefined }, answers: {} },
         { decontaminationPlan: "unknown" },
       );
 
@@ -36,7 +36,7 @@ describe("SoilsDecontaminationSelectionHandler", () => {
   describe("updateAnswersMiddleware", () => {
     it("forces the decontaminated surface to zero when decontamination is none", () => {
       const answers = SoilsDecontaminationSelectionHandler.updateAnswersMiddleware!(
-        { stepsState: {} },
+        { context: { siteData: undefined }, answers: {} },
         { decontaminationPlan: "none", decontaminatedSurfaceArea: 999 },
       );
 
@@ -45,7 +45,10 @@ describe("SoilsDecontaminationSelectionHandler", () => {
 
     it("derives a default decontaminated surface (25% of contaminated soil) when decontamination is unknown", () => {
       const answers = SoilsDecontaminationSelectionHandler.updateAnswersMiddleware!(
-        { stepsState: {}, siteData: { ...relatedSiteData, contaminatedSoilSurface: 2000 } },
+        {
+          context: { siteData: { ...relatedSiteData, contaminatedSoilSurface: 2000 } },
+          answers: {},
+        },
         { decontaminationPlan: "unknown" },
       );
 
@@ -54,7 +57,7 @@ describe("SoilsDecontaminationSelectionHandler", () => {
 
     it("leaves the answers untouched when decontamination is partial", () => {
       const answers = SoilsDecontaminationSelectionHandler.updateAnswersMiddleware!(
-        { stepsState: {} },
+        { context: { siteData: undefined }, answers: {} },
         { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1200 },
       );
 

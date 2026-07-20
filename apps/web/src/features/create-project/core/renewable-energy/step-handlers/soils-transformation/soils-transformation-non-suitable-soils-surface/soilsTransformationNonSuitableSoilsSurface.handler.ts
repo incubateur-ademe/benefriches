@@ -10,9 +10,9 @@ export const NonSuitableSoilsSurfaceHandler: AnswerStepHandler<"RENEWABLE_ENERGY
       return "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION";
     },
 
-    updateAnswersMiddleware(context, answers) {
+    updateAnswersMiddleware(params, answers) {
       const baseSoilsDistributionForTransformation = transformNonSuitableSoils(
-        context.siteData?.soilsDistribution ?? {},
+        params.context.siteData?.soilsDistribution ?? {},
         answers.nonSuitableSoilsSurfaceAreaToTransform ?? {},
       );
       return { ...answers, baseSoilsDistributionForTransformation };

@@ -4,11 +4,11 @@ export const ContractDurationHandler: AnswerStepHandler<"RENEWABLE_ENERGY_PHOTOV
   {
     stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
 
-    getNextStepId(context) {
-      if (context.siteData?.nature === "FRICHE") {
+    getNextStepId(params) {
+      if (params.context.siteData?.nature === "FRICHE") {
         return "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT";
       }
-      return context.siteData?.contaminatedSoilSurface
+      return params.context.siteData?.contaminatedSoilSurface
         ? "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION"
         : "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION";
     },

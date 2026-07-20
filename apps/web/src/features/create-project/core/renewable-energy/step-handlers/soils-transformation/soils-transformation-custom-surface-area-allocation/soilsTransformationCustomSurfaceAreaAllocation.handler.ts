@@ -10,9 +10,9 @@ export const CustomSurfaceAreaAllocationHandler: AnswerStepHandler<"RENEWABLE_EN
       return "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION";
     },
 
-    getNextStepId(context) {
+    getNextStepId(params) {
       return hasSiteSignificantBiodiversityAndClimateSensibleSoils(
-        context.siteData?.soilsDistribution ?? {},
+        params.context.siteData?.soilsDistribution ?? {},
       )
         ? "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE"
         : "RENEWABLE_ENERGY_SOILS_SUMMARY";

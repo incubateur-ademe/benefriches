@@ -1,4 +1,4 @@
-import type { AnswerStepId, RenewableEnergyCreationStep } from "../renewableEnergySteps";
+import type { AnswerStepId, IntroductionStep, SummaryStep } from "../renewableEnergySteps";
 import { InstallationExpensesHandler } from "./expenses/expenses-installation/expensesInstallation.handler";
 import { ExpensesIntroductionHandler } from "./expenses/expenses-introduction/expensesIntroduction.handler";
 import { ReinstatementExpensesHandler } from "./expenses/expenses-reinstatement/expensesReinstatement.handler";
@@ -32,13 +32,21 @@ import { StakeholdersIntroductionHandler } from "./stakeholders/stakeholders-int
 import { ProjectDeveloperHandler } from "./stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.handler";
 import { ReinstatementContractOwnerHandler } from "./stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.handler";
 import { SitePurchaseHandler } from "./stakeholders/stakeholders-site-purchase/stakeholdersSitePurchase.handler";
-import type { AnswerStepHandler, InfoStepHandler } from "./stepHandler.type";
+import type { AnswerStepHandler, InfoStepHandler, StepHandlerRegistry } from "./stepHandler.type";
 import { CreationResultHandler } from "./summary/summary-creation-result/summaryCreationResult.handler";
 import { FinalSummaryHandler } from "./summary/summary-final/summaryFinal.handler";
 import { SoilsCarbonStorageHandler } from "./summary/summary-soils-carbon-storage/summarySoilsCarbonStorage.handler";
 import { SoilsSummaryHandler } from "./summary/summary-soils/summarySoils.handler";
 
-export const stepHandlerRegistry = {
+type InfoStepId = SummaryStep | IntroductionStep;
+
+// Correlated mapped type: lookup with generic T yields AnswerStepHandler<T>.
+type AnswerStepHandlerMap = {
+  [K in AnswerStepId]: AnswerStepHandler<K>;
+};
+type InfoStepHandlerMap = Record<InfoStepId, InfoStepHandler>;
+
+export const answerStepHandlers: AnswerStepHandlerMap = {
   // Photovoltaic
   RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: KeyParameterHandler,
   RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER: PowerHandler,
@@ -48,30 +56,18 @@ export const stepHandlerRegistry = {
 
   // Soils decontamination
   RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: InvolvesReinstatementHandler,
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION: SoilsDecontaminationIntroductionHandler,
   RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: SoilsDecontaminationSelectionHandler,
   RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA: SoilsDecontaminationSurfaceAreaHandler,
 
   // Soils transformation
-  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION: SoilsTransformationIntroductionHandler,
-  RENEWABLE_ENERGY_NON_SUITABLE_SOILS_NOTICE: NonSuitableSoilsNoticeHandler,
   RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION: NonSuitableSoilsSelectionHandler,
   RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE: NonSuitableSoilsSurfaceHandler,
   RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION: ProjectSelectionHandler,
   RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION: CustomSoilsSelectionHandler,
   RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION:
     CustomSurfaceAreaAllocationHandler,
-  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE:
-    ClimateAndBiodiversityImpactNoticeHandler,
-
-  // Summaries
-  RENEWABLE_ENERGY_SOILS_SUMMARY: SoilsSummaryHandler,
-  RENEWABLE_ENERGY_SOILS_CARBON_STORAGE: SoilsCarbonStorageHandler,
-  RENEWABLE_ENERGY_FINAL_SUMMARY: FinalSummaryHandler,
-  RENEWABLE_ENERGY_CREATION_RESULT: CreationResultHandler,
 
   // Stakeholders
-  RENEWABLE_ENERGY_STAKEHOLDERS_INTRODUCTION: StakeholdersIntroductionHandler,
   RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER: ProjectDeveloperHandler,
   RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR: FutureOperatorHandler,
   RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: ReinstatementContractOwnerHandler,
@@ -79,21 +75,37 @@ export const stepHandlerRegistry = {
   RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER: FutureSiteOwnerHandler,
 
   // Expenses
-  RENEWABLE_ENERGY_EXPENSES_INTRODUCTION: ExpensesIntroductionHandler,
   RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS: SitePurchaseAmountsHandler,
   RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT: ReinstatementExpensesHandler,
   RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION: InstallationExpensesHandler,
   RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES: YearlyProjectedExpensesHandler,
 
   // Revenue
-  RENEWABLE_ENERGY_REVENUE_INTRODUCTION: RevenueIntroductionHandler,
   RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE: YearlyProjectedRevenueHandler,
   RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE: FinancialAssistanceHandler,
 
   // Schedule, phase, naming
   RENEWABLE_ENERGY_SCHEDULE_PROJECTION: ScheduleProjectionHandler,
   RENEWABLE_ENERGY_NAMING: NamingHandler,
-} as const satisfies Record<
-  RenewableEnergyCreationStep,
-  InfoStepHandler | AnswerStepHandler<AnswerStepId>
->;
+};
+
+const infoStepHandlers: InfoStepHandlerMap = {
+  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION: SoilsDecontaminationIntroductionHandler,
+  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION: SoilsTransformationIntroductionHandler,
+  RENEWABLE_ENERGY_NON_SUITABLE_SOILS_NOTICE: NonSuitableSoilsNoticeHandler,
+  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE:
+    ClimateAndBiodiversityImpactNoticeHandler,
+  RENEWABLE_ENERGY_STAKEHOLDERS_INTRODUCTION: StakeholdersIntroductionHandler,
+  RENEWABLE_ENERGY_EXPENSES_INTRODUCTION: ExpensesIntroductionHandler,
+  RENEWABLE_ENERGY_REVENUE_INTRODUCTION: RevenueIntroductionHandler,
+  RENEWABLE_ENERGY_SOILS_SUMMARY: SoilsSummaryHandler,
+  RENEWABLE_ENERGY_SOILS_CARBON_STORAGE: SoilsCarbonStorageHandler,
+  RENEWABLE_ENERGY_FINAL_SUMMARY: FinalSummaryHandler,
+  RENEWABLE_ENERGY_CREATION_RESULT: CreationResultHandler,
+};
+
+// Combined registry for navigation (step sequence walk, back navigation)
+export const stepHandlerRegistry: StepHandlerRegistry = {
+  ...answerStepHandlers,
+  ...infoStepHandlers,
+};

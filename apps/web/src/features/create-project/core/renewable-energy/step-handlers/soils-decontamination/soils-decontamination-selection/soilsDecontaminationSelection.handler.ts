@@ -13,12 +13,12 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"RENEWABLE_
       return "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION";
     },
 
-    updateAnswersMiddleware(context, answers) {
+    updateAnswersMiddleware(params, answers) {
       if (answers.decontaminationPlan === "none") {
         return { ...answers, decontaminatedSurfaceArea: 0 };
       }
       if (answers.decontaminationPlan === "unknown") {
-        const contaminatedSoilSurface = context.siteData?.contaminatedSoilSurface ?? 0;
+        const contaminatedSoilSurface = params.context.siteData?.contaminatedSoilSurface ?? 0;
         return {
           ...answers,
           decontaminatedSurfaceArea:
