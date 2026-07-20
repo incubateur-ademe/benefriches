@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
 
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import type { DateProvider } from "src/shared-kernel/dateProvider";
 import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { type TResult, fail, success } from "src/shared-kernel/result";
+import type { UidGenerator } from "src/shared-kernel/uidGenerator";
 import type { UseCase } from "src/shared-kernel/usecase";
 
 import { createReconversionCompatibilityEvaluationStartedEvent } from "../events/reconversionCompatibilityEvaluationStarted.event";

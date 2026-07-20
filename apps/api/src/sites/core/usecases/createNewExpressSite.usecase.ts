@@ -1,10 +1,10 @@
 import { Address, AgriculturalOperationActivity, FricheActivity, NaturalAreaType } from "shared";
 
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import type { AppLogger } from "src/shared-kernel/logger";
 import { TResult, fail, success } from "src/shared-kernel/result";
+import { UidGenerator } from "src/shared-kernel/uidGenerator";
 import { UseCase } from "src/shared-kernel/usecase";
 import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
 import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";

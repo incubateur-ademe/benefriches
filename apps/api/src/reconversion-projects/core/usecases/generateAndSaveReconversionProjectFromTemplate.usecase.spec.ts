@@ -8,8 +8,8 @@ import { InMemoryReconversionProjectRepository } from "src/reconversion-projects
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { FailureResult } from "src/shared-kernel/result";
+import { UidGenerator } from "src/shared-kernel/uidGenerator";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 import { SiteFeaturesView } from "src/sites/core/models/views";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";

@@ -3,7 +3,7 @@ import { describe, it, beforeEach } from "node:test";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { FailureResult } from "src/shared-kernel/result";
 
 import { ReconversionProjectUpdatePropsDto } from "../model/reconversionProject";

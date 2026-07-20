@@ -8,7 +8,7 @@ import {
   ReconversionProjectImpactsWithBreakEvenLevelInput,
 } from "shared";
 
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";

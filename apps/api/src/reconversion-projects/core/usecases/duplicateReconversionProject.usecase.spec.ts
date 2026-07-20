@@ -4,9 +4,9 @@ import { v4 as uuid } from "uuid";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { FailureResult } from "src/shared-kernel/result";
 
 import {

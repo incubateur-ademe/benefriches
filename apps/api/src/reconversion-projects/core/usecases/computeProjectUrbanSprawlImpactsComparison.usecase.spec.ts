@@ -9,7 +9,7 @@ import { v4 as uuid } from "uuid";
 
 import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-impacts/InMemoryReconversionProjectImpactsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { SuccessResult, FailureResult } from "src/shared-kernel/result";
 import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
 import { InMemoryCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/InMemoryCityRuralityQuery";

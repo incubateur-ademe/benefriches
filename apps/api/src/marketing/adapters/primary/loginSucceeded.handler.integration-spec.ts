@@ -5,9 +5,9 @@ import { createTestApp } from "test/testApp";
 
 import { createLoginSucceededEvent } from "src/auth/core/events/loginSucceeded.event";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 
 import { ConnectCrm } from "../secondary/ConnectCrm";

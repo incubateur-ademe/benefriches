@@ -6,12 +6,12 @@ import { ReconversionCompatibilityEvaluationRepository } from "src/reconversion-
 import { AddRelatedSiteToReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/addRelatedSiteToReconversionCompatibilityEvaluation.usecase";
 import { CompleteReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/completeReconversionCompatibilityEvaluation.usecase";
 import { StartReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/startReconversionCompatibilityEvaluation.usecase";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { UidGenerator } from "src/shared-kernel/uidGenerator";
 
 import { SqlReconversionCompatibilityEvaluationRepository } from "../secondary/reconversion-compatibility-evaluation/SqlReconversionCompatibilityEvaluationRepository";
 import { ReconversionCompatibilityController } from "./reconversionCompatibility.controller";

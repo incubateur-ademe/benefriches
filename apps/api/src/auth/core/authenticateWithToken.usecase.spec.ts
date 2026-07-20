@@ -5,9 +5,9 @@ import { describe, it, beforeEach } from "node:test";
 import { InMemoryTokenAuthenticationAttemptRepository } from "src/auth/adapters/auth-token-repository/InMemoryTokenAuthenticationAttemptRepository";
 import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryAuthUserRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { UserBuilder } from "src/users/core/model/user.mock";
 

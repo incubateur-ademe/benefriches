@@ -16,7 +16,7 @@ import {
 import { v4 as uuid } from "uuid";
 
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 

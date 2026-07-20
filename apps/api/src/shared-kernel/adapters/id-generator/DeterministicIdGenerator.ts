@@ -1,4 +1,4 @@
-import { UidGenerator } from "./UidGenerator";
+import { UidGenerator } from "../../uidGenerator";
 
 export class DeterministicUuidGenerator implements UidGenerator {
   private _nextUuids: string[] = [];

@@ -1,6 +1,6 @@
-import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { TResult, fail, success } from "src/shared-kernel/result";
+import { UidGenerator } from "src/shared-kernel/uidGenerator";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { createSiteCreatedFromEvaluationEvent } from "../events/siteCreatedFromEvaluation.event";

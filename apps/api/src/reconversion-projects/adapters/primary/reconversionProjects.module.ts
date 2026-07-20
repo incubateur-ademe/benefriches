@@ -33,12 +33,12 @@ import {
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
 import { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/updateReconversionProject.usecase";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { UidGenerator } from "src/shared-kernel/uidGenerator";
 import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";

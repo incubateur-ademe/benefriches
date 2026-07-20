@@ -12,7 +12,7 @@ import { v4 as uuid } from "uuid";
 import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 import { SiteFeaturesView } from "src/sites/core/models/views";

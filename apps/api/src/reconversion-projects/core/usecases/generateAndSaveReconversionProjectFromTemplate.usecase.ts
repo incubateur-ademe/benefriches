@@ -1,8 +1,8 @@
 import { ReconversionProjectTemplate } from "shared";
 
-import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { TResult, fail, success } from "src/shared-kernel/result";
+import type { UidGenerator } from "src/shared-kernel/uidGenerator";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { createReconversionProjectCreatedEvent } from "../events/reconversionProjectCreated.event";

@@ -2,10 +2,10 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 
 import { AuthModule } from "src/auth/adapters/auth.module";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DateProvider } from "src/shared-kernel/dateProvider";
+import { UidGenerator } from "src/shared-kernel/uidGenerator";
 import { SiteActionsQuery } from "src/site-actions/core/gateways/SiteActionsQuery";
 import { SiteActionsRepository } from "src/site-actions/core/gateways/SiteActionsRepository";
 import { InitializeSiteActionsUseCase } from "src/site-actions/core/usecases/initializeSiteActions.usecase";

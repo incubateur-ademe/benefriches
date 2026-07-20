@@ -7,10 +7,10 @@ import { CRMGateway } from "src/marketing/core/CRMGateway";
 import { MarketingUsersQuery } from "src/marketing/core/gateways/MarketingUsersQuery";
 import { MarketingUsersRepository } from "src/marketing/core/gateways/MarketingUsersRepository";
 import { SyncNewsletterSubscriptionsUseCase } from "src/marketing/core/usecases/syncNewsletterSubscriptions.usecase";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 
 import { ConnectCrm } from "../secondary/ConnectCrm";
 import { FakeCrm } from "../secondary/FakeCrm";

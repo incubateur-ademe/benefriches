@@ -3,7 +3,7 @@ import { describe, it, beforeEach } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 

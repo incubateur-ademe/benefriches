@@ -6,7 +6,7 @@ import {
   type LoginSucceededEvent,
 } from "src/auth/core/events/loginSucceeded.event";
 import type { CRMGateway } from "src/marketing/core/CRMGateway";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { DateProvider } from "src/shared-kernel/dateProvider";
 
 @Injectable()
 export class LoginSucceededHandler {

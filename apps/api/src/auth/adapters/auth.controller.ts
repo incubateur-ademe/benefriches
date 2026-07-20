@@ -25,14 +25,11 @@ import { registerUserRequestDtoSchema, type GetCurrentUserResponseDto } from "sh
 
 import { CreateUserUseCase, type UserProps } from "src/auth/core/createUser.usecase";
 import {
-  type UidGenerator,
-  UUID_GENERATOR_INJECTION_TOKEN,
-} from "src/shared-kernel/adapters/id-generator/UidGenerator";
-import {
   DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
   type DomainEventPublisher,
 } from "src/shared-kernel/domainEventPublisher";
 import type { AppLogger } from "src/shared-kernel/logger";
+import { type UidGenerator, UUID_GENERATOR_INJECTION_TOKEN } from "src/shared-kernel/uidGenerator";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
 import { createLoginAttemptedEvent } from "../core/events/loginAttempted.event";

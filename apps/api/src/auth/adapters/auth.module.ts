@@ -4,19 +4,16 @@ import { EventEmitter2 } from "@nestjs/event-emitter";
 import { JwtModule, JwtService, JwtSignOptions } from "@nestjs/jwt";
 
 import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import {
-  UidGenerator,
-  UUID_GENERATOR_INJECTION_TOKEN,
-} from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import {
   DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
   DomainEventPublisher,
 } from "src/shared-kernel/domainEventPublisher";
+import { UidGenerator, UUID_GENERATOR_INJECTION_TOKEN } from "src/shared-kernel/uidGenerator";
 import { SqlUserFeatureAlertRepository } from "src/users/adapters/secondary/user-feature-alert-repository/SqlUserFeatureAlertRepository";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";

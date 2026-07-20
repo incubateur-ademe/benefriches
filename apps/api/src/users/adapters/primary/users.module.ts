@@ -2,8 +2,8 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 
 import { AuthModule } from "src/auth/adapters/auth.module";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import {
   CreateUserFeatureAlertUseCase,
   UserFeatureAlertRepository,

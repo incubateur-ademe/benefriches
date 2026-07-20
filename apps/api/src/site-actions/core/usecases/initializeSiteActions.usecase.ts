@@ -1,8 +1,8 @@
 import { siteActionTypeSchema } from "shared";
 
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
+import { UidGenerator } from "src/shared-kernel/uidGenerator";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import type { SiteActionsQuery } from "../gateways/SiteActionsQuery";

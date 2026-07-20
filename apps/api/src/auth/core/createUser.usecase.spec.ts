@@ -3,8 +3,8 @@ import { beforeEach, describe, it } from "node:test";
 import { ZodError } from "zod";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { FailureResult } from "src/shared-kernel/result";
 
 import { DeterministicUuidGenerator } from "../../shared-kernel/adapters/id-generator/DeterministicIdGenerator";

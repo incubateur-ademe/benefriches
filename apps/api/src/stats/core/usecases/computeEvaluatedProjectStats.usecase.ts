@@ -24,7 +24,7 @@ import {
 
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
 import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { fail, success, TResult } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 

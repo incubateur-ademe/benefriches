@@ -4,10 +4,10 @@ import { describe, it, beforeEach } from "node:test";
 import { Address, createSoilSurfaceAreaDistribution } from "shared";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
+import { DateProvider } from "src/shared-kernel/dateProvider";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
