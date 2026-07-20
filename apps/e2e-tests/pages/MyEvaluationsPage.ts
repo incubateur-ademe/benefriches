@@ -78,4 +78,12 @@ export class MyEvaluationsPage {
   async openFirstSiteFeatures(): Promise<void> {
     await this.page.getByRole("link", { name: "Voir toutes les données du site" }).first().click();
   }
+
+  async clickModifierForProject(projectName: string): Promise<void> {
+    const projectCard = this.page.locator("div.relative").filter({
+      has: this.page.getByRole("heading", { name: projectName, level: 4 }),
+    });
+    await projectCard.getByRole("button", { name: "Ouvrir le menu d'actions" }).click();
+    await projectCard.getByRole("menuitem", { name: "Modifier" }).click();
+  }
 }
