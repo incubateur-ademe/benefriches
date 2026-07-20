@@ -1,6 +1,7 @@
 {
   "$schema": "../../node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "unicorn", "node", "oxc", "import"],
+  "jsPlugins": ["../../.tooling/oxlint/architecture-boundaries.mjs"],
   "options": {
     "typeAware": true
   },
@@ -16,6 +17,13 @@
   },
   "ignorePatterns": ["node_modules/", "dist/"],
   "rules": {
+    "architecture-boundaries/no-cross-layer-import": [
+      "error",
+      {
+        "aliasPrefix": "src/",
+        "boundaries": [{ "from": "*/core/**", "to": "*/adapters/**" }]
+      }
+    ],
     "typescript/ban-types": "error",
     "typescript/consistent-type-imports": "off",
     "no-await-in-loop": "off",
@@ -93,7 +101,10 @@
       "files": ["*.spec.ts", "*.integration-spec.ts"],
       "rules": {
         "typescript/no-floating-promises": "off",
-        "typescript/no-non-null-assertion": "off"
+        "typescript/no-non-null-assertion": "off",
+        // Unit tests instantiate InMemory/Deterministic/Fake test doubles from adapters/
+        // directly — the project's documented pattern (see api-modules-and-di.md).
+        "architecture-boundaries/no-cross-layer-import": "off"
       }
     }
   ]

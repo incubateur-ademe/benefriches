@@ -1,6 +1,7 @@
 {
   "$schema": "../../node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "unicorn", "react", "oxc", "import"],
+  "jsPlugins": ["../../.tooling/oxlint/architecture-boundaries.mjs"],
   "options": {
     "typeAware": true
   },
@@ -15,6 +16,27 @@
   },
   "ignorePatterns": ["node_modules/", "dist/", "public/", "vite.config.ts", ".prettierrc.cjs"],
   "rules": {
+    "architecture-boundaries/no-cross-layer-import": [
+      "warn",
+      {
+        "aliasPrefix": "@/",
+        "boundaries": [
+          { "from": "shared/**", "to": "features/**" },
+          {
+            "from": "shared/{core,application,domain}/**",
+            "to": "shared/{views,infra,infrastructure}/**"
+          },
+          {
+            "from": "features/*/{core,application,domain}/**",
+            "to": "features/*/{views,infra,infrastructure}/**"
+          },
+          {
+            "from": "features/*/{core,application,domain}/**",
+            "to": "shared/{views,infra,infrastructure}/**"
+          }
+        ]
+      }
+    ],
     "import/no-named-as-default": "off",
     "oxc/no-map-spread": "off",
     "no-accumulating-spread": "off",
