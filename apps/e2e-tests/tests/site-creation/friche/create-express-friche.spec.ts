@@ -1,3 +1,4 @@
+import { asSquareMeters } from "../../../fixtures/helpers/format.helpers";
 import { test } from "../fixtures";
 
 test.describe("site creation - friche - express mode", () => {
@@ -30,7 +31,7 @@ test.describe("site creation - friche - express mode", () => {
 
     await siteCreationPage.expectCreationSuccessWithDataInList([
       ["Type de friche", "Friche industrielle"],
-      ["Superficie totale du site", "10 000 ㎡"],
+      ["Superficie totale du site", asSquareMeters(10_000)],
       ["Adresse", "Blajan"],
     ]);
 

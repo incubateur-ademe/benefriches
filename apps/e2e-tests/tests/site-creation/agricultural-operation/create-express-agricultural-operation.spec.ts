@@ -1,3 +1,4 @@
+import { asSquareMeters } from "../../../fixtures/helpers/format.helpers";
 import { test } from "../fixtures";
 
 test.describe("site creation - agricultural operation - express mode", () => {
@@ -30,7 +31,7 @@ test.describe("site creation - agricultural operation - express mode", () => {
 
     await siteCreationPage.expectCreationSuccessWithDataInList([
       ["Type d'exploitation", "Polyculture / polyélevage"],
-      ["Superficie totale du site", "50 000 ㎡"],
+      ["Superficie totale du site", asSquareMeters(50_000)],
       ["Adresse", "Lyon"],
     ]);
     await siteCreationPage.expectExpressCreationDisclaimer();

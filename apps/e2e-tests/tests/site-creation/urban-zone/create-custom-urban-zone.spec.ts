@@ -1,3 +1,4 @@
+import { asSquareMeters } from "../../../fixtures/helpers/format.helpers";
 import { test } from "../fixtures";
 
 test.describe("site creation - urban zone - custom mode", () => {
@@ -129,13 +130,13 @@ test.describe("site creation - urban zone - custom mode", () => {
       ["Type de zone urbaine", "Zone d'activités économiques"],
       ["Adresse du site", "Chartres"],
       ["Gestionnaire", "Gestionnaire de parc d'activité"],
-      ["Emprise foncière des locaux commerciaux vacants ou en friche", "500 ㎡"],
-      ["Surface de plancher des locaux commerciaux vacants ou en friche", "1 000 ㎡"],
+      ["Emprise foncière des locaux commerciaux vacants ou en friche", asSquareMeters(500)],
+      ["Surface de plancher des locaux commerciaux vacants ou en friche", asSquareMeters(1_000)],
       ["Emplois équivalents temps plein", "10"],
-      ["Bâtiments", "8 000 ㎡"],
-      ["Sols imperméabilisés", "4 000 ㎡"],
-      ["Sols perméables minéraux", "2 000 ㎡"],
-      ["Sols enherbés et arbustifs", "1 000 ㎡"],
+      ["Bâtiments", asSquareMeters(8_000)],
+      ["Sols imperméabilisés", asSquareMeters(4_000)],
+      ["Sols perméables minéraux", asSquareMeters(2_000)],
+      ["Sols enherbés et arbustifs", asSquareMeters(1_000)],
     ]);
   });
 
@@ -244,8 +245,8 @@ test.describe("site creation - urban zone - custom mode", () => {
       ["Adresse du site", "Chartres"],
       ["Gestionnaire", "Gestionnaire de parc d'activité"],
       ["Emplois équivalents temps plein", "40"],
-      ["Bâtiments", "5 000 ㎡"],
-      ["Sols imperméabilisés", "5 000 ㎡"],
+      ["Bâtiments", asSquareMeters(5_000)],
+      ["Sols imperméabilisés", asSquareMeters(5_000)],
     ]);
   });
 
@@ -345,8 +346,8 @@ test.describe("site creation - urban zone - custom mode", () => {
       ["Adresse du site", "Chartres"],
       ["Gestionnaire", "Mairie de Chartres"],
       ["Emplois équivalents temps plein", "5"],
-      ["Bâtiments", "5 000 ㎡"],
-      ["Sols imperméabilisés", "5 000 ㎡"],
+      ["Bâtiments", asSquareMeters(5_000)],
+      ["Sols imperméabilisés", asSquareMeters(5_000)],
     ]);
   });
 });

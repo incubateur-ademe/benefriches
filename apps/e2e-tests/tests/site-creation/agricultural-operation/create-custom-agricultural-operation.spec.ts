@@ -1,3 +1,4 @@
+import { asSquareMeters } from "../../../fixtures/helpers/format.helpers";
 import { test } from "../fixtures";
 
 test.describe("site creation - agricultural operation - custom mode", () => {
@@ -120,7 +121,7 @@ test.describe("site creation - agricultural operation - custom mode", () => {
     await siteCreationPage.expectFinalSummary();
 
     await siteCreationPage.expectCreationSuccessWithDataInList([
-      ["Superficie totale du site", "25 000 ㎡"],
+      ["Superficie totale du site", asSquareMeters(25_000)],
       ["Propriétaire actuel", "Mairie de Chartres"],
       ["Type d'exploitation", "Grandes cultures de céréales et oléagineux"],
       ["Nom du site", "Exploitation céréalière de Chartres"],
@@ -142,10 +143,10 @@ test.describe("site creation - agricultural operation - custom mode", () => {
       ["Type d'exploitation", "Grandes cultures de céréales et oléagineux"],
       ["Adresse du site", "Chartres"],
       ["Propriétaire actuel", "Mairie de Chartres"],
-      ["Culture", "20 000 ㎡"],
-      ["Prairie herbacée", "2 500 ㎡"],
-      ["Prairie arbustive", "1 000 ㎡"],
-      ["Bâtiments", "1 500 ㎡"],
+      ["Culture", asSquareMeters(20_000)],
+      ["Prairie herbacée", asSquareMeters(2_500)],
+      ["Prairie arbustive", asSquareMeters(1_000)],
+      ["Bâtiments", asSquareMeters(1_500)],
     ]);
   });
 });

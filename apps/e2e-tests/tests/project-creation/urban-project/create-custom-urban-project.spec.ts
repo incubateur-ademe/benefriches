@@ -1,6 +1,7 @@
 import type { CreateCustomSiteDto } from "shared";
 
 import { test } from "./fixtures";
+import { asSquareMeters } from "../../../fixtures/helpers/format.helpers";
 import { createCustomSiteViaApi } from "../../../fixtures/helpers/site-creation.helpers";
 
 type AgriculturalCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>;
@@ -141,7 +142,9 @@ test.describe("urban project creation - custom mode", () => {
         Logements: 2200,
         Commerces: 800,
       });
-      await urbanProjectCreationPage.expectBuildingsNewConstructionIntroduction("3 000 ㎡");
+      await urbanProjectCreationPage.expectBuildingsNewConstructionIntroduction(
+        asSquareMeters(3_000),
+      );
       await urbanProjectCreationPage.goToNextStep(); // new construction introduction
 
       // --- cession foncière ---
@@ -326,7 +329,7 @@ test.describe("urban project creation - custom mode", () => {
 
       // --- bâtiments ---
       // the intro step is skipped — lands directly on demolition info
-      await urbanProjectCreationPage.expectBuildingsDemolitionInfo("2 000 ㎡");
+      await urbanProjectCreationPage.expectBuildingsDemolitionInfo(asSquareMeters(2_000));
       await urbanProjectCreationPage.goToNextStep(); // demolition info
 
       // --- remise en état ---
@@ -446,9 +449,9 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.expectBuildingsReuseIntroduction();
       await urbanProjectCreationPage.goToNextStep(); // reuse introduction
       await urbanProjectCreationPage.fillBuildingsFootprintToReuse(0);
-      await urbanProjectCreationPage.expectBuildingsDemolitionInfo("2 000 ㎡");
+      await urbanProjectCreationPage.expectBuildingsDemolitionInfo(asSquareMeters(2_000));
       await urbanProjectCreationPage.goToNextStep(); // demolition info
-      await urbanProjectCreationPage.expectBuildingsNewConstructionInfo("3 000 ㎡");
+      await urbanProjectCreationPage.expectBuildingsNewConstructionInfo(asSquareMeters(3_000));
       await urbanProjectCreationPage.goToNextStep(); // new construction info
 
       // --- remise en état ---
@@ -572,7 +575,7 @@ test.describe("urban project creation - custom mode", () => {
         Logements: 1500,
         Commerces: 500,
       });
-      await urbanProjectCreationPage.expectBuildingsNewConstructionInfo("1 000 ㎡");
+      await urbanProjectCreationPage.expectBuildingsNewConstructionInfo(asSquareMeters(1_000));
       await urbanProjectCreationPage.goToNextStep(); // new construction info
       await urbanProjectCreationPage.fillNewBuildingsUsesFloorSurfaceArea({
         Logements: 700,

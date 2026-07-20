@@ -1,3 +1,4 @@
+import { asSquareMeters } from "../../../fixtures/helpers/format.helpers";
 import { test } from "../fixtures";
 
 test.describe("site creation - friche - custom mode", () => {
@@ -128,8 +129,8 @@ test.describe("site creation - friche - custom mode", () => {
     await siteCreationPage.expectFinalSummary();
 
     await siteCreationPage.expectCreationSuccessWithDataInList([
-      ["Superficie totale du site", "10 000 ㎡"],
-      ["Superficie polluée", "5 000 ㎡"],
+      ["Superficie totale du site", asSquareMeters(10_000)],
+      ["Superficie polluée", asSquareMeters(5_000)],
       ["Propriétaire actuel", "Mairie de Blajan"],
       ["Type de friche", "Friche industrielle"],
       ["Nom du site", "Friche industrielle de Blajan"],
@@ -150,12 +151,12 @@ test.describe("site creation - friche - custom mode", () => {
       ["Nom du site", "Friche industrielle de Blajan"],
       ["Type de friche", "Friche industrielle"],
       ["Propriétaire actuel", "Mairie de Blajan"],
-      ["Superficie polluée", "5 000 ㎡"],
+      ["Superficie polluée", asSquareMeters(5_000)],
       ["Accidents survenus sur le site depuis 5 ans", "Aucun"],
-      ["Bâtiments", "3 000 ㎡"],
-      ["Sols imperméabilisés", "2 000 ㎡"],
-      ["Sols perméables minéraux", "3 000 ㎡"],
-      ["Sols enherbés et arbustifs", "2 000 ㎡"],
+      ["Bâtiments", asSquareMeters(3_000)],
+      ["Sols imperméabilisés", asSquareMeters(2_000)],
+      ["Sols perméables minéraux", asSquareMeters(3_000)],
+      ["Sols enherbés et arbustifs", asSquareMeters(2_000)],
     ]);
   });
 });

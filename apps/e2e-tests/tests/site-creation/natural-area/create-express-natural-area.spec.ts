@@ -1,3 +1,4 @@
+import { asSquareMeters } from "../../../fixtures/helpers/format.helpers";
 import { test } from "../fixtures";
 
 test.describe("site creation - natural area - express mode", () => {
@@ -30,7 +31,7 @@ test.describe("site creation - natural area - express mode", () => {
 
     await siteCreationPage.expectCreationSuccessWithDataInList([
       ["Nature du site", "Forêt"],
-      ["Superficie totale du site", "25 000 ㎡"],
+      ["Superficie totale du site", asSquareMeters(25_000)],
       ["Adresse", "Fontainebleau"],
     ]);
     await siteCreationPage.expectExpressCreationDisclaimer();
