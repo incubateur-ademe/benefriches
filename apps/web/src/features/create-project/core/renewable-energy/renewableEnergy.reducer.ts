@@ -9,10 +9,12 @@ import {
   nextStepRequested,
   previousStepRequested,
   stepCompletionRequested,
+  stepNavigationRequested,
 } from "./renewableEnergy.actions";
 import { addRenewableEnergyFormCasesToBuilder } from "./renewableEnergyForm.reducer";
 import type { RenewableEnergyCreationStep } from "./renewableEnergySteps";
 import type { RenewableEnergyStepsState } from "./step-handlers/stepHandler.type";
+import { answerStepHandlers } from "./step-handlers/stepHandlerRegistry";
 
 export type RenewableEnergyProjectState = {
   createMode: "express" | "custom" | undefined;
@@ -113,11 +115,27 @@ const addAsyncThunkCases = (builder: ActionReducerMapBuilder<ProjectCreationStat
 export const renewableEnergyProjectReducer = createReducer(
   {} as ProjectCreationState,
   (builder) => {
-    addRenewableEnergyFormCasesToBuilder(builder, {
-      stepCompletionRequested,
-      previousStepRequested,
-      nextStepRequested,
-    });
+    addRenewableEnergyFormCasesToBuilder<ProjectCreationState>(
+      builder,
+      {
+        stepCompletionRequested,
+        previousStepRequested,
+        nextStepRequested,
+        stepNavigationRequested,
+      },
+      {
+        config: {
+          stepChangesNextMode: "step_order",
+          finalSummaryFallbackStep: "RENEWABLE_ENERGY_FINAL_SUMMARY",
+          onPreviousStepFallback: (state) => {
+            state.currentProjectFlow = "USE_CASE_SELECTION";
+          },
+        },
+        registry: answerStepHandlers,
+        selectForm: (state) => state.renewableEnergyProject,
+        buildContext: (state) => ({ siteData: state.siteData }),
+      },
+    );
     addSaveReconversionProjectCases(builder);
     addAsyncThunkCases(builder);
   },

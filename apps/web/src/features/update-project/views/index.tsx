@@ -10,6 +10,7 @@ import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
 
 import { reconversionProjectUpdateInitiated } from "../core/updateProject.actions";
+import PhotovoltaicPowerStationUpdateView from "./PhotovoltaicPowerStationUpdateView";
 import UnavailableFeatureView from "./UnavailableFeatureView";
 import UrbanProjectUpdateView from "./UrbanProjectUpdateView";
 
@@ -65,6 +66,10 @@ function UpdateProjectPage({ route }: Props) {
         <UrbanProjectUpdateView />
       </ProjectFormProvider>
     );
+  }
+
+  if (projectType === "PHOTOVOLTAIC_POWER_PLANT" && !isExpressProject) {
+    return <PhotovoltaicPowerStationUpdateView />;
   }
 
   return <UnavailableFeatureView />;

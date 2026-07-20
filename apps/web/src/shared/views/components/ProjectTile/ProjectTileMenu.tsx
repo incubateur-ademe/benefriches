@@ -100,31 +100,32 @@ function ProjectTileMenu({
         >
           Télécharger
         </Button> */}
-        {!isExpressProject && projectType === "URBAN_PROJECT" && (
-          <>
-            <Button
-              iconId="ri-file-copy-line"
-              onClick={onDuplicateProject}
-              title={`Évaluer une variante du projet`}
-              className="py-1.5 px-4 w-full hover:bg-white hover:dark:bg-black"
-              priority="tertiary no outline"
-              size="small"
-              nativeButtonProps={{ role: "menuitem" }}
-            >
-              Évaluer une variante
-            </Button>
-            <Button
-              iconId="fr-icon-edit-line"
-              className="py-1.5 px-4 w-full hover:bg-white hover:dark:bg-black"
-              priority="tertiary no outline"
-              size="small"
-              linkProps={{ ...routes.updateProject({ projectId, from }).link, role: "menuitem" }}
-              title={`Modifier les caractéristiques du projet`}
-            >
-              Modifier
-            </Button>
-          </>
-        )}
+        {!isExpressProject &&
+          (projectType === "URBAN_PROJECT" || projectType === "PHOTOVOLTAIC_POWER_PLANT") && (
+            <>
+              <Button
+                iconId="ri-file-copy-line"
+                onClick={onDuplicateProject}
+                title={`Évaluer une variante du projet`}
+                className="py-1.5 px-4 w-full hover:bg-white hover:dark:bg-black"
+                priority="tertiary no outline"
+                size="small"
+                nativeButtonProps={{ role: "menuitem" }}
+              >
+                Évaluer une variante
+              </Button>
+              <Button
+                iconId="fr-icon-edit-line"
+                className="py-1.5 px-4 w-full hover:bg-white hover:dark:bg-black"
+                priority="tertiary no outline"
+                size="small"
+                linkProps={{ ...routes.updateProject({ projectId, from }).link, role: "menuitem" }}
+                title={`Modifier les caractéristiques du projet`}
+              >
+                Modifier
+              </Button>
+            </>
+          )}
 
         <ArchiveProjectDialogButton
           projectId={projectId}

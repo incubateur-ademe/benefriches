@@ -106,7 +106,9 @@ const ProjectImpactsView = ({
             projectId={projectId}
             evaluationPeriod={evaluationPeriod}
             isUpdateEnabled={
-              projectContext.type === "URBAN_PROJECT" && !projectContext.isExpressProject
+              (projectContext.type === "URBAN_PROJECT" ||
+                projectContext.type === "PHOTOVOLTAIC_POWER_PLANT") &&
+              !projectContext.isExpressProject
             }
             onExportModalOpened={onExportModalOpened}
           />

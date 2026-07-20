@@ -10,3 +10,7 @@ export function asEuroAmount(amount: number): string {
 export function asSquareMeters(surfaceArea: number): string {
   return `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(surfaceArea)} ㎡`;
 }
+
+export function asKiloWattsCrete(power: number): string {
+  return `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(power)} kWc`;
+}

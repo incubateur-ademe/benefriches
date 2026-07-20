@@ -6,20 +6,36 @@ import {
   StepUpdateResult,
 } from "@/shared/core/wizard-form/helpers/computeStepChanges";
 import { navigateToAndLoadStep } from "@/shared/core/wizard-form/helpers/navigateToStep";
-import { WizardFormDefinition } from "@/shared/core/wizard-form/wizardForm.reducer";
+import {
+  WizardFormDefinition,
+  WizardFormSubState,
+} from "@/shared/core/wizard-form/wizardForm.reducer";
 
-import { ProjectCreationState } from "../createProject.reducer";
 import { RenewableEnergyFormReducerActions } from "./renewableEnergy.actions";
 import { AnswersByStep, AnswerStepId, RenewableEnergyCreationStep } from "./renewableEnergySteps";
-import { RenewableEnergyStepHandlerContext } from "./step-handlers/stepHandler.type";
+import {
+  RenewableEnergyStepHandlerContext,
+  RenewableEnergyStepsState,
+} from "./step-handlers/stepHandler.type";
 import { answerStepHandlers, stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
 
-type RenewableEnergyWizardFormDefinition = Pick<
+// Structural constraint mirroring urban's `S extends WizardFormState`: any consumer state
+// that nests a renewableEnergyProject sub-state shaped like the generic engine's own
+// WizardFormSubState can drive this case-adder — creation and update alike (ADR-0015).
+type RenewableEnergyHostState = {
+  renewableEnergyProject: WizardFormSubState<
+    RenewableEnergyCreationStep,
+    RenewableEnergyStepsState
+  >;
+  siteData?: RenewableEnergyStepHandlerContext["siteData"];
+};
+
+type RenewableEnergyWizardFormDefinition<S extends RenewableEnergyHostState> = Pick<
   WizardFormDefinition<
     RenewableEnergyCreationStep,
     RenewableEnergyStepHandlerContext,
-    Draft<ProjectCreationState>["renewableEnergyProject"]["steps"],
-    Draft<ProjectCreationState>,
+    Draft<S>["renewableEnergyProject"]["steps"],
+    Draft<S>,
     StepUpdateResult<RenewableEnergyCreationStep, AnswersByStep, AnswerStepId>
   >,
   "config" | "selectForm" | "buildContext"
@@ -27,25 +43,16 @@ type RenewableEnergyWizardFormDefinition = Pick<
   registry: typeof answerStepHandlers;
 };
 
-const defaultDefinition: RenewableEnergyWizardFormDefinition = {
-  config: {
-    stepChangesNextMode: "step_order",
-    finalSummaryFallbackStep: "RENEWABLE_ENERGY_FINAL_SUMMARY",
-  },
-  registry: answerStepHandlers,
-  selectForm: (state) => state.renewableEnergyProject,
-  buildContext: (state) => ({ siteData: state.siteData }),
-};
-
-// PV's WizardFormDefinition-shaped wiring: same registry that ticket 09's editing slice will
-// reuse, running the same shared engine algorithm as urban's `addUrbanProjectFormCasesToBuilder`.
+// PV's WizardFormDefinition-shaped wiring: same registry that ticket 09's editing slice
+// reuses, running the same shared engine algorithm as urban's `addUrbanProjectFormCasesToBuilder`.
 // PV has no dependency rules/shortcuts (degenerate path), so `computeStepChanges` always yields
 // empty cascadingChanges and `applyStepChanges` is called unconditionally — there is no
-// pending-confirmation state to wire up.
-export const addRenewableEnergyFormCasesToBuilder = (
-  builder: ActionReducerMapBuilder<ProjectCreationState>,
+// pending-confirmation state to wire up. Generic over `S` (mirroring urban) so creation and
+// update can each supply their own definition (selectForm/buildContext/onPreviousStepFallback).
+export const addRenewableEnergyFormCasesToBuilder = <S extends RenewableEnergyHostState>(
+  builder: ActionReducerMapBuilder<S>,
   actions: RenewableEnergyFormReducerActions,
-  definition: RenewableEnergyWizardFormDefinition = defaultDefinition,
+  definition: RenewableEnergyWizardFormDefinition<S>,
 ) => {
   const { config, registry: answerRegistry, selectForm, buildContext } = definition;
 
@@ -84,7 +91,7 @@ export const addRenewableEnergyFormCasesToBuilder = (
     if (previousStep) {
       navigateToAndLoadStep(form, context, previousStep, stepHandlerRegistry);
     } else {
-      state.currentProjectFlow = "USE_CASE_SELECTION";
+      config.onPreviousStepFallback?.(state);
     }
   });
 
@@ -101,5 +108,14 @@ export const addRenewableEnergyFormCasesToBuilder = (
         stepHandlerRegistry,
       );
     }
+  });
+
+  builder.addCase(actions.stepNavigationRequested, (state, action) => {
+    navigateToAndLoadStep(
+      selectForm(state),
+      buildContext(state),
+      action.payload.stepId,
+      stepHandlerRegistry,
+    );
   });
 };

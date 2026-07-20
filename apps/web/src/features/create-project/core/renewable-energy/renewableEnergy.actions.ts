@@ -2,7 +2,11 @@ import { ActionCreatorWithPayload, createAction } from "@reduxjs/toolkit";
 
 import { makeWizardFormActionType } from "@/shared/core/wizard-form/wizardForm.actions";
 
-import type { AnswersByStep, AnswerStepId } from "./renewableEnergySteps";
+import type {
+  AnswersByStep,
+  AnswerStepId,
+  RenewableEnergyCreationStep,
+} from "./renewableEnergySteps";
 
 const makeRenewableEnergyFormActionType = (prefix: string, actionName: string) =>
   makeWizardFormActionType(prefix, `renewableEnergy/${actionName}`);
@@ -26,6 +30,7 @@ export type RenewableEnergyFormReducerActions = {
   stepCompletionRequested: ActionCreatorWithPayload<StepCompletionPayload>;
   previousStepRequested: ActionCreatorWithPayload<void>;
   nextStepRequested: ActionCreatorWithPayload<void>;
+  stepNavigationRequested: ActionCreatorWithPayload<{ stepId: RenewableEnergyCreationStep }>;
 };
 
 // Factory kept prefix-parameterized (mirrors `createUrbanProjectFormActions`) so ticket 09's
@@ -40,6 +45,9 @@ export const createRenewableEnergyFormActions = (
   ),
   previousStepRequested: createRenewableEnergyFormAction(prefix, "previousStepRequested"),
   nextStepRequested: createRenewableEnergyFormAction(prefix, "nextStepRequested"),
+  stepNavigationRequested: createRenewableEnergyFormAction<{
+    stepId: RenewableEnergyCreationStep;
+  }>(prefix, "stepNavigationRequested"),
 });
 
 const creationRenewableEnergyFormActions = createRenewableEnergyFormActions("projectCreation");
@@ -47,3 +55,4 @@ const creationRenewableEnergyFormActions = createRenewableEnergyFormActions("pro
 export const stepCompletionRequested = creationRenewableEnergyFormActions.stepCompletionRequested;
 export const previousStepRequested = creationRenewableEnergyFormActions.previousStepRequested;
 export const nextStepRequested = creationRenewableEnergyFormActions.nextStepRequested;
+export const stepNavigationRequested = creationRenewableEnergyFormActions.stepNavigationRequested;

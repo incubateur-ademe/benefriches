@@ -51,7 +51,9 @@ const ProjectPageHeader = ({
   const size = propsSize ?? (isSmallScreen ? "small" : "medium");
   const isSmallSize = size === "small";
 
-  const hasUpdateFeature = !isExpressProject && projectType === "URBAN_PROJECT";
+  const hasUpdateFeature =
+    !isExpressProject &&
+    (projectType === "URBAN_PROJECT" || projectType === "PHOTOVOLTAIC_POWER_PLANT");
 
   return (
     <div className={classNames(fr.cx("fr-container"), className)}>

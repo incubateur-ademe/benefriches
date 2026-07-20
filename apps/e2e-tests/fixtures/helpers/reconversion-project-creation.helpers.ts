@@ -7,6 +7,85 @@ export type TestUrbanProject = {
   name: string;
 };
 
+export type TestPhotovoltaicProject = {
+  id: string;
+  name: string;
+};
+
+type CreateCustomPhotovoltaicProjectProps = {
+  id: string;
+  createdBy: string;
+  relatedSiteId: string;
+  name: string;
+  electricalPowerKWc: number;
+  surfaceArea: number;
+  expectedAnnualProduction: number;
+  contractDuration: number;
+  yearlyMaintenanceExpenseAmount: number;
+};
+
+export const createCustomPhotovoltaicProjectViaApi =
+  (apiClient: ApiClient) =>
+  async ({
+    id,
+    createdBy,
+    relatedSiteId,
+    name,
+    electricalPowerKWc,
+    surfaceArea,
+    expectedAnnualProduction,
+    contractDuration,
+    yearlyMaintenanceExpenseAmount,
+  }: CreateCustomPhotovoltaicProjectProps): Promise<TestPhotovoltaicProject> => {
+    const body: ReconversionProjectSavePropsDto = {
+      id,
+      createdBy,
+      relatedSiteId,
+      name,
+      developmentPlan: {
+        type: "PHOTOVOLTAIC_POWER_PLANT",
+        costs: [
+          { amount: 130000, purpose: "installation_works" },
+          { amount: 59999, purpose: "technical_studies" },
+        ],
+        developer: {
+          name: "developer company name",
+          structureType: "company",
+        },
+        features: {
+          electricalPowerKWc,
+          surfaceArea,
+          expectedAnnualProduction,
+          contractDuration,
+        },
+        installationSchedule: {
+          startDate: new Date("2027-09-01"),
+          endDate: new Date("2029-03-01"),
+        },
+      },
+      soilsDistribution: [{ soilType: "MINERAL_SOIL", spaceCategory: undefined, surfaceArea }],
+      involvesReinstatement: false,
+      sitePurchaseSellingPrice: 150000,
+      sitePurchasePropertyTransferDuties: 12000,
+      operationsFirstYear: 2029,
+      projectPhase: "design",
+      // Purpose must match the wizard's own RecurringExpense Zod enum, otherwise the
+      // "Dépenses annuelles" step fails client-side validation and the summary can't be saved.
+      yearlyProjectedCosts: [{ purpose: "maintenance", amount: yearlyMaintenanceExpenseAmount }],
+      yearlyProjectedRevenues: [],
+    };
+
+    const response = await apiClient.post("/api/reconversion-projects", body);
+
+    if (!response.ok()) {
+      throw new Error(
+        `Failed to create custom photovoltaic project for user ${createdBy}: ${response.status()} ${await response.text()}`,
+      );
+    }
+
+    return { id, name };
+  };
+
 type CreateCustomUrbanProjectProps = {
   id: string;
   createdBy: string;

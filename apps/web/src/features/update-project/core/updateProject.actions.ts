@@ -3,6 +3,8 @@ import z from "zod";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { createWizardFormActions } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
+import { getProjectData as getRenewableEnergyProjectData } from "@/features/create-project/core/renewable-energy/helpers/readers/projectDataReaders";
+import { createRenewableEnergyFormActions } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
 import { createUrbanProjectFormActions } from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
 
@@ -31,6 +33,8 @@ export const updateProjectFormUrbanActions = createUrbanProjectFormActions(
     selectSiteSoilsDistribution,
   },
 );
+export const updateProjectFormRenewableEnergyActions =
+  createRenewableEnergyFormActions(UPDATE_PROJECT_STORE_KEY);
 
 export const reconversionProjectUpdateInitiated = createAppAsyncThunk<UpdateProjectView, string>(
   makeProjectUpdateActionType("init"),
@@ -47,9 +51,12 @@ export const reconversionProjectUpdateSaved = createAppAsyncThunk(
   makeProjectUpdateActionType("projectUpdateSaved"),
   async (_, { getState, extra }) => {
     const { projectUpdate } = getState();
-    const { urbanProject, projectData } = projectUpdate;
+    const { urbanProject, renewableEnergyProject, projectData } = projectUpdate;
 
-    const updateData = getProjectData(urbanProject.steps);
+    const updateData =
+      projectData.projectType === "PHOTOVOLTAIC_POWER_PLANT"
+        ? getRenewableEnergyProjectData(renewableEnergyProject.steps)
+        : getProjectData(urbanProject.steps);
 
     const projectId = z.string().parse(projectData?.id);
     const projectToSave = httpUpdateReconversionProjectPropsSchema.parse({

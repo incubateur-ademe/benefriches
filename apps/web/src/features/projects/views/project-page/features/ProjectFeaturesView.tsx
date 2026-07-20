@@ -26,7 +26,8 @@ export default function ProjectFeaturesView({ projectData }: Props) {
 
       <div className="flex justify-between items-center">
         <h2 className="text-2xl mb-0">Caractéristiques du projet</h2>
-        {projectData.developmentPlan.type === "URBAN_PROJECT" &&
+        {(projectData.developmentPlan.type === "URBAN_PROJECT" ||
+          projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT") &&
           (projectData.isExpress ? (
             <Tooltip kind="hover" title="Les projets démo ne sont pas modifiables">
               <Button
