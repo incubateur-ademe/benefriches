@@ -55,6 +55,9 @@ type IsOpenedState =
   | {
       sectionName: "summary";
       impactData: KeyImpactIndicatorData;
+    }
+  | {
+      sectionName: "breakEvenLevel";
     };
 
 export type ContentState = IsClosedState | IsOpenedState;

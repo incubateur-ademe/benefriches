@@ -13,6 +13,9 @@ type Props = {
 };
 
 export default function ProjectBreakEvenLevelSection({ total, chart, title, subtitle }: Props) {
+  if (total === 0) {
+    return null;
+  }
   return (
     <div className="grid md:grid-cols-8 gap-8">
       <div className="md:col-span-2">

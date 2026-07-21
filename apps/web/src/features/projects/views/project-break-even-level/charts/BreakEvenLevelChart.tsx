@@ -1,16 +1,11 @@
-import Button from "@codegouvfr/react-dsfr/Button";
-import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import * as Highcharts from "highcharts";
-import { HighchartsReact } from "highcharts-react-official";
-import { Fragment, useMemo, useRef } from "react";
+import { useMemo } from "react";
 
 import { withDefaultChartOptions } from "@/shared/views/charts";
 import useExportConfig from "@/shared/views/charts/useExportConfig";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
-import classNames from "@/shared/views/clsx";
-import ExportChartMenuItems from "@/shared/views/components/Charts/ExportChartMenuItems";
-import { MENU_ITEMS_CLASSES } from "@/shared/views/components/Menu/classes";
 
+import ImpactChartCard from "../../shared/charts/ImpactChartCard";
 import { formatMonetaryImpact } from "../../shared/formatImpactValue";
 // oxlint-disable-next-line import/no-unassigned-import
 import "./BreakEvenLevelChart.css";
@@ -20,10 +15,16 @@ type Props = {
   xValues: string[];
   breakEvenIndex?: number;
   breakEvenYear?: string;
+  dialogId: string;
 };
 
-const BreakEvenLevelChart = ({ values, xValues, breakEvenIndex, breakEvenYear }: Props) => {
-  const chartRef = useRef<HighchartsReact.RefObject>(null);
+const BreakEvenLevelChart = ({
+  values,
+  xValues,
+  breakEvenIndex,
+  breakEvenYear,
+  dialogId,
+}: Props) => {
   const exportConfig = useExportConfig({ title: "📈 Évolution de la balance coût-bénéfice" });
 
   const options: Highcharts.Options = useMemo(
@@ -132,56 +133,13 @@ const BreakEvenLevelChart = ({ values, xValues, breakEvenIndex, breakEvenYear }:
   );
 
   return (
-    <div
-      className={classNames(
-        "relative",
-        "p-6",
-        "rounded-2xl",
-        "flex",
-        "flex-col",
-        "justify-between",
-        "bg-white",
-        "dark:bg-black",
-        "border",
-        "border-solid",
-        "border-border-grey",
-        "cursor-pointer",
-        "hover:border-current focus:border-current",
-        "transition ease-in-out duration-500",
-      )}
-    >
-      <div className="flex justify-between mb-2">
-        <div className="flex flex-col justify-center">
-          <h3 className="text-2xl">📈 Évolution de la balance coût-bénéfice</h3>
-        </div>
-
-        <div className="flex">
-          <Menu>
-            <MenuButton as={Fragment}>
-              <Button
-                title="Menu"
-                priority="tertiary no outline"
-                iconId="ri-download-2-line"
-                className="text-text-light"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                }}
-              />
-            </MenuButton>
-            <MenuItems anchor="bottom end" transition className={classNames(MENU_ITEMS_CLASSES)}>
-              <ExportChartMenuItems chartRef={chartRef} exportConfig={exportConfig} />
-            </MenuItems>
-          </Menu>
-        </div>
-      </div>
-      <HighchartsReact
-        highcharts={Highcharts}
-        ref={chartRef}
-        containerProps={{ className: "breakeven-graph" }}
-        options={options}
-      />
-    </div>
+    <ImpactChartCard
+      title="📈 Évolution de la balance coût-bénéfice"
+      options={options}
+      containerProps={{ className: "breakeven-graph" }}
+      dialogId={dialogId}
+      exportingOptions={exportConfig}
+    />
   );
 };
 

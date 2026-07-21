@@ -10,6 +10,7 @@ type Props = {
     humanity: number;
   };
   indirectEconomicImpactsTotal: number;
+  dialogId: string;
 };
 
 const getLabelForBearer = (name: keyof Props["indirectEconomicImpactsTotalByBearer"]) => {
@@ -34,12 +35,16 @@ const getColorForBearer = (name: keyof Props["indirectEconomicImpactsTotalByBear
   }
 };
 
+const ORDER = ["localAuthority", "localPeopleOrCompany", "humanity"] as const;
+
 export default function IndirectEconomicImpactsChart({
   indirectEconomicImpactsTotalByBearer,
   indirectEconomicImpactsTotal,
+  dialogId,
 }: Props) {
   const data = useMemo(() => {
     return typedObjectEntries(indirectEconomicImpactsTotalByBearer)
+      .sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b))
       .map(([bearer, total]) => ({
         name: getLabelForBearer(bearer),
         y: total,
@@ -50,6 +55,7 @@ export default function IndirectEconomicImpactsChart({
 
   return (
     <EconomicColumnChart
+      dialogId={dialogId}
       title="👥 Impacts socio-économiques"
       legendText="Montant total des impacts"
       legendTotal={indirectEconomicImpactsTotal}

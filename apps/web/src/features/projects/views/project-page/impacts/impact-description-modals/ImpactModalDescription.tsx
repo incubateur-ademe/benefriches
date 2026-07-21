@@ -11,6 +11,7 @@ import {
   ContentState,
 } from "../../../shared/impacts/modals/ImpactModalDescriptionContext";
 import { SummaryModalWizard } from "../../../shared/impacts/modals/summary/SummaryModalWizard";
+import CostBenefitAnalysisDescription from "./cost-benefit-analysis/CostBenefitAnalysisDescription";
 import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceModalWizard";
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
 import { SocialModalWizard } from "./social/SocialModalWizard";
@@ -125,6 +126,8 @@ function ImpactModalDescription({
                 );
               case "summary":
                 return <SummaryModalWizard impactData={contentState.impactData} />;
+              case "breakEvenLevel":
+                return <CostBenefitAnalysisDescription impactsData={impactsData} />;
               default:
                 return undefined;
             }

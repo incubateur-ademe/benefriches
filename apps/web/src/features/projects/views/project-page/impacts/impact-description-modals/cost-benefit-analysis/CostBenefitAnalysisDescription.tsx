@@ -20,7 +20,7 @@ type Props = {
   impactsData: ModalDataProps["impactsData"];
 };
 
-const title = "Analyse coûts bénéfices";
+const title = "Analyse coût bénéfice";
 
 const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
