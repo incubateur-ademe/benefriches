@@ -14,7 +14,7 @@ import { SummaryModalWizard } from "../../../shared/impacts/modals/summary/Summa
 import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceModalWizard";
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
 import { SocialModalWizard } from "./social/SocialModalWizard";
-import { SocioEconomicModalWizard } from "./socio-economic/SocioEconomicModalWizard";
+import { SocioEconomicModalWizard } from "./socio-economic/wizards/SocioEconomicModalWizard";
 
 export type ModalDataProps = {
   contextData: GetReconversionProjectImpactsResultDto["contextData"];

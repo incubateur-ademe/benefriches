@@ -9,7 +9,6 @@ import { RootState } from "@/app/store/store";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
-import { ModalDataProps } from "../../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
 import {
   evaluationPeriodUpdated,
   reconversionProjectImpactsBreakEvenLevelRequested,
@@ -140,12 +139,4 @@ export const selectProjectsImpactsViewData = createSelector(
       displayImpactsAccuracyDisclaimer,
     };
   },
-);
-
-export const selectModalData = createSelector(
-  selectSelf,
-  (state): ModalDataProps => ({
-    contextData: state.contextData!,
-    impactsData: state.impacts!,
-  }),
 );

@@ -1,8 +1,11 @@
-import { useContext } from "react";
-import { AvoidedFricheCostsImpact, sumListWithKey } from "shared";
+import { useContext, useMemo } from "react";
+import { AvoidedFricheCostsIndirectEconomicImpactItemView, sumListWithKey } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
-import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import {
+  ImpactModalDescriptionContext,
+  SocioEconomicSubSectionName,
+} from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
@@ -12,40 +15,53 @@ import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHe
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
 import ModalTable from "../../shared/ModalTable";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
-import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
+import {
+  localAuthorityBreadcrumbSection,
+  localPeopleOrCompanyBreadcrumbSection,
+  mainBreadcrumbSection,
+} from "../breadcrumbSections";
 
 type Props = {
-  impactData?: AvoidedFricheCostsImpact[];
+  impactData?: AvoidedFricheCostsIndirectEconomicImpactItemView[];
+  bearerName: string;
+  sectionName: SocioEconomicSubSectionName;
+  impactName: AvoidedFricheCostsIndirectEconomicImpactItemView["name"];
 };
 
-const getChartColor = (impactName: AvoidedFricheCostsImpact["details"][number]["impact"]) => {
+const getChartColor = (impactName: AvoidedFricheCostsIndirectEconomicImpactItemView["details"]) => {
   switch (impactName) {
-    case "avoided_accidents_costs":
+    case "accidentsCost":
       return "#E73518";
-    case "avoided_illegal_dumping_costs":
+    case "illegalDumpingCost":
       return "#AD6524";
-    case "avoided_maintenance_costs":
+    case "maintenance":
       return "#9E89CC";
-    case "avoided_other_securing_costs":
+    case "otherSecuringCosts":
       return "#C4C5C6";
-    case "avoided_security_costs":
+    case "security":
       return "#AFF6FF";
   }
 };
 
-const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
-  const total = sumListWithKey(impactData, "amount");
+const AvoidedFricheExpensesDescription = ({
+  impactData = [],
+  bearerName,
+  sectionName,
+  impactName,
+}: Props) => {
+  const total = sumListWithKey(impactData, "total");
 
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const data = impactData.flatMap(({ details, actor }) =>
-    details.map(({ impact, amount }) => ({
-      label: getSocioEconomicImpactLabel(impact),
-      color: getChartColor(impact),
-      value: amount,
-      name: impact,
-      actor,
-    })),
+  const data = useMemo(
+    () =>
+      impactData.map(({ details, total }) => ({
+        label: getSocioEconomicImpactLabel(`${impactName}.${details}`),
+        color: getChartColor(details),
+        value: total,
+        name: details,
+      })),
+    [impactData, impactName],
   );
 
   return (
@@ -56,11 +72,13 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
         value={{
           text: formatMonetaryImpact(total),
           state: total > 0 ? "success" : "error",
-          description: `répartis entre l'actuel locataire et le propriétaire`,
+          description: `pour ${bearerName}`,
         }}
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          economicDirectBreadcrumbSection,
+          sectionName === "localAuthority"
+            ? localAuthorityBreadcrumbSection
+            : localPeopleOrCompanyBreadcrumbSection,
           { label: "Dépenses friche évitées" },
         ]}
       />
@@ -74,17 +92,16 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
           />
           <ModalTable
             caption="Liste des dépenses de gestion et de sécurisation de la friche évitées"
-            data={data.map(({ label, value, color, name, actor }) => ({
+            data={data.map(({ label, value, color, name }) => ({
               label,
               value,
               color,
-              actor,
               onClick: () => {
                 updateModalContent({
                   sectionName: "socio_economic",
-                  subSectionName: "economic_direct",
-                  impactName: "avoided_friche_costs",
-                  impactDetailsName: name,
+                  subSectionName: sectionName,
+                  impactName: impactName,
+                  impactDetailsName: `${impactName}.${name}`,
                 });
               },
             }))}
@@ -112,7 +129,10 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
             dernier.
           </p>
           <p>
-            <strong>Bénéficiaire</strong> : actuel locataire ou propriétaire
+            <strong>Bénéficiaire</strong> :{" "}
+            {impactName === "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+              ? "actuel propriétaire"
+              : "actuel locataire"}
           </p>
         </ModalContent>
       </ModalGrid>

@@ -1,22 +1,19 @@
 import React from "react";
 
-import { SocioEconomicImpactByCategory } from "@/features/projects/domain/projectImpactsSocioEconomic";
-import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
+import { SocioEconomicImpactsByBearerListView } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import { getSocioEconomicImpactLabel } from "../../getImpactLabel";
 import ImpactModalDescription, {
   ModalDataProps,
 } from "../../impact-description-modals/ImpactModalDescription";
-import ImpactActorsItem from "../ImpactActorsItem";
+import ImpactItemDetails from "../ImpactItemDetails";
+import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";
 import { getDialogControlButtonProps } from "../dialogControlBtnProps";
 
-type Props = SocioEconomicImpactByCategory & {
-  sectionName:
-    | "economic_direct"
-    | "economic_indirect"
-    | "social_monetary"
-    | "environmental_monetary";
+type Props = {
+  impacts: SocioEconomicImpactsByBearerListView;
+  sectionName: "humanity" | "localPeopleOrCompany" | "localAuthority";
   initialShowSectionContent?: boolean;
   noMarginBottom?: boolean;
   modalData: ModalDataProps;
@@ -24,24 +21,16 @@ type Props = SocioEconomicImpactByCategory & {
 
 const getSectionTitle = (sectionName: Props["sectionName"]) => {
   switch (sectionName) {
-    case "economic_direct":
-      return "Impacts économiques directs";
-    case "economic_indirect":
-      return "Impacts économiques indirects";
-    case "social_monetary":
-      return "Impacts sociaux monétarisés";
-    case "environmental_monetary":
-      return "Impacts environnementaux monétarisés";
+    case "humanity":
+      return "Impacts économiques pour la société française et mondiale";
+    case "localPeopleOrCompany":
+      return "Impacts économiques pour les riverains";
+    case "localAuthority":
+      return "Impacts économiques pour la collectivité locale";
   }
 };
-const SocioEconomicImpactSection = ({
-  impacts,
-  total,
-  sectionName,
-  modalData,
-  ...props
-}: Props) => {
-  if (impacts.length === 0) {
+const SocioEconomicImpactSection = ({ impacts, sectionName, modalData, ...props }: Props) => {
+  if (impacts[sectionName].impacts.length === 0) {
     return null;
   }
 
@@ -57,12 +46,12 @@ const SocioEconomicImpactSection = ({
       />
       <ImpactSection
         title={getSectionTitle(sectionName)}
-        total={total}
+        total={impacts[sectionName].total}
         {...props}
         dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-List`}
       >
-        {impacts.map(({ name, actors }) => (
-          <React.Fragment key={name}>
+        {impacts[sectionName].impacts.map(({ name, amount, details = [], bearerName }) => (
+          <React.Fragment key={`wrapper-${name}`}>
             <ImpactModalDescription
               dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-${name}-List`}
               initialState={{
@@ -72,42 +61,37 @@ const SocioEconomicImpactSection = ({
               }}
               {...modalData}
             />
-            <ImpactActorsItem
-              type="monetary"
-              label={getSocioEconomicImpactLabel(name)}
-              labelProps={getDialogControlButtonProps(
-                `fr-modal-impacts-socioeconomic-${sectionName}-${name}-List`,
-              )}
-              actors={actors.map(
-                ({ name: actorLabel, value: actorValue, details: actorDetails }) => ({
-                  label: getActorLabel(actorLabel),
-                  value: actorValue,
-                  details: actorDetails
-                    ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
-                        label: getSocioEconomicImpactLabel(detailsName),
-                        value: detailsValue,
-                        labelProps: getDialogControlButtonProps(
-                          `fr-modal-impacts-socioeconomic-${sectionName}-${name}-${detailsName}-List`,
-                        ),
-                      }))
-                    : undefined,
-                }),
-              )}
-            />
-            {actors.map(({ details = [] }) =>
-              details.map(({ name: detailsName }) => (
+            <ImpactItemGroup isClickable key={`group-${name}`}>
+              <ImpactItemDetails
+                value={amount}
+                label={getSocioEconomicImpactLabel(name)}
+                actor={bearerName}
+                data={details.map((item) => ({
+                  label: getSocioEconomicImpactLabel(item.name),
+                  value: item.amount,
+                  labelProps: getDialogControlButtonProps(
+                    `fr-modal-impacts-socioeconomic-${sectionName}-${name}-${item.name}-List`,
+                  ),
+                }))}
+                type="monetary"
+                labelProps={getDialogControlButtonProps(
+                  `fr-modal-impacts-socioeconomic-${sectionName}-${name}-List`,
+                )}
+              />
+              {details.map(({ name: detailsName }) => (
                 <ImpactModalDescription
                   key={detailsName}
                   dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-${name}-${detailsName}-List`}
                   initialState={{
                     sectionName: "socio_economic",
+                    subSectionName: sectionName,
                     impactName: name,
                     impactDetailsName: detailsName,
                   }}
                   {...modalData}
                 />
-              )),
-            )}
+              ))}
+            </ImpactItemGroup>
           </React.Fragment>
         ))}
       </ImpactSection>

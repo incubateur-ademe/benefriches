@@ -254,7 +254,7 @@ export class UrbanProjectCreationPage {
   }
 
   async expectOnboardingStep1(): Promise<void> {
-    await expect(this.page.getByText("Bénéfriches calcule 6 types d'impacts.")).toBeVisible();
+    await expect(this.page.getByText("Bénéfriches calcule 5 types d'impacts.")).toBeVisible();
   }
 
   async submitOrSkipStep(): Promise<void> {

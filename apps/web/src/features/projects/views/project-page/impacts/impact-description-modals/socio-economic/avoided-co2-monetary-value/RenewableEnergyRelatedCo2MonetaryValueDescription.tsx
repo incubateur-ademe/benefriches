@@ -4,10 +4,7 @@ import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalC
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
 import RenewableEnergyRelatedCo2Content from "../../shared/co2-emissions/RenewableEnergyRelatedCo2Content";
-import {
-  mainBreadcrumbSection,
-  environmentalMonetaryBreadcrumbSection,
-} from "../breadcrumbSections";
+import { mainBreadcrumbSection, humanityBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   impactData?: number;
@@ -40,7 +37,7 @@ const AvoidedCO2WithEnRMonetaryValueDescription = ({
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          environmentalMonetaryBreadcrumbSection,
+          humanityBreadcrumbSection,
           {
             label: "Production d'énergies renouvelables",
           },

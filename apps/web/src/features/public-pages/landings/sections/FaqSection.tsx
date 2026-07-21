@@ -100,20 +100,16 @@ const faqData: FaqItem[] = [
           Bénéfriches calcule tous les impacts de votre projet, regroupés au sein de 6 familles, sur
           la base d'un ou plusieurs indicateurs.
         </p>
-        <p>4 familles d'impacts sont exprimées sous forme monétaire :</p>
+        <p>3 familles d'impacts sont exprimées sous forme monétaire :</p>
         <ul>
-          <li>Impacts économiques directs (exemple d'indicateur : fiscalité)</li>
+          <li>Impacts économiques pour la collectivit (exemple d'indicateur : fiscalité)</li>
           <li>
-            Impacts économiques indirects (exemple d'indicateur : dépenses de sécurisation d'un
-            site)
+            Impacts économiques pour les riverains (exemple d'indicateur : temps passé en moins dans
+            les transports)
           </li>
           <li>
-            Impacts sociaux monétarisés (exemple d'indicateur : temps passé en moins dans les
-            transports)
-          </li>
-          <li>
-            Impacts environnementaux monétarisés (exemple d'indicateur : valeur monétaire des
-            services écosystémiques)
+            Impacts sociaux et environnementaux monétarisés pour la société française et l'humanité
+            (exemple d'indicateur : valeur monétaire des services écosystémiques)
           </li>
         </ul>
         <p>2 autres familles proposent des impacts non-monétarisés :</p>

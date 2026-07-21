@@ -15,13 +15,23 @@ import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHe
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { getFullTimeJobsDetailsColor } from "../../../getImpactColor";
 import ModalTable from "../../shared/ModalTable";
 import ModalAreaChart from "../../shared/modal-charts/ModalAreaChart";
 import { mainBreadcrumbSection, jobsBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   impactData?: SocialImpact;
+};
+
+const getFullTimeJobsDetailsColor = (
+  impactName: "operations_full_time_jobs" | "conversion_full_time_jobs",
+) => {
+  switch (impactName) {
+    case "operations_full_time_jobs":
+      return "#C4C5C6";
+    case "conversion_full_time_jobs":
+      return "#E73518";
+  }
 };
 
 const FullTimeJobsDescription = ({ impactData }: Props) => {

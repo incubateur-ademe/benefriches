@@ -1,6 +1,7 @@
-import { useContext } from "react";
-import { AvoidedTrafficAccidentsImpact } from "shared";
+import { useContext, useMemo } from "react";
+import { AggregatedReconversionProjectOnSiteImpactItemView, sumListWithKey } from "shared";
 
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -8,40 +9,58 @@ import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalC
 import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
+import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 
-import { getSocialImpactLabel } from "../../../getImpactLabel";
+import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
 import ModalTable from "../../shared/ModalTable";
 import AvoidedTrafficAccidentsContent from "../../shared/avoided-traffic-accidents/AvoidedTrafficAccidentsContent";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
-import { mainBreadcrumbSection, socialMonetaryBreadcrumbSection } from "../breadcrumbSections";
+import { humanityBreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
 
 const TITLE = "Dépenses de santé évitées grâce à la diminution des accidents de la route";
 
 type Props = {
-  impactData?: AvoidedTrafficAccidentsImpact;
+  impactsData: IndirectEconomicImpactsByBearerAndGroupCategory<AggregatedReconversionProjectOnSiteImpactItemView>["humanity"]["avoidedHealthExpenses"];
 };
 
-const getChartColor = (impactName: AvoidedTrafficAccidentsImpact["details"][number]["impact"]) => {
+const getChartColor = (
+  impactName:
+    | "avoidedAccidentsMinorInjuriesExpenses"
+    | "avoidedAccidentsSevereInjuriesExpenses"
+    | "avoidedAccidentsDeathsExpenses",
+) => {
   switch (impactName) {
-    case "avoided_traffic_deaths":
+    case "avoidedAccidentsDeathsExpenses":
       return "#F6DB1F";
-    case "avoided_traffic_minor_injuries":
+    case "avoidedAccidentsMinorInjuriesExpenses":
       return "#E73518";
-    case "avoided_traffic_severe_injuries":
+    case "avoidedAccidentsSevereInjuriesExpenses":
       return "#2D163C";
+    default:
+      return undefined;
   }
 };
 
-const AvoidedTrafficAccidentsMonetaryValueDescription = ({ impactData }: Props) => {
+const AvoidedTrafficAccidentsMonetaryValueDescription = ({ impactsData }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const data =
-    impactData?.details.map(({ amount, impact }) => ({
-      label: getSocialImpactLabel(impact),
-      color: getChartColor(impact),
-      value: amount,
-      name: impact,
-    })) ?? [];
+  const data = useMemo(
+    () =>
+      filterByName(
+        impactsData,
+        "avoidedAccidentsMinorInjuriesExpenses",
+        "avoidedAccidentsSevereInjuriesExpenses",
+        "avoidedAccidentsDeathsExpenses",
+      ).map(({ total, name }) => ({
+        label: getSocioEconomicImpactLabel(name),
+        color: getChartColor(name),
+        value: total,
+        name,
+      })),
+    [impactsData],
+  );
+
+  const total = sumListWithKey(data, "value");
 
   return (
     <ModalBody size="large">
@@ -49,18 +68,14 @@ const AvoidedTrafficAccidentsMonetaryValueDescription = ({ impactData }: Props) 
         title={`🚘 ${TITLE}`}
         subtitle="Grâce aux déplacements évités"
         value={
-          impactData
+          impactsData
             ? {
                 state: "success",
-                text: formatMonetaryImpact(impactData.amount),
+                text: formatMonetaryImpact(total),
               }
             : undefined
         }
-        breadcrumbSegments={[
-          mainBreadcrumbSection,
-          socialMonetaryBreadcrumbSection,
-          { label: TITLE },
-        ]}
+        breadcrumbSegments={[mainBreadcrumbSection, humanityBreadcrumbSection, { label: TITLE }]}
       />
       <ModalGrid>
         <ModalData>
@@ -72,16 +87,13 @@ const AvoidedTrafficAccidentsMonetaryValueDescription = ({ impactData }: Props) 
           />
           <ModalTable
             caption="Liste des dépenses de santé évitées grâce aux accidents évités"
-            data={data.map(({ label, value, color, name }) => ({
-              label,
-              value,
-              color,
-              actor: "Société française",
+            data={data.map((item) => ({
+              ...item,
               onClick: () => {
                 updateModalContent({
                   sectionName: "socio_economic",
-                  impactName: "avoided_traffic_accidents",
-                  impactDetailsName: name,
+                  impactName: "avoidedTrafficAccidents",
+                  impactDetailsName: item.name,
                 });
               },
             }))}

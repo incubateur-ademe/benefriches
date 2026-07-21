@@ -363,7 +363,9 @@ export const getSiteStatuQuoIndirectsImpacts = ({
   }
 
   // -- Revenus liés à la location du site
-  const currentRentCost = siteData.yearlyExpenses.find(({ purpose }) => purpose === "rent");
+  const currentRentCost = siteData.yearlyExpenses.find(
+    ({ purpose, amount }) => purpose === "rent" && amount !== 0,
+  );
 
   if (currentRentCost) {
     const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(

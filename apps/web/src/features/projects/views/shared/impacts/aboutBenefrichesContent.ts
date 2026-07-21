@@ -68,26 +68,25 @@ export const ABOUT_SECTIONS: AboutSection[] = [
       },
       {
         type: "paragraph",
-        texts: ["4 familles d'impacts sont exprimées sous forme monétaire :"],
+        texts: ["3 familles d'impacts sont exprimées sous forme monétaire :"],
       },
       {
         type: "list",
         listType: "ul",
         items: [
-          { segments: ["Impacts économiques directs (exemple d'indicateur : fiscalité)"] },
           {
             segments: [
-              "Impacts économiques indirects (exemple d'indicateur : dépenses de sécurisation d'un site)",
+              "Impacts économiques pour la collectivité (exemple d'indicateur : fiscalité)",
             ],
           },
           {
             segments: [
-              "Impacts sociaux monétarisés (exemple d'indicateur : temps passé en moins dans les transports)",
+              "Impacts économiques pour les riverains (exemple d'indicateur : temps passé en moins dans les transports)",
             ],
           },
           {
             segments: [
-              "Impacts environnementaux monétarisés (exemple d'indicateur : valeur monétaire des services écosystémiques)",
+              "Impacts sociaux et  environnementaux monétarisés pour la société française et l'humanité (exemple d'indicateur : valeur monétaire des services écosystémiques)",
             ],
           },
         ],

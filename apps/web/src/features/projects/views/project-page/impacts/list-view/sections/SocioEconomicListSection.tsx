@@ -1,4 +1,4 @@
-import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { SocioEconomicImpactsByBearerListView } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import ImpactModalDescription, {
   ModalDataProps,
@@ -7,13 +7,12 @@ import ImpactSection from "../ImpactSection";
 import SocioEconomicImpactSection from "./SocioEconomicImpactSection";
 
 type Props = {
-  socioEconomicImpacts: SocioEconomicDetailedImpact;
+  socioEconomicImpacts: SocioEconomicImpactsByBearerListView;
   modalData: ModalDataProps;
 };
 
 const SocioEconomicImpactsListSection = ({ socioEconomicImpacts, modalData }: Props) => {
-  const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary, total } =
-    socioEconomicImpacts;
+  const { total } = socioEconomicImpacts;
 
   return (
     <>
@@ -30,24 +29,19 @@ const SocioEconomicImpactsListSection = ({ socioEconomicImpacts, modalData }: Pr
         dialogId={`fr-modal-impacts-socio_economic-List`}
       >
         <SocioEconomicImpactSection
-          sectionName="economic_direct"
+          sectionName="localAuthority"
           modalData={modalData}
-          {...economicDirect}
+          impacts={socioEconomicImpacts}
         />
         <SocioEconomicImpactSection
-          sectionName="economic_indirect"
+          sectionName="localPeopleOrCompany"
           modalData={modalData}
-          {...economicIndirect}
+          impacts={socioEconomicImpacts}
         />
         <SocioEconomicImpactSection
-          sectionName="social_monetary"
+          sectionName="humanity"
           modalData={modalData}
-          {...socialMonetary}
-        />
-        <SocioEconomicImpactSection
-          modalData={modalData}
-          sectionName="environmental_monetary"
-          {...environmentalMonetary}
+          impacts={socioEconomicImpacts}
         />
       </ImpactSection>
     </>

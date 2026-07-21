@@ -1,7 +1,7 @@
 import { createStore, RootState } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { selectDetailedSocioEconomicProjectImpacts } from "../selectors/projectImpacts.selectors";
+import { selectSocioEconomicProjectImpactsListView } from "../selectors/projectImpacts.selectors";
 import { photovoltaicProjectImpactsResultDto as projectImpactMock } from "./projectImpacts.mock";
 
 const MOCK_STATES = {
@@ -21,123 +21,130 @@ describe("projectImpactsSocioEconomic selectors", () => {
     it("should return socio economic impacts formatted with details and total", () => {
       const store = createStore(getTestAppDependencies(), MOCK_STATES);
       const rootState = store.getState();
-      const { economicDirect, economicIndirect, environmentalMonetary } =
-        selectDetailedSocioEconomicProjectImpacts(rootState);
+      const { humanity, localAuthority, localPeopleOrCompany } =
+        selectSocioEconomicProjectImpactsListView(rootState);
 
-      expect(economicDirect.impacts.length).toEqual(3);
-      expect(economicIndirect.impacts.length).toEqual(1);
-      expect(environmentalMonetary.impacts.length).toEqual(3);
+      expect(humanity.impacts.length).toEqual(2);
+      expect(localAuthority.impacts.length).toEqual(4);
+      expect(localPeopleOrCompany.impacts.length).toEqual(1);
 
-      expect(economicDirect.total).toEqual(-403568);
-      expect(economicIndirect.total).toEqual(5000);
-      expect(environmentalMonetary.total).toEqual(202984);
+      expect(humanity.total).toEqual(198264);
+      expect(localAuthority.total).toEqual(-540000 + 5432 + 5000 + 4720);
+      expect(localPeopleOrCompany.total).toEqual(131000);
 
-      expect(economicDirect.impacts).toContainEqual(
+      expect(localPeopleOrCompany.impacts).toContainEqual(
         expect.objectContaining({
-          name: "avoided_friche_costs",
-          actors: [
+          amount: 131000,
+          bearerName: "Current tenant",
+          details: [
             {
-              name: "Current tenant",
-              value: 131000,
-              details: [
-                { value: 100000, name: "avoided_accidents_costs" },
-                { value: 10000, name: "avoided_illegal_dumping_costs" },
-                { value: 10000, name: "avoided_other_securing_costs" },
-                { value: 1000, name: "avoided_maintenance_costs" },
-                { value: 10000, name: "avoided_security_costs" },
-              ],
+              amount: 100000,
+              name: "avoidedFricheMaintenanceAndSecuringCostsForTenant.accidentsCost",
+            },
+            {
+              amount: 10000,
+              name: "avoidedFricheMaintenanceAndSecuringCostsForTenant.illegalDumpingCost",
+            },
+            {
+              amount: 10000,
+              name: "avoidedFricheMaintenanceAndSecuringCostsForTenant.otherSecuringCosts",
+            },
+            {
+              amount: 1000,
+              name: "avoidedFricheMaintenanceAndSecuringCostsForTenant.maintenance",
+            },
+            {
+              amount: 10000,
+              name: "avoidedFricheMaintenanceAndSecuringCostsForTenant.security",
             },
           ],
+          name: "avoidedFricheMaintenanceAndSecuringCostsForTenant",
         }),
       );
 
-      expect(economicDirect.impacts).toContainEqual(
+      expect(localAuthority.impacts).toContainEqual(
         expect.objectContaining({
-          name: "site_rental_income_loss",
-          actors: [{ name: "Mairie de Blajan", value: -540000 }],
+          amount: -540000,
+          bearerName: "Mairie de Blajan",
+          name: "oldRentalIncomeLoss",
         }),
       );
 
-      expect(economicDirect.impacts).toContainEqual(
+      expect(localAuthority.impacts).toContainEqual(
         expect.objectContaining({
-          name: "property_transfer_duties_income",
-          actors: [{ name: "community", value: 5432 }],
+          amount: 5432,
+          bearerName: undefined,
+          name: "propertyTransferDutiesIncome",
         }),
       );
 
-      expect(economicIndirect.impacts).toContainEqual(
+      expect(localAuthority.impacts).toContainEqual(
         expect.objectContaining({
-          name: "taxes_income",
-          actors: [
+          amount: 5000,
+          bearerName: undefined,
+          details: [
             {
-              name: "community",
-              value: 5000,
-              details: [
-                {
-                  name: "project_photovoltaic_taxes_income",
-                  value: 5000,
-                },
-              ],
+              amount: 5000,
+              name: "projectPhotovoltaicTaxesIncome",
             },
           ],
+          name: "taxesIncome",
         }),
       );
 
-      expect(environmentalMonetary.impacts).toContainEqual(
+      expect(humanity.impacts).toContainEqual(
         expect.objectContaining({
-          name: "avoided_co2_eq_emissions",
-          actors: [
+          amount: 168444,
+          bearerName: undefined,
+          details: [
             {
-              name: "human_society",
-              value: 168444,
-              details: [{ name: "avoided_co2_eq_with_enr", value: 168444 }],
+              amount: 168444,
+              name: "avoidedCo2eqWithEnergyProduction",
             },
           ],
+          name: "avoidedCo2eqEmissions",
         }),
       );
 
-      expect(environmentalMonetary.impacts).toContainEqual(
+      expect(localAuthority.impacts).toContainEqual(
         expect.objectContaining({
-          name: "water_regulation",
-          actors: [{ name: "community", value: 4720 }],
+          amount: 4720,
+          bearerName: undefined,
+          name: "waterRegulation",
         }),
       );
 
-      expect(environmentalMonetary.impacts).toContainEqual(
+      expect(humanity.impacts).toContainEqual(
         expect.objectContaining({
-          name: "ecosystem_services",
-          actors: [
+          amount: 29820,
+          bearerName: undefined,
+          details: [
             {
-              name: "human_society",
-              value: 29820,
-              details: [
-                {
-                  value: 1420,
-                  name: "nature_related_wellness_and_leisure",
-                },
-                {
-                  value: 1840,
-                  name: "pollination",
-                },
-                {
-                  value: 680,
-                  name: "invasive_species_regulation",
-                },
-                {
-                  value: 19500,
-                  name: "water_cycle",
-                },
-                {
-                  value: 1380,
-                  name: "nitrogen_cycle",
-                },
-                {
-                  value: 5000,
-                  name: "soil_erosion",
-                },
-              ],
+              amount: 1420,
+              name: "natureRelatedWelnessAndLeisure",
+            },
+            {
+              amount: 1840,
+              name: "pollination",
+            },
+            {
+              amount: 680,
+              name: "invasiveSpeciesRegulation",
+            },
+            {
+              amount: 19500,
+              name: "waterCycle",
+            },
+            {
+              amount: 1380,
+              name: "nitrogenCycle",
+            },
+            {
+              amount: 5000,
+              name: "soilErosion",
             },
           ],
+          name: "ecosystemServices",
         }),
       );
     });

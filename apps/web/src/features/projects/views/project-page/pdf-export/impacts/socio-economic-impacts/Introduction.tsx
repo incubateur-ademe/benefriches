@@ -40,25 +40,20 @@ export default function SocioEconomicImpactsIntroductionPage() {
         méthodes de calcul sont détaillées au niveau de chacun.
       </Text>
       <View style={tw("mb-4")}>
-        <Text>Les impacts socio-économiques sont classés en 4 catégories :</Text>
+        <Text>Les impacts socio-économiques sont classés en 3 catégories :</Text>
         <ListItem>
-          <Link src="#impacts.socio_economic.economic_direct">
-            💰 les impacts économiques directs
+          <Link src="#impacts.socio_economic.localAuthority">
+            🪙 les impacts économiques pour la collectivité
           </Link>
         </ListItem>
         <ListItem>
-          <Link src="#impacts.socio_economic.economic_indirect">
-            🪙 les impacts économiques indirects
+          <Link src="#impacts.socio_economic.localPeopleOrCompany">
+            🚶 les impacts économiques pour les riverains
           </Link>
         </ListItem>
         <ListItem>
-          <Link src="#impacts.socio_economic.social_monetary">
-            🚶 les impacts sociaux monétarisés
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link src="#impacts.socio_economic.environmental_monetary">
-            🌳 les impacts environnementaux monétarisés
+          <Link src="#impacts.socio_economic.humanity">
+            🌳 les impacts économiques pour la société française et l'humanité
           </Link>
         </ListItem>
       </View>

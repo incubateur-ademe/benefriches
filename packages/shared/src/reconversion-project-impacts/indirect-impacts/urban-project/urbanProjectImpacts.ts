@@ -7,8 +7,9 @@ import { sumList, sumListWithKey } from "../../../services";
 import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../../sum-on-evolution-period/computeCumulativeByYear";
 import {
+  ProjectIndirectEconomicImpactName,
+  ProjectIndirectImpactItemView,
   ProjectOnSiteImpactMetric,
-  ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "../../projectImpacts.types";
 import { DevelopmentPlanFeatures } from "../../projectImpactsDataView.types";
 import { InputReconversionProjectData, InputSiteData } from "../projectIndirectImpacts";
@@ -25,8 +26,8 @@ export const getNewUsagesTaxesIncomeImpact = ({
 }: {
   buildingsFloorAreaDistribution: BuildingsUseDistribution;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-}): ReconversionProjectOnSiteIndirectEconomicImpactItemView[] => {
-  const impacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[] = [];
+}): ProjectIndirectImpactItemView<ProjectIndirectEconomicImpactName>[] => {
+  const impacts: ProjectIndirectImpactItemView<ProjectIndirectEconomicImpactName>[] = [];
 
   const newHousesSurfaceArea = buildingsFloorAreaDistribution.RESIDENTIAL ?? 0;
 
@@ -84,14 +85,14 @@ export const getUrbanProjectImpacts = ({
   siteCityData,
   sumOnEvolutionPeriodService,
 }: UrbanProjectImpactsProps): {
-  economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[];
+  economicImpacts: ProjectIndirectImpactItemView<ProjectIndirectEconomicImpactName>[];
   impactMetrics: ProjectOnSiteImpactMetric[];
 } => {
-  const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpactItemView[] = [];
+  const economicImpacts: ProjectIndirectImpactItemView<ProjectIndirectEconomicImpactName>[] = [];
   const impactsMetrics: ProjectOnSiteImpactMetric[] = [];
 
   const pushEconomicImpact = (
-    name: ReconversionProjectOnSiteIndirectEconomicImpactItemView["name"],
+    name: ProjectIndirectEconomicImpactName,
     yearlyValue: number | undefined,
     weights: ("discount" | "gdp_evolution" | "co2_value" | "co2_emitted_per_vehicule")[],
   ) => {

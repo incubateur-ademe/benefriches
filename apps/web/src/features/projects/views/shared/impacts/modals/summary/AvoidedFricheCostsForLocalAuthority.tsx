@@ -1,6 +1,7 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 
 import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
+import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -14,9 +15,13 @@ type Props = {
   impactData: Extract<KeyImpactIndicatorData, { name: "avoidedFricheCostsForLocalAuthority" }>;
 };
 
+const listFormatter = new Intl.ListFormat("fr", {
+  style: "long",
+  type: "conjunction",
+});
+
 const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: Props) => {
   const { value, isSuccess } = impactData;
-  const { amount, actorName } = value;
 
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
@@ -24,16 +29,30 @@ const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: P
     ? "- de dépenses de sécurisation\u00a0💰"
     : "Des dépenses de sécurisation demeurent\u00a0💸";
 
+  const actorNames = useMemo(
+    () =>
+      listFormatter.format(
+        value.details.map(
+          (elem) =>
+            elem.bearerName ??
+            (elem.impactName === "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+              ? "l'actuel propriétaire"
+              : "l'actuel locataire"),
+        ),
+      ),
+    [value],
+  );
+
   return (
     <ModalBody>
       <ModalHeader
         title={title}
         value={{
-          text: formatMonetaryImpact(amount),
+          text: formatMonetaryImpact(value.total),
           state: isSuccess ? "success" : "error",
           description: isSuccess
-            ? `économisés par ${actorName} grâce à la reconversion de la friche`
-            : `toujours à la charge de ${actorName}`,
+            ? `économisés par ${actorNames} grâce à la reconversion de la friche`
+            : `toujours à la charge de ${actorNames}`,
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
@@ -67,24 +86,28 @@ const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: P
           </>
         )}
 
-        <ImpactItemGroup isClickable>
-          <ImpactItemDetails
-            impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
-            value={amount}
-            label="🏚️ Dépenses de gestion et de sécurisation de la friche évitées"
-            type="monetary"
-            labelProps={{
-              onClick: (e) => {
-                e.stopPropagation();
+        {value.details.map((impact) => (
+          <ImpactItemGroup isClickable key={`${impact.impactName}.${impact.bearerName}`}>
+            <ImpactItemDetails
+              impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
+              value={impact.amount}
+              actor={impact.bearerName}
+              label={getSocioEconomicImpactLabel(impact.impactName)}
+              type="monetary"
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
 
-                updateModalContent({
-                  sectionName: "socio_economic",
-                  impactName: "avoided_friche_costs",
-                });
-              },
-            }}
-          />
-        </ImpactItemGroup>
+                  updateModalContent({
+                    sectionName: "socio_economic",
+                    subSectionName: "localAuthority",
+                    impactName: impact.impactName,
+                  });
+                },
+              }}
+            />
+          </ImpactItemGroup>
+        ))}
       </ModalContent>
     </ModalBody>
   );

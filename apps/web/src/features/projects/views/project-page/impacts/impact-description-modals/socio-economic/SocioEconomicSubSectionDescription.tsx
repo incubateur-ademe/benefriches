@@ -1,8 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { ReactNode, useContext } from "react";
-import { SocioEconomicImpact, sumListWithKey } from "shared";
 
-import { getSocioEconomicProjectImpactsByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { SocioEconomicMainImpactName } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import {
   ImpactModalDescriptionContext,
@@ -13,136 +12,102 @@ import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalC
 import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
-import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
-import { getSocioEconomicImpactColor } from "../../getImpactColor";
-import { getSocioEconomicImpactLabel } from "../../getImpactLabel";
-import ModalTable from "../shared/ModalTable";
+import ModalGroupTable from "../shared/ModalGroupTable";
 import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChart";
 import { mainBreadcrumbSection } from "./breadcrumbSections";
 
 type Props = {
-  impactsData: SocioEconomicImpact[];
+  impactsData: {
+    total: number;
+    details: {
+      label: string;
+      total: number;
+      values: {
+        name: SocioEconomicMainImpactName;
+        color?: string;
+        label: string;
+        value: number;
+        onClick?: () => void;
+      }[];
+    }[];
+  };
   subSectionName: SocioEconomicSubSectionName;
   title: string;
   children: ReactNode;
   valueDescription?: string;
 };
 
-const SocioEconomicSubSectionDescription = ({
-  impactsData,
-  subSectionName,
-  title,
-  children,
-  valueDescription = "répartis entre plusieurs bénéficiaires",
-}: Props) => {
-  const impactsByActor = getSocioEconomicProjectImpactsByActor(impactsData);
+const SocioEconomicSubSectionDescription = ({ impactsData, title, children }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
-
-  const impactList = impactsByActor.map(({ name, impacts }) => ({
-    label: getActorLabel(name),
-    values: impacts.map(({ value, name }) => ({
-      value,
-      label: getSocioEconomicImpactLabel(name),
-      color: getSocioEconomicImpactColor(name),
-      name,
-    })),
-  }));
-
-  const total = sumListWithKey(impactsData, "amount");
 
   return (
     <ModalBody size="large">
       <ModalHeader
         title={title}
         value={{
-          state: total > 0 ? "success" : "error",
-          text: formatMonetaryImpact(total),
-          description: valueDescription,
+          state: impactsData.total > 0 ? "success" : "error",
+          text: formatMonetaryImpact(impactsData.total),
         }}
         breadcrumbSegments={[mainBreadcrumbSection, { label: title }]}
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnSeriesChart format="monetary" data={impactList} exportTitle={title} />
+          <ModalColumnSeriesChart
+            format="monetary"
+            data={impactsData.details}
+            exportTitle={title}
+          />
 
-          <ModalTable
+          <ModalGroupTable
             caption="Liste des impacts socio-économiques"
-            data={impactList.flatMap(({ label: actor, values }) =>
-              values.map(({ value, label, name, color }) => ({
-                label,
-                color,
-                value,
-                actor,
-                onClick: () => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    subSectionName,
-                    impactName: name,
-                  });
-                },
-              })),
-            )}
+            data={impactsData.details}
           />
         </ModalData>
 
         <ModalContent>
-          Les impacts socio-économiques consistent en 4 catégories :
-          <ul>
+          Les impacts socio-économiques sont classés en 3 catégories :
+          <ul className="list-none pl-0">
             <li>
               <Button
-                className="px-1"
+                className="px-1 text-left"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({
                     sectionName: "socio_economic",
-                    subSectionName: "economic_direct",
+                    subSectionName: "localAuthority",
                   });
                 }}
               >
-                💰 les impacts économiques directs
+                🏛️ les impacts économiques pour la collectivité locale
               </Button>
             </li>
             <li>
               <Button
-                className="px-1"
+                className="px-1 text-left"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({
                     sectionName: "socio_economic",
-                    subSectionName: "economic_indirect",
+                    subSectionName: "localPeopleOrCompany",
                   });
                 }}
               >
-                🪙 les impacts économiques indirects
+                🏘️ les impacts économiques pour les riverains
               </Button>
             </li>
             <li>
               <Button
-                className="px-1"
+                className="px-1 text-left"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({
                     sectionName: "socio_economic",
-                    subSectionName: "social_monetary",
+                    subSectionName: "humanity",
                   });
                 }}
               >
-                🚶 les impacts sociaux monétarisés
-              </Button>
-            </li>
-            <li>
-              <Button
-                className="px-1"
-                priority="tertiary no outline"
-                onClick={() => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    subSectionName: "environmental_monetary",
-                  });
-                }}
-              >
-                🌳 les impacts environnementaux monétarisés
+                🌍️ les impacts économiques pour la société française et mondiale
               </Button>
             </li>
           </ul>

@@ -1,9 +1,14 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { useContext } from "react";
-import { SocioEconomicImpact } from "shared";
+import { useContext, useMemo } from "react";
+import { sumListWithKey, typedObjectEntries } from "shared";
 
-import { getSocioEconomicProjectImpactsByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import {
+  HUMANITY_IMPACTS_CATEGORIES,
+  LOCAL_AUTHORITY_IMPACTS_CATEGORIES,
+  LOCAL_PEOPLE_OR_COMPANY_IMPACTS_CATEGORIES,
+} from "@/features/projects/views/shared/impacts/impactGroupCategory";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
@@ -11,39 +16,116 @@ import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
-import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { getSocioEconomicImpactColor } from "../../getImpactColor";
-import { getSocioEconomicImpactLabel } from "../../getImpactLabel";
-import ModalTable from "../shared/ModalTable";
+import ModalGroupTable from "../shared/ModalGroupTable";
 import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChart";
 
 type Props = {
-  impactsData: { impacts: SocioEconomicImpact[]; total: number };
+  impactsData: {
+    byBearerAndCategory: IndirectEconomicImpactsByBearerAndGroupCategory;
+    total: number;
+  };
+};
+
+const getLabelForBearer = (name: "localAuthority" | "localPeopleOrCompany" | "humanity") => {
+  switch (name) {
+    case "localAuthority":
+      return "Collectivité";
+    case "localPeopleOrCompany":
+      return "Riverains";
+    case "humanity":
+      return "Société française et mondiale";
+  }
 };
 
 const SocioEconomicDescription = ({ impactsData }: Props) => {
-  const impactsByActor = getSocioEconomicProjectImpactsByActor(impactsData.impacts);
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const impactList = impactsByActor.map(({ name, impacts }) => ({
-    label: getActorLabel(name),
-    values: impacts.map(({ value, name }) => ({
-      value,
-      label: getSocioEconomicImpactLabel(name),
-      color: getSocioEconomicImpactColor(name),
-      name,
-    })),
-  }));
+  const { total, localAuthority, localPeopleOrCompany, humanity } = impactsData.byBearerAndCategory;
+  const { total: totalLocalAuthority, ...localAuthorityList } = localAuthority;
+  const { total: totalLocalPeopleOrCompany, ...localPeopleOrCompanyList } = localPeopleOrCompany;
+  const { total: totalHumanity, ...humanityList } = humanity;
+
+  const impactList = useMemo(
+    () =>
+      [
+        {
+          label: getLabelForBearer("localAuthority"),
+          total: totalLocalAuthority,
+
+          onClick: () => {
+            updateModalContent({
+              sectionName: "socio_economic",
+              subSectionName: "localAuthority",
+            });
+          },
+          values: typedObjectEntries(localAuthorityList)
+            .map(([category, items = []]) => ({
+              value: sumListWithKey(items, "total"),
+              label: LOCAL_AUTHORITY_IMPACTS_CATEGORIES[category].label,
+              color: LOCAL_AUTHORITY_IMPACTS_CATEGORIES[category].color,
+              name: category,
+            }))
+            .filter((item) => item.value !== 0),
+        },
+        {
+          label: getLabelForBearer("localPeopleOrCompany"),
+          total: totalLocalPeopleOrCompany,
+          onClick: () => {
+            updateModalContent({
+              sectionName: "socio_economic",
+              subSectionName: "localPeopleOrCompany",
+            });
+          },
+          values: typedObjectEntries(localPeopleOrCompanyList)
+            .map(([category, items = []]) => ({
+              value: sumListWithKey(items, "total"),
+              label: LOCAL_PEOPLE_OR_COMPANY_IMPACTS_CATEGORIES[category].label,
+              color: LOCAL_PEOPLE_OR_COMPANY_IMPACTS_CATEGORIES[category].color,
+              name: category,
+            }))
+            .filter((item) => item.value !== 0),
+        },
+        {
+          label: getLabelForBearer("humanity"),
+          total: totalHumanity,
+
+          onClick: () => {
+            updateModalContent({
+              sectionName: "socio_economic",
+              subSectionName: "humanity",
+            });
+          },
+          values: typedObjectEntries(humanityList)
+            .map(([category, items = []]) => ({
+              category: category,
+              value: sumListWithKey(items, "total"),
+              label: HUMANITY_IMPACTS_CATEGORIES[category].label,
+              color: HUMANITY_IMPACTS_CATEGORIES[category].color,
+              name: category,
+            }))
+            .filter((item) => item.value !== 0),
+        },
+      ].filter((item) => item.values.length > 0),
+    [
+      localPeopleOrCompanyList,
+      humanityList,
+      localAuthorityList,
+      totalLocalAuthority,
+      totalLocalPeopleOrCompany,
+      totalHumanity,
+      updateModalContent,
+    ],
+  );
 
   return (
     <ModalBody size="large">
       <ModalHeader
         title="🌍 Impacts socio-économiques"
         value={{
-          state: impactsData.total > 0 ? "success" : "error",
-          text: formatMonetaryImpact(impactsData.total),
+          state: total > 0 ? "success" : "error",
+          text: formatMonetaryImpact(total),
           description: "répartis entre plusieurs bénéficiaires",
         }}
         breadcrumbSegments={[{ label: "Impacts socio-économiques" }]}
@@ -56,23 +138,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
             exportTitle="🌍 Impacts socio-économiques"
           />
 
-          <ModalTable
-            caption="Liste des impacts socio-économiques"
-            data={impactList.flatMap(({ label: actor, values }) =>
-              values.map(({ value, label, name, color }) => ({
-                label,
-                color,
-                value,
-                actor,
-                onClick: () => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    impactName: name,
-                  });
-                },
-              })),
-            )}
-          />
+          <ModalGroupTable caption="Liste des impacts socio-économiques" data={impactList} />
         </ModalData>
         <ModalContent>
           <p>
@@ -102,7 +168,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
             Les différents indicateurs utilisés dans Bénéfriches sont présentés ci-contre et leurs
             méthodes de calcul sont détaillées au niveau de chacun.
           </p>
-          Les impacts socio-économiques sont classés en 4 catégories :
+          Les impacts socio-économiques sont classés en 3 catégories :
           <ul>
             <li>
               <Button
@@ -111,11 +177,11 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
                 onClick={() => {
                   updateModalContent({
                     sectionName: "socio_economic",
-                    subSectionName: "economic_direct",
+                    subSectionName: "localAuthority",
                   });
                 }}
               >
-                💰 les impacts économiques directs
+                🏛️ les impacts économiques pour la collectivité locale
               </Button>
             </li>
             <li>
@@ -125,11 +191,11 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
                 onClick={() => {
                   updateModalContent({
                     sectionName: "socio_economic",
-                    subSectionName: "economic_indirect",
+                    subSectionName: "localPeopleOrCompany",
                   });
                 }}
               >
-                🪙 les impacts économiques indirects
+                🏘️ les impacts économiques pour les riverains
               </Button>
             </li>
             <li>
@@ -139,25 +205,11 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
                 onClick={() => {
                   updateModalContent({
                     sectionName: "socio_economic",
-                    subSectionName: "social_monetary",
+                    subSectionName: "humanity",
                   });
                 }}
               >
-                🚶 les impacts sociaux monétarisés
-              </Button>
-            </li>
-            <li>
-              <Button
-                className="px-1"
-                priority="tertiary no outline"
-                onClick={() => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    subSectionName: "environmental_monetary",
-                  });
-                }}
-              >
-                🌳 les impacts environnementaux monétarisés
+                🌍️ les impacts économiques pour la société française et mondiale
               </Button>
             </li>
           </ul>

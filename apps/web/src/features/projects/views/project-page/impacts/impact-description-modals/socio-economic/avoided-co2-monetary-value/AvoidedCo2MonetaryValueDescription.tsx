@@ -1,6 +1,7 @@
-import { useContext } from "react";
-import { AvoidedCO2EqEmissions, SocioEconomicImpact } from "shared";
+import { useContext, useMemo } from "react";
+import { AggregatedReconversionProjectOnSiteImpactItemView, sumListWithKey } from "shared";
 
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -8,60 +9,70 @@ import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalC
 import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
+import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
 import ModalTable from "../../shared/ModalTable";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
-import {
-  environmentalMonetaryBreadcrumbSection,
-  mainBreadcrumbSection,
-} from "../breadcrumbSections";
+import { humanityBreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
-  impactsData: SocioEconomicImpact[];
+  impactsData: IndirectEconomicImpactsByBearerAndGroupCategory<AggregatedReconversionProjectOnSiteImpactItemView>["humanity"]["avoidedHealthExpenses"];
 };
 
-const getChartColor = (impactName: AvoidedCO2EqEmissions["details"][number]["impact"]) => {
+const getChartColor = (
+  impactName:
+    | "avoidedTrafficCo2EqEmissions"
+    | "avoidedCo2eqWithEnergyProduction"
+    | "avoidedAirConditioningCo2eqEmissions",
+) => {
   switch (impactName) {
-    case "avoided_co2_eq_with_enr":
+    case "avoidedCo2eqWithEnergyProduction":
       return "#F6E900";
-    case "avoided_air_conditioning_co2_eq_emissions":
+    case "avoidedAirConditioningCo2eqEmissions":
       return "#1F60FB";
-    case "avoided_traffic_co2_eq_emissions":
+    case "avoidedTrafficCo2EqEmissions":
       return "#C750CA";
   }
 };
 
-const AvoidedCo2MonetaryValueDescription = ({ impactsData }: Props) => {
-  const impactData = impactsData.find(
-    (impact): impact is AvoidedCO2EqEmissions => impact.impact === "avoided_co2_eq_emissions",
-  );
+const AvoidedCo2MonetaryValueDescription = ({ impactsData = [] }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const data =
-    impactData?.details.map(({ amount, impact }) => ({
-      label: getSocioEconomicImpactLabel(impact),
-      color: getChartColor(impact),
-      value: amount,
-      name: impact,
-    })) ?? [];
+  const data = useMemo(
+    () =>
+      filterByName(
+        impactsData,
+        "avoidedTrafficCo2EqEmissions",
+        "avoidedCo2eqWithEnergyProduction",
+        "avoidedAirConditioningCo2eqEmissions",
+      ).map(({ total, name }) => ({
+        label: getSocioEconomicImpactLabel(name),
+        color: getChartColor(name),
+        value: total,
+        name,
+      })),
+    [impactsData],
+  );
+
+  const total = sumListWithKey(data, "value");
 
   return (
     <ModalBody size="large">
       <ModalHeader
         title="☁️ Valeur monétaire de la décarbonation"
         value={
-          impactData
+          data.length > 0
             ? {
-                state: impactData.amount > 0 ? "success" : "error",
-                text: formatMonetaryImpact(impactData.amount),
+                state: total > 0 ? "success" : "error",
+                text: formatMonetaryImpact(total),
                 description: "pour l'humanité",
               }
             : undefined
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          environmentalMonetaryBreadcrumbSection,
+          humanityBreadcrumbSection,
           { label: "Valeur monétaire de la décarbonation" },
         ]}
       />
@@ -83,7 +94,8 @@ const AvoidedCo2MonetaryValueDescription = ({ impactsData }: Props) => {
               onClick: () => {
                 updateModalContent({
                   sectionName: "socio_economic",
-                  impactName: "avoided_co2_eq_emissions",
+                  impactName: "avoidedCo2eqEmissions",
+                  subSectionName: "humanity",
                   impactDetailsName: name,
                 });
               },

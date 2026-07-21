@@ -49,7 +49,8 @@ const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
                 e.stopPropagation();
                 updateModalContent({
                   sectionName: "socio_economic",
-                  impactName: "taxes_income",
+                  subSectionName: "localAuthority",
+                  impactName: "taxesIncome",
                 });
               },
             }}

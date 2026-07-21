@@ -21,12 +21,11 @@ export default function ProjectSummaryComparisonCard({ mainImpactIndicator, proj
     if (!mainImpactIndicator) return { title: "", value: "", description: "" };
 
     switch (mainImpactIndicator.name) {
-      case "avoidedMaintenanceCostsForLocalAuthority":
       case "avoidedFricheCostsForLocalAuthority": {
         const { isSuccess, value } = mainImpactIndicator;
         return {
           title: isSuccess ? "Gains pour la collectivité" : "Pertes pour la collectivité",
-          value: formatMonetaryImpact(value.amount),
+          value: formatMonetaryImpact(value.total),
           description: isSuccess
             ? "grâce à la reconversion de la friche"
             : "à cause du maintien de la friche",

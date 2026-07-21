@@ -21,9 +21,6 @@ const SummaryPermeableSurfaceAreaDescription = lazy(() => import("./PermeableSur
 const SummaryProjectBalanceDescription = lazy(() => import("./ProjectBalance"));
 const SummaryTaxesIncomeDescription = lazy(() => import("./TaxesIncome"));
 const SummaryZanComplianceDescription = lazy(() => import("./ZanCompliance"));
-const SummaryAvoidedMaintenanceCostsForLocalAuthorityDescription = lazy(
-  () => import("./AvoidedMaintenanceCostsForLocalAuthority"),
-);
 
 type Props = {
   impactData: KeyImpactIndicatorData;
@@ -56,10 +53,6 @@ export function SummaryModalWizard({ impactData }: Props) {
             return <SummaryHouseholdsPoweredByRenewableEnergyDescription impactData={impactData} />;
           case "localPropertyValueIncrease":
             return <SummaryLocalPropertyValueIncreaseDescription impactData={impactData} />;
-          case "avoidedMaintenanceCostsForLocalAuthority":
-            return (
-              <SummaryAvoidedMaintenanceCostsForLocalAuthorityDescription impactData={impactData} />
-            );
         }
       })()}
     </Suspense>

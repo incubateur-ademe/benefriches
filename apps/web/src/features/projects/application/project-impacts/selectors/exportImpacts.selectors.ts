@@ -1,15 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/store/store";
+import { SocioEconomicImpactsByBearerListView } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { SiteFeatures } from "@/features/sites/core/site.types";
 
 import { EconomicBalance } from "../../../domain/projectImpactsEconomicBalance";
 import { EnvironmentalImpact } from "../../../domain/projectImpactsEnvironmental";
 import { SocialImpact } from "../../../domain/projectImpactsSocial";
-import { SocioEconomicDetailedImpact } from "../../../domain/projectImpactsSocioEconomic";
 import { ProjectFeatures } from "../../../domain/projects.types";
 import {
-  selectDetailedSocioEconomicProjectImpacts,
+  selectSocioEconomicProjectImpactsListView,
   selectEconomicBalanceProjectImpacts,
   selectEnvironmentalProjectImpacts,
   selectSocialProjectImpacts,
@@ -25,7 +25,7 @@ type ExportImpactsView = {
   impacts: {
     economicBalance: EconomicBalance;
     environment: EnvironmentalImpact[];
-    socioEconomic: SocioEconomicDetailedImpact;
+    socioEconomic: SocioEconomicImpactsByBearerListView;
     social: SocialImpact[];
   };
 };
@@ -52,7 +52,7 @@ export const selectExportImpactsView = createSelector(
     (state: RootState) => state.siteFeatures,
     (state: RootState) => state.projectImpacts.evaluationPeriod,
     selectEconomicBalanceProjectImpacts,
-    selectDetailedSocioEconomicProjectImpacts,
+    selectSocioEconomicProjectImpactsListView,
     selectEnvironmentalProjectImpacts,
     selectSocialProjectImpacts,
   ],

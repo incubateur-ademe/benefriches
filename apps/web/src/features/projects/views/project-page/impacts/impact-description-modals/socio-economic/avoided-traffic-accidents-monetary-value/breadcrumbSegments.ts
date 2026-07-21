@@ -1,15 +1,17 @@
 import { BreadcrumbProps } from "@/features/projects/views/shared/impacts/modals/ModalBreadcrumb";
 
-import { mainBreadcrumbSection, socialMonetaryBreadcrumbSection } from "../breadcrumbSections";
+import { mainBreadcrumbSection, humanityBreadcrumbSection } from "../breadcrumbSections";
 
 export const breadcrumbSegments: BreadcrumbProps["segments"] = [
   mainBreadcrumbSection,
-  socialMonetaryBreadcrumbSection,
+  humanityBreadcrumbSection,
   {
     label: "Dépenses de santé évitées grâce à la diminution des accidents de la route",
     contentState: {
       sectionName: mainBreadcrumbSection.contentState.sectionName,
-      impactName: "avoided_traffic_accidents",
+      subSectionName: "humanity",
+
+      impactName: "avoidedTrafficAccidents",
     },
   },
 ] as const;

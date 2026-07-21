@@ -1,4 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { ReconversionStakeholders } from "shared";
 
 import type { RootState } from "@/app/store/store";
 import {
@@ -15,7 +16,7 @@ import {
 } from "@/features/projects/domain/projectImpactsSocial";
 import {
   getSocioEconomicProjectImpactsGroupedByCategory,
-  type SocioEconomicDetailedImpact,
+  SocioEconomicImpactsByBearerListView,
 } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import {
   getKeyImpactIndicatorsList,
@@ -25,7 +26,6 @@ import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.
 import { ModalDataProps } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactModalDescription";
 
 import {
-  selectModalData,
   selectProjectsImpactsViewData,
   type ProjectImpactsState,
   type ViewMode,
@@ -35,7 +35,7 @@ import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.
 // List View
 type ImpactsListViewData = {
   economicBalance: EconomicBalance;
-  socioEconomicImpacts: SocioEconomicDetailedImpact;
+  socioEconomicImpacts: SocioEconomicImpactsByBearerListView;
   environmentImpacts: EnvironmentalImpact[];
   socialImpacts: SocialImpact[];
   modalData: ModalDataProps;
@@ -46,6 +46,11 @@ const selectProjectImpactsState = (state: RootState) => state.projectImpacts;
 const selectImpactsContextData = createSelector(
   selectProjectImpactsState,
   (state): ProjectImpactsState["contextData"] => state.contextData,
+);
+
+const selectStakeholders = createSelector(
+  selectProjectImpactsState,
+  (state): ReconversionStakeholders | undefined => state.impacts?.stakeholders,
 );
 
 export const selectSocialProjectImpacts = createSelector(
@@ -63,9 +68,13 @@ export const selectEnvironmentalProjectImpacts = createSelector(
   },
 );
 
-export const selectDetailedSocioEconomicProjectImpacts = createSelector(
-  selectImpactsCroppedByEvaluationPeriod,
-  getSocioEconomicProjectImpactsGroupedByCategory,
+export const selectSocioEconomicProjectImpactsListView = createSelector(
+  [selectImpactsCroppedByEvaluationPeriod, selectStakeholders],
+  (impacts, stakeholers) =>
+    getSocioEconomicProjectImpactsGroupedByCategory(
+      impacts?.aggregatedReconversionImpacts.indirectEconomicImpacts,
+      stakeholers,
+    ),
 );
 
 const selectProjectDevelopmentType = createSelector(
@@ -86,10 +95,18 @@ export const selectKeyImpactIndicatorsList = createSelector(
     impacts && contextData ? getKeyImpactIndicatorsList(impacts, contextData) : [],
 );
 
+const selectModalData = createSelector(
+  selectProjectImpactsState,
+  (state): ModalDataProps => ({
+    contextData: state.contextData!,
+    impactsData: state.impacts!,
+  }),
+);
+
 export const selectImpactsListViewData = createSelector(
   [
     selectEconomicBalanceProjectImpacts,
-    selectDetailedSocioEconomicProjectImpacts,
+    selectSocioEconomicProjectImpactsListView,
     selectEnvironmentalProjectImpacts,
     selectSocialProjectImpacts,
     selectModalData,

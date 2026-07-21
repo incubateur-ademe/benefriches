@@ -1,26 +1,24 @@
 import {
   GetReconversionProjectImpactsResultDto,
   LOCAL_AUTHORITIES,
-  ProjectOperatingEconomicBalanceItem,
   SiteStatuQuoEconomicImpact,
   sumListWithKey,
   UrbanSprawlComparisonIndirectEconomicImpactItemView,
   AggregatedReconversionProjectOnSiteImpactItemView,
-  IndirectEconomicImpactDataView,
-  SiteStatuQuoImpacts,
 } from "shared";
 
 const isLocalAuthority = (structureType?: string) =>
   structureType === "localAuthority" || LOCAL_AUTHORITIES.some((item) => item === structureType);
 
-type IndirectEconomicImpactItem =
+export type IndirectEconomicImpactItem =
   | AggregatedReconversionProjectOnSiteImpactItemView
   | UrbanSprawlComparisonIndirectEconomicImpactItemView
-  | SiteStatuQuoEconomicImpact
-  | ProjectOperatingEconomicBalanceItem;
+  | SiteStatuQuoEconomicImpact;
 
-const groupIndirectEconomicImpactsByBearer = (
-  indirectEconomicImpacts: IndirectEconomicImpactItem[],
+export const groupIndirectEconomicImpactsByBearer = <
+  T extends IndirectEconomicImpactItem = IndirectEconomicImpactItem,
+>(
+  indirectEconomicImpacts: T[],
   stakeholders?: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"],
 ) => {
   const {
@@ -112,7 +110,9 @@ const groupIndirectEconomicImpactsByBearer = (
   };
 };
 
-type IndirectEconomicImpactsGroupedByCategory = Partial<
+export type IndirectEconomicImpactsGroupedByCategory<
+  T extends IndirectEconomicImpactItem = IndirectEconomicImpactItem,
+> = Partial<
   Record<
     | "localPropertyValueIncrease"
     | "rentalIncome"
@@ -123,13 +123,15 @@ type IndirectEconomicImpactsGroupedByCategory = Partial<
     | "purchasingPowerIncrease"
     | "environmentalAction"
     | "avoidedHealthExpenses",
-    IndirectEconomicImpactItem[]
+    T[]
   >
 >;
 
-export const groupIndirectEconomicImpactsByCategory = (
-  indirectEconomicImpacts: IndirectEconomicImpactItem[],
-): IndirectEconomicImpactsGroupedByCategory => {
+export const groupIndirectEconomicImpactsByCategory = <
+  T extends IndirectEconomicImpactItem = IndirectEconomicImpactItem,
+>(
+  indirectEconomicImpacts: T[],
+): IndirectEconomicImpactsGroupedByCategory<T> => {
   return Object.groupBy(indirectEconomicImpacts, ({ name }) => {
     switch (name) {
       case "oldRentalIncomeLoss":
@@ -198,12 +200,14 @@ export const groupIndirectEconomicImpactsByCategory = (
   });
 };
 
-export type IndirectEconomicImpactsByBearerAndGroupCategory = {
+export type IndirectEconomicImpactsByBearerAndGroupCategory<
+  T extends IndirectEconomicImpactItem = IndirectEconomicImpactItem,
+> = {
   total: number;
   localAuthority: {
     total: number;
   } & Pick<
-    IndirectEconomicImpactsGroupedByCategory,
+    IndirectEconomicImpactsGroupedByCategory<T>,
     | "rentalIncome"
     | "taxesIncome"
     | "fricheCosts"
@@ -213,7 +217,7 @@ export type IndirectEconomicImpactsByBearerAndGroupCategory = {
   localPeopleOrCompany: {
     total: number;
   } & Pick<
-    IndirectEconomicImpactsGroupedByCategory,
+    IndirectEconomicImpactsGroupedByCategory<T>,
     | "rentalIncome"
     | "fricheCosts"
     | "operatingEconomicBalance"
@@ -223,15 +227,24 @@ export type IndirectEconomicImpactsByBearerAndGroupCategory = {
   humanity: {
     total: number;
   } & Pick<
-    IndirectEconomicImpactsGroupedByCategory,
+    IndirectEconomicImpactsGroupedByCategory<T>,
     "avoidedHealthExpenses" | "environmentalAction"
   >;
 };
-export const groupIndirectEconomicImpactsByBearerAndCategory = (
-  indirectEconomicImpacts?: IndirectEconomicImpactDataView | SiteStatuQuoImpacts["economicImpacts"],
-  stakeholders?: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"],
-): IndirectEconomicImpactsByBearerAndGroupCategory => {
-  if (!indirectEconomicImpacts || !stakeholders) {
+
+type Props<T extends IndirectEconomicImpactItem = IndirectEconomicImpactItem> = {
+  indirectEconomicImpacts?: T[];
+  indirectEconomicImpactsTotal?: number;
+  stakeholders?: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
+};
+export const groupIndirectEconomicImpactsByBearerAndCategory = <
+  T extends IndirectEconomicImpactItem = IndirectEconomicImpactItem,
+>({
+  indirectEconomicImpacts,
+  indirectEconomicImpactsTotal,
+  stakeholders,
+}: Props<T>): IndirectEconomicImpactsByBearerAndGroupCategory<T> => {
+  if (!indirectEconomicImpacts || !stakeholders || !indirectEconomicImpactsTotal) {
     return {
       total: 0,
       humanity: { total: 0 },
@@ -240,13 +253,11 @@ export const groupIndirectEconomicImpactsByBearerAndCategory = (
     };
   }
 
-  const { humanity, localAuthority, localPeopleOrCompany } = groupIndirectEconomicImpactsByBearer(
-    indirectEconomicImpacts.details,
-    stakeholders,
-  );
+  const { humanity, localAuthority, localPeopleOrCompany } =
+    groupIndirectEconomicImpactsByBearer<T>(indirectEconomicImpacts, stakeholders);
 
   return {
-    total: indirectEconomicImpacts.total,
+    total: indirectEconomicImpactsTotal,
     humanity: {
       total: humanity.total,
       ...groupIndirectEconomicImpactsByCategory(humanity.details),

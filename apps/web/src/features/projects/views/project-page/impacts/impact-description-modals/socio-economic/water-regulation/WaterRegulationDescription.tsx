@@ -11,10 +11,7 @@ import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import {
-  mainBreadcrumbSection,
-  environmentalMonetaryBreadcrumbSection,
-} from "../breadcrumbSections";
+import { mainBreadcrumbSection, localAuthorityBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   baseSoilsDistribution: { soilType: SoilType; total: number }[];
@@ -59,7 +56,7 @@ const WaterRegulationDescription = ({
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          environmentalMonetaryBreadcrumbSection,
+          localAuthorityBreadcrumbSection,
           { label: "Dépenses de traitement de l’eau évitées" },
         ]}
       />

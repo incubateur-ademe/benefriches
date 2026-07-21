@@ -13,13 +13,21 @@ import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 
-import { getPermeableSurfaceDetailsColor } from "../../../getImpactColor";
 import ModalTable from "../../shared/ModalTable";
 import ModalAreaChart from "../../shared/modal-charts/ModalAreaChart";
 import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   impactData?: EnvironmentalImpact;
+};
+
+const getPermeableSurfaceDetailsColor = (impactName: "mineral_soil" | "green_soil") => {
+  switch (impactName) {
+    case "green_soil":
+      return "#7ACA17";
+    case "mineral_soil":
+      return "#70706A";
+  }
 };
 
 const PermeableSurfaceDescription = ({ impactData }: Props) => {

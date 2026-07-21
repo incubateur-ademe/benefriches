@@ -17,13 +17,16 @@ export const selectImpactsCroppedByEvaluationPeriod = createSelector([selectSelf
     : undefined,
 );
 
-export const selectIndirectEconomicImpactsByBearer = createSelector(
+export const selectIndirectEconomicImpactsByBearerAndCategory = createSelector(
   selectImpactsCroppedByEvaluationPeriod,
   (impacts): IndirectEconomicImpactsByBearerAndGroupCategory =>
-    groupIndirectEconomicImpactsByBearerAndCategory(
-      impacts?.aggregatedReconversionImpacts.indirectEconomicImpacts,
-      impacts?.stakeholders,
-    ),
+    groupIndirectEconomicImpactsByBearerAndCategory({
+      indirectEconomicImpacts:
+        impacts?.aggregatedReconversionImpacts.indirectEconomicImpacts.details,
+      indirectEconomicImpactsTotal:
+        impacts?.aggregatedReconversionImpacts.indirectEconomicImpacts.total,
+      stakeholders: impacts?.stakeholders,
+    }),
 );
 
 export type BreakEvenLevelTabDataView =
@@ -32,7 +35,7 @@ export type BreakEvenLevelTabDataView =
     })
   | undefined;
 export const selectBreakEvenLevelTabDataView = createSelector(
-  [selectImpactsCroppedByEvaluationPeriod, selectIndirectEconomicImpactsByBearer],
+  [selectImpactsCroppedByEvaluationPeriod, selectIndirectEconomicImpactsByBearerAndCategory],
   (
     breakEvenLevelForEvaluationPeriod,
     indirectEconomicImpactsByBearer,

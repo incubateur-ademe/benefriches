@@ -1,6 +1,11 @@
-import { useContext } from "react";
-import { TaxesIncomeImpact } from "shared";
+import { useContext, useMemo } from "react";
+import {
+  AggregatedReconversionProjectOnSiteImpactItemView,
+  IndirectEconomicImpactName,
+  sumListWithKey,
+} from "shared";
 
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -11,6 +16,7 @@ import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHe
 import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
+import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
@@ -18,20 +24,27 @@ import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
 import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalTable from "../../shared/ModalTable";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
-import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
+import { mainBreadcrumbSection, localAuthorityBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   developmentPlan: ModalDataProps["contextData"]["projectDevelopmentPlan"];
-  impactData?: TaxesIncomeImpact;
+  impactData: IndirectEconomicImpactsByBearerAndGroupCategory<AggregatedReconversionProjectOnSiteImpactItemView>["localAuthority"]["taxesIncome"];
 };
 
-const getChartColor = (impactName: TaxesIncomeImpact["details"][number]["impact"]) => {
+const getChartColor = (
+  impactName: Extract<
+    IndirectEconomicImpactName,
+    | "projectNewHousesTaxesIncome"
+    | "projectNewCompanyTaxationIncome"
+    | "projectPhotovoltaicTaxesIncome"
+  >,
+) => {
   switch (impactName) {
-    case "project_new_company_taxation_income":
+    case "projectNewCompanyTaxationIncome":
       return "#1D5DA2";
-    case "project_new_houses_taxes_income":
+    case "projectNewHousesTaxesIncome":
       return "#C649CA";
-    case "project_photovoltaic_taxes_income":
+    case "projectPhotovoltaicTaxesIncome":
       return "#FF9700";
   }
 };
@@ -39,13 +52,23 @@ const getChartColor = (impactName: TaxesIncomeImpact["details"][number]["impact"
 const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const data =
-    impactData?.details.map(({ amount, impact }) => ({
-      label: getSocioEconomicImpactLabel(impact),
-      color: getChartColor(impact),
-      value: amount,
-      name: impact,
-    })) ?? [];
+  const data = useMemo(
+    () =>
+      filterByName(
+        impactData,
+        "projectNewHousesTaxesIncome",
+        "projectNewCompanyTaxationIncome",
+        "projectPhotovoltaicTaxesIncome",
+      ).map(({ total, name }) => ({
+        label: getSocioEconomicImpactLabel(name),
+        color: getChartColor(name),
+        value: total,
+        name,
+      })),
+    [impactData],
+  );
+
+  const total = sumListWithKey(data, "value");
 
   return (
     <ModalBody size="large">
@@ -54,15 +77,15 @@ const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
         value={
           impactData
             ? {
-                state: impactData.amount > 0 ? "success" : "error",
-                text: formatMonetaryImpact(impactData.amount),
+                state: total > 0 ? "success" : "error",
+                text: formatMonetaryImpact(total),
                 description: "pour la collectivité",
               }
             : undefined
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          economicDirectBreadcrumbSection,
+          localAuthorityBreadcrumbSection,
           { label: "Recettes fiscales" },
         ]}
       />
@@ -76,11 +99,12 @@ const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
               label,
               value,
               color,
-              actor: getActorLabel(impactData?.actor ?? "community"),
+              actor: getActorLabel("community"),
               onClick: () => {
                 updateModalContent({
                   sectionName: "socio_economic",
-                  impactName: "taxes_income",
+                  impactName: "taxesIncome",
+                  subSectionName: "localAuthority",
                   impactDetailsName: name,
                 });
               },

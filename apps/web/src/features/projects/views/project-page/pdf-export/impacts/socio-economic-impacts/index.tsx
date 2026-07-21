@@ -1,29 +1,23 @@
-import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { SocioEconomicImpactsByBearerListView } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import PdfPage from "../../components/PdfPage";
 import SocioEconomicImpactsIntroductionPage from "./Introduction";
 import SocioEconomicImpactsSection from "./SocioEconomicImpactsSection";
 
 type Props = {
-  impacts: SocioEconomicDetailedImpact;
+  impacts: SocioEconomicImpactsByBearerListView;
 };
 
 export default function SocioEconomicImpactsPages({ impacts }: Props) {
-  const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary } = impacts;
-
   return (
     <>
       <SocioEconomicImpactsIntroductionPage />
       <PdfPage>
-        <SocioEconomicImpactsSection sectionName="economic_direct" {...economicDirect} />
-        <SocioEconomicImpactsSection sectionName="economic_indirect" {...economicIndirect} />
+        <SocioEconomicImpactsSection sectionName="localAuthority" impacts={impacts} />
+        <SocioEconomicImpactsSection sectionName="localPeopleOrCompany" impacts={impacts} />
       </PdfPage>
       <PdfPage>
-        <SocioEconomicImpactsSection sectionName="social_monetary" {...socialMonetary} />
-        <SocioEconomicImpactsSection
-          sectionName="environmental_monetary"
-          {...environmentalMonetary}
-        />
+        <SocioEconomicImpactsSection sectionName="humanity" impacts={impacts} />
       </PdfPage>
     </>
   );
