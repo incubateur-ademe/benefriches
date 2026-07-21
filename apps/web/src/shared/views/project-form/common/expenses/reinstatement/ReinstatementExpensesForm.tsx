@@ -1,3 +1,4 @@
+import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
@@ -31,7 +32,15 @@ const getExpensesInputs = (hasProjectedDecontamination: boolean) => {
   const expenses = [
     { name: "asbestosRemovalAmount", label: "Désamiantage" },
     { name: "remediationAmount", label: "Dépollution des sols" },
-    { name: "demolitionAmount", label: "Déconstruction" },
+    {
+      name: "demolitionAmount",
+      label: (
+        <>
+          Déconstruction{" "}
+          <Tooltip title="Démantèlement sélectif d'un bâtiment, effectué de manière à récupérer certains de ses éléments constitutifs en vue de leur réemploi ou de leur recyclage" />
+        </>
+      ),
+    },
     { name: "deimpermeabilizationAmount", label: "Désimperméabilisation" },
     { name: "wasteCollectionAmount", label: "Évacuation et traitement des déchets" },
     {
