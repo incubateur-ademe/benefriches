@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
+import StakeholderForm from "@/features/create-project/views/project-form/common/stakeholder-form";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
 import { selectPVDeveloperViewData } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
-import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form";
 
 function DeveloperFormContainer() {
   const dispatch = useAppDispatch();

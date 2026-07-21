@@ -7,7 +7,7 @@ import {
   previousStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectSoilsCarbonStorageViewData } from "@/features/create-project/core/renewable-energy/step-handlers/summary/summary-soils-carbon-storage/summarySoilsCarbonStorage.selector";
-import SoilsCarbonStorageComparison from "@/shared/views/project-form/common/soils-carbon-storage-comparison";
+import SoilsCarbonStorageComparison from "@/features/create-project/views/project-form/common/soils-carbon-storage-comparison";
 
 function ProjectSoilsCarbonStorageContainer() {
   const dispatch = useAppDispatch();

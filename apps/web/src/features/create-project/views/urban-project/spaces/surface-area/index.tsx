@@ -1,0 +1,48 @@
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { getSurfaceAreaDistributionWithUnit } from "@/features/create-project/core/urban-project/helpers/surfaceAreaDistribution";
+import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
+import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
+
+import SpacesSurfaceAreaForm from "./SpacesSurfaceAreaForm";
+
+export default function SpacesSurfaceAreaContainer() {
+  const { onBack, onRequestStepCompletion, selectSpacesSurfaceAreaViewData } = useProjectForm();
+
+  const {
+    spacesSurfaceAreaDistribution,
+    selectedSpaces,
+    totalSurfaceArea,
+    spacesWithConstraints,
+    nonGreenSpacesUses,
+    hasPublicGreenSpaces,
+  } = useAppSelector(selectSpacesSurfaceAreaViewData);
+
+  const { inputMode } = useSurfaceAreaInputMode();
+
+  const initialValues =
+    spacesSurfaceAreaDistribution && inputMode === "percentage"
+      ? getSurfaceAreaDistributionWithUnit(
+          spacesSurfaceAreaDistribution,
+          "percentage",
+          totalSurfaceArea,
+        ).value
+      : (spacesSurfaceAreaDistribution ?? {});
+
+  return (
+    <SpacesSurfaceAreaForm
+      onSubmit={(formData) => {
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_SPACES_SURFACE_AREA",
+          answers: { spacesSurfaceAreaDistribution: formData },
+        });
+      }}
+      onBack={onBack}
+      initialValues={initialValues}
+      totalSurfaceArea={totalSurfaceArea}
+      selectedSpaces={selectedSpaces}
+      spacesWithConstraints={spacesWithConstraints}
+      nonGreenSpacesUses={nonGreenSpacesUses}
+      hasPublicGreenSpaces={hasPublicGreenSpaces}
+    />
+  );
+}

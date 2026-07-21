@@ -12,149 +12,153 @@ import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRou
 import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./creationStepQueryStringMap";
 
 const AnswerCascadingUpdateDialog = lazy(
-  () => import("@/shared/views/project-form/AnswerCascadingUpdateDialog"),
+  () => import("@/features/create-project/views/project-form/AnswerCascadingUpdateDialog"),
 );
 const BuildingsIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/buildings/introduction"),
+  () => import("@/features/create-project/views/urban-project/buildings/introduction"),
 );
 const BuildingsReuseIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/buildings/reuse-introduction"),
+  () => import("@/features/create-project/views/urban-project/buildings/reuse-introduction"),
 );
 const BuildingsNewConstructionIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/buildings/new-construction-introduction"),
+  () =>
+    import("@/features/create-project/views/urban-project/buildings/new-construction-introduction"),
 );
 const BuildingsFootprintToReuse = lazy(
-  () => import("@/shared/views/project-form/urban-project/buildings/footprint-to-reuse"),
+  () => import("@/features/create-project/views/urban-project/buildings/footprint-to-reuse"),
 );
 const BuildingsDemolitionInfo = lazy(
-  () => import("@/shared/views/project-form/urban-project/buildings/demolition-info"),
+  () => import("@/features/create-project/views/urban-project/buildings/demolition-info"),
 );
 const ExistingBuildingsUsesFloorSurfaceArea = lazy(
   () =>
-    import("@/shared/views/project-form/urban-project/buildings/existing-buildings-uses-floor-surface-area"),
+    import("@/features/create-project/views/urban-project/buildings/existing-buildings-uses-floor-surface-area"),
 );
 const BuildingsNewConstructionInfo = lazy(
-  () => import("@/shared/views/project-form/urban-project/buildings/new-construction-info"),
+  () => import("@/features/create-project/views/urban-project/buildings/new-construction-info"),
 );
 const NewBuildingsUsesFloorSurfaceArea = lazy(
   () =>
-    import("@/shared/views/project-form/urban-project/buildings/new-buildings-uses-floor-surface-area"),
+    import("@/features/create-project/views/urban-project/buildings/new-buildings-uses-floor-surface-area"),
 );
 const ProjectCreationResult = lazy(() => import("./creation-result"));
 const InstallationExpensesForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/expenses/installation"),
+  () => import("@/features/create-project/views/urban-project/expenses/installation"),
 );
 const ProjectExpensesIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/expenses/introduction"),
+  () => import("@/features/create-project/views/urban-project/expenses/introduction"),
 );
 const BuildingsConstructionAndRehabilitationExpensesForm = lazy(
   () =>
-    import("@/shared/views/project-form/urban-project/expenses/buildings-construction-and-rehabilitation"),
+    import("@/features/create-project/views/urban-project/expenses/buildings-construction-and-rehabilitation"),
 );
 const ReinstatementExpensesForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/expenses/reinstatement"),
+  () => import("@/features/create-project/views/urban-project/expenses/reinstatement"),
 );
 const SitePurchaseAmounts = lazy(
-  () => import("@/shared/views/project-form/urban-project/expenses/site-purchase-amounts"),
+  () => import("@/features/create-project/views/urban-project/expenses/site-purchase-amounts"),
 );
 const YearlyProjectedExpensesForm = lazy(
   () =>
-    import("@/shared/views/project-form/urban-project/expenses/projected-buildings-operating-expenses"),
+    import("@/features/create-project/views/urban-project/expenses/projected-buildings-operating-expenses"),
 );
 const ProjectNameAndDescriptionForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/naming"),
+  () => import("@/features/create-project/views/urban-project/naming"),
 );
 const BuildingsResaleRevenueForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/revenues/buildings-resale"),
+  () => import("@/features/create-project/views/urban-project/revenues/buildings-resale"),
 );
 const ProjectFinancialAssistanceRevenueForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/revenues/financial-assistance"),
+  () => import("@/features/create-project/views/urban-project/revenues/financial-assistance"),
 );
 const ProjectRevenueIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/revenues/introduction"),
+  () => import("@/features/create-project/views/urban-project/revenues/introduction"),
 );
 const SiteResaleRevenueForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/revenues/expected-site-resale"),
+  () => import("@/features/create-project/views/urban-project/revenues/expected-site-resale"),
 );
 const YearlyProjectedRevenueForm = lazy(
   () =>
-    import("@/shared/views/project-form/urban-project/revenues/buildings-operations-yearly-revenues"),
+    import("@/features/create-project/views/urban-project/revenues/buildings-operations-yearly-revenues"),
 );
 
 const ScheduleProjectionForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/schedule/projection"),
+  () => import("@/features/create-project/views/urban-project/schedule/projection"),
 );
 const BuildingsResaleForm = lazy(
   () =>
-    import("@/shared/views/project-form/urban-project/site-and-buildings-resale/buildings-resale"),
+    import("@/features/create-project/views/urban-project/site-and-buildings-resale/buildings-resale"),
 );
 const SiteResaleIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/site-and-buildings-resale/introduction"),
+  () =>
+    import("@/features/create-project/views/urban-project/site-and-buildings-resale/introduction"),
 );
 const SiteResaleForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/site-and-buildings-resale/selection"),
+  () => import("@/features/create-project/views/urban-project/site-and-buildings-resale/selection"),
 );
 const InvolvesReinstatement = lazy(
-  () => import("@/shared/views/project-form/urban-project/soils/involves-reinstatement"),
+  () => import("@/features/create-project/views/urban-project/soils/involves-reinstatement"),
 );
 const SoilsDecontaminationIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/soils/decontamination-introduction"),
+  () => import("@/features/create-project/views/urban-project/soils/decontamination-introduction"),
 );
 const SoilsDecontaminationSelection = lazy(
-  () => import("@/shared/views/project-form/urban-project/soils/decontamination-selection"),
+  () => import("@/features/create-project/views/urban-project/soils/decontamination-selection"),
 );
 const SoilsDecontaminationSurfaceArea = lazy(
-  () => import("@/shared/views/project-form/urban-project/soils/decontamination-surface-area"),
+  () => import("@/features/create-project/views/urban-project/soils/decontamination-surface-area"),
 );
 const UsesIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/uses/introduction"),
+  () => import("@/features/create-project/views/urban-project/uses/introduction"),
 );
 const UsesSelection = lazy(
-  () => import("@/shared/views/project-form/urban-project/uses/selection"),
+  () => import("@/features/create-project/views/urban-project/uses/selection"),
 );
 const UsesFloorSurfaceArea = lazy(
-  () => import("@/shared/views/project-form/urban-project/buildings/uses-floor-surface-area"),
+  () => import("@/features/create-project/views/urban-project/buildings/uses-floor-surface-area"),
 );
 const PublicGreenSpacesSurfaceArea = lazy(
-  () => import("@/shared/views/project-form/urban-project/uses/public-green-spaces-surface-area"),
+  () =>
+    import("@/features/create-project/views/urban-project/uses/public-green-spaces-surface-area"),
 );
 const PublicGreenSpacesIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/public-green-spaces-introduction"),
+  () =>
+    import("@/features/create-project/views/urban-project/spaces/public-green-spaces-introduction"),
 );
 const PublicGreenSpacesSoilsDistribution = lazy(
   () =>
-    import("@/shared/views/project-form/urban-project/spaces/public-green-spaces-soils-distribution"),
+    import("@/features/create-project/views/urban-project/spaces/public-green-spaces-soils-distribution"),
 );
 const SpacesIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/introduction"),
+  () => import("@/features/create-project/views/urban-project/spaces/introduction"),
 );
 const SpacesSelection = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/selection"),
+  () => import("@/features/create-project/views/urban-project/spaces/selection"),
 );
 const SpacesSurfaceArea = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/surface-area"),
+  () => import("@/features/create-project/views/urban-project/spaces/surface-area"),
 );
 const UrbanProjectSoilsCarbonStorage = lazy(
-  () => import("@/shared/views/project-form/urban-project/soils/carbon-summary"),
+  () => import("@/features/create-project/views/urban-project/soils/carbon-summary"),
 );
 const UrbanProjectSoilsSummary = lazy(
-  () => import("@/shared/views/project-form/urban-project/soils/summary"),
+  () => import("@/features/create-project/views/urban-project/soils/summary"),
 );
 const DeveloperForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/stakeholders/project-developer"),
+  () => import("@/features/create-project/views/urban-project/stakeholders/project-developer"),
 );
 const BuildingsDeveloperForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/stakeholders/buildings-developer"),
+  () => import("@/features/create-project/views/urban-project/stakeholders/buildings-developer"),
 );
 const ProjectStakeholdersIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/stakeholders/introduction"),
+  () => import("@/features/create-project/views/urban-project/stakeholders/introduction"),
 );
 const SiteReinstatementContractOwnerForm = lazy(
   () =>
-    import("@/shared/views/project-form/urban-project/stakeholders/reinstatement-contract-owner"),
+    import("@/features/create-project/views/urban-project/stakeholders/reinstatement-contract-owner"),
 );
 const ProjectCreationDataSummary = lazy(
-  () => import("@/shared/views/project-form/urban-project/summary"),
+  () => import("@/features/create-project/views/urban-project/summary"),
 );
 
 const HTML_URBAN_PROJECT_FORM_MAIN_TITLE = `Projet urbain - ${HTML_MAIN_TITLE}`;

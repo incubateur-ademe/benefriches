@@ -4,7 +4,7 @@ import {
   stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVScheduleProjectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/schedule/schedule-projection/scheduleProjection.selector";
-import ScheduleProjectionForm from "@/shared/views/project-form/common/schedule/projection/ScheduleProjectionForm";
+import ScheduleProjectionForm from "@/features/create-project/views/project-form/common/schedule/projection/ScheduleProjectionForm";
 
 function ScheduleProjectionFormContainer() {
   const dispatch = useAppDispatch();

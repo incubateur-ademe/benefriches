@@ -4,9 +4,9 @@ import { Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
+import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 import classNames from "@/shared/views/clsx";
 import { useNavigationBlocker } from "@/shared/views/hooks/useNavigationBlocker";
-import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 const DIALOG_DSFR_CSS = [
   "fixed inset-0",

@@ -4,7 +4,7 @@ import {
   stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/revenue/revenue-financial-assistance/revenueFinancialAssistance.selector";
-import ProjectFinancialAssistanceRevenueForm from "@/shared/views/project-form/common/revenues/financial-assistance";
+import ProjectFinancialAssistanceRevenueForm from "@/features/create-project/views/project-form/common/revenues/financial-assistance";
 
 function ProjectFinancialAssistanceRevenueFormContainer() {
   const dispatch = useAppDispatch();

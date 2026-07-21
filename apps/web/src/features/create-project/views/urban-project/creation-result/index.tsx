@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { selectCustomCreationResultViewData } from "@/features/create-project/core/createProject.selectors";
-import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
+import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 
 import ProjectCreationResult from "../../common-views/result/ProjectCreationResult";
 

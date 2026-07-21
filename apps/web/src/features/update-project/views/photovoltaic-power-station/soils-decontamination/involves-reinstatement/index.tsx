@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import InvolvesReinstatementForm from "@/features/create-project/views/urban-project/soils/involves-reinstatement/InvolvesReinstatementForm";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
 import { selectInvolvesReinstatementViewData } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
-import InvolvesReinstatementForm from "@/shared/views/project-form/urban-project/soils/involves-reinstatement/InvolvesReinstatementForm";
 
 export default function InvolvesReinstatementContainer() {
   const dispatch = useAppDispatch();

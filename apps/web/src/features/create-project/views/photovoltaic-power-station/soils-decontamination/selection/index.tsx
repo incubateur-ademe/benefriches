@@ -6,7 +6,7 @@ import {
 import { selectSoilsDecontaminationSelectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.selectors";
 import SoilsDecontaminationSelection, {
   FormValues,
-} from "@/shared/views/project-form/common/soils-decontamination/selection/SoilsDecontaminationSelection";
+} from "@/features/create-project/views/project-form/common/soils-decontamination/selection/SoilsDecontaminationSelection";
 
 function SoilsDecontaminationSelectionContainer() {
   const dispatch = useAppDispatch();

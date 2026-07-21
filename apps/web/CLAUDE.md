@@ -36,8 +36,8 @@ pnpm --filter web test path/to/file.spec.ts
 | Step Handler (schema)                    | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.schema.ts`                       |
 | Step Handler (stepper config)            | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.stepperConfig.ts`                |
 | Stepper Config (registry)                | `src/features/create-project/core/renewable-energy/step-handlers/renewableEnergyStepperConfig.ts`                                                       |
-| Step Handler (urban project, with deps)  | `src/shared/core/reducers/project-form/urban-project/step-handlers/uses/selection/usesSelection.handler.ts`                                             |
-| Step Handler (urban project, registry)   | `src/shared/core/reducers/project-form/urban-project/step-handlers/stepHandlerRegistry.ts`                                                              |
+| Step Handler (urban project, with deps)  | `src/features/create-project/core/urban-project/step-handlers/uses/selection/usesSelection.handler.ts`                                                  |
+| Step Handler (urban project, registry)   | `src/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry.ts`                                                                   |
 | Step Handler (urban zone site, registry) | `src/features/create-site/core/urban-zone/stepHandlerRegistry.ts`                                                                                       |
 | Test Store Helper (urban zone site)      | `src/features/create-site/core/urban-zone/__tests__/_testStoreHelpers.ts`                                                                               |
 | ViewData Selector                        | `src/features/create-project/core/createProject.selectors.ts`                                                                                           |
@@ -130,7 +130,7 @@ Multi-step wizards use a **step handler registry** instead of per-step actions a
 
 **Urban Project** (complex, creation + update — [ADR-0004](../../docs/adr/0004-colocate-urban-project-step-definitions.md)):
 
-- Location: `src/shared/core/reducers/project-form/urban-project/step-handlers/`
+- Location: `src/features/create-project/core/urban-project/step-handlers/`
 - Nested per-step folders (e.g., `uses/selection/usesSelection.handler.ts`)
 - **Dependency rules**: `getDependencyRules()` returns `delete`/`invalidate`/`recompute` actions on dependent steps
 - **Shortcuts**: `getShortcut()` auto-completes multiple steps when conditions are met
@@ -175,8 +175,8 @@ When creating a new container component:
    - `src/features/create-site/core/steps/spaces/spaces.selectors.ts` → `selectSiteSoilsSummaryViewData`
    - `src/features/create-site/views/common-views/spaces-and-soils/soils-summary/index.tsx`
    - Urban project form (factory pattern):
-     - `src/shared/core/reducers/project-form/urban-project/urbanProject.selectors.ts` → `selectUsesFloorSurfaceAreaViewData`
-     - `src/shared/views/project-form/urban-project/buildings/uses-floor-surface-area/index.tsx`
+     - `src/features/create-project/core/urban-project/urbanProject.selectors.ts` → `selectUsesFloorSurfaceAreaViewData`
+     - `src/features/create-project/views/urban-project/buildings/uses-floor-surface-area/index.tsx`
 
 ### Step Handler Checklist (Renewable Energy)
 

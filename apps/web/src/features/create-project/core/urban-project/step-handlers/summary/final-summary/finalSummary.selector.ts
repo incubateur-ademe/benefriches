@@ -5,7 +5,7 @@ import type { ReconversionProjectSoilsDistribution } from "shared";
 import type { RootState } from "@/app/store/store";
 import type { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
 import type { UrbanProjectFormState } from "@/features/create-project/core/urban-project/urbanProject.state";
-import type { ProjectStepGroups } from "@/shared/views/project-form/stepper/stepperConfig";
+import type { ProjectStepGroups } from "@/features/create-project/views/project-form/stepper/stepperConfig";
 
 type UrbanProjectSummaryViewData = {
   isFormValid: boolean;

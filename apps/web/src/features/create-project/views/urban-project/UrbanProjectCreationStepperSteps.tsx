@@ -1,9 +1,9 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
+import StepperLiItem from "@/features/create-project/views/project-form/stepper/StepperItem";
+import { STEP_TO_GROUP_MAPPING } from "@/features/create-project/views/project-form/stepper/stepperConfig";
+import { useBuildStepperNavigationItems } from "@/features/create-project/views/project-form/stepper/useBuildStepperNavigationItems";
+import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
-import StepperLiItem from "@/shared/views/project-form/stepper/StepperItem";
-import { STEP_TO_GROUP_MAPPING } from "@/shared/views/project-form/stepper/stepperConfig";
-import { useBuildStepperNavigationItems } from "@/shared/views/project-form/stepper/useBuildStepperNavigationItems";
-import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import { selectUrbanProjectCreationStepperDataView } from "../../core/urban-project/urbanProject.selectors";
 

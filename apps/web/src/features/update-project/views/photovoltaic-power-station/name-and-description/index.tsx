@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
-import { selectNameAndDescriptionInitialValues } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 import ProjectNameAndDescriptionForm, {
   FormValues,
-} from "@/shared/views/project-form/common/name-and-description/ProjectNameAndDescriptionForm";
+} from "@/features/create-project/views/project-form/common/name-and-description/ProjectNameAndDescriptionForm";
+import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
+import { selectNameAndDescriptionInitialValues } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 
 function ProjectNameAndDescriptionFormContainer() {
   const dispatch = useAppDispatch();

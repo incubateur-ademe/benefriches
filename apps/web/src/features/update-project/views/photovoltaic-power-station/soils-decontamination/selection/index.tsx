@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
-import { selectSoilsDecontaminationSelectionViewData } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 import SoilsDecontaminationSelection, {
   FormValues,
-} from "@/shared/views/project-form/common/soils-decontamination/selection/SoilsDecontaminationSelection";
+} from "@/features/create-project/views/project-form/common/soils-decontamination/selection/SoilsDecontaminationSelection";
+import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
+import { selectSoilsDecontaminationSelectionViewData } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 
 function SoilsDecontaminationSelectionContainer() {
   const dispatch = useAppDispatch();

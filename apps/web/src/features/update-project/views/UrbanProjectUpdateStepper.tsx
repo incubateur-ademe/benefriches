@@ -2,11 +2,11 @@ import { useContext, useEffect } from "react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import { useBuildStepperNavigationItems } from "@/features/create-project/views/project-form/stepper/useBuildStepperNavigationItems";
+import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 import classNames from "@/shared/views/clsx";
 import { SidebarCurrentStepContext } from "@/shared/views/layout/SidebarLayout/SidebarCurrentStepContext";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
-import { useBuildStepperNavigationItems } from "@/shared/views/project-form/stepper/useBuildStepperNavigationItems";
-import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import UpdateFormStepperStep from "./UpdateFormStepperStep";
 

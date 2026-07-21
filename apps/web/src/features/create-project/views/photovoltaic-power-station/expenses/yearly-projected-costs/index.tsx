@@ -6,9 +6,9 @@ import {
   stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-yearly-projected/expensesYearlyProjected.selector";
+import YearlyProjectedExpensesForm from "@/features/create-project/views/project-form/common/expenses/yearly-projected-expenses";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
-import YearlyProjectedExpensesForm from "@/shared/views/project-form/common/expenses/yearly-projected-expenses";
 
 function YearlyProjectedExpensesFormContainer() {
   const dispatch = useAppDispatch();

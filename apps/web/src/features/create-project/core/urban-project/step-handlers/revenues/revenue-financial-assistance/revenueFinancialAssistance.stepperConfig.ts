@@ -1,4 +1,4 @@
-import type { StepStepperConfig } from "@/shared/views/project-form/stepper/stepperConfig";
+import type { StepStepperConfig } from "@/features/create-project/views/project-form/stepper/stepperConfig";
 
 export const revenueFinancialAssistanceStepperConfig = {
   groupId: "REVENUE",

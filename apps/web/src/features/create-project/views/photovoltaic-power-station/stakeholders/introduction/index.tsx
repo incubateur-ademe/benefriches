@@ -3,7 +3,7 @@ import {
   nextStepRequested,
   previousStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import ProjectStakeholdersIntroduction from "@/shared/views/project-form/common/stakeholder-introduction/StakeholdersIntroduction";
+import ProjectStakeholdersIntroduction from "@/features/create-project/views/project-form/common/stakeholder-introduction/StakeholdersIntroduction";
 
 function ProjectStakeholdersIntroductionContainer() {
   const dispatch = useAppDispatch();

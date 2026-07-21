@@ -1,10 +1,10 @@
 import { RecurringRevenue } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import ProjectYearlyRevenueForm from "@/features/create-project/views/project-form/common/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
 import { selectPVYearlyProjectedRevenueViewData } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 import { getLabelForRecurringRevenueSource } from "@/shared/core/reconversionProject";
-import ProjectYearlyRevenueForm from "@/shared/views/project-form/common/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 
 const fields = ["operations", "other"] as const;
 

@@ -6,11 +6,11 @@ import {
   stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-installation/expensesInstallation.selector";
-import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import InstallationExpensesForm, {
   FormValues,
-} from "@/shared/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
+} from "@/features/create-project/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 const purposeMapKeys = {
   technicalStudyAmount: "technical_studies",

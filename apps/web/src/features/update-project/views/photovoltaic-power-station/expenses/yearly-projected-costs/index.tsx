@@ -1,11 +1,11 @@
 import { RecurringExpense } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import YearlyProjectedExpensesForm from "@/features/create-project/views/project-form/common/expenses/yearly-projected-expenses";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
 import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
-import YearlyProjectedExpensesForm from "@/shared/views/project-form/common/expenses/yearly-projected-expenses";
 
 function YearlyProjectedExpensesFormContainer() {
   const dispatch = useAppDispatch();

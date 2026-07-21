@@ -4,7 +4,7 @@ import {
   nextStepRequested,
   previousStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import SoilsDecontaminationIntroduction from "@/shared/views/project-form/common/soils-decontamination/introduction/SoilsDecontaminationIntroduction";
+import SoilsDecontaminationIntroduction from "@/features/create-project/views/project-form/common/soils-decontamination/introduction/SoilsDecontaminationIntroduction";
 
 function SoilsDecontaminationIntroductionContainer() {
   const dispatch = useAppDispatch();

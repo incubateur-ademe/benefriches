@@ -1,0 +1,46 @@
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import InstallationExpensesForm from "@/features/create-project/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
+import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+
+import { mapExpensesToFormValues, mapFormValuesToExpenses } from "./mappers";
+
+function InstallationExpensesFormContainer() {
+  const { onBack, selectStepAnswers, onRequestStepCompletion } = useProjectForm();
+  const installationExpenses = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_EXPENSES_INSTALLATION"),
+  )?.installationExpenses;
+  const initialValues = mapExpensesToFormValues(installationExpenses ?? []);
+
+  return (
+    <InstallationExpensesForm
+      title="Dépenses d'aménagement du site"
+      labels={{
+        worksAmount: "Travaux d'aménagement",
+        otherAmount: "Autres dépenses d'aménagement",
+      }}
+      instructions={
+        <FormInfo emoji="auto">
+          <span className="title">D’où viennent les montants préremplis ?</span>
+
+          <p>
+            Montants calculés d’après les informations que vous avez renseigné et les montants
+            représentatifs en France pour ce type de dépense.
+          </p>
+        </FormInfo>
+      }
+      onSubmit={(formData) => {
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
+          answers: {
+            installationExpenses: mapFormValuesToExpenses(formData),
+          },
+        });
+      }}
+      onBack={onBack}
+      initialValues={initialValues}
+    />
+  );
+}
+
+export default InstallationExpensesFormContainer;

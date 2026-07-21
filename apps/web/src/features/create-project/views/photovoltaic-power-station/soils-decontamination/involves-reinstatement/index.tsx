@@ -4,7 +4,7 @@ import {
   stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectInvolvesReinstatementViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-decontamination/involves-reinstatement/involvesReinstatement.selectors";
-import InvolvesReinstatementForm from "@/shared/views/project-form/urban-project/soils/involves-reinstatement/InvolvesReinstatementForm";
+import InvolvesReinstatementForm from "@/features/create-project/views/urban-project/soils/involves-reinstatement/InvolvesReinstatementForm";
 
 export default function InvolvesReinstatementContainer() {
   const dispatch = useAppDispatch();

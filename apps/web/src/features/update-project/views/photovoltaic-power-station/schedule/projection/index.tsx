@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import ScheduleProjectionForm from "@/features/create-project/views/project-form/common/schedule/projection/ScheduleProjectionForm";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
 import { selectPVScheduleProjectionViewData } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
-import ScheduleProjectionForm from "@/shared/views/project-form/common/schedule/projection/ScheduleProjectionForm";
 
 function ScheduleProjectionFormContainer() {
   const dispatch = useAppDispatch();

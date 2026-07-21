@@ -6,7 +6,7 @@ import {
 import { selectNameAndDescriptionInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/naming/naming/naming.selector";
 import ProjectNameAndDescriptionForm, {
   FormValues,
-} from "@/shared/views/project-form/common/name-and-description/ProjectNameAndDescriptionForm";
+} from "@/features/create-project/views/project-form/common/name-and-description/ProjectNameAndDescriptionForm";
 
 function ProjectNameAndDescriptionFormContainer() {
   const dispatch = useAppDispatch();

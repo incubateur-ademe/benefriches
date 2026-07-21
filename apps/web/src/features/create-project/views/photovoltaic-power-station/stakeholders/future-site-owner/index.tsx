@@ -5,7 +5,7 @@ import {
   stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVFutureSiteOwnerViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.selector";
-import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form";
+import StakeholderForm from "@/features/create-project/views/project-form/common/stakeholder-form";
 
 function FutureOwnerFormContainer() {
   const dispatch = useAppDispatch();

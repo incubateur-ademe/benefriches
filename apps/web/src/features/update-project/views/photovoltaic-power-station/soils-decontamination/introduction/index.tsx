@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import SoilsDecontaminationIntroduction from "@/features/create-project/views/project-form/common/soils-decontamination/introduction/SoilsDecontaminationIntroduction";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
 import { selectSiteContaminatedSurfaceArea } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
-import SoilsDecontaminationIntroduction from "@/shared/views/project-form/common/soils-decontamination/introduction/SoilsDecontaminationIntroduction";
 
 function SoilsDecontaminationIntroductionContainer() {
   const dispatch = useAppDispatch();

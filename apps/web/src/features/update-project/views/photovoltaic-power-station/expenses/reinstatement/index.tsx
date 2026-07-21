@@ -1,11 +1,11 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
-import { selectPVReinstatementExpensesViewData } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
-import ReinstatementsExpensesForm from "@/shared/views/project-form/common/expenses/reinstatement/ReinstatementExpensesForm";
+import ReinstatementsExpensesForm from "@/features/create-project/views/project-form/common/expenses/reinstatement/ReinstatementExpensesForm";
 import {
   mapFormValuesToReinstatementExpenses,
   mapReinstatementExpensesToFormValues,
-} from "@/shared/views/project-form/common/expenses/reinstatement/mappers";
+} from "@/features/create-project/views/project-form/common/expenses/reinstatement/mappers";
+import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
+import { selectPVReinstatementExpensesViewData } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 
 function ReinstatementExpensesFormContainer() {
   const dispatch = useAppDispatch();

@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/app/hooks/store.hooks";
+import ProjectStakeholdersIntroduction from "@/features/create-project/views/project-form/common/stakeholder-introduction/StakeholdersIntroduction";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
-import ProjectStakeholdersIntroduction from "@/shared/views/project-form/common/stakeholder-introduction/StakeholdersIntroduction";
 
 function ProjectStakeholdersIntroductionContainer() {
   const dispatch = useAppDispatch();

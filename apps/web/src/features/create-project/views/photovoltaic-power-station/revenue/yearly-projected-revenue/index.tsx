@@ -6,8 +6,8 @@ import {
   stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVYearlyProjectedRevenueViewData } from "@/features/create-project/core/renewable-energy/step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.selector";
+import ProjectYearlyRevenueForm from "@/features/create-project/views/project-form/common/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 import { getLabelForRecurringRevenueSource } from "@/shared/core/reconversionProject";
-import ProjectYearlyRevenueForm from "@/shared/views/project-form/common/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 
 const fields = ["operations", "other"] as const;
 

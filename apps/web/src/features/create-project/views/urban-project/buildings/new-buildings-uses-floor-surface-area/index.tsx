@@ -1,0 +1,32 @@
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
+
+import NewBuildingsUsesFloorSurfaceArea from "./NewBuildingsUsesFloorSurfaceArea";
+
+export default function NewBuildingsUsesFloorSurfaceAreaContainer() {
+  const { onBack, onRequestStepCompletion, selectNewBuildingsUsesFloorSurfaceAreaViewData } =
+    useProjectForm();
+
+  const {
+    newBuildingsUsesFloorSurfaceArea,
+    selectedUses,
+    usesFloorSurfaceAreaDistribution,
+    remainingUsesFloorSurfaceAreaDistribution,
+  } = useAppSelector(selectNewBuildingsUsesFloorSurfaceAreaViewData);
+
+  return (
+    <NewBuildingsUsesFloorSurfaceArea
+      initialValues={newBuildingsUsesFloorSurfaceArea}
+      selectedUses={selectedUses}
+      usesFloorSurfaceAreaDistribution={usesFloorSurfaceAreaDistribution}
+      remainingUsesFloorSurfaceAreaDistribution={remainingUsesFloorSurfaceAreaDistribution}
+      onBack={onBack}
+      onSubmit={(formData) => {
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+          answers: { newBuildingsUsesFloorSurfaceArea: formData },
+        });
+      }}
+    />
+  );
+}

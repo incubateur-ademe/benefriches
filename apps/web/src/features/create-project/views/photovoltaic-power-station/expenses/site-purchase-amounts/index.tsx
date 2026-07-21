@@ -6,7 +6,7 @@ import {
 import { selectSitePurchaseAmounts } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.selector";
 import SitePurchaseAmountsForm, {
   FormValues,
-} from "@/shared/views/project-form/common/expenses/site-purchase-amounts/SitePurchaseAmountsForm";
+} from "@/features/create-project/views/project-form/common/expenses/site-purchase-amounts/SitePurchaseAmountsForm";
 
 function SitePurchaseAmountsContainer() {
   const dispatch = useAppDispatch();

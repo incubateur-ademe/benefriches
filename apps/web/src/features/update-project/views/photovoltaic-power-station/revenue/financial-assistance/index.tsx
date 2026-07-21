@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import ProjectFinancialAssistanceRevenueForm from "@/features/create-project/views/project-form/common/revenues/financial-assistance";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
 import { selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
-import ProjectFinancialAssistanceRevenueForm from "@/shared/views/project-form/common/revenues/financial-assistance";
 
 function ProjectFinancialAssistanceRevenueFormContainer() {
   const dispatch = useAppDispatch();

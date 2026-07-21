@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
-import { selectSitePurchaseAmounts } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 import SitePurchaseAmountsForm, {
   FormValues,
-} from "@/shared/views/project-form/common/expenses/site-purchase-amounts/SitePurchaseAmountsForm";
+} from "@/features/create-project/views/project-form/common/expenses/site-purchase-amounts/SitePurchaseAmountsForm";
+import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
+import { selectSitePurchaseAmounts } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 
 function SitePurchaseAmountsContainer() {
   const dispatch = useAppDispatch();

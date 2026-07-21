@@ -4,9 +4,9 @@ import { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
+import { ProjectFormProvider } from "@/features/create-project/views/project-form/ProjectFormProvider";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
-import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
 
 import { reconversionProjectCreationInitiated } from "../core/actions/reconversionProjectCreationInitiated.action";
 import { selectProjectCreationWizardViewData } from "../core/createProject.selectors";

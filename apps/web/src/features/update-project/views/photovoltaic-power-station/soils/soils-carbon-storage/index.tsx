@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import SoilsCarbonStorageComparison from "@/features/create-project/views/project-form/common/soils-carbon-storage-comparison";
 import { fetchCurrentAndProjectedSoilsCarbonStorageForUpdate } from "@/features/update-project/core/actions/fetchCurrentAndProjectedSoilsCarbonStorage.action";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
 import { selectSoilsCarbonStorageViewData } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
-import SoilsCarbonStorageComparison from "@/shared/views/project-form/common/soils-carbon-storage-comparison";
 
 function ProjectSoilsCarbonStorageContainer() {
   const dispatch = useAppDispatch();

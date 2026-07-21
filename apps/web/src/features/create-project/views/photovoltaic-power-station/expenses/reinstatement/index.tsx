@@ -4,11 +4,11 @@ import {
   stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVReinstatementExpensesViewData } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
-import ReinstatementsExpensesForm from "@/shared/views/project-form/common/expenses/reinstatement/ReinstatementExpensesForm";
+import ReinstatementsExpensesForm from "@/features/create-project/views/project-form/common/expenses/reinstatement/ReinstatementExpensesForm";
 import {
   mapFormValuesToReinstatementExpenses,
   mapReinstatementExpensesToFormValues,
-} from "@/shared/views/project-form/common/expenses/reinstatement/mappers";
+} from "@/features/create-project/views/project-form/common/expenses/reinstatement/mappers";
 
 function ReinstatementExpensesFormContainer() {
   const dispatch = useAppDispatch();

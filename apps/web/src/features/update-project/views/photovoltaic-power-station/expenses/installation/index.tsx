@@ -1,13 +1,13 @@
 import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import InstallationExpensesForm, {
+  FormValues,
+} from "@/features/create-project/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
 import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "@/features/update-project/core/updateProjectRenewableEnergy.selectors";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
-import InstallationExpensesForm, {
-  FormValues,
-} from "@/shared/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
 
 const purposeMapKeys = {
   technicalStudyAmount: "technical_studies",
