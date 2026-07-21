@@ -8,7 +8,7 @@ import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
   localAuthorityIndirectEconomicImpacts: IndirectEconomicImpactsByBearerAndGroupCategory["localAuthority"];
-  dialogId: string;
+  dialogId?: string;
 };
 
 export default function LocalAuthorityIndirectEconomicImpactsCharts({
