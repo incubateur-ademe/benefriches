@@ -8,6 +8,7 @@ import {
 } from "shared";
 
 import {
+  computeBreakEvenLevel,
   computeProjectImpactsWithBreakEvenLevel,
   computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance,
 } from "./computeImpactsWithBreakEvenLevel";
@@ -748,6 +749,224 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         (d) => d.name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
       )?.total;
       assert.ok(maintenanceTotal !== undefined && Math.abs(maintenanceTotal - 203038) < 0.5);
+    });
+  });
+
+  describe("computeBreakEvenLevel", () => {
+    it("computeBreakEvenLevel with cumulativeBalanceByYear", () => {
+      const result = computeBreakEvenLevel({
+        stakeholders: {
+          current: {
+            owner: { structureType: "municipality", structureName: "Mairie de Blajan" },
+            tenant: { structureType: "unknown", structureName: "Current tenant" },
+          },
+          future: {},
+          project: {
+            developer: { structureType: "municipality", structureName: "Mairie de Blajan" },
+            reinstatementContractOwner: { structureType: "unknown" },
+          },
+        },
+        operationsFirstYear: 2025,
+        evaluationPeriodInYears: 6,
+        aggregatedIndirectEconomicImpacts: [
+          {
+            total: 43,
+            detailsByYear: [5, 6, 7, 8, 9, 10],
+            cumulativeByYear: [5, 11, 18, 24, 33, 43],
+            name: "avoidedCarRelatedExpenses",
+          },
+          {
+            total: 105,
+            detailsByYear: [5, 10, 15, 20, 25, 30],
+            cumulativeByYear: [5, 15, 30, 50, 75, 105],
+            name: "avoidedCo2eqWithEnergyProduction",
+          },
+        ],
+        projectEconomicBalance: {
+          total: -50,
+          details: [
+            {
+              total: -50,
+              details: "installation_works",
+              name: "projectInstallation",
+            },
+            {
+              total: -25,
+              details: "buildings_rehabilitation_works",
+              name: "projectBuildingsInstallation",
+            },
+            {
+              total: -25,
+              details: "deimpermeabilization",
+              name: "siteReinstatement",
+            },
+            {
+              total: 50,
+              details: "other",
+              name: "financialAssistanceRevenues",
+            },
+            {
+              total: -100,
+              name: "sitePurchase",
+            },
+            {
+              total: 100,
+              name: "buildingsResaleRevenue",
+            },
+          ],
+        },
+      });
+
+      assert.deepStrictEqual(result.cumulativeBalanceByYear, [-40, -24, -2, 24, 58, 98]);
+      assert.deepStrictEqual(result.projectionYears, [
+        "2025",
+        "2026",
+        "2027",
+        "2028",
+        "2029",
+        "2030",
+      ]);
+
+      assert.strictEqual(result.breakEvenYear, "2028");
+      assert.strictEqual(result.breakEvenIndex, 3);
+    });
+
+    it("computeBreakEvenLevel with projectOperatingBalance in economicBalance", () => {
+      const result = computeBreakEvenLevel({
+        stakeholders: {
+          current: {
+            owner: { structureType: "municipality", structureName: "Mairie de Blajan" },
+            tenant: { structureType: "unknown", structureName: "Current tenant" },
+          },
+          future: {},
+          project: {
+            developer: { structureType: "municipality", structureName: "Mairie de Blajan" },
+            reinstatementContractOwner: { structureType: "unknown" },
+          },
+        },
+        operationsFirstYear: 2025,
+        evaluationPeriodInYears: 6,
+        aggregatedIndirectEconomicImpacts: [
+          {
+            total: 43,
+            detailsByYear: [5, 6, 7, 8, 9, 10],
+            cumulativeByYear: [5, 11, 18, 24, 33, 43],
+            name: "avoidedCarRelatedExpenses",
+          },
+          {
+            total: 105,
+            detailsByYear: [5, 10, 15, 20, 25, 30],
+            cumulativeByYear: [5, 15, 30, 50, 75, 105],
+            name: "avoidedCo2eqWithEnergyProduction",
+          },
+        ],
+        projectEconomicBalance: {
+          total: -50,
+          details: [
+            {
+              total: -60,
+              detailsByYear: [-10, -10, -10, -10, -10, -10],
+              cumulativeByYear: [-10, -20, -30, -40, -50, -60],
+              details: "maintenance",
+              name: "projectOperatingEconomicBalance",
+            },
+            {
+              total: 120,
+              detailsByYear: [20, 20, 20, 20, 20, 20],
+              cumulativeByYear: [20, 40, 60, 80, 100, 120],
+              details: "operations",
+              name: "projectOperatingEconomicBalance",
+            },
+            {
+              total: -50,
+              details: "installation_works",
+              name: "projectInstallation",
+            },
+          ],
+        },
+      });
+
+      assert.deepStrictEqual(result.cumulativeBalanceByYear, [-30, -4, 28, 64, 108, 158]);
+      assert.deepStrictEqual(result.projectionYears, [
+        "2025",
+        "2026",
+        "2027",
+        "2028",
+        "2029",
+        "2030",
+      ]);
+
+      assert.strictEqual(result.breakEvenYear, "2027");
+      assert.strictEqual(result.breakEvenIndex, 2);
+    });
+
+    it("computeBreakEvenLevel with projectOperatingBalance in indirect impacts", () => {
+      const result = computeBreakEvenLevel({
+        stakeholders: {
+          current: {
+            owner: { structureType: "municipality", structureName: "Mairie de Blajan" },
+            tenant: { structureType: "unknown", structureName: "Current tenant" },
+          },
+          future: {},
+          project: {
+            developer: { structureType: "municipality", structureName: "Mairie de Blajan" },
+            reinstatementContractOwner: { structureType: "unknown" },
+          },
+        },
+        operationsFirstYear: 2025,
+        evaluationPeriodInYears: 6,
+        aggregatedIndirectEconomicImpacts: [
+          {
+            total: 43,
+            detailsByYear: [5, 6, 7, 8, 9, 10],
+            cumulativeByYear: [5, 11, 18, 24, 33, 43],
+            name: "avoidedCarRelatedExpenses",
+          },
+          {
+            total: 105,
+            detailsByYear: [5, 10, 15, 20, 25, 30],
+            cumulativeByYear: [5, 15, 30, 50, 75, 105],
+            name: "avoidedCo2eqWithEnergyProduction",
+          },
+          {
+            total: -60,
+            detailsByYear: [-10, -10, -10, -10, -10, -10],
+            cumulativeByYear: [-10, -20, -30, -40, -50, -60],
+            details: "maintenance",
+            name: "projectOperatingEconomicBalance",
+          },
+          {
+            total: 120,
+            detailsByYear: [20, 20, 20, 20, 20, 20],
+            cumulativeByYear: [20, 40, 60, 80, 100, 120],
+            details: "operations",
+            name: "projectOperatingEconomicBalance",
+          },
+        ],
+        projectEconomicBalance: {
+          total: -50,
+          details: [
+            {
+              total: -50,
+              details: "installation_works",
+              name: "projectInstallation",
+            },
+          ],
+        },
+      });
+
+      assert.deepStrictEqual(result.cumulativeBalanceByYear, [-30, -4, 28, 64, 108, 158]);
+      assert.deepStrictEqual(result.projectionYears, [
+        "2025",
+        "2026",
+        "2027",
+        "2028",
+        "2029",
+        "2030",
+      ]);
+
+      assert.strictEqual(result.breakEvenYear, "2027");
+      assert.strictEqual(result.breakEvenIndex, 2);
     });
   });
 });

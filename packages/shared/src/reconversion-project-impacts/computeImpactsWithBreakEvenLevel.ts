@@ -103,18 +103,28 @@ export const computeBreakEvenLevel = ({
   aggregatedIndirectEconomicImpacts: IndirectEconomicImpactDataView["details"];
   projectEconomicBalance: GetReconversionProjectImpactsResultDto["impacts"]["projectEconomicBalance"];
 }) => {
-  const cumulativeBalanceByYear = [
-    ...aggregatedIndirectEconomicImpacts,
-    ...projectEconomicBalance.details,
-  ].reduce<number[]>((total, impact) => {
-    if (impact.name === "projectOperatingEconomicBalance") {
+  const cumulativeEconomicBalanceByYear = projectEconomicBalance.details.reduce<number[]>(
+    (total, impact) => {
+      if (impact.name === "projectOperatingEconomicBalance") {
+        impact.cumulativeByYear.forEach((value, index) => {
+          total[index] = (total[index] ?? 0) + value;
+        });
+        return total;
+      }
+      return total.map((value) => value + impact.total);
+    },
+    Array(evaluationPeriodInYears).fill(0),
+  );
+
+  const cumulativeBalanceByYear = aggregatedIndirectEconomicImpacts.reduce<number[]>(
+    (total, impact) => {
       impact.cumulativeByYear.forEach((value, index) => {
         total[index] = (total[index] ?? 0) + value;
       });
       return total;
-    }
-    return total.map((value) => value + impact.total);
-  }, Array(evaluationPeriodInYears).fill(0));
+    },
+    cumulativeEconomicBalanceByYear,
+  );
 
   const projectionYears = cumulativeBalanceByYear.map(
     (_, index) => `${operationsFirstYear + index}`,
