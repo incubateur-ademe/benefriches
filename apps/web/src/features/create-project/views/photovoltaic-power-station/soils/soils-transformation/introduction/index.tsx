@@ -1,20 +1,11 @@
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
 import SoilsTransformationIntroduction from "./SoilsTransformationIntroduction";
 
 function SoilsTransformationIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onNext, onBack } = useRenewableEnergyForm();
 
-  return (
-    <SoilsTransformationIntroduction
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
-    />
-  );
+  return <SoilsTransformationIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default SoilsTransformationIntroductionContainer;

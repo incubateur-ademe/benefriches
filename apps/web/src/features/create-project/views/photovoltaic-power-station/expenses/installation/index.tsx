@@ -1,11 +1,7 @@
 import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-installation/expensesInstallation.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import InstallationExpensesForm, {
   FormValues,
 } from "@/features/create-project/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
@@ -19,7 +15,11 @@ const purposeMapKeys = {
 } as const satisfies Record<keyof FormValues, PhotovoltaicInstallationExpense["purpose"]>;
 
 function PhotovoltaicPanelsInstallationExpensesFormContainer() {
-  const dispatch = useAppDispatch();
+  const {
+    onBack,
+    onRequestStepCompletion,
+    selectPhotovoltaicPowerStationInstallationExpensesInitialValues,
+  } = useRenewableEnergyForm();
   const initialValues = useAppSelector(
     selectPhotovoltaicPowerStationInstallationExpensesInitialValues,
   );
@@ -55,16 +55,12 @@ function PhotovoltaicPanelsInstallationExpensesFormContainer() {
             amount: amount as number,
             purpose: purposeMapKeys[purpose],
           }));
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
-            answers: { photovoltaicPanelsInstallationExpenses: expenses },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
+          answers: { photovoltaicPanelsInstallationExpenses: expenses },
+        });
       }}
-      onBack={() => {
-        dispatch(previousStepRequested());
-      }}
+      onBack={onBack}
     />
   );
 }

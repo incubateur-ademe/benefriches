@@ -1,32 +1,37 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
 
-import type { AvailableProjectStakeholder } from "@/features/create-project/core/project-form/stakeholders";
-
-import {
-  selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
-  selectRenewableEnergyProjectAvailableStakeholders,
-} from "../../../selectors/stakeholders.selectors";
+import type { RootState } from "@/app/store/store";
+import type {
+  AvailableLocalAuthorityStakeholder,
+  AvailableProjectStakeholder,
+} from "@/features/create-project/core/project-form/stakeholders";
 
 type PVStakeholderFormViewData = {
   availableStakeholdersList: AvailableProjectStakeholder[];
-  availableLocalAuthoritiesStakeholders: ReturnType<
-    typeof selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders
-  >;
+  availableLocalAuthoritiesStakeholders: AvailableLocalAuthorityStakeholder[];
 };
 
-export const selectPVDeveloperViewData = createSelector(
-  [
-    selectRenewableEnergyProjectAvailableStakeholders,
-    selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
-  ],
-  (
-    availableStakeholdersList,
-    availableLocalAuthoritiesStakeholders,
-  ): PVStakeholderFormViewData => ({
-    availableStakeholdersList,
-    availableLocalAuthoritiesStakeholders,
-  }),
-);
-
-export const selectPVFutureSiteOwnerViewData = selectPVDeveloperViewData;
-export const selectPVReinstatementContractOwnerViewData = selectPVDeveloperViewData;
+export const createSelectPVDeveloperViewData = (
+  selectRenewableEnergyProjectAvailableStakeholders: Selector<
+    RootState,
+    AvailableProjectStakeholder[]
+  >,
+  selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders: Selector<
+    RootState,
+    AvailableLocalAuthorityStakeholder[]
+  >,
+) =>
+  createSelector(
+    [
+      selectRenewableEnergyProjectAvailableStakeholders,
+      selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
+    ],
+    (
+      availableStakeholdersList,
+      availableLocalAuthoritiesStakeholders,
+    ): PVStakeholderFormViewData => ({
+      availableStakeholdersList,
+      availableLocalAuthoritiesStakeholders,
+    }),
+  );

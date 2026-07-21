@@ -1,15 +1,12 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicSurfaceViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
 import PhotovoltaicSurfaceForm from "./SurfaceForm";
 import PhotovoltaicSurfaceFromPowerForm from "./SurfaceFromPowerForm";
 
 function PhotovoltaicSurfaceContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectPhotovoltaicSurfaceViewData } =
+    useRenewableEnergyForm();
   const {
     initialValue,
     keyParameter,
@@ -19,18 +16,14 @@ function PhotovoltaicSurfaceContainer() {
   } = useAppSelector(selectPhotovoltaicSurfaceViewData);
 
   const onSubmit = (data: { photovoltaicInstallationSurfaceSquareMeters: number }) => {
-    dispatch(
-      stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE",
-        answers: {
-          photovoltaicInstallationSurfaceSquareMeters:
-            data.photovoltaicInstallationSurfaceSquareMeters,
-        },
-      }),
-    );
+    onRequestStepCompletion({
+      stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE",
+      answers: {
+        photovoltaicInstallationSurfaceSquareMeters:
+          data.photovoltaicInstallationSurfaceSquareMeters,
+      },
+    });
   };
-
-  const onBack = () => dispatch(previousStepRequested());
 
   if (keyParameter === "POWER") {
     return (

@@ -1,28 +1,23 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectInvolvesReinstatementViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-decontamination/involves-reinstatement/involvesReinstatement.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import InvolvesReinstatementForm from "@/features/create-project/views/urban-project/soils/involves-reinstatement/InvolvesReinstatementForm";
 
 export default function InvolvesReinstatementContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectInvolvesReinstatementViewData } =
+    useRenewableEnergyForm();
   const { initialValues } = useAppSelector(selectInvolvesReinstatementViewData);
 
   return (
     <InvolvesReinstatementForm
       onSubmit={(formData) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
-            answers: {
-              involvesReinstatement: formData.involvesReinstatement === "yes",
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
+          answers: {
+            involvesReinstatement: formData.involvesReinstatement === "yes",
+          },
+        });
       }}
-      onBack={() => dispatch(previousStepRequested())}
+      onBack={onBack}
       initialValues={initialValues}
     />
   );

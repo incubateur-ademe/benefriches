@@ -1,15 +1,19 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
+
+import type { RootState } from "@/app/store/store";
+import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 
 import { ReadStateHelper } from "../../../helpers/readState";
-import { selectSteps } from "../../../selectors/renewableEnergy.selector";
 
 type InvolvesReinstatementViewData = {
   initialValues: { involvesReinstatement: "yes" | "no" } | undefined;
 };
 
-export const selectInvolvesReinstatementViewData = createSelector(
-  selectSteps,
-  (steps): InvolvesReinstatementViewData => {
+export const createSelectInvolvesReinstatementViewData = (
+  selectSteps: Selector<RootState, RenewableEnergyStepsState>,
+) =>
+  createSelector(selectSteps, (steps): InvolvesReinstatementViewData => {
     const involvesReinstatement = ReadStateHelper.getStepAnswers(
       steps,
       "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
@@ -20,5 +24,4 @@ export const selectInvolvesReinstatementViewData = createSelector(
           ? undefined
           : { involvesReinstatement: involvesReinstatement ? "yes" : "no" },
     };
-  },
-);
+  });

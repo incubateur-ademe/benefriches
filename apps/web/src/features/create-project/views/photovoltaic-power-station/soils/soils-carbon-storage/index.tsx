@@ -1,29 +1,23 @@
 import { useEffect } from "react";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/renewable-energy/actions/soilsCarbonStorage.actions";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectSoilsCarbonStorageViewData } from "@/features/create-project/core/renewable-energy/step-handlers/summary/summary-soils-carbon-storage/summarySoilsCarbonStorage.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import SoilsCarbonStorageComparison from "@/features/create-project/views/project-form/common/soils-carbon-storage-comparison";
 
 function ProjectSoilsCarbonStorageContainer() {
-  const dispatch = useAppDispatch();
+  const { onNext, onBack, onFetchSoilsCarbonStorage, selectSoilsCarbonStorageViewData } =
+    useRenewableEnergyForm();
   const viewData = useAppSelector(selectSoilsCarbonStorageViewData);
 
   useEffect(() => {
-    void dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
-  }, [dispatch]);
+    onFetchSoilsCarbonStorage();
+  }, [onFetchSoilsCarbonStorage]);
 
   if (viewData.loadingState === "success") {
     return (
       <SoilsCarbonStorageComparison
-        onNext={() => {
-          dispatch(nextStepRequested());
-        }}
-        onBack={() => dispatch(previousStepRequested())}
+        onNext={onNext}
+        onBack={onBack}
         loadingState={viewData.loadingState}
         currentCarbonStorage={viewData.current}
         projectedCarbonStorage={viewData.projected}
@@ -33,10 +27,8 @@ function ProjectSoilsCarbonStorageContainer() {
 
   return (
     <SoilsCarbonStorageComparison
-      onNext={() => {
-        dispatch(nextStepRequested());
-      }}
-      onBack={() => dispatch(previousStepRequested())}
+      onNext={onNext}
+      onBack={onBack}
       loadingState={viewData.loadingState}
       currentCarbonStorage={undefined}
       projectedCarbonStorage={undefined}

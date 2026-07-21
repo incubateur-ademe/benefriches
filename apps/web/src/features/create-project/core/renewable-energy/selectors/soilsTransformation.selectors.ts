@@ -1,4 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
 import {
   SoilsDistribution,
   getSuitableSurfaceAreaForPhotovoltaicPanels,
@@ -8,44 +9,62 @@ import {
   sumSoilsSurfaceAreasWhere,
 } from "shared";
 
-import { selectSiteData, selectSiteSoilsDistribution } from "../../createProject.selectors";
+import type { RootState } from "@/app/store/store";
+import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
+import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
+
 import { ReadStateHelper } from "../helpers/readState";
-import { selectProjectSoilsDistribution, selectSteps } from "./renewableEnergy.selector";
 
-export { selectSteps } from "./renewableEnergy.selector";
-
-export const selectPhotovoltaicPanelsSurfaceArea = createSelector(selectSteps, (steps): number => {
-  return (
-    ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE")
-      ?.photovoltaicInstallationSurfaceSquareMeters ?? 0
-  );
-});
-
-export const selectSuitableSurfaceAreaForPhotovoltaicPanels = createSelector(
-  selectSiteData,
-  (state): number => {
-    return getSuitableSurfaceAreaForPhotovoltaicPanels(state?.soilsDistribution ?? {});
-  },
-);
-
-export const selectMissingSuitableSurfaceArea = createSelector(
-  [selectPhotovoltaicPanelsSurfaceArea, selectSiteSoilsDistribution],
-  (neededSurfaceArea, siteSoilsDistribution): number => {
-    return neededSurfaceArea - getSuitableSurfaceAreaForPhotovoltaicPanels(siteSoilsDistribution);
-  },
-);
-
-export const selectBiodiversityAndClimateSensibleSoilsSurfaceAreaDestroyed = createSelector(
-  [selectSiteSoilsDistribution, selectProjectSoilsDistribution],
-  (siteSoilsDistribution, projectSoilsDistribution): number => {
-    return getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed(
-      siteSoilsDistribution,
-      projectSoilsDistribution,
+export const createSelectPhotovoltaicPanelsSurfaceArea = (
+  selectSteps: Selector<RootState, RenewableEnergyStepsState>,
+) =>
+  createSelector(selectSteps, (steps): number => {
+    return (
+      ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE")
+        ?.photovoltaicInstallationSurfaceSquareMeters ?? 0
     );
-  },
-);
+  });
 
-export const selectWillSoilsTransformationHaveNegativeImpactOnBiodiversityAndClimate =
+export const createSelectSuitableSurfaceAreaForPhotovoltaicPanels = (
+  selectSiteData: Selector<RootState, ProjectSiteView | undefined>,
+) =>
+  createSelector(selectSiteData, (state): number => {
+    return getSuitableSurfaceAreaForPhotovoltaicPanels(state?.soilsDistribution ?? {});
+  });
+
+export const createSelectMissingSuitableSurfaceArea = (
+  selectSteps: Selector<RootState, RenewableEnergyStepsState>,
+  selectSiteSoilsDistribution: Selector<RootState, SoilsDistribution>,
+) => {
+  const selectPhotovoltaicPanelsSurfaceArea =
+    createSelectPhotovoltaicPanelsSurfaceArea(selectSteps);
+
+  return createSelector(
+    [selectPhotovoltaicPanelsSurfaceArea, selectSiteSoilsDistribution],
+    (neededSurfaceArea, siteSoilsDistribution): number => {
+      return neededSurfaceArea - getSuitableSurfaceAreaForPhotovoltaicPanels(siteSoilsDistribution);
+    },
+  );
+};
+
+export const createSelectBiodiversityAndClimateSensibleSoilsSurfaceAreaDestroyed = (
+  selectSiteSoilsDistribution: Selector<RootState, SoilsDistribution>,
+  selectProjectSoilsDistribution: Selector<RootState, SoilsDistribution>,
+) =>
+  createSelector(
+    [selectSiteSoilsDistribution, selectProjectSoilsDistribution],
+    (siteSoilsDistribution, projectSoilsDistribution): number => {
+      return getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed(
+        siteSoilsDistribution,
+        projectSoilsDistribution,
+      );
+    },
+  );
+
+export const createSelectWillSoilsTransformationHaveNegativeImpactOnBiodiversityAndClimate = (
+  selectSiteSoilsDistribution: Selector<RootState, SoilsDistribution>,
+  selectProjectSoilsDistribution: Selector<RootState, SoilsDistribution>,
+) =>
   createSelector(
     [selectSiteSoilsDistribution, selectProjectSoilsDistribution],
     (siteSoilsDistribution, projectSoilsDistribution): boolean => {
@@ -56,9 +75,15 @@ export const selectWillSoilsTransformationHaveNegativeImpactOnBiodiversityAndCli
     },
   );
 
-export const selectFutureBiodiversityAndClimateSensibleSoilsSurfaceArea = createSelector(
-  selectProjectSoilsDistribution,
-  (futureSoilsDistribution: SoilsDistribution): number => {
-    return sumSoilsSurfaceAreasWhere(futureSoilsDistribution, isBiodiversityAndClimateSensibleSoil);
-  },
-);
+export const createSelectFutureBiodiversityAndClimateSensibleSoilsSurfaceArea = (
+  selectProjectSoilsDistribution: Selector<RootState, SoilsDistribution>,
+) =>
+  createSelector(
+    selectProjectSoilsDistribution,
+    (futureSoilsDistribution: SoilsDistribution): number => {
+      return sumSoilsSurfaceAreasWhere(
+        futureSoilsDistribution,
+        isBiodiversityAndClimateSensibleSoil,
+      );
+    },
+  );

@@ -1,13 +1,13 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/revenue/revenue-financial-assistance/revenueFinancialAssistance.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import ProjectFinancialAssistanceRevenueForm from "@/features/create-project/views/project-form/common/revenues/financial-assistance";
 
 function ProjectFinancialAssistanceRevenueFormContainer() {
-  const dispatch = useAppDispatch();
+  const {
+    onBack,
+    onRequestStepCompletion,
+    selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues,
+  } = useRenewableEnergyForm();
   const initialValues = useAppSelector(
     selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues,
   );
@@ -15,16 +15,12 @@ function ProjectFinancialAssistanceRevenueFormContainer() {
   return (
     <ProjectFinancialAssistanceRevenueForm
       initialValues={initialValues}
-      onBack={() => {
-        dispatch(previousStepRequested());
-      }}
+      onBack={onBack}
       onSubmit={(revenues) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE",
-            answers: { financialAssistanceRevenues: revenues },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE",
+          answers: { financialAssistanceRevenues: revenues },
+        });
       }}
     />
   );

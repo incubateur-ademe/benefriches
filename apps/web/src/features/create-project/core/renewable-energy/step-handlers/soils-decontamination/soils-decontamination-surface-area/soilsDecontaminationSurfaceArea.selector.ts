@@ -1,17 +1,18 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
 
+import type { RootState } from "@/app/store/store";
+import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
+import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 import { computePercentage } from "@/shared/core/percentage/percentage";
 
-import {
-  selectSiteContaminatedSurfaceArea,
-  selectSiteData,
-} from "../../../../createProject.selectors";
 import { ReadStateHelper } from "../../../helpers/readState";
-import { selectSteps } from "../../../selectors/renewableEnergy.selector";
 
-const selectContaminatedSurfaceAreaPercentageToDecontaminate = createSelector(
-  [selectSteps, selectSiteData],
-  (steps, siteData) => {
+const createSelectContaminatedSurfaceAreaPercentageToDecontaminate = (
+  selectSteps: Selector<RootState, RenewableEnergyStepsState>,
+  selectSiteData: Selector<RootState, ProjectSiteView | undefined>,
+) =>
+  createSelector([selectSteps, selectSiteData], (steps, siteData) => {
     const decontaminationSelection = ReadStateHelper.getStepAnswers(
       steps,
       "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
@@ -27,21 +28,29 @@ const selectContaminatedSurfaceAreaPercentageToDecontaminate = createSelector(
     if (!contaminatedSurfaceArea || !surfaceToDecontaminate) return 0;
 
     return computePercentage(surfaceToDecontaminate, contaminatedSurfaceArea);
-  },
-);
+  });
 
 type PVDecontaminationSurfaceAreaViewData = {
   contaminatedSurfaceArea: number;
   surfaceAreaToDecontaminateInPercentage: number;
 };
 
-export const selectPVDecontaminationSurfaceAreaViewData = createSelector(
-  [selectSiteContaminatedSurfaceArea, selectContaminatedSurfaceAreaPercentageToDecontaminate],
-  (
-    contaminatedSurfaceArea,
-    surfaceAreaToDecontaminateInPercentage,
-  ): PVDecontaminationSurfaceAreaViewData => ({
-    contaminatedSurfaceArea,
-    surfaceAreaToDecontaminateInPercentage,
-  }),
-);
+export const createSelectPVDecontaminationSurfaceAreaViewData = (
+  selectSteps: Selector<RootState, RenewableEnergyStepsState>,
+  selectSiteData: Selector<RootState, ProjectSiteView | undefined>,
+  selectSiteContaminatedSurfaceArea: Selector<RootState, number>,
+) => {
+  const selectContaminatedSurfaceAreaPercentageToDecontaminate =
+    createSelectContaminatedSurfaceAreaPercentageToDecontaminate(selectSteps, selectSiteData);
+
+  return createSelector(
+    [selectSiteContaminatedSurfaceArea, selectContaminatedSurfaceAreaPercentageToDecontaminate],
+    (
+      contaminatedSurfaceArea,
+      surfaceAreaToDecontaminateInPercentage,
+    ): PVDecontaminationSurfaceAreaViewData => ({
+      contaminatedSurfaceArea,
+      surfaceAreaToDecontaminateInPercentage,
+    }),
+  );
+};

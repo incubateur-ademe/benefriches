@@ -1,20 +1,17 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/core/createProject.selectors";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import SoilsDecontaminationIntroduction from "@/features/create-project/views/project-form/common/soils-decontamination/introduction/SoilsDecontaminationIntroduction";
 
 function SoilsDecontaminationIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onNext, onBack } = useRenewableEnergyForm();
   const contaminatedSurfaceArea = useAppSelector(selectSiteContaminatedSurfaceArea);
 
   return (
     <SoilsDecontaminationIntroduction
       contaminatedSurfaceArea={contaminatedSurfaceArea}
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
+      onNext={onNext}
+      onBack={onBack}
     />
   );
 }

@@ -1,29 +1,19 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectSitePurchasedViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/stakeholders-site-purchase/stakeholdersSitePurchase.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
 import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";
 
 function SitePurchasedFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectSitePurchasedViewData } = useRenewableEnergyForm();
   const { isCurrentUserSiteOwner, initialValues, siteOwnerName } = useAppSelector(
     selectSitePurchasedViewData,
   );
 
   const onSubmit = (data: FormValues) => {
-    dispatch(
-      stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
-        answers: { willSiteBePurchased: data.willSiteBePurchased === "yes" },
-      }),
-    );
-  };
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
+    onRequestStepCompletion({
+      stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
+      answers: { willSiteBePurchased: data.willSiteBePurchased === "yes" },
+    });
   };
 
   return (

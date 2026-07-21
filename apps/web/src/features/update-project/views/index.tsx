@@ -4,6 +4,7 @@ import { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
+import { RenewableEnergyFormProvider } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/RenewableEnergyFormProvider";
 import { ProjectFormProvider } from "@/features/create-project/views/project-form/ProjectFormProvider";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -69,7 +70,11 @@ function UpdateProjectPage({ route }: Props) {
   }
 
   if (projectType === "PHOTOVOLTAIC_POWER_PLANT" && !isExpressProject) {
-    return <PhotovoltaicPowerStationUpdateView />;
+    return (
+      <RenewableEnergyFormProvider mode="update">
+        <PhotovoltaicPowerStationUpdateView />
+      </RenewableEnergyFormProvider>
+    );
   }
 
   return <UnavailableFeatureView />;

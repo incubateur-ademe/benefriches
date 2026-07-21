@@ -1,15 +1,12 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicPowerViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-power/photovoltaicPower.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
 import PhotovoltaicPowerForm from "./PowerForm";
 import PhotovoltaicPowerFromSurfaceForm from "./PowerFromSurfaceForm";
 
 function PhotovoltaicPowerContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectPhotovoltaicPowerViewData } =
+    useRenewableEnergyForm();
   const {
     initialValue,
     siteSurfaceArea,
@@ -19,19 +16,12 @@ function PhotovoltaicPowerContainer() {
   } = useAppSelector(selectPhotovoltaicPowerViewData);
 
   const onSubmit = (data: { photovoltaicInstallationElectricalPowerKWc: number }) => {
-    dispatch(
-      stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
-        answers: {
-          photovoltaicInstallationElectricalPowerKWc:
-            data.photovoltaicInstallationElectricalPowerKWc,
-        },
-      }),
-    );
-  };
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
+    onRequestStepCompletion({
+      stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
+      answers: {
+        photovoltaicInstallationElectricalPowerKWc: data.photovoltaicInstallationElectricalPowerKWc,
+      },
+    });
   };
 
   if (keyParameter === "SURFACE") {

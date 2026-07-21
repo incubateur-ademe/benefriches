@@ -1,14 +1,10 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVNonSuitableSoilsNoticeViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/soils-transformation-non-suitable-soils-notice/soilsTransformationNonSuitableSoilsNotice.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
 import NonSuitableSoilsNotice from "./NonSuitableSoilsNotice";
 
 function NonSuitableSoilsNoticeContainer() {
-  const dispatch = useAppDispatch();
+  const { onNext, onBack, selectPVNonSuitableSoilsNoticeViewData } = useRenewableEnergyForm();
   const { photovoltaicPanelsSurfaceArea: photovoltaicPanelsSurfaceAre, suitableSurfaceArea } =
     useAppSelector(selectPVNonSuitableSoilsNoticeViewData);
 
@@ -16,8 +12,8 @@ function NonSuitableSoilsNoticeContainer() {
     <NonSuitableSoilsNotice
       photovoltaicPanelsSurfaceAre={photovoltaicPanelsSurfaceAre}
       suitableSurfaceArea={suitableSurfaceArea}
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
+      onNext={onNext}
+      onBack={onBack}
     />
   );
 }

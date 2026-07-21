@@ -1,13 +1,10 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVScheduleProjectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/schedule/schedule-projection/scheduleProjection.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import ScheduleProjectionForm from "@/features/create-project/views/project-form/common/schedule/projection/ScheduleProjectionForm";
 
 function ScheduleProjectionFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectPVScheduleProjectionViewData } =
+    useRenewableEnergyForm();
   const { initialValues, hasReinstatement } = useAppSelector(selectPVScheduleProjectionViewData);
 
   return (
@@ -15,20 +12,16 @@ function ScheduleProjectionFormContainer() {
       initialValues={initialValues}
       installationScheduleLabel="⚡️ Installation de la centrale photovoltaïque"
       hasReinstatement={hasReinstatement}
-      onBack={() => {
-        dispatch(previousStepRequested());
-      }}
+      onBack={onBack}
       onSubmit={(data) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_SCHEDULE_PROJECTION",
-            answers: {
-              firstYearOfOperation: data.firstYearOfOperation,
-              photovoltaicInstallationSchedule: data.installationSchedule,
-              reinstatementSchedule: data.reinstatementSchedule,
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_SCHEDULE_PROJECTION",
+          answers: {
+            firstYearOfOperation: data.firstYearOfOperation,
+            photovoltaicInstallationSchedule: data.installationSchedule,
+            reinstatementSchedule: data.reinstatementSchedule,
+          },
+        });
       }}
     />
   );

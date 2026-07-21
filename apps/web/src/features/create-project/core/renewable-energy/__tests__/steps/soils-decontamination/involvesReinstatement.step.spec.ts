@@ -3,7 +3,7 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import { stepCompletionRequested } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVScheduleProjectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/schedule/schedule-projection/scheduleProjection.selector";
+import { selectPVScheduleProjectionViewData } from "@/features/create-project/core/renewable-energy/renewableEnergyProject.selectors";
 
 describe("Renewable energy creation - Steps - involves reinstatement", () => {
   describe("completion", () => {

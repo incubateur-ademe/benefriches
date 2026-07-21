@@ -27,8 +27,6 @@ import { addUrbanProjectFormCasesToBuilder } from "@/features/create-project/cor
 import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 
-import { fetchCurrentAndProjectedSoilsCarbonStorageForUpdate } from "./actions/fetchCurrentAndProjectedSoilsCarbonStorage.action";
-import { fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocationForUpdate } from "./actions/fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation.action";
 import { convertPhotovoltaicProjectDataToSteps } from "./helpers/convertPhotovoltaicProjectDataToSteps";
 import { convertProjectDataToSteps } from "./helpers/convertProjectDataToSteps";
 import {
@@ -195,13 +193,15 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
   });
 
   builder.addCase(
-    fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocationForUpdate.pending,
+    updateProjectFormRenewableEnergyActions
+      .fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation.pending,
     (state) => {
       state.renewableEnergyProject.expectedPhotovoltaicPerformance.loadingState = "loading";
     },
   );
   builder.addCase(
-    fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocationForUpdate.fulfilled,
+    updateProjectFormRenewableEnergyActions
+      .fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation.fulfilled,
     (state, action) => {
       state.renewableEnergyProject.expectedPhotovoltaicPerformance.loadingState = "success";
       state.renewableEnergyProject.expectedPhotovoltaicPerformance.expectedPerformanceMwhPerYear =
@@ -209,17 +209,21 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
     },
   );
   builder.addCase(
-    fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocationForUpdate.rejected,
+    updateProjectFormRenewableEnergyActions
+      .fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation.rejected,
     (state) => {
       state.renewableEnergyProject.expectedPhotovoltaicPerformance.loadingState = "error";
     },
   );
 
-  builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorageForUpdate.pending, (state) => {
-    state.renewableEnergyProject.soilsCarbonStorage.loadingState = "loading";
-  });
   builder.addCase(
-    fetchCurrentAndProjectedSoilsCarbonStorageForUpdate.fulfilled,
+    updateProjectFormRenewableEnergyActions.fetchCurrentAndProjectedSoilsCarbonStorage.pending,
+    (state) => {
+      state.renewableEnergyProject.soilsCarbonStorage.loadingState = "loading";
+    },
+  );
+  builder.addCase(
+    updateProjectFormRenewableEnergyActions.fetchCurrentAndProjectedSoilsCarbonStorage.fulfilled,
     (state, action) => {
       state.renewableEnergyProject.soilsCarbonStorage = {
         loadingState: "success",
@@ -228,9 +232,12 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       };
     },
   );
-  builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorageForUpdate.rejected, (state) => {
-    state.renewableEnergyProject.soilsCarbonStorage.loadingState = "error";
-  });
+  builder.addCase(
+    updateProjectFormRenewableEnergyActions.fetchCurrentAndProjectedSoilsCarbonStorage.rejected,
+    (state) => {
+      state.renewableEnergyProject.soilsCarbonStorage.loadingState = "error";
+    },
+  );
 });
 
 export default projectUpdateReducer;

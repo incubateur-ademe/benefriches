@@ -3,13 +3,10 @@ import { ActionReducerMapBuilder, createReducer } from "@reduxjs/toolkit";
 import { ProjectCreationState } from "../createProject.reducer";
 import { SoilsCarbonStorageResult } from "../project-form/soilsCarbonStorage.types";
 import { saveReconversionProject } from "./actions/customProjectSaved.action";
-import { fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation } from "./actions/getPhotovoltaicExpectedPerformance.action";
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./actions/soilsCarbonStorage.actions";
 import {
-  nextStepRequested,
-  previousStepRequested,
-  stepCompletionRequested,
-  stepNavigationRequested,
+  creationRenewableEnergyFormActions,
+  fetchCurrentAndProjectedSoilsCarbonStorage,
+  fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation,
 } from "./renewableEnergy.actions";
 import { addRenewableEnergyFormCasesToBuilder } from "./renewableEnergyForm.reducer";
 import type { RenewableEnergyCreationStep } from "./renewableEnergySteps";
@@ -117,12 +114,7 @@ export const renewableEnergyProjectReducer = createReducer(
   (builder) => {
     addRenewableEnergyFormCasesToBuilder<ProjectCreationState>(
       builder,
-      {
-        stepCompletionRequested,
-        previousStepRequested,
-        nextStepRequested,
-        stepNavigationRequested,
-      },
+      creationRenewableEnergyFormActions,
       {
         config: {
           stepChangesNextMode: "step_order",

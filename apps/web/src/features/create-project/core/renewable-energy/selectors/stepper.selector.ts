@@ -1,6 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/store/store";
+import type { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
+import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 import { StepVariant } from "@/shared/views/layout/WizardFormLayout/FormBaseStepperStep";
 
 import {
@@ -47,13 +50,23 @@ export const selectPhotovoltaicPowerPlantStepperDataView = createSelector(
 type PhotovoltaicPowerPlantSummaryNavigationDataView = {
   stepGroups: RenewableEnergyStepperGroup[];
 };
-export const selectPhotovoltaicPowerPlantSummaryNavigationDataView = createSelector(
-  (state: RootState) => state.projectCreation.renewableEnergyProject,
-  (renewableEnergyProject): PhotovoltaicPowerPlantSummaryNavigationDataView => ({
-    stepGroups: computeRenewableEnergyStepperGroups({
-      currentStep: renewableEnergyProject.currentStep,
-      steps: renewableEnergyProject.steps,
-      stepsSequence: renewableEnergyProject.stepsSequence,
+
+// Shared by both create and update: the two flows compute the exact same
+// { stepGroups } shape from { currentStep, steps, stepsSequence }, so a single factory serves
+// both `selectPhotovoltaicPowerPlantSummaryNavigationDataView` (create) and
+// `selectPhotovoltaicPowerPlantUpdateStepperDataView` (update).
+export const createSelectPhotovoltaicPowerPlantSummaryNavigationDataView = (
+  selectCurrentStep: Selector<RootState, RenewableEnergyCreationStep>,
+  selectSteps: Selector<RootState, RenewableEnergyStepsState>,
+  selectStepsSequence: Selector<RootState, RenewableEnergyCreationStep[]>,
+) =>
+  createSelector(
+    [selectCurrentStep, selectSteps, selectStepsSequence],
+    (currentStep, steps, stepsSequence): PhotovoltaicPowerPlantSummaryNavigationDataView => ({
+      stepGroups: computeRenewableEnergyStepperGroups({
+        currentStep,
+        steps,
+        stepsSequence,
+      }),
     }),
-  }),
-);
+  );

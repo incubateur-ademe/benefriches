@@ -1,29 +1,19 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVDeveloperViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.selector";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import StakeholderForm from "@/features/create-project/views/project-form/common/stakeholder-form";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 function DeveloperFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectPVDeveloperViewData } = useRenewableEnergyForm();
   const { availableStakeholdersList, availableLocalAuthoritiesStakeholders } =
     useAppSelector(selectPVDeveloperViewData);
 
   const onSubmit = (data: { structureType: ProjectStakeholderStructure; name: string }) => {
-    dispatch(
-      stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER",
-        answers: { projectDeveloper: data },
-      }),
-    );
-  };
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
+    onRequestStepCompletion({
+      stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER",
+      answers: { projectDeveloper: data },
+    });
   };
 
   return (

@@ -12,6 +12,7 @@ import {
   selectProjectSoilsDistributionByType,
   selectSiteAddress,
   selectSiteSoilsDistribution,
+  updateRenewableEnergyFormSelectors,
 } from "./updateProject.selectors";
 import { UpdateProjectView } from "./updateProject.types";
 
@@ -33,8 +34,10 @@ export const updateProjectFormUrbanActions = createUrbanProjectFormActions(
     selectSiteSoilsDistribution,
   },
 );
-export const updateProjectFormRenewableEnergyActions =
-  createRenewableEnergyFormActions(UPDATE_PROJECT_STORE_KEY);
+export const updateProjectFormRenewableEnergyActions = createRenewableEnergyFormActions(
+  UPDATE_PROJECT_STORE_KEY,
+  updateRenewableEnergyFormSelectors,
+);
 
 export const reconversionProjectUpdateInitiated = createAppAsyncThunk<UpdateProjectView, string>(
   makeProjectUpdateActionType("init"),

@@ -1,19 +1,10 @@
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import ProjectStakeholdersIntroduction from "@/features/create-project/views/project-form/common/stakeholder-introduction/StakeholdersIntroduction";
 
 function ProjectStakeholdersIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onNext, onBack } = useRenewableEnergyForm();
 
-  return (
-    <ProjectStakeholdersIntroduction
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
-    />
-  );
+  return <ProjectStakeholdersIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default ProjectStakeholdersIntroductionContainer;

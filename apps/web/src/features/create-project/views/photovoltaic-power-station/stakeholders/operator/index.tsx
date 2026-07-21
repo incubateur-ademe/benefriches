@@ -1,10 +1,6 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVOperatorViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/stakeholders-future-operator/stakeholdersFutureOperator.selector";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import { UserStructure } from "@/features/onboarding/core/user";
 
 import FutureOperatorForm, { FormValues } from "./FutureOperatorForm";
@@ -25,7 +21,7 @@ const mapInitialValues = (
 };
 
 function FutureOperatorFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectPVOperatorViewData } = useRenewableEnergyForm();
   const { currentUser, initialValue } = useAppSelector(selectPVOperatorViewData);
 
   const onSubmit = (data: FormValues) => {
@@ -39,16 +35,10 @@ function FutureOperatorFormContainer() {
             name: data.otherStructureName,
             structureType: "company",
           };
-    dispatch(
-      stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
-        answers: { futureOperator },
-      }),
-    );
-  };
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
+    onRequestStepCompletion({
+      stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
+      answers: { futureOperator },
+    });
   };
 
   return (

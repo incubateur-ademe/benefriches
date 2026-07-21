@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
 
 import { updateProjectFormRenewableEnergyActions } from "../../core/updateProject.actions";
-import { selectPhotovoltaicPowerPlantUpdateStepperDataView } from "../../core/updateProjectRenewableEnergy.selectors";
+import { selectPhotovoltaicPowerPlantUpdateStepperDataView } from "../../core/updateProject.selectors";
 import UpdateFormStepperStep from "../UpdateFormStepperStep";
 
 function PhotovoltaicPowerPlantUpdateStepperSteps() {

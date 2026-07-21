@@ -6,7 +6,7 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import { reconversionProjectUpdateSaved } from "../core/updateProject.actions";
-import { selectIsFormStatusValid } from "../core/updateProjectRenewableEnergy.selectors";
+import { selectIsFormStatusValid } from "../core/updateProject.selectors";
 import PhotovoltaicPowerStationUpdateNavigationBlockerDialog from "./photovoltaic-power-station/PhotovoltaicPowerStationUpdateNavigationBlockerDialog";
 import PhotovoltaicPowerStationUpdateStepper from "./photovoltaic-power-station/PhotovoltaicPowerStationUpdateStepper";
 import PhotovoltaicPowerStationUpdateWizard from "./photovoltaic-power-station/PhotovoltaicPowerStationUpdateWizard";

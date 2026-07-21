@@ -1,7 +1,6 @@
 import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
 import { StoreBuilder } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
-
-import { selectPVScheduleProjectionViewData } from "./scheduleProjection.selector";
+import { selectPVScheduleProjectionViewData } from "@/features/create-project/core/renewable-energy/renewableEnergyProject.selectors";
 
 describe("selectPVScheduleProjectionViewData - default schedule", () => {
   it("omits reinstatement from default schedule on a friche that opted out of reinstatement", () => {

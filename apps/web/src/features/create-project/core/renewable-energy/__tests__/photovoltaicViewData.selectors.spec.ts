@@ -6,15 +6,17 @@ import { relatedSiteData } from "../../__tests__/siteData.mock";
 import { DEMO_INITIAL_STATE } from "../../demo/demoProject.reducer";
 import { USE_CASE_SELECTION_INITIAL_STATE } from "../../usecase-selection/useCaseSelection.reducer";
 import { INITIAL_STATE } from "../renewableEnergy.reducer";
-import { selectPVReinstatementExpensesViewData } from "../step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
-import { selectPVYearlyProjectedRevenueViewData } from "../step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.selector";
-import { selectPVScheduleProjectionViewData } from "../step-handlers/schedule/schedule-projection/scheduleProjection.selector";
-import { selectPVDecontaminationSurfaceAreaViewData } from "../step-handlers/soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.selector";
-import { selectPVClimateAndBiodiversityImpactNoticeViewData } from "../step-handlers/soils-transformation/soils-transformation-climate-and-biodiversity-impact-notice/soilsTransformationClimateAndBiodiversityImpactNotice.selector";
-import { selectPVNonSuitableSoilsNoticeViewData } from "../step-handlers/soils-transformation/soils-transformation-non-suitable-soils-notice/soilsTransformationNonSuitableSoilsNotice.selector";
-import { selectPVSoilsSummaryViewData } from "../step-handlers/soils-transformation/soils-transformation-soils-summary/soilsTransformationSoilsSummary.selector";
-import { selectPVOperatorViewData } from "../step-handlers/stakeholders/stakeholders-future-operator/stakeholdersFutureOperator.selector";
-import { selectPVDeveloperViewData } from "../step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.selector";
+import {
+  selectPVClimateAndBiodiversityImpactNoticeViewData,
+  selectPVDecontaminationSurfaceAreaViewData,
+  selectPVDeveloperViewData,
+  selectPVNonSuitableSoilsNoticeViewData,
+  selectPVOperatorViewData,
+  selectPVReinstatementExpensesViewData,
+  selectPVScheduleProjectionViewData,
+  selectPVSoilsSummaryViewData,
+  selectPVYearlyProjectedRevenueViewData,
+} from "../renewableEnergyProject.selectors";
 import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
 import { exhaustiveSteps } from "./projectData.mock";
 

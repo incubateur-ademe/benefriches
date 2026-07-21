@@ -1,24 +1,11 @@
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
 import ProjectExpensesIntroduction from "./ProjectExpensesIntroduction";
 
 function ProjectExpensesIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onNext, onBack } = useRenewableEnergyForm();
 
-  return (
-    <ProjectExpensesIntroduction
-      onNext={() => {
-        dispatch(nextStepRequested());
-      }}
-      onBack={() => {
-        dispatch(previousStepRequested());
-      }}
-    />
-  );
+  return <ProjectExpensesIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default ProjectExpensesIntroductionContainer;

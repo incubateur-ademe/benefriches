@@ -1,12 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
 import { getRevenueAmountByPurpose } from "shared";
 
-import { ReadStateHelper } from "../../../helpers/readState";
-import { selectSteps } from "../../../selectors/renewableEnergy.selector";
+import type { RootState } from "@/app/store/store";
+import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 
-export const selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues = createSelector(
-  [selectSteps],
-  (steps) => {
+import { ReadStateHelper } from "../../../helpers/readState";
+
+export const createSelectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues = (
+  selectSteps: Selector<RootState, RenewableEnergyStepsState>,
+) =>
+  createSelector([selectSteps], (steps) => {
     const financialStep = ReadStateHelper.getStepAnswers(
       steps,
       "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE",
@@ -30,5 +34,4 @@ export const selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValu
       publicSubsidies: 0,
       other: 0,
     };
-  },
-);
+  });

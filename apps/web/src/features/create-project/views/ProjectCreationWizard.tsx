@@ -4,6 +4,7 @@ import { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
+import { RenewableEnergyFormProvider } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/RenewableEnergyFormProvider";
 import { ProjectFormProvider } from "@/features/create-project/views/project-form/ProjectFormProvider";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
@@ -58,7 +59,11 @@ function ProjectCreationWizard({ route }: Props) {
             case "URBAN_PROJECT":
               return <UrbanProjectCreationWizard />;
             case "PHOTOVOLTAIC_POWER_PLANT":
-              return <PhotovoltaicPowerStationCreationWizard />;
+              return (
+                <RenewableEnergyFormProvider mode="create">
+                  <PhotovoltaicPowerStationCreationWizard />
+                </RenewableEnergyFormProvider>
+              );
             case "DEMO":
               return <DemoProjectCreationWizard />;
             case "USE_CASE_SELECTION":

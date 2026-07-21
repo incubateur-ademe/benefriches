@@ -1,28 +1,23 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicPlantFeaturesKeyParameter } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-key-parameter/photovoltaicKeyParameter.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
 import PhotovoltaicKeyParameterForm from "./KeyParameterForm";
 
 function PhotovoltaicKeyParameterContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectPhotovoltaicPlantFeaturesKeyParameter } =
+    useRenewableEnergyForm();
   const initialValue = useAppSelector(selectPhotovoltaicPlantFeaturesKeyParameter);
 
   return (
     <PhotovoltaicKeyParameterForm
       initialValues={initialValue ? { photovoltaicKeyParameter: initialValue } : undefined}
       onSubmit={(data) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
-            answers: { photovoltaicKeyParameter: data.photovoltaicKeyParameter },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
+          answers: { photovoltaicKeyParameter: data.photovoltaicKeyParameter },
+        });
       }}
-      onBack={() => dispatch(previousStepRequested())}
+      onBack={onBack}
     />
   );
 }

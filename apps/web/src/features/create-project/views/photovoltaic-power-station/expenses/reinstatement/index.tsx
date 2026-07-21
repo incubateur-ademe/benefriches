@@ -1,9 +1,5 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVReinstatementExpensesViewData } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import ReinstatementsExpensesForm from "@/features/create-project/views/project-form/common/expenses/reinstatement/ReinstatementExpensesForm";
 import {
   mapFormValuesToReinstatementExpenses,
@@ -11,23 +7,20 @@ import {
 } from "@/features/create-project/views/project-form/common/expenses/reinstatement/mappers";
 
 function ReinstatementExpensesFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectPVReinstatementExpensesViewData } =
+    useRenewableEnergyForm();
   const { decontaminatedSurfaceArea, reinstatementExpenses: initialValues } = useAppSelector(
     selectPVReinstatementExpensesViewData,
   );
 
   return (
     <ReinstatementsExpensesForm
-      onBack={() => {
-        dispatch(previousStepRequested());
-      }}
+      onBack={onBack}
       onSubmit={(expenses) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
-            answers: { reinstatementExpenses: mapFormValuesToReinstatementExpenses(expenses) },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
+          answers: { reinstatementExpenses: mapFormValuesToReinstatementExpenses(expenses) },
+        });
       }}
       hasProjectedDecontamination={Boolean(
         decontaminatedSurfaceArea && decontaminatedSurfaceArea > 0,

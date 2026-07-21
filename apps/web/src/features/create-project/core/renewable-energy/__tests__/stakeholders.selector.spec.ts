@@ -5,12 +5,14 @@ import {
 import { buildUser } from "@/features/onboarding/core/user.mock";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
-import {
-  selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
-  selectRenewableEnergyProjectAvailableStakeholders,
-} from "../selectors/stakeholders.selectors";
+import { creationRenewableEnergyFormSelectors } from "../renewableEnergyProject.selectors";
 import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
 import { exhaustiveSteps, minimalSteps } from "./projectData.mock";
+
+const {
+  selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
+  selectRenewableEnergyProjectAvailableStakeholders,
+} = creationRenewableEnergyFormSelectors;
 
 const makeStep = <T>(payload: T) => ({ completed: true, payload });
 

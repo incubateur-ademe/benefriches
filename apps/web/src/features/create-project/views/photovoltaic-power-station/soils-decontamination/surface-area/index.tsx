@@ -1,29 +1,24 @@
 import { roundToInteger } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVDecontaminationSurfaceAreaViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import SoilsDecontaminationSurfaceArea from "@/features/create-project/views/project-form/common/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
 import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { computeValueFromPercentage } from "@/shared/core/percentage/percentage";
 
 function SoilsDecontaminationSurfaceAreaContainer() {
+  const { onBack, onRequestStepCompletion, selectPVDecontaminationSurfaceAreaViewData } =
+    useRenewableEnergyForm();
   const { inputMode, onInputModeChange } = useSurfaceAreaInputMode();
-  const dispatch = useAppDispatch();
   const { contaminatedSurfaceArea, surfaceAreaToDecontaminateInPercentage } = useAppSelector(
     selectPVDecontaminationSurfaceAreaViewData,
   );
 
   const onSubmit = (surfaceArea: number) => {
-    dispatch(
-      stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
-        answers: { decontaminatedSurfaceArea: surfaceArea },
-      }),
-    );
+    onRequestStepCompletion({
+      stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+      answers: { decontaminatedSurfaceArea: surfaceArea },
+    });
   };
 
   const getInitialValues = () => {
@@ -50,7 +45,7 @@ function SoilsDecontaminationSurfaceAreaContainer() {
       inputMode={inputMode}
       onInputModeChange={onInputModeChange}
       onSubmit={onSubmit}
-      onBack={() => dispatch(previousStepRequested())}
+      onBack={onBack}
     />
   );
 }

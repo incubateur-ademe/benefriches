@@ -1,17 +1,21 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
 import type { ReinstatementExpense } from "shared";
 
+import type { RootState } from "@/app/store/store";
+import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
+
 import { ReadStateHelper } from "../../../helpers/readState";
-import { selectSteps } from "../../../selectors/renewableEnergy.selector";
 
 type PVReinstatementExpensesViewData = {
   decontaminatedSurfaceArea: number;
   reinstatementExpenses: ReinstatementExpense[] | undefined;
 };
 
-export const selectPVReinstatementExpensesViewData = createSelector(
-  [selectSteps],
-  (steps): PVReinstatementExpensesViewData => {
+export const createSelectPVReinstatementExpensesViewData = (
+  selectSteps: Selector<RootState, RenewableEnergyStepsState>,
+) =>
+  createSelector([selectSteps], (steps): PVReinstatementExpensesViewData => {
     const decontaminationSelection = ReadStateHelper.getStepAnswers(
       steps,
       "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
@@ -32,5 +36,4 @@ export const selectPVReinstatementExpensesViewData = createSelector(
         0,
       reinstatementExpenses: reinstatementExpenses,
     };
-  },
-);
+  });

@@ -4,66 +4,138 @@ import type { RenewableEnergyCreationStep } from "@/features/create-project/core
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-const PhotovoltaicPanelsInstallationExpensesForm = lazy(() => import("./expenses/installation"));
-const ProjectExpensesIntroduction = lazy(() => import("./expenses/introduction"));
-const ReinstatementsExpensesForm = lazy(() => import("./expenses/reinstatement"));
-const SitePurchaseAmountsContainer = lazy(() => import("./expenses/site-purchase-amounts"));
-const YearlyProjectedExpensesForm = lazy(() => import("./expenses/yearly-projected-costs"));
-const ProjectNameAndDescriptionForm = lazy(() => import("./name-and-description"));
+const PhotovoltaicPanelsInstallationExpensesForm = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/expenses/installation"),
+);
+const ProjectExpensesIntroduction = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/expenses/introduction"),
+);
+const ReinstatementsExpensesForm = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/expenses/reinstatement"),
+);
+const SitePurchaseAmountsContainer = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/expenses/site-purchase-amounts"),
+);
+const YearlyProjectedExpensesForm = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/expenses/yearly-projected-costs"),
+);
+const ProjectNameAndDescriptionForm = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/name-and-description"),
+);
 const PhotovoltaicContractDurationContainer = lazy(
-  () => import("./photovoltaic/contract-duration"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/photovoltaic/contract-duration"),
 );
 const PhotovoltaicExpectedAnnualProductionContainer = lazy(
-  () => import("./photovoltaic/expected-annual-production"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/photovoltaic/expected-annual-production"),
 );
-const PhotovoltaicKeyParameter = lazy(() => import("./photovoltaic/key-parameter"));
-const PhotovoltaicPower = lazy(() => import("./photovoltaic/power"));
-const PhotovoltaicSurface = lazy(() => import("./photovoltaic/surface"));
-const ProjectFinancialAssistanceRevenueForm = lazy(() => import("./revenue/financial-assistance"));
-const ProjectRevenueIntroduction = lazy(() => import("./revenue/introduction"));
-const ProjectYearlyProjectedRevenueForm = lazy(() => import("./revenue/yearly-projected-revenue"));
-const ProjectScheduleProjectionFormContainer = lazy(() => import("./schedule/projection"));
+const PhotovoltaicKeyParameter = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/photovoltaic/key-parameter"),
+);
+const PhotovoltaicPower = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/photovoltaic/power"),
+);
+const PhotovoltaicSurface = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/photovoltaic/surface"),
+);
+const ProjectFinancialAssistanceRevenueForm = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/revenue/financial-assistance"),
+);
+const ProjectRevenueIntroduction = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/revenue/introduction"),
+);
+const ProjectYearlyProjectedRevenueForm = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/revenue/yearly-projected-revenue"),
+);
+const ProjectScheduleProjectionFormContainer = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/schedule/projection"),
+);
 const InvolvesReinstatementContainer = lazy(
-  () => import("./soils-decontamination/involves-reinstatement"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils-decontamination/involves-reinstatement"),
 );
-const SoilsDecontaminationIntroduction = lazy(() => import("./soils-decontamination/introduction"));
-const SoilsDecontaminationSelection = lazy(() => import("./soils-decontamination/selection"));
-const SoilsDecontaminationSurfaceArea = lazy(() => import("./soils-decontamination/surface-area"));
-const ProjectSoilsCarbonStorageContainer = lazy(() => import("./soils/soils-carbon-storage"));
-const ProjectSoilsSummaryContainer = lazy(() => import("./soils/soils-summary"));
+const SoilsDecontaminationIntroduction = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils-decontamination/introduction"),
+);
+const SoilsDecontaminationSelection = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils-decontamination/selection"),
+);
+const SoilsDecontaminationSurfaceArea = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils-decontamination/surface-area"),
+);
+const ProjectSoilsCarbonStorageContainer = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils/soils-carbon-storage"),
+);
+const ProjectSoilsSummaryContainer = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/soils/soils-summary"),
+);
 const ClimateAndBiodiversityImpactNotice = lazy(
-  () => import("./soils/soils-transformation/climate-and-biodiversity-impact-notice"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils/soils-transformation/climate-and-biodiversity-impact-notice"),
 );
 const FutureSoilsSelectionForm = lazy(
-  () => import("./soils/soils-transformation/future-soils-selection"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils/soils-transformation/future-soils-selection"),
 );
 const FutureSoilsSurfaceAreaForm = lazy(
-  () => import("./soils/soils-transformation/future-soils-surface-area"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils/soils-transformation/future-soils-surface-area"),
 );
 const SoilsTransformationIntroduction = lazy(
-  () => import("./soils/soils-transformation/introduction"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils/soils-transformation/introduction"),
 );
 const NonSuitableSoilsNotice = lazy(
-  () => import("./soils/soils-transformation/non-suitable-soils-notice"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils/soils-transformation/non-suitable-soils-notice"),
 );
 const NonSuitableSoilsSelection = lazy(
-  () => import("./soils/soils-transformation/non-suitable-soils-selection"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils/soils-transformation/non-suitable-soils-selection"),
 );
 const NonSuitableSoilsSurfaceToTransformForm = lazy(
-  () => import("./soils/soils-transformation/non-suitable-soils-surface-to-transform"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils/soils-transformation/non-suitable-soils-surface-to-transform"),
 );
 const SoilsTransformationProjectSelection = lazy(
-  () => import("./soils/soils-transformation/transformation-project-selection"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/soils/soils-transformation/transformation-project-selection"),
 );
-const DeveloperForm = lazy(() => import("./stakeholders/developer"));
-const FutureOwnerFormContainer = lazy(() => import("./stakeholders/future-site-owner"));
-const ProjectStakeholdersIntroduction = lazy(() => import("./stakeholders/introduction"));
-const SiteOperatorForm = lazy(() => import("./stakeholders/operator"));
+const DeveloperForm = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/stakeholders/developer"),
+);
+const FutureOwnerFormContainer = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/stakeholders/future-site-owner"),
+);
+const ProjectStakeholdersIntroduction = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/stakeholders/introduction"),
+);
+const SiteOperatorForm = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/stakeholders/operator"),
+);
 const SiteReinstatementContractOwnerForm = lazy(
-  () => import("./stakeholders/reinstatement-contract-owner"),
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/stakeholders/reinstatement-contract-owner"),
 );
-const SitePurchasedFormContainer = lazy(() => import("./stakeholders/site-purchased"));
-const ProjectUpdateDataSummaryContainer = lazy(() => import("./summary"));
+const SitePurchasedFormContainer = lazy(
+  () =>
+    import("@/features/create-project/views/photovoltaic-power-station/stakeholders/site-purchased"),
+);
+const ProjectUpdateDataSummaryContainer = lazy(
+  () => import("@/features/create-project/views/photovoltaic-power-station/summary"),
+);
 
 const HTML_PV_UPDATE_FORM_MAIN_TITLE = "Modification du projet photovoltaïque";
 

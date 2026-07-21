@@ -1,27 +1,22 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectContractDurationViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-contract-duration/photovoltaicContractDuration.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
 import PhotovoltaicContractDurationForm from "./ContractDurationForm";
 
 function PhotovoltaicContractDurationContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectContractDurationViewData } =
+    useRenewableEnergyForm();
   const { initialValues } = useAppSelector(selectContractDurationViewData);
   return (
     <PhotovoltaicContractDurationForm
       initialValues={initialValues}
       onSubmit={(data) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
-            answers: { photovoltaicContractDuration: data.photovoltaicContractDuration },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
+          answers: { photovoltaicContractDuration: data.photovoltaicContractDuration },
+        });
       }}
-      onBack={() => dispatch(previousStepRequested())}
+      onBack={onBack}
     />
   );
 }

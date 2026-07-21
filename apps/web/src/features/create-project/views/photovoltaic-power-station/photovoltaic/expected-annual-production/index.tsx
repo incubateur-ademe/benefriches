@@ -1,26 +1,26 @@
 import { useEffect } from "react";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectExpectedAnnualProductionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-expected-annual-production/photovoltaicExpectedAnnualProduction.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import PhotovoltaicExpectedAnnualProductionForm from "./ExpectedAnnualProductionForm";
 
 function PhotovoltaicExpectedAnnualProductionContainer() {
-  const dispatch = useAppDispatch();
+  const {
+    onBack,
+    onRequestStepCompletion,
+    onFetchExpectedAnnualPowerPerformance,
+    selectExpectedAnnualProductionViewData,
+  } = useRenewableEnergyForm();
 
   const { loadingState, expectedPerformanceMwhPerYear } = useAppSelector(
     selectExpectedAnnualProductionViewData,
   );
 
   useEffect(() => {
-    void dispatch(fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation());
-  }, [dispatch]);
+    onFetchExpectedAnnualPowerPerformance();
+  }, [onFetchExpectedAnnualPowerPerformance]);
 
   if (loadingState === "loading") {
     return <LoadingSpinner />;
@@ -30,16 +30,14 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
     <PhotovoltaicExpectedAnnualProductionForm
       expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
       onSubmit={(data) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
-            answers: {
-              photovoltaicExpectedAnnualProduction: data.photovoltaicExpectedAnnualProduction,
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
+          answers: {
+            photovoltaicExpectedAnnualProduction: data.photovoltaicExpectedAnnualProduction,
+          },
+        });
       }}
-      onBack={() => dispatch(previousStepRequested())}
+      onBack={onBack}
     />
   );
 }

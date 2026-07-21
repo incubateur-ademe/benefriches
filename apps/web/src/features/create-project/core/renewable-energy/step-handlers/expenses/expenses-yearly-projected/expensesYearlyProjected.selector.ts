@@ -1,8 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
 import { TExpense, computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower } from "shared";
 
+import type { RootState } from "@/app/store/store";
+import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
+
 import { ReadStateHelper } from "../../../helpers/readState";
-import { selectSteps } from "../../../selectors/renewableEnergy.selector";
 
 const getExpenseAmountByPurpose = <TExpenses extends TExpense<string>[]>(
   expenses: TExpenses,
@@ -17,9 +20,10 @@ type PhotovoltaicPowerStationYearlyExpensesInitialValues = {
   taxes: number;
   other: number;
 };
-export const selectPhotovoltaicPowerStationYearlyExpensesInitialValues = createSelector(
-  [selectSteps],
-  (steps): PhotovoltaicPowerStationYearlyExpensesInitialValues => {
+export const createSelectPhotovoltaicPowerStationYearlyExpensesInitialValues = (
+  selectSteps: Selector<RootState, RenewableEnergyStepsState>,
+) =>
+  createSelector([selectSteps], (steps): PhotovoltaicPowerStationYearlyExpensesInitialValues => {
     const yearlyStep = ReadStateHelper.getStepAnswers(
       steps,
       "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES",
@@ -38,5 +42,4 @@ export const selectPhotovoltaicPowerStationYearlyExpensesInitialValues = createS
       ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER")
         ?.photovoltaicInstallationElectricalPowerKWc ?? 0;
     return computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower(electricalPowerKWc);
-  },
-);
+  });

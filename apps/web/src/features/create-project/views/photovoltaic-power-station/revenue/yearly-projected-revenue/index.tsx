@@ -1,18 +1,15 @@
 import { RecurringRevenue } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVYearlyProjectedRevenueViewData } from "@/features/create-project/core/renewable-energy/step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import ProjectYearlyRevenueForm from "@/features/create-project/views/project-form/common/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 import { getLabelForRecurringRevenueSource } from "@/shared/core/reconversionProject";
 
 const fields = ["operations", "other"] as const;
 
 function YearlyProjectedRevenueFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectPVYearlyProjectedRevenueViewData } =
+    useRenewableEnergyForm();
   const { initialValues } = useAppSelector(selectPVYearlyProjectedRevenueViewData);
 
   return (
@@ -24,9 +21,7 @@ function YearlyProjectedRevenueFormContainer() {
         operations: initialValues.operations,
         other: initialValues.other,
       }}
-      onBack={() => {
-        dispatch(previousStepRequested());
-      }}
+      onBack={onBack}
       onSubmit={(formData) => {
         const yearlyProjectedRevenues: RecurringRevenue[] = [];
         for (const field of fields) {
@@ -37,12 +32,10 @@ function YearlyProjectedRevenueFormContainer() {
             });
           }
         }
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE",
-            answers: { yearlyProjectedRevenues },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE",
+          answers: { yearlyProjectedRevenues },
+        });
       }}
     />
   );

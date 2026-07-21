@@ -1,29 +1,24 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectSoilsDecontaminationSelectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 import SoilsDecontaminationSelection, {
   FormValues,
 } from "@/features/create-project/views/project-form/common/soils-decontamination/selection/SoilsDecontaminationSelection";
 
 function SoilsDecontaminationSelectionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectSoilsDecontaminationSelectionViewData } =
+    useRenewableEnergyForm();
   const { initialValues } = useAppSelector(selectSoilsDecontaminationSelectionViewData);
 
   return (
     <SoilsDecontaminationSelection
       initialValues={initialValues}
       onSubmit={(data: FormValues) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
-            answers: { decontaminationPlan: data.decontaminationSelection ?? "unknown" },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
+          answers: { decontaminationPlan: data.decontaminationSelection ?? "unknown" },
+        });
       }}
-      onBack={() => dispatch(previousStepRequested())}
+      onBack={onBack}
     />
   );
 }

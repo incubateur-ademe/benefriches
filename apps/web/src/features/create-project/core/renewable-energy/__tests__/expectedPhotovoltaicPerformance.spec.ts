@@ -9,8 +9,8 @@ import { reconversionProjectCreationInitiated } from "../../actions/reconversion
 import {
   fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation,
   PhotovoltaicPerformanceApiResult,
-} from "../actions/getPhotovoltaicExpectedPerformance.action";
-import { stepCompletionRequested } from "../renewableEnergy.actions";
+  stepCompletionRequested,
+} from "../renewableEnergy.actions";
 
 const API_MOCKED_RESULT = {
   expectedPerformance: {

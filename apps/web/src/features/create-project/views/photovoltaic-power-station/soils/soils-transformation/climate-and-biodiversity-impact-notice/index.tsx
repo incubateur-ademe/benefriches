@@ -1,14 +1,11 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVClimateAndBiodiversityImpactNoticeViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/soils-transformation-climate-and-biodiversity-impact-notice/soilsTransformationClimateAndBiodiversityImpactNotice.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
 import ClimateAndBiodiversityImpactNotice from "./ClimateAndBiodiversityImpactNotice";
 
 export default function ClimateAndBiodiversityImpactNoticeContainer() {
-  const dispatch = useAppDispatch();
+  const { onNext, onBack, selectPVClimateAndBiodiversityImpactNoticeViewData } =
+    useRenewableEnergyForm();
   const {
     hasTransformationNegativeImpact,
     biodiversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
@@ -17,8 +14,8 @@ export default function ClimateAndBiodiversityImpactNoticeContainer() {
 
   return (
     <ClimateAndBiodiversityImpactNotice
-      onBack={() => dispatch(previousStepRequested())}
-      onNext={() => dispatch(nextStepRequested())}
+      onBack={onBack}
+      onNext={onNext}
       hasTransformationNegativeImpact={hasTransformationNegativeImpact}
       sensibleSurfaceAreaDestroyed={biodiversityAndClimateSensitiveSoilsSurfaceAreaDestroyed}
       futureBiodiversityAndClimateSensitiveSoilsSurfaceArea={

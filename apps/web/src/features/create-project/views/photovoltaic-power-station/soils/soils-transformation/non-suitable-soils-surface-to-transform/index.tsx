@@ -1,14 +1,11 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectNonSuitableSoilsSurfaceAreaToTransformViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/soils-transformation-non-suitable-soils-surface/soilsTransformationNonSuitableSoilsSurface.selector";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
 import NonSuitableSoilsSurfaceForm, { FormValues } from "./NonSuitableSoilsSurfaceToTransformForm";
 
 function NonSuitableSoilsSurfaceFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectNonSuitableSoilsSurfaceAreaToTransformViewData } =
+    useRenewableEnergyForm();
   const { initialValues, soilsToTransform, missingSuitableSurfaceArea } = useAppSelector(
     selectNonSuitableSoilsSurfaceAreaToTransformViewData,
   );
@@ -19,16 +16,12 @@ function NonSuitableSoilsSurfaceFormContainer() {
       soilsToTransform={soilsToTransform}
       missingSuitableSurfaceArea={missingSuitableSurfaceArea}
       onSubmit={(data: FormValues) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE",
-            answers: { nonSuitableSoilsSurfaceAreaToTransform: data.soilsTransformation },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE",
+          answers: { nonSuitableSoilsSurfaceAreaToTransform: data.soilsTransformation },
+        });
       }}
-      onBack={() => {
-        dispatch(previousStepRequested());
-      }}
+      onBack={onBack}
     />
   );
 }

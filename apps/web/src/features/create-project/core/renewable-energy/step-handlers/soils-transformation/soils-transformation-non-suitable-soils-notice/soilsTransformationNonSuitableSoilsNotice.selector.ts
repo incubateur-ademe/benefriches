@@ -1,19 +1,21 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { Selector } from "@reduxjs/toolkit";
 
-import {
-  selectPhotovoltaicPanelsSurfaceArea,
-  selectSuitableSurfaceAreaForPhotovoltaicPanels,
-} from "../../../selectors/soilsTransformation.selectors";
+import type { RootState } from "@/app/store/store";
 
 type PVNonSuitableSoilsNoticeViewData = {
   photovoltaicPanelsSurfaceArea: number;
   suitableSurfaceArea: number;
 };
 
-export const selectPVNonSuitableSoilsNoticeViewData = createSelector(
-  [selectPhotovoltaicPanelsSurfaceArea, selectSuitableSurfaceAreaForPhotovoltaicPanels],
-  (photovoltaicPanelsSurfaceArea, suitableSurfaceArea): PVNonSuitableSoilsNoticeViewData => ({
-    photovoltaicPanelsSurfaceArea,
-    suitableSurfaceArea,
-  }),
-);
+export const createSelectPVNonSuitableSoilsNoticeViewData = (
+  selectPhotovoltaicPanelsSurfaceArea: Selector<RootState, number>,
+  selectSuitableSurfaceAreaForPhotovoltaicPanels: Selector<RootState, number>,
+) =>
+  createSelector(
+    [selectPhotovoltaicPanelsSurfaceArea, selectSuitableSurfaceAreaForPhotovoltaicPanels],
+    (photovoltaicPanelsSurfaceArea, suitableSurfaceArea): PVNonSuitableSoilsNoticeViewData => ({
+      photovoltaicPanelsSurfaceArea,
+      suitableSurfaceArea,
+    }),
+  );
