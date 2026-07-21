@@ -10,9 +10,11 @@ test.describe("photovoltaic project creation -  with mutability results in url",
     await pvProjectCreationPage.gotoWithProjectSuggestions(agriculturalSite.id);
 
     // Project phase
+    await pvProjectCreationPage.expectStepTitle("A quelle phase du projet êtes-vous ?");
     await pvProjectCreationPage.selectProjectPhase("Montage / Développement");
 
     // Create mode selection
+    await pvProjectCreationPage.expectStepTitle("Que savez vous de votre projet ?");
     await pvProjectCreationPage.selectCreateMode("custom");
 
     await expect(

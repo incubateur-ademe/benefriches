@@ -9,8 +9,10 @@ test.describe("urban project creation - with mutability results in url", () => {
     await urbanProjectCreationPage.gotoWithProjectSuggestions(testSite.id);
 
     // --- Project phase ---
+    await urbanProjectCreationPage.expectStepTitle("A quelle phase du projet êtes-vous");
     await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
 
+    await urbanProjectCreationPage.expectStepTitle("Que savez vous de votre projet ?");
     await urbanProjectCreationPage.selectCreateMode("express");
 
     // Urban project template selection step
