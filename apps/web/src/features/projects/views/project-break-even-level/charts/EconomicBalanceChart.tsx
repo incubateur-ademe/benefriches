@@ -9,7 +9,9 @@ import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/
 import ImpactChartCard from "../../shared/charts/ImpactChartCard";
 import { formatMonetaryImpact } from "../../shared/formatImpactValue";
 
-type Props = Pick<GetReconversionProjectImpactsResultDto["impacts"], "projectEconomicBalance">;
+type Props = Pick<GetReconversionProjectImpactsResultDto["impacts"], "projectEconomicBalance"> & {
+  dialogId: string;
+};
 
 const barChartOptions: Options = withDefaultBarChartOptions({
   tooltip: {
@@ -85,7 +87,7 @@ const sumForCategory = (
   );
 };
 
-export default function EconomicBalanceChart({ projectEconomicBalance }: Props) {
+export default function EconomicBalanceChart({ projectEconomicBalance, dialogId }: Props) {
   const categories = useMemo(
     () => Array.from(new Set(projectEconomicBalance.details.map(({ name }) => name))),
     [projectEconomicBalance],
@@ -108,6 +110,7 @@ export default function EconomicBalanceChart({ projectEconomicBalance }: Props) 
 
   return (
     <ImpactChartCard
+      dialogId={dialogId}
       containerProps={{
         className: "highcharts-no-xaxis",
         id: chartContainerId,

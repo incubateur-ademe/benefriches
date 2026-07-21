@@ -8,10 +8,12 @@ import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
   localAuthorityIndirectEconomicImpacts: IndirectEconomicImpactsByBearerAndGroupCategory["localAuthority"];
+  dialogId: string;
 };
 
 export default function LocalAuthorityIndirectEconomicImpactsCharts({
   localAuthorityIndirectEconomicImpacts,
+  dialogId,
 }: Props) {
   const { total, ...impacts } = localAuthorityIndirectEconomicImpacts;
 
@@ -25,6 +27,7 @@ export default function LocalAuthorityIndirectEconomicImpactsCharts({
 
   return (
     <EconomicColumnChart
+      dialogId={dialogId}
       legendText="Impact total pour la collectivité locale"
       legendTotal={total}
       data={data}

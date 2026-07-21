@@ -17,6 +17,7 @@ type Props = {
   legendTotal: number;
   legendText: string;
   title: string;
+  dialogId: string;
 };
 
 const barChartOptions: Options = withDefaultBarChartOptions({
@@ -44,7 +45,13 @@ const barChartOptions: Options = withDefaultBarChartOptions({
   },
 });
 
-export default function EconomicColumnChart({ data, title, legendText, legendTotal }: Props) {
+export default function EconomicColumnChart({
+  data,
+  title,
+  legendText,
+  legendTotal,
+  dialogId,
+}: Props) {
   const chartContainerId = useId();
 
   const colors = data.map(({ color }) => color);
@@ -53,6 +60,7 @@ export default function EconomicColumnChart({ data, title, legendText, legendTot
 
   return (
     <ImpactChartCard
+      dialogId={dialogId}
       containerProps={{
         className: "highcharts-no-xaxis",
         id: chartContainerId,

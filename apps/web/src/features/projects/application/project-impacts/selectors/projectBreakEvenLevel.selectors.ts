@@ -10,6 +10,7 @@ import {
 } from "../../../domain/groupIndirectImpactsByBearer";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
+const selectContextData = (state: RootState) => state.projectImpacts.contextData;
 
 export const selectImpactsCroppedByEvaluationPeriod = createSelector([selectSelf], (state) =>
   state.impacts
@@ -30,22 +31,30 @@ export const selectIndirectEconomicImpactsByBearerAndCategory = createSelector(
 );
 
 export type BreakEvenLevelTabDataView =
-  | (GetReconversionProjectImpactsResultDto["impacts"] & {
+  | {
       indirectEconomicImpactsByBearer: IndirectEconomicImpactsByBearerAndGroupCategory;
-    })
+      impacts: GetReconversionProjectImpactsResultDto["impacts"];
+      contextData: GetReconversionProjectImpactsResultDto["contextData"];
+    }
   | undefined;
 export const selectBreakEvenLevelTabDataView = createSelector(
-  [selectImpactsCroppedByEvaluationPeriod, selectIndirectEconomicImpactsByBearerAndCategory],
+  [
+    selectImpactsCroppedByEvaluationPeriod,
+    selectIndirectEconomicImpactsByBearerAndCategory,
+    selectContextData,
+  ],
   (
-    breakEvenLevelForEvaluationPeriod,
+    impactsForEvaluationPeriod,
     indirectEconomicImpactsByBearer,
+    contextData,
   ): BreakEvenLevelTabDataView => {
-    if (!breakEvenLevelForEvaluationPeriod) {
+    if (!impactsForEvaluationPeriod || !contextData) {
       return undefined;
     }
     return {
-      ...breakEvenLevelForEvaluationPeriod,
+      impacts: impactsForEvaluationPeriod,
       indirectEconomicImpactsByBearer,
+      contextData,
     };
   },
 );

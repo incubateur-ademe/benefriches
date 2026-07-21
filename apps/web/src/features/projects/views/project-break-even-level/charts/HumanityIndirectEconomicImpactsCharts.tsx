@@ -8,10 +8,12 @@ import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
   humanityIndirectEconomicImpacts: IndirectEconomicImpactsByBearerAndGroupCategory["humanity"];
+  dialogId: string;
 };
 
 export default function HumanityIndirectEconomicImpactsCharts({
   humanityIndirectEconomicImpacts,
+  dialogId,
 }: Props) {
   const { total, ...impacts } = humanityIndirectEconomicImpacts;
 
@@ -25,6 +27,7 @@ export default function HumanityIndirectEconomicImpactsCharts({
 
   return (
     <EconomicColumnChart
+      dialogId={dialogId}
       title="🌍️ Impacts économiques pour la société française et mondiale"
       legendText="Impact total pour la société"
       legendTotal={total}
