@@ -85,6 +85,8 @@ export class FeaturePage {
 }
 ```
 
+**Multi-step wizards**: assert each step's title as you walk through it (`expectStepTitle(title)` — see `apps/e2e-tests/pages/PhotovoltaicProjectCreationPage.ts` for the pattern). Find each title's exact text with `grep -rn "WizardFormLayout title" apps/web/src` rather than guessing — many step components (e.g. create-mode selection, reinstatement question) are shared across wizards, so the same title string applies in multiple flows.
+
 **Selector Priority** (accessibility-first):
 1. `getByRole()` - buttons, links, headings, textboxes
 2. `getByLabel()` - form inputs with labels
