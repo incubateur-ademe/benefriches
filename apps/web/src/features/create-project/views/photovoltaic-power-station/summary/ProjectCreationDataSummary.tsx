@@ -12,6 +12,8 @@ import {
 
 import { SoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
 import { Schedule } from "@/features/create-project/core/project.types";
+import { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
+import { RenewableEnergyStepperGroup } from "@/features/create-project/core/renewable-energy/selectors/stepperNavigation";
 import { formatCarbonStorage } from "@/shared/core/format-number/formatCarbonStorage";
 import {
   formatMoney,
@@ -76,9 +78,35 @@ type Props = {
   };
   onNext: () => void;
   onBack: () => void;
+  stepperGroups: RenewableEnergyStepperGroup[];
+  onNavigateToStep: (stepId: RenewableEnergyCreationStep) => void;
 };
 
-function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: Props) {
+const WARNING_TEXT = "Cette étape est incomplète. Veuillez la compléter.";
+
+function ProjectCreationDataSummary({
+  projectData,
+  siteData,
+  onNext,
+  onBack,
+  stepperGroups,
+  onNavigateToStep,
+}: Props) {
+  const getSectionProps = (groupId: RenewableEnergyStepperGroup["groupId"]) => {
+    const group = stepperGroups.find((candidate) => candidate.groupId === groupId);
+    if (!group) return {};
+    return {
+      warning: group.validation === "empty" ? WARNING_TEXT : undefined,
+      buttonProps: {
+        iconId: "fr-icon-edit-line" as const,
+        children: "Modifier",
+        onClick: () => {
+          onNavigateToStep(group.targetStepId);
+        },
+      },
+    };
+  };
+
   return (
     <WizardFormLayout
       title="Récapitulatif du projet"
@@ -99,7 +127,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             value={getLabelForRenewableEnergyProductionType(projectData.renewableEnergy)}
           />
         </Section>
-        <Section title="⚙️ Paramètres du projet">
+        <Section title="⚙️ Paramètres du projet" {...getSectionProps("PHOTOVOLTAIC_PARAMETERS")}>
           <DataLine
             label={<strong>Puissance d'installation</strong>}
             value={`${formatNumberFr(projectData.photovoltaicElectricalPowerKWc)} kWc`}
@@ -117,7 +145,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             value={`${formatNumberFr(projectData.photovoltaicContractDuration)} ans`}
           />
         </Section>
-        <Section title="🌾 Transformation des sols">
+        <Section title="🌾 Transformation des sols" {...getSectionProps("SITE_WORKS")}>
           {projectData.decontaminatedSurfaceArea ? (
             <DataLine
               label="Surface dépolluée"
@@ -222,7 +250,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             </>
           ) : null}
         </Section>
-        <Section title="👱 Acteurs">
+        <Section title="👱 Acteurs" {...getSectionProps("STAKEHOLDERS")}>
           <DataLine
             label={<strong>Aménageur du site</strong>}
             value={projectData.projectDeveloper ?? "Non renseigné"}
@@ -244,7 +272,10 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             />
           )}
         </Section>
-        <Section title="💰 Dépenses et recettes du projet">
+        <Section
+          title="💰 Dépenses et recettes du projet"
+          {...getSectionProps("EXPENSES_AND_REVENUE")}
+        >
           {projectData.sitePurchaseTotalCost ? (
             <DataLine
               label={<strong>Prix de vente du site et droits de mutation</strong>}
@@ -369,7 +400,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             );
           })}
         </Section>
-        <Section title="📆 Calendrier">
+        <Section title="📆 Calendrier" {...getSectionProps("SCHEDULE")}>
           {projectData.reinstatementSchedule && (
             <DataLine
               label={<strong>Travaux de remise en état de la friche</strong>}
@@ -397,7 +428,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             value={projectData.firstYearOfOperation ?? "Non renseigné"}
           />
         </Section>
-        <Section title="✍️ Dénomination">
+        <Section title="✍️ Dénomination" {...getSectionProps("NAMING")}>
           <DataLine label={<strong>Nom du projet</strong>} value={projectData.name} />
           {projectData.description && (
             <DataLine label={<strong>Description</strong>} value={projectData.description} />

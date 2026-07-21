@@ -41,18 +41,14 @@ import { ReadStateHelper } from "@/features/create-project/core/renewable-energy
 import {
   answersByStepSchemas,
   isAnswersStep,
-  RenewableEnergyCreationStep,
 } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
 import {
-  RENEWABLE_ENERGY_STEP_GROUP_IDS,
-  RENEWABLE_ENERGY_STEP_GROUP_LABELS,
-  RENEWABLE_ENERGY_STEP_TO_GROUP,
-  RenewableEnergyStepGroupId,
-} from "@/features/create-project/core/renewable-energy/step-handlers/renewableEnergyStepperConfig";
+  computeRenewableEnergyStepperGroups,
+  RenewableEnergyStepperGroup,
+} from "@/features/create-project/core/renewable-energy/selectors/stepperNavigation";
 import { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
 import { computePercentage } from "@/shared/core/percentage/percentage";
-import { StepVariant } from "@/shared/views/layout/WizardFormLayout/FormBaseStepperStep";
 
 const selectSelf = (state: RootState) => state.projectUpdate;
 
@@ -304,56 +300,18 @@ export const selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders =
   },
 );
 
-// The final-summary review step has no "answers" of its own to complete, so it's always
-// shown as completed rather than flashing the update stepper's incomplete-step warning icon.
-const NON_ANSWER_NAVIGABLE_STEPS = new Set<RenewableEnergyCreationStep>([
-  "RENEWABLE_ENERGY_FINAL_SUMMARY",
-]);
-
-type PhotovoltaicPowerPlantUpdateStepperGroup = StepVariant & {
-  groupId: RenewableEnergyStepGroupId;
-  title: string;
-  targetStepId: RenewableEnergyCreationStep;
-};
 type PhotovoltaicPowerPlantUpdateStepperDataView = {
-  stepGroups: PhotovoltaicPowerPlantUpdateStepperGroup[];
+  stepGroups: RenewableEnergyStepperGroup[];
 };
 export const selectPhotovoltaicPowerPlantUpdateStepperDataView = createSelector(
   [selectSelf, selectSteps, selectStepsSequence],
-  (state, steps, stepsSequence): PhotovoltaicPowerPlantUpdateStepperDataView => {
-    const currentStep = state.renewableEnergyProject.currentStep;
-    const { groupId: currentGroupId } = RENEWABLE_ENERGY_STEP_TO_GROUP[currentStep];
-
-    return {
-      stepGroups: RENEWABLE_ENERGY_STEP_GROUP_IDS.map((groupId) => {
-        const stepsInGroup = stepsSequence.filter(
-          (stepId) => RENEWABLE_ENERGY_STEP_TO_GROUP[stepId].groupId === groupId,
-        );
-        const navigableStepsInGroup = stepsInGroup.filter(
-          (stepId) => isAnswersStep(stepId) || NON_ANSWER_NAVIGABLE_STEPS.has(stepId),
-        );
-        const isStepCompleted = (stepId: RenewableEnergyCreationStep) =>
-          NON_ANSWER_NAVIGABLE_STEPS.has(stepId) ||
-          (isAnswersStep(stepId) && Boolean(steps[stepId]?.completed));
-
-        const firstIncompleteStep = navigableStepsInGroup.find(
-          (stepId) => !isStepCompleted(stepId),
-        );
-        const targetStepId = firstIncompleteStep ?? navigableStepsInGroup[0] ?? currentStep;
-
-        return {
-          groupId,
-          title: RENEWABLE_ENERGY_STEP_GROUP_LABELS[groupId],
-          targetStepId,
-          activity: groupId === currentGroupId ? "current" : "inactive",
-          validation:
-            navigableStepsInGroup.length > 0 && navigableStepsInGroup.every(isStepCompleted)
-              ? "completed"
-              : "empty",
-        };
-      }),
-    };
-  },
+  (state, steps, stepsSequence): PhotovoltaicPowerPlantUpdateStepperDataView => ({
+    stepGroups: computeRenewableEnergyStepperGroups({
+      currentStep: state.renewableEnergyProject.currentStep,
+      steps,
+      stepsSequence,
+    }),
+  }),
 );
 
 export const selectPhotovoltaicPlantFeaturesKeyParameter = createSelector(selectSteps, (steps) => {

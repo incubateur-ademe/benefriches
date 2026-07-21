@@ -8,6 +8,10 @@ import {
   RENEWABLE_ENERGY_STEP_GROUP_LABELS,
   RENEWABLE_ENERGY_STEP_TO_GROUP,
 } from "../step-handlers/renewableEnergyStepperConfig";
+import {
+  computeRenewableEnergyStepperGroups,
+  RenewableEnergyStepperGroup,
+} from "./stepperNavigation";
 
 type PhotovoltaicPowerPlantStepperDataView = {
   stepCategories: (StepVariant & { title: string })[];
@@ -38,4 +42,18 @@ export const selectPhotovoltaicPowerPlantStepperDataView = createSelector(
       }),
     };
   },
+);
+
+type PhotovoltaicPowerPlantSummaryNavigationDataView = {
+  stepGroups: RenewableEnergyStepperGroup[];
+};
+export const selectPhotovoltaicPowerPlantSummaryNavigationDataView = createSelector(
+  (state: RootState) => state.projectCreation.renewableEnergyProject,
+  (renewableEnergyProject): PhotovoltaicPowerPlantSummaryNavigationDataView => ({
+    stepGroups: computeRenewableEnergyStepperGroups({
+      currentStep: renewableEnergyProject.currentStep,
+      steps: renewableEnergyProject.steps,
+      stepsSequence: renewableEnergyProject.stepsSequence,
+    }),
+  }),
 );
