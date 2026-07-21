@@ -38,7 +38,9 @@ const barChartOptions: Options = withDefaultBarChartOptions({
   },
 });
 
-const getLabelForName = (name: Props["projectEconomicBalance"]["details"][number]["name"]) => {
+const getLabelForName = (
+  name: Props["projectEconomicBalance"]["details"][number]["name"],
+): string => {
   switch (name) {
     case "projectInstallation":
       return "Aménagement du site";
@@ -54,12 +56,14 @@ const getLabelForName = (name: Props["projectEconomicBalance"]["details"][number
       return "Revente du site";
     case "projectOperatingEconomicBalance":
       return "Exploitation du site";
+    case "projectBuildingsInstallation":
+      return "Construction et réhabilitation des bâtiments";
   }
 };
 
 export const getColorForName = (
   name: Props["projectEconomicBalance"]["details"][number]["name"],
-) => {
+): string => {
   switch (name) {
     case "projectInstallation":
       return "#E02727";
@@ -75,6 +79,8 @@ export const getColorForName = (
       return "#1BBB36";
     case "projectOperatingEconomicBalance":
       return "#E0A227";
+    case "projectBuildingsInstallation":
+      return "#854C1B";
   }
 };
 const sumForCategory = (
