@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { StoreBuilder } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const { previousStepRequested, stepCompletionRequested } = creationProjectFormUrbanActions;
 
@@ -35,7 +35,7 @@ describe("Urban project creation - Steps - Revenue expected site resale navigati
     );
 
     // Assert — advances to buildings operations yearly revenues
-    expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
+    expect(getCurrentStep(store)).toBe(
       "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
     );
 
@@ -43,8 +43,6 @@ describe("Urban project creation - Steps - Revenue expected site resale navigati
     store.dispatch(previousStepRequested());
 
     // Assert — returns to site resale revenue step
-    expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
-    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
   });
 });

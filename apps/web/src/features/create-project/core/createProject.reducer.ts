@@ -3,9 +3,13 @@ import reduceReducers from "reduce-reducers";
 import { v4 as uuid } from "uuid";
 
 import {
-  getWizardFormInitialState,
-  WizardFormState,
-} from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+  ProjectSiteView,
+  SiteRelatedLocalAuthorities,
+} from "@/features/create-project/core/project-form/projectSite.types";
+import {
+  getUrbanProjectInitialState,
+  UrbanProjectState,
+} from "@/features/create-project/core/urban-project/urbanProject.state";
 import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 import { currentProjectFlowUpdated } from "./actions/currentProjectFlowUpdated.action";
@@ -39,7 +43,11 @@ export type CurrentProjectFlow =
   | "PHOTOVOLTAIC_POWER_PLANT"
   | "URBAN_PROJECT";
 
-export type ProjectCreationState = WizardFormState & {
+export type ProjectCreationState = {
+  siteData?: ProjectSiteView;
+  siteDataLoadingState: "idle" | "loading" | "success" | "error";
+  siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities;
+  urbanProject: UrbanProjectState;
   projectId: string;
   currentProjectFlow: CurrentProjectFlow;
   useCaseSelection: UseCaseSelectionState;
@@ -62,7 +70,12 @@ export const getInitialState = (): ProjectCreationState => {
     demoProject: DEMO_INITIAL_STATE,
     renewableEnergyProject: renenewableEnergyProjectInitialState,
     surfaceAreaInputMode: "percentage",
-    ...getWizardFormInitialState("URBAN_PROJECT_USES_INTRODUCTION"),
+    siteData: undefined,
+    siteDataLoadingState: "idle",
+    siteRelatedLocalAuthorities: {
+      loadingState: "idle",
+    },
+    urbanProject: getUrbanProjectInitialState("URBAN_PROJECT_USES_INTRODUCTION"),
   };
 };
 

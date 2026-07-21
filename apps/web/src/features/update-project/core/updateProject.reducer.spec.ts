@@ -1,17 +1,18 @@
 import { describe, expect, it } from "vitest";
 
 import { mockSiteData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
+import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
 import { stepHandlerRegistry } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 
 import { updateProjectFormUrbanActions } from "./updateProject.actions";
 import updateProjectReducer from "./updateProject.reducer";
 
 describe("update project reducer", () => {
-  it("redirects to buildings footprint to reuse when project building footprint changes", () => {
+  it("redirects to buildings footprint to reuse and clears it when the project building footprint changes", () => {
     const initialState = updateProjectReducer(undefined, { type: "@@INIT" });
-    const steps: WizardFormState["urbanProject"]["steps"] = {
+    const steps: UrbanProjectStepsState = {
       URBAN_PROJECT_USES_SELECTION: {
         completed: true,
         payload: { usesSelection: ["RESIDENTIAL"] },
@@ -50,14 +51,14 @@ describe("update project reducer", () => {
       hasContaminatedSoils: false,
     };
     state.siteDataLoadingState = "success";
-    state.urbanProject.currentStep = "URBAN_PROJECT_SPACES_SURFACE_AREA";
-    state.urbanProject.steps = steps;
-    state.urbanProject.stepsSequence = computeStepsSequence(
+    state.urbanProject.form.currentStep = "URBAN_PROJECT_SPACES_SURFACE_AREA";
+    state.urbanProject.form.steps = steps;
+    state.urbanProject.form.stepsSequence = computeStepsSequence(
       {
         context: { siteData: state.siteData },
         answers: steps,
       },
-      state.urbanProject.firstSequenceStep,
+      state.urbanProject.form.firstSequenceStep,
       stepHandlerRegistry,
     );
 
@@ -79,19 +80,17 @@ describe("update project reducer", () => {
       updateProjectFormUrbanActions.stepCompletionConfirmed(),
     );
 
-    expect(confirmedState.urbanProject.steps.URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE).toEqual({
-      completed: false,
-      defaultValues: undefined,
-      payload: undefined,
-    });
-    expect(confirmedState.urbanProject.currentStep).toBe(
+    expect(confirmedState.urbanProject.form.currentStep).toBe(
       "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
+    );
+    expect(getProjectData(confirmedState.urbanProject.form.steps).buildingsFootprintToReuse).toBe(
+      undefined,
     );
   });
 
-  it("redirects to new buildings uses when an updated reuse footprint removes all reused buildings", () => {
+  it("redirects to new buildings uses and clears building answers when an updated reuse footprint removes all reused buildings", () => {
     const initialState = updateProjectReducer(undefined, { type: "@@INIT" });
-    const steps: WizardFormState["urbanProject"]["steps"] = {
+    const steps: UrbanProjectStepsState = {
       URBAN_PROJECT_USES_SELECTION: {
         completed: true,
         payload: { usesSelection: ["RESIDENTIAL"] },
@@ -134,14 +133,14 @@ describe("update project reducer", () => {
       hasContaminatedSoils: false,
     };
     state.siteDataLoadingState = "success";
-    state.urbanProject.currentStep = "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE";
-    state.urbanProject.steps = steps;
-    state.urbanProject.stepsSequence = computeStepsSequence(
+    state.urbanProject.form.currentStep = "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE";
+    state.urbanProject.form.steps = steps;
+    state.urbanProject.form.stepsSequence = computeStepsSequence(
       {
         context: { siteData: state.siteData },
         answers: steps,
       },
-      state.urbanProject.firstSequenceStep,
+      state.urbanProject.form.firstSequenceStep,
       stepHandlerRegistry,
     );
 
@@ -160,20 +159,11 @@ describe("update project reducer", () => {
       updateProjectFormUrbanActions.stepCompletionConfirmed(),
     );
 
-    expect(
-      confirmedState.urbanProject.steps
-        .URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA,
-    ).toBeUndefined();
-    expect(
-      confirmedState.urbanProject.steps
-        .URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA,
-    ).toEqual({
-      completed: false,
-      defaultValues: undefined,
-      payload: undefined,
-    });
-    expect(confirmedState.urbanProject.currentStep).toBe(
+    expect(confirmedState.urbanProject.form.currentStep).toBe(
       "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
     );
+    const projectData = getProjectData(confirmedState.urbanProject.form.steps);
+    expect(projectData.existingBuildingsUsesFloorSurfaceArea).toBeUndefined();
+    expect(projectData.newBuildingsUsesFloorSurfaceArea).toBeUndefined();
   });
 });

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { RevenueBuildingsOperationsYearlyRevenuesHandler } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.handler";
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
   describe("getNextStepId", () => {
@@ -14,7 +14,7 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
 
   describe("getPreviousStepId", () => {
     it("should return URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE when site resale is planned (yes)", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "yes" },
@@ -30,7 +30,7 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
     });
 
     it("should return URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE when site resale is unknown", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "unknown" },
@@ -46,7 +46,7 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
     });
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when site resale is not planned", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "no" },

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { mockSiteData } from "../../_siteData.mock";
-import { StoreBuilder } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const { previousStepRequested, stepCompletionRequested } = creationProjectFormUrbanActions;
 
@@ -49,14 +49,10 @@ describe("Urban project creation - Steps - Expenses site purchase amounts naviga
       }),
     );
 
-    expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-    );
+    expect(getCurrentStep(storeFriche)).toBe("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
 
     storeFriche.dispatch(previousStepRequested());
-    expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
-    );
+    expect(getCurrentStep(storeFriche)).toBe("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS");
 
     // Arrange — non-friche: no reinstatement step in sequence
     const storeNonFriche = new StoreBuilder()
@@ -72,8 +68,6 @@ describe("Urban project creation - Steps - Expenses site purchase amounts naviga
       }),
     );
 
-    expect(storeNonFriche.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_EXPENSES_INSTALLATION",
-    );
+    expect(getCurrentStep(storeNonFriche)).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
   });
 });

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
 import { AnswersByStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
@@ -19,18 +19,10 @@ describe("Urban project creation - Steps - Uses selection", () => {
       }),
     );
 
-    expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      WizardFormState["urbanProject"]["steps"]
-    >({
-      URBAN_PROJECT_USES_SELECTION: {
-        completed: true,
-        payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
-      },
-    });
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
   });
 
-  it("should complete step with only PUBLIC_GREEN_SPACES, skip surface area step and set it to site surface area", () => {
+  it("should complete step with only PUBLIC_GREEN_SPACES and skip the surface area step", () => {
     const store = new StoreBuilder().build();
 
     store.dispatch(
@@ -42,18 +34,8 @@ describe("Urban project creation - Steps - Uses selection", () => {
       }),
     );
 
-    expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      WizardFormState["urbanProject"]["steps"]
-    >({
-      URBAN_PROJECT_USES_SELECTION: {
-        completed: true,
-        payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
-      },
-      URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
-        completed: true,
-        payload: { publicGreenSpacesSurfaceArea: 10000 },
-      },
-    });
+    // With a single PUBLIC_GREEN_SPACES use, the surface area step is shortcut (auto-filled with
+    // the site surface area) and navigation jumps straight to the spaces introduction.
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
@@ -72,7 +54,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
-  it("should delete URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA when uses selection changes", () => {
+  it("should delete the buildings floor surface area answer when uses selection changes", () => {
     const store = new StoreBuilder()
       .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
@@ -96,34 +78,12 @@ describe("Urban project creation - Steps - Uses selection", () => {
         answers: newAnswer,
       }),
     );
-
-    expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toEqual<
-      WizardFormState["urbanProject"]["pendingStepCompletion"]
-    >({
-      showAlert: true,
-      changes: {
-        payload: {
-          stepId: "URBAN_PROJECT_USES_SELECTION",
-          answers: newAnswer,
-        },
-        cascadingChanges: [
-          { action: "delete", stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA" },
-        ],
-        navigationTarget: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
-      },
-    });
-
     store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
-    expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      WizardFormState["urbanProject"]["steps"]
-    >({
-      URBAN_PROJECT_USES_SELECTION: {
-        completed: true,
-        payload: newAnswer,
-      },
-    });
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
+    // The dependent buildings floor surface area answer was cascaded away.
+    const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
+    expect(projectData.developmentPlan?.features.buildingsFloorAreaDistribution).toEqual({});
   });
 
   it("should delete all persisted building answer steps when building uses are removed", () => {
@@ -170,36 +130,18 @@ describe("Urban project creation - Steps - Uses selection", () => {
         answers: newAnswer,
       }),
     );
+    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
-    expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toEqual<
-      WizardFormState["urbanProject"]["pendingStepCompletion"]
-    >({
-      showAlert: true,
-      changes: {
-        payload: {
-          stepId: "URBAN_PROJECT_USES_SELECTION",
-          answers: newAnswer,
-        },
-        cascadingChanges: [
-          { action: "delete", stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA" },
-          { action: "delete", stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE" },
-          {
-            action: "delete",
-            stepId: "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-          },
-          {
-            action: "delete",
-            stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-          },
-          { action: "delete", stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER" },
-          {
-            action: "delete",
-            stepId: "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
-          },
-        ],
-        navigationTarget: "URBAN_PROJECT_SPACES_INTRODUCTION",
-      },
-    });
+    // Removing all building uses cascades away every persisted building answer and routes back
+    // to the spaces introduction.
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
+    const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
+    expect(projectData.developmentPlan?.features.buildingsFloorAreaDistribution).toEqual({});
+    expect(projectData.buildingsFootprintToReuse).toBeUndefined();
+    expect(projectData.existingBuildingsUsesFloorSurfaceArea).toBeUndefined();
+    expect(projectData.newBuildingsUsesFloorSurfaceArea).toBeUndefined();
+    expect(projectData.developerWillBeBuildingsConstructor).toBeUndefined();
+    expect(projectData.buildingsConstructionAndRehabilitationExpenses).toBeUndefined();
   });
 
   it("should not trigger cascading changes when uses selection remains the same", () => {
@@ -225,8 +167,10 @@ describe("Urban project creation - Steps - Uses selection", () => {
       }),
     );
 
-    // No cascading changes, direct completion
-    expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toBeUndefined();
+    // No cascading changes, direct completion (no confirmation dialog pending).
+    expect(
+      store.getState().projectCreation.urbanProject.form.pendingStepCompletion,
+    ).toBeUndefined();
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 });

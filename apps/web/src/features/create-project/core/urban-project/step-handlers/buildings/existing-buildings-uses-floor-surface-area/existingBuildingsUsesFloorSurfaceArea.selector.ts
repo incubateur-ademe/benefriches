@@ -7,7 +7,7 @@ import {
 } from "shared";
 
 import type { RootState } from "@/app/store/store";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 type ExistingBuildingsUsesFloorSurfaceAreaViewData = {
@@ -17,7 +17,7 @@ type ExistingBuildingsUsesFloorSurfaceAreaViewData = {
 };
 
 export const createSelectExistingBuildingsUsesFloorSurfaceAreaViewData = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
 ) =>
   createSelector([selectStepState], (steps): ExistingBuildingsUsesFloorSurfaceAreaViewData => {
     const existingUsesAnswers =

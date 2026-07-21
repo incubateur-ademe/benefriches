@@ -7,7 +7,7 @@ import type {
   AvailableProjectStakeholder,
 } from "@/features/create-project/core/project-form/stakeholders";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 type ReinstatementContractOwnerViewData = {
@@ -17,7 +17,7 @@ type ReinstatementContractOwnerViewData = {
 };
 
 export const createSelectReinstatementContractOwnerViewData = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
   selectUrbanProjectAvailableStakeholders: Selector<RootState, AvailableProjectStakeholder[]>,
   selectUrbanProjectAvailableLocalAuthoritiesStakeholders: Selector<
     RootState,

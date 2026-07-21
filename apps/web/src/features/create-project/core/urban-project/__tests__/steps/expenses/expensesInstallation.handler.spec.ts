@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import { UrbanProjectInstallationExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-installation/expensesInstallation.handler";
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 describe("UrbanProjectInstallationExpensesHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION when developer will build the new buildings", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -42,7 +42,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
     });
 
     it("should return URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION when buildings are reused", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -74,7 +74,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
     });
 
     it("should return URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES when project has buildings but no buildings resale planned", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -96,7 +96,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
     });
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when project has buildings and buildings resale is planned", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -118,7 +118,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
     });
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when project has no buildings", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },

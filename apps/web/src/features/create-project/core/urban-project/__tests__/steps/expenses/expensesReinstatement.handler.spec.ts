@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 
+import { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
 import { UrbanProjectReinstatementExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 describe("UrbanProjectReinstatementExpensesHandler", () => {
   describe("getNextStepId", () => {
@@ -21,7 +22,7 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
 
   describe("getDefaultAnswers", () => {
     it("should return default reinstatement expenses based on soils distribution", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -34,7 +35,7 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
         },
       };
 
-      const siteData: WizardFormState["siteData"] = {
+      const siteData: ProjectSiteView = {
         id: "test-site",
         name: "Test Site",
         nature: "FRICHE",

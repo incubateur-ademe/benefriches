@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
-import { StoreBuilder } from "./_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "./_testStoreHelpers";
 
 const { nextStepRequested, previousStepRequested } = creationProjectFormUrbanActions;
 
@@ -12,9 +12,8 @@ describe("urbanProject.reducer - Navigation Framework Tests", () => {
       expect(store.getState().projectCreation.currentProjectFlow).toBe("URBAN_PROJECT");
 
       store.dispatch(previousStepRequested());
-      const newState = store.getState().projectCreation;
-      expect(newState.urbanProject.currentStep).toBe("URBAN_PROJECT_USES_INTRODUCTION");
-      expect(newState.currentProjectFlow).toBe("USE_CASE_SELECTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_INTRODUCTION");
+      expect(store.getState().projectCreation.currentProjectFlow).toBe("USE_CASE_SELECTION");
     });
 
     it("should handle edge cases in navigation consistency", () => {
@@ -23,14 +22,10 @@ describe("urbanProject.reducer - Navigation Framework Tests", () => {
       store.dispatch(nextStepRequested());
 
       store.dispatch(previousStepRequested());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_USES_INTRODUCTION",
-      );
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_INTRODUCTION");
 
       store.dispatch(nextStepRequested());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_USES_SELECTION",
-      );
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_SELECTION");
     });
   });
 });

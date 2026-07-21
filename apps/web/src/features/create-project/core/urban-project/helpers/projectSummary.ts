@@ -11,12 +11,12 @@ import {
   getFutureOperator,
 } from "@/features/create-project/core/project-form/stakeholders";
 
-import { WizardFormState } from "../urbanProjectForm.state";
+import { UrbanProjectStepsState } from "../urbanProject.state";
 import { UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { isSiteResalePlannedAfterDevelopment } from "./readers/siteResaleReaders";
 
 export const getProjectSummary = (
-  steps: WizardFormState["urbanProject"]["steps"],
+  steps: UrbanProjectStepsState,
   stepsSequence: UrbanProjectCreationStep[],
   projectPhase?: ProjectPhase,
   soilsDistribution: ReconversionProjectSoilsDistribution = [],

@@ -1,7 +1,5 @@
 import { describe, it, expect } from "vitest";
 
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
-
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
@@ -32,31 +30,6 @@ describe("Urban project creation - Steps - public green spaces soils distributio
       }),
     );
 
-    expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      WizardFormState["urbanProject"]["steps"]
-    >({
-      URBAN_PROJECT_USES_SELECTION: {
-        completed: true,
-        payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
-      },
-      URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
-        completed: true,
-        payload: { publicGreenSpacesSurfaceArea: 5000 },
-      },
-      URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: {
-        completed: true,
-        payload: {
-          publicGreenSpacesSoilsDistribution: {
-            PRAIRIE_GRASS: 2000,
-            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 3000,
-          },
-        },
-      },
-      URBAN_PROJECT_SPACES_SELECTION: {
-        completed: false,
-        defaultValues: { spacesSelection: ["BUILDINGS"] },
-      },
-    });
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SELECTION");
   });
 

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { mockSiteData } from "../../_siteData.mock";
-import { StoreBuilder } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const { previousStepRequested } = creationProjectFormUrbanActions;
 
@@ -42,8 +42,6 @@ describe("Urban project creation - Steps - Expenses introduction navigation", ()
     store.dispatch(previousStepRequested());
 
     // Assert
-    expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
-    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
   });
 });

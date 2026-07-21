@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { mockSiteData } from "../../_siteData.mock";
-import { StoreBuilder } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const { nextStepRequested, previousStepRequested, stepCompletionRequested } =
   creationProjectFormUrbanActions;
@@ -32,9 +32,7 @@ describe("Urban project creation - Steps - Stakeholders navigation", () => {
 
     // Act / Assert — friche: intro → project developer → reinstatement contract owner → back to project developer
     storeFriche.dispatch(nextStepRequested());
-    expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
-    );
+    expect(getCurrentStep(storeFriche)).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
 
     storeFriche.dispatch(
       stepCompletionRequested({
@@ -42,14 +40,12 @@ describe("Urban project creation - Steps - Stakeholders navigation", () => {
         answers: { projectDeveloper: { name: "Test", structureType: "company" } },
       }),
     );
-    expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
+    expect(getCurrentStep(storeFriche)).toBe(
       "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
     );
 
     storeFriche.dispatch(previousStepRequested());
-    expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
-    );
+    expect(getCurrentStep(storeFriche)).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
 
     // Arrange — non-friche site at stakeholders introduction
     const storeNonFriche = new StoreBuilder()
@@ -72,9 +68,7 @@ describe("Urban project creation - Steps - Stakeholders navigation", () => {
       }),
     );
 
-    expect(storeNonFriche.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_EXPENSES_INTRODUCTION",
-    );
+    expect(getCurrentStep(storeNonFriche)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 
   it("should go back from reinstatement contract owner to buildings developer when new construction exists", () => {
@@ -112,8 +106,6 @@ describe("Urban project creation - Steps - Stakeholders navigation", () => {
     store.dispatch(previousStepRequested());
 
     // Assert
-    expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
-    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
   });
 });

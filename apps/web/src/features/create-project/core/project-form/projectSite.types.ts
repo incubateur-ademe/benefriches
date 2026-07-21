@@ -21,6 +21,10 @@ export type LocalAuthorities = {
   };
 };
 
+export type SiteRelatedLocalAuthorities = {
+  loadingState: "idle" | "loading" | "success" | "error";
+} & LocalAuthorities;
+
 export type ProjectSiteView = {
   id: string;
   name: string;

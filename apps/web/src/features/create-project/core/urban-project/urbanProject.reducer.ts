@@ -22,19 +22,19 @@ const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (bui
       },
     },
     registry: answerStepHandlers,
-    selectForm: (state) => state.urbanProject,
+    selectForm: (state) => state.urbanProject.form,
     buildContext: (state) => ({ siteData: state.siteData }),
   });
 
   // Custom create Save
   builder.addCase(customUrbanProjectSaved.pending, (state) => {
-    state.urbanProject.saveState = "loading";
+    state.urbanProject.form.saveState = "loading";
   });
   builder.addCase(customUrbanProjectSaved.fulfilled, (state) => {
-    state.urbanProject.saveState = "success";
+    state.urbanProject.form.saveState = "success";
   });
   builder.addCase(customUrbanProjectSaved.rejected, (state) => {
-    state.urbanProject.saveState = "error";
+    state.urbanProject.form.saveState = "error";
   });
   // Fetch estimated site resale price
   builder.addCase(fetchEstimatedSiteResalePrice.pending, (state) => {
@@ -43,7 +43,7 @@ const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (bui
   builder.addCase(fetchEstimatedSiteResalePrice.fulfilled, (state, action) => {
     state.urbanProject.siteResaleEstimationLoadingState = "success";
     MutateStateHelper.setDefaultValues(
-      state.urbanProject,
+      state.urbanProject.form,
       "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
       {
         siteResaleExpectedSellingPrice: action.payload.sellingPrice,

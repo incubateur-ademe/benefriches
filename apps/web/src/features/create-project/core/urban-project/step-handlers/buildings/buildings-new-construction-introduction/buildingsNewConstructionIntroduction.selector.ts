@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 import { getProjectBuildingsFootprint } from "../buildingsReaders";
 
@@ -11,7 +11,7 @@ type BuildingsNewConstructionIntroductionViewData = {
 };
 
 export const createSelectBuildingsNewConstructionIntroductionViewData = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
 ) =>
   createSelector(
     [selectStepState],

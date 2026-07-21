@@ -1,6 +1,6 @@
 import { rootReducer } from "@/app/store/rootReducer";
 import type { RootState } from "@/app/store/store";
-import { getWizardFormInitialState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { getUrbanProjectInitialState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import { DEMO_INITIAL_STATE } from "../../demo/demoProject.reducer";
@@ -45,7 +45,7 @@ const buildState = (
       createMode: "custom",
       steps: { ...exhaustiveSteps, ...stepOverrides },
     },
-    urbanProject: getWizardFormInitialState("URBAN_PROJECT_USES_INTRODUCTION").urbanProject,
+    urbanProject: getUrbanProjectInitialState("URBAN_PROJECT_USES_INTRODUCTION"),
     surfaceAreaInputMode: "percentage",
     demoProject: DEMO_INITIAL_STATE,
     useCaseSelection: USE_CASE_SELECTION_INITIAL_STATE,

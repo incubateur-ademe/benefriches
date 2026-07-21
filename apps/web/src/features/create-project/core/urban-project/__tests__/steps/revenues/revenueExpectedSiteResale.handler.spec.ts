@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import { RevenueExpectedSiteResaleHandler } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.handler";
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 describe("RevenueExpectedSiteResaleHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_REVENUE_BUILDINGS_RESALE when project has buildings and buildings resale is planned", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -28,7 +28,7 @@ describe("RevenueExpectedSiteResaleHandler", () => {
     });
 
     it("should return URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES when project has buildings but no buildings resale planned", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -50,7 +50,7 @@ describe("RevenueExpectedSiteResaleHandler", () => {
     });
 
     it("should return URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE when project has no buildings", () => {
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },

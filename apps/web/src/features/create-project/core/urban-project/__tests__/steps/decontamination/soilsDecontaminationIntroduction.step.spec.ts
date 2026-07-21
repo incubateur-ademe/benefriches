@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { mockSiteData } from "../../_siteData.mock";
-import { StoreBuilder } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const { previousStepRequested } = creationProjectFormUrbanActions;
 
@@ -43,9 +43,7 @@ describe("Urban project creation - Steps - Soils decontamination introduction na
     store.dispatch(previousStepRequested());
 
     // Assert
-    expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
-    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
   });
 
   it("should go back from decontamination introduction to soils carbon summary on a non-friche contaminated site without buildings", () => {
@@ -70,9 +68,7 @@ describe("Urban project creation - Steps - Soils decontamination introduction na
     store.dispatch(previousStepRequested());
 
     // Assert — no buildings chapter means carbon summary is the previous step
-    expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
-    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_CARBON_SUMMARY");
   });
 
   it("should go back from decontamination introduction to the last buildings step on a non-friche contaminated site with buildings", () => {
@@ -100,8 +96,6 @@ describe("Urban project creation - Steps - Soils decontamination introduction na
     store.dispatch(previousStepRequested());
 
     // Assert — buildings chapter present means last buildings step is the previous step
-    expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
-    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE");
   });
 });

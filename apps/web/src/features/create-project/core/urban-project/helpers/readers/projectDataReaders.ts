@@ -6,12 +6,12 @@ import {
 } from "@/features/create-project/core/project-form/stakeholders";
 
 import { EXPENSE_FIELD_TO_PURPOSE } from "../../step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
-import type { WizardFormState } from "../../urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "../../urbanProject.state";
 import type { UrbanProjectFormData } from "../../urbanProjectSteps";
 import { isSiteResalePlannedAfterDevelopment } from "./siteResaleReaders";
 import { getProjectSoilDistribution } from "./soilsReaders";
 
-type Steps = WizardFormState["urbanProject"]["steps"];
+type Steps = UrbanProjectStepsState;
 
 function getBuildingsConstructionExpenses(
   steps: Steps,

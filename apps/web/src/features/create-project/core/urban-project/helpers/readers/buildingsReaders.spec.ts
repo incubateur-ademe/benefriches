@@ -1,12 +1,12 @@
 import { describe, it, expect } from "vitest";
 
-import { WizardFormState } from "../../urbanProjectForm.state";
+import { UrbanProjectStepsState } from "../../urbanProject.state";
 import { hasBuildingsResalePlannedAfterDevelopment, willHaveBuildings } from "./buildingsReaders";
 
 describe("buildingsReaders", () => {
   describe("willHaveBuildings", () => {
     it("should return true when uses selection includes building uses", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
@@ -17,7 +17,7 @@ describe("buildingsReaders", () => {
     });
 
     it("should return false when uses selection only includes non-building uses", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES", "OTHER_PUBLIC_SPACES"] },
@@ -34,7 +34,7 @@ describe("buildingsReaders", () => {
 
   describe("hasBuildingsResalePlannedAfterDevelopment", () => {
     it("should return true when buildings resale is planned", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,
           payload: {
@@ -49,7 +49,7 @@ describe("buildingsReaders", () => {
     });
 
     it("should return false when buildings resale is not planned", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,
           payload: {

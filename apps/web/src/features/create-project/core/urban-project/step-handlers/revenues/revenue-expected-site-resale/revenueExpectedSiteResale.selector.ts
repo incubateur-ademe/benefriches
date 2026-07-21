@@ -3,7 +3,10 @@ import type { Selector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
 import { shouldSiteResalePriceBeEstimated } from "@/features/create-project/core/urban-project/helpers/readers/siteResaleReaders";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type {
+  UrbanProjectState,
+  UrbanProjectStepsState,
+} from "@/features/create-project/core/urban-project/urbanProject.state";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 type SiteResaleRevenueViewData = {
@@ -14,10 +17,10 @@ type SiteResaleRevenueViewData = {
 };
 
 export const createSelectSiteResaleRevenueViewData = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
   selectSiteResaleEstimationLoadingState: Selector<
     RootState,
-    WizardFormState["urbanProject"]["siteResaleEstimationLoadingState"]
+    UrbanProjectState["siteResaleEstimationLoadingState"]
   >,
 ) =>
   createSelector(

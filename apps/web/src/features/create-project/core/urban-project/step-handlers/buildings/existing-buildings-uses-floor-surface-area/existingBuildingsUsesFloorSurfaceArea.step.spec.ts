@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { StoreBuilder } from "@/features/create-project/core/urban-project/__tests__/_testStoreHelpers";
 import { creationProjectFormUrbanActions } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 const makeSiteData = () => ({
   id: "test-site",
@@ -23,7 +23,7 @@ const makeSiteData = () => ({
   },
 });
 
-const makeBaseSteps = (spacesBuildings: number): WizardFormState["urbanProject"]["steps"] => ({
+const makeBaseSteps = (spacesBuildings: number): UrbanProjectStepsState => ({
   URBAN_PROJECT_USES_SELECTION: {
     completed: true,
     payload: { usesSelection: ["RESIDENTIAL"] },
@@ -38,9 +38,9 @@ const makeBaseSteps = (spacesBuildings: number): WizardFormState["urbanProject"]
 
 describe("URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA handler", () => {
   describe("getDependencyRules", () => {
-    it("given both existing and new buildings uses steps are completed, when existing allocation changes, then new buildings uses step is invalidated", () => {
+    it("given both existing and new buildings uses steps are completed, when existing allocation changes, then a cascade confirmation is required", () => {
       // site=2000, project=3000, reuse=2000 → new=1000
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         ...makeBaseSteps(3000),
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,
@@ -70,19 +70,17 @@ describe("URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA han
           },
         }),
       );
-      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
-      const state = store.getState().projectCreation.urbanProject.steps;
-
-      expect(state.URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA).toBeDefined();
-      expect(state.URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA?.completed).toBe(
-        false,
-      );
+      // Because the new buildings uses step is already completed, changing the existing
+      // allocation cascades onto it and must be confirmed before it applies.
+      expect(
+        store.getState().projectCreation.urbanProject.form.pendingStepCompletion,
+      ).toBeDefined();
     });
 
     it("given new buildings uses step is not yet completed, when existing allocation changes, then no invalidation rule is emitted", () => {
       // site=2000, project=3000, reuse=2000 → new=1000
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         ...makeBaseSteps(3000),
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,
@@ -110,7 +108,9 @@ describe("URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA han
       );
 
       // No pending confirmation should be needed — no dependency rules triggered
-      expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toBeUndefined();
+      expect(
+        store.getState().projectCreation.urbanProject.form.pendingStepCompletion,
+      ).toBeUndefined();
     });
   });
 });

@@ -68,7 +68,7 @@ export const selectUrbanProjectCreationWizardViewData = createSelector(
   selectSelf,
   (currentStep, state): UrbanProjectCreationWizardViewData => ({
     currentStep,
-    saveState: state.urbanProject.saveState,
+    saveState: state.urbanProject.form.saveState,
   }),
 );
 

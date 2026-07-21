@@ -5,6 +5,7 @@ import {
   getCurrentStep,
   StoreBuilder,
 } from "@/features/create-project/core/urban-project/__tests__/_testStoreHelpers";
+import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
 import { creationProjectFormUrbanActions } from "@/features/create-project/core/urban-project/urbanProject.actions";
 
 describe("Urban project buildings sequencing - partial reuse with demolition and new construction", () => {
@@ -79,11 +80,9 @@ describe("Urban project buildings sequencing - partial reuse with demolition and
         }),
       );
       expect(
-        store.getState().projectCreation.urbanProject.steps
-          .URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload,
-      ).toEqual({
-        newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 },
-      });
+        getProjectData(store.getState().projectCreation.urbanProject.form.steps)
+          .newBuildingsUsesFloorSurfaceArea,
+      ).toEqual({ RESIDENTIAL: 1400, OFFICES: 100 });
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 

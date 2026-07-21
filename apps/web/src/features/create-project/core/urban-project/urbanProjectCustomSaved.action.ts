@@ -11,7 +11,7 @@ export const customUrbanProjectSaved = createAppAsyncThunk(
     const { projectCreation, currentUser } = getState();
     const { urbanProject, siteData, projectId, useCaseSelection } = projectCreation;
 
-    const creationData = getProjectData(urbanProject.steps);
+    const creationData = getProjectData(urbanProject.form.steps);
 
     const mappedProjectData = {
       id: projectId,

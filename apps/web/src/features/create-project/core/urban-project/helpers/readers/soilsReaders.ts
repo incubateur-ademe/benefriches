@@ -2,9 +2,9 @@ import { getProjectSoilDistributionByType, typedObjectEntries } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
-import type { WizardFormState } from "../../urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "../../urbanProject.state";
 
-type Steps = WizardFormState["urbanProject"]["steps"];
+type Steps = UrbanProjectStepsState;
 
 export function getProjectSoilDistribution(steps: Steps) {
   const publicGreenSpacesSoilsDistribution = ReadStateHelper.getStepAnswers(

@@ -3,7 +3,7 @@ import type { Selector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
 import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 import { getBuildingsFootprintToDemolish } from "../buildingsReaders";
 
@@ -12,7 +12,7 @@ type BuildingsDemolitionInfoViewData = {
 };
 
 export const createSelectBuildingsDemolitionInfoViewData = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
   selectSiteData: Selector<RootState, ProjectSiteView | undefined>,
 ) =>
   createSelector(

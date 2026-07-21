@@ -1,12 +1,12 @@
 import { describe, it, expect } from "vitest";
 
-import { WizardFormState } from "../../urbanProjectForm.state";
+import { UrbanProjectStepsState } from "../../urbanProject.state";
 import { getProjectSoilDistribution } from "./soilsReaders";
 
 describe("soilsReaders", () => {
   describe("getProjectSoilDistribution", () => {
     it("should return soil distribution from URBAN_PROJECT_SPACES_SURFACE_AREA step without spaceCategory", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_SPACES_SURFACE_AREA: {
           completed: true,
           payload: {
@@ -29,7 +29,7 @@ describe("soilsReaders", () => {
     });
 
     it("should tag public green spaces soils with spaceCategory PUBLIC_GREEN_SPACE and leave others without", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: {
           completed: true,
           payload: {
@@ -61,7 +61,7 @@ describe("soilsReaders", () => {
     });
 
     it("should produce separate entries for same soil type across both distributions", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: {
           completed: true,
           payload: {
@@ -97,7 +97,7 @@ describe("soilsReaders", () => {
     });
 
     it("should filter out entries with no surface area", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_SPACES_SURFACE_AREA: {
           completed: true,
           payload: {
@@ -115,7 +115,7 @@ describe("soilsReaders", () => {
     });
 
     it("should return empty array when step has no data", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {};
+      const steps: UrbanProjectStepsState = {};
 
       const result = getProjectSoilDistribution(steps);
 

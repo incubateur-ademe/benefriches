@@ -157,9 +157,7 @@ describe("Urban project creation - Steps - Buildings navigation", () => {
 
       store.dispatch(previousStepRequested());
 
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
-      );
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_CARBON_SUMMARY");
     });
 
     it("goes back to soils carbon summary when uses include buildings (contamination: none)", () => {
@@ -184,9 +182,7 @@ describe("Urban project creation - Steps - Buildings navigation", () => {
 
       store.dispatch(previousStepRequested());
 
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
-      );
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_CARBON_SUMMARY");
     });
   });
 });

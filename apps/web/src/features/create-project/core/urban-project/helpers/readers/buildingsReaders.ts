@@ -2,9 +2,9 @@ import { doesUseIncludeBuildings } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
-import type { WizardFormState } from "../../urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "../../urbanProject.state";
 
-type Steps = WizardFormState["urbanProject"]["steps"];
+type Steps = UrbanProjectStepsState;
 
 export function willHaveBuildings(steps: Steps): boolean {
   const selectedUses =

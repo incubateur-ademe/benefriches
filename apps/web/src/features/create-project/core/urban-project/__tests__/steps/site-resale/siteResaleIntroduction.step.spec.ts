@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { mockSiteData } from "../../_siteData.mock";
-import { StoreBuilder } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const { previousStepRequested } = creationProjectFormUrbanActions;
 
@@ -58,9 +58,7 @@ describe("Urban project creation - Steps - Site resale introduction navigation",
     store.dispatch(previousStepRequested());
 
     // Assert
-    expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
-    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
   });
 
   it("should go back from site resale introduction to decontamination surface area on a contaminated friche even when involvesReinstatement is false", () => {
@@ -92,8 +90,6 @@ describe("Urban project creation - Steps - Site resale introduction navigation",
     store.dispatch(previousStepRequested());
 
     // Assert — decontamination overrides reinstatement as back target when contamination exists
-    expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-      "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA");
   });
 });

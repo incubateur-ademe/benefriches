@@ -4,8 +4,9 @@ import {
   getCurrentStep,
   StoreBuilder,
 } from "@/features/create-project/core/urban-project/__tests__/_testStoreHelpers";
+import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
 import { creationProjectFormUrbanActions } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 const makeSiteData = (
   overrides: Partial<{
@@ -32,7 +33,7 @@ const makeSiteData = (
   },
 });
 
-const makeBaseSteps = (spacesBuildings: number): WizardFormState["urbanProject"]["steps"] => ({
+const makeBaseSteps = (spacesBuildings: number): UrbanProjectStepsState => ({
   URBAN_PROJECT_USES_SELECTION: {
     completed: true,
     payload: { usesSelection: ["RESIDENTIAL"] },
@@ -49,7 +50,7 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
   describe("getNextStepId", () => {
     it("navigates to DEMOLITION_INFO when demolished > 0", () => {
       // site=2000, project=3000, reuse=1500 → demolished=500
-      const steps: WizardFormState["urbanProject"]["steps"] = makeBaseSteps(3000);
+      const steps: UrbanProjectStepsState = makeBaseSteps(3000);
       const store = new StoreBuilder()
         .withSiteData(makeSiteData())
         .withSteps(steps)
@@ -133,7 +134,7 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
 
   describe("getDependencyRules", () => {
     it("does not trigger cascading confirmation when no dependent steps have been answered yet", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = makeBaseSteps(3000);
+      const steps: UrbanProjectStepsState = makeBaseSteps(3000);
 
       const store = new StoreBuilder()
         .withSiteData(makeSiteData())
@@ -148,16 +149,18 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
         }),
       );
 
-      expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toBeUndefined();
+      expect(
+        store.getState().projectCreation.urbanProject.form.pendingStepCompletion,
+      ).toBeUndefined();
       expect(getCurrentStep(store)).toBe(
         "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
       );
     });
 
-    it("deletes existing/new uses steps and stakeholder builder when new construction becomes 0", () => {
+    it("discards existing/new buildings uses and stakeholder builder answers when new construction becomes 0", () => {
       // site=2000, project=2000, reuse=2000 → new=0
       // Previously had uses steps completed
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         ...makeBaseSteps(2000),
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,
@@ -195,108 +198,12 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
       );
       store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
-      const state = store.getState().projectCreation.urbanProject.steps;
+      const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
 
-      // Deleted
-      expect(
-        state.URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA,
-      ).toBeUndefined();
-      expect(state.URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA).toBeUndefined();
-      expect(state.URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER).toBeUndefined();
-      // Invalidated (not deleted)
-      expect(state.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION).toBeDefined();
-      expect(
-        state.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION?.completed,
-      ).toBe(false);
-    });
-
-    it("invalidates existing uses and expenses when reuse changes but still has both", () => {
-      // site=2000, project=3000
-      // Change reuse from 1500 to 1000 → still hasBoth (reuse=1000, new=2000)
-      const steps: WizardFormState["urbanProject"]["steps"] = {
-        ...makeBaseSteps(3000),
-        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
-          completed: true,
-          payload: { buildingsFootprintToReuse: 1500 },
-        },
-        URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
-          completed: true,
-          payload: { existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1500 } },
-        },
-        URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
-          completed: true,
-          payload: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1500 } },
-        },
-        URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION: {
-          completed: true,
-          payload: { buildingsConstructionWorks: 100000 },
-        },
-      };
-
-      const store = new StoreBuilder()
-        .withSiteData(makeSiteData())
-        .withSteps(steps)
-        .withCurrentStep("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE")
-        .build();
-
-      store.dispatch(
-        creationProjectFormUrbanActions.stepCompletionRequested({
-          stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
-          answers: { buildingsFootprintToReuse: 1000 },
-        }),
-      );
-      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
-
-      const state = store.getState().projectCreation.urbanProject.steps;
-
-      // Invalidated (still present, but completed=false)
-      expect(
-        state.URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA,
-      ).toBeDefined();
-      expect(
-        state.URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA?.completed,
-      ).toBe(false);
-      expect(state.URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA).toBeDefined();
-      expect(state.URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA?.completed).toBe(
-        false,
-      );
-      expect(
-        state.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION?.completed,
-      ).toBe(false);
-    });
-
-    it("always invalidates expenses step", () => {
-      // Even when reuse stays the same (but is resubmitted)
-      const steps: WizardFormState["urbanProject"]["steps"] = {
-        ...makeBaseSteps(2000),
-        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
-          completed: true,
-          payload: { buildingsFootprintToReuse: 2000 },
-        },
-        URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION: {
-          completed: true,
-          payload: { buildingsConstructionWorks: 50000 },
-        },
-      };
-
-      const store = new StoreBuilder()
-        .withSiteData(makeSiteData())
-        .withSteps(steps)
-        .withCurrentStep("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE")
-        .build();
-
-      store.dispatch(
-        creationProjectFormUrbanActions.stepCompletionRequested({
-          stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
-          answers: { buildingsFootprintToReuse: 2000 },
-        }),
-      );
-      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
-
-      const state = store.getState().projectCreation.urbanProject.steps;
-      expect(
-        state.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION?.completed,
-      ).toBe(false);
+      // Dependent buildings answers are discarded now that there is no new construction
+      expect(projectData.existingBuildingsUsesFloorSurfaceArea).toBeUndefined();
+      expect(projectData.newBuildingsUsesFloorSurfaceArea).toBeUndefined();
+      expect(projectData.developerWillBeBuildingsConstructor).toBeUndefined();
     });
   });
 });

@@ -4,7 +4,7 @@ import { isConstrainedSoilType, isNaturalSoil, ORDERED_SOIL_TYPES, typedObjectKe
 import type { SoilsDistribution, SoilType } from "shared";
 
 import type { RootState } from "@/app/store/store";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 type SpaceConstraint = {
@@ -37,7 +37,7 @@ type PublicGreenSpacesSoilsDistributionViewData = {
 };
 
 export const createSelectPublicGreenSpacesSoilsDistributionViewData = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
   selectSiteSoilsDistribution: Selector<RootState, SoilsDistribution>,
 ) =>
   createSelector(

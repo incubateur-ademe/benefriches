@@ -6,7 +6,7 @@ import { getInitialState, ProjectCreationState } from "../../createProject.reduc
 import { mockSiteData } from "./_siteData.mock";
 
 export const getCurrentStep = (store: { getState: () => RootState }): UrbanProjectCreationStep =>
-  store.getState().projectCreation.urbanProject.currentStep;
+  store.getState().projectCreation.urbanProject.form.currentStep;
 
 export class StoreBuilder {
   preloadedRootState: Pick<RootState, "projectCreation"> = {
@@ -17,12 +17,15 @@ export class StoreBuilder {
   };
   _appDependencies: AppDependencies = getTestAppDependencies();
 
-  withSteps(steps: ProjectCreationState["urbanProject"]["steps"]): this {
+  withSteps(steps: ProjectCreationState["urbanProject"]["form"]["steps"]): this {
     this.preloadedRootState.projectCreation = {
       ...this.preloadedRootState.projectCreation,
       urbanProject: {
         ...this.preloadedRootState.projectCreation.urbanProject,
-        steps,
+        form: {
+          ...this.preloadedRootState.projectCreation.urbanProject.form,
+          steps,
+        },
       },
     };
     return this;
@@ -41,7 +44,10 @@ export class StoreBuilder {
       ...this.preloadedRootState.projectCreation,
       urbanProject: {
         ...this.preloadedRootState.projectCreation.urbanProject,
-        currentStep,
+        form: {
+          ...this.preloadedRootState.projectCreation.urbanProject.form,
+          currentStep,
+        },
       },
     };
     return this;

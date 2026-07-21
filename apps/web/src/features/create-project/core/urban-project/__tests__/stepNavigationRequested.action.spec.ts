@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
-import { StoreBuilder } from "./_testStoreHelpers";
+import { creationProjectFormSelectors } from "../urbanProject.selectors";
+import { getCurrentStep, StoreBuilder } from "./_testStoreHelpers";
 
 const { stepNavigationRequested } = creationProjectFormUrbanActions;
 
@@ -12,18 +13,17 @@ describe("stepNavigationRequested action", () => {
     store = new StoreBuilder().build();
   });
 
-  it("should not change state when navigating to a step that has no default logic", () => {
-    const initialSteps = store.getState().projectCreation.urbanProject.steps;
-    expect(Object.keys(initialSteps)).toHaveLength(0);
-
+  it("navigates to the requested step without fabricating answers for it", () => {
     store.dispatch(stepNavigationRequested({ stepId: "URBAN_PROJECT_USES_SELECTION" }));
 
-    expect(
-      store.getState().projectCreation.urbanProject.steps.URBAN_PROJECT_USES_SELECTION,
-    ).toBeUndefined();
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_SELECTION");
+    const selectUsesAnswers = creationProjectFormSelectors.selectStepAnswers(
+      "URBAN_PROJECT_USES_SELECTION",
+    );
+    expect(selectUsesAnswers(store.getState())).toBeUndefined();
   });
 
-  it("should not overwrite existing step state when navigating to a step that already has answers", () => {
+  it("does not overwrite existing answers when navigating to a step that already has some", () => {
     const storeWithExistingAnswer = new StoreBuilder()
       .withSteps({
         URBAN_PROJECT_NAMING: {
@@ -36,12 +36,10 @@ describe("stepNavigationRequested action", () => {
 
     storeWithExistingAnswer.dispatch(stepNavigationRequested({ stepId: "URBAN_PROJECT_NAMING" }));
 
-    expect(
-      storeWithExistingAnswer.getState().projectCreation.urbanProject.steps.URBAN_PROJECT_NAMING,
-    ).toEqual({
-      completed: true,
-      payload: { name: "Nom existant" },
-      defaultValues: { name: "Projet PV" },
+    const selectNamingAnswers =
+      creationProjectFormSelectors.selectStepAnswers("URBAN_PROJECT_NAMING");
+    expect(selectNamingAnswers(storeWithExistingAnswer.getState())).toEqual({
+      name: "Nom existant",
     });
   });
 });

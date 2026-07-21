@@ -2,12 +2,16 @@ import { ActionReducerMapBuilder, AsyncThunk, AsyncThunkConfig } from "@reduxjs/
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { RootState } from "@/app/store/store";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type {
+  ProjectSiteView,
+  SiteRelatedLocalAuthorities,
+} from "@/features/create-project/core/project-form/projectSite.types";
 import { makeWizardFormActionType } from "@/shared/core/wizard-form/wizardForm.actions";
 
-type SelectWizardFormState = (
-  state: RootState,
-) => Pick<WizardFormState, "siteData" | "siteRelatedLocalAuthorities">;
+type SelectSiteRelatedFormState = (state: RootState) => {
+  siteData?: ProjectSiteView;
+  siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities;
+};
 
 export type WizardFormReducerActions = {
   fetchSiteRelatedLocalAuthorities: AsyncThunk<
@@ -45,7 +49,7 @@ export interface SiteMunicipalityDataGateway {
 
 export const createWizardFormActions = (
   prefix: string,
-  selectWizardFormState: SelectWizardFormState,
+  selectSiteRelatedFormState: SelectSiteRelatedFormState,
 ): WizardFormReducerActions => {
   return {
     fetchSiteRelatedLocalAuthorities: createAppAsyncThunk<
@@ -53,7 +57,7 @@ export const createWizardFormActions = (
     >(
       makeWizardFormActionType(prefix, "fetchSiteRelatedLocalAuthorities"),
       async (_, { extra, getState }) => {
-        const formState = selectWizardFormState(getState());
+        const formState = selectSiteRelatedFormState(getState());
         const siteAddress = formState.siteData?.address;
         const localAuthoritiesData = formState.siteRelatedLocalAuthorities;
 
@@ -79,7 +83,9 @@ export const createWizardFormActions = (
   };
 };
 
-export const addWizardFormCasesToBuilder = <S extends WizardFormState>(
+export const addWizardFormCasesToBuilder = <
+  S extends { siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities },
+>(
   builder: ActionReducerMapBuilder<S>,
   actions: WizardFormReducerActions,
 ) => {

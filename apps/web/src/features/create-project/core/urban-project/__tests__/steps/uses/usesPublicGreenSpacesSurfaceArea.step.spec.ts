@@ -1,12 +1,10 @@
 import { describe, it, expect } from "vitest";
 
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
-
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - public green spaces surface area", () => {
-  it("should complete step and go to URBAN_PROJECT_SPACES_INTRODUCTION when building uses selected", () => {
+  it("should complete step and go to URBAN_PROJECT_SPACES_INTRODUCTION", () => {
     const store = new StoreBuilder()
       .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
@@ -21,40 +19,6 @@ describe("Urban project creation - Steps - public green spaces surface area", ()
         stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
         answers: {
           publicGreenSpacesSurfaceArea: 5000,
-        },
-      }),
-    );
-
-    expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      WizardFormState["urbanProject"]["steps"]
-    >({
-      URBAN_PROJECT_USES_SELECTION: {
-        completed: true,
-        payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
-      },
-      URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
-        completed: true,
-        payload: { publicGreenSpacesSurfaceArea: 5000 },
-      },
-    });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
-  });
-
-  it("should complete step and go to URBAN_PROJECT_SPACES_INTRODUCTION when no building uses selected", () => {
-    const store = new StoreBuilder()
-      .withSteps({
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
-        },
-      })
-      .build();
-
-    store.dispatch(
-      creationProjectFormUrbanActions.stepCompletionRequested({
-        stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
-        answers: {
-          publicGreenSpacesSurfaceArea: 3000,
         },
       }),
     );

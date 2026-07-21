@@ -3,7 +3,7 @@ import type { Selector } from "@reduxjs/toolkit";
 import type z from "zod";
 
 import type { RootState } from "@/app/store/store";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import type { scheduleProjectionSchema } from "./scheduleProjection.schema";
@@ -14,7 +14,7 @@ type ScheduleProjectionViewData = {
 };
 
 export const createSelectScheduleProjectionViewData = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
 ) =>
   createSelector([selectStepState], (steps): ScheduleProjectionViewData => {
     const involvesReinstatement = ReadStateHelper.getStepAnswers(

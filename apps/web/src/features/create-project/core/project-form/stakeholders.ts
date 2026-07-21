@@ -5,10 +5,10 @@ import {
   type TenantStructureType,
 } from "shared";
 
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
 import { UserStructureActivity, UserStructureType } from "@/features/onboarding/core/user";
 
 import { ProjectStakeholder, ProjectStakeholderStructure } from "../project.types";
+import type { SiteRelatedLocalAuthorities } from "./projectSite.types";
 
 export const DEFAULT_FUTURE_SITE_OWNER = {
   name: "Futur propriétaire inconnu",
@@ -99,7 +99,7 @@ export type AvailableLocalAuthorityStakeholder = {
 };
 
 export const getAvailableLocalAuthoritiesStakeholders = (
-  siteRelatedLocalAuthorities: WizardFormState["siteRelatedLocalAuthorities"],
+  siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities,
   projectAvailableStakeholders: AvailableProjectStakeholder[],
 ) => {
   const projectLocalAuthorities = projectAvailableStakeholders.filter((element) =>

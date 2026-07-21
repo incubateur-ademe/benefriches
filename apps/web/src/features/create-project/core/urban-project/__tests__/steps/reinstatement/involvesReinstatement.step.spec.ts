@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { UrbanProjectScheduleProjectionHandler } from "@/features/create-project/core/urban-project/step-handlers/schedule/schedule-projection/scheduleProjection.handler";
 
+import { getProjectData } from "../../../helpers/readers/projectDataReaders";
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
@@ -66,7 +67,7 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
   });
 
-  it("should delete only reinstatement-specific steps when switching from true to false", () => {
+  it("should drop reinstatement-specific answers from the project data when switching from true to false", () => {
     const store = new StoreBuilder()
       .withSteps({
         URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
@@ -102,11 +103,12 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
     );
     store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
-    const steps = store.getState().projectCreation.urbanProject.steps;
+    const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
 
-    // Reinstatement-specific steps must be deleted
-    expect(steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT).toBeUndefined();
-    expect(steps.URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER).toBeUndefined();
+    // Reinstatement-specific answers must be dropped from the resulting project data
+    expect(projectData.involvesReinstatement).toBe(false);
+    expect(projectData.reinstatementCosts).toBeUndefined();
+    expect(projectData.reinstatementContractOwner).toBeUndefined();
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
   });
 

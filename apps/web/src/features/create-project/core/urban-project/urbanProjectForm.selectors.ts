@@ -51,7 +51,7 @@ export const createUrbanProjectFormSelectors = (
   const selectors = createWizardFormSelectors(entityName);
   const selectSelf = (state: RootState) => state[entityName];
 
-  const selectStepState = createSelector(selectSelf, (state) => state.urbanProject.steps);
+  const selectStepState = createSelector(selectSelf, (state) => state.urbanProject.form.steps);
 
   const selectProjectSoilsDistributionByType = createSelector(selectStepState, (state) =>
     getProjectSoilDistributionBySoilType(state),
@@ -77,7 +77,7 @@ export const createUrbanProjectFormSelectors = (
 
   const selectProjectStepsSequence = createSelector(
     selectSelf,
-    (state) => state.urbanProject.stepsSequence,
+    (state) => state.urbanProject.form.stepsSequence,
   );
 
   const selectProjectPhase = createSelector(selectSelf, (state) => {
@@ -158,10 +158,13 @@ export const createUrbanProjectFormSelectors = (
 
   const selectPendingStepCompletion = createSelector(
     [selectSelf],
-    (state) => state.urbanProject.pendingStepCompletion,
+    (state) => state.urbanProject.form.pendingStepCompletion,
   );
 
-  const selectSaveState = createSelector([selectSelf], (state) => state.urbanProject.saveState);
+  const selectSaveState = createSelector(
+    [selectSelf],
+    (state) => state.urbanProject.form.saveState,
+  );
 
   const selectSiteResaleEstimationLoadingState = createSelector(
     [selectSelf],

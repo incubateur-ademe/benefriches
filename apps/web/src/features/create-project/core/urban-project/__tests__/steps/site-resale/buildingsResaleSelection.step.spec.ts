@@ -1,11 +1,13 @@
-import { describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
-
+import { getProjectData } from "../../../helpers/readers/projectDataReaders";
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
+import type { UrbanProjectStepsState } from "../../../urbanProject.state";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
-const INITIAL_STEPS: WizardFormState["urbanProject"]["steps"] = {
+const { stepCompletionRequested, stepCompletionConfirmed } = creationProjectFormUrbanActions;
+
+const INITIAL_STEPS: UrbanProjectStepsState = {
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
     completed: true,
     payload: { projectDeveloper: { structureType: "municipality", name: "Mairie d'angers" } },
@@ -20,90 +22,51 @@ const INITIAL_STEPS: WizardFormState["urbanProject"]["steps"] = {
   },
 };
 
+const getData = (store: ReturnType<StoreBuilder["build"]>) =>
+  getProjectData(store.getState().projectCreation.urbanProject.form.steps);
+
 describe("Urban project creation - Steps - buildings resale selection", () => {
-  it("should complete step with true and automaticaly completed future site operator and add related step revenue to stepSequence", () => {
+  it("assigns the default future operator and routes to stakeholders when resale is planned", () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.stepCompletionRequested({
+      stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-        answers: {
-          buildingsResalePlannedAfterDevelopment: true,
-        },
+        answers: { buildingsResalePlannedAfterDevelopment: true },
       }),
     );
 
-    expect(store.getState().projectCreation.urbanProject.steps).toEqual<
-      WizardFormState["urbanProject"]["steps"]
-    >({
-      ...INITIAL_STEPS,
-      URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-        completed: true,
-        payload: {
-          buildingsResalePlannedAfterDevelopment: true,
-        },
-      },
+    expect(getData(store).futureOperator).toEqual({
+      name: "Futur exploitant inconnu",
+      structureType: "unknown",
     });
-
-    expect(
-      store
-        .getState()
-        .projectCreation.urbanProject.stepsSequence.includes(
-          "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
-        ),
-    ).toBe(true);
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
   });
 
-  it("should complete step with false, add steps related to buildings operations revenues and expenses to step sequences", () => {
+  it("keeps the developer as future operator and routes to stakeholders when resale is not planned", () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.stepCompletionRequested({
+      stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-        answers: {
-          buildingsResalePlannedAfterDevelopment: false,
-        },
+        answers: { buildingsResalePlannedAfterDevelopment: false },
       }),
     );
 
-    const state = store.getState().projectCreation.urbanProject;
-
-    expect(state.steps).toEqual<WizardFormState["urbanProject"]["steps"]>({
-      ...INITIAL_STEPS,
-      URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-        completed: true,
-        payload: {
-          buildingsResalePlannedAfterDevelopment: false,
-        },
-      },
+    expect(getData(store).futureOperator).toEqual({
+      structureType: "municipality",
+      name: "Mairie d'angers",
     });
-    expect(state.stepsSequence.includes("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE")).toBe(false);
-    expect(
-      state.stepsSequence.includes("URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES"),
-    ).toBe(true);
-    expect(
-      state.stepsSequence.includes("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"),
-    ).toBe(true);
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
   });
 
-  it("should complete step with true and remove steps related to building operation if exist", () => {
+  it("discards buildings operations data when switching to resale planned", () => {
     const store = new StoreBuilder()
       .withSteps({
         ...INITIAL_STEPS,
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,
-          payload: {
-            buildingsResalePlannedAfterDevelopment: false,
-          },
-        },
-        URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: {
-          completed: true,
-          payload: {
-            buildingsResaleSellingPrice: 0,
-            buildingsResalePropertyTransferDuties: 0,
-          },
+          payload: { buildingsResalePlannedAfterDevelopment: false },
         },
         URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: {
           completed: true,
@@ -121,53 +84,25 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.stepCompletionRequested({
+      stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-        answers: {
-          buildingsResalePlannedAfterDevelopment: true,
-        },
+        answers: { buildingsResalePlannedAfterDevelopment: true },
       }),
     );
+    store.dispatch(stepCompletionConfirmed());
 
-    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
-
-    const state = store.getState().projectCreation.urbanProject;
-
-    expect(state.steps).toEqual<WizardFormState["urbanProject"]["steps"]>({
-      ...INITIAL_STEPS,
-      URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-        completed: true,
-        payload: {
-          buildingsResalePlannedAfterDevelopment: true,
-        },
-      },
-      URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: {
-        completed: false,
-        payload: undefined,
-        defaultValues: undefined,
-      },
-      URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: undefined,
-      URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: undefined,
-    });
-    expect(state.stepsSequence.includes("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE")).toBe(true);
-    expect(
-      state.stepsSequence.includes("URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES"),
-    ).toBe(false);
-    expect(
-      state.stepsSequence.includes("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"),
-    ).toBe(false);
+    expect(getData(store).yearlyProjectedCosts).toEqual([]);
+    expect(getData(store).yearlyProjectedRevenues).toEqual([]);
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
   });
 
-  it("should complete step with false and remove steps related to resale buildings revenue if exist", () => {
+  it("discards buildings resale revenue when switching to resale not planned", () => {
     const store = new StoreBuilder()
       .withSteps({
         ...INITIAL_STEPS,
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,
-          payload: {
-            buildingsResalePlannedAfterDevelopment: true,
-          },
+          payload: { buildingsResalePlannedAfterDevelopment: true },
         },
         URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: {
           completed: true,
@@ -176,61 +111,18 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
             buildingsResalePropertyTransferDuties: 500,
           },
         },
-        URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: {
-          completed: true,
-          payload: {
-            yearlyProjectedBuildingsOperationsExpenses: [],
-          },
-        },
-        URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: {
-          completed: true,
-          payload: {
-            yearlyProjectedRevenues: [],
-          },
-        },
       })
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.stepCompletionRequested({
+      stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-        answers: {
-          buildingsResalePlannedAfterDevelopment: false,
-        },
+        answers: { buildingsResalePlannedAfterDevelopment: false },
       }),
     );
+    store.dispatch(stepCompletionConfirmed());
 
-    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
-
-    const state = store.getState().projectCreation.urbanProject;
-
-    expect(state.steps).toEqual<WizardFormState["urbanProject"]["steps"]>({
-      ...INITIAL_STEPS,
-      URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-        completed: true,
-        payload: {
-          buildingsResalePlannedAfterDevelopment: false,
-        },
-      },
-      URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: undefined,
-      URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: {
-        completed: false,
-        payload: undefined,
-        defaultValues: undefined,
-      },
-      URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: {
-        completed: false,
-        payload: undefined,
-        defaultValues: undefined,
-      },
-    });
-    expect(state.stepsSequence.includes("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE")).toBe(false);
-    expect(
-      state.stepsSequence.includes("URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES"),
-    ).toBe(true);
-    expect(
-      state.stepsSequence.includes("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"),
-    ).toBe(true);
+    expect(getData(store).buildingsResaleExpectedSellingPrice).toBeUndefined();
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
   });
 });

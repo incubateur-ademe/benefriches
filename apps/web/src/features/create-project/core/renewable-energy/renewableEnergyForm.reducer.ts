@@ -19,7 +19,7 @@ import {
 } from "./step-handlers/stepHandler.type";
 import { answerStepHandlers, stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
 
-// Structural constraint mirroring urban's `S extends WizardFormState`: any consumer state
+// Structural constraint mirroring urban's `S extends UrbanProjectHostState`: any consumer state
 // that nests a renewableEnergyProject sub-state shaped like the generic engine's own
 // WizardFormSubState can drive this case-adder — creation and update alike (ADR-0015).
 type RenewableEnergyHostState = {

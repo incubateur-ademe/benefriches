@@ -11,6 +11,6 @@ const { selectSiteAddress, selectSiteSoilsDistribution, selectProjectSoilsDistri
 export { selectSiteAddress, selectSiteSoilsDistribution, selectProjectSoilsDistributionByType };
 
 export const selectUrbanProjectCurrentStep = createSelector(
-  [(state: RootState) => state.projectUpdate.urbanProject],
-  (state) => state.currentStep,
+  [(state: RootState) => state.projectUpdate.urbanProject.form],
+  (form) => form.currentStep,
 );

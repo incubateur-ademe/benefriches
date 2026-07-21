@@ -13,15 +13,26 @@ import { navigateToAndLoadStep } from "@/shared/core/wizard-form/helpers/navigat
 import { WizardFormDefinition } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { UrbanStepHandlerContext } from "./step-handlers/stepHandler.type";
+import { UrbanProjectFormState } from "./urbanProject.state";
 import { UrbanProjectFormReducerActions } from "./urbanProjectForm.actions";
-import { WizardFormState } from "./urbanProjectForm.state";
 import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
-type UrbanWizardFormDefinition<S extends WizardFormState> = Pick<
+// Structural constraint mirroring PV's `RenewableEnergyHostState` (ADR-0015): any consumer state
+// that nests a self-contained urban slice with its own `form` sub-state can drive this case-adder
+// — creation and update alike. The case-adder never reads the slice shape directly; it locates the
+// form sub-state and eager context through the injected `selectForm` / `buildContext` lenses.
+type UrbanProjectHostState = {
+  urbanProject: {
+    form: UrbanProjectFormState;
+  };
+  siteData?: UrbanStepHandlerContext["siteData"];
+};
+
+type UrbanWizardFormDefinition<S extends UrbanProjectHostState> = Pick<
   WizardFormDefinition<
     UrbanProjectCreationStep,
     UrbanStepHandlerContext,
-    Draft<S>["urbanProject"]["steps"],
+    Draft<S>["urbanProject"]["form"]["steps"],
     Draft<S>,
     StepUpdateResult<UrbanProjectCreationStep, AnswersByStep, AnswerStepId>
   >,
@@ -30,20 +41,10 @@ type UrbanWizardFormDefinition<S extends WizardFormState> = Pick<
   registry: typeof answerStepHandlers;
 };
 
-const defaultDefinition = <S extends WizardFormState>(): UrbanWizardFormDefinition<S> => ({
-  config: {
-    stepChangesNextMode: "step_order",
-    finalSummaryFallbackStep: "URBAN_PROJECT_FINAL_SUMMARY",
-  },
-  registry: answerStepHandlers,
-  selectForm: (state) => state.urbanProject,
-  buildContext: (state) => ({ siteData: state.siteData }),
-});
-
-export const addUrbanProjectFormCasesToBuilder = <S extends WizardFormState>(
+export const addUrbanProjectFormCasesToBuilder = <S extends UrbanProjectHostState>(
   builder: ActionReducerMapBuilder<S>,
   actions: UrbanProjectFormReducerActions,
-  definition: UrbanWizardFormDefinition<S> = defaultDefinition<S>(),
+  definition: UrbanWizardFormDefinition<S>,
 ) => {
   const { config, registry: answerRegistry, selectForm, buildContext } = definition;
 

@@ -1,12 +1,12 @@
 import { describe, it, expect } from "vitest";
 
-import { WizardFormState } from "../../urbanProjectForm.state";
+import { UrbanProjectStepsState } from "../../urbanProject.state";
 import { getProjectData } from "./projectDataReaders";
 
 describe("projectDataReaders", () => {
   describe("getProjectData", () => {
     it("should extract and structure all project data correctly", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_NAMING: {
           completed: true,
           payload: { name: "Test Project", description: "Description" },
@@ -30,7 +30,7 @@ describe("projectDataReaders", () => {
     });
 
     it("should extract buildings reuse and construction data", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,
           payload: { buildingsFootprintToReuse: 500 },
@@ -86,7 +86,7 @@ describe("projectDataReaders", () => {
     });
 
     it("should return developerWillBeBuildingsConstructor as false when developer is not buildings constructor", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
           payload: { developerWillBeBuildingsConstructor: false },
@@ -99,7 +99,7 @@ describe("projectDataReaders", () => {
     });
 
     it("should filter out undefined expense fields from construction expenses", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {
+      const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION: {
           completed: true,
           payload: {
@@ -118,7 +118,7 @@ describe("projectDataReaders", () => {
     });
 
     it("should handle missing optional data", () => {
-      const steps: WizardFormState["urbanProject"]["steps"] = {};
+      const steps: UrbanProjectStepsState = {};
 
       const result = getProjectData(steps);
 
@@ -130,7 +130,7 @@ describe("projectDataReaders", () => {
 
     describe("futureOperator", () => {
       it("should return project developer as future operator when buildings resale is not planned", () => {
-        const steps: WizardFormState["urbanProject"]["steps"] = {
+        const steps: UrbanProjectStepsState = {
           URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
             completed: true,
             payload: { buildingsResalePlannedAfterDevelopment: false },
@@ -149,7 +149,7 @@ describe("projectDataReaders", () => {
       });
 
       it("should return default unknown operator when buildings resale is planned", () => {
-        const steps: WizardFormState["urbanProject"]["steps"] = {
+        const steps: UrbanProjectStepsState = {
           URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
             completed: true,
             payload: { buildingsResalePlannedAfterDevelopment: true },
@@ -171,7 +171,7 @@ describe("projectDataReaders", () => {
       });
 
       it("should return undefined when buildings resale selection step is not completed", () => {
-        const steps: WizardFormState["urbanProject"]["steps"] = {};
+        const steps: UrbanProjectStepsState = {};
 
         const result = getProjectData(steps);
 

@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import { RevenueIntroductionHandler } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-introduction/revenueIntroduction.handler";
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 describe("RevenueIntroductionHandler", () => {
   describe("getNextStepId", () => {
     it("returns expected site resale when site resale is planned", () => {
       // Arrange
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "yes" },
@@ -26,7 +26,7 @@ describe("RevenueIntroductionHandler", () => {
 
     it("returns expected site resale when site resale remains unknown", () => {
       // Arrange
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "unknown" },
@@ -55,7 +55,7 @@ describe("RevenueIntroductionHandler", () => {
 
     it("returns buildings resale when site resale is skipped but buildings resale is planned", () => {
       // Arrange
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "no" },
@@ -84,7 +84,7 @@ describe("RevenueIntroductionHandler", () => {
 
     it("returns financial assistance when no resale revenue applies", () => {
       // Arrange
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "no" },
@@ -105,7 +105,7 @@ describe("RevenueIntroductionHandler", () => {
   describe("getPreviousStepId", () => {
     it("returns projected operating expenses when going back without buildings resale", () => {
       // Arrange
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -130,7 +130,7 @@ describe("RevenueIntroductionHandler", () => {
 
     it("returns construction and rehabilitation when reuse exists and buildings resale is planned", () => {
       // Arrange
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -161,7 +161,7 @@ describe("RevenueIntroductionHandler", () => {
 
     it("returns installation when the project has no buildings", () => {
       // Arrange
-      const answers: WizardFormState["urbanProject"]["steps"] = {
+      const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["OTHER_PUBLIC_SPACES"] },

@@ -1,12 +1,13 @@
+import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
 import { willHaveBuildings } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import type { UrbanProjectCreationStep } from "../../urbanProjectSteps";
 import type { StepHandlerParams } from "../stepHandler.type";
 
-type StepsState = WizardFormState["urbanProject"]["steps"];
-type SiteData = NonNullable<WizardFormState["siteData"]>;
+type StepsState = UrbanProjectStepsState;
+type SiteData = ProjectSiteView;
 
 export function siteHasBuildings(siteData: SiteData): boolean {
   return getSiteBuildingsFootprint(siteData) > 0;

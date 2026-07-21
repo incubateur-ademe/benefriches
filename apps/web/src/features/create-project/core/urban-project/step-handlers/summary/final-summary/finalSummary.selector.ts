@@ -4,14 +4,14 @@ import type { ReconversionProjectSoilsDistribution } from "shared";
 
 import type { RootState } from "@/app/store/store";
 import type { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectFormState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import type { ProjectStepGroups } from "@/shared/views/project-form/stepper/stepperConfig";
 
 type UrbanProjectSummaryViewData = {
   isFormValid: boolean;
   projectSummary: ReturnType<typeof getProjectSummary>;
   projectSoilsDistribution: ReconversionProjectSoilsDistribution;
-  saveState: WizardFormState["urbanProject"]["saveState"];
+  saveState: UrbanProjectFormState["saveState"];
   stepsGroupedBySections: ProjectStepGroups;
 };
 
@@ -19,7 +19,7 @@ export const createSelectUrbanProjectSummaryViewData = (
   selectIsFormStatusValid: Selector<RootState, boolean>,
   selectProjectSummary: Selector<RootState, ReturnType<typeof getProjectSummary>>,
   selectProjectSoilsDistribution: Selector<RootState, ReconversionProjectSoilsDistribution>,
-  selectSaveState: Selector<RootState, WizardFormState["urbanProject"]["saveState"]>,
+  selectSaveState: Selector<RootState, UrbanProjectFormState["saveState"]>,
   selectStepsGroupedBySections: Selector<RootState, ProjectStepGroups>,
 ) =>
   createSelector(

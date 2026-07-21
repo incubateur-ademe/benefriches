@@ -15,7 +15,7 @@ export const setupProjectCreationListeners = (startAppListening: AppStartListeni
 
       const state = listenerApi.getState();
       const siteResaleSelection =
-        state.projectCreation.urbanProject.steps.URBAN_PROJECT_SITE_RESALE_SELECTION?.payload
+        state.projectCreation.urbanProject.form.steps.URBAN_PROJECT_SITE_RESALE_SELECTION?.payload
           ?.siteResaleSelection;
 
       if (siteResaleSelection !== "unknown") {

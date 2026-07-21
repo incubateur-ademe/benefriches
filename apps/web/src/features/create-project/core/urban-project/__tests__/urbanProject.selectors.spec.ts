@@ -17,7 +17,7 @@ describe("urbanProject.selectors", () => {
             usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"],
           },
         },
-      } satisfies ProjectCreationState["urbanProject"]["steps"];
+      } satisfies ProjectCreationState["urbanProject"]["form"]["steps"];
 
       const store = new StoreBuilder()
         .withSteps(initialSteps)

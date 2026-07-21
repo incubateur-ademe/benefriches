@@ -4,7 +4,7 @@ import { isConstrainedSoilType, ORDERED_SOIL_TYPES } from "shared";
 import type { SoilsDistribution, SoilType, UrbanProjectUse } from "shared";
 
 import type { RootState } from "@/app/store/store";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 /**
@@ -34,7 +34,7 @@ type SpacesSelectionViewData = {
 };
 
 export const createSelectSpacesSelectionViewData = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
   selectSiteSoilsDistribution: Selector<RootState, SoilsDistribution>,
 ) =>
   createSelector(

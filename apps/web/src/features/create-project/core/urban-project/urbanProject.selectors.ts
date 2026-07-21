@@ -8,14 +8,14 @@ export const creationProjectFormSelectors = createUrbanProjectFormSelectors("pro
 const { selectProjectSoilsDistributionByType } = creationProjectFormSelectors;
 
 export const selectUrbanProjectCurrentStep = createSelector(
-  [(state: RootState) => state.projectCreation.urbanProject],
-  (state) => state.currentStep,
+  [(state: RootState) => state.projectCreation.urbanProject.form],
+  (form) => form.currentStep,
 );
 
 export const selectUrbanProjectCreationStepperDataView = createSelector(
   [(state: RootState) => state.projectCreation],
   (state) => ({
-    currentStep: state.urbanProject.currentStep,
+    currentStep: state.urbanProject.form.currentStep,
     currentProjectFlow: state.currentProjectFlow,
   }),
 );

@@ -10,11 +10,11 @@ import {
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   getUrbanProjectAvailableStakeholders,
 } from "@/features/create-project/core/urban-project/helpers/stakeholders";
-import type { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 const createSelectProjectDeveloper = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
 ) =>
   createSelector(
     [selectStepState],
@@ -24,7 +24,7 @@ const createSelectProjectDeveloper = (
   );
 
 const createSelectReinstatementContractOwner = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
 ) =>
   createSelector(
     [selectStepState],
@@ -36,7 +36,7 @@ const createSelectReinstatementContractOwner = (
   );
 
 export const createSelectUrbanProjectAvailableStakeholders = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
   selectProjectAvailableStakeholders: Selector<RootState, AvailableProjectStakeholder[]>,
 ) => {
   const selectProjectDeveloper = createSelectProjectDeveloper(selectStepState);
@@ -54,7 +54,7 @@ export const createSelectUrbanProjectAvailableStakeholders = (
 };
 
 export const createSelectUrbanProjectAvailableLocalAuthoritiesStakeholders = (
-  selectStepState: Selector<RootState, WizardFormState["urbanProject"]["steps"]>,
+  selectStepState: Selector<RootState, UrbanProjectStepsState>,
   selectAvailableLocalAuthoritiesStakeholders: Selector<
     RootState,
     AvailableLocalAuthorityStakeholder[]

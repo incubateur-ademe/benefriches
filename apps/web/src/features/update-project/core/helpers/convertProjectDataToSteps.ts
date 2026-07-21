@@ -12,7 +12,7 @@ import type { UrbanProjectUse } from "shared";
 
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { EXPENSE_PURPOSE_TO_FIELD } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
-import { WizardFormState } from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+import { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import {
   ANSWER_STEPS,
   INTRODUCTION_STEPS,
@@ -22,7 +22,7 @@ import {
 import { UpdateProjectView } from "../updateProject.types";
 
 export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProjectView) => {
-  const steps: WizardFormState["urbanProject"]["steps"] = {};
+  const steps: UrbanProjectStepsState = {};
 
   if (
     projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" ||

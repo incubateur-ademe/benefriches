@@ -1,6 +1,10 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { DevelopmentPlanType, ProjectPhase } from "shared";
 
+import {
+  ProjectSiteView,
+  SiteRelatedLocalAuthorities,
+} from "@/features/create-project/core/project-form/projectSite.types";
 import { addWizardFormCasesToBuilder } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
 import {
   INITIAL_STATE as renewableEnergyInitialState,
@@ -15,11 +19,11 @@ import {
   answerStepHandlers,
   stepHandlerRegistry,
 } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
-import { addUrbanProjectFormCasesToBuilder } from "@/features/create-project/core/urban-project/urbanProjectForm.reducer";
 import {
-  getWizardFormInitialState,
-  WizardFormState,
-} from "@/features/create-project/core/urban-project/urbanProjectForm.state";
+  getUrbanProjectInitialState,
+  UrbanProjectState,
+} from "@/features/create-project/core/urban-project/urbanProject.state";
+import { addUrbanProjectFormCasesToBuilder } from "@/features/create-project/core/urban-project/urbanProjectForm.reducer";
 import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 
@@ -44,7 +48,11 @@ export type UrbanProjectUpdateStep = Exclude<
   | "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION"
 >;
 
-type ProjectUpdateState = WizardFormState<UrbanProjectUpdateStep> & {
+type ProjectUpdateState = {
+  siteData?: ProjectSiteView;
+  siteDataLoadingState: "idle" | "loading" | "success" | "error";
+  siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities;
+  urbanProject: UrbanProjectState<UrbanProjectUpdateStep>;
   renewableEnergyProject: RenewableEnergyProjectState;
   projectData: {
     id?: string;
@@ -63,7 +71,14 @@ const getInitialState = (): ProjectUpdateState => {
       loadingState: "idle",
     },
     renewableEnergyProject: renewableEnergyInitialState,
-    ...getWizardFormInitialState<UrbanProjectUpdateStep>("URBAN_PROJECT_USES_INTRODUCTION"),
+    siteData: undefined,
+    siteDataLoadingState: "idle",
+    siteRelatedLocalAuthorities: {
+      loadingState: "idle",
+    },
+    urbanProject: getUrbanProjectInitialState<UrbanProjectUpdateStep>(
+      "URBAN_PROJECT_USES_INTRODUCTION",
+    ),
   };
 };
 
@@ -76,7 +91,7 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       finalSummaryFallbackStep: "URBAN_PROJECT_FINAL_SUMMARY",
     },
     registry: answerStepHandlers,
-    selectForm: (state) => state.urbanProject,
+    selectForm: (state) => state.urbanProject.form,
     buildContext: (state) => ({ siteData: state.siteData }),
   });
 
@@ -133,16 +148,16 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
         return;
       }
 
-      state.urbanProject.steps = convertProjectDataToSteps(action.payload);
-      state.urbanProject.currentStep = "URBAN_PROJECT_FINAL_SUMMARY";
-      state.urbanProject.saveState = "idle";
+      state.urbanProject.form.steps = convertProjectDataToSteps(action.payload);
+      state.urbanProject.form.currentStep = "URBAN_PROJECT_FINAL_SUMMARY";
+      state.urbanProject.form.saveState = "idle";
 
-      state.urbanProject.stepsSequence = computeStepsSequence(
+      state.urbanProject.form.stepsSequence = computeStepsSequence(
         {
           context: { siteData: action.payload.siteData },
-          answers: state.urbanProject.steps,
+          answers: state.urbanProject.form.steps,
         },
-        state.urbanProject.firstSequenceStep,
+        state.urbanProject.form.firstSequenceStep,
         stepHandlerRegistry,
       );
     })
@@ -156,7 +171,7 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       state.renewableEnergyProject.saveState = "loading";
       return;
     }
-    state.urbanProject.saveState = "loading";
+    state.urbanProject.form.saveState = "loading";
   });
   builder.addCase(reconversionProjectUpdateSaved.fulfilled, (state) => {
     if (state.projectData.projectType === "PHOTOVOLTAIC_POWER_PLANT") {
@@ -166,8 +181,9 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       state.projectData.updatedAt = new Date().toISOString();
       return;
     }
-    state.urbanProject.saveState = "success";
-    state.projectData.projectName = state.urbanProject.steps.URBAN_PROJECT_NAMING?.payload?.name;
+    state.urbanProject.form.saveState = "success";
+    state.projectData.projectName =
+      state.urbanProject.form.steps.URBAN_PROJECT_NAMING?.payload?.name;
     state.projectData.updatedAt = new Date().toISOString();
   });
   builder.addCase(reconversionProjectUpdateSaved.rejected, (state) => {
@@ -175,7 +191,7 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       state.renewableEnergyProject.saveState = "error";
       return;
     }
-    state.urbanProject.saveState = "error";
+    state.urbanProject.form.saveState = "error";
   });
 
   builder.addCase(

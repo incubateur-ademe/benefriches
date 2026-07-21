@@ -56,7 +56,7 @@ export const reconversionProjectUpdateSaved = createAppAsyncThunk(
     const updateData =
       projectData.projectType === "PHOTOVOLTAIC_POWER_PLANT"
         ? getRenewableEnergyProjectData(renewableEnergyProject.steps)
-        : getProjectData(urbanProject.steps);
+        : getProjectData(urbanProject.form.steps);
 
     const projectId = z.string().parse(projectData?.id);
     const projectToSave = httpUpdateReconversionProjectPropsSchema.parse({
