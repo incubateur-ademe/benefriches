@@ -17,7 +17,7 @@ type Props = {
   legendTotal: number;
   legendText: string;
   title: string;
-  dialogId: string;
+  dialogId?: string;
 };
 
 const barChartOptions: Options = withDefaultBarChartOptions({
