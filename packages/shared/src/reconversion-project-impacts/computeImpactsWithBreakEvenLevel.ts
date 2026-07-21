@@ -133,11 +133,9 @@ export const computeBreakEvenLevel = ({
     (v, i, arr) => v >= 0 && (i === 0 || (arr?.[i - 1] ?? 0) < 0),
   );
 
-  const breakEvenYear = projectionYears[breakEvenIndex];
-
   return {
-    breakEvenYear,
-    breakEvenIndex,
+    breakEvenYear: projectionYears[breakEvenIndex],
+    breakEvenIndex: breakEvenIndex === -1 ? undefined : breakEvenIndex,
     projectionYears,
     cumulativeBalanceByYear,
   };
@@ -593,7 +591,7 @@ export const computeProjectImpactsWithBreakEvenLevel = ({
     projectionYears,
     aggregatedReconversionImpacts: {
       breakEvenYear,
-      breakEvenIndex: breakEvenIndex === -1 ? undefined : breakEvenIndex,
+      breakEvenIndex,
       cumulativeBalanceByYear,
       indirectEconomicImpacts: {
         total: sumListWithKey(aggregatedIndirectEconomicImpacts, "total"),
