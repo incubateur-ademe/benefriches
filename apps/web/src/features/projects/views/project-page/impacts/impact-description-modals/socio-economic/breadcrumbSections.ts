@@ -5,35 +5,28 @@ export const mainBreadcrumbSection = {
   contentState: { sectionName: "socio_economic" },
 } as const;
 
-export const environmentalMonetaryBreadcrumbSection = {
-  label: "Impacts environnementaux monétarisés",
-  contentState: { sectionName: "socio_economic", subSectionName: "environmental_monetary" },
+export const humanityBreadcrumbSection = {
+  label: "Impacts pour la société française et mondiale",
+  contentState: { sectionName: "socio_economic", subSectionName: "humanity" },
 } as const;
 
-export const socialMonetaryBreadcrumbSection = {
-  label: "Impacts sociaux monétarisés",
-  contentState: { sectionName: "socio_economic", subSectionName: "social_monetary" },
+export const localPeopleOrCompanyBreadcrumbSection = {
+  label: "Impacts pour les riverains",
+  contentState: { sectionName: "socio_economic", subSectionName: "localPeopleOrCompany" },
 } as const;
 
-export const economicDirectBreadcrumbSection = {
-  label: "Impacts économiques directs",
-  contentState: { sectionName: "socio_economic", subSectionName: "economic_direct" },
-} as const;
-
-export const economicIndirectBreadcrumbSection = {
-  label: "Impacts économiques indirects",
-  contentState: { sectionName: "socio_economic", subSectionName: "economic_indirect" },
+export const localAuthorityBreadcrumbSection = {
+  label: "Impacts pour la collectivité locale",
+  contentState: { sectionName: "socio_economic", subSectionName: "localAuthority" },
 } as const;
 
 export const getSubSectionBreadcrumb = (subSectionName: SocioEconomicSubSectionName) => {
   switch (subSectionName) {
-    case "economic_direct":
-      return economicDirectBreadcrumbSection;
-    case "economic_indirect":
-      return economicIndirectBreadcrumbSection;
-    case "social_monetary":
-      return socialMonetaryBreadcrumbSection;
-    case "environmental_monetary":
-      return environmentalMonetaryBreadcrumbSection;
+    case "humanity":
+      return humanityBreadcrumbSection;
+    case "localAuthority":
+      return localAuthorityBreadcrumbSection;
+    case "localPeopleOrCompany":
+      return localPeopleOrCompanyBreadcrumbSection;
   }
 };

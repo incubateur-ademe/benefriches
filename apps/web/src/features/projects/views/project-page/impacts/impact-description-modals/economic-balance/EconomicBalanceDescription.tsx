@@ -1,7 +1,10 @@
 import { useContext } from "react";
 import { DevelopmentPlanType, roundTo2Digits } from "shared";
 
-import { getEconomicBalanceProjectImpacts } from "@/features/projects/domain/projectImpactsEconomicBalance";
+import {
+  EconomicBalanceMainName,
+  getEconomicBalanceProjectImpacts,
+} from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -12,7 +15,6 @@ import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHe
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { getEconomicBalanceImpactColor } from "../../getImpactColor";
 import { getEconomicBalanceImpactLabel } from "../../getImpactLabel";
 import { ModalDataProps } from "../ImpactModalDescription";
 import ModalTable from "../shared/ModalTable";
@@ -21,6 +23,31 @@ import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChar
 type Props = {
   impactsData: ModalDataProps["impactsData"];
   projectType: DevelopmentPlanType;
+};
+
+const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName): string => {
+  switch (name) {
+    case "buildings_resale":
+    case "site_resale":
+    case "site_purchase":
+      return "#C649CA";
+    case "site_reinstatement":
+      return "#DE3317";
+    case "financial_assistance":
+      return "#66D6FF";
+    case "development_plan_installation":
+      return "#FF9700";
+    case "photovoltaic_development_plan_installation":
+      return "#FF9700";
+    case "urban_project_development_plan_installation":
+      return "#E4D1AF";
+    case "urban_project_buildings_construction_and_rehabilitation":
+      return "#854C1B";
+    case "operations_costs":
+      return "#F5E900";
+    case "operations_revenues":
+      return "#57B54B";
+  }
 };
 
 const EconomicBalanceDescription = ({ impactsData, projectType }: Props) => {

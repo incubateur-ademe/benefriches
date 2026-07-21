@@ -1,4 +1,7 @@
+import { AvoidedFricheCostsIndirectEconomicImpactItemView } from "shared";
+
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { SocioEconomicSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
@@ -6,14 +9,23 @@ import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/Mod
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { breadcrumbSegments } from "./breadcrumbSegments";
+import { getBreadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   addressLabel: string;
   impactData?: number;
+  bearerName: string;
+  sectionName: SocioEconomicSubSectionName;
+  impactName: AvoidedFricheCostsIndirectEconomicImpactItemView["name"];
 };
 
-const AvoidedIllegalDumpingCostsDescription = ({ addressLabel, impactData }: Props) => {
+const AvoidedIllegalDumpingCostsDescription = ({
+  addressLabel,
+  impactData,
+  bearerName,
+  sectionName,
+  impactName,
+}: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -23,11 +35,14 @@ const AvoidedIllegalDumpingCostsDescription = ({ addressLabel, impactData }: Pro
             ? {
                 state: impactData > 0 ? "success" : "error",
                 text: formatMonetaryImpact(impactData),
-                description: "pour l'actuel locataire ou le propriétaire",
+                description: `pour ${bearerName}`,
               }
             : undefined
         }
-        breadcrumbSegments={[...breadcrumbSegments, { label: "Débarras de dépôt sauvage" }]}
+        breadcrumbSegments={[
+          ...getBreadcrumbSegments(sectionName, impactName),
+          { label: "Débarras de dépôt sauvage" },
+        ]}
       />
       <ModalContent fullWidth>
         <p>
@@ -35,7 +50,10 @@ const AvoidedIllegalDumpingCostsDescription = ({ addressLabel, impactData }: Pro
           l’enlèvement est coûteux !
         </p>
         <p>
-          <strong>Bénéficiaire</strong> : actuel exploitant
+          <strong>Bénéficiaire</strong> :{" "}
+          {impactName === "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+            ? "actuel propriétaire"
+            : "actuel locataire"}
         </p>
 
         <ModalTitleTwo>Quelles données sont utilisées dans le calcul ?</ModalTitleTwo>

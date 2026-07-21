@@ -1,7 +1,7 @@
 import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
-import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { SocioEconomicImpactsByBearerListView } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import { ModalDataProps } from "../impact-description-modals/ImpactModalDescription";
 import EconomicBalanceListSection from "./sections/EconomicBalance";
@@ -11,7 +11,7 @@ import SocioEconomicImpactsListSection from "./sections/SocioEconomicListSection
 
 type Props = {
   economicBalance: EconomicBalance;
-  socioEconomicImpacts: SocioEconomicDetailedImpact;
+  socioEconomicImpacts: SocioEconomicImpactsByBearerListView;
   environmentImpacts: EnvironmentalImpact[];
   socialImpacts: SocialImpact[];
   modalData: ModalDataProps;

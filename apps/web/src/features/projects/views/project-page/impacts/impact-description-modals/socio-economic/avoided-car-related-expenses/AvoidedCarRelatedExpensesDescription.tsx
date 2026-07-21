@@ -8,7 +8,10 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import LinkToAvoidedKilometersImpact from "../../shared/avoided-kilometers-social-impact-link/AvoidedKilometersSocialImpactLink";
 import TravelRelatedImpactsIntroduction from "../../shared/travel-related-impacts-introduction/TravelRelatedImpactsIntroduction";
-import { mainBreadcrumbSection, socialMonetaryBreadcrumbSection } from "../breadcrumbSections";
+import {
+  localPeopleOrCompanyBreadcrumbSection,
+  mainBreadcrumbSection,
+} from "../breadcrumbSections";
 
 const TITLE = "Dépenses automobiles évitées";
 
@@ -33,7 +36,7 @@ const AvoidedCarRelatedExpensesDescription = ({ impactData }: Props) => {
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          socialMonetaryBreadcrumbSection,
+          localPeopleOrCompanyBreadcrumbSection,
           { label: TITLE },
         ]}
       />

@@ -1,5 +1,9 @@
 import { useContext } from "react";
-import { ProjectDevelopmentEconomicBalanceItem, sumListWithKey } from "shared";
+import {
+  ProjectDevelopmentEconomicBalanceItem,
+  ReinstatementExpensePurpose,
+  sumListWithKey,
+} from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
@@ -11,7 +15,6 @@ import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHe
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { getSiteReinstatementDetailsColor } from "../../../getImpactColor";
 import { getEconomicBalanceDetailsImpactLabel } from "../../../getImpactLabel";
 import ModalTable from "../../shared/ModalTable";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
@@ -20,6 +23,24 @@ import { breadcrumbSection } from "../breadcrumbSection";
 type Props = {
   impactData?: Extract<ProjectDevelopmentEconomicBalanceItem, { name: "siteReinstatement" }>[];
   bearer?: string;
+};
+const getSiteReinstatementDetailsColor = (impactName: ReinstatementExpensePurpose) => {
+  switch (impactName) {
+    case "asbestos_removal":
+      return "#F4C00A";
+    case "deimpermeabilization":
+      return "#039CF2";
+    case "demolition":
+      return "#85341B";
+    case "other_reinstatement":
+      return "#DE3317";
+    case "remediation":
+      return "#F6DB1F";
+    case "sustainable_soils_reinstatement":
+      return "#7ACA17";
+    case "waste_collection":
+      return "#298435";
+  }
 };
 
 const SiteReinstatementDescription = ({ impactData, bearer = "l'aménageur" }: Props) => {

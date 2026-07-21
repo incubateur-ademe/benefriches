@@ -7,7 +7,7 @@ import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/Modal
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
+import { localAuthorityBreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   surfaceArea: number;
@@ -31,7 +31,7 @@ const RoadsAndUtilitiesMaintenanceExpenses = ({ surfaceArea, impactData }: Props
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          economicDirectBreadcrumbSection,
+          localAuthorityBreadcrumbSection,
           { label: "Dépenses d’entretien des VRD" },
         ]}
       />

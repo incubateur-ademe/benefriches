@@ -1,58 +1,53 @@
 import { View } from "@react-pdf/renderer";
 
-import { SocioEconomicImpactByCategory } from "@/features/projects/domain/projectImpactsSocioEconomic";
-import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
+import { SocioEconomicImpactsByBearerListView } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import { getSocioEconomicImpactLabel } from "../../../impacts/getImpactLabel";
-import ImpactsGroupByActor from "../../components/ImpactsGroupByActor";
+import ImpactItemDetails from "../../components/ImpactItemDetails";
+import ImpactItemGroup from "../../components/ImpactItemGroup";
 import ImpactsSection from "../../components/ImpactsSection";
 
-type Props = SocioEconomicImpactByCategory & {
-  sectionName:
-    | "economic_direct"
-    | "economic_indirect"
-    | "social_monetary"
-    | "environmental_monetary";
+type Props = {
+  impacts: SocioEconomicImpactsByBearerListView;
+  sectionName: "humanity" | "localPeopleOrCompany" | "localAuthority";
 };
 
 const getSectionTitle = (sectionName: Props["sectionName"]) => {
   switch (sectionName) {
-    case "economic_direct":
-      return "Impacts économiques directs";
-    case "economic_indirect":
-      return "Impacts économiques indirects";
-    case "social_monetary":
-      return "Impacts sociaux monétarisés";
-    case "environmental_monetary":
-      return "Impacts environnementaux monétarisés";
+    case "humanity":
+      return "Impacts économiques pour la société française et mondiale";
+    case "localPeopleOrCompany":
+      return "Impacts économiques pour les riverains";
+    case "localAuthority":
+      return "Impacts économiques pour la collectivité locale";
   }
 };
-export default function SocioEconomicImpactsSection({ impacts, total, sectionName }: Props) {
-  if (impacts.length === 0) {
+
+export default function SocioEconomicImpactsSection({ impacts, sectionName }: Props) {
+  if (impacts[sectionName].impacts.length === 0) {
     return null;
   }
 
   return (
     <View id={`impacts.socio_economic.${sectionName}`}>
-      <ImpactsSection title={getSectionTitle(sectionName)} total={total} valueType="monetary">
-        {impacts.map(({ name, actors }) => (
-          <ImpactsGroupByActor
-            key={name}
-            type="monetary"
-            label={getSocioEconomicImpactLabel(name)}
-            actors={actors.map(
-              ({ name: actorLabel, value: actorValue, details: actorDetails }) => ({
-                label: getActorLabel(actorLabel),
-                value: actorValue,
-                details: actorDetails
-                  ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
-                      label: getSocioEconomicImpactLabel(detailsName),
-                      value: detailsValue,
-                    }))
-                  : undefined,
-              }),
-            )}
-          />
+      <ImpactsSection
+        title={getSectionTitle(sectionName)}
+        total={impacts[sectionName].total}
+        valueType="monetary"
+      >
+        {impacts[sectionName].impacts.map(({ name, amount, details = [], bearerName }) => (
+          <ImpactItemGroup key={name}>
+            <ImpactItemDetails
+              value={amount}
+              label={getSocioEconomicImpactLabel(name)}
+              actor={bearerName}
+              data={details.map((item) => ({
+                label: getSocioEconomicImpactLabel(item.name),
+                value: item.amount,
+              }))}
+              type="monetary"
+            />
+          </ImpactItemGroup>
         ))}
       </ImpactsSection>
     </View>

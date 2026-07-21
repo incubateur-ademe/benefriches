@@ -71,7 +71,6 @@ export type ReconversionStakeholders = {
 // --- IMPACTS
 
 type SoilsRelatedIndirectEconomicImpactName =
-  | "storedCo2Eq"
   | "newStoredCo2Eq"
   | "natureRelatedWelnessAndLeisure"
   | "forestRelatedProduct"
@@ -82,7 +81,7 @@ type SoilsRelatedIndirectEconomicImpactName =
   | "soilErosion"
   | "waterRegulation";
 
-type ProjectIndirectEconomicImpactName =
+export type ProjectIndirectEconomicImpactName =
   | "avoidedAirConditioningExpenses"
   | "avoidedCo2eqWithEnergyProduction"
   | "avoidedAirConditioningCo2eqEmissions"
@@ -115,25 +114,9 @@ type AggregatedReconversionProjectOnSiteImpactName =
   | ProjectIndirectEconomicImpactName
   | SiteReconversionIndirectEconomicImpactName;
 
-export type AvoidedFricheCostsIndirectEconomicImpactItemView = {
-  total: number;
-  detailsByYear: number[];
-  cumulativeByYear: number[];
-  details:
-    | "security"
-    | "illegalDumpingCost"
-    | "accidentsCost"
-    | "otherSecuringCosts"
-    | "maintenance";
-  name: Extract<
-    SiteReconversionIndirectEconomicImpactName,
-    | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
-    | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
-  >;
-};
 export type AggregatedReconversionProjectOnSiteImpactItemView =
   | ProjectIndirectImpactItemView<AggregatedReconversionProjectOnSiteImpactName>
-  | AvoidedFricheCostsIndirectEconomicImpactItemView;
+  | ProjectOperatingEconomicBalanceItem;
 
 // Situation --> comparaison coût de l'inaction, impacts seuls du projet
 type ReconversionProjectOnSiteImpactName =
@@ -141,7 +124,8 @@ type ReconversionProjectOnSiteImpactName =
   | ProjectIndirectEconomicImpactName;
 
 export type ReconversionProjectOnSiteIndirectEconomicImpactItemView =
-  ProjectIndirectImpactItemView<ReconversionProjectOnSiteImpactName>;
+  | ProjectIndirectImpactItemView<ReconversionProjectOnSiteImpactName>
+  | ProjectOperatingEconomicBalanceItem;
 
 // Situation --> comparaison extension urbaine
 type UrbanSprawlComparisonIndirectEconomicImpactName =
@@ -151,7 +135,8 @@ type UrbanSprawlComparisonIndirectEconomicImpactName =
   | "avoidedRoadsAndUtilitiesConstructionExpenses";
 
 export type UrbanSprawlComparisonIndirectEconomicImpactItemView =
-  ProjectIndirectImpactItemView<UrbanSprawlComparisonIndirectEconomicImpactName>;
+  | ProjectIndirectImpactItemView<UrbanSprawlComparisonIndirectEconomicImpactName>
+  | ProjectOperatingEconomicBalanceItem;
 
 // IMPACTS DATA VIEWS
 
@@ -163,15 +148,32 @@ export type ProjectIndirectImpactItemView<
     | ReconversionProjectOnSiteImpactName
     | UrbanSprawlComparisonIndirectEconomicImpactName
     | AggregatedReconversionProjectOnSiteImpactName,
-> =
-  | {
+> = T extends
+  | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+  | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
+  ? {
       total: number;
       detailsByYear: number[];
       cumulativeByYear: number[];
       name: T;
-      details?: undefined;
+      details:
+        | "security"
+        | "illegalDumpingCost"
+        | "accidentsCost"
+        | "otherSecuringCosts"
+        | "maintenance";
     }
-  | AvoidedFricheCostsIndirectEconomicImpactItemView;
+  : {
+      total: number;
+      detailsByYear: number[];
+      cumulativeByYear: number[];
+      name: T;
+    };
+
+export type AvoidedFricheCostsIndirectEconomicImpactItemView = ProjectIndirectImpactItemView<
+  | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+  | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
+>;
 
 export type IndirectEconomicImpactName =
   | AggregatedReconversionProjectOnSiteImpactName
@@ -193,7 +195,7 @@ export type IndirectEconomicImpactDataView<
     | UrbanSprawlComparisonIndirectEconomicImpactItemView,
 > = {
   total: number;
-  details: (T | ProjectOperatingEconomicBalanceItem)[];
+  details: T[];
 };
 
 export type AggregatedReconversionIndirectEconomicImpactsDataView =

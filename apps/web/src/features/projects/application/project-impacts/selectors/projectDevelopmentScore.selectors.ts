@@ -6,7 +6,7 @@ import { RootState } from "@/app/store/store";
 import { IndirectEconomicImpactsByBearerAndGroupCategory } from "../../../domain/groupIndirectImpactsByBearer";
 import {
   selectImpactsCroppedByEvaluationPeriod,
-  selectIndirectEconomicImpactsByBearer,
+  selectIndirectEconomicImpactsByBearerAndCategory,
 } from "./projectBreakEvenLevel.selectors";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
@@ -105,7 +105,11 @@ const INDIRECT_ECONOMIC_IMPACTS_SCORE = {
 } as const;
 
 export const selectDevelopmentScoreDataView = createSelector(
-  [selectSelf, selectImpactsCroppedByEvaluationPeriod, selectIndirectEconomicImpactsByBearer],
+  [
+    selectSelf,
+    selectImpactsCroppedByEvaluationPeriod,
+    selectIndirectEconomicImpactsByBearerAndCategory,
+  ],
   (
     state,
     breakEvenLevelForEvaluationPeriod,

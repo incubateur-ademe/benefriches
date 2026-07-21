@@ -1,4 +1,5 @@
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { SocioEconomicSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
@@ -8,14 +9,19 @@ import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/f
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ModalDataProps } from "../../ImpactModalDescription";
-import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
+import {
+  localAuthorityBreadcrumbSection,
+  localPeopleOrCompanyBreadcrumbSection,
+  mainBreadcrumbSection,
+} from "../breadcrumbSections";
 
 type Props = {
   developmentPlan: ModalDataProps["contextData"]["projectDevelopmentPlan"];
   impactData?: number;
+  bearer: SocioEconomicSubSectionName;
 };
 
-const RentalIncomeDescription = ({ developmentPlan, impactData }: Props) => {
+const RentalIncomeDescription = ({ developmentPlan, impactData, bearer }: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -31,8 +37,10 @@ const RentalIncomeDescription = ({ developmentPlan, impactData }: Props) => {
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          economicDirectBreadcrumbSection,
-          { label: "Dépenses friche évitées" },
+          bearer === "localAuthority"
+            ? localAuthorityBreadcrumbSection
+            : localPeopleOrCompanyBreadcrumbSection,
+          { label: "Revenu locatif" },
         ]}
       />
       <ModalContent fullWidth>

@@ -17,7 +17,7 @@ export default function Step1({ onNextClick, canSkipOnboarding, skipOnboarding }
       title={
         <>
           Bénéfriches calcule{" "}
-          <span className="bg-success-ultralight dark:text-black">6 types d'impacts</span>.
+          <span className="bg-success-ultralight dark:text-black">5 types d'impacts</span>.
         </>
       }
       onNextClick={onNextClick}
@@ -28,23 +28,18 @@ export default function Step1({ onNextClick, canSkipOnboarding, skipOnboarding }
         <li className="text-xl">
           <div className="mb-4">Des impacts monétaires :</div>
           <ul className="text-base list-none space-y-2">
-            <EmojiListItem emoji="💰" classes={EMOJI_CLASSES}>
-              Impacts économiques directs <span>→</span>{" "}
-              <span className="font-normal">
-                Exemple : dépenses de sécurisation de la friche évitées
-              </span>
-            </EmojiListItem>
             <EmojiListItem emoji="🏦" classes={EMOJI_CLASSES}>
-              Impacts économiques indirects <span>→</span>{" "}
+              Impacts économiques pour la collectivité <span>→</span>{" "}
               <span className="font-normal">Exemple : recettes fiscales</span>
             </EmojiListItem>
             <EmojiListItem emoji="💰👩🏻" smallText classes={EMOJI_CLASSES}>
-              Impacts sociaux monétarisés <span>→</span>{" "}
-              <span className="font-normal">Exemple : dépenses de santé évitées</span>
+              Impacts sociaux monétarisés pour les riverains <span>→</span>{" "}
+              <span className="font-normal">Exemple : dépenses de déplacement évitées</span>
             </EmojiListItem>
             <EmojiListItem emoji="💰🌳" smallText classes={EMOJI_CLASSES}>
-              Impacts environnementaux monétarisés <span>→</span>{" "}
-              <span className="font-normal">Exemple : dépenses de traitement de l'eau évitées</span>
+              Impacts environnementaux monétarisés pour l'humanité et la société française{" "}
+              <span>→</span>{" "}
+              <span className="font-normal">Exemple : valeur monétaire de la décarbonation</span>
             </EmojiListItem>
           </ul>
           <MonetizedImpactInfoModal />

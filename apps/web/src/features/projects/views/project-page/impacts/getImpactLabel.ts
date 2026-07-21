@@ -18,7 +18,10 @@ import {
   PermeableSoilsDetails,
 } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { SocialImpactName } from "@/features/projects/domain/projectImpactsSocial";
-import { SocioEconomicImpactName } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import {
+  SocioEconomicDetailsName,
+  SocioEconomicMainImpactName,
+} from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { getLabelForBuildingsConstructionExpenseFromApiPurpose } from "@/shared/core/urbanProject";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
@@ -100,96 +103,133 @@ export const getSocialImpactLabel = (name: SocialImpactName) => {
   }
 };
 
-export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
+export const getSocioEconomicImpactLabel = (
+  name: SocioEconomicMainImpactName | SocioEconomicDetailsName,
+) => {
   switch (name) {
     // Économique directs
-    case "rental_income":
+    case "projectedRentalIncome":
       return "🔑 Revenu locatif";
-    case "site_rental_income_loss":
+    case "oldRentalIncomeLoss":
       return "🔑 Perte de revenu locatif";
 
     // Arrêt de la sécurisation de la friche
-    case "avoided_friche_costs":
-      return "🏚️ Dépenses de gestion et sécurisation de la friche évitées";
-    case "avoided_accidents_costs":
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner":
+      return "🏚️ Dépenses liées à la friche évitées pour le propriétaire";
+
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant":
+      return "🏚️ Dépenses liées à la friche évitées pour le locataire";
+
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant.accidentsCost":
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner.accidentsCost":
       return "💥 Accidents évités";
-    case "avoided_illegal_dumping_costs":
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner.illegalDumpingCost":
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant.illegalDumpingCost":
       return "🚮 Débarras de dépôt sauvage";
-    case "avoided_maintenance_costs":
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner.maintenance":
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant.maintenance":
       return "🔧 Entretien";
-    case "avoided_other_securing_costs":
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner.otherSecuringCosts":
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant.otherSecuringCosts":
       return "🛡 Autres dépenses de sécurisation";
-    case "avoided_security_costs":
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner.security":
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant.security":
       return "👮 Gardiennage";
+
+    case "projectOperatingExpenses":
+      return "💸 Charges d’exploitation";
+
+    case "projectOperatingExpenses.rent":
+      return "🔑 Loyer";
+    case "projectOperatingExpenses.maintenance":
+      return "⚙️ Entretien et maintenance";
+    case "projectOperatingExpenses.taxes":
+      return "🏛️ Taxes et impôts";
+    case "projectOperatingExpenses.other":
+      return "💸 Autres charges d’exploitation";
+
+    case "projectOperatingRevenues":
+      return "💰 Recettes d'exploitation";
+
+    case "projectOperatingRevenues.operations":
+      return "💰 Recettes principales";
+    case "projectOperatingRevenues.other":
+      return "💶 Recettes secondaires";
+    case "projectOperatingRevenues.rent":
+      return "🔑 Revenu locatif";
+
     // Économique indirects
-    case "taxes_income":
-      return "🏛 Recettes fiscales";
-    case "property_transfer_duties_income":
-      return "🏛 Droits de mutation sur la transaction foncière";
-    case "local_property_value_increase":
-      return "🏡 Valeur patrimoniale des bâtiments alentour";
-    case "local_transfer_duties_increase":
+    case "taxesIncome":
+      return "🏛️ Recettes fiscales";
+
+    case "propertyTransferDutiesIncome":
+      return "🏛️ Droits de mutation sur la transaction foncière";
+    case "localPropertyValueIncrease":
+      return "🏡 Hausse de la valeur patrimoniale des bâtiments alentour";
+    case "localTransferDutiesIncrease":
       return "🏛️ Droits de mutation sur les ventes immobilières alentour";
-    case "project_new_company_taxation_income":
+    case "projectNewCompanyTaxationIncome":
       return "🏢 Fiscalité sur les entreprises créées";
-    case "project_new_houses_taxes_income":
+    case "projectNewHousesTaxesIncome":
       return "🏠 Taxe foncière sur les habitations créées";
-    case "project_photovoltaic_taxes_income":
+    case "projectPhotovoltaicTaxesIncome":
       return "⚡️ Taxes et impôts sur la centrale EnR";
-    case "site_operation_benefits_loss":
+    case "previousSiteOperationBenefitLoss":
       return "👨‍🌾 Perte de revenus agricoles";
     /// Projet urbain
-    case "avoided_property_damages_expenses":
+    case "avoidedPropertyDamageExpenses":
       return "🚙 Dépenses d’entretien et réparation évitées";
-    case "avoided_car_related_expenses":
+    case "avoidedCarRelatedExpenses":
       return "🚗 Dépenses automobiles évitées";
-    case "avoided_air_conditioning_expenses":
+    case "avoidedAirConditioningExpenses":
       return "❄️ Dépenses de climatisation évitées";
-    case "roads_and_utilities_maintenance_expenses":
+    case "fricheRoadsAndUtilitiesExpenses":
       return "🅿️ Dépenses d’entretien des VRD";
     // Sociaux monétarisés
     /// Projet urbain
-    case "travel_time_saved":
+    case "travelTimeSavedPerTravelerExpenses":
       return "⏱️️ Valeur monétaire du temps passé en moins dans les transports";
-    case "avoided_traffic_accidents":
+
+    case "avoidedTrafficAccidents":
       return "🚗 Dépenses de santé évitées grâce à la diminution des accidents de la route";
-    case "avoided_traffic_deaths":
+    case "avoidedAccidentsDeathsExpenses":
       return "🪦 Décès évités";
-    case "avoided_traffic_minor_injuries":
+    case "avoidedAccidentsMinorInjuriesExpenses":
       return "🤕 Blessés légers évités";
-    case "avoided_traffic_severe_injuries":
+    case "avoidedAccidentsSevereInjuriesExpenses":
       return "‍🚑 Blessés graves évités";
     // Environementaux monétarisés
-    case "avoided_co2_eq_emissions":
+    case "avoidedCo2eqEmissions":
       return "☁️  Valeur monétaire de la décarbonation ";
-    case "avoided_co2_eq_with_enr":
+    case "avoidedCo2eqWithEnergyProduction":
       return "⚡️️ Production d'énergies renouvelables";
-    case "avoided_traffic_co2_eq_emissions":
+    case "avoidedTrafficCo2EqEmissions":
       return "🚙 Déplacements en voiture évités";
-    case "avoided_air_conditioning_co2_eq_emissions":
+    case "avoidedAirConditioningCo2eqEmissions":
       return "❄️ Utilisation réduite de de la climatisation";
-    case "avoided_air_pollution":
+
+    case "avoidedAirPollutionHealthExpenses":
       return "💨 Dépenses de santé évitées grâce à la réduction de la pollution de l’air";
-    case "water_regulation":
+    case "waterRegulation":
       return "🚰 Dépenses de traitement de l’eau évitées";
     // Services écosystémiques
-    case "ecosystem_services":
+    case "ecosystemServices":
       return "🌱 Valeur monétaire des services écosystémiques";
-    case "forest_related_product":
+    case "forestRelatedProduct":
       return "🪵 Produits issus de la forêt";
-    case "invasive_species_regulation":
+    case "invasiveSpeciesRegulation":
       return "🦔 Régulation des espèces invasives";
-    case "nature_related_wellness_and_leisure":
+    case "natureRelatedWelnessAndLeisure":
       return "🚵 Bien-être et loisirs liés à la nature";
-    case "nitrogen_cycle":
+    case "nitrogenCycle":
       return "🍄 Cycle de l'azote";
     case "pollination":
       return "🐝 Pollinisation";
-    case "soil_erosion":
+    case "soilErosion":
       return "🌾 Régulation de l'érosion des sols";
-    case "water_cycle":
+    case "waterCycle":
       return "💧 Cycle de l'eau";
-    case "soils_co2_eq_storage":
+    case "newStoredCo2Eq":
       return "🍂️ Carbone stocké dans les sols";
   }
 };

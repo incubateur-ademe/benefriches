@@ -11,7 +11,10 @@ import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/Modal
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import TravelRelatedImpactsIntroduction from "../../shared/travel-related-impacts-introduction/TravelRelatedImpactsIntroduction";
-import { mainBreadcrumbSection, socialMonetaryBreadcrumbSection } from "../breadcrumbSections";
+import {
+  mainBreadcrumbSection,
+  localPeopleOrCompanyBreadcrumbSection,
+} from "../breadcrumbSections";
 
 const TITLE = "Valeur monétaire du temps passé en moins dans les transports";
 
@@ -55,7 +58,7 @@ const TimeTravelSavedMonetaryValueDescription = ({ impactData }: Props) => {
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          socialMonetaryBreadcrumbSection,
+          localPeopleOrCompanyBreadcrumbSection,
           { label: TITLE },
         ]}
       />

@@ -1,4 +1,7 @@
+import { AvoidedFricheCostsIndirectEconomicImpactItemView } from "shared";
+
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { SocioEconomicSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
@@ -7,14 +10,23 @@ import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/Modal
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { breadcrumbSegments } from "./breadcrumbSegments";
+import { getBreadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   siteSurfaceArea: number;
   impactData?: number;
+  bearerName: string;
+  sectionName: SocioEconomicSubSectionName;
+  impactName: AvoidedFricheCostsIndirectEconomicImpactItemView["name"];
 };
 
-const AvoidedSecurityCostsDescription = ({ siteSurfaceArea, impactData }: Props) => {
+const AvoidedSecurityCostsDescription = ({
+  siteSurfaceArea,
+  impactData,
+  bearerName,
+  sectionName,
+  impactName,
+}: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -24,11 +36,14 @@ const AvoidedSecurityCostsDescription = ({ siteSurfaceArea, impactData }: Props)
             ? {
                 state: impactData > 0 ? "success" : "error",
                 text: formatMonetaryImpact(impactData),
-                description: "pour l'actuel locataire ou le propriétaire",
+                description: `pour ${bearerName}`,
               }
             : undefined
         }
-        breadcrumbSegments={[...breadcrumbSegments, { label: "Gardiennage" }]}
+        breadcrumbSegments={[
+          ...getBreadcrumbSegments(sectionName, impactName),
+          { label: "Gardiennage" },
+        ]}
       />
       <ModalContent fullWidth>
         <p>
@@ -38,7 +53,10 @@ const AvoidedSecurityCostsDescription = ({ siteSurfaceArea, impactData }: Props)
           augmentation des dépenses de réhabilitation, un gardiennage du site peut être nécessaire.
         </p>
         <p>
-          <strong>Bénéficiaire</strong> : actuel exploitant
+          <strong>Bénéficiaire</strong> :{" "}
+          {impactName === "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+            ? "actuel propriétaire"
+            : "actuel locataire"}
         </p>
         <ModalTitleTwo>Quelles données sont utilisées dans le calcul ?</ModalTitleTwo>
         <ModalTitleThree> Données systémiques agrégées par Bénéfriches :</ModalTitleThree>

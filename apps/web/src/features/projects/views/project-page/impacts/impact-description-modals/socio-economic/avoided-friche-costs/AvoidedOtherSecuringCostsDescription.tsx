@@ -1,14 +1,25 @@
+import { AvoidedFricheCostsIndirectEconomicImpactItemView } from "shared";
+
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { SocioEconomicSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
-import { breadcrumbSegments } from "./breadcrumbSegments";
+import { getBreadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   impactData?: number;
+  bearerName: string;
+  sectionName: SocioEconomicSubSectionName;
+  impactName: AvoidedFricheCostsIndirectEconomicImpactItemView["name"];
 };
-const AvoidedOtherSecuringCostsDescription = ({ impactData }: Props) => {
+const AvoidedOtherSecuringCostsDescription = ({
+  impactData,
+  bearerName,
+  sectionName,
+  impactName,
+}: Props) => {
   return (
     <ModalBody size="medium">
       <ModalHeader
@@ -18,11 +29,14 @@ const AvoidedOtherSecuringCostsDescription = ({ impactData }: Props) => {
             ? {
                 state: impactData > 0 ? "success" : "error",
                 text: formatMonetaryImpact(impactData),
-                description: "pour l'actuel locataire ou le propriétaire",
+                description: `pour ${bearerName}`,
               }
             : undefined
         }
-        breadcrumbSegments={[...breadcrumbSegments, { label: "Autres dépenses de sécurisation" }]}
+        breadcrumbSegments={[
+          ...getBreadcrumbSegments(sectionName, impactName),
+          { label: "Autres dépenses de sécurisation" },
+        ]}
       />
       <ModalContent>
         <p>
@@ -32,7 +46,10 @@ const AvoidedOtherSecuringCostsDescription = ({ impactData }: Props) => {
           de fermeture).
         </p>
         <p>
-          <strong>Bénéficiaire</strong> : actuel exploitant
+          <strong>Bénéficiaire</strong> :{" "}
+          {impactName === "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+            ? "actuel propriétaire"
+            : "actuel locataire"}
         </p>
 
         <p>Les données du site ont été saisies par l’utilisateur·ice.</p>

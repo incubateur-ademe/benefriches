@@ -42,10 +42,9 @@ describe("projectImpacts ViewData selectors", () => {
         }),
         socioEconomicImpacts: expect.objectContaining({
           total: expect.any(Number),
-          economicDirect: expect.any(Object),
-          economicIndirect: expect.any(Object),
-          socialMonetary: expect.any(Object),
-          environmentalMonetary: expect.any(Object),
+          humanity: expect.any(Object),
+          localPeopleOrCompany: expect.any(Object),
+          localAuthority: expect.any(Object),
         }),
         environmentImpacts: expect.any(Array),
         socialImpacts: expect.any(Array),

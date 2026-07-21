@@ -47,7 +47,9 @@ const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => 
                 e.stopPropagation();
                 updateModalContent({
                   sectionName: "socio_economic",
-                  impactName: "local_property_value_increase",
+                  subSectionName: "localPeopleOrCompany",
+
+                  impactName: "localPropertyValueIncrease",
                 });
               },
             }}

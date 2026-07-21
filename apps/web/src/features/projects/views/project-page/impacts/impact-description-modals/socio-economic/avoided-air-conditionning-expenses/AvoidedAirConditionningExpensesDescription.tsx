@@ -6,7 +6,10 @@ import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/Mod
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { economicIndirectBreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
+import {
+  localPeopleOrCompanyBreadcrumbSection,
+  mainBreadcrumbSection,
+} from "../breadcrumbSections";
 
 type Props = {
   impactData?: number;
@@ -28,7 +31,7 @@ const AvoidedAirConditionningExpensesDescription = ({ impactData }: Props) => {
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          economicIndirectBreadcrumbSection,
+          localPeopleOrCompanyBreadcrumbSection,
           { label: "Dépenses de climatisation évitées" },
         ]}
       />

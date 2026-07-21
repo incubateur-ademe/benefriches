@@ -8,7 +8,11 @@ type Props = {
 };
 
 const ModalData = ({ children, className }: Props) => {
-  return <div className={classNames("p-6 md:p-10", className)}>{children}</div>;
+  return (
+    <div className={classNames("p-6 md:p-10 grid grid-cols-1 lg:grid-cols-2 gap-10", className)}>
+      {children}
+    </div>
+  );
 };
 
 export default ModalData;

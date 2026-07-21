@@ -6,7 +6,7 @@ import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/Mod
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { mainBreadcrumbSection, economicIndirectBreadcrumbSection } from "../breadcrumbSections";
+import { mainBreadcrumbSection, localAuthorityBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   impactData?: number;
@@ -27,7 +27,7 @@ const PropertyTransferDutiesIncreaseDescription = ({ impactData }: Props) => {
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          economicIndirectBreadcrumbSection,
+          localAuthorityBreadcrumbSection,
           { label: "Droits de mutation sur les ventes immobilières alentour" },
         ]}
       />

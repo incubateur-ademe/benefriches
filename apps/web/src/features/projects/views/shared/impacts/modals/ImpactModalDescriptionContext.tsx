@@ -24,11 +24,7 @@ type IsClosedState = {
   impactDetailsName: undefined;
 };
 
-export type SocioEconomicSubSectionName =
-  | "economic_direct"
-  | "economic_indirect"
-  | "social_monetary"
-  | "environmental_monetary";
+export type SocioEconomicSubSectionName = "humanity" | "localPeopleOrCompany" | "localAuthority";
 export type SocialSubSectionName = "jobs" | "french_society" | "local_people";
 export type EnvironmentSubSectionName = "co2" | "soils";
 

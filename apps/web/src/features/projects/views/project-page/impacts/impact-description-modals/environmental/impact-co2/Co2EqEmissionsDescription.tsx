@@ -12,7 +12,6 @@ import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
-import { getAvoidedCo2eqEmissionsDetailsColor } from "../../../getImpactColor";
 import { getEnvironmentalDetailsImpactLabel } from "../../../getImpactLabel";
 import ModalTable from "../../shared/ModalTable";
 import ModalAreaChart from "../../shared/modal-charts/ModalAreaChart";
@@ -20,6 +19,19 @@ import { co2BreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSectio
 
 type Props = {
   impactsData?: EnvironmentalImpact;
+};
+
+const getAvoidedCo2eqEmissionsDetailsColor = (impactName: CO2BenefitDetails) => {
+  switch (impactName) {
+    case "avoided_co2_eq_emissions_with_production":
+      return "#F6E900";
+    case "avoided_air_conditioning_co2_eq_emissions":
+      return "#1F60FB";
+    case "avoided_car_traffic_co2_eq_emissions":
+      return "#C750CA";
+    case "stored_co2_eq":
+      return "#FF8910";
+  }
 };
 
 const Co2BenefitDescription = ({ impactsData: co2Benefit }: Props) => {

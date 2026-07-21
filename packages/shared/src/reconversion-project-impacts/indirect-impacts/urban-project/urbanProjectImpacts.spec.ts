@@ -3,8 +3,8 @@ import { describe, it, beforeEach, mock } from "node:test";
 import {
   BuildingsUseDistribution,
   DevelopmentPlanFeatures,
+  ProjectIndirectEconomicImpactName,
   ProjectOnSiteImpactMetric,
-  ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "shared";
 
 import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
@@ -224,17 +224,16 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const travelEconomicImpactNames: ReconversionProjectOnSiteIndirectEconomicImpactItemView["name"][] =
-        [
-          "avoidedPropertyDamageExpenses",
-          "avoidedCarRelatedExpenses",
-          "travelTimeSavedPerTravelerExpenses",
-          "avoidedTrafficCo2EqEmissions",
-          "avoidedAirPollutionHealthExpenses",
-          "avoidedAccidentsMinorInjuriesExpenses",
-          "avoidedAccidentsSevereInjuriesExpenses",
-          "avoidedAccidentsDeathsExpenses",
-        ] as const;
+      const travelEconomicImpactNames: ProjectIndirectEconomicImpactName[] = [
+        "avoidedPropertyDamageExpenses",
+        "avoidedCarRelatedExpenses",
+        "travelTimeSavedPerTravelerExpenses",
+        "avoidedTrafficCo2EqEmissions",
+        "avoidedAirPollutionHealthExpenses",
+        "avoidedAccidentsMinorInjuriesExpenses",
+        "avoidedAccidentsSevereInjuriesExpenses",
+        "avoidedAccidentsDeathsExpenses",
+      ] as const;
 
       travelEconomicImpactNames.forEach((name) => {
         assert.ok(result.economicImpacts.find((r) => r.name === name) !== undefined);

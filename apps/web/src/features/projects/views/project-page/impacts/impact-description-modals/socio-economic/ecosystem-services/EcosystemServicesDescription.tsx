@@ -1,6 +1,7 @@
-import { useContext } from "react";
-import { EcosystemServicesImpact, SocioEconomicImpact } from "shared";
+import { useContext, useMemo } from "react";
+import { AggregatedReconversionProjectOnSiteImpactItemView, sumListWithKey } from "shared";
 
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -10,95 +11,111 @@ import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
-import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
+import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ModalTable from "../../shared/ModalTable";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
-import {
-  mainBreadcrumbSection,
-  environmentalMonetaryBreadcrumbSection,
-} from "../breadcrumbSections";
+import { mainBreadcrumbSection, humanityBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
-  impactsData: SocioEconomicImpact[];
+  impactsData: IndirectEconomicImpactsByBearerAndGroupCategory<AggregatedReconversionProjectOnSiteImpactItemView>["humanity"]["environmentalAction"];
 };
 
-const getEcosystemServiceDetailsTitle = (
-  impactName: EcosystemServicesImpact["details"][number]["impact"],
-) => {
+type EcosystemServiceName =
+  | "newStoredCo2Eq"
+  | "natureRelatedWelnessAndLeisure"
+  | "forestRelatedProduct"
+  | "pollination"
+  | "invasiveSpeciesRegulation"
+  | "waterCycle"
+  | "nitrogenCycle"
+  | "soilErosion";
+
+const getEcosystemServiceDetailsTitle = (impactName: EcosystemServiceName) => {
   switch (impactName) {
-    case "soils_co2_eq_storage":
+    case "newStoredCo2Eq":
       return "🍂️ Carbone stocké dans les sols";
-    case "nature_related_wellness_and_leisure":
+    case "natureRelatedWelnessAndLeisure":
       return "🚵 Loisirs et bien-être liés à la nature";
-    case "forest_related_product":
+    case "forestRelatedProduct":
       return "🪵 Produits issus de la forêt";
-    case "invasive_species_regulation":
+    case "invasiveSpeciesRegulation":
       return "🦔 Régulation des espèces invasives";
-    case "nitrogen_cycle":
+    case "nitrogenCycle":
       return "🍄 Cycle de l'azote";
     case "pollination":
       return "🐝 Pollinisation";
-    case "soil_erosion":
+    case "soilErosion":
       return "🌾 Régulation de l'érosion des sols";
-    case "water_cycle":
+    case "waterCycle":
       return "💧 Cycle de l'eau";
   }
 };
 
-const getChartColor = (impactName: EcosystemServicesImpact["details"][number]["impact"]) => {
+const getChartColor = (impactName: EcosystemServiceName) => {
   switch (impactName) {
-    case "soils_co2_eq_storage":
+    case "newStoredCo2Eq":
       return "#FF8910";
-    case "soil_erosion":
+    case "soilErosion":
       return "#C3D869";
-    case "forest_related_product":
+    case "forestRelatedProduct":
       return "#A27C61";
-    case "nature_related_wellness_and_leisure":
+    case "natureRelatedWelnessAndLeisure":
       return "#75399D";
     case "pollination":
       return "#F6E900";
-    case "invasive_species_regulation":
+    case "invasiveSpeciesRegulation":
       return "#2D163C";
-    case "nitrogen_cycle":
+    case "nitrogenCycle":
       return "#F83A31";
-    case "water_cycle":
+    case "waterCycle":
       return "#1F60FB";
   }
 };
 
 const EcosystemServicesDescription = ({ impactsData }: Props) => {
-  const ecosystemServicesImpact = impactsData.find(
-    (impact): impact is EcosystemServicesImpact => impact.impact === "ecosystem_services",
-  );
-
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const data =
-    ecosystemServicesImpact?.details.map(({ amount, impact }) => ({
-      label: getEcosystemServiceDetailsTitle(impact),
-      color: getChartColor(impact),
-      value: amount,
-      name: impact,
-    })) ?? [];
+  const data = useMemo(
+    () =>
+      filterByName(
+        impactsData,
+        "newStoredCo2Eq",
+        "natureRelatedWelnessAndLeisure",
+        "forestRelatedProduct",
+        "pollination",
+        "invasiveSpeciesRegulation",
+        "waterCycle",
+        "nitrogenCycle",
+        "soilErosion",
+      ).map(({ total, name }) => ({
+        label: getEcosystemServiceDetailsTitle(name),
+        color: getChartColor(name),
+        value: total,
+        name: name,
+      })),
+    [impactsData],
+  );
+
+  const total = sumListWithKey(data, "value");
 
   return (
     <ModalBody size="large">
       <ModalHeader
         title="🌱 Valeur monétaire des services écosystémiques"
         value={
-          ecosystemServicesImpact
+          data
             ? {
-                state: ecosystemServicesImpact.amount > 0 ? "success" : "error",
-                text: formatMonetaryImpact(ecosystemServicesImpact.amount),
+                state: total > 0 ? "success" : "error",
+                text: formatMonetaryImpact(total),
                 description: "pour l'humanité",
               }
             : undefined
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          environmentalMonetaryBreadcrumbSection,
+          humanityBreadcrumbSection,
           {
             label: "Valeur monétaire des services écosystémiques",
           },
@@ -118,11 +135,11 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
               label,
               value,
               color,
-              actor: getActorLabel(ecosystemServicesImpact?.actor ?? "humanity"),
               onClick: () => {
                 updateModalContent({
                   sectionName: "socio_economic",
-                  impactName: "ecosystem_services",
+                  subSectionName: "humanity",
+                  impactName: "ecosystemServices",
                   impactDetailsName: name,
                 });
               },

@@ -3,23 +3,11 @@ import { sumListWithKey, typedObjectEntries } from "shared";
 
 import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 
+import { HUMANITY_IMPACTS_CATEGORIES } from "../../shared/impacts/impactGroupCategory";
 import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
   humanityIndirectEconomicImpacts: IndirectEconomicImpactsByBearerAndGroupCategory["humanity"];
-};
-
-type HumanityImpactCategory = Exclude<keyof Props["humanityIndirectEconomicImpacts"], "total">;
-
-const CATEGORIES: Record<HumanityImpactCategory, { label: string; color: string }> = {
-  avoidedHealthExpenses: {
-    label: "🫀 Économies sur les dépenses de santé",
-    color: "#D0E24B",
-  },
-  environmentalAction: {
-    label: "🌿 Valeur de l’action environnementale",
-    color: "#6CE24B",
-  },
 };
 
 export default function HumanityIndirectEconomicImpactsCharts({
@@ -29,9 +17,9 @@ export default function HumanityIndirectEconomicImpactsCharts({
 
   const data = useMemo(() => {
     return typedObjectEntries(impacts).map(([category, items = []]) => ({
-      name: CATEGORIES[category].label,
+      name: HUMANITY_IMPACTS_CATEGORIES[category].label,
       y: sumListWithKey(items, "total"),
-      color: CATEGORIES[category].color,
+      color: HUMANITY_IMPACTS_CATEGORIES[category].color,
     }));
   }, [impacts]);
 

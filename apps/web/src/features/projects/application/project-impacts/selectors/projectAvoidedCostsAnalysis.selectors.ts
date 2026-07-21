@@ -42,15 +42,21 @@ export const selectAvoidedInactionCostsAnalysisDataView = createSelector(
   [selectSelf, selectImpactsCroppedByEvaluationPeriod],
   (state, impacts): AvoidedInactionCostsAnalysisDataView => ({
     siteStatuQuoIndirectEconomicImpactsByBearerAndCategory:
-      groupIndirectEconomicImpactsByBearerAndCategory(
-        impacts?.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData,
-        impacts?.stakeholders,
-      ),
+      groupIndirectEconomicImpactsByBearerAndCategory({
+        indirectEconomicImpacts:
+          impacts?.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details,
+        indirectEconomicImpactsTotal:
+          impacts?.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.total,
+        stakeholders: impacts?.stakeholders,
+      }),
     projectOnSiteIndirectEconomicImpactsByBearerAndCategory:
-      groupIndirectEconomicImpactsByBearerAndCategory(
-        impacts?.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData,
-        impacts?.stakeholders,
-      ),
+      groupIndirectEconomicImpactsByBearerAndCategory({
+        indirectEconomicImpacts:
+          impacts?.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData.details,
+        indirectEconomicImpactsTotal:
+          impacts?.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData.total,
+        stakeholders: impacts?.stakeholders,
+      }),
     siteId: state.contextData?.relatedSiteId,
     projectEconomicBalance: impacts?.projectEconomicBalance,
   }),
@@ -136,28 +142,46 @@ export const selectAvoidedUrbanSprawlCostsAnalysisDataView = createSelector(
         urbanSprawlSimulation: {
           ...urbanSprawlSimulationImpactsByEvaluationPeriod,
           simulationSiteStatuQuoImpactsByBearerAndCategory:
-            groupIndirectEconomicImpactsByBearerAndCategory(
-              urbanSprawlSimulationImpactsByEvaluationPeriod.simulationSiteStatuQuoImpactsData,
-              impactsByEvaluationPeriod?.stakeholders,
-            ),
+            groupIndirectEconomicImpactsByBearerAndCategory({
+              indirectEconomicImpacts:
+                urbanSprawlSimulationImpactsByEvaluationPeriod.simulationSiteStatuQuoImpactsData
+                  .details,
+              indirectEconomicImpactsTotal:
+                urbanSprawlSimulationImpactsByEvaluationPeriod.simulationSiteStatuQuoImpactsData
+                  .total,
+              stakeholders: impactsByEvaluationPeriod?.stakeholders,
+            }),
           projectOnSimulationSiteImpactsByBearerAndCategory:
-            groupIndirectEconomicImpactsByBearerAndCategory(
-              urbanSprawlSimulationImpactsByEvaluationPeriod.projectOnSimulationSiteImpactsData,
-              impactsByEvaluationPeriod?.stakeholders,
-            ),
+            groupIndirectEconomicImpactsByBearerAndCategory({
+              indirectEconomicImpacts:
+                urbanSprawlSimulationImpactsByEvaluationPeriod.projectOnSimulationSiteImpactsData
+                  .details,
+              indirectEconomicImpactsTotal:
+                urbanSprawlSimulationImpactsByEvaluationPeriod.projectOnSimulationSiteImpactsData
+                  .total,
+              stakeholders: impactsByEvaluationPeriod?.stakeholders,
+            }),
         },
         projectImpacts: {
           ...impactsByEvaluationPeriod,
-          siteStatuQuoImpactsByBearerAndCategory: groupIndirectEconomicImpactsByBearerAndCategory(
-            impactsByEvaluationPeriod.reconversionImpactsBreakdown
-              .siteStatuQuoIndirectEconomicImpactsData,
-            impactsByEvaluationPeriod?.stakeholders,
-          ),
-          projectOnSiteImpactsByBearerAndCategory: groupIndirectEconomicImpactsByBearerAndCategory(
-            impactsByEvaluationPeriod.reconversionImpactsBreakdown
-              .projectOnSiteIndirectEconomicImpactsData,
-            impactsByEvaluationPeriod?.stakeholders,
-          ),
+          siteStatuQuoImpactsByBearerAndCategory: groupIndirectEconomicImpactsByBearerAndCategory({
+            indirectEconomicImpacts:
+              impactsByEvaluationPeriod.reconversionImpactsBreakdown
+                .siteStatuQuoIndirectEconomicImpactsData.details,
+            indirectEconomicImpactsTotal:
+              impactsByEvaluationPeriod.reconversionImpactsBreakdown
+                .siteStatuQuoIndirectEconomicImpactsData.total,
+            stakeholders: impactsByEvaluationPeriod?.stakeholders,
+          }),
+          projectOnSiteImpactsByBearerAndCategory: groupIndirectEconomicImpactsByBearerAndCategory({
+            indirectEconomicImpacts:
+              impactsByEvaluationPeriod.reconversionImpactsBreakdown
+                .projectOnSiteIndirectEconomicImpactsData.details,
+            indirectEconomicImpactsTotal:
+              impactsByEvaluationPeriod.reconversionImpactsBreakdown
+                .projectOnSiteIndirectEconomicImpactsData.total,
+            stakeholders: impactsByEvaluationPeriod?.stakeholders,
+          }),
         },
         dataLoadingState: "success",
         shouldDisplayOnBoarding,
