@@ -65,10 +65,39 @@ export const addRenewableEnergyFormCasesToBuilder = <S extends RenewableEnergyHo
       AnswerStepId
     >(answerRegistry, context, selectForm(state).steps, action.payload);
 
-    applyStepChanges(selectForm(state), context, changes, stepHandlerRegistry, answerRegistry, {
-      nextMode: config.stepChangesNextMode,
-      finalSummaryFallbackStep: config.finalSummaryFallbackStep,
-    });
+    if (changes.cascadingChanges && changes.cascadingChanges.length > 0) {
+      selectForm(state).pendingStepCompletion = {
+        changes,
+        showAlert: true,
+      };
+    } else {
+      applyStepChanges(selectForm(state), context, changes, stepHandlerRegistry, answerRegistry, {
+        nextMode: config.stepChangesNextMode,
+        finalSummaryFallbackStep: config.finalSummaryFallbackStep,
+      });
+    }
+  });
+
+  builder.addCase(actions.stepCompletionConfirmed, (state) => {
+    const pending = selectForm(state).pendingStepCompletion;
+    if (pending) {
+      applyStepChanges(
+        selectForm(state),
+        buildContext(state),
+        pending.changes,
+        stepHandlerRegistry,
+        answerRegistry,
+        {
+          nextMode: config.stepChangesNextMode,
+          finalSummaryFallbackStep: config.finalSummaryFallbackStep,
+        },
+      );
+      selectForm(state).pendingStepCompletion = undefined;
+    }
+  });
+
+  builder.addCase(actions.stepCompletionCancelled, (state) => {
+    selectForm(state).pendingStepCompletion = undefined;
   });
 
   builder.addCase(actions.previousStepRequested, (state) => {

@@ -72,6 +72,8 @@ type FetchExpectedAnnualPowerPerformanceResult = {
 // Pure, dependency-free navigation + step-completion action creators.
 export type RenewableEnergyFormPureActions = {
   stepCompletionRequested: ActionCreatorWithPayload<StepCompletionPayload>;
+  stepCompletionConfirmed: ActionCreatorWithPayload<void>;
+  stepCompletionCancelled: ActionCreatorWithPayload<void>;
   previousStepRequested: ActionCreatorWithPayload<void>;
   nextStepRequested: ActionCreatorWithPayload<void>;
   stepNavigationRequested: ActionCreatorWithPayload<{ stepId: RenewableEnergyCreationStep }>;
@@ -110,6 +112,8 @@ export const createRenewableEnergyFormActions = (
     prefix,
     "stepCompletionRequested",
   ),
+  stepCompletionConfirmed: createRenewableEnergyFormAction(prefix, "stepCompletionConfirmed"),
+  stepCompletionCancelled: createRenewableEnergyFormAction(prefix, "stepCompletionCancelled"),
   previousStepRequested: createRenewableEnergyFormAction(prefix, "previousStepRequested"),
   nextStepRequested: createRenewableEnergyFormAction(prefix, "nextStepRequested"),
   stepNavigationRequested: createRenewableEnergyFormAction<{
@@ -203,6 +207,8 @@ export const creationRenewableEnergyFormActions: RenewableEnergyFormReducerActio
 };
 
 export const stepCompletionRequested = creationRenewableEnergyFormActions.stepCompletionRequested;
+export const stepCompletionConfirmed = creationRenewableEnergyFormActions.stepCompletionConfirmed;
+export const stepCompletionCancelled = creationRenewableEnergyFormActions.stepCompletionCancelled;
 export const previousStepRequested = creationRenewableEnergyFormActions.previousStepRequested;
 export const nextStepRequested = creationRenewableEnergyFormActions.nextStepRequested;
 export const stepNavigationRequested = creationRenewableEnergyFormActions.stepNavigationRequested;

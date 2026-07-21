@@ -3,6 +3,7 @@ import { useAppSelector } from "@/app/hooks/store.hooks";
 import NavigationBlockerDialog from "../NavigationBlockerDialog";
 import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
 import PhotovoltaicPowerStationCustomCreationWizard from "./PhotovoltaicPowerStationCreationWizard";
+import RenewableEnergyCascadingUpdateDialog from "./RenewableEnergyCascadingUpdateDialog";
 import { RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./creationStepQueryStringMap";
 
 function PhotovoltaicPowerStationCreationWizard() {
@@ -17,6 +18,7 @@ function PhotovoltaicPowerStationCreationWizard() {
   return (
     <>
       <PhotovoltaicPowerStationCustomCreationWizard currentStep={currentStep} />
+      <RenewableEnergyCascadingUpdateDialog mode="create" />
       <NavigationBlockerDialog shouldBlock={saveState !== "success"} />
     </>
   );

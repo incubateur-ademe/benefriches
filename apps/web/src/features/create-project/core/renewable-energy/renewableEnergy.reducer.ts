@@ -1,5 +1,7 @@
 import { ActionReducerMapBuilder, createReducer } from "@reduxjs/toolkit";
 
+import { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
+
 import { ProjectCreationState } from "../createProject.reducer";
 import { SoilsCarbonStorageResult } from "../project-form/soilsCarbonStorage.types";
 import { saveReconversionProject } from "./actions/customProjectSaved.action";
@@ -9,7 +11,11 @@ import {
   fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation,
 } from "./renewableEnergy.actions";
 import { addRenewableEnergyFormCasesToBuilder } from "./renewableEnergyForm.reducer";
-import type { RenewableEnergyCreationStep } from "./renewableEnergySteps";
+import type {
+  AnswersByStep,
+  AnswerStepId,
+  RenewableEnergyCreationStep,
+} from "./renewableEnergySteps";
 import type { RenewableEnergyStepsState } from "./step-handlers/stepHandler.type";
 import { answerStepHandlers } from "./step-handlers/stepHandlerRegistry";
 
@@ -20,6 +26,10 @@ export type RenewableEnergyProjectState = {
   stepsSequence: RenewableEnergyCreationStep[];
   firstSequenceStep: RenewableEnergyCreationStep;
   steps: RenewableEnergyStepsState;
+  pendingStepCompletion?: {
+    changes: StepUpdateResult<RenewableEnergyCreationStep, AnswersByStep, AnswerStepId>;
+    showAlert: boolean;
+  };
   soilsCarbonStorage:
     | {
         loadingState: "idle" | "loading" | "error";
@@ -46,6 +56,7 @@ export const INITIAL_STATE: RenewableEnergyProjectState = {
   stepsSequence: [],
   firstSequenceStep: FIRST_CUSTOM_STEP,
   steps: {},
+  pendingStepCompletion: undefined,
   saveState: "idle",
   soilsCarbonStorage: {
     loadingState: "idle",

@@ -12,6 +12,7 @@ export const {
   selectStepsSequence,
   selectCurrentStep,
   selectSaveState,
+  selectPendingStepCompletion,
   selectExpectedPhotovoltaicPerformance,
   selectSoilsCarbonStorage,
   selectProjectSoilsDistribution,

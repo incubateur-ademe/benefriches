@@ -80,6 +80,11 @@ export const createRenewableEnergyFormSelectors = (prefix: "projectCreation" | "
 
   const selectSaveState = createSelector(selectRenewableEnergyData, (state) => state.saveState);
 
+  const selectPendingStepCompletion = createSelector(
+    selectRenewableEnergyData,
+    (state) => state.pendingStepCompletion,
+  );
+
   const selectExpectedPhotovoltaicPerformance = createSelector(
     selectRenewableEnergyData,
     (state) => state.expectedPhotovoltaicPerformance,
@@ -333,6 +338,7 @@ export const createRenewableEnergyFormSelectors = (prefix: "projectCreation" | "
     selectStepsSequence,
     selectCurrentStep,
     selectSaveState,
+    selectPendingStepCompletion,
     selectExpectedPhotovoltaicPerformance,
     selectSoilsCarbonStorage,
     selectProjectSoilsDistribution,

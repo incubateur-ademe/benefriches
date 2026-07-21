@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import RenewableEnergyCascadingUpdateDialog from "@/features/create-project/views/photovoltaic-power-station/RenewableEnergyCascadingUpdateDialog";
 import { RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "@/features/create-project/views/photovoltaic-power-station/creationStepQueryStringMap";
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -55,6 +56,7 @@ function PhotovoltaicPowerStationUpdateView() {
         ) : (
           <>
             <PhotovoltaicPowerStationUpdateWizard currentStep={currentStep} />
+            <RenewableEnergyCascadingUpdateDialog mode="update" />
             <PhotovoltaicPowerStationUpdateNavigationBlockerDialog
               shouldBlock={saveState === "dirty"}
             />
