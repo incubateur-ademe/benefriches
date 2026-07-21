@@ -1,7 +1,7 @@
 # [ADR-0015] Extract a generic wizard-form engine via injected lens, defer slice normalization
 
 - **Date**: 2026-07-13
-- **Status**: Accepted (design agreed; implementation phased, not yet started)
+- **Status**: Accepted — **Implemented** (see [Outcome](#outcome))
 
 ## Context
 
@@ -78,6 +78,21 @@ The engine is a higher-order **open case-adder** — `addWizardFormCases(builder
 - The injected lens is deliberate interim indirection; a reader may wonder why the slice isn't normalized (this ADR is the answer).
 - Until Phase 4, PV's slice carries urban-shaped fields it never uses (`pendingStepCompletion`; inert `stepCompletionConfirmed`/`Cancelled` cases).
 - The ~55 shape tests must still be confronted at normalize (Phase 4) — deferred, not eliminated.
+
+## Outcome
+
+Fully implemented (tickets 01–10, all shipped to `main`). The delivery followed the injected-lens decision above and went one phase further than the original table: the slice **was** normalized, the concrete `ProjectFormState`/`WizardFormState` were **deleted**, and urban's slice is now composed via `combineReducers` over the generic `WizardFormSubState` (`features/create-project/core/urban-project/urbanProject.state.ts`). The `mode`-free pure handler contract and the unified degenerate cascade path both landed as decided; PV omits the cascade hooks and runs the same `computeStepChanges`.
+
+Final three-layer structure:
+
+- **L1 — generic engine** (domain-free; no project/urban/site tokens, no `features/*` imports): `apps/web/src/shared/core/wizard-form/` — `wizardForm.reducer.ts` (`WizardFormDefinition`, `WizardFormSubState`), `wizardForm.actions.ts`, `stepHandler.type.ts`, and `helpers/` (`navigateToStep`, `applyStepChanges`, `mutateState`, …).
+- **L2 — project-form base**: `features/create-project/core/project-form/` — the project/site domain (project name, site, stakeholders, local authorities) evicted out of the generic engine.
+- **L3 — per-type**: `features/create-project/core/{urban-project,renewable-energy}/`.
+
+Two deliverables beyond the original phase list:
+
+- **10a — view/context relocation.** The concrete VIEWS and the view-context machinery moved **out of** `shared/views/project-form/` (that directory is gone) **into** `features/create-project/views/`: `urban-project/**`, `photovoltaic-power-station/**`, and `project-form/` (context/provider/hook — `ProjectFormProvider`, `useProjectForm`). `features/update-project` consumes these via an accepted feature→feature import.
+- **10b — PV convergence.** PV creation and editing share one lens-injected selector/container set (`createRenewableEnergyFormSelectors(prefix)`, `useRenewableEnergyForm`); the separate update-side PV mirror was deleted. Step-id→component maps are shared across create/update per type (`stepToComponent.tsx`), and stateful thunks are split out of the pure action factories.
 
 ## Links
 
