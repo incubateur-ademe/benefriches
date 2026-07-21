@@ -187,6 +187,18 @@ export class PhotovoltaicProjectUpdatePage {
     await this.page.getByRole("button", { name: "Valider" }).click();
   }
 
+  // --- Cascading-change confirmation dialog ---
+
+  // The dialog only appears when an edit invalidates downstream steps. On a site that can
+  // accommodate the panels, no soils cascade is possible, so it must never surface.
+  async expectNoCascadeDialog(): Promise<void> {
+    await expect(
+      this.page.getByRole("heading", {
+        name: /La modification de cette étape entraîne d.autres modifications/,
+      }),
+    ).toHaveCount(0);
+  }
+
   // --- Save result ---
 
   async expectSaveSuccess(): Promise<void> {

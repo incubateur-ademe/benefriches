@@ -47,6 +47,7 @@ const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"
 export const PHOTOVOLTAIC_PROJECT_NAME = "Centrale photovoltaïque de Meylan";
 export const ORIGINAL_ELECTRICAL_POWER_KWC = 296;
 export const ORIGINAL_MAINTENANCE_EXPENSE_AMOUNT = 8000;
+export const ORIGINAL_EXPECTED_ANNUAL_PRODUCTION = 374;
 
 type PhotovoltaicProjectUpdateFixtures = {
   pvProjectUpdatePage: PhotovoltaicProjectUpdatePage;
@@ -72,7 +73,7 @@ export const test = authTest.extend<PhotovoltaicProjectUpdateFixtures>({
       name: PHOTOVOLTAIC_PROJECT_NAME,
       electricalPowerKWc: ORIGINAL_ELECTRICAL_POWER_KWC,
       surfaceArea: 2700,
-      expectedAnnualProduction: 374,
+      expectedAnnualProduction: ORIGINAL_EXPECTED_ANNUAL_PRODUCTION,
       contractDuration: 20,
       yearlyMaintenanceExpenseAmount: ORIGINAL_MAINTENANCE_EXPENSE_AMOUNT,
     });

@@ -222,6 +222,40 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
     });
   });
 
+  it("hydrates the non-suitable soils steps with no-op values when the saved surface exceeds the site's suitable surface, so the update starts valid", () => {
+    const steps = convertPhotovoltaicProjectDataToSteps({
+      // The saved project's panel surface is 5000 m².
+      projectData: BASE_PROJECT_DATA,
+      // WATER is not a suitable soil for panels, so the suitable surface is 0 and the
+      // 5000 m² of panels cannot be accommodated: the non-suitable sub-flow is walked.
+      siteData: { ...BASE_SITE_DATA, soilsDistribution: { WATER: 10000 } },
+    });
+
+    expect(steps.RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION).toEqual({
+      payload: { nonSuitableSoilsToTransform: [] },
+      completed: true,
+    });
+    expect(steps.RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE).toEqual({
+      payload: {
+        nonSuitableSoilsSurfaceAreaToTransform: {},
+        baseSoilsDistributionForTransformation: { WATER: 10000 },
+      },
+      completed: true,
+    });
+  });
+
+  it("does not populate the non-suitable soils steps when the site can accommodate the panels (they are not in the sequence)", () => {
+    const steps = convertPhotovoltaicProjectDataToSteps({
+      // The saved project's panel surface is 5000 m².
+      projectData: BASE_PROJECT_DATA,
+      // IMPERMEABLE_SOILS is suitable and its 10000 m² covers the 5000 m² of panels.
+      siteData: { ...BASE_SITE_DATA, soilsDistribution: { IMPERMEABLE_SOILS: 10000 } },
+    });
+
+    expect(steps.RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION).toBeUndefined();
+    expect(steps.RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE).toBeUndefined();
+  });
+
   it("maps the project developer unconditionally", () => {
     const steps = convertPhotovoltaicProjectDataToSteps({
       projectData: BASE_PROJECT_DATA,

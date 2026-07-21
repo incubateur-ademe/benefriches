@@ -6,6 +6,7 @@ import {
   ReinstatementExpense,
   SoilsDistribution,
   SoilType,
+  canSiteAccomodatePhotovoltaicPanels,
   computeDefaultDecontaminatedSurfaceArea,
 } from "shared";
 
@@ -128,6 +129,32 @@ export const convertPhotovoltaicProjectDataToSteps = ({
       // ReinstatementExpensePurpose, mirroring urban's convertProjectDataToSteps.
       payload: {
         reinstatementExpenses: (projectData.reinstatementCosts ?? []) as ReinstatementExpense[],
+      },
+    };
+  }
+
+  // When the saved panel surface exceeds the site's suitable surface, the sequence walk
+  // (SoilsTransformationIntroductionHandler.getNextStepId) routes through the two
+  // non-suitable-soils steps. Hydration must complete them, otherwise the update starts
+  // invalid on the first non-suitable screen. Fill them with no-op values only when the
+  // walk needs them (i.e. only when the site cannot accommodate the panels), to avoid
+  // leaving orphan data on projects that never route through them. The base distribution
+  // is the site's own soils, which the always-custom transformation branch ignores anyway.
+  if (
+    !canSiteAccomodatePhotovoltaicPanels(
+      siteData.soilsDistribution,
+      developmentPlan.features.surfaceArea,
+    )
+  ) {
+    steps.RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION = {
+      completed: true,
+      payload: { nonSuitableSoilsToTransform: [] },
+    };
+    steps.RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE = {
+      completed: true,
+      payload: {
+        nonSuitableSoilsSurfaceAreaToTransform: {},
+        baseSoilsDistributionForTransformation: siteData.soilsDistribution,
       },
     };
   }

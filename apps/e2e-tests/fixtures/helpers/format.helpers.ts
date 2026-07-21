@@ -14,3 +14,7 @@ export function asSquareMeters(surfaceArea: number): string {
 export function asKiloWattsCrete(power: number): string {
   return `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(power)} kWc`;
 }
+
+export function asMegaWattHoursPerYear(production: number): string {
+  return `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(production)} MWh / an`;
+}
