@@ -27,7 +27,8 @@ export type StepCompletionPayload<K extends AnswerStepId = AnswerStepId> = {
   };
 }[K];
 
-export type UrbanProjectFormReducerActions = {
+// Pure, dependency-free navigation + step-completion action creators.
+export type UrbanProjectFormPureActions = {
   stepCompletionRequested: ActionCreatorWithPayload<StepCompletionPayload>;
   stepCompletionConfirmed: ActionCreatorWithPayload<void>;
   stepCompletionCancelled: ActionCreatorWithPayload<void>;
@@ -36,6 +37,11 @@ export type UrbanProjectFormReducerActions = {
   stepNavigationRequested: ActionCreatorWithPayload<{
     stepId: UrbanProjectCreationStep;
   }>;
+};
+
+// Full action bag consumed by the reducer: pure actions plus the stateful thunk
+// composed alongside them at the call site.
+export type UrbanProjectFormReducerActions = UrbanProjectFormPureActions & {
   fetchSoilsCarbonStorageDifference: AsyncThunk<
     CurrentAndProjectedSoilsCarbonStorageResult,
     void,
@@ -43,14 +49,16 @@ export type UrbanProjectFormReducerActions = {
   >;
 };
 
-type Selectors = Pick<WizardFormSelectors, "selectSiteAddress" | "selectSiteSoilsDistribution"> & {
+export type UrbanProjectFormThunkSelectors = Pick<
+  WizardFormSelectors,
+  "selectSiteAddress" | "selectSiteSoilsDistribution"
+> & {
   selectProjectSoilsDistributionByType: (state: RootState) => SoilsDistribution;
 };
 
 export const createUrbanProjectFormActions = (
   prefix: "projectCreation" | "projectUpdate",
-  selectors: Selectors,
-): UrbanProjectFormReducerActions => {
+): UrbanProjectFormPureActions => {
   return {
     stepCompletionConfirmed: createUrbanProjectFormAction(prefix, "stepCompletionConfirmed"),
     stepCompletionCancelled: createUrbanProjectFormAction(prefix, "stepCompletionCancelled"),
@@ -63,33 +71,37 @@ export const createUrbanProjectFormActions = (
       prefix,
       "stepCompletionRequested",
     ),
-    fetchSoilsCarbonStorageDifference:
-      createAppAsyncThunk<CurrentAndProjectedSoilsCarbonStorageResult>(
-        makeUrbanProjectFormActionType(prefix, "fetchCurrentAndProjectedSoilsCarbonStorage"),
-        async (_, { extra, getState }) => {
-          const rootState = getState();
-          const siteAddress = selectors.selectSiteAddress(rootState);
-          const siteSoils = selectors.selectSiteSoilsDistribution(rootState);
-          const projectSoils = selectors.selectProjectSoilsDistributionByType(rootState);
-
-          if (!siteAddress) throw new Error("Missing site address");
-
-          const [current, projected] = await Promise.all([
-            extra.soilsCarbonStorageService.getForCityCodeAndSoils({
-              cityCode: siteAddress.cityCode,
-              soils: siteSoils,
-            }),
-            extra.soilsCarbonStorageService.getForCityCodeAndSoils({
-              soils: projectSoils,
-              cityCode: siteAddress.cityCode,
-            }),
-          ]);
-
-          return {
-            current,
-            projected,
-          };
-        },
-      ),
   };
 };
+
+export const createFetchSoilsCarbonStorageDifference = (
+  prefix: "projectCreation" | "projectUpdate",
+  selectors: UrbanProjectFormThunkSelectors,
+): UrbanProjectFormReducerActions["fetchSoilsCarbonStorageDifference"] =>
+  createAppAsyncThunk<CurrentAndProjectedSoilsCarbonStorageResult>(
+    makeUrbanProjectFormActionType(prefix, "fetchCurrentAndProjectedSoilsCarbonStorage"),
+    async (_, { extra, getState }) => {
+      const rootState = getState();
+      const siteAddress = selectors.selectSiteAddress(rootState);
+      const siteSoils = selectors.selectSiteSoilsDistribution(rootState);
+      const projectSoils = selectors.selectProjectSoilsDistributionByType(rootState);
+
+      if (!siteAddress) throw new Error("Missing site address");
+
+      const [current, projected] = await Promise.all([
+        extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+          cityCode: siteAddress.cityCode,
+          soils: siteSoils,
+        }),
+        extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+          soils: projectSoils,
+          cityCode: siteAddress.cityCode,
+        }),
+      ]);
+
+      return {
+        current,
+        projected,
+      };
+    },
+  );

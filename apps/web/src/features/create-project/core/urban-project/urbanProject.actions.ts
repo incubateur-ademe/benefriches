@@ -1,5 +1,8 @@
 import { createWizardFormActions } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
-import { createUrbanProjectFormActions } from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
+import {
+  createFetchSoilsCarbonStorageDifference,
+  createUrbanProjectFormActions,
+} from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
 
 import {
   makeProjectCreationActionType,
@@ -12,14 +15,17 @@ export const creationProjectFormActions = createWizardFormActions(
   PROJECT_CREATION_ACTION_PREFIX,
   (state) => state.projectCreation,
 );
-export const creationProjectFormUrbanActions = createUrbanProjectFormActions(
-  PROJECT_CREATION_ACTION_PREFIX,
-  {
-    selectProjectSoilsDistributionByType,
-    selectSiteAddress,
-    selectSiteSoilsDistribution,
-  },
-);
+export const creationProjectFormUrbanActions = {
+  ...createUrbanProjectFormActions(PROJECT_CREATION_ACTION_PREFIX),
+  fetchSoilsCarbonStorageDifference: createFetchSoilsCarbonStorageDifference(
+    PROJECT_CREATION_ACTION_PREFIX,
+    {
+      selectProjectSoilsDistributionByType,
+      selectSiteAddress,
+      selectSiteSoilsDistribution,
+    },
+  ),
+};
 
 export const makeUrbanProjectCreationActionType = (actionName: string) => {
   return makeProjectCreationActionType(`urbanProject/${actionName}`);

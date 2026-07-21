@@ -69,11 +69,17 @@ type FetchExpectedAnnualPowerPerformanceResult = {
   expectedPerformanceMwhPerYear: number;
 };
 
-export type RenewableEnergyFormReducerActions = {
+// Pure, dependency-free navigation + step-completion action creators.
+export type RenewableEnergyFormPureActions = {
   stepCompletionRequested: ActionCreatorWithPayload<StepCompletionPayload>;
   previousStepRequested: ActionCreatorWithPayload<void>;
   nextStepRequested: ActionCreatorWithPayload<void>;
   stepNavigationRequested: ActionCreatorWithPayload<{ stepId: RenewableEnergyCreationStep }>;
+};
+
+// Full action bag consumed by the reducer: pure actions plus the stateful thunks
+// composed alongside them at the call site.
+export type RenewableEnergyFormReducerActions = RenewableEnergyFormPureActions & {
   fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation: AsyncThunk<
     FetchExpectedAnnualPowerPerformanceResult,
     void,
@@ -86,19 +92,20 @@ export type RenewableEnergyFormReducerActions = {
   >;
 };
 
-type Selectors = Pick<WizardFormSelectors, "selectSiteAddress" | "selectSiteSoilsDistribution"> & {
+export type RenewableEnergyFormThunkSelectors = Pick<
+  WizardFormSelectors,
+  "selectSiteAddress" | "selectSiteSoilsDistribution"
+> & {
   selectProjectSoilsDistribution: (state: RootState) => SoilsDistribution;
   selectSteps: (state: RootState) => RenewableEnergyStepsState;
 };
 
 // Factory kept prefix-parameterized (mirrors `createUrbanProjectFormActions`) so the update-side
 // editing slice can instantiate a second, independently-namespaced instance from this same
-// registry, exactly as urban does for creation vs update. Selectors are injected by the caller
-// (rather than imported here) to avoid a selectors <-> actions import cycle.
+// registry, exactly as urban does for creation vs update.
 export const createRenewableEnergyFormActions = (
   prefix: string,
-  selectors: Selectors,
-): RenewableEnergyFormReducerActions => ({
+): RenewableEnergyFormPureActions => ({
   stepCompletionRequested: createRenewableEnergyFormAction<StepCompletionPayload>(
     prefix,
     "stepCompletionRequested",
@@ -108,74 +115,92 @@ export const createRenewableEnergyFormActions = (
   stepNavigationRequested: createRenewableEnergyFormAction<{
     stepId: RenewableEnergyCreationStep;
   }>(prefix, "stepNavigationRequested"),
-  fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation:
-    createAppAsyncThunk<FetchExpectedAnnualPowerPerformanceResult>(
-      makeRenewableEnergyFormActionType(
-        prefix,
-        "fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation",
-      ),
-      async (_, { extra, getState }) => {
-        const rootState = getState();
-        const { lat, long } = selectors.selectSiteAddress(rootState) ?? {};
-        const peakPower = ReadStateHelper.getStepAnswers(
-          selectors.selectSteps(rootState),
-          "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
-        )?.photovoltaicInstallationElectricalPowerKWc;
-
-        if (!lat || !long || !peakPower) {
-          return Promise.reject(
-            new Error(
-              "fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation: Missing required parameters",
-            ),
-          );
-        }
-
-        const result =
-          await extra.photovoltaicPerformanceService.getExpectedPhotovoltaicPerformance({
-            lat,
-            long,
-            peakPower,
-          });
-
-        return {
-          expectedPerformanceMwhPerYear: Math.round(result.expectedPerformance.kwhPerYear / 1000),
-        };
-      },
-    ),
-  fetchCurrentAndProjectedSoilsCarbonStorage:
-    createAppAsyncThunk<CurrentAndProjectedSoilsCarbonStorageResult>(
-      makeRenewableEnergyFormActionType(prefix, "fetchCurrentAndProjectedSoilsCarbonStorage"),
-      async (_, { extra, getState }) => {
-        const rootState = getState();
-        const siteAddress = selectors.selectSiteAddress(rootState);
-        const siteSoils = selectors.selectSiteSoilsDistribution(rootState);
-        const projectSoils = selectors.selectProjectSoilsDistribution(rootState);
-
-        if (!siteAddress) throw new Error("Missing site address");
-
-        const [current, projected] = await Promise.all([
-          extra.soilsCarbonStorageService.getForCityCodeAndSoils({
-            cityCode: siteAddress.cityCode,
-            soils: siteSoils,
-          }),
-          extra.soilsCarbonStorageService.getForCityCodeAndSoils({
-            soils: projectSoils,
-            cityCode: siteAddress.cityCode,
-          }),
-        ]);
-
-        return {
-          current,
-          projected,
-        };
-      },
-    ),
 });
 
-export const creationRenewableEnergyFormActions = createRenewableEnergyFormActions(
-  "projectCreation",
-  creationRenewableEnergyFormSelectors,
-);
+// Stateful thunks are separate factories: selectors are injected by the caller (rather than
+// imported here) to avoid a selectors <-> actions import cycle, and to keep the pure factory above
+// dependency-free.
+export const createFetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation = (
+  prefix: string,
+  selectors: RenewableEnergyFormThunkSelectors,
+): RenewableEnergyFormReducerActions["fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation"] =>
+  createAppAsyncThunk<FetchExpectedAnnualPowerPerformanceResult>(
+    makeRenewableEnergyFormActionType(
+      prefix,
+      "fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation",
+    ),
+    async (_, { extra, getState }) => {
+      const rootState = getState();
+      const { lat, long } = selectors.selectSiteAddress(rootState) ?? {};
+      const peakPower = ReadStateHelper.getStepAnswers(
+        selectors.selectSteps(rootState),
+        "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
+      )?.photovoltaicInstallationElectricalPowerKWc;
+
+      if (!lat || !long || !peakPower) {
+        return Promise.reject(
+          new Error(
+            "fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation: Missing required parameters",
+          ),
+        );
+      }
+
+      const result = await extra.photovoltaicPerformanceService.getExpectedPhotovoltaicPerformance({
+        lat,
+        long,
+        peakPower,
+      });
+
+      return {
+        expectedPerformanceMwhPerYear: Math.round(result.expectedPerformance.kwhPerYear / 1000),
+      };
+    },
+  );
+
+export const createFetchCurrentAndProjectedSoilsCarbonStorage = (
+  prefix: string,
+  selectors: RenewableEnergyFormThunkSelectors,
+): RenewableEnergyFormReducerActions["fetchCurrentAndProjectedSoilsCarbonStorage"] =>
+  createAppAsyncThunk<CurrentAndProjectedSoilsCarbonStorageResult>(
+    makeRenewableEnergyFormActionType(prefix, "fetchCurrentAndProjectedSoilsCarbonStorage"),
+    async (_, { extra, getState }) => {
+      const rootState = getState();
+      const siteAddress = selectors.selectSiteAddress(rootState);
+      const siteSoils = selectors.selectSiteSoilsDistribution(rootState);
+      const projectSoils = selectors.selectProjectSoilsDistribution(rootState);
+
+      if (!siteAddress) throw new Error("Missing site address");
+
+      const [current, projected] = await Promise.all([
+        extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+          cityCode: siteAddress.cityCode,
+          soils: siteSoils,
+        }),
+        extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+          soils: projectSoils,
+          cityCode: siteAddress.cityCode,
+        }),
+      ]);
+
+      return {
+        current,
+        projected,
+      };
+    },
+  );
+
+export const creationRenewableEnergyFormActions: RenewableEnergyFormReducerActions = {
+  ...createRenewableEnergyFormActions("projectCreation"),
+  fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation:
+    createFetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation(
+      "projectCreation",
+      creationRenewableEnergyFormSelectors,
+    ),
+  fetchCurrentAndProjectedSoilsCarbonStorage: createFetchCurrentAndProjectedSoilsCarbonStorage(
+    "projectCreation",
+    creationRenewableEnergyFormSelectors,
+  ),
+};
 
 export const stepCompletionRequested = creationRenewableEnergyFormActions.stepCompletionRequested;
 export const previousStepRequested = creationRenewableEnergyFormActions.previousStepRequested;

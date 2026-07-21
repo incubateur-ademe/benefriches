@@ -4,9 +4,16 @@ import z from "zod";
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { createWizardFormActions } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
 import { getProjectData as getRenewableEnergyProjectData } from "@/features/create-project/core/renewable-energy/helpers/readers/projectDataReaders";
-import { createRenewableEnergyFormActions } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import {
+  createFetchCurrentAndProjectedSoilsCarbonStorage,
+  createFetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation,
+  createRenewableEnergyFormActions,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
-import { createUrbanProjectFormActions } from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
+import {
+  createFetchSoilsCarbonStorageDifference,
+  createUrbanProjectFormActions,
+} from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
 
 import {
   selectProjectSoilsDistributionByType,
@@ -26,18 +33,29 @@ export const updateProjectFormActions = createWizardFormActions(
   UPDATE_PROJECT_STORE_KEY,
   (state) => state.projectUpdate,
 );
-export const updateProjectFormUrbanActions = createUrbanProjectFormActions(
-  UPDATE_PROJECT_STORE_KEY,
-  {
-    selectProjectSoilsDistributionByType,
-    selectSiteAddress,
-    selectSiteSoilsDistribution,
-  },
-);
-export const updateProjectFormRenewableEnergyActions = createRenewableEnergyFormActions(
-  UPDATE_PROJECT_STORE_KEY,
-  updateRenewableEnergyFormSelectors,
-);
+export const updateProjectFormUrbanActions = {
+  ...createUrbanProjectFormActions(UPDATE_PROJECT_STORE_KEY),
+  fetchSoilsCarbonStorageDifference: createFetchSoilsCarbonStorageDifference(
+    UPDATE_PROJECT_STORE_KEY,
+    {
+      selectProjectSoilsDistributionByType,
+      selectSiteAddress,
+      selectSiteSoilsDistribution,
+    },
+  ),
+};
+export const updateProjectFormRenewableEnergyActions = {
+  ...createRenewableEnergyFormActions(UPDATE_PROJECT_STORE_KEY),
+  fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation:
+    createFetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation(
+      UPDATE_PROJECT_STORE_KEY,
+      updateRenewableEnergyFormSelectors,
+    ),
+  fetchCurrentAndProjectedSoilsCarbonStorage: createFetchCurrentAndProjectedSoilsCarbonStorage(
+    UPDATE_PROJECT_STORE_KEY,
+    updateRenewableEnergyFormSelectors,
+  ),
+};
 
 export const reconversionProjectUpdateInitiated = createAppAsyncThunk<UpdateProjectView, string>(
   makeProjectUpdateActionType("init"),
