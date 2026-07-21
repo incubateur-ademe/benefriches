@@ -2,6 +2,21 @@ import { expect, type Page } from "@playwright/test";
 
 export type CreateMode = "express" | "custom";
 
+export type SoilTransformationSoilType =
+  | "BUILDINGS"
+  | "IMPERMEABLE_SOILS"
+  | "MINERAL_SOIL"
+  | "ARTIFICIAL_GRASS_OR_BUSHES_FILLED"
+  | "ARTIFICIAL_TREE_FILLED";
+
+const SOIL_TYPE_LABELS: Record<SoilTransformationSoilType, string> = {
+  BUILDINGS: "Bâtiments",
+  IMPERMEABLE_SOILS: "Sols imperméabilisés",
+  MINERAL_SOIL: "Sols perméables minéraux",
+  ARTIFICIAL_GRASS_OR_BUSHES_FILLED: "Sols enherbés et arbustifs",
+  ARTIFICIAL_TREE_FILLED: "Sol arboré",
+};
+
 export class PhotovoltaicProjectCreationPage {
   readonly page: Page;
 
@@ -19,6 +34,12 @@ export class PhotovoltaicProjectCreationPage {
     await this.page.goto(
       `/creer-projet?siteId=${siteId}&projectSuggestions[]={"type"%3A"INDUSTRIAL_FACILITIES"%2C"compatibilityScore"%3A59.5},{"type"%3A"RENATURATION"%2C"compatibilityScore"%3A59.3},{"type"%3A"OFFICES"%2C"compatibilityScore"%3A52.7},{"type"%3A"RESIDENTIAL_NORMAL_AREA"%2C"compatibilityScore"%3A43.2},{"type"%3A"TOURISM_AND_CULTURAL_FACILITIES"%2C"compatibilityScore"%3A42},{"type"%3A"PUBLIC_FACILITIES"%2C"compatibilityScore"%3A40.5},{"type"%3A"PHOTOVOLTAIC_POWER_PLANT"%2C"compatibilityScore"%3A38.5}`,
     );
+  }
+
+  // --- Step title assertion ---
+
+  async expectStepTitle(title: string): Promise<void> {
+    await expect(this.page.getByRole("heading", { name: title })).toBeVisible();
   }
 
   // --- Project type selection ---
@@ -121,6 +142,46 @@ export class PhotovoltaicProjectCreationPage {
       custom: "Transformer les sols au cas par cas",
     };
     await this.page.getByText(labels[option]).click();
+    await this.submit();
+  }
+
+  // --- Non-suitable soils transformation (custom mode) ---
+
+  async selectNonSuitableSoilsToTransform(soilTypes: SoilTransformationSoilType[]): Promise<void> {
+    for (const soilType of soilTypes) {
+      await this.page.getByText(SOIL_TYPE_LABELS[soilType], { exact: true }).click();
+    }
+    await this.submit();
+  }
+
+  async fillNonSuitableSoilsSurfaceToTransform(
+    surfaceBySoilType: Partial<Record<SoilTransformationSoilType, number>>,
+  ): Promise<void> {
+    for (const [soilType, value] of Object.entries(surfaceBySoilType) as [
+      SoilTransformationSoilType,
+      number,
+    ][]) {
+      await this.page.getByLabel(SOIL_TYPE_LABELS[soilType]).fill(String(value));
+    }
+    await this.submit();
+  }
+
+  async selectFutureSoils(soilTypes: SoilTransformationSoilType[]): Promise<void> {
+    for (const soilType of soilTypes) {
+      await this.page.getByText(SOIL_TYPE_LABELS[soilType], { exact: true }).click();
+    }
+    await this.submit();
+  }
+
+  async fillFutureSoilsSurfaceArea(
+    surfaceBySoilType: Partial<Record<SoilTransformationSoilType, number>>,
+  ): Promise<void> {
+    for (const [soilType, value] of Object.entries(surfaceBySoilType) as [
+      SoilTransformationSoilType,
+      number,
+    ][]) {
+      await this.page.getByLabel(SOIL_TYPE_LABELS[soilType]).fill(String(value));
+    }
     await this.submit();
   }
 
