@@ -1,5 +1,10 @@
+import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
+
 import type { AnswersByStep } from "../../../renewableEnergySteps";
-import type { RenewableEnergyStepsState } from "../../stepHandler.type";
+import type {
+  RenewableEnergyStepHandlerContext,
+  RenewableEnergyStepsState,
+} from "../../stepHandler.type";
 import { SurfaceHandler } from "./photovoltaicSurface.handler";
 
 const stepsStateWithKeyParameter = (
@@ -158,5 +163,255 @@ describe("SurfaceHandler", () => {
 
       expect(rules).toEqual([]);
     });
+  });
+});
+
+// relatedSiteData has 5000 m² MINERAL_SOIL + 10000 m² ARTIFICIAL_GRASS_OR_BUSHES_FILLED = 15000 m²
+// of soils suitable for photovoltaic panels; BUILDINGS (3000) and FOREST_DECIDUOUS (12000) are not.
+// So a panel surface <= 15000 m² can be accommodated (no non-suitable steps), > 15000 m² cannot.
+const SUITABLE_SURFACE_AREA = 15000;
+
+const contextWithSuitableArea: { context: RenewableEnergyStepHandlerContext } = {
+  context: { siteData: relatedSiteData },
+};
+
+const nonSuitableSoilsSteps = (): RenewableEnergyStepsState => ({
+  RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION: {
+    completed: true,
+    payload: { nonSuitableSoilsToTransform: ["BUILDINGS"] },
+  },
+  RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE: {
+    completed: true,
+    payload: { nonSuitableSoilsSurfaceAreaToTransform: { BUILDINGS: 3000 } },
+  },
+});
+
+const projectSelectionStep = (
+  soilsTransformationProject: AnswersByStep["RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION"]["soilsTransformationProject"],
+): RenewableEnergyStepsState => ({
+  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION: {
+    completed: true,
+    payload: { soilsTransformationProject },
+  },
+});
+
+const customSoilsSteps = (): RenewableEnergyStepsState => ({
+  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION: {
+    completed: true,
+    payload: { futureSoilsSelection: ["PRAIRIE_GRASS"] },
+  },
+  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION: {
+    completed: true,
+    payload: { soilsDistribution: { PRAIRIE_GRASS: 1000 } },
+  },
+});
+
+// Editing surface while POWER is the key parameter (surface is not primary) so the power/production
+// twin rules never fire — the returned rules are exactly the soils-transformation cascade.
+describe("SurfaceHandler - soils-transformation cascade (surface is not the key parameter)", () => {
+  const oldNonSuitableSurface = SUITABLE_SURFACE_AREA + 5000; // 20000, non-suitable
+
+  it("deletes the non-suitable steps when the new surface makes the site able to accommodate the panels (custom)", () => {
+    const rules = SurfaceHandler.getDependencyRules!(
+      {
+        ...contextWithSuitableArea,
+        answers: {
+          ...stepsStateWithKeyParameter("POWER"),
+          ...completedSurface(oldNonSuitableSurface),
+          ...nonSuitableSoilsSteps(),
+          ...projectSelectionStep("custom"),
+          ...customSoilsSteps(),
+        },
+      },
+      newSurface(SUITABLE_SURFACE_AREA - 5000), // 10000, now suitable
+    );
+
+    expect(rules).toEqual([
+      { stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION", action: "delete" },
+      { stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE", action: "delete" },
+      {
+        stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION",
+        action: "invalidate",
+      },
+      {
+        stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
+        action: "invalidate",
+      },
+    ]);
+  });
+
+  it("invalidates the non-suitable steps when the new surface still cannot be accommodated (custom)", () => {
+    const rules = SurfaceHandler.getDependencyRules!(
+      {
+        ...contextWithSuitableArea,
+        answers: {
+          ...stepsStateWithKeyParameter("POWER"),
+          ...completedSurface(oldNonSuitableSurface),
+          ...nonSuitableSoilsSteps(),
+          ...projectSelectionStep("custom"),
+          ...customSoilsSteps(),
+        },
+      },
+      newSurface(SUITABLE_SURFACE_AREA + 10000), // 25000, still non-suitable
+    );
+
+    expect(rules).toEqual([
+      { stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION", action: "invalidate" },
+      { stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE", action: "invalidate" },
+      {
+        stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION",
+        action: "invalidate",
+      },
+      {
+        stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
+        action: "invalidate",
+      },
+    ]);
+  });
+
+  it("keeps PROJECT_SELECTION and invalidates the custom soils/allocation steps for a custom transformation", () => {
+    const rules = SurfaceHandler.getDependencyRules!(
+      {
+        ...contextWithSuitableArea,
+        answers: {
+          ...stepsStateWithKeyParameter("POWER"),
+          ...completedSurface(oldNonSuitableSurface),
+          ...nonSuitableSoilsSteps(),
+          ...projectSelectionStep("custom"),
+          ...customSoilsSteps(),
+        },
+      },
+      newSurface(SUITABLE_SURFACE_AREA + 10000),
+    );
+
+    const stepIds = rules.map((rule) => rule.stepId);
+    expect(stepIds).not.toContain("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION");
+    expect(stepIds).toContain("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION");
+    expect(stepIds).toContain(
+      "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
+    );
+  });
+
+  it("invalidates PROJECT_SELECTION for a renaturation transformation", () => {
+    const rules = SurfaceHandler.getDependencyRules!(
+      {
+        ...contextWithSuitableArea,
+        answers: {
+          ...stepsStateWithKeyParameter("POWER"),
+          ...completedSurface(oldNonSuitableSurface),
+          ...nonSuitableSoilsSteps(),
+          ...projectSelectionStep("renaturation"),
+        },
+      },
+      newSurface(SUITABLE_SURFACE_AREA + 10000),
+    );
+
+    expect(rules).toEqual([
+      { stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION", action: "invalidate" },
+      { stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE", action: "invalidate" },
+      { stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION", action: "invalidate" },
+    ]);
+  });
+
+  it("invalidates PROJECT_SELECTION for a preserveCurrentSoils transformation", () => {
+    const rules = SurfaceHandler.getDependencyRules!(
+      {
+        ...contextWithSuitableArea,
+        answers: {
+          ...stepsStateWithKeyParameter("POWER"),
+          ...completedSurface(oldNonSuitableSurface),
+          ...nonSuitableSoilsSteps(),
+          ...projectSelectionStep("preserveCurrentSoils"),
+        },
+      },
+      newSurface(SUITABLE_SURFACE_AREA + 10000),
+    );
+
+    expect(rules).toEqual([
+      { stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION", action: "invalidate" },
+      { stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE", action: "invalidate" },
+      { stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION", action: "invalidate" },
+    ]);
+  });
+
+  it("emits no non-suitable rules when the site was already suitable (no non-suitable steps present)", () => {
+    const rules = SurfaceHandler.getDependencyRules!(
+      {
+        ...contextWithSuitableArea,
+        answers: {
+          ...stepsStateWithKeyParameter("POWER"),
+          ...completedSurface(SUITABLE_SURFACE_AREA - 5000), // 10000, was suitable
+          ...projectSelectionStep("custom"),
+          ...customSoilsSteps(),
+        },
+      },
+      newSurface(SUITABLE_SURFACE_AREA - 3000), // 12000, still suitable
+    );
+
+    expect(rules).toEqual([
+      {
+        stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION",
+        action: "invalidate",
+      },
+      {
+        stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
+        action: "invalidate",
+      },
+    ]);
+  });
+
+  it("fires no soils cascade when PROJECT_SELECTION has not been reached", () => {
+    const rules = SurfaceHandler.getDependencyRules!(
+      {
+        ...contextWithSuitableArea,
+        answers: {
+          ...stepsStateWithKeyParameter("POWER"),
+          ...completedSurface(oldNonSuitableSurface),
+          ...nonSuitableSoilsSteps(),
+        },
+      },
+      newSurface(SUITABLE_SURFACE_AREA + 10000),
+    );
+
+    expect(rules).toEqual([]);
+  });
+
+  it("fires no soils cascade when the surface value is unchanged", () => {
+    const rules = SurfaceHandler.getDependencyRules!(
+      {
+        ...contextWithSuitableArea,
+        answers: {
+          ...stepsStateWithKeyParameter("POWER"),
+          ...completedSurface(oldNonSuitableSurface),
+          ...nonSuitableSoilsSteps(),
+          ...projectSelectionStep("custom"),
+          ...customSoilsSteps(),
+        },
+      },
+      newSurface(oldNonSuitableSurface),
+    );
+
+    expect(rules).toEqual([]);
+  });
+
+  it("does not invalidate custom soils/allocation steps that are not completed", () => {
+    const rules = SurfaceHandler.getDependencyRules!(
+      {
+        ...contextWithSuitableArea,
+        answers: {
+          ...stepsStateWithKeyParameter("POWER"),
+          ...completedSurface(oldNonSuitableSurface),
+          ...nonSuitableSoilsSteps(),
+          ...projectSelectionStep("custom"),
+          // custom soils selection + allocation not yet completed
+        },
+      },
+      newSurface(SUITABLE_SURFACE_AREA + 10000),
+    );
+
+    expect(rules).toEqual([
+      { stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION", action: "invalidate" },
+      { stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE", action: "invalidate" },
+    ]);
   });
 });

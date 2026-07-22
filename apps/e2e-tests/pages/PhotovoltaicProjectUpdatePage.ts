@@ -1,5 +1,20 @@
 import { expect, type Page } from "@playwright/test";
 
+export type SoilTransformationSoilType =
+  | "BUILDINGS"
+  | "IMPERMEABLE_SOILS"
+  | "MINERAL_SOIL"
+  | "ARTIFICIAL_GRASS_OR_BUSHES_FILLED"
+  | "ARTIFICIAL_TREE_FILLED";
+
+const SOIL_TYPE_LABELS: Record<SoilTransformationSoilType, string> = {
+  BUILDINGS: "Bâtiments",
+  IMPERMEABLE_SOILS: "Sols imperméabilisés",
+  MINERAL_SOIL: "Sols perméables minéraux",
+  ARTIFICIAL_GRASS_OR_BUSHES_FILLED: "Sols enherbés et arbustifs",
+  ARTIFICIAL_TREE_FILLED: "Sol arboré",
+};
+
 export class PhotovoltaicProjectUpdatePage {
   readonly page: Page;
 
@@ -100,6 +115,27 @@ export class PhotovoltaicProjectUpdatePage {
     await this.submit();
   }
 
+  // --- Non-suitable soils transformation (custom mode) ---
+
+  async selectNonSuitableSoilsToTransform(soilTypes: SoilTransformationSoilType[]): Promise<void> {
+    for (const soilType of soilTypes) {
+      await this.page.getByText(SOIL_TYPE_LABELS[soilType], { exact: true }).click();
+    }
+    await this.submit();
+  }
+
+  async fillNonSuitableSoilsSurfaceToTransform(
+    surfaceBySoilType: Partial<Record<SoilTransformationSoilType, number>>,
+  ): Promise<void> {
+    for (const [soilType, value] of Object.entries(surfaceBySoilType) as [
+      SoilTransformationSoilType,
+      number,
+    ][]) {
+      await this.page.getByLabel(SOIL_TYPE_LABELS[soilType]).fill(String(value));
+    }
+    await this.submit();
+  }
+
   async expectSoilsSummaryStep(): Promise<void> {
     await expect(
       this.page.getByRole("heading", { name: "Récapitulatif de l'occupation des sols" }),
@@ -197,6 +233,26 @@ export class PhotovoltaicProjectUpdatePage {
         name: /La modification de cette étape entraîne d.autres modifications/,
       }),
     ).toHaveCount(0);
+  }
+
+  // When editing the panel surface on a non-suitable-soils project, the cascade dialog lists the
+  // soils-transformation steps to reset. Every soils step belongs to the "Travaux" group, so the
+  // reset list shows one or more "Travaux" entries.
+  async expectCascadeDialogListsSoilsSteps(): Promise<void> {
+    const dialog = this.page.locator(".fr-modal__body");
+    await expect(
+      dialog.getByRole("heading", {
+        name: /La modification de cette étape entraîne d.autres modifications/,
+      }),
+    ).toBeVisible();
+    await expect(
+      dialog.getByText("Les étapes suivantes seront réinitialisées, vous devrez les compléter :"),
+    ).toBeVisible();
+    await expect(dialog.getByRole("listitem").filter({ hasText: "Travaux" }).first()).toBeVisible();
+  }
+
+  async confirmCascadeAndComplete(): Promise<void> {
+    await this.page.getByRole("button", { name: "Valider et compléter les étapes" }).click();
   }
 
   // --- Save result ---

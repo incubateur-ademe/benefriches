@@ -49,10 +49,21 @@ export const ORIGINAL_ELECTRICAL_POWER_KWC = 296;
 export const ORIGINAL_MAINTENANCE_EXPENSE_AMOUNT = 8000;
 export const ORIGINAL_EXPECTED_ANNUAL_PRODUCTION = 374;
 
+// A project whose panel surface (3500 m²) exceeds the agricultural site's suitable soils area
+// (IMPERMEABLE_SOILS 920 + MINERAL_SOIL 690 + ARTIFICIAL_GRASS_OR_BUSHES_FILLED 1150 = 2760 m²), so
+// the saved project routes through the non-suitable-soils steps and opens as a custom transformation
+// (converter fix, ticket 02). Used to exercise the soils-transformation cascade on a surface edit.
+export const NON_SUITABLE_SOILS_PROJECT_NAME =
+  "Centrale photovoltaïque sur sols non adaptés de Meylan";
+export const NON_SUITABLE_SOILS_ORIGINAL_SURFACE = 3500;
+export const NON_SUITABLE_SOILS_ELECTRICAL_POWER_KWC = 440;
+export const NON_SUITABLE_SOILS_EXPECTED_ANNUAL_PRODUCTION = 550;
+
 type PhotovoltaicProjectUpdateFixtures = {
   pvProjectUpdatePage: PhotovoltaicProjectUpdatePage;
   agriculturalSite: TestSite;
   photovoltaicProject: TestPhotovoltaicProject;
+  nonSuitableSoilsPhotovoltaicProject: TestPhotovoltaicProject;
   myEvaluationsPage: MyEvaluationsPage;
 };
 
@@ -74,6 +85,24 @@ export const test = authTest.extend<PhotovoltaicProjectUpdateFixtures>({
       electricalPowerKWc: ORIGINAL_ELECTRICAL_POWER_KWC,
       surfaceArea: 2700,
       expectedAnnualProduction: ORIGINAL_EXPECTED_ANNUAL_PRODUCTION,
+      contractDuration: 20,
+      yearlyMaintenanceExpenseAmount: ORIGINAL_MAINTENANCE_EXPENSE_AMOUNT,
+    });
+    await use(project);
+  },
+
+  nonSuitableSoilsPhotovoltaicProject: async (
+    { authenticatedApiClient, testUser, agriculturalSite },
+    use,
+  ) => {
+    const project = await createCustomPhotovoltaicProjectViaApi(authenticatedApiClient)({
+      id: crypto.randomUUID(),
+      createdBy: testUser.id,
+      relatedSiteId: agriculturalSite.id,
+      name: NON_SUITABLE_SOILS_PROJECT_NAME,
+      electricalPowerKWc: NON_SUITABLE_SOILS_ELECTRICAL_POWER_KWC,
+      surfaceArea: NON_SUITABLE_SOILS_ORIGINAL_SURFACE,
+      expectedAnnualProduction: NON_SUITABLE_SOILS_EXPECTED_ANNUAL_PRODUCTION,
       contractDuration: 20,
       yearlyMaintenanceExpenseAmount: ORIGINAL_MAINTENANCE_EXPENSE_AMOUNT,
     });
