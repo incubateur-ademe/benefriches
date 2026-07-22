@@ -103,7 +103,6 @@ const EconomicBalanceDescription = ({ impactsData, projectType }: Props) => {
               label,
               value,
               color,
-              actor: bearer ?? "Aménageur",
               onClick: () => {
                 updateModalContent({
                   sectionName: "economic_balance",

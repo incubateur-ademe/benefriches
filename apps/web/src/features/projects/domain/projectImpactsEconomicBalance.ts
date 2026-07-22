@@ -68,7 +68,7 @@ const getInstallationCostNamePrefix = (projectType?: ProjectDevelopmentPlanType)
   }
 };
 
-const getDevelopmentPlanDetailsName = (
+export const getDevelopmentPlanDetailsName = (
   costName: DevelopmentPlanInstallationExpenses["purpose"],
   projectType?: ProjectDevelopmentPlanType,
 ) => {
@@ -77,6 +77,8 @@ const getDevelopmentPlanDetailsName = (
     return costName;
   }
   switch (costName) {
+    case "technical_studies":
+      return `${prefix}_technical_studies`;
     case "development_works":
     case "installation_works":
       return `${prefix}_works`;

@@ -3,13 +3,13 @@ import { lazy, Suspense, useContext, useMemo } from "react";
 import {
   ProjectDevelopmentEconomicBalanceItem,
   ProjectOperatingEconomicBalanceItem,
-  ReinstatementExpensePurpose,
   sumListWithKey,
 } from "shared";
 
 import {
   EconomicBalanceDetailsName,
   EconomicBalanceMainName,
+  getDevelopmentPlanDetailsName,
 } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ImpactInProgressDescriptionModal from "@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal";
@@ -41,7 +41,7 @@ type Props = {
   contextData: ModalDataProps["contextData"];
 };
 
-const getSiteReinstatementDetailsColor = (impactName: ReinstatementExpensePurpose) => {
+const getEconomicBalanceDetailsColor = (impactName: EconomicBalanceDetailsName) => {
   switch (impactName) {
     case "asbestos_removal":
       return "#F4C00A";
@@ -57,6 +57,16 @@ const getSiteReinstatementDetailsColor = (impactName: ReinstatementExpensePurpos
       return "#7ACA17";
     case "waste_collection":
       return "#298435";
+
+    case "photovoltaic_works":
+      return "#7E7F81";
+    case "photovoltaic_technical_studies":
+      return "#C4C5C6";
+    case "photovoltaic_other":
+      return "#FF9700";
+
+    default:
+      return "";
   }
 };
 
@@ -103,7 +113,7 @@ const ECONOMIC_BALANCE_MODALS = {
         .filter((item) => item.name === "siteReinstatement")
         ?.map(({ details, total }) => ({
           label: getEconomicBalanceDetailsImpactLabel("site_reinstatement", details),
-          color: getSiteReinstatementDetailsColor(details),
+          color: getEconomicBalanceDetailsColor(details),
           value: total,
           name: details,
         }));
@@ -173,10 +183,63 @@ const ECONOMIC_BALANCE_MODALS = {
       ),
   },
 
-  photovoltaic_development_plan_installation: undefined,
-  photovoltaic_works: undefined,
-  photovoltaic_technical_studies: undefined,
-  photovoltaic_other: undefined,
+  photovoltaic_development_plan_installation: {
+    title: "⚡️ Installation de la centrale $EnR",
+    Component: () => import("./photovoltaic_development_plan_installation.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
+      const details = impactsData.projectEconomicBalance.details
+        .filter((item) => item.name === "projectInstallation")
+        ?.map(({ details, total }) => {
+          const name = getDevelopmentPlanDetailsName(
+            details,
+            "PHOTOVOLTAIC_POWER_PLANT",
+          ) as EconomicBalanceDetailsName;
+          return {
+            label: getEconomicBalanceDetailsImpactLabel(
+              "photovoltaic_development_plan_installation",
+              details,
+            ),
+            color: getEconomicBalanceDetailsColor(name),
+            value: total,
+            name: name,
+          };
+        });
+
+      return details
+        ? {
+            total: sumListWithKey(details, "value"),
+            details,
+          }
+        : undefined;
+    },
+  },
+  photovoltaic_works: {
+    title: "🛠️ Travaux d'installation des panneaux",
+    Component: () => import("./photovoltaic_development_plan_installation.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "installation_works",
+      ),
+  },
+  photovoltaic_technical_studies: {
+    title: "📋 Études et honoraires techniques",
+    Component: () => import("./photovoltaic_technical_studies.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "technical_studies",
+      ),
+  },
+  photovoltaic_other: {
+    title: "⚡️ Autres frais d’installation de la centrale",
+    Component: () => import("./photovoltaic_other.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "other",
+      ),
+  },
 
   urban_project_development_plan_installation: undefined,
   urban_project_works: undefined,
@@ -323,29 +386,29 @@ export function EconomicBalanceModalWizard({
             { label: title },
           ]}
         />
-        <ModalContent>
-          <ModalGrid>
-            {data?.details && (
-              <ModalData>
-                <ModalColumnPointChart format="monetary" data={data.details} exportTitle={title} />
+        <ModalGrid>
+          {data?.details && (
+            <ModalData>
+              <ModalColumnPointChart format="monetary" data={data.details} exportTitle={title} />
 
-                <ModalTable
-                  caption={`Liste détaillée des dépenses et recettes de ${title}`}
-                  data={data.details.map(({ label, value, color, name }) => ({
-                    label,
-                    value,
-                    color,
-                    onClick: () => {
-                      updateModalContent({
-                        sectionName: "economic_balance",
-                        impactName: impactName,
-                        impactDetailsName: name,
-                      });
-                    },
-                  }))}
-                />
-              </ModalData>
-            )}
+              <ModalTable
+                caption={`Liste détaillée des dépenses et recettes de ${title}`}
+                data={data.details.map(({ label, value, color, name }) => ({
+                  label,
+                  value,
+                  color,
+                  onClick: () => {
+                    updateModalContent({
+                      sectionName: "economic_balance",
+                      impactName: impactName,
+                      impactDetailsName: name,
+                    });
+                  },
+                }))}
+              />
+            </ModalData>
+          )}
+          <ModalContent>
             <LazyComponent
               components={{
                 a: ExternalLink,
@@ -355,8 +418,8 @@ export function EconomicBalanceModalWizard({
                 ProjectFeature: BoundProjectFeature,
               }}
             />
-          </ModalGrid>
-        </ModalContent>
+          </ModalContent>
+        </ModalGrid>
       </ModalBody>
     </Suspense>
   );
