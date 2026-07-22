@@ -1,5 +1,7 @@
 import { isForest, isImpermeableSoil, SoilType, sumListWithKey } from "shared";
 
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
 
 type SoilsDistributionItem = {
@@ -66,7 +68,7 @@ const ModalSiteOrProjectFeature = ({
   return (
     <ImpactItemGroup className="max-w-1/3 py-3 flex justify-between">
       <span>{label}</span>
-      <span>{total} m²</span>
+      <span>{formatNumberFr(total)} m²</span>
     </ImpactItemGroup>
   );
 };

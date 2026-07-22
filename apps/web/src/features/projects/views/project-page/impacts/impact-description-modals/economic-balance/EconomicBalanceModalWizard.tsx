@@ -65,6 +65,13 @@ const getEconomicBalanceDetailsColor = (impactName: EconomicBalanceDetailsName) 
     case "photovoltaic_other":
       return "#FF9700";
 
+    case "urban_project_works":
+      return "#9E89CC";
+    case "urban_project_technical_studies":
+      return "#C4C5C6";
+    case "urban_project_other":
+      return "#E9DABE";
+
     case "local_or_regional_authority_participation":
       return "#1D5DA2";
     case "public_subsidies":
@@ -247,10 +254,63 @@ const ECONOMIC_BALANCE_MODALS = {
       ),
   },
 
-  urban_project_development_plan_installation: undefined,
-  urban_project_works: undefined,
-  urban_project_technical_studies: undefined,
-  urban_project_other: undefined,
+  urban_project_development_plan_installation: {
+    title: "🏘 Aménagement du site",
+    Component: () => import("./urban_project_development_plan_installation.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
+      const details = impactsData.projectEconomicBalance.details
+        .filter((item) => item.name === "projectInstallation")
+        ?.map(({ details, total }) => {
+          const name = getDevelopmentPlanDetailsName(
+            details,
+            "URBAN_PROJECT",
+          ) as EconomicBalanceDetailsName;
+          return {
+            label: getEconomicBalanceDetailsImpactLabel(
+              "urban_project_development_plan_installation",
+              details,
+            ),
+            color: getEconomicBalanceDetailsColor(name),
+            value: total,
+            name: name,
+          };
+        });
+
+      return details
+        ? {
+            total: sumListWithKey(details, "value"),
+            details,
+          }
+        : undefined;
+    },
+  },
+  urban_project_works: {
+    title: "🔌 Travaux d'aménagement (VRD, espaces verts...)",
+    Component: () => import("./urban_project_works.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "development_works",
+      ),
+  },
+  urban_project_technical_studies: {
+    title: "📋 Études et honoraires techniques",
+    Component: () => import("./urban_project_technical_studies.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "technical_studies",
+      ),
+  },
+  urban_project_other: {
+    title: "🏘 Autres dépenses d'aménagements",
+    Component: () => import("./urban_project_other.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "other",
+      ),
+  },
 
   urban_project_buildings_construction_and_rehabilitation: undefined,
   buildings_construction_works: undefined,
