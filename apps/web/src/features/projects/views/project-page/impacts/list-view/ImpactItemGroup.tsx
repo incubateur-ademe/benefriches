@@ -1,13 +1,14 @@
 import { ReactNode } from "react";
 
-import classNames from "@/shared/views/clsx";
+import classNames, { ClassValue } from "@/shared/views/clsx";
 
 type Props = {
   children: ReactNode;
   isClickable?: boolean;
+  className?: ClassValue;
 };
 
-const ImpactItemGroup = ({ children, isClickable = false }: Props) => {
+const ImpactItemGroup = ({ children, isClickable = false, className }: Props) => {
   return (
     <div
       className={classNames(
@@ -21,6 +22,7 @@ const ImpactItemGroup = ({ children, isClickable = false }: Props) => {
           "transition ease-in-out duration-500",
           "hover:border-grey-dark dark:hover:border-white",
         ],
+        className,
       )}
     >
       {children}

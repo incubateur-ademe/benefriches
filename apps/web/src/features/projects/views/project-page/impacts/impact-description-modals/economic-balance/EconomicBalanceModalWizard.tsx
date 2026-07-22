@@ -1,10 +1,27 @@
-import { lazy, Suspense } from "react";
-import { ProjectDevelopmentEconomicBalanceItem } from "shared";
+import type { MDXComponents } from "mdx/types";
+import { lazy, Suspense, useContext, useMemo } from "react";
+import {
+  ProjectDevelopmentEconomicBalanceItem,
+  ProjectOperatingEconomicBalanceItem,
+  ReinstatementExpensePurpose,
+  sumListWithKey,
+} from "shared";
 
 import {
   EconomicBalanceDetailsName,
   EconomicBalanceMainName,
 } from "@/features/projects/domain/projectImpactsEconomicBalance";
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import ImpactInProgressDescriptionModal from "@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
+import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
+import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
+import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import {
@@ -12,18 +29,10 @@ import {
   getEconomicBalanceImpactLabel,
 } from "../../getImpactLabel";
 import { ModalDataProps } from "../ImpactModalDescription";
-import { breadcrumbSection as economicBalanceBreadcrumbSection } from "./breadcrumbSection";
-
-const ImpactInProgressDescriptionModal = lazy(
-  () => import("@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal"),
-);
-const EconomicBalanceDescription = lazy(() => import("./EconomicBalanceDescription"));
-const RealEstateAcquisitionDescription = lazy(
-  () => import("./real-estate-acquisition/RealEstateAcquisition"),
-);
-const SiteReinstatementDescription = lazy(
-  () => import("./site-reinstatement/SiteReinstatementDescription"),
-);
+import ModalTable from "../shared/ModalTable";
+import ModalColumnPointChart from "../shared/modal-charts/ModalColumnPointChart";
+import EconomicBalanceDescription from "./EconomicBalanceDescription";
+import ModalSiteOrProjectFeature from "./EconomicBalanceModalSiteOrProjectFeature";
 
 type Props = {
   impactName?: EconomicBalanceMainName;
@@ -32,72 +41,318 @@ type Props = {
   contextData: ModalDataProps["contextData"];
 };
 
+const getSiteReinstatementDetailsColor = (impactName: ReinstatementExpensePurpose) => {
+  switch (impactName) {
+    case "asbestos_removal":
+      return "#F4C00A";
+    case "deimpermeabilization":
+      return "#039CF2";
+    case "demolition":
+      return "#85341B";
+    case "other_reinstatement":
+      return "#DE3317";
+    case "remediation":
+      return "#F6DB1F";
+    case "sustainable_soils_reinstatement":
+      return "#7ACA17";
+    case "waste_collection":
+      return "#298435";
+  }
+};
+
+const getTotal = (
+  impactsData: ModalDataProps["impactsData"],
+  filterFn: (
+    item: ProjectDevelopmentEconomicBalanceItem | ProjectOperatingEconomicBalanceItem,
+  ) => boolean,
+): EconomicBalanceModalData | undefined => {
+  const filtered = impactsData.projectEconomicBalance.details.filter(filterFn);
+  return filtered.length > 0 ? { total: sumListWithKey(filtered, "total") } : undefined;
+};
+
+type EconomicBalanceModalData = {
+  total: number;
+  details?: {
+    label: string;
+    color: string;
+    value: number;
+    name: EconomicBalanceDetailsName;
+  }[];
+};
+const ECONOMIC_BALANCE_MODALS = {
+  site_purchase: {
+    title: "🏠 Acquisition du site",
+    Component: () => import("./site_purchase.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(impactsData, (item) => item.name === "sitePurchase"),
+  },
+
+  site_resale: undefined,
+  buildings_resale: undefined,
+
+  site_reinstatement: {
+    title: "🚧 Remise en état de la friche",
+    Component: () => import("./site_reinstatement.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
+      const details = impactsData.projectEconomicBalance.details
+        .filter((item) => item.name === "siteReinstatement")
+        ?.map(({ details, total }) => ({
+          label: getEconomicBalanceDetailsImpactLabel("site_reinstatement", details),
+          color: getSiteReinstatementDetailsColor(details),
+          value: total,
+          name: details,
+        }));
+
+      return details
+        ? {
+            total: sumListWithKey(details, "value"),
+            details,
+          }
+        : undefined;
+    },
+  },
+  sustainable_soils_reinstatement: {
+    title: "🌱 Restauration écologique",
+    Component: () => import("./site_reinstatement-sustainable_soils_reinstatement.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) =>
+          item.name === "siteReinstatement" && item.details === "sustainable_soils_reinstatement",
+      ),
+  },
+  deimpermeabilization: {
+    title: "🌧️ Désimperméabilisation",
+    Component: () => import("./site_reinstatement-deimpermeabilization.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "siteReinstatement" && item.details === "deimpermeabilization",
+      ),
+  },
+  remediation: {
+    title: "✨ Dépollution des sols",
+    Component: () => import("./site_reinstatement-remediation.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "siteReinstatement" && item.details === "remediation",
+      ),
+  },
+  demolition: {
+    title: "🧱 Déconstruction",
+    Component: () => import("./site_reinstatement-demolition.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "siteReinstatement" && item.details === "demolition",
+      ),
+  },
+  asbestos_removal: undefined,
+  waste_collection: {
+    title: "♻️️ Évacuation et traitement des déchets",
+    Component: () => import("./site_reinstatement-waste_collection.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "siteReinstatement" && item.details === "waste_collection",
+      ),
+  },
+  other_reinstatement: {
+    title: "🏗️ Autres dépenses de remise en état",
+    Component: () => import("./site_reinstatement-other_reinstatement.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "siteReinstatement" && item.details === "other_reinstatement",
+      ),
+  },
+
+  photovoltaic_development_plan_installation: undefined,
+  photovoltaic_works: undefined,
+  photovoltaic_technical_studies: undefined,
+  photovoltaic_other: undefined,
+
+  urban_project_development_plan_installation: undefined,
+  urban_project_works: undefined,
+  urban_project_technical_studies: undefined,
+  urban_project_other: undefined,
+
+  urban_project_buildings_construction_and_rehabilitation: undefined,
+  buildings_construction_works: undefined,
+  buildings_rehabilitation_works: undefined,
+  other_construction_expenses: undefined,
+
+  financial_assistance: undefined,
+  public_subsidies: undefined,
+  local_or_regional_authority_participation: undefined,
+
+  operations_costs: undefined,
+  operations_revenues: undefined,
+  rent: undefined,
+  maintenance: undefined,
+  taxes: undefined,
+  other: undefined,
+  operations: undefined,
+
+  development_plan_installation: undefined,
+  technical_studies: undefined,
+  installation_works: undefined,
+  development_works: undefined,
+  technical_studies_and_fees: undefined,
+} as const satisfies Record<
+  EconomicBalanceMainName | EconomicBalanceDetailsName,
+  | {
+      title: string;
+      getData: (impactsData: ModalDataProps["impactsData"]) => EconomicBalanceModalData | undefined;
+      Component: () => Promise<{
+        default: React.ComponentType<{ components?: MDXComponents } & Record<string, unknown>>;
+      }>;
+    }
+  | undefined
+>;
+
+function bindProps<P extends object, K extends keyof P>(
+  Component: React.ComponentType<P>,
+  boundProps: Pick<P, K>,
+) {
+  return (props: Omit<P, K>) => <Component {...(boundProps as P)} {...(props as P)} />;
+}
+
 export function EconomicBalanceModalWizard({
   impactName,
   impactDetailsName,
   impactsData,
   contextData,
 }: Props) {
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+
+  const breadcrumbProps = {
+    section: {
+      label: "Bilan de l'opération",
+      contentState: { sectionName: "economic_balance" as const },
+    },
+    segments:
+      impactDetailsName && impactName
+        ? [
+            {
+              label: getEconomicBalanceImpactLabel(impactName),
+              contentState: {
+                sectionName: "economic_balance" as const,
+                impactName,
+              },
+            },
+          ]
+        : [],
+  };
+
+  const config = useMemo(() => {
+    return impactName ? ECONOMIC_BALANCE_MODALS[impactDetailsName ?? impactName] : undefined;
+  }, [impactName, impactDetailsName]);
+
+  const BoundSiteFeature = useMemo(
+    () =>
+      bindProps(ModalSiteOrProjectFeature, {
+        siteSurfaceArea: contextData.siteSurfaceArea,
+        soilsDistribution:
+          impactsData.reconversionImpactsBreakdown.projectIndirectImpactMetrics.filter(
+            (item) => item.name === "soilsDistribution",
+          ),
+      }),
+    [contextData, impactsData],
+  );
+  const BoundProjectFeature = useMemo(
+    () =>
+      bindProps(ModalSiteOrProjectFeature, {
+        soilsDistribution:
+          impactsData.reconversionImpactsBreakdown.projectIndirectImpactMetrics.filter(
+            (item) => item.name === "soilsDistribution",
+          ),
+      }),
+    [impactsData],
+  );
+
+  if (!impactName) {
+    return (
+      <EconomicBalanceDescription
+        impactsData={impactsData}
+        projectType={contextData.projectDevelopmentPlan.type}
+      />
+    );
+  }
+
+  if (!config) {
+    return (
+      <ImpactInProgressDescriptionModal
+        title={
+          impactDetailsName
+            ? getEconomicBalanceDetailsImpactLabel(impactName, impactDetailsName)
+            : getEconomicBalanceImpactLabel(impactName)
+        }
+        breadcrumbProps={breadcrumbProps}
+      />
+    );
+  }
+
+  const { Component, title, getData } = config;
+  const data = getData(impactsData);
+  const LazyComponent = lazy(Component);
+
   return (
     <Suspense fallback={<LoadingSpinner classes={{ text: "text-grey-light" }} />}>
-      {(() => {
-        if (!impactName) {
-          return (
-            <EconomicBalanceDescription
-              impactsData={impactsData}
-              projectType={contextData.projectDevelopmentPlan.type}
-            />
-          );
-        }
-
-        switch (impactDetailsName ?? impactName) {
-          case "site_reinstatement":
-            return (
-              <SiteReinstatementDescription
-                impactData={impactsData.projectEconomicBalance.details.filter(
-                  (
-                    item,
-                  ): item is Extract<
-                    ProjectDevelopmentEconomicBalanceItem,
-                    { name: "siteReinstatement" }
-                  > => item.name === "siteReinstatement",
-                )}
-                bearer={impactsData.stakeholders.project.reinstatementContractOwner.structureName}
-              />
-            );
-
-          case "site_purchase":
-            return (
-              <RealEstateAcquisitionDescription
-                impactData={
-                  impactsData.projectEconomicBalance.details.find(
-                    ({ name }) => name === "sitePurchase",
-                  )?.total
+      <ModalBody size="large">
+        <ModalHeader
+          title={title}
+          value={
+            data?.total
+              ? {
+                  state: "error",
+                  text: formatMonetaryImpact(data?.total),
+                  description: `pour ${impactsData.stakeholders.project.developer.structureName ?? "l'aménageur"}`,
                 }
-              />
-            );
+              : undefined
+          }
+          breadcrumbSegments={[
+            breadcrumbProps.section,
+            ...breadcrumbProps.segments,
+            { label: title },
+          ]}
+        />
+        <ModalContent>
+          <ModalGrid>
+            {data?.details && (
+              <ModalData>
+                <ModalColumnPointChart format="monetary" data={data.details} exportTitle={title} />
 
-          default:
-            return (
-              <ImpactInProgressDescriptionModal
-                title={
-                  impactDetailsName
-                    ? getEconomicBalanceDetailsImpactLabel(impactName, impactDetailsName)
-                    : getEconomicBalanceImpactLabel(impactName)
-                }
-                breadcrumbProps={{
-                  section: economicBalanceBreadcrumbSection,
-                  segments: impactDetailsName && [
-                    {
-                      label: getEconomicBalanceImpactLabel(impactName),
-                      contentState: { sectionName: "economic_balance", impactName },
+                <ModalTable
+                  caption={`Liste détaillée des dépenses et recettes de ${title}`}
+                  data={data.details.map(({ label, value, color, name }) => ({
+                    label,
+                    value,
+                    color,
+                    onClick: () => {
+                      updateModalContent({
+                        sectionName: "economic_balance",
+                        impactName: impactName,
+                        impactDetailsName: name,
+                      });
                     },
-                  ],
-                }}
-              />
-            );
-        }
-      })()}
+                  }))}
+                />
+              </ModalData>
+            )}
+            <LazyComponent
+              components={{
+                a: ExternalLink,
+                h2: ModalTitleTwo,
+                h3: ModalTitleThree,
+                SiteFeature: BoundSiteFeature,
+                ProjectFeature: BoundProjectFeature,
+              }}
+            />
+          </ModalGrid>
+        </ModalContent>
+      </ModalBody>
     </Suspense>
   );
 }

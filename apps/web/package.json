@@ -28,6 +28,7 @@
   "dependencies": {
     "@codegouvfr/react-dsfr": "~1.32.4",
     "@headlessui/react": "^2.2.10",
+    "@mdx-js/rollup": "~3.1.1",
     "@react-pdf/renderer": "^4.5.1",
     "@reduxjs/toolkit": "~2.12.0",
     "clsx": "~2.1.1",
@@ -43,6 +44,7 @@
     "react-pdf-tailwind": "^3.0.0",
     "react-redux": "~9.3.0",
     "reduce-reducers": "~1.0.4",
+    "remark-gfm": "~4.0.1",
     "shared": "workspace:*",
     "type-route": "~1.1.0",
     "uuid": "~14.0.0",
@@ -55,6 +57,7 @@
     "@trivago/prettier-plugin-sort-imports": "~6.0.2",
     "@types/geojson": "~7946.0.16",
     "@types/leaflet": "~1.9.21",
+    "@types/mdx": "~2.0.14",
     "@types/react": "~19.2.17",
     "@types/react-dom": "~19.2.3",
     "@vitejs/plugin-react": "~6.0.2",

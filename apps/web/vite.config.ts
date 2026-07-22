@@ -1,6 +1,8 @@
+import mdx from "@mdx-js/rollup";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
+import remarkGfm from "remark-gfm";
 import { defineConfig, loadEnv } from "vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
@@ -31,6 +33,8 @@ export default defineConfig(({ mode }) => ({
       include: ["buffer"], // only polyfill buffer (needed by react-pdf)
     }),
     tailwindcss(),
+    // mdx() doit être déclaré AVANT react() dans le tableau
+    { enforce: "pre", ...mdx({ remarkPlugins: [remarkGfm] }) },
     react(),
     interceptEmbedRouting(),
   ],
