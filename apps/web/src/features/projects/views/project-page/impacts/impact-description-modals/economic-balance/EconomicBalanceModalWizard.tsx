@@ -65,6 +65,12 @@ const getEconomicBalanceDetailsColor = (impactName: EconomicBalanceDetailsName) 
     case "photovoltaic_other":
       return "#FF9700";
 
+    case "local_or_regional_authority_participation":
+      return "#1D5DA2";
+    case "public_subsidies":
+      return "#AFF6FF";
+    case "other":
+      return "#FFADFE";
     default:
       return "";
   }
@@ -251,9 +257,48 @@ const ECONOMIC_BALANCE_MODALS = {
   buildings_rehabilitation_works: undefined,
   other_construction_expenses: undefined,
 
-  financial_assistance: undefined,
-  public_subsidies: undefined,
-  local_or_regional_authority_participation: undefined,
+  financial_assistance: {
+    title: "🏦 Aides financière",
+    Component: () => import("./financial_assistance.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
+      const details = impactsData.projectEconomicBalance.details
+        .filter((item) => item.name === "financialAssistanceRevenues")
+        ?.map(({ details, total }) => ({
+          label: getEconomicBalanceDetailsImpactLabel("financial_assistance", details),
+          color: getEconomicBalanceDetailsColor(details),
+          value: total,
+          name: details,
+        }));
+
+      return details
+        ? {
+            total: sumListWithKey(details, "value"),
+            details,
+          }
+        : undefined;
+    },
+  },
+  public_subsidies: {
+    title: "🏫 Subventions publiques",
+    Component: () => import("./financial_assistance-public_subsidies.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) =>
+          item.name === "financialAssistanceRevenues" && item.details === "public_subsidies",
+      ),
+  },
+  local_or_regional_authority_participation: {
+    title: "🏦 Participation des collectivités",
+    Component: () => import("./financial_assistance-local_or_regional_authority_participation.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) =>
+          item.name === "financialAssistanceRevenues" &&
+          item.details === "local_or_regional_authority_participation",
+      ),
+  },
 
   operations_costs: undefined,
   operations_revenues: undefined,
