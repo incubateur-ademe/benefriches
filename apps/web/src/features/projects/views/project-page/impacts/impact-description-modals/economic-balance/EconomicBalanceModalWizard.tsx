@@ -428,7 +428,7 @@ export function EconomicBalanceModalWizard({
       bindProps(ModalSiteOrProjectFeature, {
         siteSurfaceArea: contextData.siteSurfaceArea,
         soilsDistribution:
-          impactsData.reconversionImpactsBreakdown.projectIndirectImpactMetrics.filter(
+          impactsData.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.filter(
             (item) => item.name === "soilsDistribution",
           ),
       }),
