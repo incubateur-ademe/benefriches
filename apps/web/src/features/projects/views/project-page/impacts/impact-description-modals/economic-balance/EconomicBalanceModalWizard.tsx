@@ -87,7 +87,12 @@ const ECONOMIC_BALANCE_MODALS = {
       getTotal(impactsData, (item) => item.name === "sitePurchase"),
   },
 
-  site_resale: undefined,
+  site_resale: {
+    title: "🚪 Cession du site",
+    Component: () => import("./site_resale.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(impactsData, (item) => item.name === "siteResaleRevenue"),
+  },
   buildings_resale: undefined,
 
   site_reinstatement: {
@@ -306,7 +311,7 @@ export function EconomicBalanceModalWizard({
           value={
             data?.total
               ? {
-                  state: "error",
+                  state: data?.total > 0 ? "success" : "error",
                   text: formatMonetaryImpact(data?.total),
                   description: `pour ${impactsData.stakeholders.project.developer.structureName ?? "l'aménageur"}`,
                 }
