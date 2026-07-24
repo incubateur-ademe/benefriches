@@ -1,6 +1,6 @@
 import { Link, Text, View } from "@react-pdf/renderer";
 
-import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
+import { EconomicBalance } from "@/features/projects/core/projectImpactsEconomicBalance";
 
 import {
   getEconomicBalanceDetailsImpactLabel,

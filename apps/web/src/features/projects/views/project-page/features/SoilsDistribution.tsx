@@ -3,7 +3,7 @@ import { getProjectSoilDistributionByType, roundToInteger, sumListWithKey } from
 import {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
-} from "@/features/projects/domain/projects.types";
+} from "@/features/projects/core/projects.types";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { sortAndAggregateProjectSoilDistribution } from "@/shared/core/soils";
 import classNames from "@/shared/views/clsx";

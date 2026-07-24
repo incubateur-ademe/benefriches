@@ -1,4 +1,4 @@
-import { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
+import { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 
 export const getSummaryIndicatorTitle = ({
   name,

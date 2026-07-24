@@ -2,11 +2,11 @@ import { lazy, Suspense } from "react";
 import { AggregatedReconversionProjectOnSiteImpactItemView } from "shared";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import { groupIndirectEconomicImpactsByBearerAndCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
+import { groupIndirectEconomicImpactsByBearerAndCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 import {
   SocioEconomicDetailsName,
   SocioEconomicMainImpactName,
-} from "@/features/projects/domain/projectImpactsSocioEconomic";
+} from "@/features/projects/core/projectImpactsSocioEconomic";
 import { SocioEconomicSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 

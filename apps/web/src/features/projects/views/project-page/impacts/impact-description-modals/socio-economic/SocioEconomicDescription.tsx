@@ -2,7 +2,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { useContext, useMemo } from "react";
 import { sumListWithKey, typedObjectEntries } from "shared";
 
-import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import {
   HUMANITY_IMPACTS_CATEGORIES,

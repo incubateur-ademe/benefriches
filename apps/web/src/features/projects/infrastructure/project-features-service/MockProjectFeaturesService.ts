@@ -1,5 +1,5 @@
 import { ProjectFeaturesGateway } from "../../application/project-features/projectFeatures.actions";
-import { ProjectFeatures } from "../../domain/projects.types";
+import { ProjectFeatures } from "../../core/projects.types";
 
 export class MockProjectFeaturesService implements ProjectFeaturesGateway {
   projectFeatures: ProjectFeatures = {

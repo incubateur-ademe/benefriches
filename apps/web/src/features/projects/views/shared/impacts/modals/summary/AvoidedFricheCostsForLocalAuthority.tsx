@@ -1,6 +1,6 @@
 import { useContext, useMemo } from "react";
 
-import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
+import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";

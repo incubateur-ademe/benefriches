@@ -3,20 +3,20 @@ import { createContext } from "react";
 import {
   EconomicBalanceDetailsName,
   EconomicBalanceMainName,
-} from "@/features/projects/domain/projectImpactsEconomicBalance";
+} from "@/features/projects/core/projectImpactsEconomicBalance";
 import {
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
-} from "@/features/projects/domain/projectImpactsEnvironmental";
+} from "@/features/projects/core/projectImpactsEnvironmental";
 import {
   SocialImpactDetailsName,
   SocialMainImpactName,
-} from "@/features/projects/domain/projectImpactsSocial";
+} from "@/features/projects/core/projectImpactsSocial";
 import {
   SocioEconomicDetailsName,
   SocioEconomicMainImpactName,
-} from "@/features/projects/domain/projectImpactsSocioEconomic";
-import { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
+} from "@/features/projects/core/projectImpactsSocioEconomic";
+import { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 
 type IsClosedState = {
   sectionName: undefined;

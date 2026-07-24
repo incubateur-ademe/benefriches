@@ -5,8 +5,8 @@ import {
   typedObjectEntries,
 } from "shared";
 
-import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
-import { groupByListViewCategory } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
+import { groupByListViewCategory } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { LOCAL_AUTHORITY_IMPACTS_CATEGORIES } from "@/features/projects/views/shared/impacts/impactGroupCategory";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 

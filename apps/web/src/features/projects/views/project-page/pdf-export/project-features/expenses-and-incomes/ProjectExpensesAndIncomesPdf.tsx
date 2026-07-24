@@ -10,7 +10,7 @@ import {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
   UrbanProjectFeatures,
-} from "@/features/projects/domain/projects.types";
+} from "@/features/projects/core/projects.types";
 import {
   getLabelForFinancialAssistanceRevenueSource,
   getLabelForRecurringExpense,

@@ -1,6 +1,6 @@
 import { Text, View } from "@react-pdf/renderer";
 
-import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
+import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
 
 import {
   getEnvironmentalDetailsImpactLabel,

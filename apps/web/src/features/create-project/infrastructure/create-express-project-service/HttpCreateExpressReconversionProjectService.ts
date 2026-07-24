@@ -1,6 +1,6 @@
 import { ReconversionProjectTemplate } from "shared";
 
-import { ProjectFeatures } from "@/features/projects/domain/projects.types";
+import { ProjectFeatures } from "@/features/projects/core/projects.types";
 import { objectToQueryParams } from "@/shared/core/object-query-parameters/objectToQueryParameters";
 
 import { CreateExpressReconversionProjectGateway } from "../../core/demo/demoProject.actions";

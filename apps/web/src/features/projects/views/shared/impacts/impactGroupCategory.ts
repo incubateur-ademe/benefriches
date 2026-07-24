@@ -1,4 +1,4 @@
-import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 
 type HumanityImpactCategory = Exclude<
   keyof IndirectEconomicImpactsByBearerAndGroupCategory["humanity"],

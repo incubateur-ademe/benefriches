@@ -2,7 +2,7 @@ import { createAction } from "@reduxjs/toolkit";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
-import { UserSiteEvaluation } from "../domain/types";
+import { UserSiteEvaluation } from "../core/types";
 
 export interface SiteEvaluationGateway {
   getUserList(): Promise<UserSiteEvaluation[]>;

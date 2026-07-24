@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/store/store";
 
-import { KeyImpactIndicatorData, PRIORITY_ORDER } from "../../../domain/projectKeyImpactIndicators";
+import { KeyImpactIndicatorData, PRIORITY_ORDER } from "../../../core/projectKeyImpactIndicators";
 import { ProjectImpactsState } from "../projectImpacts.reducer";
 import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
 import { selectKeyImpactIndicatorsList } from "./projectImpacts.selectors";

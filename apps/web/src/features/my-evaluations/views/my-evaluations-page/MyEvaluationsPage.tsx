@@ -8,7 +8,7 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import ProjectTile from "@/shared/views/components/ProjectTile/ProjectTile";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { UserSiteEvaluation } from "../../domain/types";
+import { UserSiteEvaluation } from "../../core/types";
 import MyEvaluationItem from "./MyEvaluationItem";
 import MyEvaluationsPageHeader from "./MyEvaluationsPageHeader";
 

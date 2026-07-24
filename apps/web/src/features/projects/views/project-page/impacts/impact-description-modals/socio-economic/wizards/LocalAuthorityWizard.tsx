@@ -7,11 +7,11 @@ import {
 } from "shared";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 import {
   SocioEconomicDetailsName,
   SocioEconomicMainImpactName,
-} from "@/features/projects/domain/projectImpactsSocioEconomic";
+} from "@/features/projects/core/projectImpactsSocioEconomic";
 import ImpactInProgressDescriptionModal from "@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 

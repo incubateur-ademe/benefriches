@@ -2,7 +2,7 @@ import { SiteNature } from "shared";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { selectAvoidedInactionCostsAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
-import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
+import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 
 import ProjectAvoidedInactionCosts from "./ProjectAvoidedInactionCosts";
 

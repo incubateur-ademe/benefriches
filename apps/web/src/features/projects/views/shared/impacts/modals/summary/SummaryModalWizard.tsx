@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 
-import { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
+import { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 const SummaryAvoidedCo2eqEmissionsDescription = lazy(() => import("./AvoidedCo2eqEmissions"));

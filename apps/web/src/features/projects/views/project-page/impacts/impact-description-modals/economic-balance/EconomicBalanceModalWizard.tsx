@@ -11,7 +11,7 @@ import {
   EconomicBalanceDetailsName,
   EconomicBalanceMainName,
   getDevelopmentPlanDetailsName,
-} from "@/features/projects/domain/projectImpactsEconomicBalance";
+} from "@/features/projects/core/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ImpactInProgressDescriptionModal from "@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";

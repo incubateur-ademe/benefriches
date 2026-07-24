@@ -4,7 +4,7 @@ import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { routes } from "@/app/router";
 import { getLabelForRenewableEnergyProductionType } from "@/features/create-project/core/project-form/renewableEnergyLabelMapping";
 import { getLabelForDevelopmentPlanCategory } from "@/features/create-project/views/projectTypeLabelMapping";
-import { ProjectFeatures } from "@/features/projects/domain/projects.types";
+import { ProjectFeatures } from "@/features/projects/core/projects.types";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";

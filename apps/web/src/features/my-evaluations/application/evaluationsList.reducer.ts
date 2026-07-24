@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { UserSiteEvaluation } from "../domain/types";
+import { UserSiteEvaluation } from "../core/types";
 import {
   fetchUserSiteEvaluations,
   projectRemovedFromEvaluationList,

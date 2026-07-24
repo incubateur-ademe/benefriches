@@ -7,7 +7,7 @@ import {
 import {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
-} from "@/features/projects/domain/projects.types";
+} from "@/features/projects/core/projects.types";
 import { getLabelForPhotovoltaicInstallationExpensePurpose } from "@/shared/core/reconversionProject";
 import { getLabelForUrbanProjectDevelopmentExpense } from "@/shared/core/urbanProject";
 

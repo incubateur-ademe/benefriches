@@ -1,5 +1,5 @@
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
+import { SocialImpact } from "@/features/projects/core/projectImpactsSocial";
 
 import { getSocialImpactLabel } from "../../getImpactLabel";
 import ImpactModalDescription from "../../impact-description-modals/ImpactModalDescription";

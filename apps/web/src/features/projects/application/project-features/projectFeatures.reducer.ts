@@ -2,7 +2,7 @@ import { createReducer, createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/store/store";
 
-import { ProjectFeatures } from "../../domain/projects.types";
+import { ProjectFeatures } from "../../core/projects.types";
 import { fetchProjectFeatures } from "./projectFeatures.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";

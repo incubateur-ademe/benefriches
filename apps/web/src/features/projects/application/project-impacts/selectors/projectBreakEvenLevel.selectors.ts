@@ -3,11 +3,11 @@ import { GetReconversionProjectImpactsResultDto } from "shared";
 
 import { RootState } from "@/app/store/store";
 
-import { cropImpactsByEvaluationPeriod } from "../../../domain/cropImpactsByEvaluationPeriod";
+import { cropImpactsByEvaluationPeriod } from "../../../core/cropImpactsByEvaluationPeriod";
 import {
   groupIndirectEconomicImpactsByBearerAndCategory,
   IndirectEconomicImpactsByBearerAndGroupCategory,
-} from "../../../domain/groupIndirectImpactsByBearer";
+} from "../../../core/groupIndirectImpactsByBearer";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 const selectContextData = (state: RootState) => state.projectImpacts.contextData;

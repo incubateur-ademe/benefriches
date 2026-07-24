@@ -10,18 +10,18 @@ import {
   DevelopmentPlanInstallationExpenseName,
   EconomicBalanceMainName,
   EconomicBalanceName,
-} from "@/features/projects/domain/projectImpactsEconomicBalance";
+} from "@/features/projects/core/projectImpactsEconomicBalance";
 import {
   CO2BenefitDetails,
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
   PermeableSoilsDetails,
-} from "@/features/projects/domain/projectImpactsEnvironmental";
-import { SocialImpactName } from "@/features/projects/domain/projectImpactsSocial";
+} from "@/features/projects/core/projectImpactsEnvironmental";
+import { SocialImpactName } from "@/features/projects/core/projectImpactsSocial";
 import {
   SocioEconomicDetailsName,
   SocioEconomicMainImpactName,
-} from "@/features/projects/domain/projectImpactsSocioEconomic";
+} from "@/features/projects/core/projectImpactsSocioEconomic";
 import { getLabelForBuildingsConstructionExpenseFromApiPurpose } from "@/shared/core/urbanProject";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {

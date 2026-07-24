@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
+import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";

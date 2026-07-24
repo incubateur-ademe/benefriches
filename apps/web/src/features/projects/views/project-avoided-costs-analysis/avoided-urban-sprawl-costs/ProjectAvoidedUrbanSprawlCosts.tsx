@@ -6,7 +6,7 @@ import Badge from "@/shared/views/components/Badge/Badge";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";
 
-import { ProjectDevelopmentPlanType } from "../../../domain/projects.types";
+import { ProjectDevelopmentPlanType } from "../../../core/projects.types";
 import { getScenarioPictoUrl } from "../../shared/scenarioType";
 import ComparisionDetailsMonetaryRow from "../layout/ComparisionDetailsMonetaryRow";
 import ComparisonCell from "../layout/ComparisonCell";

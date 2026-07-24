@@ -2,7 +2,7 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { SiteNature } from "shared";
 
-import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
+import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 

@@ -7,7 +7,7 @@ import {
   UrbanProjectCategory,
 } from "shared";
 
-import { UrbanProjectFeatures } from "../../domain/projects.types";
+import { UrbanProjectFeatures } from "../../core/projects.types";
 
 const PUBLIC_FACILITIES = [
   "PUBLIC_FACILITIES",

@@ -5,7 +5,7 @@ import { Fragment } from "react/jsx-runtime";
 import { Link } from "type-route";
 
 import ArchiveProjectDialog from "@/features/archive-project/views/ArchiveProjectDialog";
-import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
+import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 import classNames, { ClassValue } from "@/shared/views/clsx";
 import MenuItemButton from "@/shared/views/components/Menu/MenuItemButton";
 import { MENU_ITEMS_CLASSES } from "@/shared/views/components/Menu/classes";

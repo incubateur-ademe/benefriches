@@ -1,7 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { ReactNode, useContext } from "react";
 
-import { SocioEconomicMainImpactName } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { SocioEconomicMainImpactName } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import {
   ImpactModalDescriptionContext,

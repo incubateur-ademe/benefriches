@@ -19,7 +19,7 @@ import NewProjectTile from "@/shared/views/components/ProjectTile/NewProjectTile
 import ProjectOverviewTile from "@/shared/views/components/ProjectTile/ProjectOverviewTile";
 import ProjectTile from "@/shared/views/components/ProjectTile/ProjectTile";
 
-import { UserSiteEvaluation } from "../../domain/types";
+import { UserSiteEvaluation } from "../../core/types";
 
 type Props = {
   evaluation: UserSiteEvaluation;

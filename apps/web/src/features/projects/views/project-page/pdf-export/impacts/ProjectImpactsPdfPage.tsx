@@ -1,7 +1,7 @@
-import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
-import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
-import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
-import { SocioEconomicImpactsByBearerListView } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { EconomicBalance } from "@/features/projects/core/projectImpactsEconomicBalance";
+import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
+import { SocialImpact } from "@/features/projects/core/projectImpactsSocial";
+import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 
 import EconomicBalancePages from "./EconomicBalancePages";
 import EnvironmentalImpactsPage from "./environmental-impacts";

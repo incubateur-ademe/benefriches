@@ -4,7 +4,7 @@ import { useContext } from "react";
 import {
   EnvironmentalImpact,
   EnvironmentalImpactDetailsName,
-} from "@/features/projects/domain/projectImpactsEnvironmental";
+} from "@/features/projects/core/projectImpactsEnvironmental";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";

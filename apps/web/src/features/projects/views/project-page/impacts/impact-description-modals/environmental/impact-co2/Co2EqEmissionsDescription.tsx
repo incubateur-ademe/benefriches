@@ -3,7 +3,7 @@ import { useContext } from "react";
 import {
   CO2BenefitDetails,
   EnvironmentalImpact,
-} from "@/features/projects/domain/projectImpactsEnvironmental";
+} from "@/features/projects/core/projectImpactsEnvironmental";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";

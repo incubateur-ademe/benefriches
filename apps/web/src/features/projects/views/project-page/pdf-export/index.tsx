@@ -1,10 +1,10 @@
 import { Document } from "@react-pdf/renderer";
 
-import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
-import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
-import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
-import { SocioEconomicImpactsByBearerListView } from "@/features/projects/domain/projectImpactsSocioEconomic";
-import { ProjectFeatures } from "@/features/projects/domain/projects.types";
+import { EconomicBalance } from "@/features/projects/core/projectImpactsEconomicBalance";
+import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
+import { SocialImpact } from "@/features/projects/core/projectImpactsSocial";
+import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
+import { ProjectFeatures } from "@/features/projects/core/projects.types";
 import { SiteFeatures } from "@/features/sites/core/site.types";
 
 import type { PdfExportSectionSelection } from "../export-impacts/pdf-export/pdfExportSections";

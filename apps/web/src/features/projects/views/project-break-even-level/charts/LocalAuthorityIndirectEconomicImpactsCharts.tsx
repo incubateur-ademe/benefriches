@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { sumListWithKey, typedObjectEntries } from "shared";
 
-import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
+import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 
 import { LOCAL_AUTHORITY_IMPACTS_CATEGORIES } from "../../shared/impacts/impactGroupCategory";
 import EconomicColumnChart from "./EconomicColumnChart";

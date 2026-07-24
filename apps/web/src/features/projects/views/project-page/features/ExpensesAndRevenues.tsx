@@ -11,7 +11,7 @@ import {
   sumObjectValues,
 } from "shared";
 
-import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
+import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/core/projects.types";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForFinancialAssistanceRevenueSource,

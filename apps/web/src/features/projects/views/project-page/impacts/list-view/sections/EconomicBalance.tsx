@@ -1,7 +1,7 @@
 import React from "react";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
+import { EconomicBalance } from "@/features/projects/core/projectImpactsEconomicBalance";
 
 import {
   getEconomicBalanceDetailsImpactLabel,

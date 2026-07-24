@@ -1,6 +1,6 @@
 import React from "react";
 
-import type { ProjectFeatures } from "@/features/projects/domain/projects.types";
+import type { ProjectFeatures } from "@/features/projects/core/projects.types";
 
 import DevelopmentPlanFeaturesPdf from "./DevelopmentPlanFeaturesPdf";
 

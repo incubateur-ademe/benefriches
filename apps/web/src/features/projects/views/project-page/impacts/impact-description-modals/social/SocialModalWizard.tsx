@@ -5,7 +5,7 @@ import {
   getSocialProjectImpacts,
   SocialImpactDetailsName,
   SocialMainImpactName,
-} from "@/features/projects/domain/projectImpactsSocial";
+} from "@/features/projects/core/projectImpactsSocial";
 import { SocialSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 

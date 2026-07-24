@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { ProjectFeatures } from "../../domain/projects.types";
+import type { ProjectFeatures } from "../../core/projects.types";
 import {
   selectProjectFeatures,
   selectProjectFeaturesLoadingState,

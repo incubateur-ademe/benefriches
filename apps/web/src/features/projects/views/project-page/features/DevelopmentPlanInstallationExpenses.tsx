@@ -10,7 +10,7 @@ import {
 import {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
-} from "@/features/projects/domain/projects.types";
+} from "@/features/projects/core/projects.types";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import { getLabelForPhotovoltaicInstallationExpensePurpose } from "@/shared/core/reconversionProject";
 import { getLabelForUrbanProjectDevelopmentExpense } from "@/shared/core/urbanProject";

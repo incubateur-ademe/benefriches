@@ -1,4 +1,4 @@
-import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
+import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";

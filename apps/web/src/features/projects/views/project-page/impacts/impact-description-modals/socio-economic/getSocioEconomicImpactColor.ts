@@ -1,4 +1,4 @@
-import { SocioEconomicMainImpactName } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { SocioEconomicMainImpactName } from "@/features/projects/core/projectImpactsSocioEconomic";
 
 export const getSocioEconomicImpactColor = (impactName: SocioEconomicMainImpactName) => {
   switch (impactName) {

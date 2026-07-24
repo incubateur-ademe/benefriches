@@ -8,7 +8,7 @@ import {
 import { RootState } from "@/app/store/store";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 
-import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
+import { ProjectDevelopmentPlanType } from "../../core/projects.types";
 import {
   evaluationPeriodUpdated,
   reconversionProjectImpactsBreakEvenLevelRequested,

@@ -1,5 +1,5 @@
 import { SiteEvaluationGateway } from "../../application/evaluationsList.actions";
-import { UserSiteEvaluation } from "../../domain/types";
+import { UserSiteEvaluation } from "../../core/types";
 
 export class InMemorySiteEvaluationService implements SiteEvaluationGateway {
   private readonly siteEvaluations: UserSiteEvaluation[];

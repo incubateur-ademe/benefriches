@@ -1,6 +1,6 @@
 import { roundToInteger, sumListWithKey, sumObjectValues } from "shared";
 
-import { ProjectFeatures } from "@/features/projects/domain/projects.types";
+import { ProjectFeatures } from "@/features/projects/core/projects.types";
 import {
   formatNumberFr,
   formatPercentage,

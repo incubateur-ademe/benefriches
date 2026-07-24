@@ -4,7 +4,7 @@ import type { ModalDataProps } from "@/features/projects/application/project-imp
 import {
   KeyImpactIndicatorData,
   PRIORITY_ORDER,
-} from "@/features/projects/domain/projectKeyImpactIndicators";
+} from "@/features/projects/core/projectKeyImpactIndicators";
 
 import { getSummaryIndicatorTitle } from "../../../shared/impacts/summary";
 import ImpactModalDescription from "../impact-description-modals/ImpactModalDescription";

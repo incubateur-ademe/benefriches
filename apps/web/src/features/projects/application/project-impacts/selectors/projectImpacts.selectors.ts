@@ -5,24 +5,24 @@ import type { RootState } from "@/app/store/store";
 import {
   getEconomicBalanceProjectImpacts,
   type EconomicBalance,
-} from "@/features/projects/domain/projectImpactsEconomicBalance";
+} from "@/features/projects/core/projectImpactsEconomicBalance";
 import {
   getEnvironmentalProjectImpacts,
   type EnvironmentalImpact,
-} from "@/features/projects/domain/projectImpactsEnvironmental";
+} from "@/features/projects/core/projectImpactsEnvironmental";
 import {
   getSocialProjectImpacts,
   type SocialImpact,
-} from "@/features/projects/domain/projectImpactsSocial";
+} from "@/features/projects/core/projectImpactsSocial";
 import {
   getSocioEconomicProjectImpactsGroupedByCategory,
   SocioEconomicImpactsByBearerListView,
-} from "@/features/projects/domain/projectImpactsSocioEconomic";
+} from "@/features/projects/core/projectImpactsSocioEconomic";
 import {
   getKeyImpactIndicatorsList,
   type KeyImpactIndicatorData,
-} from "@/features/projects/domain/projectKeyImpactIndicators";
-import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
+} from "@/features/projects/core/projectKeyImpactIndicators";
+import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 
 import {
   selectProjectsImpactsViewData,

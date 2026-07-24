@@ -3,7 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "@/app/store/store";
 import { selectCurrentUserId } from "@/features/onboarding/core/user.reducer";
 
-import type { UserSiteEvaluation } from "../domain/types";
+import type { UserSiteEvaluation } from "./types";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

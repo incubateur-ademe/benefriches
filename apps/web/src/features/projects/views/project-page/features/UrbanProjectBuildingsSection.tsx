@@ -1,6 +1,6 @@
 import { sumObjectValues, typedObjectEntries } from "shared";
 
-import { UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
+import { UrbanProjectFeatures } from "@/features/projects/core/projects.types";
 import { formatPercentage, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { computePercentage } from "@/shared/core/percentage/percentage";
 import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";

@@ -5,7 +5,7 @@ import type { ModalDataProps } from "@/features/projects/application/project-imp
 import {
   EconomicBalanceMainName,
   getEconomicBalanceProjectImpacts,
-} from "@/features/projects/domain/projectImpactsEconomicBalance";
+} from "@/features/projects/core/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";

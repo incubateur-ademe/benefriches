@@ -1,5 +1,5 @@
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
+import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
 
 import {
   getEnvironmentalDetailsImpactLabel,

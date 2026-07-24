@@ -10,7 +10,7 @@ import {
 } from "shared";
 
 import { ProjectImpactsState } from "../application/project-impacts/projectImpacts.reducer";
-import { ProjectDevelopmentPlanType } from "../domain/projects.types";
+import { ProjectDevelopmentPlanType } from "../core/projects.types";
 
 export type EconomicBalanceName = EconomicBalanceMainName | EconomicBalanceDetailsName;
 

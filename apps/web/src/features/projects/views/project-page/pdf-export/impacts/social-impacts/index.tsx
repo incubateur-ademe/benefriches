@@ -1,6 +1,6 @@
 import { Text, View } from "@react-pdf/renderer";
 
-import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
+import { SocialImpact } from "@/features/projects/core/projectImpactsSocial";
 
 import { getSocialImpactLabel } from "../../../impacts/getImpactLabel";
 import ImpactItemDetails from "../../components/ImpactItemDetails";

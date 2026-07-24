@@ -4,7 +4,7 @@ import { useContext } from "react";
 import {
   SocialImpact,
   SocialImpactDetailsName,
-} from "@/features/projects/domain/projectImpactsSocial";
+} from "@/features/projects/core/projectImpactsSocial";
 import { formatETPImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";

@@ -1,7 +1,7 @@
 import { Text } from "@react-pdf/renderer";
 import { sumListWithKey, sumObjectValues, typedObjectEntries } from "shared";
 
-import { ProjectFeatures } from "@/features/projects/domain/projects.types";
+import { ProjectFeatures } from "@/features/projects/core/projects.types";
 import {
   getLabelForBuildingsUse,
   getUrbanSpaceLabelForLivingAndActivitySpace,

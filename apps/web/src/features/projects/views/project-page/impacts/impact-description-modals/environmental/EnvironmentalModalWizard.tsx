@@ -5,7 +5,7 @@ import {
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
   getEnvironmentalProjectImpacts,
-} from "@/features/projects/domain/projectImpactsEnvironmental";
+} from "@/features/projects/core/projectImpactsEnvironmental";
 import { EnvironmentSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 

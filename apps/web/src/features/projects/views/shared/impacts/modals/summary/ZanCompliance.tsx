@@ -1,4 +1,4 @@
-import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
+import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
