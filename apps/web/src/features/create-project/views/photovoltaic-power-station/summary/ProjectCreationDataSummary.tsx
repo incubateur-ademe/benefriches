@@ -10,6 +10,7 @@ import {
   sumListWithKey,
 } from "shared";
 
+import { getLabelForRenewableEnergyProductionType } from "@/features/create-project/core/project-form/renewableEnergyLabelMapping";
 import { SoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
 import { Schedule } from "@/features/create-project/core/project.types";
 import { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
@@ -38,10 +39,7 @@ import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import {
-  getLabelForDevelopmentPlanCategory,
-  getLabelForRenewableEnergyProductionType,
-} from "../../projectTypeLabelMapping";
+import { getLabelForDevelopmentPlanCategory } from "../../projectTypeLabelMapping";
 
 type Props = {
   projectData: {

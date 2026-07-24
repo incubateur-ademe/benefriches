@@ -1,5 +1,5 @@
-import { getLabelForRenewableEnergyProductionType } from "../../views/projectTypeLabelMapping";
 import { ReconversionProjectCreationData } from "../project.types";
+import { getLabelForRenewableEnergyProductionType } from "./renewableEnergyLabelMapping";
 
 type ProjectInfo = Pick<ReconversionProjectCreationData, "renewableEnergyType">;
 

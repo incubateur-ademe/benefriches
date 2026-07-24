@@ -1,7 +1,5 @@
-import {
-  getLabelForDevelopmentPlanCategory,
-  getLabelForRenewableEnergyProductionType,
-} from "@/features/create-project/views/projectTypeLabelMapping";
+import { getLabelForRenewableEnergyProductionType } from "@/features/create-project/core/project-form/renewableEnergyLabelMapping";
+import { getLabelForDevelopmentPlanCategory } from "@/features/create-project/views/projectTypeLabelMapping";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 
 import DataLine from "../components/DataLine";
