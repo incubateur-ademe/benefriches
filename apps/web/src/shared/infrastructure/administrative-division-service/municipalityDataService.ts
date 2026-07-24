@@ -1,5 +1,7 @@
 import { GetCityRuralityResponseDto, LocalAuthority } from "shared";
 
+import type { AdministrativeDivisionGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
+
 type Response = {
   nom: string;
   code: string;
@@ -53,7 +55,7 @@ async function fetchCityRurality(cityCode: string): Promise<boolean | undefined>
   }
 }
 
-export class MunicipalityDataService {
+export class MunicipalityDataService implements AdministrativeDivisionGateway {
   async getMunicipalityData(cityCode: string) {
     const [jsonResult, isRural] = await Promise.all([
       fetchMunicipalityGeoData(cityCode),

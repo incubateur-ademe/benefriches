@@ -6,7 +6,11 @@ import type {
   ProjectSiteView,
   SiteRelatedLocalAuthorities,
 } from "@/features/create-project/core/project-form/projectSite.types";
+import type { GetMunicipalityDataResult } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 import { makeWizardFormActionType } from "@/shared/core/wizard-form/wizardForm.actions";
+
+export type { GetMunicipalityDataResult } from "@/shared/core/gateways/AdministrativeDivisionGateway";
+export type { AdministrativeDivisionGateway as SiteMunicipalityDataGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 
 type SelectSiteRelatedFormState = (state: RootState) => {
   siteData?: ProjectSiteView;
@@ -20,32 +24,6 @@ export type WizardFormReducerActions = {
     AsyncThunkConfig
   >;
 };
-
-export type GetMunicipalityDataResult = {
-  localAuthorities: {
-    city: {
-      code: string;
-      name: string;
-    };
-    epci?: {
-      code: string;
-      name: string;
-    };
-    department: {
-      code: string;
-      name: string;
-    };
-    region: {
-      code: string;
-      name: string;
-    };
-  };
-  population: number;
-};
-
-export interface SiteMunicipalityDataGateway {
-  getMunicipalityData(cityCode: string): Promise<GetMunicipalityDataResult>;
-}
 
 export const createWizardFormActions = (
   prefix: string,

@@ -1,6 +1,9 @@
-import { GetMunicipalityDataResult } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import {
+  AdministrativeDivisionGateway,
+  GetMunicipalityDataResult,
+} from "@/shared/core/gateways/AdministrativeDivisionGateway";
 
-export class AdministrativeDivisionMock {
+export class AdministrativeDivisionMock implements AdministrativeDivisionGateway {
   private result: GetMunicipalityDataResult;
   private shouldFail: boolean;
 

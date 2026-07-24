@@ -1,31 +1,8 @@
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
+import type { GetMunicipalityDataResult } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 
-export type GetMunicipalityDataResult = {
-  localAuthorities: {
-    city: {
-      code: string;
-      name: string;
-    };
-    epci?: {
-      code: string;
-      name: string;
-    };
-    department: {
-      code: string;
-      name: string;
-    };
-    region: {
-      code: string;
-      name: string;
-    };
-  };
-  population: number;
-  isRural?: boolean;
-};
-
-export interface SiteMunicipalityDataGateway {
-  getMunicipalityData(cityCode: string): Promise<GetMunicipalityDataResult>;
-}
+export type { GetMunicipalityDataResult } from "@/shared/core/gateways/AdministrativeDivisionGateway";
+export type { AdministrativeDivisionGateway as SiteMunicipalityDataGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 
 export const fetchSiteMunicipalityData = createAppAsyncThunk<GetMunicipalityDataResult>(
   "site/fetchSiteMunicipalityData",

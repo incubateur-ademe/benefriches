@@ -5,10 +5,8 @@ import { AppSettingsGateway } from "@/features/app-settings/core/AppSettingsGate
 import { GetSitesByIdGateway } from "@/features/create-project/core/actions/reconversionProjectCreationInitiated.action";
 import { SaveReconversionProjectGateway } from "@/features/create-project/core/actions/saveReconversionProject.action";
 import { CreateExpressReconversionProjectGateway } from "@/features/create-project/core/demo/demoProject.actions";
-import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
 import { CreateSiteGateway } from "@/features/create-site/core/createSiteGateway";
 import { SiteEvaluationGateway } from "@/features/my-evaluations/application/evaluationsList.actions";
@@ -24,6 +22,7 @@ import type { SiteGateway } from "@/features/sites/core/gateways/SiteGateway";
 import type { SupportChatGateway } from "@/features/support/core/gateways/SupportChatGateway";
 import { UpdateProjectServiceGateway } from "@/features/update-project/core/updateProject.types";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
+import type { AdministrativeDivisionGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 import { RealEstateValuationGateway } from "@/shared/core/gateways/RealEstateValuationGateway";
 
 import { getListener, setupAllListeners } from "./listenerMiddleware";
@@ -39,7 +38,7 @@ export type AppDependencies = {
   siteEvaluationService: SiteEvaluationGateway;
   getSiteByIdService: GetSitesByIdGateway;
   photovoltaicPerformanceService: PhotovoltaicPerformanceGateway;
-  municipalityDataService: CreateSiteMunicipalityDataGateway | CreateProjectMunicipalityDataGateway;
+  municipalityDataService: AdministrativeDivisionGateway;
   reconversionProjectImpacts: ReconversionProjectImpactsGateway;
   currentUserService: CurrentUserGateway;
   createUserService: CreateUserGateway;
