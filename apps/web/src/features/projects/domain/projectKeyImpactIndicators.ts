@@ -288,6 +288,19 @@ export type KeyImpactIndicatorData =
       };
     };
 
+export const PRIORITY_ORDER: KeyImpactIndicatorData["name"][] = [
+  "zanCompliance",
+  "projectImpactBalance",
+  "avoidedFricheCostsForLocalAuthority",
+  "taxesIncomesImpact",
+  "localPropertyValueIncrease",
+  "fullTimeJobs",
+  "householdsPoweredByRenewableEnergy",
+  "avoidedCo2eqEmissions",
+  "permeableSurfaceArea",
+  "nonContaminatedSurfaceArea",
+];
+
 type SiteData = {
   fricheActivity?: FricheActivity;
   nature: SiteNature;

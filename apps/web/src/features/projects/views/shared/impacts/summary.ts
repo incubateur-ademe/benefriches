@@ -1,18 +1,5 @@
 import { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
 
-export const PRIORITY_ORDER = [
-  "zanCompliance",
-  "projectImpactBalance",
-  "avoidedFricheCostsForLocalAuthority",
-  "taxesIncomesImpact",
-  "localPropertyValueIncrease",
-  "fullTimeJobs",
-  "householdsPoweredByRenewableEnergy",
-  "avoidedCo2eqEmissions",
-  "permeableSurfaceArea",
-  "nonContaminatedSurfaceArea",
-];
-
 export const getSummaryIndicatorTitle = ({
   name,
   isSuccess,
