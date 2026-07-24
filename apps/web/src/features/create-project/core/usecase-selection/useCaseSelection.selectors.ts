@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { DevelopmentPlanCategory, ProjectPhase } from "shared";
 
 import { RootState } from "@/app/store/store";
-import { StepVariant } from "@/shared/views/layout/WizardFormLayout/FormBaseStepperStep";
+import type { StepVariant } from "@/shared/core/stepVariant.types";
 
 import { ProjectSuggestion } from "../project.types";
 import { UseCaseSelectionStep } from "./useCaseSelection.reducer";

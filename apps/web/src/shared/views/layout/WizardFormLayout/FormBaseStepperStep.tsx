@@ -1,15 +1,10 @@
 import { HTMLAttributes, useContext, useEffect, useMemo } from "react";
 
+import type { StepActivity, StepValidation, StepVariant } from "@/shared/core/stepVariant.types";
 import classNames, { ClassValue } from "@/shared/views/clsx";
 import { SidebarCurrentStepContext } from "@/shared/views/layout/SidebarLayout/SidebarCurrentStepContext";
 
-export type StepActivity = "current" | "groupActive" | "inactive";
-export type StepValidation = "completed" | "empty";
-
-export type StepVariant = {
-  activity: StepActivity;
-  validation: StepValidation;
-};
+export type { StepVariant } from "@/shared/core/stepVariant.types";
 
 type VariantKey = `${StepActivity}-${StepValidation}`;
 

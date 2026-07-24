@@ -1,4 +1,4 @@
-import { StepVariant } from "@/shared/views/layout/WizardFormLayout/FormBaseStepperStep";
+import type { StepVariant } from "@/shared/core/stepVariant.types";
 
 import { isAnswersStep, RenewableEnergyCreationStep } from "../renewableEnergySteps";
 import {
