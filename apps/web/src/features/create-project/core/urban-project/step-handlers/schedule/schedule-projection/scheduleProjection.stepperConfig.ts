@@ -1,4 +1,4 @@
-import type { StepStepperConfig } from "@/features/create-project/views/project-form/stepper/stepperConfig";
+import type { StepStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/stepGroups.types";
 
 export const scheduleProjectionStepperConfig = {
   groupId: "SCHEDULE",

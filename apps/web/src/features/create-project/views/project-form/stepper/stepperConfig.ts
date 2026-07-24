@@ -39,6 +39,11 @@ import { stakeholdersBuildingsDeveloperStepperConfig } from "@/features/create-p
 import { stakeholdersIntroductionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholders-introduction/stakeholdersIntroduction.stepperConfig";
 import { stakeholdersProjectDeveloperStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.stepperConfig";
 import { stakeholdersReinstatementContractOwnerStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.stepperConfig";
+import type {
+  StepGroupId as InternalStepGroupId,
+  StepStepperConfig as InternalStepStepperConfig,
+  StepSubGroupId as InternalStepSubGroupId,
+} from "@/features/create-project/core/urban-project/step-handlers/stepGroups.types";
 import { finalSummaryStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/summary/final-summary/finalSummary.stepperConfig";
 import { usesIntroductionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/uses/introduction/usesIntroduction.stepperConfig";
 import { publicGreenSpacesSurfaceAreaStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.stepperConfig";
@@ -49,52 +54,13 @@ import {
   UrbanProjectCreationStep,
 } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
-export type StepGroupId =
-  | "CREATION_MODE"
-  | "USES"
-  | "SPACES"
-  | "BUILDINGS"
-  | "SOILS_DECONTAMINATION"
-  | "STAKEHOLDERS"
-  | "SITE_RESALE"
-  | "EXPENSES"
-  | "REVENUE"
-  | "SCHEDULE"
-  | "NAMING"
-  | "SUMMARY";
+export type {
+  StepGroupId,
+  StepSubGroupId,
+  StepStepperConfig,
+} from "@/features/create-project/core/urban-project/step-handlers/stepGroups.types";
 
-export type StepSubGroupId =
-  | "USES_SELECTION"
-  | "USES_GREEN_SPACES_AREA"
-  | "USES_FLOOR_AREA"
-  | "SPACES_SELECTION"
-  | "SPACES_GREEN_SPACES_SOILS"
-  | "SPACES_SURFACES"
-  | "SOILS_SUMMARY"
-  | "INVOLVES_REINSTATEMENT"
-  | "DECONTAMINATION_SELECTION"
-  | "DECONTAMINATION_SURFACE"
-  | "CARBON_STORAGE"
-  | "FLOOR_SURFACE"
-  | "STAKEHOLDERS_PROJECT_DEVELOPER"
-  | "STAKEHOLDERS_REINSTATEMENT_OWNER"
-  | "EXPENSES_SITE_PURCHASE"
-  | "EXPENSES_SITE_REINSTATEMENT"
-  | "EXPENSES_SITE_INSTALLATION"
-  | "EXPENSES_BUILDINGS_OPERATION"
-  | "REVENUE_BUILDINGS_OPERATION"
-  | "REVENUE_FINANCIAL_ASSISTANCE"
-  | "REVENUE_SITE_RESALE"
-  | "REVENUE_BUILDINGS_RESALE"
-  | "BUILDINGS_REUSE"
-  | "BUILDINGS_EXISTING_USES"
-  | "BUILDINGS_NEW_USES"
-  | "STAKEHOLDERS_BUILDINGS_DEVELOPER"
-  | "EXPENSES_BUILDINGS_CONSTRUCTION"
-  | "SITE_CESSION"
-  | "BUILDINGS_CESSION";
-
-export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
+export const STEP_GROUP_LABELS: Record<InternalStepGroupId | InternalStepSubGroupId, string> = {
   CREATION_MODE: "Mode de création",
 
   // Usages
@@ -150,9 +116,7 @@ export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
   SUMMARY: "Récapitulatif",
 } as const;
 
-export type StepStepperConfig = { groupId: StepGroupId; subGroupId?: StepSubGroupId };
-
-type StepToGroupMapping = Record<UrbanProjectCreationStep, StepStepperConfig>;
+type StepToGroupMapping = Record<UrbanProjectCreationStep, InternalStepStepperConfig>;
 export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   // Uses flow
   URBAN_PROJECT_USES_INTRODUCTION: usesIntroductionStepperConfig,
@@ -228,8 +192,12 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
 };
 
 export type ProjectStepGroups = Record<
-  StepGroupId,
-  { stepId: UrbanProjectCreationStep; subGroupId?: StepSubGroupId; isStepCompleted: boolean }[]
+  InternalStepGroupId,
+  {
+    stepId: UrbanProjectCreationStep;
+    subGroupId?: InternalStepSubGroupId;
+    isStepCompleted: boolean;
+  }[]
 >;
 export const buildStepGroupsFromSequence = (
   stepSequence: { stepId: UrbanProjectCreationStep; isCompleted: boolean }[],
