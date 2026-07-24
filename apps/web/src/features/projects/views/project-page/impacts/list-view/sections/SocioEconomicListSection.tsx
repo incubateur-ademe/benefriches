@@ -1,8 +1,7 @@
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
-import ImpactModalDescription, {
-  ModalDataProps,
-} from "../../impact-description-modals/ImpactModalDescription";
+import ImpactModalDescription from "../../impact-description-modals/ImpactModalDescription";
 import ImpactSection from "../ImpactSection";
 import SocioEconomicImpactSection from "./SocioEconomicImpactSection";
 

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { DevelopmentPlanType, roundTo2Digits } from "shared";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import {
   EconomicBalanceMainName,
   getEconomicBalanceProjectImpacts,
@@ -16,7 +17,6 @@ import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/Modal
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { getEconomicBalanceImpactLabel } from "../../getImpactLabel";
-import { ModalDataProps } from "../ImpactModalDescription";
 import ModalTable from "../shared/ModalTable";
 import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChart";
 

@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import {
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
@@ -12,7 +13,6 @@ import {
   getEnvironmentalDetailsImpactLabel,
   getEnvironmentalImpactLabel,
 } from "../../getImpactLabel";
-import { ModalDataProps } from "../ImpactModalDescription";
 import { getSubSectionBreadcrumb, mainBreadcrumbSection } from "./breadcrumbSections";
 
 const ImpactInProgressDescriptionModal = lazy(

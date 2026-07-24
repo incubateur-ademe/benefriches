@@ -5,6 +5,7 @@ import {
   sumListWithKey,
 } from "shared";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
@@ -21,7 +22,6 @@ import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/f
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
-import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalTable from "../../shared/ModalTable";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import { mainBreadcrumbSection, localAuthorityBreadcrumbSection } from "../breadcrumbSections";

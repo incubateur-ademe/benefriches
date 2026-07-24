@@ -1,9 +1,8 @@
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
 
 import { getSocialImpactLabel } from "../../getImpactLabel";
-import ImpactModalDescription, {
-  ModalDataProps,
-} from "../../impact-description-modals/ImpactModalDescription";
+import ImpactModalDescription from "../../impact-description-modals/ImpactModalDescription";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";

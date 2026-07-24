@@ -4,6 +4,7 @@ import {
   ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "shared";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 import {
   SocioEconomicDetailsName,
@@ -13,7 +14,6 @@ import ImpactInProgressDescriptionModal from "@/features/projects/views/shared/i
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
-import { ModalDataProps } from "../../ImpactModalDescription";
 import { humanityBreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
 
 const AvoidedAirPollutionDescription = lazy(

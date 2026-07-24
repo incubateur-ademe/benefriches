@@ -6,6 +6,7 @@ import {
   sumListWithKey,
 } from "shared";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import {
   EconomicBalanceDetailsName,
   EconomicBalanceMainName,
@@ -28,7 +29,6 @@ import {
   getEconomicBalanceDetailsImpactLabel,
   getEconomicBalanceImpactLabel,
 } from "../../getImpactLabel";
-import { ModalDataProps } from "../ImpactModalDescription";
 import ModalTable from "../shared/ModalTable";
 import ModalColumnPointChart from "../shared/modal-charts/ModalColumnPointChart";
 import EconomicBalanceDescription from "./EconomicBalanceDescription";

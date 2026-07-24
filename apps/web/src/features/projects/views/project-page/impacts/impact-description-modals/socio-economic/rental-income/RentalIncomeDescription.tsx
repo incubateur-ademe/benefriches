@@ -1,3 +1,4 @@
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { SocioEconomicSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -8,7 +9,6 @@ import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/Modal
 import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { ModalDataProps } from "../../ImpactModalDescription";
 import {
   localAuthorityBreadcrumbSection,
   localPeopleOrCompanyBreadcrumbSection,

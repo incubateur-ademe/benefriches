@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { ReconversionStakeholders } from "shared";
+import { GetReconversionProjectImpactsResultDto, ReconversionStakeholders } from "shared";
 
 import type { RootState } from "@/app/store/store";
 import {
@@ -23,7 +23,6 @@ import {
   type KeyImpactIndicatorData,
 } from "@/features/projects/domain/projectKeyImpactIndicators";
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
-import { ModalDataProps } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactModalDescription";
 
 import {
   selectProjectsImpactsViewData,
@@ -31,6 +30,11 @@ import {
   type ViewMode,
 } from "../projectImpacts.reducer";
 import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
+
+export type ModalDataProps = {
+  contextData: GetReconversionProjectImpactsResultDto["contextData"];
+  impactsData: GetReconversionProjectImpactsResultDto["impacts"];
+};
 
 // List View
 type ImpactsListViewData = {

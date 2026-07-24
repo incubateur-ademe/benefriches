@@ -1,12 +1,11 @@
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
 
 import {
   getEnvironmentalDetailsImpactLabel,
   getEnvironmentalImpactLabel,
 } from "../../getImpactLabel";
-import ImpactModalDescription, {
-  ModalDataProps,
-} from "../../impact-description-modals/ImpactModalDescription";
+import ImpactModalDescription from "../../impact-description-modals/ImpactModalDescription";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";

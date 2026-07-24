@@ -1,7 +1,7 @@
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { Suspense, useCallback, useLayoutEffect, useMemo, useState } from "react";
-import { GetReconversionProjectImpactsResultDto } from "shared";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import {
@@ -16,11 +16,6 @@ import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceMo
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
 import { SocialModalWizard } from "./social/SocialModalWizard";
 import { SocioEconomicModalWizard } from "./socio-economic/wizards/SocioEconomicModalWizard";
-
-export type ModalDataProps = {
-  contextData: GetReconversionProjectImpactsResultDto["contextData"];
-  impactsData: GetReconversionProjectImpactsResultDto["impacts"];
-};
 
 type ModalDescriptionProviderProps = ModalDataProps & {
   dialogId: string;

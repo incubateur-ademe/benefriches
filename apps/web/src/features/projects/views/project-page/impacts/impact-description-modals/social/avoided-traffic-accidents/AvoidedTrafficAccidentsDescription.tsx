@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { sumListWithKey } from "shared";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { formatDefaultImpact } from "@/features/projects/views/shared/formatImpactValue";
 import {
   ImpactModalDescriptionContext,
@@ -12,7 +13,6 @@ import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
-import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalTable from "../../shared/ModalTable";
 import AvoidedTrafficAccidentsContent from "../../shared/avoided-traffic-accidents/AvoidedTrafficAccidentsContent";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";

@@ -1,9 +1,9 @@
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
-import { ModalDataProps } from "../impact-description-modals/ImpactModalDescription";
 import EconomicBalanceListSection from "./sections/EconomicBalance";
 import EnvironmentalListSection from "./sections/EnvironmentalListSection";
 import SocialListSection from "./sections/SocialListSection";

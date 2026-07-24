@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import {
   getSocialProjectImpacts,
   SocialImpactDetailsName,
@@ -9,7 +10,6 @@ import { SocialSubSectionName } from "@/features/projects/views/shared/impacts/m
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { getSocialImpactLabel } from "../../getImpactLabel";
-import { ModalDataProps } from "../ImpactModalDescription";
 import {
   frenchSocietyBreadcrumbSection,
   getSubSectionBreadcrumb,

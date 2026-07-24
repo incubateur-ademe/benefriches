@@ -2,6 +2,7 @@ import * as Highcharts from "highcharts";
 import { HighchartsReact } from "highcharts-react-official";
 import { useContext } from "react";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -13,7 +14,6 @@ import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/Modal
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { ModalDataProps } from "../ImpactModalDescription";
 import ModalTable from "../shared/ModalTable";
 
 type Props = {

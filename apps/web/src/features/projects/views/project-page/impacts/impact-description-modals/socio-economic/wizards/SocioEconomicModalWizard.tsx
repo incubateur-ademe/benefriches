@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { AggregatedReconversionProjectOnSiteImpactItemView } from "shared";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { groupIndirectEconomicImpactsByBearerAndCategory } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 import {
   SocioEconomicDetailsName,
@@ -9,7 +10,6 @@ import {
 import { SocioEconomicSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { ModalDataProps } from "../../ImpactModalDescription";
 import { HumanityModalWizard } from "./HumanityModalWizard";
 import { LocalAuthorityModalWizard } from "./LocalAuthorityWizard";
 import { LocalPeopleOrCompanyModalWizard } from "./LocalPeopleOrCompanyWizard";

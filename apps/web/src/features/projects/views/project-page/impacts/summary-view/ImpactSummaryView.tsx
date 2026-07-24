@@ -1,11 +1,13 @@
 import React from "react";
 
-import { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
+import {
+  KeyImpactIndicatorData,
+  PRIORITY_ORDER,
+} from "@/features/projects/domain/projectKeyImpactIndicators";
 
-import { getSummaryIndicatorTitle, PRIORITY_ORDER } from "../../../shared/impacts/summary";
-import ImpactModalDescription, {
-  ModalDataProps,
-} from "../impact-description-modals/ImpactModalDescription";
+import { getSummaryIndicatorTitle } from "../../../shared/impacts/summary";
+import ImpactModalDescription from "../impact-description-modals/ImpactModalDescription";
 import { getDialogControlButtonProps } from "../list-view/dialogControlBtnProps";
 import KeyImpactIndicatorCard from "./KeyImpactIndicatorCard";
 
