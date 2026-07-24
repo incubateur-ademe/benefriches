@@ -1,23 +1,10 @@
-import { SoilsDistribution, SoilType } from "shared";
+import type { SoilsCarbonStorageResult } from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 
-export type GetSoilsCarbonStoragePayload = {
-  cityCode: string;
-  soils: SoilsDistribution;
-};
-
-export interface SoilsCarbonStorageGateway {
-  getForCityCodeAndSoils(payload: GetSoilsCarbonStoragePayload): Promise<SoilsCarbonStorageResult>;
-}
-
-export type SoilsCarbonStorageResult = {
-  totalCarbonStorage: number;
-  soilsStorage: {
-    type: SoilType;
-    surfaceArea: number;
-    carbonStorage: number;
-    carbonStorageInTonPerSquareMeters: number;
-  }[];
-};
+export type {
+  GetSoilsCarbonStoragePayload,
+  SoilsCarbonStorageGateway,
+  SoilsCarbonStorageResult,
+} from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 
 export type CurrentAndProjectedSoilsCarbonStorageResult = {
   current: SoilsCarbonStorageResult;

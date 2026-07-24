@@ -5,9 +5,7 @@ import { AppSettingsGateway } from "@/features/app-settings/core/AppSettingsGate
 import { GetSitesByIdGateway } from "@/features/create-project/core/actions/reconversionProjectCreationInitiated.action";
 import { SaveReconversionProjectGateway } from "@/features/create-project/core/actions/saveReconversionProject.action";
 import { CreateExpressReconversionProjectGateway } from "@/features/create-project/core/demo/demoProject.actions";
-import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
 import { CreateSiteGateway } from "@/features/create-site/core/createSiteGateway";
 import { SiteEvaluationGateway } from "@/features/my-evaluations/application/evaluationsList.actions";
 import { AuthenticationGateway } from "@/features/onboarding/core/AuthenticationGateway";
@@ -24,6 +22,7 @@ import { UpdateProjectServiceGateway } from "@/features/update-project/core/upda
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 import type { AdministrativeDivisionGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 import { RealEstateValuationGateway } from "@/shared/core/gateways/RealEstateValuationGateway";
+import type { SoilsCarbonStorageGateway } from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 
 import { getListener, setupAllListeners } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";
@@ -31,7 +30,7 @@ import { rootReducer } from "./rootReducer";
 export type AppDependencies = {
   appSettingsService: AppSettingsGateway;
   authService: AuthenticationGateway;
-  soilsCarbonStorageService: SiteSoilsCarbonStorageGateway | ProjectSoilsCarbonStorageGateway;
+  soilsCarbonStorageService: SoilsCarbonStorageGateway;
   createSiteService: CreateSiteGateway;
   saveReconversionProjectService: SaveReconversionProjectGateway;
   createExpressReconversionProjectService: CreateExpressReconversionProjectGateway;

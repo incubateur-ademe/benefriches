@@ -1,22 +1,15 @@
 import {
   GetSoilsCarbonStoragePayload,
-  SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway,
+  SoilsCarbonStorageGateway,
   SoilsCarbonStorageResult,
-} from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
-import {
-  GetSiteSoilsCarbonStoragePayload,
-  SiteSoilsCarbonStorageResult,
-  SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway,
-} from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
+} from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 import { objectToQueryParams } from "@/shared/core/object-query-parameters/objectToQueryParameters";
 
-export class SoilsCarbonStorageApi
-  implements SiteSoilsCarbonStorageGateway, ProjectSoilsCarbonStorageGateway
-{
+export class SoilsCarbonStorageApi implements SoilsCarbonStorageGateway {
   async getForCityCodeAndSoils({
     cityCode,
     soils,
-  }: GetSoilsCarbonStoragePayload | GetSiteSoilsCarbonStoragePayload) {
+  }: GetSoilsCarbonStoragePayload): Promise<SoilsCarbonStorageResult> {
     const soilsDistributionAsArray: { type: string; surfaceArea: number }[] = Object.entries(
       soils,
     ).map(([type, surfaceArea]) => ({
@@ -28,9 +21,7 @@ export class SoilsCarbonStorageApi
 
     if (!response.ok) throw new Error("Error while computing carbon storage");
 
-    const jsonResponse = (await response.json()) as
-      | SoilsCarbonStorageResult
-      | SiteSoilsCarbonStorageResult;
+    const jsonResponse = (await response.json()) as SoilsCarbonStorageResult;
     return jsonResponse;
   }
 }

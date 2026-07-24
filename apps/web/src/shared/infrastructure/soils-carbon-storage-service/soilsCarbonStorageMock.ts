@@ -1,12 +1,9 @@
 import {
-  SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway,
+  SoilsCarbonStorageGateway,
   SoilsCarbonStorageResult,
-} from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
-import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
+} from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 
-export class SoilsCarbonStorageMock
-  implements ProjectSoilsCarbonStorageGateway, SiteSoilsCarbonStorageGateway
-{
+export class SoilsCarbonStorageMock implements SoilsCarbonStorageGateway {
   private result: SoilsCarbonStorageResult;
   private shouldFail: boolean;
 

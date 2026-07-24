@@ -1,30 +1,17 @@
-import { SoilsDistribution, SoilType } from "shared";
-
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
+import type {
+  GetSoilsCarbonStoragePayload,
+  SoilsCarbonStorageResult,
+} from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 
 import { selectSiteSoilsDistribution } from "../selectors/createSite.selectors";
 import { SiteCarbonStorage } from "../siteSoilsCarbonStorage.reducer";
 
-export type GetSiteSoilsCarbonStoragePayload = {
-  cityCode: string;
-  soils: SoilsDistribution;
-};
+export type { SoilsCarbonStorageGateway } from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 
-export type SiteSoilsCarbonStorageResult = {
-  totalCarbonStorage: number;
-  soilsStorage: {
-    type: SoilType;
-    surfaceArea: number;
-    carbonStorage: number;
-    carbonStorageInTonPerSquareMeters: number;
-  }[];
-};
+export type GetSiteSoilsCarbonStoragePayload = GetSoilsCarbonStoragePayload;
 
-export interface SoilsCarbonStorageGateway {
-  getForCityCodeAndSoils(
-    payload: GetSiteSoilsCarbonStoragePayload,
-  ): Promise<SiteSoilsCarbonStorageResult>;
-}
+export type SiteSoilsCarbonStorageResult = SoilsCarbonStorageResult;
 
 export const fetchSiteSoilsCarbonStorage = createAppAsyncThunk<SiteCarbonStorage>(
   "site/fetchSiteSoilsCarbonStorage",
