@@ -119,6 +119,7 @@
     {
       "files": ["*.spec.{ts,tsx}"],
       "rules": {
+        "architecture-boundaries/no-cross-layer-import": "off",
         "typescript/no-unsafe-assignment": "off",
         "typescript/no-unsafe-call": "off",
         "vitest/expect-expect": ["error", { "assertFunctionNames": ["expect*"] }],
