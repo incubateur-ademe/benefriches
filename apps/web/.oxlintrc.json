@@ -17,7 +17,7 @@
   "ignorePatterns": ["node_modules/", "dist/", "public/", "vite.config.ts", ".prettierrc.cjs"],
   "rules": {
     "architecture-boundaries/no-cross-layer-import": [
-      "warn",
+      "error",
       {
         "aliasPrefix": "@/",
         "boundaries": [
