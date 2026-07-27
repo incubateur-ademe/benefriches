@@ -1,4 +1,8 @@
 import type { StepVariant } from "@/shared/core/stepVariant.types";
+import {
+  buildStepGroupsFromSequence,
+  StepGroups,
+} from "@/shared/core/wizard-form/helpers/stepGroups";
 
 import { isAnswersStep, RenewableEnergyCreationStep } from "../renewableEnergySteps";
 import {
@@ -6,6 +10,7 @@ import {
   RENEWABLE_ENERGY_STEP_GROUP_LABELS,
   RENEWABLE_ENERGY_STEP_TO_GROUP,
   RenewableEnergyStepGroupId,
+  RenewableEnergyStepSubGroupId,
 } from "../step-handlers/renewableEnergyStepperConfig";
 import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
 
@@ -14,6 +19,42 @@ import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.typ
 const NON_ANSWER_NAVIGABLE_STEPS = new Set<RenewableEnergyCreationStep>([
   "RENEWABLE_ENERGY_FINAL_SUMMARY",
 ]);
+
+// A step is navigable (i.e. eligible for a stepper entry) when it's an answer step, or one of
+// the non-answer steps explicitly allow-listed above.
+const isNavigableRenewableEnergyStep = (stepId: RenewableEnergyCreationStep): boolean =>
+  isAnswersStep(stepId) || NON_ANSWER_NAVIGABLE_STEPS.has(stepId);
+
+const isRenewableEnergyStepCompleted = (
+  stepId: RenewableEnergyCreationStep,
+  steps: RenewableEnergyStepsState,
+): boolean =>
+  NON_ANSWER_NAVIGABLE_STEPS.has(stepId) ||
+  (isAnswersStep(stepId) && Boolean(steps[stepId]?.completed));
+
+export type RenewableEnergyStepGroups = StepGroups<
+  RenewableEnergyCreationStep,
+  RenewableEnergyStepGroupId,
+  RenewableEnergyStepSubGroupId
+>;
+
+// Buckets the walked step sequence into its groups/sub-groups (shared wizard-form mechanism),
+// for rendering the update stepper's nested, clickable sub-steps.
+export const buildRenewableEnergyStepGroupsFromSequence = ({
+  steps,
+  stepsSequence,
+}: {
+  steps: RenewableEnergyStepsState;
+  stepsSequence: RenewableEnergyCreationStep[];
+}): RenewableEnergyStepGroups =>
+  buildStepGroupsFromSequence(
+    stepsSequence.map((stepId) => ({
+      stepId,
+      isCompleted: isRenewableEnergyStepCompleted(stepId, steps),
+    })),
+    RENEWABLE_ENERGY_STEP_TO_GROUP,
+    isNavigableRenewableEnergyStep,
+  );
 
 export type RenewableEnergyStepperGroup = StepVariant & {
   groupId: RenewableEnergyStepGroupId;
@@ -40,12 +81,9 @@ export const computeRenewableEnergyStepperGroups = ({
     const stepsInGroup = stepsSequence.filter(
       (stepId) => RENEWABLE_ENERGY_STEP_TO_GROUP[stepId].groupId === groupId,
     );
-    const navigableStepsInGroup = stepsInGroup.filter(
-      (stepId) => isAnswersStep(stepId) || NON_ANSWER_NAVIGABLE_STEPS.has(stepId),
-    );
+    const navigableStepsInGroup = stepsInGroup.filter(isNavigableRenewableEnergyStep);
     const isStepCompleted = (stepId: RenewableEnergyCreationStep) =>
-      NON_ANSWER_NAVIGABLE_STEPS.has(stepId) ||
-      (isAnswersStep(stepId) && Boolean(steps[stepId]?.completed));
+      isRenewableEnergyStepCompleted(stepId, steps);
 
     const firstIncompleteStep = navigableStepsInGroup.find((stepId) => !isStepCompleted(stepId));
     const targetStepId = firstIncompleteStep ?? navigableStepsInGroup[0] ?? currentStep;

@@ -24,7 +24,10 @@ import {
   createSelectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
   createSelectRenewableEnergyProjectAvailableStakeholders,
 } from "./selectors/stakeholders.selectors";
-import { createSelectPhotovoltaicPowerPlantSummaryNavigationDataView } from "./selectors/stepper.selector";
+import {
+  createSelectPhotovoltaicPowerPlantSummaryNavigationDataView,
+  createSelectPhotovoltaicStepsGroupedBySections,
+} from "./selectors/stepper.selector";
 import { createSelectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "./step-handlers/expenses/expenses-installation/expensesInstallation.selector";
 import { createSelectPVReinstatementExpensesViewData } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
 import { createSelectSitePurchaseAmounts } from "./step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.selector";
@@ -160,6 +163,11 @@ export const createRenewableEnergyFormSelectors = (prefix: "projectCreation" | "
       selectSteps,
       selectStepsSequence,
     );
+
+  const selectPhotovoltaicStepsGroupedBySections = createSelectPhotovoltaicStepsGroupedBySections(
+    selectSteps,
+    selectStepsSequence,
+  );
 
   const selectRenewableEnergyProjectAvailableStakeholders =
     createSelectRenewableEnergyProjectAvailableStakeholders(
@@ -348,6 +356,7 @@ export const createRenewableEnergyFormSelectors = (prefix: "projectCreation" | "
     // Alias kept for the update-side barrel's pre-existing export name.
     selectPhotovoltaicPowerPlantUpdateStepperDataView:
       selectPhotovoltaicPowerPlantSummaryNavigationDataView,
+    selectPhotovoltaicStepsGroupedBySections,
     selectRenewableEnergyProjectAvailableStakeholders,
     selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
     selectPhotovoltaicPanelsSurfaceArea,

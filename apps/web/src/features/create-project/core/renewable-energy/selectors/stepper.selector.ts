@@ -12,7 +12,9 @@ import {
   RENEWABLE_ENERGY_STEP_TO_GROUP,
 } from "../step-handlers/renewableEnergyStepperConfig";
 import {
+  buildRenewableEnergyStepGroupsFromSequence,
   computeRenewableEnergyStepperGroups,
+  RenewableEnergyStepGroups,
   RenewableEnergyStepperGroup,
 } from "./stepperNavigation";
 
@@ -69,4 +71,17 @@ export const createSelectPhotovoltaicPowerPlantSummaryNavigationDataView = (
         stepsSequence,
       }),
     }),
+  );
+
+// Feeds the update stepper's nested sub-step rendering (via
+// `useBuildStepperNavigationItems`): the walked step sequence bucketed into groups/sub-groups,
+// with per-step completion.
+export const createSelectPhotovoltaicStepsGroupedBySections = (
+  selectSteps: Selector<RootState, RenewableEnergyStepsState>,
+  selectStepsSequence: Selector<RootState, RenewableEnergyCreationStep[]>,
+) =>
+  createSelector(
+    [selectSteps, selectStepsSequence],
+    (steps, stepsSequence): RenewableEnergyStepGroups =>
+      buildRenewableEnergyStepGroupsFromSequence({ steps, stepsSequence }),
   );
