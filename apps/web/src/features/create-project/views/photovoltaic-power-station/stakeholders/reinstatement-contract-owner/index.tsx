@@ -5,8 +5,12 @@ import StakeholderForm from "@/features/create-project/views/project-form/common
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 function SiteReinstatementContractOwnerFormContainer() {
-  const { onBack, onRequestStepCompletion, selectPVReinstatementContractOwnerViewData } =
-    useRenewableEnergyForm();
+  const {
+    onBack,
+    onRequestStepCompletion,
+    onFetchSiteLocalAuthorities,
+    selectPVReinstatementContractOwnerViewData,
+  } = useRenewableEnergyForm();
   const { availableStakeholdersList, availableLocalAuthoritiesStakeholders } = useAppSelector(
     selectPVReinstatementContractOwnerViewData,
   );
@@ -33,6 +37,7 @@ function SiteReinstatementContractOwnerFormContainer() {
       }
       onSubmit={onSubmit}
       onBack={onBack}
+      onFetchSiteLocalAuthorities={onFetchSiteLocalAuthorities}
       availableStakeholdersList={availableStakeholdersList}
       availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
     />

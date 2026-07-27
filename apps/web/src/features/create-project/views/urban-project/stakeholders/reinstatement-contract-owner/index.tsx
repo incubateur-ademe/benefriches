@@ -3,8 +3,12 @@ import StakeholderForm from "@/features/create-project/views/project-form/common
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 
 function SiteReinstatementContractOwnerFormContainer() {
-  const { onBack, onRequestStepCompletion, selectReinstatementContractOwnerViewData } =
-    useProjectForm();
+  const {
+    onBack,
+    onRequestStepCompletion,
+    onFetchSiteLocalAuthorities,
+    selectReinstatementContractOwnerViewData,
+  } = useProjectForm();
   const {
     availableStakeholdersList,
     availableLocalAuthoritiesStakeholders,
@@ -22,6 +26,7 @@ function SiteReinstatementContractOwnerFormContainer() {
         });
       }}
       onBack={onBack}
+      onFetchSiteLocalAuthorities={onFetchSiteLocalAuthorities}
       availableStakeholdersList={availableStakeholdersList}
       availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
     />

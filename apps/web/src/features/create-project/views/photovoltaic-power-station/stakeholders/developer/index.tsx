@@ -5,7 +5,12 @@ import StakeholderForm from "@/features/create-project/views/project-form/common
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 function DeveloperFormContainer() {
-  const { onBack, onRequestStepCompletion, selectPVDeveloperViewData } = useRenewableEnergyForm();
+  const {
+    onBack,
+    onRequestStepCompletion,
+    onFetchSiteLocalAuthorities,
+    selectPVDeveloperViewData,
+  } = useRenewableEnergyForm();
   const { availableStakeholdersList, availableLocalAuthoritiesStakeholders } =
     useAppSelector(selectPVDeveloperViewData);
 
@@ -33,6 +38,7 @@ function DeveloperFormContainer() {
       }
       onSubmit={onSubmit}
       onBack={onBack}
+      onFetchSiteLocalAuthorities={onFetchSiteLocalAuthorities}
       availableStakeholdersList={availableStakeholdersList}
       availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
     />

@@ -4,8 +4,12 @@ import { useRenewableEnergyForm } from "@/features/create-project/views/photovol
 import StakeholderForm from "@/features/create-project/views/project-form/common/stakeholder-form";
 
 function FutureOwnerFormContainer() {
-  const { onBack, onRequestStepCompletion, selectPVFutureSiteOwnerViewData } =
-    useRenewableEnergyForm();
+  const {
+    onBack,
+    onRequestStepCompletion,
+    onFetchSiteLocalAuthorities,
+    selectPVFutureSiteOwnerViewData,
+  } = useRenewableEnergyForm();
   const { availableStakeholdersList, availableLocalAuthoritiesStakeholders } = useAppSelector(
     selectPVFutureSiteOwnerViewData,
   );
@@ -22,6 +26,7 @@ function FutureOwnerFormContainer() {
       title="Qui sera le nouveau propriétaire du site ?"
       onSubmit={onSubmit}
       onBack={onBack}
+      onFetchSiteLocalAuthorities={onFetchSiteLocalAuthorities}
       availableStakeholdersList={availableStakeholdersList.filter(
         ({ role }) => role !== "site_owner",
       )}

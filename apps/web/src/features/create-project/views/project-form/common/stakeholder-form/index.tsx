@@ -11,7 +11,6 @@ import {
   ProjectStakeholderStructure,
 } from "@/features/create-project/core/project.types";
 
-import { useProjectForm } from "../../useProjectForm";
 import StakeholderForm, { FormValues } from "./StakeholderForm";
 
 const DEFAULT_UNKNOWN_NAME = "Aménageur inconnu";
@@ -113,6 +112,7 @@ type Props = {
   initialValues?: { name: string; structureType: ProjectStakeholderStructure };
   onSubmit: (data: { name: string; structureType: ProjectStakeholderStructure }) => void;
   onBack: () => void;
+  onFetchSiteLocalAuthorities: () => void;
   title: ReactNode;
   instructions?: ReactNode;
   availableStakeholdersList: AvailableProjectStakeholder[];
@@ -126,14 +126,13 @@ function StakeholderFormContainer({
   initialValues,
   onSubmit,
   onBack,
+  onFetchSiteLocalAuthorities,
   title,
   instructions,
   availableStakeholdersList,
   availableLocalAuthoritiesStakeholders,
 }: Props) {
   const dispatch = useAppDispatch();
-
-  const { onFetchSiteLocalAuthorities } = useProjectForm();
 
   const _onSubmit = (data: FormValues) => {
     onSubmit(

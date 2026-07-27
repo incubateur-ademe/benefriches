@@ -13,6 +13,7 @@ export type RenewableEnergyFormContextValue = ReturnType<
   onNavigateToStep: (stepId: RenewableEnergyCreationStep) => void;
   onFetchExpectedAnnualPowerPerformance: () => void;
   onFetchSoilsCarbonStorage: () => void;
+  onFetchSiteLocalAuthorities: () => void;
   onSave: () => void;
 };
 

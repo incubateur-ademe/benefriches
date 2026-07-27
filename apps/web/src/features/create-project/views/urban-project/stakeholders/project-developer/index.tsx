@@ -4,7 +4,12 @@ import { useProjectForm } from "@/features/create-project/views/project-form/use
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 function DeveloperFormContainer() {
-  const { onBack, onRequestStepCompletion, selectProjectDeveloperViewData } = useProjectForm();
+  const {
+    onBack,
+    onRequestStepCompletion,
+    onFetchSiteLocalAuthorities,
+    selectProjectDeveloperViewData,
+  } = useProjectForm();
   const { availableStakeholdersList, availableLocalAuthoritiesStakeholders, projectDeveloper } =
     useAppSelector(selectProjectDeveloperViewData);
 
@@ -31,6 +36,7 @@ function DeveloperFormContainer() {
         });
       }}
       onBack={onBack}
+      onFetchSiteLocalAuthorities={onFetchSiteLocalAuthorities}
     />
   );
 }

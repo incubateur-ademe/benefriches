@@ -1,6 +1,7 @@
 import React, { ReactNode, useCallback, useMemo } from "react";
 
 import { useAppDispatch } from "@/app/hooks/store.hooks";
+import { fetchSiteRelatedLocalAuthorities as fetchSiteRelatedLocalAuthoritiesOnCreate } from "@/features/create-project/core/actions/getSiteLocalAuthorities.action";
 import { saveReconversionProject } from "@/features/create-project/core/renewable-energy/actions/customProjectSaved.action";
 import {
   creationRenewableEnergyFormActions,
@@ -10,6 +11,7 @@ import { creationRenewableEnergyFormSelectors } from "@/features/create-project/
 import { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
 import {
   reconversionProjectUpdateSaved,
+  updateProjectFormActions,
   updateProjectFormRenewableEnergyActions,
 } from "@/features/update-project/core/updateProject.actions";
 import { updateRenewableEnergyFormSelectors } from "@/features/update-project/core/updateProject.selectors";
@@ -73,6 +75,16 @@ export const RenewableEnergyFormProvider: React.FC<RenewableEnergyFormProviderPr
     [dispatch, actions],
   );
 
+  const onFetchSiteLocalAuthorities = useCallback(
+    () =>
+      void dispatch(
+        mode === "create"
+          ? fetchSiteRelatedLocalAuthoritiesOnCreate()
+          : updateProjectFormActions.fetchSiteRelatedLocalAuthorities(),
+      ),
+    [dispatch, mode],
+  );
+
   const onSave = useCallback(() => {
     void dispatch(saveAction());
   }, [dispatch, saveAction]);
@@ -87,6 +99,7 @@ export const RenewableEnergyFormProvider: React.FC<RenewableEnergyFormProviderPr
       onNavigateToStep,
       onFetchExpectedAnnualPowerPerformance,
       onFetchSoilsCarbonStorage,
+      onFetchSiteLocalAuthorities,
       onSave,
     }),
     [
@@ -98,6 +111,7 @@ export const RenewableEnergyFormProvider: React.FC<RenewableEnergyFormProviderPr
       onNavigateToStep,
       onFetchExpectedAnnualPowerPerformance,
       onFetchSoilsCarbonStorage,
+      onFetchSiteLocalAuthorities,
       onSave,
     ],
   );
