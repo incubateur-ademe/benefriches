@@ -44,7 +44,9 @@ test.describe("photovoltaic project editing without a soils cascade", () => {
     await pvProjectUpdatePage.goBack();
     await pvProjectUpdatePage.goBack();
     // Production is fetched on entry (loading spinner); expectStepTitle waits it out.
-    await pvProjectUpdatePage.expectStepTitle(/production annuelle attendue de l.installation/i);
+    await pvProjectUpdatePage.expectStepTitle(
+      "Quelle est la production annuelle attendue de l'installation",
+    );
 
     await pvProjectUpdatePage.fillExpectedAnnualProduction(UPDATED_EXPECTED_ANNUAL_PRODUCTION);
 

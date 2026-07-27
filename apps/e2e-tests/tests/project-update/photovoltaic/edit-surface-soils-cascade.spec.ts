@@ -29,16 +29,29 @@ test.describe("photovoltaic project editing with a soils-transformation cascade"
     // and step back through the sequence to the surface: non-suitable selection → non-suitable
     // notice → soils intro → contract duration → production → surface.
     await pvProjectUpdatePage.clickEditSection(/Transformation des sols/);
-    await pvProjectUpdatePage.expectStepTitle(/Quels espaces souhaitez-vous supprimer/i);
-    await pvProjectUpdatePage.goBack(); // non-suitable soils notice
-    await pvProjectUpdatePage.goBack(); // soils transformation intro
-    await pvProjectUpdatePage.goBack(); // contract duration
-    await pvProjectUpdatePage.goBack(); // expected annual production
+    await pvProjectUpdatePage.expectStepTitle("Quels espaces souhaitez-vous supprimer");
+    await pvProjectUpdatePage.goBack();
+    await pvProjectUpdatePage.expectStepTitle(
+      "Le site n'est pas encore prêt à accueillir une centrale photovoltaïque",
+    );
+    await pvProjectUpdatePage.goBack();
+    await pvProjectUpdatePage.expectStepTitle(
+      "Nous allons maintenant parler de ce que seront les sols du site",
+    );
+    await pvProjectUpdatePage.goBack();
+    await pvProjectUpdatePage.expectStepTitle(
+      "Quelle sera la durée prévisionnelle du contrat de la revente d'énergie au distributeur",
+    );
+    await pvProjectUpdatePage.goBack();
     // Production is fetched on entry (loading spinner); expectStepTitle waits it out before we
     // step back once more.
-    await pvProjectUpdatePage.expectStepTitle(/production annuelle attendue de l.installation/i);
-    await pvProjectUpdatePage.goBack(); // surface
-    await pvProjectUpdatePage.expectStepTitle(/superficie du site occuperont les panneaux/i);
+    await pvProjectUpdatePage.expectStepTitle(
+      "Quelle est la production annuelle attendue de l'installation",
+    );
+    await pvProjectUpdatePage.goBack();
+    await pvProjectUpdatePage.expectStepTitle(
+      "Quelle superficie du site occuperont les panneaux photovoltaïques",
+    );
 
     // --- Change the surface: still non-suitable, so the cascade dialog surfaces ---
     await pvProjectUpdatePage.fillSurface(UPDATED_SURFACE);
@@ -50,18 +63,20 @@ test.describe("photovoltaic project editing with a soils-transformation cascade"
     // next_empty navigation walks the sequence and stops on each step the cascade reset: the
     // non-suitable-soils pair, then — since the kept "custom" strategy routes through them — the
     // custom soils selection and its surface-area allocation, whose answers were reset too.
-    await pvProjectUpdatePage.expectStepTitle(/Quels espaces souhaitez-vous supprimer/i);
+    await pvProjectUpdatePage.expectStepTitle("Quels espaces souhaitez-vous supprimer");
     await pvProjectUpdatePage.selectNonSuitableSoilsToTransform(["BUILDINGS"]);
 
-    await pvProjectUpdatePage.expectStepTitle(/proportion de chaque espace/i);
+    await pvProjectUpdatePage.expectStepTitle(
+      "Quelle proportion de chaque espace souhaitez-vous supprimer",
+    );
     await pvProjectUpdatePage.fillNonSuitableSoilsSurfaceToTransform({ BUILDINGS: 1380 });
 
     // The whole site (4600 m²) becomes mineral soil, which is suitable for panels and so covers
     // the new 4000 m² footprint.
-    await pvProjectUpdatePage.expectStepTitle(/Quels types de sols y aura-t-il sur ce site/i);
+    await pvProjectUpdatePage.expectStepTitle("Quels types de sols y aura-t-il sur ce site");
     await pvProjectUpdatePage.selectFutureSoils(["MINERAL_SOIL"]);
 
-    await pvProjectUpdatePage.expectStepTitle(/Quelles seront les superficies des sols/i);
+    await pvProjectUpdatePage.expectStepTitle("Quelles seront les superficies des sols");
     await pvProjectUpdatePage.fillFutureSoilsSurfaceAreas({ MINERAL_SOIL: 4600 });
 
     // --- Back on the summary with the new surface; save in place, no error ---

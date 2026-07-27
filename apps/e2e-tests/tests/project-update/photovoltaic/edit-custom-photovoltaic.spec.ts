@@ -38,6 +38,7 @@ test.describe("photovoltaic project editing", () => {
 
     // --- Edit the project name via the summary section's "Modifier" link ---
     await pvProjectUpdatePage.clickEditSection(/Dénomination/);
+    await pvProjectUpdatePage.expectStepTitle("Dénomination du projet");
     await expect(authenticatedPage.getByLabel(/Nom du projet/i)).toHaveValue(
       PHOTOVOLTAIC_PROJECT_NAME,
     );
@@ -49,7 +50,7 @@ test.describe("photovoltaic project editing", () => {
 
     // --- Navigate to a different section via the sidebar and edit a value there ---
     await pvProjectUpdatePage.selectSidebarStep("Dépenses et recettes");
-    await pvProjectUpdatePage.expectStepTitle(/Montant de l'acquisition foncière/);
+    await pvProjectUpdatePage.expectStepTitle("Montant de l'acquisition foncière");
 
     await pvProjectUpdatePage.fillSitePurchaseSellingPrice(UPDATED_SITE_PURCHASE_SELLING_PRICE);
 
