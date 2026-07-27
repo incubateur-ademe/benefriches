@@ -5,8 +5,8 @@ import { expect, test } from "./fixtures";
 // non-suitable-soils steps stay in the sequence.
 const UPDATED_SURFACE = 4000;
 
-test.describe("photovoltaic project editing with a soils-transformation cascade", () => {
-  test("editing the panel surface resets the non-suitable and custom soils steps, which the user re-completes before saving", async ({
+test.describe("photovoltaic project editing when the panel surface exceeds the site's suitable soils", () => {
+  test("increasing the panel surface requires redefining which soils to transform before saving", async ({
     myEvaluationsPage,
     pvProjectUpdatePage,
     nonSuitableSoilsPhotovoltaicProject,
@@ -22,33 +22,12 @@ test.describe("photovoltaic project editing with a soils-transformation cascade"
     await pvProjectUpdatePage.expectFinalSummary();
     await pvProjectUpdatePage.expectNoCascadeDialog();
 
-    // --- Reach the surface step ---
-    // The parameters section's "Modifier" lands on the group's first step (key parameter), which
-    // only offers "Valider" — re-submitting it would jump to the next empty step, not forward to
-    // surface. So enter the following soils section (lands on the non-suitable-soils selection step)
-    // and step back through the sequence to the surface: non-suitable selection → non-suitable
-    // notice → soils intro → contract duration → production → surface.
-    await pvProjectUpdatePage.clickEditSection(/Transformation des sols/);
-    await pvProjectUpdatePage.expectStepTitle("Quels espaces souhaitez-vous supprimer");
-    await pvProjectUpdatePage.goBack();
-    await pvProjectUpdatePage.expectStepTitle(
-      "Le site n'est pas encore prêt à accueillir une centrale photovoltaïque",
-    );
-    await pvProjectUpdatePage.goBack();
-    await pvProjectUpdatePage.expectStepTitle(
-      "Nous allons maintenant parler de ce que seront les sols du site",
-    );
-    await pvProjectUpdatePage.goBack();
-    await pvProjectUpdatePage.expectStepTitle(
-      "Quelle sera la durée prévisionnelle du contrat de la revente d'énergie au distributeur",
-    );
-    await pvProjectUpdatePage.goBack();
-    // Production is fetched on entry (loading spinner); expectStepTitle waits it out before we
-    // step back once more.
-    await pvProjectUpdatePage.expectStepTitle(
-      "Quelle est la production annuelle attendue de l'installation",
-    );
-    await pvProjectUpdatePage.goBack();
+    // --- Reach the surface step directly via the sidebar sub-step ---
+    // The parameters group's row lands on the group's first step (key parameter); clicking it
+    // first makes the group "active" so its sub-steps render, then the "Surface des panneaux"
+    // sub-step navigates straight to the surface step — no backwards walking required.
+    await pvProjectUpdatePage.selectSidebarStep("Paramètres du projet");
+    await pvProjectUpdatePage.selectSidebarStep("Surface des panneaux");
     await pvProjectUpdatePage.expectStepTitle(
       "Quelle superficie du site occuperont les panneaux photovoltaïques",
     );
@@ -89,5 +68,11 @@ test.describe("photovoltaic project editing with a soils-transformation cascade"
     await pvProjectUpdatePage.goto(nonSuitableSoilsPhotovoltaicProject.id);
     await pvProjectUpdatePage.expectFinalSummary();
     await pvProjectUpdatePage.expectUpdatePageTitle(nonSuitableSoilsPhotovoltaicProject.name);
+
+    // --- Another mid-group step (Puissance, the other field the original bug report couldn't
+    // reach) stays directly reachable via its own sidebar sub-step, alongside surface above ---
+    await pvProjectUpdatePage.selectSidebarStep("Paramètres du projet");
+    await pvProjectUpdatePage.selectSidebarStep("Puissance");
+    await pvProjectUpdatePage.expectStepTitle("Quelle sera la puissance de l'installation ?");
   });
 });

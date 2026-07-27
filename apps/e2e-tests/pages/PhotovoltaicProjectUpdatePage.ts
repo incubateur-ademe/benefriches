@@ -44,7 +44,7 @@ export class PhotovoltaicProjectUpdatePage {
   // --- Sidebar navigation ---
 
   async selectSidebarStep(stepLabel: string): Promise<void> {
-    await this.page.getByRole("button", { name: stepLabel }).click();
+    await this.page.getByRole("button", { name: stepLabel, exact: true }).click();
   }
 
   // --- Yearly expenses ---
@@ -167,6 +167,17 @@ export class PhotovoltaicProjectUpdatePage {
     await expect(this.page.getByText(/stockage de carbone/i)).toBeVisible();
   }
 
+  // --- Soils decontamination ---
+
+  // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
+  async selectInvolvesReinstatement(involves: boolean): Promise<void> {
+    const label = involves
+      ? "Oui, le projet inclut des travaux de remise en état"
+      : "Non, le projet ne prévoit pas de remise en état";
+    await this.page.getByRole("radio", { name: label }).check({ force: true });
+    await this.submit();
+  }
+
   // --- Stakeholders ---
 
   // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
@@ -186,6 +197,11 @@ export class PhotovoltaicProjectUpdatePage {
 
   async fillSitePurchaseSellingPrice(amount: number): Promise<void> {
     await this.page.getByLabel("Prix d'acquisition").fill(String(amount));
+    await this.submitOrSkipStep();
+  }
+
+  async fillReinstatementExpenses(amount: number): Promise<void> {
+    await this.page.getByLabel("Désamiantage").fill(String(amount));
     await this.submitOrSkipStep();
   }
 

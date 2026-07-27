@@ -22,6 +22,9 @@ type CreateCustomPhotovoltaicProjectProps = {
   expectedAnnualProduction: number;
   contractDuration: number;
   yearlyMaintenanceExpenseAmount: number;
+  // Friche sites always route through the decontamination-selection step, regardless of the
+  // reinstatement answer — set this so a friche-sited project opens fully answered.
+  decontaminatedSoilSurface?: number;
 };
 
 export const createCustomPhotovoltaicProjectViaApi =
@@ -36,6 +39,7 @@ export const createCustomPhotovoltaicProjectViaApi =
     expectedAnnualProduction,
     contractDuration,
     yearlyMaintenanceExpenseAmount,
+    decontaminatedSoilSurface,
   }: CreateCustomPhotovoltaicProjectProps): Promise<TestPhotovoltaicProject> => {
     const body: ReconversionProjectSavePropsDto = {
       id,
@@ -65,6 +69,7 @@ export const createCustomPhotovoltaicProjectViaApi =
       },
       soilsDistribution: [{ soilType: "MINERAL_SOIL", spaceCategory: undefined, surfaceArea }],
       involvesReinstatement: false,
+      ...(decontaminatedSoilSurface !== undefined ? { decontaminatedSoilSurface } : {}),
       // Every project created through the wizard answers the future-operator question (the form
       // requires it) and, since the site is purchased below, the future-site-owner one. Seeding
       // both keeps the update wizard fully hydrated, so editing any answer returns straight to the

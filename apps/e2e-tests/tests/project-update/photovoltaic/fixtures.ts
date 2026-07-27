@@ -13,6 +13,7 @@ import { MyEvaluationsPage } from "../../../pages/MyEvaluationsPage";
 import { PhotovoltaicProjectUpdatePage } from "../../../pages/PhotovoltaicProjectUpdatePage";
 
 type AgriculturalCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>;
+type FricheCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "FRICHE" }>;
 
 const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"> = {
   nature: "AGRICULTURAL_OPERATION",
@@ -44,6 +45,31 @@ const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"
   tenant: { structureType: "company", name: "Société agricole" },
 };
 
+const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
+  nature: "FRICHE",
+  name: "Friche industrielle de Meylan",
+  address: {
+    banId: "38229",
+    value: "Meylan",
+    city: "Meylan",
+    cityCode: "38229",
+    postCode: "38240",
+    long: 5.7826,
+    lat: 45.2116,
+  },
+  // Suitable soils (IMPERMEABLE_SOILS 2000 + MINERAL_SOIL 1500 = 3500 m²) cover the panel surface
+  // seeded below, so the project routes through no soils cascade — only the reinstatement toggle
+  // is exercised.
+  soilsDistribution: {
+    BUILDINGS: 1000,
+    IMPERMEABLE_SOILS: 2000,
+    MINERAL_SOIL: 1500,
+  },
+  yearlyExpenses: [],
+  yearlyIncomes: [],
+  owner: { structureType: "municipality", name: "Mairie de Meylan" },
+};
+
 export const PHOTOVOLTAIC_PROJECT_NAME = "Centrale photovoltaïque de Meylan";
 export const ORIGINAL_ELECTRICAL_POWER_KWC = 296;
 export const ORIGINAL_MAINTENANCE_EXPENSE_AMOUNT = 8000;
@@ -59,11 +85,15 @@ export const NON_SUITABLE_SOILS_ORIGINAL_SURFACE = 3500;
 export const NON_SUITABLE_SOILS_ELECTRICAL_POWER_KWC = 440;
 export const NON_SUITABLE_SOILS_EXPECTED_ANNUAL_PRODUCTION = 550;
 
+export const FRICHE_PHOTOVOLTAIC_PROJECT_NAME = "Centrale photovoltaïque sur friche de Meylan";
+
 type PhotovoltaicProjectUpdateFixtures = {
   pvProjectUpdatePage: PhotovoltaicProjectUpdatePage;
   agriculturalSite: TestSite;
+  fricheSite: TestSite;
   photovoltaicProject: TestPhotovoltaicProject;
   nonSuitableSoilsPhotovoltaicProject: TestPhotovoltaicProject;
+  fricheReinstatementProject: TestPhotovoltaicProject;
   myEvaluationsPage: MyEvaluationsPage;
 };
 
@@ -105,6 +135,32 @@ export const test = authTest.extend<PhotovoltaicProjectUpdateFixtures>({
       expectedAnnualProduction: NON_SUITABLE_SOILS_EXPECTED_ANNUAL_PRODUCTION,
       contractDuration: 20,
       yearlyMaintenanceExpenseAmount: ORIGINAL_MAINTENANCE_EXPENSE_AMOUNT,
+    });
+    await use(project);
+  },
+
+  fricheSite: async ({ authenticatedApiClient, testUser }, use) => {
+    const site = await createCustomSiteViaApi(authenticatedApiClient)({
+      ...FRICHE_SITE_DATA,
+      createdBy: testUser.id,
+    });
+    await use(site);
+  },
+
+  fricheReinstatementProject: async ({ authenticatedApiClient, testUser, fricheSite }, use) => {
+    const project = await createCustomPhotovoltaicProjectViaApi(authenticatedApiClient)({
+      id: crypto.randomUUID(),
+      createdBy: testUser.id,
+      relatedSiteId: fricheSite.id,
+      name: FRICHE_PHOTOVOLTAIC_PROJECT_NAME,
+      electricalPowerKWc: ORIGINAL_ELECTRICAL_POWER_KWC,
+      surfaceArea: 2700,
+      expectedAnnualProduction: ORIGINAL_EXPECTED_ANNUAL_PRODUCTION,
+      contractDuration: 20,
+      yearlyMaintenanceExpenseAmount: ORIGINAL_MAINTENANCE_EXPENSE_AMOUNT,
+      // No decontamination planned: marks the friche-only decontamination-selection step
+      // answered, so the project opens fully hydrated on the final summary.
+      decontaminatedSoilSurface: 0,
     });
     await use(project);
   },
