@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { NationalAddressBaseService } from "@/features/create-site/infrastructure/address-service/nationalAddressBaseApi";
+import { NationalAddressBaseService } from "@/shared/infrastructure/address-service/nationalAddressBaseApi";
 import { useAddressSearch } from "@/shared/views/hooks/useAddressSearch";
 
 import SearchAddressAutocompleteInput, {
