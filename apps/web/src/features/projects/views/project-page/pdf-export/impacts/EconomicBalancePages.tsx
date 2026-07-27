@@ -1,11 +1,8 @@
 import { Link, Text, View } from "@react-pdf/renderer";
 
-import { EconomicBalance } from "@/features/projects/core/projectImpactsEconomicBalance";
+import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 
-import {
-  getEconomicBalanceDetailsImpactLabel,
-  getEconomicBalanceImpactLabel,
-} from "../../impacts/getImpactLabel";
+import { getEconomicBalanceImpactLabel } from "../../impacts/getImpactLabel";
 import ImpactsGroupByActor from "../components/ImpactsGroupByActor";
 import ImpactsSection from "../components/ImpactsSection";
 import ListItem from "../components/ListItem";
@@ -17,14 +14,14 @@ import { pageIds } from "../pageIds";
 import { tw } from "../styles";
 
 type Props = {
-  impact: EconomicBalance;
+  impact: EconomicBalanceByCategory;
   evaluationPeriodInYears: number;
 };
 
 export default function EconomicBalanceSection({ impact, evaluationPeriodInYears }: Props) {
   const impactsSectionLabel = useSectionLabel("impacts");
   const economicBalanceSectionLabel = useSectionLabel("impacts-economic-balance");
-  const { total, economicBalance, bearer } = impact;
+  const { total, economicBalance, bearerName } = impact;
   return (
     <PdfPage id={pageIds["impacts-economic-balance"]}>
       <PdfPageTitle>{impactsSectionLabel}</PdfPageTitle>
@@ -60,16 +57,16 @@ export default function EconomicBalanceSection({ impact, evaluationPeriodInYears
         </View>
       </View>
       <ImpactsSection title="Bilan de l'opération" total={total} valueType="monetary" isMain>
-        {economicBalance.map(({ name, value, details = [] }) => (
+        {economicBalance.map(({ keyName, total, details }) => (
           <ImpactsGroupByActor
-            key={name}
-            label={getEconomicBalanceImpactLabel(name)}
+            key={keyName}
+            label={getEconomicBalanceImpactLabel(keyName)}
             actors={[
               {
-                label: bearer ?? "Aménageur",
-                value,
-                details: details.map(({ name: detailsName, value: detailsValue }) => ({
-                  label: getEconomicBalanceDetailsImpactLabel(name, detailsName),
+                label: bearerName ?? "Aménageur",
+                value: total,
+                details: details.map(({ keyName: detailsKeyName, total: detailsValue }) => ({
+                  label: getEconomicBalanceImpactLabel(detailsKeyName),
                   value: detailsValue,
                 })),
               },

@@ -4,8 +4,10 @@ import { RootState } from "@/app/store/store";
 
 import { KeyImpactIndicatorData, PRIORITY_ORDER } from "../../../core/projectKeyImpactIndicators";
 import { ProjectImpactsState } from "../projectImpacts.reducer";
-import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
-import { selectKeyImpactIndicatorsList } from "./projectImpacts.selectors";
+import {
+  selectImpactsCroppedByEvaluationPeriod,
+  selectKeyImpactIndicatorsList,
+} from "./projectImpacts.selectors";
 
 type ZanCompliance = Extract<KeyImpactIndicatorData, { name: "zanCompliance" }>;
 export type ProjectSummaryDataView = {

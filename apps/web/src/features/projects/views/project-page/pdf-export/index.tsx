@@ -1,6 +1,6 @@
 import { Document } from "@react-pdf/renderer";
 
-import { EconomicBalance } from "@/features/projects/core/projectImpactsEconomicBalance";
+import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
 import { SocialImpact } from "@/features/projects/core/projectImpactsSocial";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
@@ -21,7 +21,7 @@ export type Props = {
   evaluationPeriodInYears: number;
   selectedSections: PdfExportSectionSelection;
   impacts: {
-    economicBalance: EconomicBalance;
+    economicBalance: EconomicBalanceByCategory;
     environment: EnvironmentalImpact[];
     socioEconomic: SocioEconomicImpactsByBearerListView;
     social: SocialImpact[];

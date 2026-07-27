@@ -23,7 +23,7 @@ export const getProjectOperatingEconomicBalance = ({
         details: purpose,
         detailsByYear,
         cumulativeByYear: computeCumulativeByYear(detailsByYear),
-        name: "projectOperatingEconomicBalance" as const,
+        name: "projectOperatingExpenses" as const,
         total: sumList(detailsByYear),
       };
     }),
@@ -35,7 +35,7 @@ export const getProjectOperatingEconomicBalance = ({
         details: source,
         detailsByYear,
         cumulativeByYear: computeCumulativeByYear(detailsByYear),
-        name: "projectOperatingEconomicBalance" as const,
+        name: "projectOperatingRevenues" as const,
         total: sumList(detailsByYear),
       };
     }),

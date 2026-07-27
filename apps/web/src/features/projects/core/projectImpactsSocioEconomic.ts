@@ -132,7 +132,7 @@ const getBearerName = (
 export const groupByListViewCategory = (
   indirectEconomicImpacts: AggregatedReconversionProjectOnSiteImpactItemView[],
 ) => {
-  return Object.groupBy(indirectEconomicImpacts, ({ name, total }) => {
+  return Object.groupBy(indirectEconomicImpacts, ({ name }) => {
     switch (name) {
       case "projectNewHousesTaxesIncome":
       case "projectNewCompanyTaxationIncome":
@@ -158,9 +158,6 @@ export const groupByListViewCategory = (
       case "avoidedAccidentsSevereInjuriesExpenses":
       case "avoidedAccidentsDeathsExpenses":
         return "avoidedTrafficAccidents";
-
-      case "projectOperatingEconomicBalance":
-        return total > 0 ? "projectOperatingRevenues" : "projectOperatingExpenses";
 
       default:
         return name;
@@ -195,7 +192,8 @@ const formatAsListViewArray = (
         name:
           item.name === "avoidedFricheMaintenanceAndSecuringCostsForOwner" ||
           item.name === "avoidedFricheMaintenanceAndSecuringCostsForTenant" ||
-          item.name === "projectOperatingEconomicBalance"
+          item.name === "projectOperatingRevenues" ||
+          item.name === "projectOperatingExpenses"
             ? `${groupName}.${item.details}`
             : item.name,
       })),

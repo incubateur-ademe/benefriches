@@ -8,9 +8,9 @@ import {
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import {
-  EconomicBalanceDetailsName,
-  EconomicBalanceMainName,
-  getDevelopmentPlanDetailsName,
+  EconomicBalanceDetailsImpactKeyName,
+  EconomicBalanceImpactKeyName,
+  EconomicBalanceMainImpactKeyName,
 } from "@/features/projects/core/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ImpactInProgressDescriptionModal from "@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal";
@@ -22,65 +22,22 @@ import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
+import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import {
-  getEconomicBalanceDetailsImpactLabel,
-  getEconomicBalanceImpactLabel,
-} from "../../getImpactLabel";
+import { getEconomicBalanceImpactLabel } from "../../getImpactLabel";
 import ModalTable from "../shared/ModalTable";
 import ModalColumnPointChart from "../shared/modal-charts/ModalColumnPointChart";
 import EconomicBalanceDescription from "./EconomicBalanceDescription";
 import ModalSiteOrProjectFeature from "./EconomicBalanceModalSiteOrProjectFeature";
+import { getEconomicBalanceImpactColor } from "./colors";
 
 type Props = {
-  impactName?: EconomicBalanceMainName;
-  impactDetailsName?: EconomicBalanceDetailsName;
+  impactName?: EconomicBalanceMainImpactKeyName;
+  impactDetailsName?: EconomicBalanceDetailsImpactKeyName;
   impactsData: ModalDataProps["impactsData"];
   contextData: ModalDataProps["contextData"];
-};
-
-const getEconomicBalanceDetailsColor = (impactName: EconomicBalanceDetailsName) => {
-  switch (impactName) {
-    case "asbestos_removal":
-      return "#F4C00A";
-    case "deimpermeabilization":
-      return "#039CF2";
-    case "demolition":
-      return "#85341B";
-    case "other_reinstatement":
-      return "#DE3317";
-    case "remediation":
-      return "#F6DB1F";
-    case "sustainable_soils_reinstatement":
-      return "#7ACA17";
-    case "waste_collection":
-      return "#298435";
-
-    case "photovoltaic_works":
-      return "#7E7F81";
-    case "photovoltaic_technical_studies":
-      return "#C4C5C6";
-    case "photovoltaic_other":
-      return "#FF9700";
-
-    case "urban_project_works":
-      return "#9E89CC";
-    case "urban_project_technical_studies":
-      return "#C4C5C6";
-    case "urban_project_other":
-      return "#E9DABE";
-
-    case "local_or_regional_authority_participation":
-      return "#1D5DA2";
-    case "public_subsidies":
-      return "#AFF6FF";
-    case "other":
-      return "#FFADFE";
-    default:
-      return "";
-  }
 };
 
 const getTotal = (
@@ -99,36 +56,61 @@ type EconomicBalanceModalData = {
     label: string;
     color: string;
     value: number;
-    name: EconomicBalanceDetailsName;
+    name: EconomicBalanceDetailsImpactKeyName;
   }[];
 };
 const ECONOMIC_BALANCE_MODALS = {
-  site_purchase: {
+  realEstateAcquisition: {
+    title: "🏠 Transaction foncière",
+    Component: () => import("./real_estate_acquisition.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
+      const details = filterByName(
+        impactsData.projectEconomicBalance.details,
+        "sitePurchase",
+        "buildingsResaleRevenue",
+        "siteResaleRevenue",
+      )?.map(({ name, total }) => ({
+        label: getEconomicBalanceImpactLabel(`realEstateAcquisition.${name}`),
+        color: getEconomicBalanceImpactColor(`realEstateAcquisition.${name}`),
+        value: total,
+        name: `realEstateAcquisition.${name}` as const,
+      }));
+
+      return details
+        ? {
+            total: sumListWithKey(details, "value"),
+            details,
+          }
+        : undefined;
+    },
+  },
+
+  "realEstateAcquisition.sitePurchase": {
     title: "🏠 Acquisition du site",
-    Component: () => import("./site_purchase.mdx"),
+    Component: () => import("./real_estate_acquisition-site_purchase.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(impactsData, (item) => item.name === "sitePurchase"),
   },
 
-  site_resale: {
+  "realEstateAcquisition.siteResaleRevenue": {
     title: "🚪 Cession du site",
-    Component: () => import("./site_resale.mdx"),
+    Component: () => import("./real_estate_acquisition-site_resale.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(impactsData, (item) => item.name === "siteResaleRevenue"),
   },
-  buildings_resale: undefined,
+  "realEstateAcquisition.buildingsResaleRevenue": undefined,
 
-  site_reinstatement: {
+  siteReinstatement: {
     title: "🚧 Remise en état de la friche",
     Component: () => import("./site_reinstatement.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
       const details = impactsData.projectEconomicBalance.details
         .filter((item) => item.name === "siteReinstatement")
         ?.map(({ details, total }) => ({
-          label: getEconomicBalanceDetailsImpactLabel("site_reinstatement", details),
-          color: getEconomicBalanceDetailsColor(details),
+          label: getEconomicBalanceImpactLabel(`siteReinstatement.${details}`),
+          color: getEconomicBalanceImpactColor(`siteReinstatement.${details}`),
           value: total,
-          name: details,
+          name: `siteReinstatement.${details}` as const,
         }));
 
       return details
@@ -139,7 +121,7 @@ const ECONOMIC_BALANCE_MODALS = {
         : undefined;
     },
   },
-  sustainable_soils_reinstatement: {
+  "siteReinstatement.sustainable_soils_reinstatement": {
     title: "🌱 Restauration écologique",
     Component: () => import("./site_reinstatement-sustainable_soils_reinstatement.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
@@ -149,7 +131,7 @@ const ECONOMIC_BALANCE_MODALS = {
           item.name === "siteReinstatement" && item.details === "sustainable_soils_reinstatement",
       ),
   },
-  deimpermeabilization: {
+  "siteReinstatement.deimpermeabilization": {
     title: "🌧️ Désimperméabilisation",
     Component: () => import("./site_reinstatement-deimpermeabilization.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
@@ -158,7 +140,7 @@ const ECONOMIC_BALANCE_MODALS = {
         (item) => item.name === "siteReinstatement" && item.details === "deimpermeabilization",
       ),
   },
-  remediation: {
+  "siteReinstatement.remediation": {
     title: "✨ Dépollution des sols",
     Component: () => import("./site_reinstatement-remediation.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
@@ -167,7 +149,7 @@ const ECONOMIC_BALANCE_MODALS = {
         (item) => item.name === "siteReinstatement" && item.details === "remediation",
       ),
   },
-  demolition: {
+  "siteReinstatement.demolition": {
     title: "🧱 Déconstruction",
     Component: () => import("./site_reinstatement-demolition.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
@@ -176,8 +158,8 @@ const ECONOMIC_BALANCE_MODALS = {
         (item) => item.name === "siteReinstatement" && item.details === "demolition",
       ),
   },
-  asbestos_removal: undefined,
-  waste_collection: {
+  "siteReinstatement.asbestos_removal": undefined,
+  "siteReinstatement.waste_collection": {
     title: "♻️️ Évacuation et traitement des déchets",
     Component: () => import("./site_reinstatement-waste_collection.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
@@ -186,7 +168,7 @@ const ECONOMIC_BALANCE_MODALS = {
         (item) => item.name === "siteReinstatement" && item.details === "waste_collection",
       ),
   },
-  other_reinstatement: {
+  "siteReinstatement.other_reinstatement": {
     title: "🏗️ Autres dépenses de remise en état",
     Component: () => import("./site_reinstatement-other_reinstatement.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
@@ -196,138 +178,17 @@ const ECONOMIC_BALANCE_MODALS = {
       ),
   },
 
-  photovoltaic_development_plan_installation: {
+  photovoltaicProjectInstallation: {
     title: "⚡️ Installation de la centrale $EnR",
     Component: () => import("./photovoltaic_development_plan_installation.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
       const details = impactsData.projectEconomicBalance.details
         .filter((item) => item.name === "projectInstallation")
-        ?.map(({ details, total }) => {
-          const name = getDevelopmentPlanDetailsName(
-            details,
-            "PHOTOVOLTAIC_POWER_PLANT",
-          ) as EconomicBalanceDetailsName;
-          return {
-            label: getEconomicBalanceDetailsImpactLabel(
-              "photovoltaic_development_plan_installation",
-              details,
-            ),
-            color: getEconomicBalanceDetailsColor(name),
-            value: total,
-            name: name,
-          };
-        });
-
-      return details
-        ? {
-            total: sumListWithKey(details, "value"),
-            details,
-          }
-        : undefined;
-    },
-  },
-  photovoltaic_works: {
-    title: "🛠️ Travaux d'installation des panneaux",
-    Component: () => import("./photovoltaic_development_plan_installation.mdx"),
-    getData: (impactsData: ModalDataProps["impactsData"]) =>
-      getTotal(
-        impactsData,
-        (item) => item.name === "projectInstallation" && item.details === "installation_works",
-      ),
-  },
-  photovoltaic_technical_studies: {
-    title: "📋 Études et honoraires techniques",
-    Component: () => import("./photovoltaic_technical_studies.mdx"),
-    getData: (impactsData: ModalDataProps["impactsData"]) =>
-      getTotal(
-        impactsData,
-        (item) => item.name === "projectInstallation" && item.details === "technical_studies",
-      ),
-  },
-  photovoltaic_other: {
-    title: "⚡️ Autres frais d’installation de la centrale",
-    Component: () => import("./photovoltaic_other.mdx"),
-    getData: (impactsData: ModalDataProps["impactsData"]) =>
-      getTotal(
-        impactsData,
-        (item) => item.name === "projectInstallation" && item.details === "other",
-      ),
-  },
-
-  urban_project_development_plan_installation: {
-    title: "🏘 Aménagement du site",
-    Component: () => import("./urban_project_development_plan_installation.mdx"),
-    getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
-      const details = impactsData.projectEconomicBalance.details
-        .filter((item) => item.name === "projectInstallation")
-        ?.map(({ details, total }) => {
-          const name = getDevelopmentPlanDetailsName(
-            details,
-            "URBAN_PROJECT",
-          ) as EconomicBalanceDetailsName;
-          return {
-            label: getEconomicBalanceDetailsImpactLabel(
-              "urban_project_development_plan_installation",
-              details,
-            ),
-            color: getEconomicBalanceDetailsColor(name),
-            value: total,
-            name: name,
-          };
-        });
-
-      return details
-        ? {
-            total: sumListWithKey(details, "value"),
-            details,
-          }
-        : undefined;
-    },
-  },
-  urban_project_works: {
-    title: "🔌 Travaux d'aménagement (VRD, espaces verts...)",
-    Component: () => import("./urban_project_works.mdx"),
-    getData: (impactsData: ModalDataProps["impactsData"]) =>
-      getTotal(
-        impactsData,
-        (item) => item.name === "projectInstallation" && item.details === "development_works",
-      ),
-  },
-  urban_project_technical_studies: {
-    title: "📋 Études et honoraires techniques",
-    Component: () => import("./urban_project_technical_studies.mdx"),
-    getData: (impactsData: ModalDataProps["impactsData"]) =>
-      getTotal(
-        impactsData,
-        (item) => item.name === "projectInstallation" && item.details === "technical_studies",
-      ),
-  },
-  urban_project_other: {
-    title: "🏘 Autres dépenses d'aménagements",
-    Component: () => import("./urban_project_other.mdx"),
-    getData: (impactsData: ModalDataProps["impactsData"]) =>
-      getTotal(
-        impactsData,
-        (item) => item.name === "projectInstallation" && item.details === "other",
-      ),
-  },
-
-  urban_project_buildings_construction_and_rehabilitation: undefined,
-  buildings_construction_works: undefined,
-  buildings_rehabilitation_works: undefined,
-  other_construction_expenses: undefined,
-
-  financial_assistance: {
-    title: "🏦 Aides financière",
-    Component: () => import("./financial_assistance.mdx"),
-    getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
-      const details = impactsData.projectEconomicBalance.details
-        .filter((item) => item.name === "financialAssistanceRevenues")
         ?.map(({ details, total }) => ({
-          label: getEconomicBalanceDetailsImpactLabel("financial_assistance", details),
-          color: getEconomicBalanceDetailsColor(details),
+          label: getEconomicBalanceImpactLabel(`photovoltaicProjectInstallation.${details}`),
+          color: getEconomicBalanceImpactColor(`photovoltaicProjectInstallation.${details}`),
           value: total,
-          name: details,
+          name: `photovoltaicProjectInstallation.${details}` as const,
         }));
 
       return details
@@ -338,7 +199,111 @@ const ECONOMIC_BALANCE_MODALS = {
         : undefined;
     },
   },
-  public_subsidies: {
+  "photovoltaicProjectInstallation.installation_works": {
+    title: "🛠️ Travaux d'installation des panneaux",
+    Component: () => import("./photovoltaic_development_plan_installation.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "installation_works",
+      ),
+  },
+  "photovoltaicProjectInstallation.technical_studies": {
+    title: "📋 Études et honoraires techniques",
+    Component: () => import("./photovoltaic_technical_studies.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "technical_studies",
+      ),
+  },
+  "photovoltaicProjectInstallation.other": {
+    title: "⚡️ Autres frais d’installation de la centrale",
+    Component: () => import("./photovoltaic_other.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "other",
+      ),
+  },
+
+  urbanProjectInstallation: {
+    title: "🏘 Aménagement du site",
+    Component: () => import("./urban_project_development_plan_installation.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
+      const details = impactsData.projectEconomicBalance.details
+        .filter((item) => item.name === "projectInstallation")
+        ?.map(({ details, total }) => ({
+          label: getEconomicBalanceImpactLabel(`urbanProjectInstallation.${details}`),
+          color: getEconomicBalanceImpactColor(`urbanProjectInstallation.${details}`),
+          value: total,
+          name: `urbanProjectInstallation.${details}` as const,
+        }));
+
+      return details
+        ? {
+            total: sumListWithKey(details, "value"),
+            details,
+          }
+        : undefined;
+    },
+  },
+  "urbanProjectInstallation.development_works": {
+    title: "🔌 Travaux d'aménagement (VRD, espaces verts...)",
+    Component: () => import("./urban_project_works.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "development_works",
+      ),
+  },
+  "urbanProjectInstallation.technical_studies": {
+    title: "📋 Études et honoraires techniques",
+    Component: () => import("./urban_project_technical_studies.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "technical_studies",
+      ),
+  },
+  "urbanProjectInstallation.other": {
+    title: "🏘 Autres dépenses d'aménagements",
+    Component: () => import("./urban_project_other.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]) =>
+      getTotal(
+        impactsData,
+        (item) => item.name === "projectInstallation" && item.details === "other",
+      ),
+  },
+
+  projectBuildingsInstallation: undefined,
+  "projectBuildingsInstallation.buildings_construction_works": undefined,
+  "projectBuildingsInstallation.buildings_rehabilitation_works": undefined,
+  "projectBuildingsInstallation.technical_studies_and_fees": undefined,
+  "projectBuildingsInstallation.other_construction_expenses": undefined,
+
+  financialAssistanceRevenues: {
+    title: "🏦 Aides financière",
+    Component: () => import("./financial_assistance.mdx"),
+    getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
+      const details = impactsData.projectEconomicBalance.details
+        .filter((item) => item.name === "financialAssistanceRevenues")
+        ?.map(({ details, total }) => ({
+          label: getEconomicBalanceImpactLabel(`financialAssistanceRevenues.${details}`),
+          color: getEconomicBalanceImpactColor(`financialAssistanceRevenues.${details}`),
+          value: total,
+          name: `financialAssistanceRevenues.${details}` as const,
+        }));
+
+      return details
+        ? {
+            total: sumListWithKey(details, "value"),
+            details,
+          }
+        : undefined;
+    },
+  },
+  "financialAssistanceRevenues.public_subsidies": {
     title: "🏫 Subventions publiques",
     Component: () => import("./financial_assistance-public_subsidies.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
@@ -348,7 +313,7 @@ const ECONOMIC_BALANCE_MODALS = {
           item.name === "financialAssistanceRevenues" && item.details === "public_subsidies",
       ),
   },
-  local_or_regional_authority_participation: {
+  "financialAssistanceRevenues.local_or_regional_authority_participation": {
     title: "🏦 Participation des collectivités",
     Component: () => import("./financial_assistance-local_or_regional_authority_participation.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
@@ -359,22 +324,21 @@ const ECONOMIC_BALANCE_MODALS = {
           item.details === "local_or_regional_authority_participation",
       ),
   },
+  "financialAssistanceRevenues.other": undefined,
 
-  operations_costs: undefined,
-  operations_revenues: undefined,
-  rent: undefined,
-  maintenance: undefined,
-  taxes: undefined,
-  other: undefined,
-  operations: undefined,
-
-  development_plan_installation: undefined,
-  technical_studies: undefined,
-  installation_works: undefined,
-  development_works: undefined,
-  technical_studies_and_fees: undefined,
+  "urbanProjectInstallation.installation_works": undefined,
+  projectOperatingRevenues: undefined,
+  projectOperatingExpenses: undefined,
+  "projectOperatingRevenues.other": undefined,
+  "projectOperatingRevenues.operations": undefined,
+  "projectOperatingRevenues.rent": undefined,
+  "projectOperatingExpenses.other": undefined,
+  "projectOperatingExpenses.rent": undefined,
+  "projectOperatingExpenses.maintenance": undefined,
+  "projectOperatingExpenses.taxes": undefined,
+  "photovoltaicProjectInstallation.development_works": undefined,
 } as const satisfies Record<
-  EconomicBalanceMainName | EconomicBalanceDetailsName,
+  EconomicBalanceImpactKeyName,
   | {
       title: string;
       getData: (impactsData: ModalDataProps["impactsData"]) => EconomicBalanceModalData | undefined;
@@ -459,7 +423,7 @@ export function EconomicBalanceModalWizard({
       <ImpactInProgressDescriptionModal
         title={
           impactDetailsName
-            ? getEconomicBalanceDetailsImpactLabel(impactName, impactDetailsName)
+            ? getEconomicBalanceImpactLabel(impactDetailsName)
             : getEconomicBalanceImpactLabel(impactName)
         }
         breadcrumbProps={breadcrumbProps}

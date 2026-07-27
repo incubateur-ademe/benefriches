@@ -37,7 +37,7 @@ describe("projectImpacts ViewData selectors", () => {
       expect(viewData).toEqual({
         economicBalance: expect.objectContaining({
           total: -700000,
-          bearer: "Mairie de Blajan",
+          bearerName: "Mairie de Blajan",
           economicBalance: expect.any(Array),
         }),
         socioEconomicImpacts: expect.objectContaining({

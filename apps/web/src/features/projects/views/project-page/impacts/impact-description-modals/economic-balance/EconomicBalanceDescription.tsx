@@ -2,10 +2,7 @@ import { useContext } from "react";
 import { DevelopmentPlanType, roundTo2Digits } from "shared";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import {
-  EconomicBalanceMainName,
-  getEconomicBalanceProjectImpacts,
-} from "@/features/projects/core/projectImpactsEconomicBalance";
+import { buildEconomicBalanceListView } from "@/features/projects/core/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -19,48 +16,24 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { getEconomicBalanceImpactLabel } from "../../getImpactLabel";
 import ModalTable from "../shared/ModalTable";
 import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChart";
+import { getEconomicBalanceImpactColor } from "./colors";
 
 type Props = {
   impactsData: ModalDataProps["impactsData"];
   projectType: DevelopmentPlanType;
 };
 
-const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName): string => {
-  switch (name) {
-    case "buildings_resale":
-    case "site_resale":
-    case "site_purchase":
-      return "#C649CA";
-    case "site_reinstatement":
-      return "#DE3317";
-    case "financial_assistance":
-      return "#66D6FF";
-    case "development_plan_installation":
-      return "#FF9700";
-    case "photovoltaic_development_plan_installation":
-      return "#FF9700";
-    case "urban_project_development_plan_installation":
-      return "#E4D1AF";
-    case "urban_project_buildings_construction_and_rehabilitation":
-      return "#854C1B";
-    case "operations_costs":
-      return "#F5E900";
-    case "operations_revenues":
-      return "#57B54B";
-  }
-};
-
 const EconomicBalanceDescription = ({ impactsData, projectType }: Props) => {
-  const { economicBalance, total, bearer } = getEconomicBalanceProjectImpacts(
+  const { economicBalance, total, bearerName } = buildEconomicBalanceListView(
     projectType,
     impactsData,
   );
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const impactList = economicBalance.map(({ value, name }) => ({
+  const impactList = economicBalance.map(({ total, keyName: name }) => ({
     label: getEconomicBalanceImpactLabel(name),
     color: getEconomicBalanceImpactColor(name),
-    value: roundTo2Digits(value),
+    value: roundTo2Digits(total),
     name,
   }));
 
@@ -71,7 +44,7 @@ const EconomicBalanceDescription = ({ impactsData, projectType }: Props) => {
         value={{
           state: total > 0 ? "success" : "error",
           text: formatMonetaryImpact(total),
-          description: `pour ${bearer}`,
+          description: `pour ${bearerName}`,
         }}
         breadcrumbSegments={[
           {
@@ -84,7 +57,7 @@ const EconomicBalanceDescription = ({ impactsData, projectType }: Props) => {
           <ModalColumnSeriesChart
             format="monetary"
             exportTitle="📉 Bilan de l'opération"
-            exportSubtitle={`pour ${bearer}`}
+            exportSubtitle={`pour ${bearerName}`}
             data={[
               {
                 label: "Recettes",

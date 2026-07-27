@@ -180,25 +180,25 @@ const photovoltaicEconomicBalance: GetReconversionProjectImpactsResultDto["impac
   (() => {
     const details = [
       {
-        name: "projectOperatingEconomicBalance" as const,
+        name: "projectOperatingExpenses" as const,
         details: "taxes" as const,
         total: -10000,
         ...buildYearlySeries(-10000, photovoltaicYears),
       },
       {
-        name: "projectOperatingEconomicBalance" as const,
+        name: "projectOperatingExpenses" as const,
         details: "maintenance" as const,
         total: -100000,
         ...buildYearlySeries(-100000, photovoltaicYears),
       },
       {
-        name: "projectOperatingEconomicBalance" as const,
+        name: "projectOperatingRevenues" as const,
         details: "rent" as const,
         total: 100000,
         ...buildYearlySeries(100000, photovoltaicYears),
       },
       {
-        name: "projectOperatingEconomicBalance" as const,
+        name: "projectOperatingRevenues" as const,
         details: "other" as const,
         total: 10000,
         ...buildYearlySeries(10000, photovoltaicYears),
@@ -307,13 +307,13 @@ const urbanEconomicBalance: GetReconversionProjectImpactsResultDto["impacts"]["p
   (() => {
     const details = [
       {
-        name: "projectOperatingEconomicBalance" as const,
+        name: "projectOperatingExpenses" as const,
         details: "taxes" as const,
         total: -10000,
         ...buildYearlySeries(-10000, urbanYears),
       },
       {
-        name: "projectOperatingEconomicBalance" as const,
+        name: "projectOperatingExpenses" as const,
         details: "maintenance" as const,
         total: -100000,
         ...buildYearlySeries(-100000, urbanYears),

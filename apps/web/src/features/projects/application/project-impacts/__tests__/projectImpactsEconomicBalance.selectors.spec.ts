@@ -29,58 +29,79 @@ describe("projectImpactsEconomicBalance selectors", () => {
       const rootState = store.getState();
       const economicBalance = selectEconomicBalanceProjectImpacts(rootState);
 
-      expect(economicBalance.bearer).toEqual("Mairie de Blajan");
+      expect(economicBalance.bearerName).toEqual("Mairie de Blajan");
       expect(economicBalance.total).toEqual(-700000);
       expect(economicBalance.economicBalance).toContainEqual(
         expect.objectContaining({
-          name: "operations_costs",
-          value: -110000,
+          keyName: "projectOperatingExpenses",
+          total: -110000,
           details: [
-            { value: -10000, name: "taxes" },
-            { value: -100000, name: "maintenance" },
+            { total: -10000, keyName: "projectOperatingExpenses.taxes", name: "taxes" },
+            {
+              total: -100000,
+              keyName: "projectOperatingExpenses.maintenance",
+              name: "maintenance",
+            },
           ],
         }),
       );
 
       expect(economicBalance.economicBalance).toContainEqual(
         expect.objectContaining({
-          name: "site_reinstatement",
-          value: -500000,
-          details: [{ value: -500000, name: "demolition" }],
-        }),
-      );
-
-      expect(economicBalance.economicBalance).toContainEqual(
-        expect.objectContaining({
-          name: "photovoltaic_development_plan_installation",
-          value: -200000,
-          details: [{ value: -200000, name: "photovoltaic_works" }],
-        }),
-      );
-
-      expect(economicBalance.economicBalance).toContainEqual(
-        expect.objectContaining({
-          name: "site_purchase",
-          value: -150000,
-        }),
-      );
-
-      expect(economicBalance.economicBalance).toContainEqual(
-        expect.objectContaining({
-          name: "operations_revenues",
-          value: 110000,
+          keyName: "siteReinstatement",
+          total: -500000,
           details: [
-            { value: 100000, name: "rent" },
-            { value: 10000, name: "other" },
+            { total: -500000, keyName: "siteReinstatement.demolition", name: "demolition" },
           ],
         }),
       );
 
       expect(economicBalance.economicBalance).toContainEqual(
         expect.objectContaining({
-          name: "financial_assistance",
-          value: 150000,
-          details: [{ value: 150000, name: "public_subsidies" }],
+          keyName: "photovoltaicProjectInstallation",
+          total: -200000,
+          details: [
+            {
+              total: -200000,
+              keyName: "photovoltaicProjectInstallation.installation_works",
+              name: "installation_works",
+            },
+          ],
+        }),
+      );
+
+      expect(economicBalance.economicBalance).toContainEqual(
+        expect.objectContaining({
+          keyName: "realEstateAcquisition",
+          total: -150000,
+          details: [
+            { total: -150000, keyName: "realEstateAcquisition.sitePurchase", name: "sitePurchase" },
+          ],
+        }),
+      );
+
+      expect(economicBalance.economicBalance).toContainEqual(
+        expect.objectContaining({
+          keyName: "projectOperatingRevenues",
+          total: 110000,
+          details: [
+            { total: 100000, keyName: "projectOperatingRevenues.rent", name: "rent" },
+            { total: 10000, keyName: "projectOperatingRevenues.other", name: "other" },
+          ],
+        }),
+      );
+
+      expect(economicBalance.economicBalance).toContainEqual(
+        expect.objectContaining({
+          keyName: "financialAssistanceRevenues",
+          total: 150000,
+          details: [
+            {
+              total: 150000,
+              keyName: "financialAssistanceRevenues.public_subsidies",
+              name: "public_subsidies",
+            },
+          ],
         }),
       );
     });
@@ -99,9 +120,15 @@ describe("projectImpactsEconomicBalance selectors", () => {
 
       expect(economicBalance.economicBalance).toContainEqual(
         expect.objectContaining({
-          name: "urban_project_development_plan_installation",
-          value: -200000,
-          details: [{ value: -200000, name: "urban_project_works" }],
+          keyName: "urbanProjectInstallation",
+          total: -200000,
+          details: [
+            {
+              total: -200000,
+              keyName: "urbanProjectInstallation.development_works",
+              name: "development_works",
+            },
+          ],
         }),
       );
     });
@@ -147,13 +174,29 @@ describe("projectImpactsEconomicBalance selectors", () => {
 
       expect(economicBalance.economicBalance).toContainEqual(
         expect.objectContaining({
-          name: "urban_project_buildings_construction_and_rehabilitation",
-          value: -365000,
+          keyName: "projectBuildingsInstallation",
+          total: -365000,
           details: [
-            { value: -30000, name: "technical_studies_and_fees" },
-            { value: -250000, name: "buildings_construction_works" },
-            { value: -80000, name: "buildings_rehabilitation_works" },
-            { value: -5000, name: "other_construction_expenses" },
+            {
+              total: -30000,
+              name: "technical_studies_and_fees",
+              keyName: "projectBuildingsInstallation.technical_studies_and_fees",
+            },
+            {
+              total: -250000,
+              name: "buildings_construction_works",
+              keyName: "projectBuildingsInstallation.buildings_construction_works",
+            },
+            {
+              total: -80000,
+              name: "buildings_rehabilitation_works",
+              keyName: "projectBuildingsInstallation.buildings_rehabilitation_works",
+            },
+            {
+              total: -5000,
+              name: "other_construction_expenses",
+              keyName: "projectBuildingsInstallation.other_construction_expenses",
+            },
           ],
         }),
       );

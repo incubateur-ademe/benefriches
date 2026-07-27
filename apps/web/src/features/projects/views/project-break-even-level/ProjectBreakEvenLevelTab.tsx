@@ -24,10 +24,11 @@ export default function ProjectBreakEvenLevelTab({
   impacts,
   contextData,
   indirectEconomicImpactsByBearer,
+  projectEconomicBalanceByCategory,
   onEvaluationPeriodChange,
 }: Props) {
   const { evaluationPeriod = 50 } = useAppSelector(selectImpactsPageViewData);
-  const { projectionYears, projectEconomicBalance, aggregatedReconversionImpacts } = impacts;
+  const { projectionYears, aggregatedReconversionImpacts } = impacts;
   const { breakEvenYear, cumulativeBalanceByYear, indirectEconomicImpacts } =
     aggregatedReconversionImpacts;
 
@@ -72,14 +73,14 @@ export default function ProjectBreakEvenLevelTab({
       </div>
 
       <ProjectBreakEvenLevelSection
-        title={`Bilan de l'opération ${projectEconomicBalance.total > 0 ? "positif" : "négatif"}`}
+        title={`Bilan de l'opération ${projectEconomicBalanceByCategory.total > 0 ? "positif" : "négatif"}`}
         subtitle="Pour l'aménageur."
-        total={projectEconomicBalance.total}
+        total={projectEconomicBalanceByCategory.total}
         chart={
           <>
             <EconomicBalanceChart
               dialogId="fr-modal-impacts-break-even-level-tab-economicBalance--Chart"
-              projectEconomicBalance={projectEconomicBalance}
+              projectEconomicBalanceByCategory={projectEconomicBalanceByCategory}
             />
             <ImpactModalDescription
               dialogId={`fr-modal-impacts-break-even-level-tab-economicBalance--Chart`}

@@ -10,7 +10,7 @@ import {
 } from "../../../core/groupIndirectImpactsByBearer";
 import { ProjectDevelopmentPlanType } from "../../../core/projects.types";
 import { ProjectImpactsState } from "../projectImpacts.reducer";
-import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
+import { selectImpactsCroppedByEvaluationPeriod } from "./projectImpacts.selectors";
 import { selectDisplayOnboarding } from "./projectUrbanSprawlComparisonOnboardingSkip.selector";
 
 const selectSelf = (state: RootState) => state.projectImpacts;

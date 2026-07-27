@@ -1,5 +1,4 @@
 import { GetReconversionProjectImpactsResultDto } from "../../api-dtos";
-import { RecurringExpensePurpose } from "../../reconversion-projects";
 import { roundToInteger, sumListWithKey } from "../../services";
 import {
   AvoidedFricheCostsIndirectEconomicImpactItemView,
@@ -15,10 +14,6 @@ import {
   TaxesIncomeImpact,
 } from "./socioEconomic.types";
 import { EconomicBalanceImpactResult, ReconversionProjectImpacts } from "./types";
-
-type ProjectOperatingEconomicBalanceItemWithDetails<
-  D extends ProjectOperatingEconomicBalanceItem["details"],
-> = Omit<ProjectOperatingEconomicBalanceItem, "details"> & { details: D };
 
 export const formatEconomicBalanceImpact = (
   projectEconomicBalance: GetReconversionProjectImpactsResultDto["impacts"]["projectEconomicBalance"],
@@ -99,24 +94,26 @@ export const formatEconomicBalanceImpact = (
 
   const sitePurchaseTotal = sitePurchase ? sitePurchase * -1 : undefined;
 
-  const operationEconomicBalance = projectEconomicBalance.details.filter(
-    (item): item is ProjectOperatingEconomicBalanceItem =>
-      item.name === "projectOperatingEconomicBalance",
+  const projectOperatingExpenses = projectEconomicBalance.details.filter(
+    (
+      item,
+    ): item is Extract<ProjectOperatingEconomicBalanceItem, { name: "projectOperatingExpenses" }> =>
+      item.name === "projectOperatingExpenses",
   );
-  if (operationEconomicBalance.length > 0) {
-    const costs = operationEconomicBalance.filter(
-      (item): item is ProjectOperatingEconomicBalanceItemWithDetails<RecurringExpensePurpose> =>
-        item.total < 0,
+  const projectOperatingRevenues = projectEconomicBalance.details.filter(
+    (
+      item,
+    ): item is Extract<ProjectOperatingEconomicBalanceItem, { name: "projectOperatingRevenues" }> =>
+      item.name === "projectOperatingRevenues",
+  );
+  if (projectOperatingExpenses.length > 0 || projectOperatingRevenues.length > 0) {
+    const projectOperatingExpensesTotal =
+      projectOperatingExpenses.length > 0
+        ? roundToInteger(sumListWithKey(projectOperatingExpenses, "total")) * -1
+        : 0;
+    const projectOperatingRevenuesTotal = roundToInteger(
+      sumListWithKey(projectOperatingRevenues, "total"),
     );
-    const revenues = operationEconomicBalance.filter(
-      (
-        item,
-      ): item is ProjectOperatingEconomicBalanceItemWithDetails<"other" | "operations" | "rent"> =>
-        item.total > 0,
-    );
-    const operationCostsTotal =
-      costs.length > 0 ? roundToInteger(sumListWithKey(costs, "total")) * -1 : 0;
-    const operationsRevenuesTotal = roundToInteger(sumListWithKey(revenues, "total"));
 
     return {
       total: roundToInteger(projectEconomicBalance.total),
@@ -125,12 +122,12 @@ export const formatEconomicBalanceImpact = (
         total:
           siteReinstatementTotal +
           developmentPlanInstallationTotal +
-          operationCostsTotal +
+          projectOperatingExpensesTotal +
           buildingsConstructionAndRehabilitationTotal +
           (sitePurchaseTotal ?? 0),
         operationsCosts: {
-          total: operationCostsTotal,
-          costs: costs.map(({ details, total }) => ({
+          total: projectOperatingExpensesTotal,
+          costs: projectOperatingExpenses.map(({ details, total }) => ({
             purpose: details,
             amount: roundToInteger(total * -1),
           })),
@@ -162,7 +159,7 @@ export const formatEconomicBalanceImpact = (
         total:
           (siteResale ?? 0) +
           (buildingsResale ?? 0) +
-          operationsRevenuesTotal +
+          projectOperatingRevenuesTotal +
           financialAssistanceTotal,
         siteResale: projectEconomicBalance.details.find(({ name }) => name === "siteResaleRevenue")
           ?.total,
@@ -170,8 +167,8 @@ export const formatEconomicBalanceImpact = (
           ({ name }) => name === "buildingsResaleRevenue",
         )?.total,
         operationsRevenues: {
-          total: roundToInteger(sumListWithKey(revenues, "total")),
-          revenues: revenues.map((item) => ({
+          total: projectOperatingRevenuesTotal,
+          revenues: projectOperatingRevenues.map((item) => ({
             amount: roundToInteger(item.total),
             source: item.details,
           })),

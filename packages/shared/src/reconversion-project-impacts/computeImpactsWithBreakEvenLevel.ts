@@ -105,7 +105,10 @@ export const computeBreakEvenLevel = ({
 }) => {
   const cumulativeEconomicBalanceByYear = projectEconomicBalance.details.reduce<number[]>(
     (total, impact) => {
-      if (impact.name === "projectOperatingEconomicBalance") {
+      if (
+        impact.name === "projectOperatingRevenues" ||
+        impact.name === "projectOperatingExpenses"
+      ) {
         impact.cumulativeByYear.forEach((value, index) => {
           total[index] = (total[index] ?? 0) + value;
         });

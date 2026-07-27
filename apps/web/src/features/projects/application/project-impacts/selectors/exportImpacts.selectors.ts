@@ -4,7 +4,7 @@ import { RootState } from "@/app/store/store";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { SiteFeatures } from "@/features/sites/core/site.types";
 
-import { EconomicBalance } from "../../../core/projectImpactsEconomicBalance";
+import { EconomicBalanceByCategory } from "../../../core/projectImpactsEconomicBalance";
 import { EnvironmentalImpact } from "../../../core/projectImpactsEnvironmental";
 import { SocialImpact } from "../../../core/projectImpactsSocial";
 import { ProjectFeatures } from "../../../core/projects.types";
@@ -23,7 +23,7 @@ type ExportImpactsView = {
   siteFeatures: SiteFeatures | undefined;
   evaluationPeriodInYears: number | undefined;
   impacts: {
-    economicBalance: EconomicBalance;
+    economicBalance: EconomicBalanceByCategory;
     environment: EnvironmentalImpact[];
     socioEconomic: SocioEconomicImpactsByBearerListView;
     social: SocialImpact[];

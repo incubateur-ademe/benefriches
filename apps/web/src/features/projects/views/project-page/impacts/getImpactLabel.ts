@@ -1,16 +1,4 @@
-import {
-  BuildingsConstructionExpensePurpose,
-  FinancialAssistanceRevenue,
-  RecurringExpense,
-  RecurringRevenue,
-  ReinstatementExpense,
-} from "shared";
-
-import {
-  DevelopmentPlanInstallationExpenseName,
-  EconomicBalanceMainName,
-  EconomicBalanceName,
-} from "@/features/projects/core/projectImpactsEconomicBalance";
+import { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
 import {
   CO2BenefitDetails,
   EnvironmentalImpactDetailsName,
@@ -22,7 +10,7 @@ import {
   SocioEconomicDetailsName,
   SocioEconomicMainImpactName,
 } from "@/features/projects/core/projectImpactsSocioEconomic";
-import { getLabelForBuildingsConstructionExpenseFromApiPurpose } from "@/shared/core/urbanProject";
+import { getLabelForBuildingsConstructionExpense } from "@/shared/core/urbanProject";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
   switch (name) {
@@ -234,141 +222,95 @@ export const getSocioEconomicImpactLabel = (
   }
 };
 
-export const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName): string => {
+export const getEconomicBalanceImpactLabel = (name: EconomicBalanceImpactKeyName): string => {
   switch (name) {
-    case "site_purchase":
-      return "🏠 Acquisition du site";
-    case "site_resale":
-      return "🚪 Cession du site";
-    case "site_reinstatement":
+    case "siteReinstatement":
       return "🚧 Remise en état de la friche";
-    case "financial_assistance":
-      return "🏦 Aides financières";
-    case "development_plan_installation":
-      return "🏗️️ Aménagement du projet";
-    case "photovoltaic_development_plan_installation":
-      return "⚡️ Installation des panneaux photovoltaïques";
-    case "urban_project_development_plan_installation":
-      return "🏘️️ Aménagement du site";
-    case "urban_project_buildings_construction_and_rehabilitation":
-      return "🏗️ Construction et réhabilitation des bâtiments";
-    case "operations_costs":
-      return "💸️ Charges d'exploitation";
-    case "operations_revenues":
-      return "💰 Recettes d'exploitation";
-    case "buildings_resale":
-      return "🏢 Cession des bâtiments";
-  }
-};
-
-export const getEconomicBalanceDetailsImpactLabel = (
-  mainCategory: EconomicBalanceMainName,
-  name: EconomicBalanceName,
-): string => {
-  switch (mainCategory) {
-    case "site_reinstatement":
-      return getEconomicBalanceReinstatementExpensePurposeLabel(
-        name as ReinstatementExpense["purpose"],
-      );
-    case "operations_costs":
-      return getEconomicBalanceYearlyExpensePurposeLabel(name as RecurringExpense["purpose"]);
-    case "operations_revenues":
-      return getEconomicBalanceYearlyRevenueSourceLabel(name as RecurringRevenue["source"]);
-    case "financial_assistance":
-      return getEconomicBalanceFinancialAssistanceLabel(
-        name as FinancialAssistanceRevenue["source"],
-      );
-    case "photovoltaic_development_plan_installation":
-    case "urban_project_development_plan_installation":
-    case "development_plan_installation":
-      return getEconomicBalanceInstallationLabel(name as DevelopmentPlanInstallationExpenseName);
-    case "urban_project_buildings_construction_and_rehabilitation":
-      return getLabelForBuildingsConstructionExpenseFromApiPurpose(
-        name as BuildingsConstructionExpensePurpose,
-      );
-    default:
-      return "Autre";
-  }
-};
-
-const getEconomicBalanceYearlyExpensePurposeLabel = (purpose: RecurringExpense["purpose"]) => {
-  switch (purpose) {
-    case "rent":
-      return "🔑 Loyer";
-    case "maintenance":
-      return "⚙️ Entretien et maintenance";
-    case "taxes":
-      return "🏛️ Taxes et impôts";
-    case "other":
-      return "💸 Autres charges d’exploitation";
-  }
-};
-
-const getEconomicBalanceYearlyRevenueSourceLabel = (source: RecurringRevenue["source"]): string => {
-  switch (source) {
-    case "operations":
-      return "💰 Recettes principales";
-    case "other":
-      return "💶 Recettes secondaires";
-    case "rent":
-      return "🔑 Revenu locatif";
-  }
-};
-
-const getEconomicBalanceReinstatementExpensePurposeLabel = (
-  purpose: ReinstatementExpense["purpose"],
-): string => {
-  switch (purpose) {
-    case "asbestos_removal":
+    case "siteReinstatement.asbestos_removal":
       return "☣️ Désamiantage";
-    case "sustainable_soils_reinstatement":
-      return "🌱 Restauration écologique";
-    case "deimpermeabilization":
+    case "siteReinstatement.deimpermeabilization":
       return "🌧️ Désimperméabilisation";
-    case "remediation":
-      return "✨ Dépollution des sols";
-    case "demolition":
+    case "siteReinstatement.demolition":
       return "🧱 Déconstruction";
-    case "waste_collection":
-      return "♻️️ Évacuation et traitement des déchets";
-    default:
+    case "siteReinstatement.other_reinstatement":
       return "🏗️ Autres dépenses de remise en état";
-  }
-};
+    case "siteReinstatement.remediation":
+      return "✨ Dépollution des sols";
+    case "siteReinstatement.sustainable_soils_reinstatement":
+      return "🌱 Restauration écologique";
+    case "siteReinstatement.waste_collection":
+      return "♻️️ Évacuation et traitement des déchets";
 
-const getEconomicBalanceFinancialAssistanceLabel = (
-  revenueSource: FinancialAssistanceRevenue["source"],
-): string => {
-  switch (revenueSource) {
-    case "local_or_regional_authority_participation":
+    case "financialAssistanceRevenues":
+      return "🏦 Aides financières";
+
+    case "financialAssistanceRevenues.local_or_regional_authority_participation":
       return "🏛️ Participation des collectivités";
-    case "public_subsidies":
+    case "financialAssistanceRevenues.public_subsidies":
       return "🏫 Subventions publiques";
-    default:
+    case "financialAssistanceRevenues.other":
       return "🏦 Autres ressources";
-  }
-};
 
-const getEconomicBalanceInstallationLabel = (
-  purpose: DevelopmentPlanInstallationExpenseName,
-): string => {
-  switch (purpose) {
-    case "urban_project_technical_studies":
-    case "photovoltaic_technical_studies":
-    case "technical_studies":
+    case "photovoltaicProjectInstallation":
+      return "⚡️ Installation des panneaux photovoltaïques";
+
+    case "urbanProjectInstallation.technical_studies":
+    case "photovoltaicProjectInstallation.technical_studies":
       return "📋 Études et honoraires techniques";
-    case "photovoltaic_works":
+
+    case "photovoltaicProjectInstallation.installation_works":
+    case "photovoltaicProjectInstallation.development_works":
       return "🛠️ Travaux d'installation des panneaux";
-    case "photovoltaic_other":
+    case "photovoltaicProjectInstallation.other":
       return "⚡️ Autres frais d'installation des panneaux";
-    case "urban_project_works":
+
+    case "urbanProjectInstallation":
+      return "🏘️️ Aménagement du site";
+    case "urbanProjectInstallation.development_works":
+    case "urbanProjectInstallation.installation_works":
       return "🏗️ Travaux d'aménagement";
-    case "urban_project_other":
+    case "urbanProjectInstallation.other":
       return "🏘️ Autres dépenses d'aménagement";
-    case "installation_works":
-    case "development_works":
-      return "🛠️ Travaux d'installation";
-    case "other":
-      return "🏗️ Autres frais d'installation";
+
+    case "projectBuildingsInstallation":
+      return "🏗️ Construction et réhabilitation des bâtiments";
+    case "projectBuildingsInstallation.buildings_construction_works":
+      return getLabelForBuildingsConstructionExpense("buildingsConstructionWorks");
+    case "projectBuildingsInstallation.buildings_rehabilitation_works":
+      return getLabelForBuildingsConstructionExpense("buildingsRehabilitationWorks");
+    case "projectBuildingsInstallation.other_construction_expenses":
+      return getLabelForBuildingsConstructionExpense("otherConstructionExpenses");
+
+    case "projectBuildingsInstallation.technical_studies_and_fees":
+      return getLabelForBuildingsConstructionExpense("technicalStudiesAndFees");
+
+    case "projectOperatingExpenses":
+      return "💸️ Charges d'exploitation";
+    case "projectOperatingExpenses.rent":
+      return "🔑 Loyer";
+    case "projectOperatingExpenses.maintenance":
+      return "⚙️ Entretien et maintenance";
+    case "projectOperatingExpenses.taxes":
+      return "🏛️ Taxes et impôts";
+    case "projectOperatingExpenses.other":
+      return "💸 Autres charges d’exploitation";
+
+    case "projectOperatingRevenues":
+      return "💰 Recettes d'exploitation";
+    case "projectOperatingRevenues.operations":
+      return "💰 Recettes principales";
+    case "projectOperatingRevenues.other":
+      return "💶 Recettes secondaires";
+    case "projectOperatingRevenues.rent":
+      return "🔑 Revenu locatif";
+
+    case "realEstateAcquisition":
+      return "🏠 Transaction foncière";
+    case "realEstateAcquisition.buildingsResaleRevenue":
+      return "🏢 Cession des bâtiments";
+    case "realEstateAcquisition.sitePurchase":
+      return "🏠 Acquisition du site";
+    case "realEstateAcquisition.siteResaleRevenue":
+      return "🚪 Cession du site";
   }
 };

@@ -1,24 +1,21 @@
 import React from "react";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import { EconomicBalance } from "@/features/projects/core/projectImpactsEconomicBalance";
+import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 
-import {
-  getEconomicBalanceDetailsImpactLabel,
-  getEconomicBalanceImpactLabel,
-} from "../../getImpactLabel";
+import { getEconomicBalanceImpactLabel } from "../../getImpactLabel";
 import ImpactModalDescription from "../../impact-description-modals/ImpactModalDescription";
 import ImpactActorsItem from "../ImpactActorsItem";
 import ImpactSection from "../ImpactSection";
 import { getDialogControlButtonProps } from "../dialogControlBtnProps";
 
 type Props = {
-  impact: EconomicBalance;
+  impact: EconomicBalanceByCategory;
   modalData: ModalDataProps;
 };
 
 const EconomicBalanceListSection = ({ impact, modalData }: Props) => {
-  const { total, economicBalance, bearer } = impact;
+  const { total, economicBalance, bearerName } = impact;
 
   return (
     <>
@@ -34,43 +31,43 @@ const EconomicBalanceListSection = ({ impact, modalData }: Props) => {
         initialShowSectionContent={false}
         dialogId={`fr-modal-impacts-economic_balance-List`}
       >
-        {economicBalance.map(({ name, value, details = [] }) => (
-          <React.Fragment key={name}>
+        {economicBalance?.map(({ keyName, details, total }) => (
+          <React.Fragment key={keyName}>
             <ImpactModalDescription
-              dialogId={`fr-modal-impacts-economic_balance-${name}-List`}
-              initialState={{ sectionName: "economic_balance", impactName: name }}
+              dialogId={`fr-modal-impacts-economic_balance-${keyName}-List`}
+              initialState={{ sectionName: "economic_balance", impactName: keyName }}
               {...modalData}
             />
 
             <ImpactActorsItem
-              key={name}
-              label={getEconomicBalanceImpactLabel(name)}
+              key={keyName}
+              label={getEconomicBalanceImpactLabel(keyName)}
               labelProps={getDialogControlButtonProps(
-                `fr-modal-impacts-economic_balance-${name}-List`,
+                `fr-modal-impacts-economic_balance-${keyName}-List`,
               )}
               actors={[
                 {
-                  label: bearer ?? "Aménageur",
-                  value,
-                  details: details.map(({ name: detailsName, value: detailsValue }) => ({
-                    label: getEconomicBalanceDetailsImpactLabel(name, detailsName),
-                    value: detailsValue,
+                  label: bearerName ?? "Aménageur",
+                  value: total,
+                  details: details.map((d) => ({
+                    label: getEconomicBalanceImpactLabel(d.keyName),
+                    value: d.total,
                     labelProps: getDialogControlButtonProps(
-                      `fr-modal-impacts-economic_balance-${name}-${detailsName}-List`,
+                      `fr-modal-impacts-economic_balance-${keyName}-${d.name}-List`,
                     ),
                   })),
                 },
               ]}
               type="monetary"
             />
-            {details.map(({ name: detailsName }) => (
+            {details.map(({ name: detailsName, keyName: detailsKeyName }) => (
               <ImpactModalDescription
                 key={detailsName}
-                dialogId={`fr-modal-impacts-economic_balance-${name}-${detailsName}-List`}
+                dialogId={`fr-modal-impacts-economic_balance-${keyName}-${detailsName}-List`}
                 initialState={{
                   sectionName: "economic_balance",
-                  impactName: name,
-                  impactDetailsName: detailsName,
+                  impactName: keyName,
+                  impactDetailsName: detailsKeyName,
                 }}
                 {...modalData}
               />

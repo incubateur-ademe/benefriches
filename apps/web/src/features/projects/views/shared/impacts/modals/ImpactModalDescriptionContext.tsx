@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
 import {
-  EconomicBalanceDetailsName,
-  EconomicBalanceMainName,
+  EconomicBalanceDetailsImpactKeyName,
+  EconomicBalanceMainImpactKeyName,
 } from "@/features/projects/core/projectImpactsEconomicBalance";
 import {
   EnvironmentalImpactDetailsName,
@@ -31,8 +31,8 @@ export type EnvironmentSubSectionName = "co2" | "soils";
 type IsOpenedState =
   | {
       sectionName: "economic_balance";
-      impactName?: EconomicBalanceMainName;
-      impactDetailsName?: EconomicBalanceDetailsName;
+      impactName?: EconomicBalanceMainImpactKeyName;
+      impactDetailsName?: EconomicBalanceDetailsImpactKeyName;
     }
   | {
       sectionName: "socio_economic";

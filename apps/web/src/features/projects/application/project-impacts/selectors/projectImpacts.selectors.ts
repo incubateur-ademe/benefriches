@@ -2,9 +2,10 @@ import { createSelector } from "@reduxjs/toolkit";
 import { GetReconversionProjectImpactsResultDto, ReconversionStakeholders } from "shared";
 
 import type { RootState } from "@/app/store/store";
+import { cropImpactsByEvaluationPeriod } from "@/features/projects/core/cropImpactsByEvaluationPeriod";
 import {
-  getEconomicBalanceProjectImpacts,
-  type EconomicBalance,
+  buildEconomicBalanceListView,
+  type EconomicBalanceByCategory,
 } from "@/features/projects/core/projectImpactsEconomicBalance";
 import {
   getEnvironmentalProjectImpacts,
@@ -29,7 +30,6 @@ import {
   type ProjectImpactsState,
   type ViewMode,
 } from "../projectImpacts.reducer";
-import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
 
 export type ModalDataProps = {
   contextData: GetReconversionProjectImpactsResultDto["contextData"];
@@ -38,7 +38,7 @@ export type ModalDataProps = {
 
 // List View
 type ImpactsListViewData = {
-  economicBalance: EconomicBalance;
+  economicBalance: EconomicBalanceByCategory;
   socioEconomicImpacts: SocioEconomicImpactsByBearerListView;
   environmentImpacts: EnvironmentalImpact[];
   socialImpacts: SocialImpact[];
@@ -55,6 +55,14 @@ const selectImpactsContextData = createSelector(
 const selectStakeholders = createSelector(
   selectProjectImpactsState,
   (state): ReconversionStakeholders | undefined => state.impacts?.stakeholders,
+);
+
+export const selectImpactsCroppedByEvaluationPeriod = createSelector(
+  [selectProjectImpactsState],
+  (state) =>
+    state.impacts
+      ? cropImpactsByEvaluationPeriod(state.impacts, state.evaluationPeriod ?? 50)
+      : undefined,
 );
 
 export const selectSocialProjectImpacts = createSelector(
@@ -90,7 +98,7 @@ const selectProjectDevelopmentType = createSelector(
 export const selectEconomicBalanceProjectImpacts = createSelector(
   selectProjectDevelopmentType,
   selectImpactsCroppedByEvaluationPeriod,
-  getEconomicBalanceProjectImpacts,
+  buildEconomicBalanceListView,
 );
 
 export const selectKeyImpactIndicatorsList = createSelector(

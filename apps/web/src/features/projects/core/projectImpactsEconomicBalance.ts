@@ -1,233 +1,145 @@
-import {
-  BuildingsConstructionExpensePurpose,
-  DevelopmentPlanInstallationExpenses,
-  FinancialAssistanceRevenue,
-  ProjectOperatingEconomicBalanceItem,
-  RecurringExpense,
-  RecurringRevenue,
-  ReinstatementExpensePurpose,
-  sumListWithKey,
-} from "shared";
+import { ProjectEconomicBalance, sumListWithKey } from "shared";
+
+import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 
 import { ProjectImpactsState } from "../application/project-impacts/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType } from "../core/projects.types";
 
-export type EconomicBalanceName = EconomicBalanceMainName | EconomicBalanceDetailsName;
+type EconomicBalanceByListViewCategory = ReturnType<typeof groupEconomicBalanceByListViewCategory>;
 
-export type EconomicBalanceMainName =
-  | "site_reinstatement"
-  | "site_purchase"
-  | "operations_costs"
-  | "operations_revenues"
-  | "financial_assistance"
-  | "development_plan_installation"
-  | "photovoltaic_development_plan_installation"
-  | "urban_project_development_plan_installation"
-  | "urban_project_buildings_construction_and_rehabilitation"
-  | "site_resale"
-  | "buildings_resale";
-
-export type DevelopmentPlanInstallationExpenseName =
-  | "photovoltaic_technical_studies"
-  | "photovoltaic_works"
-  | "photovoltaic_other"
-  | "urban_project_technical_studies"
-  | "urban_project_works"
-  | "urban_project_other"
-  | DevelopmentPlanInstallationExpenses["purpose"];
-
-export type EconomicBalanceDetailsName =
-  | RecurringExpense["purpose"]
-  | RecurringRevenue["source"]
-  | ReinstatementExpensePurpose
-  | FinancialAssistanceRevenue["source"]
-  | DevelopmentPlanInstallationExpenseName
-  | BuildingsConstructionExpensePurpose;
-
-export type EconomicBalance = {
+export type EconomicBalanceByCategory = {
   total: number;
-  bearer?: string;
-  economicBalance: {
-    name: EconomicBalanceMainName;
-    value: number;
-    details?: {
-      name: EconomicBalanceDetailsName;
-      value: number;
-    }[];
+  bearerName?: string;
+  economicBalance: EconomicBalanceByListViewCategory;
+};
+
+export type EconomicBalanceMainImpactKeyName = EconomicBalanceByListViewCategory[number]["keyName"];
+export type EconomicBalanceDetailsImpactKeyName =
+  EconomicBalanceByListViewCategory[number]["details"][number]["keyName"];
+
+export type EconomicBalanceImpactKeyName =
+  | EconomicBalanceMainImpactKeyName
+  | EconomicBalanceDetailsImpactKeyName;
+
+function extractDetails<
+  T extends ProjectEconomicBalance["details"][number],
+  G extends Exclude<
+    T["name"],
+    "projectInstallation" | "sitePurchase" | "siteResaleRevenue" | "buildingsResaleRevenue"
+  >,
+>(
+  items: readonly T[],
+  groupName: G,
+): {
+  total: number;
+  keyName: G;
+  details: {
+    name: Extract<T, { name: G }>["details"];
+    total: number;
+    keyName: `${G}.${Extract<T, { name: G }>["details"]}`;
   }[];
 };
 
-const getInstallationCostNamePrefix = (projectType?: ProjectDevelopmentPlanType) => {
-  switch (projectType) {
-    case "URBAN_PROJECT":
-      return "urban_project";
-    case "PHOTOVOLTAIC_POWER_PLANT":
-      return "photovoltaic";
-    default:
-      return undefined;
-  }
+function extractDetails<
+  T extends ProjectEconomicBalance["details"][number],
+  G extends "projectInstallation",
+>(
+  items: readonly T[],
+  groupName: G,
+  keyGroupName: "photovoltaicProjectInstallation" | "urbanProjectInstallation",
+): {
+  total: number;
+  keyName: typeof keyGroupName;
+  details: {
+    name: Extract<T, { name: G }>["details"];
+    total: number;
+    keyName: `${typeof keyGroupName}.${Extract<T, { name: G }>["details"]}`;
+  }[];
 };
 
-export const getDevelopmentPlanDetailsName = (
-  costName: DevelopmentPlanInstallationExpenses["purpose"],
-  projectType?: ProjectDevelopmentPlanType,
+function extractDetails<
+  T extends ProjectEconomicBalance["details"][number],
+  G extends Exclude<T["name"], "sitePurchase" | "siteResaleRevenue" | "buildingsResaleRevenue">,
+>(
+  items: readonly T[],
+  groupName: G,
+  keyGroupName?: "photovoltaicProjectInstallation" | "urbanProjectInstallation",
+) {
+  const details = filterByName(items, groupName).map((item) => ({
+    name: item.details as Extract<T, { name: G }>["details"],
+    total: item.total,
+    keyName: `${keyGroupName ?? groupName}.${item.details}`,
+  }));
+
+  return {
+    total: sumListWithKey(details, "total"),
+    details,
+    keyName: keyGroupName ?? groupName,
+  };
+}
+
+function groupImpacts<T extends ProjectEconomicBalance["details"][number], G extends string>(
+  items: readonly T[],
+  groupName: G,
+  impactList: Extract<T["name"], "sitePurchase" | "siteResaleRevenue" | "buildingsResaleRevenue">[],
+) {
+  const details = filterByName(items, ...impactList).map((item) => ({
+    name: item.name,
+    total: item.total,
+    keyName: `${groupName}.${item.name}` as const,
+  }));
+
+  return {
+    total: sumListWithKey(details, "total"),
+    details,
+    keyName: groupName,
+  };
+}
+
+export const groupEconomicBalanceByListViewCategory = (
+  projectType: ProjectDevelopmentPlanType,
+  projectEconomicBalance: ProjectEconomicBalance["details"],
 ) => {
-  const prefix = getInstallationCostNamePrefix(projectType);
-  if (!prefix) {
-    return costName;
-  }
-  switch (costName) {
-    case "technical_studies":
-      return `${prefix}_technical_studies`;
-    case "development_works":
-    case "installation_works":
-      return `${prefix}_works`;
-    case "other":
-      return `${prefix}_other`;
-
-    default:
-      return costName;
-  }
+  return [
+    groupImpacts(projectEconomicBalance, "realEstateAcquisition", [
+      "sitePurchase",
+      "siteResaleRevenue",
+      "buildingsResaleRevenue",
+    ]),
+    extractDetails(projectEconomicBalance, "siteReinstatement"),
+    extractDetails(
+      projectEconomicBalance,
+      "projectInstallation",
+      projectType === "PHOTOVOLTAIC_POWER_PLANT"
+        ? "photovoltaicProjectInstallation"
+        : "urbanProjectInstallation",
+    ),
+    extractDetails(projectEconomicBalance, "projectBuildingsInstallation"),
+    extractDetails(projectEconomicBalance, "financialAssistanceRevenues"),
+    extractDetails(projectEconomicBalance, "projectOperatingExpenses"),
+    extractDetails(projectEconomicBalance, "projectOperatingRevenues"),
+  ].filter((item) => item.details.length !== 0);
 };
 
-export const getEconomicBalanceProjectImpacts = (
+export const buildEconomicBalanceListView = (
   projectType: ProjectDevelopmentPlanType,
   impactsData?: ProjectImpactsState["impacts"],
-): EconomicBalance => {
-  if (!impactsData)
+): EconomicBalanceByCategory => {
+  if (!impactsData) {
     return {
       total: 0,
       economicBalance: [],
     };
+  }
 
-  const economicBalance = impactsData.projectEconomicBalance;
-  const impacts: EconomicBalance["economicBalance"] = [];
-
-  const siteReinstatement = economicBalance.details.filter(
-    (item) => item.name === "siteReinstatement",
+  const economicBalance = groupEconomicBalanceByListViewCategory(
+    projectType,
+    impactsData.projectEconomicBalance.details,
   );
-
-  if (siteReinstatement.length > 0) {
-    impacts.push({
-      name: "site_reinstatement",
-      value: sumListWithKey(siteReinstatement, "total"),
-      details: siteReinstatement.map(({ details, total }) => ({
-        value: total,
-        name: details,
-      })),
-    });
-  }
-
-  const sitePurchase = economicBalance.details.find((item) => item.name === "sitePurchase")?.total;
-
-  if (sitePurchase) {
-    impacts.push({
-      name: "site_purchase",
-      value: sitePurchase,
-    });
-  }
-
-  const developmentPlanInstallation = economicBalance.details.filter(
-    (item) => item.name === "projectInstallation",
-  );
-
-  if (developmentPlanInstallation.length > 0) {
-    const namePrefix = getInstallationCostNamePrefix(projectType);
-    impacts.push({
-      name: namePrefix
-        ? `${namePrefix}_development_plan_installation`
-        : "development_plan_installation",
-      value: sumListWithKey(developmentPlanInstallation, "total"),
-      details: developmentPlanInstallation.map(({ details, total }) => ({
-        value: total,
-        name: getDevelopmentPlanDetailsName(details, projectType) as EconomicBalanceDetailsName,
-      })),
-    });
-  }
-
-  const buildingsConstructionAndRehabilitation = economicBalance.details.filter(
-    (item) => item.name === "projectBuildingsInstallation",
-  );
-
-  if (buildingsConstructionAndRehabilitation.length > 0) {
-    impacts.push({
-      name: "urban_project_buildings_construction_and_rehabilitation",
-      value: sumListWithKey(buildingsConstructionAndRehabilitation, "total"),
-      details: buildingsConstructionAndRehabilitation.map(({ details, total }) => ({
-        value: total,
-        name: details,
-      })),
-    });
-  }
-  const financialAssistance = economicBalance.details.filter(
-    (item) => item.name === "financialAssistanceRevenues",
-  );
-
-  if (financialAssistance.length > 0) {
-    impacts.push({
-      name: "financial_assistance",
-      value: sumListWithKey(financialAssistance, "total"),
-      details: financialAssistance.map(({ details, total }) => ({
-        value: total,
-        name: details,
-      })),
-    });
-  }
-
-  const operationsCosts = economicBalance.details.filter(
-    (item): item is ProjectOperatingEconomicBalanceItem =>
-      item.name === "projectOperatingEconomicBalance" && item.total < 0,
-  );
-
-  if (operationsCosts.length > 0) {
-    impacts.push({
-      name: "operations_costs",
-      value: sumListWithKey(operationsCosts, "total"),
-      details: operationsCosts.map(({ details, total }) => ({
-        value: total,
-        name: details,
-      })),
-    });
-  }
-  const operationsRevenues = economicBalance.details.filter(
-    (item): item is ProjectOperatingEconomicBalanceItem =>
-      item.name === "projectOperatingEconomicBalance" && item.total > 0,
-  );
-
-  if (operationsRevenues.length > 0) {
-    impacts.push({
-      name: "operations_revenues",
-      value: sumListWithKey(operationsRevenues, "total"),
-      details: operationsRevenues.map(({ details, total }) => ({
-        value: total,
-        name: details,
-      })),
-    });
-  }
-  const siteResale = economicBalance.details.find(
-    (item) => item.name === "siteResaleRevenue",
-  )?.total;
-
-  if (siteResale) {
-    impacts.push({
-      name: "site_resale",
-      value: siteResale,
-    });
-  }
-  const buildingsResale = economicBalance.details.find(
-    (item) => item.name === "buildingsResaleRevenue",
-  )?.total;
-
-  if (buildingsResale) {
-    impacts.push({
-      name: "buildings_resale",
-      value: buildingsResale,
-    });
-  }
 
   return {
-    total: economicBalance.total,
-    bearer: impactsData.stakeholders.project.developer.structureName,
-    economicBalance: impacts,
+    total: impactsData.projectEconomicBalance.total,
+    bearerName: impactsData.stakeholders.project.developer.structureName,
+    economicBalance,
   };
 };

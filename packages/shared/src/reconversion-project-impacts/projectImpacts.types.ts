@@ -11,13 +11,21 @@ import { SoilType } from "../soils";
 import { DevelopmentPlanInstallationExpenses } from "./format-impacts/types";
 
 // ECONOMIC BALANCES
-export type ProjectOperatingEconomicBalanceItem = {
-  total: number;
-  detailsByYear: number[];
-  cumulativeByYear: number[];
-  details: RecurringExpense["purpose"] | RecurringRevenue["source"];
-  name: "projectOperatingEconomicBalance";
-};
+export type ProjectOperatingEconomicBalanceItem =
+  | {
+      total: number;
+      detailsByYear: number[];
+      cumulativeByYear: number[];
+      details: RecurringExpense["purpose"];
+      name: "projectOperatingExpenses";
+    }
+  | {
+      total: number;
+      detailsByYear: number[];
+      cumulativeByYear: number[];
+      details: RecurringRevenue["source"];
+      name: "projectOperatingRevenues";
+    };
 
 export type ProjectDevelopmentEconomicBalanceItem =
   | {

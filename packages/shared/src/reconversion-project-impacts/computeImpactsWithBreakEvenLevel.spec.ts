@@ -1019,14 +1019,14 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
               detailsByYear: [-10, -10, -10, -10, -10, -10],
               cumulativeByYear: [-10, -20, -30, -40, -50, -60],
               details: "maintenance",
-              name: "projectOperatingEconomicBalance",
+              name: "projectOperatingExpenses",
             },
             {
               total: 120,
               detailsByYear: [20, 20, 20, 20, 20, 20],
               cumulativeByYear: [20, 40, 60, 80, 100, 120],
               details: "operations",
-              name: "projectOperatingEconomicBalance",
+              name: "projectOperatingRevenues",
             },
             {
               total: -50,
@@ -1084,14 +1084,14 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
             detailsByYear: [-10, -10, -10, -10, -10, -10],
             cumulativeByYear: [-10, -20, -30, -40, -50, -60],
             details: "maintenance",
-            name: "projectOperatingEconomicBalance",
+            name: "projectOperatingExpenses",
           },
           {
             total: 120,
             detailsByYear: [20, 20, 20, 20, 20, 20],
             cumulativeByYear: [20, 40, 60, 80, 100, 120],
             details: "operations",
-            name: "projectOperatingEconomicBalance",
+            name: "projectOperatingRevenues",
           },
         ],
         projectEconomicBalance: {

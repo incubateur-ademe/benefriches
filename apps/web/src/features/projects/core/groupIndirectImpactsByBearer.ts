@@ -50,7 +50,8 @@ export const groupIndirectEconomicImpactsByBearer = <
           ? "localAuthority"
           : "localPeopleOrCompany";
 
-      case "projectOperatingEconomicBalance":
+      case "projectOperatingExpenses":
+      case "projectOperatingRevenues":
         return isLocalAuthority(stakeholders?.project.developer?.structureType)
           ? "localAuthority"
           : "localPeopleOrCompany";
@@ -148,7 +149,8 @@ export const groupIndirectEconomicImpactsByCategory = <
 
       case "previousSiteOperationBenefitLoss":
       case "operatingEconomicBalance":
-      case "projectOperatingEconomicBalance":
+      case "projectOperatingExpenses":
+      case "projectOperatingRevenues":
         return "operatingEconomicBalance";
 
       case "propertyTransferDutiesIncome":

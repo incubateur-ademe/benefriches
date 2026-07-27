@@ -4,10 +4,8 @@ import { sumListWithKey } from "shared";
 import { RootState } from "@/app/store/store";
 
 import { IndirectEconomicImpactsByBearerAndGroupCategory } from "../../../core/groupIndirectImpactsByBearer";
-import {
-  selectImpactsCroppedByEvaluationPeriod,
-  selectIndirectEconomicImpactsByBearerAndCategory,
-} from "./projectBreakEvenLevel.selectors";
+import { selectIndirectEconomicImpactsByBearerAndCategory } from "./projectBreakEvenLevel.selectors";
+import { selectImpactsCroppedByEvaluationPeriod } from "./projectImpacts.selectors";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 

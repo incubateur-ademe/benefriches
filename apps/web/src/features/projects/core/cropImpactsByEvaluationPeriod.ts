@@ -67,7 +67,7 @@ export const cropImpactsByEvaluationPeriod = (
     impacts.aggregatedReconversionImpacts.cumulativeBalanceByYear.slice(0, evaluationPeriodInYears);
 
   const croppedEconomicBalance = impacts.projectEconomicBalance.details.map((item) => {
-    return item.name === "projectOperatingEconomicBalance"
+    return item.name === "projectOperatingExpenses" || item.name === "projectOperatingRevenues"
       ? cropAndSumEconomicImpact(item, evaluationPeriodInYears)
       : item;
   });
@@ -139,7 +139,7 @@ export const cropUrbanSprawlSimulationByEvaluationPeriod = (
 
   const croppedEconomicBalance = urbanSprawlSimulation.projectEconomicBalance.details.map(
     (item) => {
-      return item.name === "projectOperatingEconomicBalance"
+      return item.name === "projectOperatingRevenues" || item.name === "projectOperatingExpenses"
         ? cropAndSumEconomicImpact(item, evaluationPeriodInYears)
         : item;
     },
