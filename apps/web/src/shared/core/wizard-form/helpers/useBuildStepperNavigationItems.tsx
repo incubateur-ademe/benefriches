@@ -1,35 +1,44 @@
 import { useMemo } from "react";
 import { typedObjectEntries } from "shared";
 
-import {
-  ProjectStepGroups,
-  STEP_GROUP_LABELS,
-  STEP_TO_GROUP_MAPPING,
-} from "@/features/create-project/core/urban-project/stepperConfig";
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
-import { StepVariant } from "@/shared/views/layout/WizardFormLayout/FormBaseStepperStep";
+import type { StepVariant } from "@/shared/core/stepVariant.types";
 
-type UseBuildStepperNavigationItemsProps = {
-  projectStepGroups: ProjectStepGroups;
-  currentStep: UrbanProjectCreationStep;
+import { StepGroups, StepToGroupMapping } from "./stepGroups";
+
+type UseBuildStepperNavigationItemsProps<
+  TStepId extends string,
+  TGroupId extends string,
+  TSubGroupId extends string,
+> = {
+  stepGroups: StepGroups<TStepId, TGroupId, TSubGroupId>;
+  currentStep: TStepId;
+  stepToGroupMapping: StepToGroupMapping<TStepId, TGroupId, TSubGroupId>;
+  labels: Record<TGroupId | TSubGroupId, string>;
   disableCurrent?: boolean;
 };
-export const useBuildStepperNavigationItems = ({
-  projectStepGroups,
+
+export const useBuildStepperNavigationItems = <
+  TStepId extends string,
+  TGroupId extends string,
+  TSubGroupId extends string,
+>({
+  stepGroups,
   currentStep,
+  stepToGroupMapping,
+  labels,
   disableCurrent,
-}: UseBuildStepperNavigationItemsProps) => {
+}: UseBuildStepperNavigationItemsProps<TStepId, TGroupId, TSubGroupId>) => {
   return useMemo(() => {
     const { groupId: currentGroupId, subGroupId: currentSubGroupId } =
-      STEP_TO_GROUP_MAPPING[currentStep];
+      stepToGroupMapping[currentStep];
 
-    return typedObjectEntries(projectStepGroups).map(([groupId, subGroups]) => {
+    return typedObjectEntries(stepGroups).map(([groupId, subGroups]) => {
       const isGroupCompleted = subGroups.every(({ isStepCompleted }) => isStepCompleted);
       const isCurrentGroup = disableCurrent === true ? false : currentGroupId === groupId;
 
       return {
         groupId,
-        title: STEP_GROUP_LABELS[groupId],
+        title: labels[groupId],
         variant: {
           activity: isCurrentGroup
             ? currentSubGroupId !== undefined
@@ -52,10 +61,10 @@ export const useBuildStepperNavigationItems = ({
                 validation: isStepCompleted ? "completed" : "empty",
               } as StepVariant,
               subGroupId,
-              title: STEP_GROUP_LABELS[subGroupId],
+              title: labels[subGroupId],
             };
           }),
       };
     }, []);
-  }, [projectStepGroups, currentStep, disableCurrent]);
+  }, [stepGroups, currentStep, stepToGroupMapping, labels, disableCurrent]);
 };

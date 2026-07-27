@@ -53,6 +53,7 @@ import {
   isSummaryStep,
   UrbanProjectCreationStep,
 } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import { buildStepGroupsFromSequence } from "@/shared/core/wizard-form/helpers/stepGroups";
 
 export type {
   StepGroupId,
@@ -199,26 +200,12 @@ export type ProjectStepGroups = Record<
     isStepCompleted: boolean;
   }[]
 >;
-export const buildStepGroupsFromSequence = (
+
+export const buildUrbanProjectStepGroupsFromSequence = (
   stepSequence: { stepId: UrbanProjectCreationStep; isCompleted: boolean }[],
-) => {
-  const stepGroups = {} as ProjectStepGroups;
-
-  for (const { stepId, isCompleted: isStepCompleted } of stepSequence.filter(
-    ({ stepId }) => isAnswersStep(stepId) || isSummaryStep(stepId),
-  )) {
-    const { groupId, subGroupId } = STEP_TO_GROUP_MAPPING[stepId];
-
-    if (!stepGroups[groupId]) {
-      stepGroups[groupId] = [];
-    }
-
-    stepGroups[groupId].push({
-      stepId: stepId,
-      subGroupId: subGroupId,
-      isStepCompleted,
-    });
-  }
-
-  return stepGroups;
-};
+): ProjectStepGroups =>
+  buildStepGroupsFromSequence(
+    stepSequence,
+    STEP_TO_GROUP_MAPPING,
+    (stepId) => isAnswersStep(stepId) || isSummaryStep(stepId),
+  );

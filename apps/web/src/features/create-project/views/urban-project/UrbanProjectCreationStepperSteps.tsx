@@ -1,8 +1,11 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import { STEP_TO_GROUP_MAPPING } from "@/features/create-project/core/urban-project/stepperConfig";
+import {
+  STEP_GROUP_LABELS,
+  STEP_TO_GROUP_MAPPING,
+} from "@/features/create-project/core/urban-project/stepperConfig";
 import StepperLiItem from "@/features/create-project/views/project-form/stepper/StepperItem";
-import { useBuildStepperNavigationItems } from "@/features/create-project/views/project-form/stepper/useBuildStepperNavigationItems";
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
+import { useBuildStepperNavigationItems } from "@/shared/core/wizard-form/helpers/useBuildStepperNavigationItems";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
 
 import { selectUrbanProjectCreationStepperDataView } from "../../core/urban-project/urbanProject.selectors";
@@ -20,8 +23,10 @@ function UrbanProjectCreationStepperSteps() {
   );
 
   const stepGroupsList = useBuildStepperNavigationItems({
-    projectStepGroups: stepsGroupedBySections,
+    stepGroups: stepsGroupedBySections,
     currentStep,
+    stepToGroupMapping: STEP_TO_GROUP_MAPPING,
+    labels: STEP_GROUP_LABELS,
     disableCurrent: currentProjectFlow !== "URBAN_PROJECT",
   });
 

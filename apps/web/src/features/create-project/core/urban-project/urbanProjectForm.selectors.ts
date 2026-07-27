@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/store/store";
 import { createWizardFormSelectors } from "@/features/create-project/core/project-form/projectForm.selectors";
-import { buildStepGroupsFromSequence } from "@/features/create-project/core/urban-project/stepperConfig";
+import { buildUrbanProjectStepGroupsFromSequence } from "@/features/create-project/core/urban-project/stepperConfig";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import { getProjectSummary } from "./helpers/projectSummary";
@@ -124,7 +124,7 @@ export const createUrbanProjectFormSelectors = (
   const selectStepsGroupedBySections = createSelector(
     [selectProjectStepsSequenceWithStatus],
     (selectProjectStepsSequenceWithStatus) =>
-      buildStepGroupsFromSequence(selectProjectStepsSequenceWithStatus),
+      buildUrbanProjectStepGroupsFromSequence(selectProjectStepsSequenceWithStatus),
   );
 
   const selectIsFormStatusValid = createSelector(

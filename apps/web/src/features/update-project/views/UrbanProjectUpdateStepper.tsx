@@ -1,9 +1,13 @@
 import { useContext, useEffect } from "react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
+import {
+  STEP_GROUP_LABELS,
+  STEP_TO_GROUP_MAPPING,
+} from "@/features/create-project/core/urban-project/stepperConfig";
 import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
-import { useBuildStepperNavigationItems } from "@/features/create-project/views/project-form/stepper/useBuildStepperNavigationItems";
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
+import { useBuildStepperNavigationItems } from "@/shared/core/wizard-form/helpers/useBuildStepperNavigationItems";
 import classNames from "@/shared/views/clsx";
 import { SidebarCurrentStepContext } from "@/shared/views/layout/SidebarLayout/SidebarCurrentStepContext";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
@@ -60,8 +64,10 @@ function UrbanProjectUpdateStepper({ step: currentStep }: Props) {
   const stepsGroupedBySections = useAppSelector(selectStepsGroupedBySections);
 
   const stepGroupsList = useBuildStepperNavigationItems({
-    projectStepGroups: stepsGroupedBySections,
+    stepGroups: stepsGroupedBySections,
     currentStep,
+    stepToGroupMapping: STEP_TO_GROUP_MAPPING,
+    labels: STEP_GROUP_LABELS,
   });
 
   const summary = stepGroupsList.find(({ groupId }) => groupId === "SUMMARY");
