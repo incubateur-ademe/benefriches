@@ -8,9 +8,6 @@ import {
 
 const UPDATED_PROJECT_NAME = "Centrale photovoltaïque de Meylan (production révisée)";
 const UPDATED_EXPECTED_ANNUAL_PRODUCTION = 450;
-// The saved project never answered the future-operator question, so every forward walk through
-// the sequence passes through it once before returning to the final summary.
-const FUTURE_OPERATOR_LABEL = "Ma structure, ADEME";
 
 test.describe("photovoltaic project editing without a soils cascade", () => {
   test("opens a can-accommodate project valid on the summary, then edits production and name and saves with no cascade dialog", async ({
@@ -50,8 +47,6 @@ test.describe("photovoltaic project editing without a soils cascade", () => {
     await pvProjectUpdatePage.expectStepTitle(/production annuelle attendue de l.installation/i);
 
     await pvProjectUpdatePage.fillExpectedAnnualProduction(UPDATED_EXPECTED_ANNUAL_PRODUCTION);
-    // Completing an answer returns toward the summary via the single still-empty step.
-    await pvProjectUpdatePage.selectStakeholder(FUTURE_OPERATOR_LABEL);
 
     await pvProjectUpdatePage.expectFinalSummary();
     await pvProjectUpdatePage.expectNoCascadeDialog();

@@ -43,9 +43,6 @@ test.describe("photovoltaic project editing", () => {
     );
 
     await pvProjectUpdatePage.fillNameAndDescription(UPDATED_PROJECT_NAME);
-    // The saved project never answered the future-operator question — every walk forward
-    // through the sequence passes through it once before reaching the final summary.
-    await pvProjectUpdatePage.selectStakeholder("Ma structure, ADEME");
 
     await pvProjectUpdatePage.expectFinalSummary();
     await pvProjectUpdatePage.expectSummaryLineValue("Nom du projet", UPDATED_PROJECT_NAME);

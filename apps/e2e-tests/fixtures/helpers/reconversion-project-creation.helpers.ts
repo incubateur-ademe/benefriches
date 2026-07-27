@@ -65,6 +65,12 @@ export const createCustomPhotovoltaicProjectViaApi =
       },
       soilsDistribution: [{ soilType: "MINERAL_SOIL", spaceCategory: undefined, surfaceArea }],
       involvesReinstatement: false,
+      // Every project created through the wizard answers the future-operator question (the form
+      // requires it) and, since the site is purchased below, the future-site-owner one. Seeding
+      // both keeps the update wizard fully hydrated, so editing any answer returns straight to the
+      // final summary instead of detouring through a never-answered step.
+      futureOperator: { name: "ADEME", structureType: "company" },
+      futureSiteOwner: { name: "ADEME", structureType: "company" },
       sitePurchaseSellingPrice: 150000,
       sitePurchasePropertyTransferDuties: 12000,
       operationsFirstYear: 2029,

@@ -5,10 +5,6 @@ import { expect, test } from "./fixtures";
 // non-suitable-soils steps stay in the sequence.
 const UPDATED_SURFACE = 4000;
 
-// Future operator is never answered by the API-seeded project, so the forward walk passes through it
-// once on the way back to the summary (as in the other PV update specs).
-const FUTURE_OPERATOR_LABEL = "Ma structure, ADEME";
-
 test.describe("photovoltaic project editing with a soils-transformation cascade", () => {
   test("editing the panel surface resets the non-suitable and custom soils steps, which the user re-completes before saving", async ({
     myEvaluationsPage,
@@ -54,16 +50,12 @@ test.describe("photovoltaic project editing with a soils-transformation cascade"
     // next_empty navigation lands on the first still-empty step of the walked sequence: the
     // non-suitable-soils selection, then its surface. The custom soils selection/allocation are
     // reset too, but the kept "custom" project-selection strategy retains its distribution and the
-    // walk does not route back through those two steps, so the next empty step after the
-    // non-suitable pair is the (never-answered) future operator.
+    // walk does not route back through those two steps, so the summary follows the non-suitable pair.
     await pvProjectUpdatePage.expectStepTitle(/Quels espaces souhaitez-vous supprimer/i);
     await pvProjectUpdatePage.selectNonSuitableSoilsToTransform(["BUILDINGS"]);
 
     await pvProjectUpdatePage.expectStepTitle(/proportion de chaque espace/i);
     await pvProjectUpdatePage.fillNonSuitableSoilsSurfaceToTransform({ BUILDINGS: 1380 });
-
-    await pvProjectUpdatePage.expectStepTitle(/exploitant de la centrale photovoltaïque/i);
-    await pvProjectUpdatePage.selectStakeholder(FUTURE_OPERATOR_LABEL);
 
     // --- Back on the summary with the new surface; save in place, no error ---
     await pvProjectUpdatePage.expectFinalSummary();
