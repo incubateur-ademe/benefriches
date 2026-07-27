@@ -3,11 +3,11 @@ import { SiteNature, sumListWithKey } from "shared";
 import { AvoidedCostsUrbanSprawlAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
+import { getScenarioPictoUrl } from "@/shared/views/components/ProjectTile/scenarioType";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";
 
 import { ProjectDevelopmentPlanType } from "../../../core/projects.types";
-import { getScenarioPictoUrl } from "../../shared/scenarioType";
 import ComparisionDetailsMonetaryRow from "../layout/ComparisionDetailsMonetaryRow";
 import ComparisonCell from "../layout/ComparisonCell";
 import ComparisonGrid from "../layout/ComparisonGrid";

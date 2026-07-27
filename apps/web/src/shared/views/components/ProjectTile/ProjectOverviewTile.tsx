@@ -2,12 +2,12 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { DevelopmentPlanType } from "shared";
 
 import { routes } from "@/app/router";
-import { getScenarioPictoUrl } from "@/features/projects/views/shared/scenarioType";
 import classNames, { ClassValue } from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
 
 import ProjectTile from "./ProjectTile";
 import ProjectTileMenu from "./ProjectTileMenu";
+import { getScenarioPictoUrl } from "./scenarioType";
 import { useProjectTileMenu } from "./useProjectTileMenu";
 
 type Props = {

@@ -1,7 +1,7 @@
 import classNames from "@/shared/views/clsx";
+import { getScenarioPictoUrl } from "@/shared/views/components/ProjectTile/scenarioType";
 
 import ExpressProjectTooltipBadge from "../shared/project-badge/ExpressProjectBadge";
-import { getScenarioPictoUrl } from "../shared/scenarioType";
 
 type Props = {
   siteCity: string;

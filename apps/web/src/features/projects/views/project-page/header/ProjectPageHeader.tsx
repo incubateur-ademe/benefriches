@@ -9,10 +9,10 @@ import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.ty
 import classNames, { ClassValue } from "@/shared/views/clsx";
 import MenuItemButton from "@/shared/views/components/Menu/MenuItemButton";
 import { MENU_ITEMS_CLASSES } from "@/shared/views/components/Menu/classes";
+import { getScenarioPictoUrl } from "@/shared/views/components/ProjectTile/scenarioType";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import ExpressProjectTooltipBadge from "../../shared/project-badge/ExpressProjectBadge";
-import { getScenarioPictoUrl } from "../../shared/scenarioType";
 
 type HeaderProps = {
   projectName: string;

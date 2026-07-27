@@ -3,9 +3,9 @@ import { SiteNature, sumListWithKey } from "shared";
 import { AvoidedInactionCostsAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
 import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 import Badge from "@/shared/views/components/Badge/Badge";
+import { getScenarioPictoUrl } from "@/shared/views/components/ProjectTile/scenarioType";
 import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";
 
-import { getScenarioPictoUrl } from "../../shared/scenarioType";
 import ComparisionDetailsMonetaryRow from "../layout/ComparisionDetailsMonetaryRow";
 import ComparisonCell from "../layout/ComparisonCell";
 import ComparisonGrid from "../layout/ComparisonGrid";
