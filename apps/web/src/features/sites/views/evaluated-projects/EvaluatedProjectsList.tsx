@@ -1,3 +1,4 @@
+import ArchiveProjectDialogButton from "@/features/archive-project/views/ArchiveProjectDialogButton";
 import ProjectOverviewTile from "@/shared/views/components/ProjectTile/ProjectOverviewTile";
 
 import NewProjectTile from "../../../../shared/views/components/ProjectTile/NewProjectTile";
@@ -30,9 +31,15 @@ export default function EvaluatedProjectsList({
             siteName={siteName}
             isExpressProject={project.express}
             className="w-full h-60"
-            onSuccessArchive={() => {
-              onRemoveProjectFromList(project.id);
-            }}
+            archiveButton={
+              <ArchiveProjectDialogButton
+                projectId={project.id}
+                projectName={project.name}
+                onSuccess={() => {
+                  onRemoveProjectFromList(project.id);
+                }}
+              />
+            }
           />
         ))}
         <NewProjectTile siteId={siteId} className="w-full h-60" />

@@ -7,6 +7,7 @@ import { Fragment } from "react/jsx-runtime";
 import { MutabilityUsage } from "shared";
 
 import { routes } from "@/app/router";
+import ArchiveProjectDialogButton from "@/features/archive-project/views/ArchiveProjectDialogButton";
 import ArchiveSiteDialog from "@/features/archive-site/views/ArchiveSiteDialog";
 import { formatPercentage } from "@/shared/core/format-number/formatNumber";
 import { getMutabilityUsageDisplayName } from "@/shared/core/reconversionCompatibility";
@@ -163,9 +164,15 @@ function MyEvaluationItem({ evaluation, onRemoveProjectFromList, onRemoveSiteFro
                   isExpressProject={isExpressProject}
                   key={id}
                   className={TILE_CLASSNAME}
-                  onSuccessArchive={() => {
-                    onRemoveProjectFromList({ projectId: id, siteId });
-                  }}
+                  archiveButton={
+                    <ArchiveProjectDialogButton
+                      projectId={id}
+                      projectName={name}
+                      onSuccess={() => {
+                        onRemoveProjectFromList({ projectId: id, siteId });
+                      }}
+                    />
+                  }
                 />
               ))}
             {nbOtherProjects > 0 && (

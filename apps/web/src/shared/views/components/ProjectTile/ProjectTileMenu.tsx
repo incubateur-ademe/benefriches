@@ -1,9 +1,8 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { RefObject } from "react";
+import { ReactNode, RefObject } from "react";
 import { DevelopmentPlanType } from "shared";
 
 import { routes } from "@/app/router";
-import ArchiveProjectDialogButton from "@/features/archive-project/views/ArchiveProjectDialogButton";
 import useDuplicateProject from "@/shared/views/project/useDuplicateProject";
 
 import classNames from "../../clsx";
@@ -19,7 +18,7 @@ type ProjectTileMenuProps = {
   menuRef: RefObject<HTMLDivElement | null>;
   buttonRef: RefObject<HTMLButtonElement | null>;
   from: "evaluations" | "site";
-  onSuccessArchive?: () => void;
+  archiveButton?: ReactNode;
 };
 
 function ProjectTileMenu({
@@ -33,7 +32,7 @@ function ProjectTileMenu({
   menuRef,
   buttonRef,
   from,
-  onSuccessArchive,
+  archiveButton,
 }: ProjectTileMenuProps) {
   const { onDuplicateProject } = useDuplicateProject(projectId, from);
 
@@ -127,19 +126,7 @@ function ProjectTileMenu({
             </>
           )}
 
-        <ArchiveProjectDialogButton
-          projectId={projectId}
-          projectName={projectName}
-          onSuccess={onSuccessArchive}
-          buttonProps={{
-            className: "py-1.5 px-4 w-full text-error-ultradark hover:bg-white hover:dark:bg-black",
-            priority: "tertiary no outline",
-            size: "small",
-            iconId: "fr-icon-delete-line",
-            title: "Supprimer le projet",
-            children: "Supprimer",
-          }}
-        />
+        {archiveButton}
       </div>
     </div>
   );

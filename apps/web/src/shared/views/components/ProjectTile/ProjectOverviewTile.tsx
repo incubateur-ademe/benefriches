@@ -1,4 +1,5 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import { ReactNode } from "react";
 import { DevelopmentPlanType } from "shared";
 
 import { routes } from "@/app/router";
@@ -18,7 +19,7 @@ type Props = {
   isExpressProject: boolean;
   className?: ClassValue;
   from: "evaluations" | "site";
-  onSuccessArchive: () => void;
+  archiveButton: ReactNode;
 };
 
 function ProjectOverviewTile({
@@ -28,7 +29,7 @@ function ProjectOverviewTile({
   id,
   isExpressProject,
   className,
-  onSuccessArchive,
+  archiveButton,
   from,
 }: Props) {
   const { isMenuOpened, openMenu, menuRef, menuButtonRef, closeMenu } = useProjectTileMenu();
@@ -94,7 +95,7 @@ function ProjectOverviewTile({
         menuRef={menuRef}
         buttonRef={menuButtonRef}
         from={from}
-        onSuccessArchive={onSuccessArchive}
+        archiveButton={archiveButton}
       />
     </div>
   );
