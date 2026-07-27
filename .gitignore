@@ -24,13 +24,8 @@ coverage/
 .settings/
 *.sublime-workspace
 
-# Claude Code local settings
+
+# AI agents
 .claude/settings.local.json
 .claude/worktrees/
-
-# Codex
-.codex/
-
-# Short-lived implementation plans (not versioned)
-docs/plans/
-docs/superpowers/
+.agents/tasks
