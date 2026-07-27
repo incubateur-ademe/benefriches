@@ -9,6 +9,7 @@ import { Link } from "type-route";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
+// oxlint-disable-next-line architecture-boundaries/no-cross-layer-import
 import AboutImpactsContent from "@/features/projects/views/shared/impacts/AboutImpactsContent";
 
 import classNames from "../../clsx";
