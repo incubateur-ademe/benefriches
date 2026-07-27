@@ -1,10 +1,13 @@
 import { useMemo } from "react";
 import { typedObjectEntries } from "shared";
 
+import {
+  ProjectStepGroups,
+  STEP_GROUP_LABELS,
+  STEP_TO_GROUP_MAPPING,
+} from "@/features/create-project/core/urban-project/stepperConfig";
 import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { StepVariant } from "@/shared/views/layout/WizardFormLayout/FormBaseStepperStep";
-
-import { ProjectStepGroups, STEP_GROUP_LABELS, STEP_TO_GROUP_MAPPING } from "./stepperConfig";
 
 type UseBuildStepperNavigationItemsProps = {
   projectStepGroups: ProjectStepGroups;

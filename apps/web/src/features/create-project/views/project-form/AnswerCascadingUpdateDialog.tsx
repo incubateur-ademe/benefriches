@@ -3,11 +3,13 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
+import {
+  STEP_GROUP_LABELS,
+  STEP_TO_GROUP_MAPPING,
+} from "@/features/create-project/core/urban-project/stepperConfig";
 import { AnswerStepId } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 import classNames from "@/shared/views/clsx";
-
-import { STEP_GROUP_LABELS, STEP_TO_GROUP_MAPPING } from "./stepper/stepperConfig";
 
 const DIALOG_DSFR_CSS = [
   "fixed inset-0",

@@ -8,6 +8,7 @@ import {
 } from "shared";
 
 import { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
+import { ProjectStepGroups } from "@/features/create-project/core/urban-project/stepperConfig";
 import { getLabelForUrbanProjectUse } from "@/features/create-project/core/urban-project/urbanProject";
 import { getLabelForSpace } from "@/features/create-project/core/urban-project/urbanProject";
 import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
@@ -24,7 +25,6 @@ import WizardFormLayout, {
   WizardFormLayoutProps,
 } from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import { ProjectStepGroups } from "../../project-form/stepper/stepperConfig";
 import UrbanProjectExpensesSection from "./UrbanProjectExpensesSection";
 import UrbanProjectRevenuesSection from "./UrbanProjectRevenuesSection";
 

@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback, ReactNode } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { StepGroupId } from "@/features/create-project/core/urban-project/stepperConfig";
 import {
   creationProjectFormActions,
   creationProjectFormUrbanActions,
@@ -17,7 +18,6 @@ import {
 import { updateUrbanProjectFormSelectors } from "@/features/update-project/core/updateProject.selectors";
 
 import { ProjectFormContext, ProjectFormContextValue } from "./ProjectFormContext";
-import { StepGroupId } from "./stepper/stepperConfig";
 
 type ProjectFormProviderProps = {
   children: ReactNode;
