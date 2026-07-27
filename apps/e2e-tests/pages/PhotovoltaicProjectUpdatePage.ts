@@ -136,6 +136,27 @@ export class PhotovoltaicProjectUpdatePage {
     await this.submit();
   }
 
+  // --- Custom soils transformation (future soils) ---
+
+  async selectFutureSoils(soilTypes: SoilTransformationSoilType[]): Promise<void> {
+    for (const soilType of soilTypes) {
+      await this.page.getByText(SOIL_TYPE_LABELS[soilType], { exact: true }).click();
+    }
+    await this.submit();
+  }
+
+  async fillFutureSoilsSurfaceAreas(
+    surfaceBySoilType: Partial<Record<SoilTransformationSoilType, number>>,
+  ): Promise<void> {
+    for (const [soilType, value] of Object.entries(surfaceBySoilType) as [
+      SoilTransformationSoilType,
+      number,
+    ][]) {
+      await this.page.getByLabel(SOIL_TYPE_LABELS[soilType]).fill(String(value));
+    }
+    await this.submit();
+  }
+
   async expectSoilsSummaryStep(): Promise<void> {
     await expect(
       this.page.getByRole("heading", { name: "Récapitulatif de l'occupation des sols" }),

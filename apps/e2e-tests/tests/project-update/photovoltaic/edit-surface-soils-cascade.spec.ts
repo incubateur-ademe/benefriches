@@ -47,15 +47,22 @@ test.describe("photovoltaic project editing with a soils-transformation cascade"
     await pvProjectUpdatePage.confirmCascadeAndComplete();
 
     // --- Re-complete the reset steps the update walk routes through ---
-    // next_empty navigation lands on the first still-empty step of the walked sequence: the
-    // non-suitable-soils selection, then its surface. The custom soils selection/allocation are
-    // reset too, but the kept "custom" project-selection strategy retains its distribution and the
-    // walk does not route back through those two steps, so the summary follows the non-suitable pair.
+    // next_empty navigation walks the sequence and stops on each step the cascade reset: the
+    // non-suitable-soils pair, then — since the kept "custom" strategy routes through them — the
+    // custom soils selection and its surface-area allocation, whose answers were reset too.
     await pvProjectUpdatePage.expectStepTitle(/Quels espaces souhaitez-vous supprimer/i);
     await pvProjectUpdatePage.selectNonSuitableSoilsToTransform(["BUILDINGS"]);
 
     await pvProjectUpdatePage.expectStepTitle(/proportion de chaque espace/i);
     await pvProjectUpdatePage.fillNonSuitableSoilsSurfaceToTransform({ BUILDINGS: 1380 });
+
+    // The whole site (4600 m²) becomes mineral soil, which is suitable for panels and so covers
+    // the new 4000 m² footprint.
+    await pvProjectUpdatePage.expectStepTitle(/Quels types de sols y aura-t-il sur ce site/i);
+    await pvProjectUpdatePage.selectFutureSoils(["MINERAL_SOIL"]);
+
+    await pvProjectUpdatePage.expectStepTitle(/Quelles seront les superficies des sols/i);
+    await pvProjectUpdatePage.fillFutureSoilsSurfaceAreas({ MINERAL_SOIL: 4600 });
 
     // --- Back on the summary with the new surface; save in place, no error ---
     await pvProjectUpdatePage.expectFinalSummary();

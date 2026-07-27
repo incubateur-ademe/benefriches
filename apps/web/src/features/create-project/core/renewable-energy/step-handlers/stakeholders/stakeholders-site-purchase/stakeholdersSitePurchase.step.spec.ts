@@ -48,6 +48,38 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
     });
   });
 
+  describe("steps sequence", () => {
+    it("should keep future site owner in the sequence when the site will be purchased", () => {
+      const store = new StoreBuilder().build();
+
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
+          answers: { willSiteBePurchased: true },
+        }),
+      );
+
+      expect(store.getState().projectCreation.renewableEnergyProject.stepsSequence).toContain(
+        "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER",
+      );
+    });
+
+    it("should leave future site owner out of the sequence when the site will not be purchased", () => {
+      const store = new StoreBuilder().build();
+
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
+          answers: { willSiteBePurchased: false },
+        }),
+      );
+
+      expect(store.getState().projectCreation.renewableEnergyProject.stepsSequence).not.toContain(
+        "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER",
+      );
+    });
+  });
+
   describe("back navigation", () => {
     it("should navigate back to reinstatement contract owner when involvesReinstatement is true", () => {
       const store = new StoreBuilder()

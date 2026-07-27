@@ -132,6 +132,50 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
     });
   });
 
+  describe("steps sequence", () => {
+    it("leaves DEMOLITION_INFO out of the sequence when every site building is reused", () => {
+      // site=2000, project=2000, reuse=2000 → demolished=0, so nothing is demolished
+      const store = new StoreBuilder()
+        .withSiteData(makeSiteData())
+        .withSteps(makeBaseSteps(2000))
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE")
+        .build();
+
+      store.dispatch(
+        creationProjectFormUrbanActions.stepCompletionRequested({
+          stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
+          answers: { buildingsFootprintToReuse: 2000 },
+        }),
+      );
+      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
+
+      expect(store.getState().projectCreation.urbanProject.form.stepsSequence).not.toContain(
+        "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO",
+      );
+    });
+
+    it("keeps DEMOLITION_INFO in the sequence when part of the site buildings is demolished", () => {
+      // site=2000, project=3000, reuse=1500 → demolished=500
+      const store = new StoreBuilder()
+        .withSiteData(makeSiteData())
+        .withSteps(makeBaseSteps(3000))
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE")
+        .build();
+
+      store.dispatch(
+        creationProjectFormUrbanActions.stepCompletionRequested({
+          stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
+          answers: { buildingsFootprintToReuse: 1500 },
+        }),
+      );
+      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
+
+      expect(store.getState().projectCreation.urbanProject.form.stepsSequence).toContain(
+        "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO",
+      );
+    });
+  });
+
   describe("getDependencyRules", () => {
     it("does not trigger cascading confirmation when no dependent steps have been answered yet", () => {
       const steps: UrbanProjectStepsState = makeBaseSteps(3000);

@@ -20,7 +20,9 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
     const siteData = params.context?.siteData;
     if (!siteData) return getNextStepAfterBuildings(params);
 
-    // Use answers (not stepsState) because state hasn't been updated yet when this runs
+    // Read the reuse from `answers`, this step's own answers: on completion they are the freshly
+    // submitted ones (state isn't mutated yet), and on the sequence walk the engine passes the
+    // ones already stored for the step.
     const siteBuildings = getSiteBuildingsFootprint(siteData);
     const projectBuildings = getProjectBuildingsFootprint(params.answers);
     const reuse = answers?.buildingsFootprintToReuse ?? 0;
