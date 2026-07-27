@@ -1,5 +1,6 @@
-import type { RenewableEnergyStepGroupId } from "../../renewableEnergyStepperConfig";
+import type { RenewableEnergyStepStepperConfig } from "../../renewableEnergyStepperConfig";
 
 export const stakeholdersSitePurchaseStepperConfig = {
   groupId: "STAKEHOLDERS",
-} as const satisfies { groupId: RenewableEnergyStepGroupId };
+  subGroupId: "STAKEHOLDERS_SITE_PURCHASE",
+} as const satisfies RenewableEnergyStepStepperConfig;

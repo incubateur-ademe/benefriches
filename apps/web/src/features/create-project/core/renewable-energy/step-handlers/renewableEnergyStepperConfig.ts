@@ -1,3 +1,8 @@
+import type {
+  StepStepperConfig,
+  StepToGroupMapping,
+} from "@/shared/core/wizard-form/helpers/stepGroups";
+
 import type { RenewableEnergyCreationStep } from "../renewableEnergySteps";
 import { expensesInstallationStepperConfig } from "./expenses/expenses-installation/expensesInstallation.stepperConfig";
 import { expensesIntroductionStepperConfig } from "./expenses/expenses-introduction/expensesIntroduction.stepperConfig";
@@ -56,7 +61,49 @@ export const RENEWABLE_ENERGY_STEP_GROUP_IDS = [
   "SUMMARY",
 ] as const satisfies readonly RenewableEnergyStepGroupId[];
 
-export const RENEWABLE_ENERGY_STEP_GROUP_LABELS: Record<RenewableEnergyStepGroupId, string> = {
+export type RenewableEnergyStepSubGroupId =
+  // Photovoltaic
+  | "PHOTOVOLTAIC_KEY_PARAMETER"
+  | "PHOTOVOLTAIC_POWER"
+  | "PHOTOVOLTAIC_SURFACE"
+  | "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION"
+  | "PHOTOVOLTAIC_CONTRACT_DURATION"
+  // Site works (soils decontamination + soils transformation)
+  | "INVOLVES_REINSTATEMENT"
+  | "SOILS_DECONTAMINATION_SELECTION"
+  | "SOILS_DECONTAMINATION_SURFACE_AREA"
+  | "NON_SUITABLE_SOILS_SELECTION"
+  | "NON_SUITABLE_SOILS_SURFACE"
+  | "SOILS_TRANSFORMATION_PROJECT_SELECTION"
+  | "SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION"
+  | "SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION"
+  // Stakeholders
+  | "STAKEHOLDERS_PROJECT_DEVELOPER"
+  | "STAKEHOLDERS_FUTURE_OPERATOR"
+  | "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
+  | "STAKEHOLDERS_SITE_PURCHASE"
+  | "STAKEHOLDERS_FUTURE_SITE_OWNER"
+  // Expenses and revenue
+  | "EXPENSES_SITE_PURCHASE_AMOUNTS"
+  | "EXPENSES_REINSTATEMENT"
+  | "EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION"
+  | "EXPENSES_PROJECTED_YEARLY_EXPENSES"
+  | "REVENUE_PROJECTED_YEARLY_REVENUE"
+  | "REVENUE_FINANCIAL_ASSISTANCE"
+  // Schedule
+  | "SCHEDULE_PROJECTION"
+  // Naming
+  | "NAMING_PROJECT_NAME";
+
+export type RenewableEnergyStepStepperConfig = StepStepperConfig<
+  RenewableEnergyStepGroupId,
+  RenewableEnergyStepSubGroupId
+>;
+
+export const RENEWABLE_ENERGY_STEP_GROUP_LABELS: Record<
+  RenewableEnergyStepGroupId | RenewableEnergyStepSubGroupId,
+  string
+> = {
   PHOTOVOLTAIC_PARAMETERS: "Paramètres du projet",
   SITE_WORKS: "Travaux",
   STAKEHOLDERS: "Acteurs",
@@ -64,11 +111,50 @@ export const RENEWABLE_ENERGY_STEP_GROUP_LABELS: Record<RenewableEnergyStepGroup
   SCHEDULE: "Calendrier",
   NAMING: "Dénomination",
   SUMMARY: "Récapitulatif",
+
+  // Photovoltaic
+  PHOTOVOLTAIC_KEY_PARAMETER: "Puissance ou surface de référence",
+  PHOTOVOLTAIC_POWER: "Puissance",
+  PHOTOVOLTAIC_SURFACE: "Surface des panneaux",
+  PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION: "Production annuelle attendue",
+  PHOTOVOLTAIC_CONTRACT_DURATION: "Durée du contrat",
+
+  // Site works
+  INVOLVES_REINSTATEMENT: "Remise en état",
+  SOILS_DECONTAMINATION_SELECTION: "Choix de dépolluer",
+  SOILS_DECONTAMINATION_SURFACE_AREA: "Surface à dépolluer",
+  NON_SUITABLE_SOILS_SELECTION: "Sols non adaptés",
+  NON_SUITABLE_SOILS_SURFACE: "Surface des sols non adaptés",
+  SOILS_TRANSFORMATION_PROJECT_SELECTION: "Sols du projet",
+  SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION: "Sols personnalisés",
+  SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION: "Répartition des surfaces",
+
+  // Stakeholders
+  STAKEHOLDERS_PROJECT_DEVELOPER: "Aménageur",
+  STAKEHOLDERS_FUTURE_OPERATOR: "Exploitant",
+  STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: "Maître d'ouvrage de la remise en état",
+  STAKEHOLDERS_SITE_PURCHASE: "Acquisition du site",
+  STAKEHOLDERS_FUTURE_SITE_OWNER: "Futur propriétaire du site",
+
+  // Expenses and revenue
+  EXPENSES_SITE_PURCHASE_AMOUNTS: "Montant d'acquisition",
+  EXPENSES_REINSTATEMENT: "Coût de la remise en état",
+  EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION: "Coût d'installation des panneaux",
+  EXPENSES_PROJECTED_YEARLY_EXPENSES: "Dépenses annuelles prévisionnelles",
+  REVENUE_PROJECTED_YEARLY_REVENUE: "Recettes annuelles prévisionnelles",
+  REVENUE_FINANCIAL_ASSISTANCE: "Aides financières",
+
+  // Schedule
+  SCHEDULE_PROJECTION: "Calendrier prévisionnel",
+
+  // Naming
+  NAMING_PROJECT_NAME: "Nom du projet",
 };
 
-export const RENEWABLE_ENERGY_STEP_TO_GROUP: Record<
+export const RENEWABLE_ENERGY_STEP_TO_GROUP: StepToGroupMapping<
   RenewableEnergyCreationStep,
-  { groupId: RenewableEnergyStepGroupId }
+  RenewableEnergyStepGroupId,
+  RenewableEnergyStepSubGroupId
 > = {
   // Photovoltaic
   RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: photovoltaicKeyParameterStepperConfig,
@@ -102,7 +188,7 @@ export const RENEWABLE_ENERGY_STEP_TO_GROUP: Record<
   RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE:
     soilsTransformationClimateAndBiodiversityImpactNoticeStepperConfig,
 
-  // Summaries (soils + carbon belong to SOILS_TRANSFORMATION group)
+  // Summaries (soils + carbon belong to the SITE_WORKS group)
   RENEWABLE_ENERGY_SOILS_SUMMARY: summarySoilsStepperConfig,
   RENEWABLE_ENERGY_SOILS_CARBON_STORAGE: summarySoilsCarbonStorageStepperConfig,
   RENEWABLE_ENERGY_FINAL_SUMMARY: summaryFinalStepperConfig,

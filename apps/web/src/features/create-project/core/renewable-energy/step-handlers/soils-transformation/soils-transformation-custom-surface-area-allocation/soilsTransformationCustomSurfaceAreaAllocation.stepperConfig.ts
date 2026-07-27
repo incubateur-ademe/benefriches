@@ -1,5 +1,6 @@
-import type { RenewableEnergyStepGroupId } from "../../renewableEnergyStepperConfig";
+import type { RenewableEnergyStepStepperConfig } from "../../renewableEnergyStepperConfig";
 
 export const soilsTransformationCustomSurfaceAreaAllocationStepperConfig = {
   groupId: "SITE_WORKS",
-} as const satisfies { groupId: RenewableEnergyStepGroupId };
+  subGroupId: "SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
+} as const satisfies RenewableEnergyStepStepperConfig;

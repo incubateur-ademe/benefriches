@@ -1,5 +1,6 @@
-import type { RenewableEnergyStepGroupId } from "../../renewableEnergyStepperConfig";
+import type { RenewableEnergyStepStepperConfig } from "../../renewableEnergyStepperConfig";
 
 export const revenueFinancialAssistanceStepperConfig = {
   groupId: "EXPENSES_AND_REVENUE",
-} as const satisfies { groupId: RenewableEnergyStepGroupId };
+  subGroupId: "REVENUE_FINANCIAL_ASSISTANCE",
+} as const satisfies RenewableEnergyStepStepperConfig;

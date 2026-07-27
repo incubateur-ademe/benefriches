@@ -1,5 +1,6 @@
-import type { RenewableEnergyStepGroupId } from "../../renewableEnergyStepperConfig";
+import type { RenewableEnergyStepStepperConfig } from "../../renewableEnergyStepperConfig";
 
 export const photovoltaicPowerStepperConfig = {
   groupId: "PHOTOVOLTAIC_PARAMETERS",
-} as const satisfies { groupId: RenewableEnergyStepGroupId };
+  subGroupId: "PHOTOVOLTAIC_POWER",
+} as const satisfies RenewableEnergyStepStepperConfig;
