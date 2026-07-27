@@ -1,7 +1,9 @@
 import { lazy, Suspense } from "react";
 import { createGroup } from "type-route";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
+import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 import RequireAuthenticatedUser from "@/shared/views/components/RequireAuthenticatedUser/RequireAuthenticatedUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -45,6 +47,7 @@ const formsLayoutGroup = createGroup([
 
 function FeaturesApp() {
   const route = useRoute();
+  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
 
   if (formsLayoutGroup.has(route)) {
     return (
@@ -53,6 +56,7 @@ function FeaturesApp() {
           fallback={
             <SidebarLayout
               title=""
+              currentUserEmail={currentUserEmail}
               sidebarChildren={null}
               mainChildren={<LoadingSpinner />}
             ></SidebarLayout>

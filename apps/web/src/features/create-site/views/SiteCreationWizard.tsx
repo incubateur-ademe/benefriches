@@ -4,6 +4,7 @@ import { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
+import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
@@ -114,6 +115,7 @@ export function useSiteCreationWizardLayout({
 function SiteCreationWizard() {
   const dispatch = useAppDispatch();
   const { currentStep, isFriche, createMode } = useAppSelector(selectSiteCreationWizardViewData);
+  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
 
   useSyncCreationStepWithRouteQuery();
 
@@ -139,6 +141,7 @@ function SiteCreationWizard() {
       <HtmlTitle>{htmlTitle}</HtmlTitle>
       <SidebarLayout
         title={createMode === "express" ? "Évaluation démo" : "Renseignement du site"}
+        currentUserEmail={currentUserEmail}
         mainChildren={mainChildren}
         sidebarChildren={sidebarChildren}
       />

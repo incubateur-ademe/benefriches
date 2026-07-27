@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
 import { RenewableEnergyFormProvider } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/RenewableEnergyFormProvider";
 import { ProjectFormProvider } from "@/features/create-project/views/project-form/ProjectFormProvider";
+import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
@@ -23,6 +24,7 @@ type Props = {
 
 function ProjectCreationWizard({ route }: Props) {
   const { currentProjectFlow, loadingState } = useAppSelector(selectProjectCreationWizardViewData);
+  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -37,6 +39,7 @@ function ProjectCreationWizard({ route }: Props) {
     <ProjectFormProvider mode="create">
       <SidebarLayout
         title="Renseignement du projet"
+        currentUserEmail={currentUserEmail}
         sidebarChildren={<ProjectCreationStepper />}
         mainChildren={(() => {
           if (loadingState === "error") {

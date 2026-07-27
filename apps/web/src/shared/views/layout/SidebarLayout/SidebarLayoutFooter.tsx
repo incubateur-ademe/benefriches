@@ -3,14 +3,14 @@ import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import Display from "@codegouvfr/react-dsfr/Display/Display";
 import { FooterBottomItem } from "@codegouvfr/react-dsfr/Footer";
 
-import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
-import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import classNames from "@/shared/views/clsx";
 
-function SidebarLayoutFooter() {
-  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
+type Props = {
+  currentUserEmail?: string;
+};
 
+function SidebarLayoutFooter({ currentUserEmail }: Props) {
   const bottomItems = [
     {
       text: "Accessibilité : non conforme",

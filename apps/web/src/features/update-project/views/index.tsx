@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
 import { RenewableEnergyFormProvider } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/RenewableEnergyFormProvider";
 import { ProjectFormProvider } from "@/features/create-project/views/project-form/ProjectFormProvider";
+import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
@@ -21,6 +22,7 @@ type Props = {
 
 function UpdateProjectPage({ route }: Props) {
   const dispatch = useAppDispatch();
+  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
 
   const {
     loadingState,
@@ -39,6 +41,7 @@ function UpdateProjectPage({ route }: Props) {
         <HtmlTitle>Modifier un projet</HtmlTitle>
         <SidebarLayout
           title="Modification du projet"
+          currentUserEmail={currentUserEmail}
           sidebarChildren={null}
           mainChildren={(() => {
             switch (loadingState) {

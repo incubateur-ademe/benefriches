@@ -17,6 +17,7 @@ export type SidebarLayoutProps = {
   sidebarChildren: ReactNode;
   title: ReactNode;
   header?: "sticky" | "normal";
+  currentUserEmail?: string;
   actions?: (ButtonProps.Common & {
     title?: string;
     iconId: ButtonProps.WithIcon["iconId"];
@@ -41,6 +42,7 @@ function SidebarLayout({
   sidebarChildren,
   actions = DEFAULT_ACTIONS,
   header = "normal",
+  currentUserEmail,
 }: SidebarLayoutProps) {
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
@@ -125,7 +127,7 @@ function SidebarLayout({
           </main>
         </div>
       </div>
-      <SidebarLayoutFooter />
+      <SidebarLayoutFooter currentUserEmail={currentUserEmail} />
     </div>
   );
 }

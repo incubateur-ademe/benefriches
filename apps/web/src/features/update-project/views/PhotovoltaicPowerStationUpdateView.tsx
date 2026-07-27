@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "@/features/create-project/views/photovoltaic-power-station/creationStepQueryStringMap";
+import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
@@ -22,6 +23,7 @@ function PhotovoltaicPowerStationUpdateView() {
   const projectName = useAppSelector((state) => state.projectUpdate.projectData.projectName ?? "");
   const siteId = useAppSelector((state) => state.projectUpdate.siteData?.id);
   const isFormValid = useAppSelector(selectIsFormStatusValid);
+  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
 
   const sidebarActions = useSidebarActions({
     onSave: () => {
@@ -44,6 +46,7 @@ function PhotovoltaicPowerStationUpdateView() {
     <SidebarLayout
       title={`Modification du projet « ${projectName} »`}
       header="sticky"
+      currentUserEmail={currentUserEmail}
       actions={sidebarActions}
       sidebarChildren={<PhotovoltaicPowerStationUpdateStepper />}
       mainChildren={

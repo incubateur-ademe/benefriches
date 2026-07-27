@@ -4,6 +4,7 @@ import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "@/features/create-project/views/urban-project/creationStepQueryStringMap";
 import { getUrbanProjectStepView } from "@/features/create-project/views/urban-project/stepToComponent";
+import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
@@ -24,6 +25,7 @@ function UrbanProjectUpdateView() {
   const projectId = useAppSelector((state) => state.projectUpdate.projectData.id);
   const projectName = useAppSelector((state) => state.projectUpdate.projectData.projectName ?? "");
   const siteId = useAppSelector((state) => state.projectUpdate.siteData?.id);
+  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
 
   const { onSave, selectIsFormStatusValid, selectSaveState } = useProjectForm();
   const isFormValid = useAppSelector(selectIsFormStatusValid);
@@ -40,6 +42,7 @@ function UrbanProjectUpdateView() {
     <SidebarLayout
       title={`Modification du projet « ${projectName} »`}
       header="sticky"
+      currentUserEmail={currentUserEmail}
       actions={sidebarActions}
       sidebarChildren={<UrbanProjectUpdateStepper step={currentStep} />}
       mainChildren={
