@@ -11,7 +11,10 @@ user-invocable: true
 > One generic algorithm drives every guided, multi-step form in the app — urban & photovoltaic,
 > creation & editing. Each form is a thin **definition** plugged into a shared engine through an
 > **injected lens**. Decision record: `docs/adr/0015-extract-wizard-form-engine-via-injected-lens.md`.
-> Glossary (*Wizard form*, *Context*, *Answers*): `apps/web/CONTEXT.md`.
+>
+> Glossary: **Wizard form** — one guided flow instance (e.g. urban-create). **Context** — the eager,
+> guaranteed-present data `buildContext` derives from the slice (e.g. the site). **Answers** — the
+> per-step user input accumulated in `WizardFormSubState`, keyed by `StepId`.
 
 Read this before reading the files — it saves you from reverse-engineering the abstraction. Paths below
 are the source of truth; open them when you need detail.
@@ -137,4 +140,3 @@ You never open `shared/core/wizard-form/`.
 
 - Visual architecture diagram: https://claude.ai/code/artifact/cd38a538-d6d3-48b2-bfaa-888f804eef09
 - ADR-0015 (decision + rationale): `docs/adr/0015-extract-wizard-form-engine-via-injected-lens.md`
-- Glossary: `apps/web/CONTEXT.md`
