@@ -22,9 +22,12 @@ test.describe("photovoltaic project editing when site reinstatement is enabled",
     await pvProjectUpdatePage.selectSidebarStep("Remise en état");
     await pvProjectUpdatePage.expectStepTitle(/Le projet prévoit-il une remise en état du site/);
 
-    // --- Switching to "yes" adds two new required steps to the sequence: no cascade dialog,
-    // since nothing already-answered gets invalidated by this transition, only new steps appear ---
+    // --- Switching to "yes" adds two new required steps to the sequence, and also invalidates
+    // the already-answered schedule step: its dates were entered without reinstatement works in
+    // mind, so it must be re-answered — the cascade dialog gates on this ---
     await pvProjectUpdatePage.selectInvolvesReinstatement(true);
+    await pvProjectUpdatePage.expectCascadeDialogListsStep("Calendrier");
+    await pvProjectUpdatePage.confirmCascadeAndComplete();
 
     await pvProjectUpdatePage.expectStepTitle(
       "Qui sera le maître d'ouvrage des travaux de remise en état de la friche ?",
@@ -34,7 +37,16 @@ test.describe("photovoltaic project editing when site reinstatement is enabled",
     await pvProjectUpdatePage.expectStepTitle("Dépenses de travaux de remise en état de la friche");
     await pvProjectUpdatePage.fillReinstatementExpenses(15000);
 
-    // --- Both new steps answered: back on a valid summary, no cascade dialog ---
+    // --- The invalidated schedule step must be answered again before reaching the summary,
+    // now with reinstatement-work dates in addition to the panels installation dates ---
+    await pvProjectUpdatePage.expectStepTitle("Calendrier");
+    await pvProjectUpdatePage.fillScheduleWithReinstatement(
+      { startDate: "09/2027", endDate: "12/2027" },
+      { startDate: "01/2028", endDate: "03/2029" },
+      2029,
+    );
+
+    // --- All required steps answered: back on a valid summary, no cascade dialog ---
     await pvProjectUpdatePage.expectFinalSummary();
     await pvProjectUpdatePage.expectNoCascadeDialog();
 

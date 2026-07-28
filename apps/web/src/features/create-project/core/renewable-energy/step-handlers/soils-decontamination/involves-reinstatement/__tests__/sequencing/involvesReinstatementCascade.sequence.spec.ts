@@ -125,7 +125,7 @@ describe("Renewable energy - InvolvesReinstatement cascade sequencing", () => {
     });
   });
 
-  it("applies immediately with no pending dialog when the edit produces no cascade (false to true)", () => {
+  it("gates on a cascade that invalidates the already-completed schedule step (false to true)", () => {
     const store = new StoreBuilder()
       .withSteps(stepsWithReinstatement(false))
       .withCurrentStep("RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT")
@@ -139,10 +139,34 @@ describe("Renewable energy - InvolvesReinstatement cascade sequencing", () => {
     );
 
     const form = getForm(store);
-    expect(form.pendingStepCompletion).toBeUndefined();
-    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
+    expect(form.pendingStepCompletion?.showAlert).toBe(true);
+    expect(form.pendingStepCompletion?.changes.cascadingChanges).toEqual([
+      { stepId: "RENEWABLE_ENERGY_SCHEDULE_PROJECTION", action: "invalidate" },
+    ]);
+    // Nothing applied yet: current step unchanged, schedule step untouched.
+    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT");
+    expect(form.steps.RENEWABLE_ENERGY_SCHEDULE_PROJECTION?.completed).toBe(true);
+  });
+
+  it("re-requires reinstatement dates on the schedule step once the cascade is confirmed (false to true)", () => {
+    const store = new StoreBuilder()
+      .withSteps(stepsWithReinstatement(false))
+      .withCurrentStep("RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT")
+      .build();
+
+    store.dispatch(
+      creationRenewableEnergyFormActions.stepCompletionRequested({
+        stepId: "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
+        answers: { involvesReinstatement: true },
+      }),
+    );
+    store.dispatch(creationRenewableEnergyFormActions.stepCompletionConfirmed());
+
+    const form = getForm(store);
+    expect(form.steps.RENEWABLE_ENERGY_SCHEDULE_PROJECTION?.completed).toBe(false);
     expect(form.steps.RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT?.payload).toEqual({
       involvesReinstatement: true,
     });
+    expect(form.pendingStepCompletion).toBeUndefined();
   });
 });

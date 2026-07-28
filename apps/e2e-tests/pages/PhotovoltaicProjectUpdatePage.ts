@@ -229,6 +229,39 @@ export class PhotovoltaicProjectUpdatePage {
     await this.submit();
   }
 
+  // When the project involves reinstatement, the schedule step renders two date ranges — one for
+  // the reinstatement works, one for the panels installation — so "Début des travaux"/"Fin des
+  // travaux" each match twice; the reinstatement fieldset renders first.
+  async fillScheduleWithReinstatement(
+    reinstatement: { startDate: string; endDate: string },
+    installation: { startDate: string; endDate: string },
+    firstYearOfOperation: number,
+  ): Promise<void> {
+    const startInputs = this.page.getByLabel("Début des travaux");
+    const endInputs = this.page.getByLabel("Fin des travaux");
+    const yearInput = this.page.getByLabel(/Année de mise en service/i);
+
+    // reinstatement
+    await startInputs.nth(0).fill("");
+    await startInputs.nth(0).pressSequentially(reinstatement.startDate.replace("/", ""), {
+      delay: 50,
+    });
+    await endInputs.nth(0).fill("");
+    await endInputs.nth(0).pressSequentially(reinstatement.endDate.replace("/", ""), { delay: 50 });
+
+    // installation
+    await startInputs.nth(1).fill("");
+    await startInputs.nth(1).pressSequentially(installation.startDate.replace("/", ""), {
+      delay: 50,
+    });
+    await endInputs.nth(1).fill("");
+    await endInputs.nth(1).pressSequentially(installation.endDate.replace("/", ""), { delay: 50 });
+
+    await yearInput.fill(String(firstYearOfOperation));
+
+    await this.submit();
+  }
+
   // --- Name and description ---
 
   async fillNameAndDescription(name: string, description?: string): Promise<void> {
@@ -276,6 +309,12 @@ export class PhotovoltaicProjectUpdatePage {
   // soils-transformation steps to reset. Every soils step belongs to the "Travaux" group, so the
   // reset list shows one or more "Travaux" entries.
   async expectCascadeDialogListsSoilsSteps(): Promise<void> {
+    await this.expectCascadeDialogListsStep("Travaux");
+  }
+
+  // Generic assertion: the cascade dialog is visible and lists `groupLabel` among the steps that
+  // will be reset (e.g. "Calendrier" when the schedule step gets invalidated).
+  async expectCascadeDialogListsStep(groupLabel: string): Promise<void> {
     const dialog = this.page.locator(".fr-modal__body");
     await expect(
       dialog.getByRole("heading", {
@@ -285,7 +324,9 @@ export class PhotovoltaicProjectUpdatePage {
     await expect(
       dialog.getByText("Les étapes suivantes seront réinitialisées, vous devrez les compléter :"),
     ).toBeVisible();
-    await expect(dialog.getByRole("listitem").filter({ hasText: "Travaux" }).first()).toBeVisible();
+    await expect(
+      dialog.getByRole("listitem").filter({ hasText: groupLabel }).first(),
+    ).toBeVisible();
   }
 
   async confirmCascadeAndComplete(): Promise<void> {

@@ -76,7 +76,7 @@ describe("Renewable energy - InvolvesReinstatement handler dependency rules", ()
     expect(rules).toEqual([]);
   });
 
-  it("returns no rule when switching from false to true", () => {
+  it("returns no rule when switching from false to true and schedule was never answered", () => {
     const answers: RenewableEnergyStepsState = {
       RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: {
         completed: true,
@@ -90,6 +90,28 @@ describe("Renewable energy - InvolvesReinstatement handler dependency rules", ()
     );
 
     expect(rules).toEqual([]);
+  });
+
+  it("invalidates the already-completed schedule step when switching from false to true", () => {
+    const answers: RenewableEnergyStepsState = {
+      RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: {
+        completed: true,
+        payload: { involvesReinstatement: false },
+      },
+      RENEWABLE_ENERGY_SCHEDULE_PROJECTION: {
+        completed: true,
+        payload: { firstYearOfOperation: 2025 },
+      },
+    };
+
+    const rules = InvolvesReinstatementHandler.getDependencyRules!(
+      { context: CONTEXT, answers },
+      { involvesReinstatement: true },
+    );
+
+    expect(rules).toEqual([
+      { stepId: "RENEWABLE_ENERGY_SCHEDULE_PROJECTION", action: "invalidate" },
+    ]);
   });
 
   it("returns no rule when switching from true to true", () => {

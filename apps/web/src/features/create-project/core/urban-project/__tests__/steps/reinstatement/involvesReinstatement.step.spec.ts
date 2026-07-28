@@ -112,6 +112,37 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
   });
 
+  it("re-requires reinstatement dates on the schedule step when switching from false to true after it was already answered", () => {
+    const store = new StoreBuilder()
+      .withSiteData({ hasContaminatedSoils: true, contaminatedSoilSurface: 2000 })
+      .withSteps({
+        URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
+          completed: true,
+          payload: { involvesReinstatement: false },
+        },
+        URBAN_PROJECT_SCHEDULE_PROJECTION: {
+          completed: true,
+          payload: { firstYearOfOperation: 2025 },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_INVOLVES_REINSTATEMENT")
+      .build();
+
+    store.dispatch(
+      creationProjectFormUrbanActions.stepCompletionRequested({
+        stepId: "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+        answers: { involvesReinstatement: true },
+      }),
+    );
+    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
+
+    const form = store.getState().projectCreation.urbanProject.form;
+    expect(form.steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.completed).toBe(false);
+    expect(form.steps.URBAN_PROJECT_INVOLVES_REINSTATEMENT?.payload).toEqual({
+      involvesReinstatement: true,
+    });
+  });
+
   it("should compute installationSchedule without reinstatement when involvesReinstatement is false on a FRICHE", () => {
     const defaults = UrbanProjectScheduleProjectionHandler.getDefaultAnswers({
       answers: {
