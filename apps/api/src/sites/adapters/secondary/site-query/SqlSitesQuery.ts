@@ -222,24 +222,18 @@ export class SqlSitesQuery implements SitesQuery {
           accidentsDeaths: sqlSite.friche_accidents_deaths ?? undefined,
         };
       case "AGRICULTURAL_OPERATION":
-        if (!sqlSite.agricultural_operation_activity) {
-          throw new Error("Missing agricultural operation activity for agricultural site");
-        }
         return {
           ...baseSiteFeatures,
           nature: "AGRICULTURAL_OPERATION",
           description: sqlSite.description ?? undefined,
-          agriculturalOperationActivity: sqlSite.agricultural_operation_activity,
+          agriculturalOperationActivity: sqlSite.agricultural_operation_activity ?? undefined,
         };
       case "NATURAL_AREA":
-        if (!sqlSite.natural_area_type) {
-          throw new Error("Missing natural area type for natural area site");
-        }
         return {
           ...baseSiteFeatures,
           nature: "NATURAL_AREA",
           description: sqlSite.description ?? undefined,
-          naturalAreaType: sqlSite.natural_area_type,
+          naturalAreaType: sqlSite.natural_area_type ?? undefined,
         };
       case "URBAN_ZONE":
         if (!sqlSite.urban_zone_type) {

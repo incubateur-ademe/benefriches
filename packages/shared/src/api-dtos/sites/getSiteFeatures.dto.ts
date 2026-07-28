@@ -57,12 +57,14 @@ const fricheSiteFeaturesResponseDtoSchema = baseSiteFeaturesSchema.extend({
 
 const agriculturalOperationSiteFeaturesResponseDtoSchema = baseSiteFeaturesSchema.extend({
   nature: siteNatureSchema.extract(["AGRICULTURAL_OPERATION"]),
-  agriculturalOperationActivity: z.string(),
+  // optional: the column is nullable and sites created before it existed have no activity
+  agriculturalOperationActivity: z.string().optional(),
 });
 
 const naturalAreaSiteFeaturesResponseDtoSchema = baseSiteFeaturesSchema.extend({
   nature: siteNatureSchema.extract(["NATURAL_AREA"]),
-  naturalAreaType: z.string(),
+  // optional: the column is nullable and sites created before it existed have no type
+  naturalAreaType: z.string().optional(),
 });
 
 const urbanZoneSiteFeaturesResponseDtoSchema = baseSiteFeaturesSchema.extend({

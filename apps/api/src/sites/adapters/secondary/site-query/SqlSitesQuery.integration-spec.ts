@@ -131,6 +131,62 @@ describe("SqlSitesQuery integration", () => {
       assert.deepStrictEqual(result, expectedResult);
     });
 
+    it("gets agricultural operation site with no recorded activity", async () => {
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        name: "Exploitation sans activité renseignée",
+        nature: "AGRICULTURAL_OPERATION",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: now,
+        agricultural_operation_activity: null,
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        city: "Paris",
+        city_code: "75109",
+        post_code: "75009",
+        ban_id: "123abc",
+        lat: 48.876517,
+        long: 2.330785,
+        value: "1 rue de Londres, 75009 Paris",
+      });
+
+      const result = await sitesQuery.getSiteFeaturesById(siteId);
+
+      const expectedResult: SiteFeaturesView = {
+        id: siteId,
+        name: "Exploitation sans activité renseignée",
+        nature: "AGRICULTURAL_OPERATION",
+        surfaceArea: 14000,
+        isExpressSite: false,
+        owner: { name: undefined, structureType: "company" },
+        tenant: undefined,
+        yearlyExpenses: [],
+        yearlyIncomes: [],
+        address: {
+          city: "Paris",
+          cityCode: "75109",
+          postCode: "75009",
+          banId: "123abc",
+          lat: 48.876517,
+          long: 2.330785,
+          value: "1 rue de Londres, 75009 Paris",
+          streetName: undefined,
+          streetNumber: undefined,
+        },
+        soilsDistribution: {},
+        description: undefined,
+        agriculturalOperationActivity: undefined,
+      };
+
+      assert.deepStrictEqual(result, expectedResult);
+    });
+
     it("gets agricultural operation with only required data", async () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
@@ -273,6 +329,62 @@ describe("SqlSitesQuery integration", () => {
           FOREST_DECIDUOUS: 50000,
         },
         naturalAreaType: "FOREST",
+      };
+
+      assert.deepStrictEqual(result, expectedResult);
+    });
+
+    it("gets natural area site with no recorded natural area type", async () => {
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        name: "Espace naturel sans type renseigné",
+        nature: "NATURAL_AREA",
+        surface_area: 50000,
+        owner_structure_type: "municipality",
+        created_at: now,
+        natural_area_type: null,
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        city: "Fontainebleau",
+        city_code: "77186",
+        post_code: "77300",
+        ban_id: "77186_abc",
+        lat: 48.4,
+        long: 2.7,
+        value: "Fontainebleau",
+      });
+
+      const result = await sitesQuery.getSiteFeaturesById(siteId);
+
+      const expectedResult: SiteFeaturesView = {
+        id: siteId,
+        name: "Espace naturel sans type renseigné",
+        nature: "NATURAL_AREA",
+        isExpressSite: false,
+        description: undefined,
+        surfaceArea: 50000,
+        owner: { name: undefined, structureType: "municipality" },
+        tenant: undefined,
+        yearlyExpenses: [],
+        yearlyIncomes: [],
+        address: {
+          city: "Fontainebleau",
+          cityCode: "77186",
+          postCode: "77300",
+          banId: "77186_abc",
+          lat: 48.4,
+          long: 2.7,
+          value: "Fontainebleau",
+          streetName: undefined,
+          streetNumber: undefined,
+        },
+        soilsDistribution: {},
+        naturalAreaType: undefined,
       };
 
       assert.deepStrictEqual(result, expectedResult);
