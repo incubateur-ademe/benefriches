@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
+import type { TResult } from "src/shared-kernel/result";
 
 import {
   buildAdemeScriptComputeImpactsUseCase,
@@ -27,6 +28,27 @@ const EVALUATION_PERIOD_IN_YEARS = 50;
 
 function logProgress(message: string): void {
   process.stderr.write(`${message}\n`);
+}
+
+// A descriptive lookup must never cost us the row: the impacts are the expensive part.
+// Query adapters signal bad data by throwing (e.g. an urban zone site with no features
+// row), so a throw degrades to blank cells exactly like an unsuccessful Result.
+async function lookupOrBlank<T>(
+  projectLabel: string,
+  what: string,
+  run: () => Promise<TResult<T>>,
+): Promise<T | undefined> {
+  try {
+    const result = await run();
+    if (result.isSuccess()) {
+      return result.getData();
+    }
+    logProgress(`⚠️  ${projectLabel}: ${what} lookup failed (${result.getError()}), cells blank`);
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "Unknown error";
+    logProgress(`⚠️  ${projectLabel}: ${what} lookup failed (${reason}), cells blank`);
+  }
+  return undefined;
 }
 
 // oxlint-disable-next-line typescript/no-floating-promises
@@ -78,29 +100,20 @@ function logProgress(message: string): void {
 
         const computedImpacts = impactsResult.getData();
 
-        const siteResult = await getSiteByIdUseCase.execute({
-          siteId: computedImpacts.relatedSiteId,
-        });
-        if (!siteResult.isSuccess()) {
-          logProgress(
-            `⚠️  ${projectId} (${projectName}): site lookup failed (${siteResult.getError()}), site cells left blank`,
-          );
-        }
-
-        const featuresResult = await getReconversionProjectFeaturesUseCase.execute({
-          reconversionProjectId: projectId,
-        });
-        if (!featuresResult.isSuccess()) {
-          logProgress(
-            `⚠️  ${projectId} (${projectName}): project features lookup failed (${featuresResult.getError()}), project cells left blank`,
-          );
-        }
+        const siteData = await lookupOrBlank(`${projectId} (${projectName})`, "site", () =>
+          getSiteByIdUseCase.execute({ siteId: computedImpacts.relatedSiteId }),
+        );
+        const projectFeatures = await lookupOrBlank(
+          `${projectId} (${projectName})`,
+          "project features",
+          () => getReconversionProjectFeaturesUseCase.execute({ reconversionProjectId: projectId }),
+        );
 
         const row = buildReferentielProjectsCsvRow(
           { createdBy, createdAt },
           computedImpacts,
-          siteResult.isSuccess() ? siteResult.getData().site : undefined,
-          featuresResult.isSuccess() ? featuresResult.getData() : undefined,
+          siteData?.site,
+          projectFeatures,
         );
         process.stdout.write(`${row.map(escapeCsvValue).join(";")}\n`);
         successCount++;
