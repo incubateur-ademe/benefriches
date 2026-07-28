@@ -6,20 +6,24 @@ import path from "node:path";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
-import { buildAdemeScriptComputeImpactsUseCase } from "../ademeScriptDeps";
 import {
-  ADEME_IMPACTS_CSV_HEADERS,
-  buildAdemeImpactsCsvRow,
-  escapeCsvValue,
-} from "../export/ademeImpactsCsvRow";
+  buildAdemeScriptComputeImpactsUseCase,
+  buildAdemeScriptGetReconversionProjectFeaturesUseCase,
+  buildAdemeScriptGetSiteByIdUseCase,
+} from "../ademeScriptDeps";
+import { escapeCsvValue } from "../export/ademeImpactsCsvRow";
+import {
+  REFERENTIEL_PROJECTS_CSV_HEADERS,
+  buildReferentielProjectsCsvRow,
+} from "../export/referentielProjectsCsvRow";
 
 const dotEnvPath = path.resolve(process.cwd(), ".env");
 if (fs.existsSync(dotEnvPath)) {
-  configDotenv({ path: dotEnvPath });
+  // quiet: dotenv's startup banner would otherwise go to stdout and corrupt the CSV
+  configDotenv({ path: dotEnvPath, quiet: true });
 }
 
-const EXTRA_HEADERS = ["Reconversion project ID", "Created by (user ID)", "Created at"];
-const ALL_HEADERS = [...EXTRA_HEADERS, ...ADEME_IMPACTS_CSV_HEADERS];
+const EVALUATION_PERIOD_IN_YEARS = 50;
 
 function logProgress(message: string): void {
   process.stderr.write(`${message}\n`);
@@ -39,13 +43,17 @@ function logProgress(message: string): void {
         "reconversion_projects.created_at",
       )
       .where("reconversion_projects.creation_mode", "custom")
+      .andWhere("reconversion_projects.status", "active")
       .orderBy("reconversion_projects.created_at");
 
-    logProgress(`Found ${projects.length} custom reconversion projects`);
+    logProgress(`Found ${projects.length} custom, active reconversion projects`);
 
     const computeImpactsUseCase = buildAdemeScriptComputeImpactsUseCase(db);
+    const getSiteByIdUseCase = buildAdemeScriptGetSiteByIdUseCase(db);
+    const getReconversionProjectFeaturesUseCase =
+      buildAdemeScriptGetReconversionProjectFeaturesUseCase(db);
 
-    process.stdout.write(`${ALL_HEADERS.map(escapeCsvValue).join(";")}\n`);
+    process.stdout.write(`${REFERENTIEL_PROJECTS_CSV_HEADERS.map(escapeCsvValue).join(";")}\n`);
 
     let successCount = 0;
     let errorCount = 0;
@@ -54,28 +62,47 @@ function logProgress(message: string): void {
       const projectId = project.id as string;
       const projectName = project.name as string;
       const createdBy = project.created_by as string;
-      const createdAt = (project.created_at as Date).toISOString();
+      const createdAt = project.created_at as Date;
 
       try {
-        const result = await computeImpactsUseCase.execute({
+        const impactsResult = await computeImpactsUseCase.execute({
           reconversionProjectId: projectId,
-          evaluationPeriodInYears: 50,
+          evaluationPeriodInYears: EVALUATION_PERIOD_IN_YEARS,
         });
 
-        if (!result.isSuccess()) {
-          logProgress(`❌ ${projectId} (${projectName}): ${result.getError()}`);
+        if (!impactsResult.isSuccess()) {
+          logProgress(`❌ ${projectId} (${projectName}): ${impactsResult.getError()}`);
           errorCount++;
           continue;
         }
 
-        const resultData = result.getData();
-        const impactsRow = buildAdemeImpactsCsvRow(
-          resultData.relatedSiteName,
-          projectName,
-          resultData,
+        const computedImpacts = impactsResult.getData();
+
+        const siteResult = await getSiteByIdUseCase.execute({
+          siteId: computedImpacts.relatedSiteId,
+        });
+        if (!siteResult.isSuccess()) {
+          logProgress(
+            `⚠️  ${projectId} (${projectName}): site lookup failed (${siteResult.getError()}), site cells left blank`,
+          );
+        }
+
+        const featuresResult = await getReconversionProjectFeaturesUseCase.execute({
+          reconversionProjectId: projectId,
+        });
+        if (!featuresResult.isSuccess()) {
+          logProgress(
+            `⚠️  ${projectId} (${projectName}): project features lookup failed (${featuresResult.getError()}), project cells left blank`,
+          );
+        }
+
+        const row = buildReferentielProjectsCsvRow(
+          { createdBy, createdAt },
+          computedImpacts,
+          siteResult.isSuccess() ? siteResult.getData().site : undefined,
+          featuresResult.isSuccess() ? featuresResult.getData() : undefined,
         );
-        const fullRow = [projectId, createdBy, createdAt, ...impactsRow];
-        process.stdout.write(`${fullRow.map(escapeCsvValue).join(";")}\n`);
+        process.stdout.write(`${row.map(escapeCsvValue).join(";")}\n`);
         successCount++;
         logProgress(`✅ ${projectId} (${projectName})`);
       } catch (error) {

@@ -41,6 +41,125 @@ export function escapeCsvValue(value: string | number): string {
   return str;
 }
 
+/**
+ * One property per exportable impact indicator, keyed by what the indicator describes rather
+ * than by its column label or position. This is the single source of truth for how a value is
+ * pulled out of the computed impacts — every export (ADEME, référentiel, ...) projects this
+ * object into its own ordered column array instead of re-deriving these values.
+ */
+export type AdemeImpactFields = {
+  fullTimeJobs: string;
+  soilsCo2eqStorageBase: string;
+  soilsCo2eqStorageForecast: string;
+  soilsCo2eqStorageVariation: string;
+  avoidedCo2eqEmissionsCarTraffic: string;
+  permeableSurfaceAreaBase: string;
+  permeableSurfaceAreaForecast: string;
+  permeableSurfaceAreaVariation: string;
+  contaminatedSurfaceAreaBase: string;
+  contaminatedSurfaceAreaForecast: string;
+  contaminatedSurfaceAreaDifference: string;
+  ecosystemServicesTotal: string;
+  ecosystemServiceNatureRelatedWellnessAndLeisure: string;
+  ecosystemServiceForestRelatedProduct: string;
+  ecosystemServicePollination: string;
+  ecosystemServiceInvasiveSpeciesRegulation: string;
+  ecosystemServiceWaterCycle: string;
+  ecosystemServiceNitrogenCycle: string;
+  ecosystemServiceSoilErosion: string;
+  ecosystemServiceSoilsCo2EqStorage: string;
+  avoidedFricheCosts: string;
+  taxesIncomeTotal: string;
+  propertyTransferDutiesIncome: string;
+  localTransferDutiesIncrease: string;
+  newHousesTaxesIncome: string;
+  newCompanyTaxationIncome: string;
+  photovoltaicTaxesIncome: string;
+  communalExpensesTotal: string;
+  roadsAndUtilitiesMaintenanceExpenses: string;
+  waterRegulationExpenses: string;
+  avoidedAirPollutionExpenses: string;
+  avoidedCo2EqEmissionsValue: string;
+};
+
+export function extractAdemeImpactFields(
+  computedImpacts: Pick<ComputedImpacts, "impacts" | "contaminatedSurfaceArea">,
+): AdemeImpactFields {
+  const { impacts, contaminatedSurfaceArea } = computedImpacts;
+  const socio = impacts.socioeconomic.impacts;
+
+  return {
+    fullTimeJobs: String(impacts.social.fullTimeJobs?.difference ?? ""),
+    soilsCo2eqStorageBase: String(impacts.environmental.soilsCo2eqStorage?.base ?? ""),
+    soilsCo2eqStorageForecast: String(impacts.environmental.soilsCo2eqStorage?.forecast ?? ""),
+    soilsCo2eqStorageVariation: impacts.environmental.soilsCo2eqStorage
+      ? percentageDifference(
+          impacts.environmental.soilsCo2eqStorage.base,
+          impacts.environmental.soilsCo2eqStorage.forecast,
+        )
+      : "",
+    avoidedCo2eqEmissionsCarTraffic: String(
+      impacts.environmental.avoidedCo2eqEmissions?.withCarTrafficDiminution ?? "",
+    ),
+    permeableSurfaceAreaBase: String(impacts.environmental.permeableSurfaceArea.base),
+    permeableSurfaceAreaForecast: String(impacts.environmental.permeableSurfaceArea.forecast),
+    permeableSurfaceAreaVariation: percentageDifference(
+      impacts.environmental.permeableSurfaceArea.base,
+      impacts.environmental.permeableSurfaceArea.forecast,
+    ),
+    contaminatedSurfaceAreaBase: String(contaminatedSurfaceArea?.base ?? ""),
+    contaminatedSurfaceAreaForecast: String(contaminatedSurfaceArea?.forecast ?? ""),
+    contaminatedSurfaceAreaDifference: String(contaminatedSurfaceArea?.difference ?? ""),
+    ecosystemServicesTotal: String(getSocioEconomicAmount(socio, "ecosystem_services")),
+    ecosystemServiceNatureRelatedWellnessAndLeisure: String(
+      getEcosystemServiceDetail(socio, "nature_related_wellness_and_leisure"),
+    ),
+    ecosystemServiceForestRelatedProduct: String(
+      getEcosystemServiceDetail(socio, "forest_related_product"),
+    ),
+    ecosystemServicePollination: String(getEcosystemServiceDetail(socio, "pollination")),
+    ecosystemServiceInvasiveSpeciesRegulation: String(
+      getEcosystemServiceDetail(socio, "invasive_species_regulation"),
+    ),
+    ecosystemServiceWaterCycle: String(getEcosystemServiceDetail(socio, "water_cycle")),
+    ecosystemServiceNitrogenCycle: String(getEcosystemServiceDetail(socio, "nitrogen_cycle")),
+    ecosystemServiceSoilErosion: String(getEcosystemServiceDetail(socio, "soil_erosion")),
+    ecosystemServiceSoilsCo2EqStorage: String(
+      getEcosystemServiceDetail(socio, "soils_co2_eq_storage"),
+    ),
+    avoidedFricheCosts: String(getSocioEconomicAmount(socio, "avoided_friche_costs")),
+    taxesIncomeTotal: String(
+      getSocioEconomicAmount(socio, "property_transfer_duties_income") +
+        getSocioEconomicAmount(socio, "local_transfer_duties_increase") +
+        getSocioEconomicAmount(socio, "taxes_income"),
+    ),
+    propertyTransferDutiesIncome: String(
+      getSocioEconomicAmount(socio, "property_transfer_duties_income"),
+    ),
+    localTransferDutiesIncrease: String(
+      getSocioEconomicAmount(socio, "local_transfer_duties_increase"),
+    ),
+    newHousesTaxesIncome: String(getTaxesIncomeDetail(socio, "project_new_houses_taxes_income")),
+    newCompanyTaxationIncome: String(
+      getTaxesIncomeDetail(socio, "project_new_company_taxation_income"),
+    ),
+    photovoltaicTaxesIncome: String(
+      getTaxesIncomeDetail(socio, "project_photovoltaic_taxes_income"),
+    ),
+    // Dépenses communales — negative in the model (expenses), exported as positive values
+    communalExpensesTotal: String(
+      Math.abs(getSocioEconomicAmount(socio, "roads_and_utilities_maintenance_expenses")) +
+        Math.abs(getSocioEconomicAmount(socio, "water_regulation")),
+    ),
+    roadsAndUtilitiesMaintenanceExpenses: String(
+      Math.abs(getSocioEconomicAmount(socio, "roads_and_utilities_maintenance_expenses")),
+    ),
+    waterRegulationExpenses: String(Math.abs(getSocioEconomicAmount(socio, "water_regulation"))),
+    avoidedAirPollutionExpenses: String(getSocioEconomicAmount(socio, "avoided_air_pollution")),
+    avoidedCo2EqEmissionsValue: String(getSocioEconomicAmount(socio, "avoided_co2_eq_emissions")),
+  };
+}
+
 export const ADEME_IMPACTS_CSV_HEADERS = [
   "Friche",
   "Surface du site (m²)",
@@ -87,60 +206,43 @@ export function buildAdemeImpactsCsvRow(
     "impacts" | "relatedSiteSurfaceArea" | "contaminatedSurfaceArea"
   >,
 ): string[] {
-  const { impacts, relatedSiteSurfaceArea, contaminatedSurfaceArea } = computedImpacts;
-  const socio = impacts.socioeconomic.impacts;
+  const fields = extractAdemeImpactFields(computedImpacts);
 
   return [
     siteName,
-    String(relatedSiteSurfaceArea),
+    String(computedImpacts.relatedSiteSurfaceArea),
     projectName,
-    String(impacts.social.fullTimeJobs?.difference ?? ""),
-    String(impacts.environmental.soilsCo2eqStorage?.base ?? ""),
-    String(impacts.environmental.soilsCo2eqStorage?.forecast ?? ""),
-    impacts.environmental.soilsCo2eqStorage
-      ? percentageDifference(
-          impacts.environmental.soilsCo2eqStorage.base,
-          impacts.environmental.soilsCo2eqStorage.forecast,
-        )
-      : "",
-    String(impacts.environmental.avoidedCo2eqEmissions?.withCarTrafficDiminution ?? ""),
-    String(impacts.environmental.permeableSurfaceArea.base),
-    String(impacts.environmental.permeableSurfaceArea.forecast),
-    percentageDifference(
-      impacts.environmental.permeableSurfaceArea.base,
-      impacts.environmental.permeableSurfaceArea.forecast,
-    ),
-    String(contaminatedSurfaceArea?.base ?? ""),
-    String(contaminatedSurfaceArea?.forecast ?? ""),
-    String(contaminatedSurfaceArea?.difference ?? ""),
-    String(getSocioEconomicAmount(socio, "ecosystem_services")),
-    String(getEcosystemServiceDetail(socio, "nature_related_wellness_and_leisure")),
-    String(getEcosystemServiceDetail(socio, "forest_related_product")),
-    String(getEcosystemServiceDetail(socio, "pollination")),
-    String(getEcosystemServiceDetail(socio, "invasive_species_regulation")),
-    String(getEcosystemServiceDetail(socio, "water_cycle")),
-    String(getEcosystemServiceDetail(socio, "nitrogen_cycle")),
-    String(getEcosystemServiceDetail(socio, "soil_erosion")),
-    String(getEcosystemServiceDetail(socio, "soils_co2_eq_storage")),
-    String(getSocioEconomicAmount(socio, "avoided_friche_costs")),
-    String(
-      getSocioEconomicAmount(socio, "property_transfer_duties_income") +
-        getSocioEconomicAmount(socio, "local_transfer_duties_increase") +
-        getSocioEconomicAmount(socio, "taxes_income"),
-    ),
-    String(getSocioEconomicAmount(socio, "property_transfer_duties_income")),
-    String(getSocioEconomicAmount(socio, "local_transfer_duties_increase")),
-    String(getTaxesIncomeDetail(socio, "project_new_houses_taxes_income")),
-    String(getTaxesIncomeDetail(socio, "project_new_company_taxation_income")),
-    String(getTaxesIncomeDetail(socio, "project_photovoltaic_taxes_income")),
-    // Dépenses communales — negative in the model (expenses), exported as positive values
-    String(
-      Math.abs(getSocioEconomicAmount(socio, "roads_and_utilities_maintenance_expenses")) +
-        Math.abs(getSocioEconomicAmount(socio, "water_regulation")),
-    ),
-    String(Math.abs(getSocioEconomicAmount(socio, "roads_and_utilities_maintenance_expenses"))),
-    String(Math.abs(getSocioEconomicAmount(socio, "water_regulation"))),
-    String(getSocioEconomicAmount(socio, "avoided_air_pollution")),
-    String(getSocioEconomicAmount(socio, "avoided_co2_eq_emissions")),
+    fields.fullTimeJobs,
+    fields.soilsCo2eqStorageBase,
+    fields.soilsCo2eqStorageForecast,
+    fields.soilsCo2eqStorageVariation,
+    fields.avoidedCo2eqEmissionsCarTraffic,
+    fields.permeableSurfaceAreaBase,
+    fields.permeableSurfaceAreaForecast,
+    fields.permeableSurfaceAreaVariation,
+    fields.contaminatedSurfaceAreaBase,
+    fields.contaminatedSurfaceAreaForecast,
+    fields.contaminatedSurfaceAreaDifference,
+    fields.ecosystemServicesTotal,
+    fields.ecosystemServiceNatureRelatedWellnessAndLeisure,
+    fields.ecosystemServiceForestRelatedProduct,
+    fields.ecosystemServicePollination,
+    fields.ecosystemServiceInvasiveSpeciesRegulation,
+    fields.ecosystemServiceWaterCycle,
+    fields.ecosystemServiceNitrogenCycle,
+    fields.ecosystemServiceSoilErosion,
+    fields.ecosystemServiceSoilsCo2EqStorage,
+    fields.avoidedFricheCosts,
+    fields.taxesIncomeTotal,
+    fields.propertyTransferDutiesIncome,
+    fields.localTransferDutiesIncrease,
+    fields.newHousesTaxesIncome,
+    fields.newCompanyTaxationIncome,
+    fields.photovoltaicTaxesIncome,
+    fields.communalExpensesTotal,
+    fields.roadsAndUtilitiesMaintenanceExpenses,
+    fields.waterRegulationExpenses,
+    fields.avoidedAirPollutionExpenses,
+    fields.avoidedCo2EqEmissionsValue,
   ];
 }
