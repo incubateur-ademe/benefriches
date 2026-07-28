@@ -261,10 +261,13 @@ describe("SqlReconversionProjectRepository integration", () => {
               "dp.schedule_start_date",
               "dp.schedule_end_date",
               "dp.reconversion_project_id",
+              // ORDER BY: json_agg has no inherent ordering, so without it the aggregated
+              // costs come back in whatever order the join produces and this assertion
+              // fails intermittently
               sqlConnection.raw(`
               CASE
                 WHEN count(cost.id) = 0 THEN '[]'::json
-                ELSE json_agg(json_build_object('amount', cost.amount, 'purpose', cost.purpose))
+                ELSE json_agg(json_build_object('amount', cost.amount, 'purpose', cost.purpose) ORDER BY cost.purpose)
               END as "costs"
             `),
             )
