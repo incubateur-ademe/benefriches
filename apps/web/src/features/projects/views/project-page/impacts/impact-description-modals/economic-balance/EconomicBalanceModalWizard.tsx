@@ -1,5 +1,4 @@
-import type { MDXComponents } from "mdx/types";
-import { lazy, Suspense, useContext, useMemo } from "react";
+import { Suspense, useContext, useMemo } from "react";
 import {
   ProjectDevelopmentEconomicBalanceItem,
   ProjectOperatingEconomicBalanceItem,
@@ -20,17 +19,14 @@ import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalC
 import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
-import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
-import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import { filterByName } from "@/shared/core/filter-by-name/filterByName";
-import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { getEconomicBalanceImpactLabel } from "../../getImpactLabel";
 import ModalTable from "../shared/ModalTable";
+import { LazyContent, LazyContentComponent } from "../shared/lazy-content/LazyContent";
 import ModalColumnPointChart from "../shared/modal-charts/ModalColumnPointChart";
 import EconomicBalanceDescription from "./EconomicBalanceDescription";
-import ModalSiteOrProjectFeature from "./EconomicBalanceModalSiteOrProjectFeature";
 import { getEconomicBalanceImpactColor } from "./colors";
 
 type Props = {
@@ -342,19 +338,10 @@ const ECONOMIC_BALANCE_MODALS = {
   | {
       title: string;
       getData: (impactsData: ModalDataProps["impactsData"]) => EconomicBalanceModalData | undefined;
-      Component: () => Promise<{
-        default: React.ComponentType<{ components?: MDXComponents } & Record<string, unknown>>;
-      }>;
+      Component: LazyContentComponent;
     }
   | undefined
 >;
-
-function bindProps<P extends object, K extends keyof P>(
-  Component: React.ComponentType<P>,
-  boundProps: Pick<P, K>,
-) {
-  return (props: Omit<P, K>) => <Component {...(boundProps as P)} {...(props as P)} />;
-}
 
 export function EconomicBalanceModalWizard({
   impactName,
@@ -387,28 +374,6 @@ export function EconomicBalanceModalWizard({
     return impactName ? ECONOMIC_BALANCE_MODALS[impactDetailsName ?? impactName] : undefined;
   }, [impactName, impactDetailsName]);
 
-  const BoundSiteFeature = useMemo(
-    () =>
-      bindProps(ModalSiteOrProjectFeature, {
-        siteSurfaceArea: contextData.siteSurfaceArea,
-        soilsDistribution:
-          impactsData.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.filter(
-            (item) => item.name === "soilsDistribution",
-          ),
-      }),
-    [contextData, impactsData],
-  );
-  const BoundProjectFeature = useMemo(
-    () =>
-      bindProps(ModalSiteOrProjectFeature, {
-        soilsDistribution:
-          impactsData.reconversionImpactsBreakdown.projectIndirectImpactMetrics.filter(
-            (item) => item.name === "soilsDistribution",
-          ),
-      }),
-    [impactsData],
-  );
-
   if (!impactName) {
     return (
       <EconomicBalanceDescription
@@ -433,7 +398,6 @@ export function EconomicBalanceModalWizard({
 
   const { Component, title, getData } = config;
   const data = getData(impactsData);
-  const LazyComponent = lazy(Component);
 
   return (
     <Suspense fallback={<LoadingSpinner classes={{ text: "text-grey-light" }} />}>
@@ -478,14 +442,10 @@ export function EconomicBalanceModalWizard({
             </ModalData>
           )}
           <ModalContent>
-            <LazyComponent
-              components={{
-                a: ExternalLink,
-                h2: ModalTitleTwo,
-                h3: ModalTitleThree,
-                SiteFeature: BoundSiteFeature,
-                ProjectFeature: BoundProjectFeature,
-              }}
+            <LazyContent
+              contextData={contextData}
+              impactsData={impactsData}
+              Component={Component}
             />
           </ModalContent>
         </ModalGrid>

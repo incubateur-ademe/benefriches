@@ -1,0 +1,29 @@
+_Dans certains projets (ex : centrale photovoltaïque au sol), le foncier aménagé ne fait pas l’objet de cession mais d’une location. Les revenus issus de cette éventuelle location sont repris ici._
+
+_La valeur est saisie par l’utilisateur. A défaut, Bénéfriches calcule un revenu locatif moyen._
+
+**Bénéficiaires** : actuel propriétaire, futur propriétaire (si acquisition du foncier)
+
+## Quelles données sont utilisées dans le calcul ?
+
+### Données systémiques agrégées par Bénéfriches :
+
+- _Ratio “Dépenses de location de terrain par unité de puissance installée” : 4 €/kWc_
+
+### Données du projet :
+
+_Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou avoir été suggérées par Bénéfriches sur la base d’une moyenne ou d’une hypothèse._
+
+<ProjectFeature
+  value="photovoltaicSurfaceArea"
+  label="📏 Surface au sol occupée par les panneaux"
+/>
+<ProjectFeature value="electricalPowerKwc" label="🔌 Puissance installée" />
+
+## Comment est fait le calcul ?
+
+_Le revenu locatif est calculé en multipliant le ratio “Dépenses de location de terrain par unité de puissance installée” par la puissance installée._
+
+## Sources
+
+- [CRE : Coûts et rentabilités du grand photovoltaïque en métropole continentale](https://www.cre.fr/documents/Publications/Rapports-thematiques/Couts-et-rentabilites-du-grand-photovoltaique-en-metropole-continentale)

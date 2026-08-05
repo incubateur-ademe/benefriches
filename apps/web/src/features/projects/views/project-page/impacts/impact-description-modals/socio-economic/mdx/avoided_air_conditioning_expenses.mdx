@@ -1,0 +1,48 @@
+La présence de nature en ville peut dans une certaine mesure (type de végétation, surface, distance, configuration urbaine, etc.) conduire à des effets mesurables en termes de rafraîchissement des bâtiments alentours, conduisant à un moindre besoin en rafraîchissement actif (ventilation, climatisation) réduisant d’autant les factures d’électricité des équipements associés.
+
+**Bénéficiaire** : Riverains
+
+## Quelles données sont utilisées dans le calcul ?
+
+### Données systémiques agrégées par Bénéfriches :
+
+- Facture moyenne annuelle d’énergie des ménages pour leur logement : 1744€
+- Facture moyenne annuelle d’énergie des locaux d’activités économiques, d’équipements et de services : 0,15€/kWhEF pour 164 kWhEF/m² par an.
+- Réduction de la facture en électricité liée aux équipements de rafraîchissement ou de climatisation pour baisser la température d’un logement d’1°C : 7%
+- Part de la consommation moyenne d’électricité aux fins de refroidissement (dans les logements qui sont équipés de système de climatisation) : 3,4 %
+- Nombre de ménages présents dans la zone d’influence de l’effet
+- Surface de locaux d’activités économiques, d’équipements et de services présents dans la zone d’influence de l’effet
+- Zone d’influence de l’effet « Îlot de fraîcheur » : variable selon (i) la nouvelle surface d’espace de nature crée par le projet(m²), (ii) le % que cette nouvelle surface représente dans le projet et (iii) la distance de l’espace de nature (cette dernière est limitée à 75m, suite à l’analyse de la bibliographie disponible)
+
+### Données du projet :
+
+_Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou avoir été suggérées par Bénéfriches sur la base d’une moyenne ou d’une hypothèse._
+
+- Nouvelle surface d’espace de nature crée par le projet (exprimée en m²)
+- Surface de logements créés par le projet (exprimée en m² SDP)
+- Surface de bâtiments d’activités économiques et d’équipements publics créés par le projet (exprimés en m² SDP)
+
+<>
+  <ProjectFeature value="residentialBuildingsFloorArea" label="Surfaces de logements prévues" />
+  <ProjectFeature value="officesBuildingsFloorArea" label="Surfaces de bureaux prévues" />
+  <ProjectFeature
+    value="publicFacilitiesBuildingsFloorArea"
+    label="Surfaces de services publics prévues"
+  />
+</>
+
+## Comment est fait le calcul ?
+
+Le gain économique annuel sur les factures d’électricité du fait de l’effet « îlot de fraicheur » est calculé en additionnant le produit suivant, pour les ménages d’une part et les locaux d’activités économiques, d’équipements et de services d’autre part, dans la zone d’influence de l’effet : \[Réduction de la facture en électricité liée aux équipements de rafraîchissement ou de climatisation] \_ \[Part de la consommation moyenne d’électricité aux fins de refroidissement] \_ \[consommation moyenne annuelle d’électricité] \* \[nombre de ménage ou nombre de m² de locaux d’activités économiques, d’équipements et de services dans la zone d’influence de l’effet].
+
+## Sources
+
+- ADEME, « Chiffres-clés », Climat, Air et Energie, édition 2014 (p.4 du document)
+- [Facteurs d’émission associés à la production de différentes sources d’énergie](https://base-empreinte.ademe.fr/donnees/jeu-donnees)
+- Observatoire de l’Immobilier Durable cité par Le Moniteur en référence à la fin de la section
+- Ministère de l’Environnement sur « Les ménages et la consommation d’énergie » de mars 2017, édité par le service de l’observation et des statistiques (SoeS)
+
+## Aller plus loin
+
+- [Référentiel Bénéfriches](https://librairie.ademe.fr/changement-climatique-et-energie/3772-evaluer-les-benefices-socio-economiques-de-la-reconversion-de-friches-pour-lutter-contre-l-artificialisation-outil-benefriches.html)
+- [ADEME (octobre 2018), « Aménager avec la nature en ville », ADEME Editions](https://librairie.ademe.fr/urbanisme-territoires-et-sols/1170-amenager-avec-la-nature-en-ville.html)

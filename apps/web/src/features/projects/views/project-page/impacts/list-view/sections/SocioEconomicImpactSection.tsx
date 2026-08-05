@@ -49,47 +49,52 @@ const SocioEconomicImpactSection = ({ impacts, sectionName, modalData, ...props 
         {...props}
         dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-List`}
       >
-        {impacts[sectionName].impacts.map(({ name, amount, details = [], bearerName }) => (
-          <React.Fragment key={`wrapper-${name}`}>
+        {impacts[sectionName].impacts.map(({ keyName, total, ...rest }) => (
+          <React.Fragment key={`wrapper-${keyName}`}>
             <ImpactModalDescription
-              dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-${name}-List`}
+              dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-${keyName}-List`}
               initialState={{
                 sectionName: "socio_economic",
                 subSectionName: sectionName,
-                impactName: name,
+                impactName: keyName,
               }}
               {...modalData}
             />
-            <ImpactItemGroup isClickable key={`group-${name}`}>
+            <ImpactItemGroup isClickable key={`group-${keyName}`}>
               <ImpactItemDetails
-                value={amount}
-                label={getSocioEconomicImpactLabel(name)}
-                actor={bearerName}
-                data={details.map((item) => ({
-                  label: getSocioEconomicImpactLabel(item.name),
-                  value: item.amount,
-                  labelProps: getDialogControlButtonProps(
-                    `fr-modal-impacts-socioeconomic-${sectionName}-${name}-${item.name}-List`,
-                  ),
-                }))}
+                value={total}
+                label={getSocioEconomicImpactLabel(keyName)}
+                actor={"bearerName" in rest ? rest.bearerName : undefined}
+                data={
+                  "details" in rest
+                    ? rest.details.map((item) => ({
+                        label: getSocioEconomicImpactLabel(item.keyName),
+                        value: item.total,
+                        labelProps: getDialogControlButtonProps(
+                          `fr-modal-impacts-socioeconomic-${sectionName}-${keyName}-${item.keyName}-List`,
+                        ),
+                      }))
+                    : undefined
+                }
                 type="monetary"
                 labelProps={getDialogControlButtonProps(
-                  `fr-modal-impacts-socioeconomic-${sectionName}-${name}-List`,
+                  `fr-modal-impacts-socioeconomic-${sectionName}-${keyName}-List`,
                 )}
               />
-              {details.map(({ name: detailsName }) => (
-                <ImpactModalDescription
-                  key={detailsName}
-                  dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-${name}-${detailsName}-List`}
-                  initialState={{
-                    sectionName: "socio_economic",
-                    subSectionName: sectionName,
-                    impactName: name,
-                    impactDetailsName: detailsName,
-                  }}
-                  {...modalData}
-                />
-              ))}
+              {"details" in rest &&
+                rest.details.map(({ keyName: detailsName }) => (
+                  <ImpactModalDescription
+                    key={detailsName}
+                    dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-${keyName}-${detailsName}-List`}
+                    initialState={{
+                      sectionName: "socio_economic",
+                      subSectionName: sectionName,
+                      impactName: keyName,
+                      impactDetailsName: detailsName,
+                    }}
+                    {...modalData}
+                  />
+                ))}
             </ImpactItemGroup>
           </React.Fragment>
         ))}

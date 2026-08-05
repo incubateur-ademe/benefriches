@@ -34,117 +34,127 @@ describe("projectImpactsSocioEconomic selectors", () => {
 
       expect(localPeopleOrCompany.impacts).toContainEqual(
         expect.objectContaining({
-          amount: 131000,
+          total: 131000,
           bearerName: "Current tenant",
           details: [
             {
-              amount: 100000,
-              name: "avoidedFricheMaintenanceAndSecuringCostsForTenant.accidentsCost",
+              total: 100000,
+              keyName: "avoidedFricheMaintenanceAndSecuringCostsForTenant.accidentsCost",
+              name: "accidentsCost",
             },
             {
-              amount: 10000,
-              name: "avoidedFricheMaintenanceAndSecuringCostsForTenant.illegalDumpingCost",
+              total: 10000,
+              keyName: "avoidedFricheMaintenanceAndSecuringCostsForTenant.illegalDumpingCost",
+              name: "illegalDumpingCost",
             },
             {
-              amount: 10000,
-              name: "avoidedFricheMaintenanceAndSecuringCostsForTenant.otherSecuringCosts",
+              total: 10000,
+              keyName: "avoidedFricheMaintenanceAndSecuringCostsForTenant.otherSecuringCosts",
+              name: "otherSecuringCosts",
             },
             {
-              amount: 1000,
-              name: "avoidedFricheMaintenanceAndSecuringCostsForTenant.maintenance",
+              total: 1000,
+              keyName: "avoidedFricheMaintenanceAndSecuringCostsForTenant.maintenance",
+              name: "maintenance",
             },
             {
-              amount: 10000,
-              name: "avoidedFricheMaintenanceAndSecuringCostsForTenant.security",
+              total: 10000,
+              keyName: "avoidedFricheMaintenanceAndSecuringCostsForTenant.security",
+              name: "security",
             },
           ],
-          name: "avoidedFricheMaintenanceAndSecuringCostsForTenant",
+          keyName: "avoidedFricheMaintenanceAndSecuringCostsForTenant",
         }),
       );
 
       expect(localAuthority.impacts).toContainEqual(
         expect.objectContaining({
-          amount: -540000,
+          total: -540000,
           bearerName: "Mairie de Blajan",
-          name: "oldRentalIncomeLoss",
+          keyName: "oldRentalIncomeLoss",
         }),
       );
 
       expect(localAuthority.impacts).toContainEqual(
         expect.objectContaining({
-          amount: 5432,
+          total: 5432,
           bearerName: undefined,
-          name: "propertyTransferDutiesIncome",
+          keyName: "propertyTransferDutiesIncome",
         }),
       );
 
       expect(localAuthority.impacts).toContainEqual(
         expect.objectContaining({
-          amount: 5000,
-          bearerName: undefined,
+          total: 5000,
           details: [
             {
-              amount: 5000,
+              total: 5000,
               name: "projectPhotovoltaicTaxesIncome",
+              keyName: "taxesIncome.projectPhotovoltaicTaxesIncome",
             },
           ],
-          name: "taxesIncome",
+          keyName: "taxesIncome",
         }),
       );
 
       expect(humanity.impacts).toContainEqual(
         expect.objectContaining({
-          amount: 168444,
-          bearerName: undefined,
+          total: 168444,
           details: [
             {
-              amount: 168444,
+              total: 168444,
               name: "avoidedCo2eqWithEnergyProduction",
+              keyName: "avoidedCo2eqEmissions.avoidedCo2eqWithEnergyProduction",
             },
           ],
-          name: "avoidedCo2eqEmissions",
+          keyName: "avoidedCo2eqEmissions",
         }),
       );
 
       expect(localAuthority.impacts).toContainEqual(
         expect.objectContaining({
-          amount: 4720,
+          total: 4720,
           bearerName: undefined,
-          name: "waterRegulation",
+          keyName: "waterRegulation",
         }),
       );
 
       expect(humanity.impacts).toContainEqual(
         expect.objectContaining({
-          amount: 29820,
-          bearerName: undefined,
+          total: 29820,
           details: [
             {
-              amount: 1420,
+              total: 1420,
               name: "natureRelatedWelnessAndLeisure",
+              keyName: "ecosystemServices.natureRelatedWelnessAndLeisure",
             },
             {
-              amount: 1840,
+              total: 1840,
               name: "pollination",
+              keyName: "ecosystemServices.pollination",
             },
             {
-              amount: 680,
+              total: 680,
               name: "invasiveSpeciesRegulation",
+              keyName: "ecosystemServices.invasiveSpeciesRegulation",
             },
             {
-              amount: 19500,
+              total: 19500,
               name: "waterCycle",
+              keyName: "ecosystemServices.waterCycle",
             },
             {
-              amount: 1380,
+              total: 1380,
               name: "nitrogenCycle",
+              keyName: "ecosystemServices.nitrogenCycle",
             },
             {
-              amount: 5000,
+              total: 5000,
               name: "soilErosion",
+              keyName: "ecosystemServices.soilErosion",
             },
           ],
-          name: "ecosystemServices",
+          keyName: "ecosystemServices",
         }),
       );
     });

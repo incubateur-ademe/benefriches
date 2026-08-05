@@ -6,7 +6,7 @@ import {
 } from "shared";
 
 import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
-import { groupByListViewCategory } from "@/features/projects/core/projectImpactsSocioEconomic";
+import { groupSocioEconomicImpactsByListViewCategory } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { LOCAL_PEOPLE_OR_COMPANY_IMPACTS_CATEGORIES } from "@/features/projects/views/shared/impacts/impactGroupCategory";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 
@@ -28,16 +28,16 @@ const LocalPeopleOrCompanyDescription = ({ impactsData }: Props) => {
         label: LOCAL_PEOPLE_OR_COMPANY_IMPACTS_CATEGORIES[category].label,
         total: sumListWithKey(items, "total"),
 
-        values: typedObjectEntries(groupByListViewCategory(items)).map(([name, details = []]) => ({
-          name: name,
-          value: sumListWithKey(details, "total"),
-          label: getSocioEconomicImpactLabel(name),
-          color: getSocioEconomicImpactColor(name),
+        values: groupSocioEconomicImpactsByListViewCategory(items).map(({ keyName, total }) => ({
+          name: keyName,
+          value: total,
+          label: getSocioEconomicImpactLabel(keyName),
+          color: getSocioEconomicImpactColor(keyName),
           onClick: () => {
             updateModalContent({
               sectionName: "socio_economic",
               subSectionName: "localPeopleOrCompany",
-              impactName: name,
+              impactName: keyName,
             });
           },
         })),

@@ -35,16 +35,20 @@ export default function SocioEconomicImpactsSection({ impacts, sectionName }: Pr
         total={impacts[sectionName].total}
         valueType="monetary"
       >
-        {impacts[sectionName].impacts.map(({ name, amount, details = [], bearerName }) => (
-          <ImpactItemGroup key={name}>
+        {impacts[sectionName].impacts.map(({ keyName, total, ...rest }) => (
+          <ImpactItemGroup key={keyName}>
             <ImpactItemDetails
-              value={amount}
-              label={getSocioEconomicImpactLabel(name)}
-              actor={bearerName}
-              data={details.map((item) => ({
-                label: getSocioEconomicImpactLabel(item.name),
-                value: item.amount,
-              }))}
+              value={total}
+              label={getSocioEconomicImpactLabel(keyName)}
+              actor={"bearerName" in rest ? rest.bearerName : undefined}
+              data={
+                "details" in rest
+                  ? rest.details.map((item) => ({
+                      label: getSocioEconomicImpactLabel(item.keyName),
+                      value: item.total,
+                    }))
+                  : undefined
+              }
               type="monetary"
             />
           </ImpactItemGroup>

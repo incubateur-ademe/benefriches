@@ -1,6 +1,6 @@
-import { SocioEconomicMainImpactName } from "@/features/projects/core/projectImpactsSocioEconomic";
+import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 
-export const getSocioEconomicImpactColor = (impactName: SocioEconomicMainImpactName) => {
+export const getSocioEconomicImpactColor = (impactName: SocioEconomicImpactImpactKeyName) => {
   switch (impactName) {
     case "avoidedFricheMaintenanceAndSecuringCostsForOwner":
     case "avoidedFricheMaintenanceAndSecuringCostsForTenant":
@@ -42,5 +42,52 @@ export const getSocioEconomicImpactColor = (impactName: SocioEconomicMainImpactN
       return "#F5E900";
     case "projectOperatingRevenues":
       return "#57B54B";
+
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner.accidentsCost":
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant.accidentsCost":
+      return "#E73518";
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner.illegalDumpingCost":
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant.illegalDumpingCost":
+      return "#AD6524";
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner.maintenance":
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant.maintenance":
+      return "#9E89CC";
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner.otherSecuringCosts":
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant.otherSecuringCosts":
+      return "#C4C5C6";
+    case "avoidedFricheMaintenanceAndSecuringCostsForOwner.security":
+    case "avoidedFricheMaintenanceAndSecuringCostsForTenant.security":
+      return "#AFF6FF";
+
+    case "avoidedCo2eqEmissions.avoidedCo2eqWithEnergyProduction":
+      return "#F6E900";
+    case "avoidedCo2eqEmissions.avoidedAirConditioningCo2eqEmissions":
+      return "#1F60FB";
+    case "avoidedCo2eqEmissions.avoidedTrafficCo2EqEmissions":
+      return "#C750CA";
+
+    case "ecosystemServices.newStoredCo2Eq":
+      return "#FF8910";
+    case "ecosystemServices.soilErosion":
+      return "#C3D869";
+    case "ecosystemServices.forestRelatedProduct":
+      return "#A27C61";
+    case "ecosystemServices.natureRelatedWelnessAndLeisure":
+      return "#75399D";
+    case "ecosystemServices.pollination":
+      return "#F6E900";
+    case "ecosystemServices.invasiveSpeciesRegulation":
+      return "#2D163C";
+    case "ecosystemServices.nitrogenCycle":
+      return "#F83A31";
+    case "ecosystemServices.waterCycle":
+      return "#1F60FB";
+
+    case "taxesIncome.projectNewCompanyTaxationIncome":
+      return "#1D5DA2";
+    case "taxesIncome.projectNewHousesTaxesIncome":
+      return "#C649CA";
+    case "taxesIncome.projectPhotovoltaicTaxesIncome":
+      return "#FF9700";
   }
 };

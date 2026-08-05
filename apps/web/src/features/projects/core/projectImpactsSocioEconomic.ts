@@ -1,15 +1,12 @@
 import {
   sumListWithKey,
   GetReconversionProjectImpactsResultDto,
-  IndirectEconomicImpactName,
-  typedObjectEntries,
   ReconversionStakeholders,
   AggregatedReconversionIndirectEconomicImpactsDataView,
   AggregatedReconversionProjectOnSiteImpactItemView,
-  RecurringExpensePurpose,
-  RecurringRevenue,
-  AvoidedFricheCostsIndirectEconomicImpactItemView,
 } from "shared";
+
+import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 
 import { groupIndirectEconomicImpactsByBearer } from "./groupIndirectImpactsByBearer";
 
@@ -20,75 +17,39 @@ export type SocioEconomicImpactsByBearerListView = {
   localAuthority: { total: number; impacts: SocioEconomicImpactsDetailsByBearerListView[] };
 };
 
-const simpleSocioEconomicImpactNames = [
-  "previousSiteOperationBenefitLoss",
-  "projectedRentalIncome",
-  "oldRentalIncomeLoss",
-  "avoidedPropertyDamageExpenses",
-  "avoidedCarRelatedExpenses",
-  "avoidedAirConditioningExpenses",
-  "travelTimeSavedPerTravelerExpenses",
-  "localPropertyValueIncrease",
-  "propertyTransferDutiesIncome",
-  "localTransferDutiesIncrease",
-  "waterRegulation",
-  "fricheRoadsAndUtilitiesExpenses",
-  "avoidedAirPollutionHealthExpenses",
-] as const satisfies IndirectEconomicImpactName[];
+export type SocioEconomicMainImpactName = SocioEconomicImpactMainImpactKeyName;
+export type SocioEconomicDetailsName = SocioEconomicImpactDetailsImpactKeyName;
 
-type SimpleSocioEconomicImpactName = (typeof simpleSocioEconomicImpactNames)[number];
+export type SocioEconomicImpactImpactKeyName =
+  | SocioEconomicImpactMainImpactKeyName
+  | SocioEconomicImpactDetailsImpactKeyName;
 
-export type WithDetailsSocioEconomicImpactName =
-  | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
-  | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
-  | "taxesIncome"
-  | "ecosystemServices"
-  | "avoidedCo2eqEmissions"
-  | "avoidedTrafficAccidents"
-  | "projectOperatingRevenues"
-  | "projectOperatingExpenses";
+type SocioEconomicImpactByListViewCategory = ReturnType<
+  typeof groupSocioEconomicImpactsByListViewCategory
+>;
+export type SocioEconomicImpactMainImpactKeyName =
+  SocioEconomicImpactByListViewCategory[number]["keyName"];
 
-export type SocioEconomicImpactListViewGroupName =
-  | WithDetailsSocioEconomicImpactName
-  | SimpleSocioEconomicImpactName;
+type SocioEconomicImpactDetailsImpactKeyName = Extract<
+  SocioEconomicImpactByListViewCategory[number],
+  {
+    keyName:
+      | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+      | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
+      | "projectOperatingExpenses"
+      | "projectOperatingRevenues"
+      | "taxesIncome"
+      | "avoidedCo2eqEmissions"
+      | "ecosystemServices"
+      | "avoidedTrafficAccidents";
+  }
+>["details"][number]["keyName"];
 
-export type SocioEconomicMainImpactName = SocioEconomicImpactListViewGroupName;
-export type SocioEconomicDetailsName = SocioEconomicImpactListViewDetailsName;
-
-type SocioEconomicImpactListViewDetailsName =
-  | `projectOperatingRevenues.${RecurringRevenue["source"]}`
-  | `projectOperatingExpenses.${RecurringExpensePurpose}`
-  | `${AvoidedFricheCostsIndirectEconomicImpactItemView["name"]}.${AvoidedFricheCostsIndirectEconomicImpactItemView["details"]}`
-  | "projectNewHousesTaxesIncome"
-  | "projectNewCompanyTaxationIncome"
-  | "projectPhotovoltaicTaxesIncome"
-  | "newStoredCo2Eq"
-  | "natureRelatedWelnessAndLeisure"
-  | "forestRelatedProduct"
-  | "pollination"
-  | "invasiveSpeciesRegulation"
-  | "waterCycle"
-  | "nitrogenCycle"
-  | "soilErosion"
-  | "avoidedCo2eqWithEnergyProduction"
-  | "avoidedAirConditioningCo2eqEmissions"
-  | "avoidedTrafficCo2EqEmissions"
-  | "avoidedAccidentsMinorInjuriesExpenses"
-  | "avoidedAccidentsSevereInjuriesExpenses"
-  | "avoidedAccidentsDeathsExpenses";
-
-export type SocioEconomicImpactsDetailsByBearerListView = {
-  name: SocioEconomicImpactListViewGroupName;
-  amount: number;
-  bearerName?: string;
-  details?: {
-    name: SocioEconomicImpactListViewDetailsName;
-    amount: number;
-  }[];
-};
+export type SocioEconomicImpactsDetailsByBearerListView =
+  SocioEconomicImpactByListViewCategory[number];
 
 const BEARER_NAME_RESOLVERS: Map<
-  SocioEconomicImpactListViewGroupName,
+  AggregatedReconversionIndirectEconomicImpactsDataView["details"][number]["name"],
   (s?: ReconversionStakeholders) => string
 > = new Map([
   [
@@ -122,83 +83,145 @@ const BEARER_NAME_RESOLVERS: Map<
 ]);
 
 const getBearerName = (
-  itemName: SocioEconomicImpactListViewGroupName,
+  itemName: AggregatedReconversionIndirectEconomicImpactsDataView["details"][number]["name"],
   stakeholders?: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"],
 ): string | undefined => {
   const resolve = BEARER_NAME_RESOLVERS.get(itemName);
   return resolve ? resolve(stakeholders) : undefined;
 };
 
-export const groupByListViewCategory = (
-  indirectEconomicImpacts: AggregatedReconversionProjectOnSiteImpactItemView[],
-) => {
-  return Object.groupBy(indirectEconomicImpacts, ({ name }) => {
-    switch (name) {
-      case "projectNewHousesTaxesIncome":
-      case "projectNewCompanyTaxationIncome":
-      case "projectPhotovoltaicTaxesIncome":
-        return "taxesIncome";
+function extractDetails<
+  T extends AggregatedReconversionProjectOnSiteImpactItemView,
+  G extends Extract<
+    T["name"],
+    | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+    | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
+    | "projectOperatingExpenses"
+    | "projectOperatingRevenues"
+  >,
+>(items: readonly T[], groupName: G, bearerName?: string) {
+  const details = filterByName(items, groupName).map((item) => ({
+    name: item.details as Extract<T, { name: G }>["details"],
+    total: item.total,
+    keyName: `${groupName}.${item.details}` as `${G}.${Extract<T, { name: G }>["details"]}`,
+  }));
 
-      case "avoidedCo2eqWithEnergyProduction":
-      case "avoidedAirConditioningCo2eqEmissions":
-      case "avoidedTrafficCo2EqEmissions":
-        return "avoidedCo2eqEmissions";
+  return {
+    total: sumListWithKey(details, "total"),
+    details,
+    keyName: groupName,
+    bearerName: bearerName,
+  };
+}
 
-      case "newStoredCo2Eq":
-      case "natureRelatedWelnessAndLeisure":
-      case "forestRelatedProduct":
-      case "pollination":
-      case "invasiveSpeciesRegulation":
-      case "waterCycle":
-      case "nitrogenCycle":
-      case "soilErosion":
-        return "ecosystemServices";
+function groupImpacts<
+  T extends AggregatedReconversionProjectOnSiteImpactItemView,
+  G extends string,
+  N extends T["name"],
+>(items: readonly T[], groupName: G, ...names: N[]) {
+  const details = filterByName(items, ...names).map((item) => ({
+    name: item.name,
+    total: item.total,
+    keyName: `${groupName}.${item.name}` as const,
+  }));
 
-      case "avoidedAccidentsMinorInjuriesExpenses":
-      case "avoidedAccidentsSevereInjuriesExpenses":
-      case "avoidedAccidentsDeathsExpenses":
-        return "avoidedTrafficAccidents";
+  return {
+    total: sumListWithKey(details, "total"),
+    details,
+    keyName: groupName,
+  };
+}
 
-      default:
-        return name;
-    }
-  });
-};
+function formatImpacts(
+  items: readonly AggregatedReconversionProjectOnSiteImpactItemView[],
+  stakeholders?: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"],
+) {
+  return filterByName(
+    items,
+    "previousSiteOperationBenefitLoss",
+    "oldRentalIncomeLoss",
+    "projectedRentalIncome",
+    "fricheRoadsAndUtilitiesExpenses",
+    "waterRegulation",
+    "avoidedAirConditioningExpenses",
+    "avoidedPropertyDamageExpenses",
+    "avoidedCarRelatedExpenses",
+    "avoidedAirPollutionHealthExpenses",
+    "travelTimeSavedPerTravelerExpenses",
+    "propertyTransferDutiesIncome",
+    "localPropertyValueIncrease",
+    "localTransferDutiesIncrease",
+  ).map((item) => ({
+    name: item.name,
+    total: item.total,
+    keyName: item.name,
+    bearerName: getBearerName(item.name, stakeholders),
+  }));
+}
 
-const formatAsListViewArray = (
-  indirectEconomicImpacts: AggregatedReconversionProjectOnSiteImpactItemView[],
+export const groupSocioEconomicImpactsByListViewCategory = (
+  indirectEconomicImpacts: AggregatedReconversionIndirectEconomicImpactsDataView["details"],
   stakeholders?: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"],
 ) => {
-  return typedObjectEntries(groupByListViewCategory(indirectEconomicImpacts)).reduce<
-    SocioEconomicImpactsDetailsByBearerListView[]
-  >((result, [groupName, impacts]) => {
-    if (impacts?.length === 1) {
-      const [impact] = impacts;
-      if (simpleSocioEconomicImpactNames.some((e) => e === impact?.name)) {
-        return result.concat({
-          name: groupName,
-          amount: sumListWithKey(impacts ?? [], "total"),
-          bearerName: getBearerName(groupName, stakeholders),
-        });
-      }
-    }
+  return [
+    extractDetails(
+      indirectEconomicImpacts,
+      "avoidedFricheMaintenanceAndSecuringCostsForOwner",
+      getBearerName("avoidedFricheMaintenanceAndSecuringCostsForOwner", stakeholders),
+    ),
 
-    return result.concat({
-      name: groupName,
-      amount: sumListWithKey(impacts ?? [], "total"),
-      bearerName: getBearerName(groupName, stakeholders),
-      details: impacts?.map((item) => ({
-        amount: item.total,
-        name:
-          item.name === "avoidedFricheMaintenanceAndSecuringCostsForOwner" ||
-          item.name === "avoidedFricheMaintenanceAndSecuringCostsForTenant" ||
-          item.name === "projectOperatingRevenues" ||
-          item.name === "projectOperatingExpenses"
-            ? `${groupName}.${item.details}`
-            : item.name,
-      })),
-    } as SocioEconomicImpactsDetailsByBearerListView);
-  }, []);
+    extractDetails(
+      indirectEconomicImpacts,
+      "avoidedFricheMaintenanceAndSecuringCostsForTenant",
+      getBearerName("avoidedFricheMaintenanceAndSecuringCostsForTenant", stakeholders),
+    ),
+
+    extractDetails(
+      indirectEconomicImpacts,
+      "projectOperatingExpenses",
+      getBearerName("projectOperatingExpenses", stakeholders),
+    ),
+    extractDetails(
+      indirectEconomicImpacts,
+      "projectOperatingRevenues",
+      getBearerName("projectOperatingRevenues", stakeholders),
+    ),
+
+    groupImpacts(
+      indirectEconomicImpacts,
+      "taxesIncome",
+      "projectNewHousesTaxesIncome",
+      "projectNewCompanyTaxationIncome",
+      "projectPhotovoltaicTaxesIncome",
+    ),
+    groupImpacts(
+      indirectEconomicImpacts,
+      "avoidedCo2eqEmissions",
+      "avoidedCo2eqWithEnergyProduction",
+      "avoidedAirConditioningCo2eqEmissions",
+      "avoidedTrafficCo2EqEmissions",
+    ),
+    groupImpacts(
+      indirectEconomicImpacts,
+      "ecosystemServices",
+      "newStoredCo2Eq",
+      "natureRelatedWelnessAndLeisure",
+      "forestRelatedProduct",
+      "pollination",
+      "invasiveSpeciesRegulation",
+      "waterCycle",
+      "nitrogenCycle",
+      "soilErosion",
+    ),
+    groupImpacts(
+      indirectEconomicImpacts,
+      "avoidedTrafficAccidents",
+      "avoidedAccidentsMinorInjuriesExpenses",
+      "avoidedAccidentsSevereInjuriesExpenses",
+      "avoidedAccidentsDeathsExpenses",
+    ),
+    ...formatImpacts(indirectEconomicImpacts, stakeholders),
+  ].filter((item) => ("details" in item && item.details.length !== 0) || item.total !== 0);
 };
 
 export const getSocioEconomicProjectImpactsGroupedByCategory = (
@@ -220,16 +243,20 @@ export const getSocioEconomicProjectImpactsGroupedByCategory = (
       stakeholders,
     );
 
-  const humanityImpacts: SocioEconomicImpactsDetailsByBearerListView[] = formatAsListViewArray(
+  const humanityImpacts = groupSocioEconomicImpactsByListViewCategory(
     humanity.details,
     stakeholders,
   );
 
-  const localPeopleOrCompanyImpacts: SocioEconomicImpactsDetailsByBearerListView[] =
-    formatAsListViewArray(localPeopleOrCompany.details, stakeholders);
+  const localPeopleOrCompanyImpacts = groupSocioEconomicImpactsByListViewCategory(
+    localPeopleOrCompany.details,
+    stakeholders,
+  );
 
-  const localAuthorityImpacts: SocioEconomicImpactsDetailsByBearerListView[] =
-    formatAsListViewArray(localAuthority.details, stakeholders);
+  const localAuthorityImpacts = groupSocioEconomicImpactsByListViewCategory(
+    localAuthority.details,
+    stakeholders,
+  );
 
   return {
     total: indirectEconomicImpacts.total,

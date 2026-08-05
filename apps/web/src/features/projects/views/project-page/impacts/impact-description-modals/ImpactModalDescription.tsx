@@ -15,7 +15,7 @@ import CostBenefitAnalysisDescription from "./cost-benefit-analysis/CostBenefitA
 import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceModalWizard";
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
 import { SocialModalWizard } from "./social/SocialModalWizard";
-import { SocioEconomicModalWizard } from "./socio-economic/wizards/SocioEconomicModalWizard";
+import { SocioEconomicModalWizard } from "./socio-economic/SocioEconomicModalWizard";
 
 type ModalDescriptionProviderProps = ModalDataProps & {
   dialogId: string;

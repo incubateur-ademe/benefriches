@@ -6,10 +6,7 @@ import {
   PermeableSoilsDetails,
 } from "@/features/projects/core/projectImpactsEnvironmental";
 import { SocialImpactName } from "@/features/projects/core/projectImpactsSocial";
-import {
-  SocioEconomicDetailsName,
-  SocioEconomicMainImpactName,
-} from "@/features/projects/core/projectImpactsSocioEconomic";
+import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { getLabelForBuildingsConstructionExpense } from "@/shared/core/urbanProject";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
@@ -91,9 +88,7 @@ export const getSocialImpactLabel = (name: SocialImpactName) => {
   }
 };
 
-export const getSocioEconomicImpactLabel = (
-  name: SocioEconomicMainImpactName | SocioEconomicDetailsName,
-) => {
+export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactImpactKeyName) => {
   switch (name) {
     // Économique directs
     case "projectedRentalIncome":
@@ -156,11 +151,11 @@ export const getSocioEconomicImpactLabel = (
       return "🏡 Hausse de la valeur patrimoniale des bâtiments alentour";
     case "localTransferDutiesIncrease":
       return "🏛️ Droits de mutation sur les ventes immobilières alentour";
-    case "projectNewCompanyTaxationIncome":
+    case "taxesIncome.projectNewCompanyTaxationIncome":
       return "🏢 Fiscalité sur les entreprises créées";
-    case "projectNewHousesTaxesIncome":
+    case "taxesIncome.projectNewHousesTaxesIncome":
       return "🏠 Taxe foncière sur les habitations créées";
-    case "projectPhotovoltaicTaxesIncome":
+    case "taxesIncome.projectPhotovoltaicTaxesIncome":
       return "⚡️ Taxes et impôts sur la centrale EnR";
     case "previousSiteOperationBenefitLoss":
       return "👨‍🌾 Perte de revenus agricoles";
@@ -180,20 +175,20 @@ export const getSocioEconomicImpactLabel = (
 
     case "avoidedTrafficAccidents":
       return "🚗 Dépenses de santé évitées grâce à la diminution des accidents de la route";
-    case "avoidedAccidentsDeathsExpenses":
+    case "avoidedTrafficAccidents.avoidedAccidentsDeathsExpenses":
       return "🪦 Décès évités";
-    case "avoidedAccidentsMinorInjuriesExpenses":
+    case "avoidedTrafficAccidents.avoidedAccidentsMinorInjuriesExpenses":
       return "🤕 Blessés légers évités";
-    case "avoidedAccidentsSevereInjuriesExpenses":
+    case "avoidedTrafficAccidents.avoidedAccidentsSevereInjuriesExpenses":
       return "‍🚑 Blessés graves évités";
     // Environementaux monétarisés
     case "avoidedCo2eqEmissions":
       return "☁️  Valeur monétaire de la décarbonation ";
-    case "avoidedCo2eqWithEnergyProduction":
+    case "avoidedCo2eqEmissions.avoidedCo2eqWithEnergyProduction":
       return "⚡️️ Production d'énergies renouvelables";
-    case "avoidedTrafficCo2EqEmissions":
+    case "avoidedCo2eqEmissions.avoidedTrafficCo2EqEmissions":
       return "🚙 Déplacements en voiture évités";
-    case "avoidedAirConditioningCo2eqEmissions":
+    case "avoidedCo2eqEmissions.avoidedAirConditioningCo2eqEmissions":
       return "❄️ Utilisation réduite de de la climatisation";
 
     case "avoidedAirPollutionHealthExpenses":
@@ -203,21 +198,21 @@ export const getSocioEconomicImpactLabel = (
     // Services écosystémiques
     case "ecosystemServices":
       return "🌱 Valeur monétaire des services écosystémiques";
-    case "forestRelatedProduct":
+    case "ecosystemServices.forestRelatedProduct":
       return "🪵 Produits issus de la forêt";
-    case "invasiveSpeciesRegulation":
+    case "ecosystemServices.invasiveSpeciesRegulation":
       return "🦔 Régulation des espèces invasives";
-    case "natureRelatedWelnessAndLeisure":
+    case "ecosystemServices.natureRelatedWelnessAndLeisure":
       return "🚵 Bien-être et loisirs liés à la nature";
-    case "nitrogenCycle":
+    case "ecosystemServices.nitrogenCycle":
       return "🍄 Cycle de l'azote";
-    case "pollination":
+    case "ecosystemServices.pollination":
       return "🐝 Pollinisation";
-    case "soilErosion":
+    case "ecosystemServices.soilErosion":
       return "🌾 Régulation de l'érosion des sols";
-    case "waterCycle":
+    case "ecosystemServices.waterCycle":
       return "💧 Cycle de l'eau";
-    case "newStoredCo2Eq":
+    case "ecosystemServices.newStoredCo2Eq":
       return "🍂️ Carbone stocké dans les sols";
   }
 };

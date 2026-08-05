@@ -1,0 +1,103 @@
+La présence de nature en ville peut dans une certaine mesure (type de végétation, surface, distance, configuration urbaine, etc.) conduire à des effets mesurables en termes de rafraichissement des bâtiments alentours, conduisant à un moindre besoin en rafraichissement actif (ventilation, climatisation), réduisant d’autant les émissions de CO2 associée aux consommations électriques des équipements.
+
+**Bénéficiaire** : Humanité
+
+## Quelles données sont utilisées dans le calcul ?
+
+### Données systémiques agrégées par Bénéfriches :
+
+<If when={props.withMonetarisation}>
+- Consommation moyenne annuelle d’énergie des ménages pour leur logement : 240 kWhep/m² par an (« ep » pour énergie primaire)
+- Consommation moyenne annuelle d’énergie des locaux d’activités économiques, d’équipements et de services : 0,15€/kWhef (« ef » pour énergie finale) pour 164 kWhEF/m² par an.
+- Réduction de la consommation en électricité liée aux équipements de rafraîchissement ou de climatisation pour baisser la température d’un logement d’1°C : 7%
+- Part de la consommation moyenne d’électricité aux fins de refroidissement (dans les logements qui sont équipés de système de climatisation) : 3,4 %
+- Ratio de conversion énergie finale / énergie primaire pour le mix électrique en France : 0,6 (sans dimension)
+- Contenu carbone mix électrique en France : 66gCOéq. par kWh d’énergie finale
+- Valeur tutélaire du carbone (exprimée en €/t éq. CO2) : variable selon l’année, selon une trajectoire à la hausse
+- Surface de logements présents dans la zone d’influence de l’effet (variable selon le projet)
+- Surface de locaux d’activités économiques, d’équipements et de services présents dans la zone d’influence de l’effet (variable selon le projet)
+- Zone d’influence de l’effet « Îlot de fraîcheur » : variable selon (i) la nouvelle surface d’espace de nature crée par le projet(m²), (ii) le % que cette nouvelle surface représente dans le projet et (iii) la distance de l’espace de nature (cette dernière est limitée à 75m, suite à l’analyse de la bibliographie disponible)
+
+</If>
+<If when={!props.withMonetarisation}>
+- Consommation moyenne annuelle d’énergie des ménages pour leur logement : 240 kWhep/m² par an (« ep » pour énergie primaire)
+- Consommation moyenne annuelle d’énergie des locaux d’activités économiques, d’équipements et de services : 0,15€/kWhef (« ef » pour énergie finale) pour 164 kWhEF/m² par an.
+- Réduction de la consommation en électricité liée aux équipements de rafraîchissement ou de climatisation pour baisser la température d’un logement d’1°C : 7%
+- Part de la consommation moyenne d’électricité aux fins de refroidissement (dans les logements qui sont équipés de système de climatisation) : 3,4 %
+- Ratio de conversion énergie finale / énergie primaire pour le mix électrique en France : 0,6 (sans dimension)
+- Contenu carbone mix électrique en France : 66gCOéq. par kWh d’énergie finale
+- Surface de logements présents dans la zone d’influence de l’effet (variable selon le projet)
+- Surface de locaux d’activités économiques, d’équipements et de services présents dans la zone d’influence de l’effet (variable selon le projet)
+- Zone d’influence de l’effet « Îlot de fraîcheur » : variable selon (i) la nouvelle surface d’espace de nature crée par le projet(m²), (ii) le % que cette nouvelle surface représente dans le projet et (iii) la distance de l’espace de nature (cette dernière est limitée à 75m, suite à l’analyse de la bibliographie disponible)
+</If>
+
+### Données du projet :
+
+_Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou avoir été suggérées par Bénéfriches sur la base d’une moyenne ou d’une hypothèse._
+
+- Nouvelle surface d’espace de nature crée par le projet le cas échéant (exprimée en m²)
+- Surface de nouveaux logements créés par le projet le cas échéant (exprimé en m² SDP)
+- Surface de nouveaux locaux d’activités économiques, d’équipements et de services créés par le projet le cas échéant (exprimé en m² SDP)
+
+## Comment est fait le calcul ?
+
+<If when={props.withMonetarisation}>
+  <p>
+    La monétarisation de l’utilisation réduite de la climatisation consiste à multiplier la valeur
+    de cet indicateur d’impact par la valeur tutélaire du carbone (ou valeur d’action pour le
+    climat).
+  </p>
+  <p>
+    L’indicateur d’impact environnemental “utilisation réduite de la climatisation” correspond à la
+    quantité de CO2 évitée annuellement liée à la moindre consommation électrique d’équipements de
+    rafraîchissement du fait de l’effet «&nbsp;îlot de fraîcheur&nbsp;». Il est calculé en
+    additionnant le produit suivant, pour les ménages d’une part et les locaux d’activités
+    économiques, d’équipements et de services d’autre part, dans la zone d’influence de
+    l’effet&nbsp;:
+  </p>
+</If>
+<If when={!props.withMonetarisation}>
+  La quantité de CO2 évitée annuellement liée à la moindre consommation électrique d’équipements de
+  rafraîchissement du fait de l’effet «&nbsp;îlot de fraîcheur&nbsp;» est calculé en additionnant le
+  produit suivant, pour les ménages d’une part et les locaux d’activités économiques, d’équipements
+  et de services d’autre part, dans la zone d’influence de l’effet&nbsp;:{" "}
+</If>
+
+L’indicateur d’impact environnemental “utilisation réduite de la climatisation” correspond à la quantité de CO2 évitée annuellement liée à la moindre consommation électrique d’équipements de rafraîchissement du fait de l’effet « îlot de fraîcheur ».
+
+Il est calculé en additionnant le produit suivant, pour les ménages d’une part et les locaux d’activités économiques, d’équipements et de services d’autre part, dans la zone d’influence de l’effet :
+
+- `reduction` = Réduction de la consommation électrique (en énergie primaire) liée aux équipements de rafraîchissement ou de climatisation
+- `part_conso_clim` = Part de la consommation moyenne d’électricité aux fins de refroidissement
+- `conso_moy_annuelle` = consommation moyenne annuelle d’électricité
+- `ratio_energie_mix_electrique` = Ratio de conversion énergie finale / énergie primaire pour le mix électrique
+- `contenu_co2eq_mix_electrique` = contenu en CO2éq. du mix électrique (en énergie finale)
+- `surface_batiments_concernes` = de m² de logements ou nombre de m² de locaux d’activités économiques, d’équipements et de services dans la zone d’influence de l’effet
+
+[`reduction`] **x** [`part_conso_clim`] **x** [`conso_moy_annuelle`] **x** [`ratio_energie_mix_electrique`] **x** [`contenu_co2eq_mix_electrique`] **x** [`surface_batiments_concernes`]
+
+## Sources
+
+<If when={props.withMonetarisation}>
+  - ADEME, « Chiffres-clés », Climat, Air et Energie, édition 2014 (p.4 du document) - [Facteurs
+  d’émission associés à la production de différentes sources
+  d’énergie](https://base-empreinte.ademe.fr/donnees/jeu-donnees) - [Valeur tutélaire du
+  carbone](https://www.strategie.gouv.fr/sites/strategie.gouv.fr/files/atoms/files/fs-2019-rapport-la-valeur-de-laction-pour-le-climat_0.pdf)
+  - Observatoire de l’Immobilier Durable cité par Le Moniteur en référence à la fin de la section -
+  Ministère de l’Environnement sur « Les ménages et la consommation d’énergie » de mars 2017, édité
+  par le service de l’observation et des statistiques (SoeS)
+</If>
+
+<If when={!props.withMonetarisation}>
+  - ADEME, « Chiffres-clés », Climat, Air et Energie, édition 2014 (p.4 du document) - [Facteurs
+  d’émission associés à la production de différentes sources
+  d’énergie](https://base-empreinte.ademe.fr/donnees/jeu-donnees) - Observatoire de l’Immobilier
+  Durable cité par Le Moniteur en référence à la fin de la section - Ministère de l’Environnement
+  sur « Les ménages et la consommation d’énergie » de mars 2017, édité par le service de
+  l’observation et des statistiques (SoeS)
+</If>
+
+## Aller plus loin
+
+- [Référentiel Bénéfriches](https://librairie.ademe.fr/changement-climatique-et-energie/3772-evaluer-les-benefices-socio-economiques-de-la-reconversion-de-friches-pour-lutter-contre-l-artificialisation-outil-benefriches.html)
+- [ADEME (octobre 2018), « Aménager avec la nature en ville », ADEME Editions](https://librairie.ademe.fr/urbanisme-territoires-et-sols/1170-amenager-avec-la-nature-en-ville.html)

@@ -7,9 +7,8 @@ import {
   sumListWithKey,
 } from "shared";
 
+import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 import { getPercentageDifference } from "@/shared/core/percentage/percentage";
-
-import { groupByListViewCategory } from "./projectImpactsSocioEconomic";
 
 const getRelatedSiteInfos = (
   siteData: SiteData,
@@ -36,10 +35,14 @@ const getAvoidedFricheCostsForLocalAuthority = (
   socioEconomicList: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["indirectEconomicImpacts"]["details"],
   currentStakeholders: ReconversionStakeholders["current"],
 ) => {
-  const {
-    avoidedFricheMaintenanceAndSecuringCostsForOwner,
-    avoidedFricheMaintenanceAndSecuringCostsForTenant,
-  } = groupByListViewCategory(socioEconomicList) ?? {};
+  const avoidedFricheMaintenanceAndSecuringCostsForOwner = filterByName(
+    socioEconomicList,
+    "avoidedFricheMaintenanceAndSecuringCostsForOwner",
+  );
+  const avoidedFricheMaintenanceAndSecuringCostsForTenant = filterByName(
+    socioEconomicList,
+    "avoidedFricheMaintenanceAndSecuringCostsForTenant",
+  );
 
   const details: {
     impactName:
