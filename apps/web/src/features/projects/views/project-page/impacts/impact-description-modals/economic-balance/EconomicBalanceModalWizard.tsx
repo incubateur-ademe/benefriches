@@ -58,7 +58,7 @@ type EconomicBalanceModalData = {
 const ECONOMIC_BALANCE_MODALS = {
   realEstateAcquisition: {
     title: "🏠 Transaction foncière",
-    Component: () => import("./real_estate_acquisition.mdx"),
+    Component: () => import("../mdx/economic-balance/real_estate_acquisition.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
       const details = filterByName(
         impactsData.projectEconomicBalance.details,
@@ -83,14 +83,14 @@ const ECONOMIC_BALANCE_MODALS = {
 
   "realEstateAcquisition.sitePurchase": {
     title: "🏠 Acquisition du site",
-    Component: () => import("./real_estate_acquisition-site_purchase.mdx"),
+    Component: () => import("../mdx/economic-balance/real_estate_acquisition-site_purchase.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(impactsData, (item) => item.name === "sitePurchase"),
   },
 
   "realEstateAcquisition.siteResaleRevenue": {
     title: "🚪 Cession du site",
-    Component: () => import("./real_estate_acquisition-site_resale.mdx"),
+    Component: () => import("../mdx/economic-balance/real_estate_acquisition-site_resale.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(impactsData, (item) => item.name === "siteResaleRevenue"),
   },
@@ -98,7 +98,7 @@ const ECONOMIC_BALANCE_MODALS = {
 
   siteReinstatement: {
     title: "🚧 Remise en état de la friche",
-    Component: () => import("./site_reinstatement.mdx"),
+    Component: () => import("../mdx/economic-balance/site_reinstatement.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
       const details = impactsData.projectEconomicBalance.details
         .filter((item) => item.name === "siteReinstatement")
@@ -119,7 +119,8 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "siteReinstatement.sustainable_soils_reinstatement": {
     title: "🌱 Restauration écologique",
-    Component: () => import("./site_reinstatement-sustainable_soils_reinstatement.mdx"),
+    Component: () =>
+      import("../mdx/economic-balance/site_reinstatement-sustainable_soils_reinstatement.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -129,7 +130,7 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "siteReinstatement.deimpermeabilization": {
     title: "🌧️ Désimperméabilisation",
-    Component: () => import("./site_reinstatement-deimpermeabilization.mdx"),
+    Component: () => import("../mdx/economic-balance/site_reinstatement-deimpermeabilization.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -138,7 +139,7 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "siteReinstatement.remediation": {
     title: "✨ Dépollution des sols",
-    Component: () => import("./site_reinstatement-remediation.mdx"),
+    Component: () => import("../mdx/economic-balance/site_reinstatement-remediation.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -147,7 +148,7 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "siteReinstatement.demolition": {
     title: "🧱 Déconstruction",
-    Component: () => import("./site_reinstatement-demolition.mdx"),
+    Component: () => import("../mdx/economic-balance/site_reinstatement-demolition.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -157,7 +158,7 @@ const ECONOMIC_BALANCE_MODALS = {
   "siteReinstatement.asbestos_removal": undefined,
   "siteReinstatement.waste_collection": {
     title: "♻️️ Évacuation et traitement des déchets",
-    Component: () => import("./site_reinstatement-waste_collection.mdx"),
+    Component: () => import("../mdx/economic-balance/site_reinstatement-waste_collection.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -166,7 +167,7 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "siteReinstatement.other_reinstatement": {
     title: "🏗️ Autres dépenses de remise en état",
-    Component: () => import("./site_reinstatement-other_reinstatement.mdx"),
+    Component: () => import("../mdx/economic-balance/site_reinstatement-other_reinstatement.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -176,7 +177,8 @@ const ECONOMIC_BALANCE_MODALS = {
 
   photovoltaicProjectInstallation: {
     title: "⚡️ Installation de la centrale $EnR",
-    Component: () => import("./photovoltaic_development_plan_installation.mdx"),
+    Component: () =>
+      import("../mdx/economic-balance/photovoltaic_development_plan_installation.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
       const details = impactsData.projectEconomicBalance.details
         .filter((item) => item.name === "projectInstallation")
@@ -197,7 +199,8 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "photovoltaicProjectInstallation.installation_works": {
     title: "🛠️ Travaux d'installation des panneaux",
-    Component: () => import("./photovoltaic_development_plan_installation.mdx"),
+    Component: () =>
+      import("../mdx/economic-balance/photovoltaic_development_plan_installation.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -206,7 +209,7 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "photovoltaicProjectInstallation.technical_studies": {
     title: "📋 Études et honoraires techniques",
-    Component: () => import("./photovoltaic_technical_studies.mdx"),
+    Component: () => import("../mdx/economic-balance/photovoltaic_technical_studies.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -215,7 +218,7 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "photovoltaicProjectInstallation.other": {
     title: "⚡️ Autres frais d’installation de la centrale",
-    Component: () => import("./photovoltaic_other.mdx"),
+    Component: () => import("../mdx/economic-balance/photovoltaic_other.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -225,7 +228,8 @@ const ECONOMIC_BALANCE_MODALS = {
 
   urbanProjectInstallation: {
     title: "🏘 Aménagement du site",
-    Component: () => import("./urban_project_development_plan_installation.mdx"),
+    Component: () =>
+      import("../mdx/economic-balance/urban_project_development_plan_installation.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
       const details = impactsData.projectEconomicBalance.details
         .filter((item) => item.name === "projectInstallation")
@@ -246,7 +250,7 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "urbanProjectInstallation.development_works": {
     title: "🔌 Travaux d'aménagement (VRD, espaces verts...)",
-    Component: () => import("./urban_project_works.mdx"),
+    Component: () => import("../mdx/economic-balance/urban_project_works.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -255,7 +259,7 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "urbanProjectInstallation.technical_studies": {
     title: "📋 Études et honoraires techniques",
-    Component: () => import("./urban_project_technical_studies.mdx"),
+    Component: () => import("../mdx/economic-balance/urban_project_technical_studies.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -264,7 +268,7 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "urbanProjectInstallation.other": {
     title: "🏘 Autres dépenses d'aménagements",
-    Component: () => import("./urban_project_other.mdx"),
+    Component: () => import("../mdx/economic-balance/urban_project_other.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -280,7 +284,7 @@ const ECONOMIC_BALANCE_MODALS = {
 
   financialAssistanceRevenues: {
     title: "🏦 Aides financière",
-    Component: () => import("./financial_assistance.mdx"),
+    Component: () => import("../mdx/economic-balance/financial_assistance.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]): EconomicBalanceModalData | undefined => {
       const details = impactsData.projectEconomicBalance.details
         .filter((item) => item.name === "financialAssistanceRevenues")
@@ -301,7 +305,7 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "financialAssistanceRevenues.public_subsidies": {
     title: "🏫 Subventions publiques",
-    Component: () => import("./financial_assistance-public_subsidies.mdx"),
+    Component: () => import("../mdx/economic-balance/financial_assistance-public_subsidies.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
@@ -311,7 +315,8 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "financialAssistanceRevenues.local_or_regional_authority_participation": {
     title: "🏦 Participation des collectivités",
-    Component: () => import("./financial_assistance-local_or_regional_authority_participation.mdx"),
+    Component: () =>
+      import("../mdx/economic-balance/financial_assistance-local_or_regional_authority_participation.mdx"),
     getData: (impactsData: ModalDataProps["impactsData"]) =>
       getTotal(
         impactsData,
