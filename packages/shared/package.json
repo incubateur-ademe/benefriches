@@ -25,13 +25,13 @@
   "license": "MIT",
   "dependencies": {
     "date-fns": "~4.4.0",
-    "uuid": "~14.0.0",
+    "uuid": "~14.0.1",
     "zod": "~4.4.3"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "~6.0.2",
-    "@types/node": "^24",
-    "tsdown": "^0.22.2",
-    "tsx": "~4.22.4"
+    "@types/node": "^24.13.3",
+    "tsdown": "^0.22.14",
+    "tsx": "~4.22.5"
   }
 }
