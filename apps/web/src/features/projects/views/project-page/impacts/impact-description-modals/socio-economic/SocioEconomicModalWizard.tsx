@@ -108,12 +108,14 @@ export const SOCIO_ECONOMIC_MODALS = {
   },
   avoidedFricheMaintenanceAndSecuringCostsForOwner: {
     title: "🏚️ Dépenses liées à la friche évitées pour le propriétaire",
-    Component: () => import("../mdx/avoided_friche_maintenance_and_securing_costs.mdx"),
+    Component: () =>
+      import("../mdx/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs.mdx"),
   },
   avoidedFricheMaintenanceAndSecuringCostsForTenant: {
     title: "🏚️ Dépenses liées à la friche évitées pour le locataire",
     subtitle: "Grâce à la reconversion de la friche",
-    Component: () => import("../mdx/avoided_friche_maintenance_and_securing_costs.mdx"),
+    Component: () =>
+      import("../mdx/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs.mdx"),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForOwner.accidentsCost": undefined,
   "avoidedFricheMaintenanceAndSecuringCostsForTenant.accidentsCost": undefined,
@@ -121,47 +123,49 @@ export const SOCIO_ECONOMIC_MODALS = {
     title: "🚮 Débarras de dépôt sauvage",
 
     Component: () =>
-      import("../mdx/avoided_friche_maintenance_and_securing_costs__illegal_dumping_cost.mdx"),
+      import("../mdx/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__illegal_dumping_cost.mdx"),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForTenant.illegalDumpingCost": {
     title: "🚮 Débarras de dépôt sauvage",
 
     Component: () =>
-      import("../mdx/avoided_friche_maintenance_and_securing_costs__illegal_dumping_cost.mdx"),
+      import("../mdx/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__illegal_dumping_cost.mdx"),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForOwner.maintenance": {
     title: "🔧 Entretien",
 
     Component: () =>
-      import("../mdx/avoided_friche_maintenance_and_securing_costs__maintenance.mdx"),
+      import("../mdx/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__maintenance.mdx"),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForTenant.maintenance": {
     title: "🔧 Entretien",
 
     Component: () =>
-      import("../mdx/avoided_friche_maintenance_and_securing_costs__maintenance.mdx"),
+      import("../mdx/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__maintenance.mdx"),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForOwner.otherSecuringCosts": {
     title: "🛡 Autres dépenses de sécurisation",
 
     Component: () =>
-      import("../mdx/avoided_friche_maintenance_and_securing_costs__other_securing_costs.mdx"),
+      import("../mdx/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__other_securing_costs.mdx"),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForTenant.otherSecuringCosts": {
     title: "🛡 Autres dépenses de sécurisation",
 
     Component: () =>
-      import("../mdx/avoided_friche_maintenance_and_securing_costs__other_securing_costs.mdx"),
+      import("../mdx/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__other_securing_costs.mdx"),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForOwner.security": {
     title: "👮 Gardiennage",
 
-    Component: () => import("../mdx/avoided_friche_maintenance_and_securing_costs__security.mdx"),
+    Component: () =>
+      import("../mdx/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__security.mdx"),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForTenant.security": {
     title: "👮 Gardiennage",
 
-    Component: () => import("../mdx/avoided_friche_maintenance_and_securing_costs__security.mdx"),
+    Component: () =>
+      import("../mdx/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__security.mdx"),
   },
   projectOperatingExpenses: undefined,
   "projectOperatingExpenses.rent": undefined,
@@ -228,27 +232,27 @@ export const SOCIO_ECONOMIC_MODALS = {
   },
   avoidedTrafficAccidents: {
     title: "🚗 Dépenses de santé évitées grâce à la diminution des accidents de la route",
-    Component: () => import("../mdx/avoided_traffic_accidents.mdx"),
+    Component: () => import("../mdx/avoided-accidents/avoided_traffic_accidents.mdx"),
   },
   "avoidedTrafficAccidents.avoidedAccidentsDeathsExpenses": {
     title: "🪦 Décès évités",
     subtitle: "Grâce aux déplacements évités",
     Component: () =>
-      import("../mdx/avoided_traffic_accidents__avoided_accidents_deaths_expenses.mdx"),
+      import("../mdx/avoided-accidents/avoided_traffic_accidents__avoided_accidents_deaths_expenses.mdx"),
   },
   "avoidedTrafficAccidents.avoidedAccidentsMinorInjuriesExpenses": {
     title: "🤕 Blessés légers évités",
     subtitle: "Grâce aux déplacements évités",
 
     Component: () =>
-      import("../mdx/avoided_traffic_accidents__avoided_accidents_minor_injuries_expenses.mdx"),
+      import("../mdx/avoided-accidents/avoided_traffic_accidents__avoided_accidents_minor_injuries_expenses.mdx"),
   },
   "avoidedTrafficAccidents.avoidedAccidentsSevereInjuriesExpenses": {
     title: "‍🚑 Blessés graves évités",
     subtitle: "Grâce aux déplacements évités",
 
     Component: () =>
-      import("../mdx/avoided_traffic_accidents__avoided_accidents_severe_injuries_expenses.mdx"),
+      import("../mdx/avoided-accidents/avoided_traffic_accidents__avoided_accidents_severe_injuries_expenses.mdx"),
   },
   avoidedCo2eqEmissions: {
     title: "☁️ Valeur monétaire de la décarbonation",
@@ -288,46 +292,49 @@ export const SOCIO_ECONOMIC_MODALS = {
   ecosystemServices: {
     title: "🌱 Valeur monétaire des services écosystémiques",
     description: "pour l'humanité",
-    Component: () => import("../mdx/ecosystem_services.mdx"),
+    Component: () => import("../mdx/ecosystem-services/ecosystem_services.mdx"),
   },
   "ecosystemServices.forestRelatedProduct": {
     title: "🪵 Produits issus de la forêt",
     description: "pour l'humanité",
-    Component: () => import("../mdx/ecosystem_services__forest_related_product.mdx"),
+    Component: () =>
+      import("../mdx/ecosystem-services/ecosystem_services__forest_related_product.mdx"),
   },
   "ecosystemServices.invasiveSpeciesRegulation": {
     title: "🦔 Régulation des espèces invasives",
     description: "pour l'humanité",
-    Component: () => import("../mdx/ecosystem_services__invasive_species_regulation.mdx"),
+    Component: () =>
+      import("../mdx/ecosystem-services/ecosystem_services__invasive_species_regulation.mdx"),
   },
   "ecosystemServices.natureRelatedWelnessAndLeisure": {
     title: "🚵 Bien-être et loisirs liés à la nature",
     description: "pour l'humanité",
-    Component: () => import("../mdx/ecosystem_services__nature_related_welness_and_leisure.mdx"),
+    Component: () =>
+      import("../mdx/ecosystem-services/ecosystem_services__nature_related_welness_and_leisure.mdx"),
   },
   "ecosystemServices.nitrogenCycle": {
     title: "🍄 Cycle de l'azote",
     description: "pour l'humanité",
-    Component: () => import("../mdx/ecosystem_services__nitrogen_cycle.mdx"),
+    Component: () => import("../mdx/ecosystem-services/ecosystem_services__nitrogen_cycle.mdx"),
   },
   "ecosystemServices.pollination": {
     title: "🐝 Pollinisation",
     description: "pour l'humanité",
-    Component: () => import("../mdx/ecosystem_services__pollination.mdx"),
+    Component: () => import("../mdx/ecosystem-services/ecosystem_services__pollination.mdx"),
   },
   "ecosystemServices.soilErosion": {
     title: "🌾 Régulation de l'érosion des sols",
-    Component: () => import("../mdx/ecosystem_services__soil_erosion.mdx"),
+    Component: () => import("../mdx/ecosystem-services/ecosystem_services__soil_erosion.mdx"),
   },
   "ecosystemServices.waterCycle": {
     title: "💧 Cycle de l'eau",
     description: "pour l'humanité",
-    Component: () => import("../mdx/ecosystem_services__water_cycle.mdx"),
+    Component: () => import("../mdx/ecosystem-services/ecosystem_services__water_cycle.mdx"),
   },
   "ecosystemServices.newStoredCo2Eq": {
     title: "🍂️ CO2-eq stocké dans les sols",
     description: "pour l'humanité",
-    Component: () => import("../mdx/ecosystem_services__new_stored_co2_eq.mdx"),
+    Component: () => import("../mdx/ecosystem-services/ecosystem_services__new_stored_co2_eq.mdx"),
   },
   oldRentalIncomeLoss: undefined,
 } as const satisfies Record<
