@@ -11,11 +11,9 @@ import {
   ContentState,
 } from "../../../shared/impacts/modals/ImpactModalDescriptionContext";
 import { SummaryModalWizard } from "../../../shared/impacts/modals/summary/SummaryModalWizard";
-import CostBenefitAnalysisDescription from "./cost-benefit-analysis/CostBenefitAnalysisDescription";
-import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceModalWizard";
+import { ImpactModalContentWizard } from "./ImpactModalContentWizard";
+import CostBenefitAnalysisDescription from "./body-component/CostBenefitAnalysisDescription";
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
-import { SocialModalWizard } from "./social/SocialModalWizard";
-import { SocioEconomicModalWizard } from "./socio-economic/SocioEconomicModalWizard";
 
 type ModalDescriptionProviderProps = ModalDataProps & {
   dialogId: string;
@@ -80,33 +78,13 @@ function ImpactModalDescription({
             }
             switch (contentState.sectionName) {
               case "economic_balance":
-                return (
-                  <EconomicBalanceModalWizard
-                    contextData={contextData}
-                    impactsData={impactsData}
-                    impactName={contentState.impactName}
-                    impactDetailsName={contentState.impactDetailsName}
-                  />
-                );
               case "socio_economic":
-                return (
-                  <SocioEconomicModalWizard
-                    contextData={contextData}
-                    impactsData={impactsData}
-                    impactSubSectionName={contentState.subSectionName}
-                    impactName={contentState.impactName}
-                    impactDetailsName={contentState.impactDetailsName}
-                  />
-                );
-
               case "social":
                 return (
-                  <SocialModalWizard
+                  <ImpactModalContentWizard
                     contextData={contextData}
                     impactsData={impactsData}
-                    impactSubSectionName={contentState.subSectionName}
-                    impactName={contentState.impactName}
-                    impactDetailsName={contentState.impactDetailsName}
+                    contentState={contentState}
                   />
                 );
               case "environmental":

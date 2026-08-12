@@ -45,7 +45,8 @@ const SummaryHouseholdsPoweredByRenewableEnergyDescription = ({ impactData }: Pr
                 e.stopPropagation();
                 updateModalContent({
                   sectionName: "social",
-                  impactName: "households_powered_by_renewable_energy",
+                  subSectionName: "humanity",
+                  impactName: "householdsPoweredByRenewableEnergy",
                 });
               },
             }}

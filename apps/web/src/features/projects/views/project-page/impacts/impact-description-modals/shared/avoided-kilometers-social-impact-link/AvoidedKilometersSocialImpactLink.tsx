@@ -11,7 +11,8 @@ const LinkToAvoidedKilometersImpact = () => {
       onClick={() => {
         updateModalContent({
           sectionName: "social",
-          impactName: "avoided_vehicule_kilometers",
+          subSectionName: "localPeopleOrCompany",
+          impactName: "avoidedVehiculeKilometers",
         });
       }}
       className="px-1"

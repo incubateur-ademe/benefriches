@@ -1,6 +1,6 @@
 import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
-import { SocialImpact } from "@/features/projects/core/projectImpactsSocial";
+import { SocialImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 
 import EconomicBalancePages from "./EconomicBalancePages";
@@ -13,7 +13,7 @@ type Props = {
     economicBalance: EconomicBalanceByCategory;
     environment: EnvironmentalImpact[];
     socioEconomic: SocioEconomicImpactsByBearerListView;
-    social: SocialImpact[];
+    social: SocialImpactMetricsByListViewCategory;
   };
   evaluationPeriodInYears: number;
   showEconomicBalance: boolean;

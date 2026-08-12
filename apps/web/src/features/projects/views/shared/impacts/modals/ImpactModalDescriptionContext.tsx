@@ -9,8 +9,8 @@ import {
   EnvironmentalMainImpactName,
 } from "@/features/projects/core/projectImpactsEnvironmental";
 import {
-  SocialImpactDetailsName,
-  SocialMainImpactName,
+  SocialImpactMetricDetailsKeyName,
+  SocialImpactMetricMainKeyName,
 } from "@/features/projects/core/projectImpactsSocial";
 import {
   SocioEconomicDetailsName,
@@ -25,7 +25,7 @@ type IsClosedState = {
 };
 
 export type SocioEconomicSubSectionName = "humanity" | "localPeopleOrCompany" | "localAuthority";
-export type SocialSubSectionName = "jobs" | "french_society" | "local_people";
+export type SocialSubSectionName = "jobs" | "humanity" | "localPeopleOrCompany";
 export type EnvironmentSubSectionName = "co2" | "soils";
 
 type IsOpenedState =
@@ -43,8 +43,8 @@ type IsOpenedState =
   | {
       sectionName: "social";
       subSectionName?: SocialSubSectionName;
-      impactName?: SocialMainImpactName;
-      impactDetailsName?: SocialImpactDetailsName;
+      impactName?: SocialImpactMetricMainKeyName;
+      impactDetailsName?: SocialImpactMetricDetailsKeyName;
     }
   | {
       sectionName: "environmental";

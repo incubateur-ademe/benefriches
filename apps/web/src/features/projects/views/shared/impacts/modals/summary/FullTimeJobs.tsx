@@ -58,7 +58,8 @@ const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
                 e.stopPropagation();
                 updateModalContent({
                   sectionName: "social",
-                  impactName: "full_time_jobs",
+                  subSectionName: "jobs",
+                  impactName: "fullTimeJobs",
                 });
               },
             }}

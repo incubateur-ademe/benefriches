@@ -1,0 +1,34 @@
+_Cet indicateur propose une illustration du potentiel de production en électricité renouvelable qui sera produite par la centrale du projet en nombre de foyers alimentés._
+
+**Bénéficiaire** : société humaine
+
+## Quelles données sont utilisées dans le calcul ?
+
+### Données systémiques agrégées par Bénéfriches :
+
+- Consommation d’électricité par personne et par an en France (exprimée en kWh/personne/an)
+- Composition moyenne d’un foyer en France (exprimée en nombre de personnes/foyer)
+
+### Données du projet :
+
+_Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou avoir été suggérées par Bénéfriches sur la base d’une moyenne ou d’une hypothèse._
+
+<SiteFeature value="siteAddress" label="📍 Adresse du site" />
+<ProjectFeature
+  value="photovoltaicSurfaceArea"
+  label="📏 Surface au sol occupée par les panneaux"
+/>
+<ProjectFeature value="electricalPowerKwc" label="🔌 Puissance installée" />
+
+## Comment est fait le calcul ?
+
+Sur la base des données du projet photovoltaïque, la production d’énergie renouvelable attendue annuellement (exprimée en kWh/an) est calculée avec l’outil PVGIS de la Commission européenne (renvoi vers indicateur impact CO2 lié à la production d’ENR).
+La consommation annuelle d’un foyer français (exprimée en kWh/foyer/an) est calculée en multipliant la consommation d’électricité par personne et par an en France (exprimée en kWh/personne/an) par la composition moyenne d’un foyer (exprimée en nombre de personnes/foyer).
+Le nombre de foyers français pouvant être alimentés par cette production est calculé en divisant la valeur de cette production par la consommation annuelle d’un foyer français.
+
+## Sources
+
+_Liste des sources (rapports gouvernementaux, études…) d’où proviennent les données systémiques de Bénéfriches. Devrait être obligatoire dès lors qu’il y a des données systémiques. Pas de limite de nombre de lien._
+
+- [Consommation par habitant et par ville d'électricité en France](https://www.data.gouv.fr/fr/reuses/consommation-par-habitant-et-par-ville-delectricite-en-france/)
+- [INSEE : Taille et composition des ménages](https://www.insee.fr/fr/statistiques/5039855)

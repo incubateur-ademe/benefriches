@@ -16,7 +16,8 @@ type Props = {
     | "newNatureSoilsSurface"
     | "residentialBuildingsFloorArea"
     | "publicFacilitiesBuildingsFloorArea"
-    | "officesBuildingsFloorArea";
+    | "officesBuildingsFloorArea"
+    | "groundFloorRetailSurface";
 
   soilsSubset?: ModalSoilsDistributionProps["soilsSubset"];
   soilsDistribution: ModalSoilsDistributionProps["soilsDistribution"];
@@ -71,6 +72,11 @@ const ModalProjectFeature = ({
       case "residentialBuildingsFloorArea":
         return projectDevelopmentPlan.type === "URBAN_PROJECT"
           ? projectDevelopmentPlan.buildingsFloorAreaDistribution.RESIDENTIAL
+          : undefined;
+
+      case "groundFloorRetailSurface":
+        return projectDevelopmentPlan.type === "URBAN_PROJECT"
+          ? projectDevelopmentPlan.buildingsFloorAreaDistribution.LOCAL_STORE
           : undefined;
     }
   }, [projectDevelopmentPlan, siteContaminatedSurfaceArea, decontaminatedSurfaceArea, value]);

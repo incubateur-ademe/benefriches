@@ -2,7 +2,7 @@ import { Document } from "@react-pdf/renderer";
 
 import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
-import { SocialImpact } from "@/features/projects/core/projectImpactsSocial";
+import { SocialImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { ProjectFeatures } from "@/features/projects/core/projects.types";
 import { SiteFeatures } from "@/features/sites/core/site.types";
@@ -24,7 +24,7 @@ export type Props = {
     economicBalance: EconomicBalanceByCategory;
     environment: EnvironmentalImpact[];
     socioEconomic: SocioEconomicImpactsByBearerListView;
-    social: SocialImpact[];
+    social: SocialImpactMetricsByListViewCategory;
   };
 };
 

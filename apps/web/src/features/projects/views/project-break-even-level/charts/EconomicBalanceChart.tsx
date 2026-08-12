@@ -7,7 +7,7 @@ import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomC
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 
 import { getEconomicBalanceImpactLabel } from "../../project-page/impacts/getImpactLabel";
-import { getEconomicBalanceImpactColor } from "../../project-page/impacts/impact-description-modals/economic-balance/colors";
+import { getEconomicBalanceImpactColor } from "../../project-page/impacts/impact-description-modals/colors";
 import ImpactChartCard from "../../shared/charts/ImpactChartCard";
 import { formatMonetaryImpact } from "../../shared/formatImpactValue";
 

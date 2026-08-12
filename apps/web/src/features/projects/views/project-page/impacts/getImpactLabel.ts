@@ -5,7 +5,7 @@ import {
   EnvironmentalMainImpactName,
   PermeableSoilsDetails,
 } from "@/features/projects/core/projectImpactsEnvironmental";
-import { SocialImpactName } from "@/features/projects/core/projectImpactsSocial";
+import { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
 import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { getLabelForBuildingsConstructionExpense } from "@/shared/core/urbanProject";
 
@@ -56,34 +56,38 @@ const getPermeableSurfaceDetailsImpactLabel = (name: PermeableSoilsDetails) => {
   }
 };
 
-export const getSocialImpactLabel = (name: SocialImpactName) => {
+export const getSocialImpactLabel = (name: SocialImpactMetricKeyName) => {
   switch (name) {
-    case "conversion_full_time_jobs":
+    case "fullTimeJobs.conversionFullTimeJobs":
       return "👷 Reconversion du site";
-    case "operations_full_time_jobs":
+    case "fullTimeJobs.photovoltaicOperationsFullTimeJobs":
+    case "fullTimeJobs.urbanOperationsFullTimeJobs":
       return "🧑‍🔧 Exploitation du site";
-    case "avoided_friche_accidents":
-      return "💥 Personnes préservées des accidents sur la friche";
-    case "avoided_friche_minor_accidents":
-      return "🤕 Blessés légers évités";
-    case "avoided_friche_severe_accidents":
-      return "🚑 Blessés graves évités";
 
-    case "avoided_traffic_accidents":
-      return "🚘 Personnes préservées des accidents de la route";
-    case "avoided_traffic_minor_injuries":
+    case "avoidedFricheAccidents":
+      return "💥 Personnes préservées des accidents sur la friche";
+    case "avoidedFricheAccidents.avoidedFricheAccidentsMinorInjuries":
       return "🤕 Blessés légers évités";
-    case "avoided_traffic_severe_injuries":
+    case "avoidedFricheAccidents.avoidedFricheAccidentsSevereInjuries":
       return "🚑 Blessés graves évités";
-    case "avoided_traffic_deaths":
+    case "avoidedFricheAccidents.avoidedFricheAccidentsDeaths":
+      return "Décès évités";
+
+    case "avoidedTrafficAccidents":
+      return "🚘 Personnes préservées des accidents de la route";
+    case "avoidedTrafficAccidents.avoidedTrafficAccidentsSevereInjuries":
+      return "🤕 Blessés légers évités";
+    case "avoidedTrafficAccidents.avoidedTrafficAccidentsMinorInjuries":
+      return "🚑 Blessés graves évités";
+    case "avoidedTrafficAccidents.avoidedTrafficAccidentsDeaths":
       return "🪦 Décès évités";
-    case "households_powered_by_renewable_energy":
+    case "householdsPoweredByRenewableEnergy":
       return "🏠 Foyers alimentés par les EnR";
-    case "full_time_jobs":
+    case "fullTimeJobs":
       return "🧑‍🔧 Emplois équivalent temps plein mobilisés";
-    case "avoided_vehicule_kilometers":
+    case "avoidedVehiculeKilometers":
       return "🚙 Kilomètres évités";
-    case "travel_time_saved":
+    case "timeTravelSavedInHours":
       return "⏱️ Temps passé en moins dans les transports";
   }
 };

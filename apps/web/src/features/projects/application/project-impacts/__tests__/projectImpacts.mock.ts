@@ -82,7 +82,6 @@ const buildSiteStatuQuoEconomicImpacts = (
 };
 
 const siteStatuQuoImpactMetrics: SiteStatuQuoImpactMetric[] = [
-  { name: "fricheAccidentsDeaths", total: 0 },
   { name: "fricheAccidentsSevereInjuries", total: 2 },
   { name: "fricheAccidentsMinorInjuries", total: 1 },
   { name: "permeableGreenSurface", total: 40000 },
@@ -93,7 +92,6 @@ const siteStatuQuoImpactMetrics: SiteStatuQuoImpactMetric[] = [
 
 const aggregatedSiteStatuQuoImpactMetrics: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["impactsMetrics"] =
   [
-    { name: "avoidedFricheAccidentsDeaths", total: 0 },
     { name: "avoidedFricheAccidentsSevereInjuries", total: 2 },
     { name: "avoidedFricheAccidentsMinorInjuries", total: 1 },
   ];

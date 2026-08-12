@@ -12,8 +12,8 @@ import {
   type EnvironmentalImpact,
 } from "@/features/projects/core/projectImpactsEnvironmental";
 import {
-  getSocialProjectImpacts,
-  type SocialImpact,
+  groupSocialMetricsByListViewCategory,
+  type SocialImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsSocial";
 import {
   getSocioEconomicProjectImpactsGroupedByCategory,
@@ -41,7 +41,7 @@ type ImpactsListViewData = {
   economicBalance: EconomicBalanceByCategory;
   socioEconomicImpacts: SocioEconomicImpactsByBearerListView;
   environmentImpacts: EnvironmentalImpact[];
-  socialImpacts: SocialImpact[];
+  socialImpacts: SocialImpactMetricsByListViewCategory;
   modalData: ModalDataProps;
 };
 
@@ -66,8 +66,12 @@ export const selectImpactsCroppedByEvaluationPeriod = createSelector(
 );
 
 export const selectSocialProjectImpacts = createSelector(
-  selectImpactsCroppedByEvaluationPeriod,
-  getSocialProjectImpacts,
+  [selectImpactsCroppedByEvaluationPeriod, selectImpactsContextData],
+  (impacts, contextData) =>
+    groupSocialMetricsByListViewCategory(
+      impacts?.aggregatedReconversionImpacts.impactsMetrics ?? [],
+      contextData?.projectDevelopmentPlan.type ?? "URBAN_PROJECT",
+    ),
 );
 
 export const selectEnvironmentalProjectImpacts = createSelector(

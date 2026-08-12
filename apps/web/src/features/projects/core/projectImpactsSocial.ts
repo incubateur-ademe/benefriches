@@ -1,250 +1,124 @@
-import { sumListWithKey } from "shared";
+import { AggregatedProjectImpactMetric, DevelopmentPlanType, sumListWithKey } from "shared";
 
-import { ProjectImpactsState } from "../application/project-impacts/projectImpacts.reducer";
+import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 
-type ImpactValue = {
-  base: number;
-  forecast: number;
-  difference: number;
-};
+export type SocialImpactMetricKeyName =
+  | SocialImpactMetricMainKeyName
+  | SocialImpactMetricDetailsKeyName;
 
-export type SocialImpactName = SocialMainImpactName | SocialImpactDetailsName;
+export type SocialImpactMetricsByListViewCategory = ReturnType<
+  typeof groupSocialMetricsByListViewCategory
+>;
+export type SocialImpactMetricMainKeyName =
+  | JobsSectionImpacts["keyName"]
+  | LocalPeopleOrCompanySectionImpacts["keyName"]
+  | HumanitySectionImpacts["keyName"];
 
-export type SocialMainImpactName =
-  | "full_time_jobs"
-  | "avoided_friche_accidents"
-  | "avoided_traffic_accidents"
-  | "travel_time_saved"
-  | "avoided_vehicule_kilometers"
-  | "households_powered_by_renewable_energy";
+export type SocialImpactMetricDetailsKeyName =
+  | ExtractDetails<JobsSectionImpacts, "fullTimeJobs">
+  | ExtractDetails<LocalPeopleOrCompanySectionImpacts, "avoidedTrafficAccidents">
+  | ExtractDetails<HumanitySectionImpacts, "avoidedFricheAccidents">;
 
-export type SocialImpactDetailsName =
-  | "operations_full_time_jobs"
-  | "conversion_full_time_jobs"
-  | "avoided_friche_severe_accidents"
-  | "avoided_friche_minor_accidents"
-  | "avoided_traffic_minor_injuries"
-  | "avoided_traffic_severe_injuries"
-  | "avoided_traffic_deaths";
+type JobsSectionImpacts = SocialImpactMetricsByListViewCategory["jobs"][number];
+type LocalPeopleOrCompanySectionImpacts =
+  SocialImpactMetricsByListViewCategory["localPeopleOrCompany"][number];
+type HumanitySectionImpacts = SocialImpactMetricsByListViewCategory["humanity"][number];
 
-export type SocialImpact = {
-  name: SocialMainImpactName;
-  type: "default" | "etp" | "time";
-  impact: ImpactValue & {
-    details?: {
-      name: SocialImpactDetailsName;
-      impact: ImpactValue;
-    }[];
+type ExtractDetails<
+  T extends JobsSectionImpacts | LocalPeopleOrCompanySectionImpacts | HumanitySectionImpacts,
+  N extends "fullTimeJobs" | "avoidedTrafficAccidents" | "avoidedFricheAccidents",
+> = Extract<
+  T,
+  {
+    keyName: N;
+  }
+>["details"][number]["keyName"];
+
+function groupImpacts<
+  T extends AggregatedProjectImpactMetric,
+  G extends string,
+  N extends T["name"],
+>(items: readonly T[], groupName: G, ...names: N[]) {
+  const details = filterByName(items, ...names).map((item) => ({
+    name: item.name,
+    total: item.total,
+    keyName: `${groupName}.${item.name}` as const,
+  }));
+
+  return {
+    total: sumListWithKey(details, "total"),
+    details,
+    keyName: groupName,
   };
-};
+}
 
-export const getSocialProjectImpacts = (
-  impactsData?: ProjectImpactsState["impacts"],
-): SocialImpact[] => {
-  const impacts: SocialImpact[] = [];
+function groupETPImpacts(
+  items: readonly AggregatedProjectImpactMetric[],
+  projectType: DevelopmentPlanType,
+) {
+  const details = [
+    groupImpacts(
+      items,
+      `fullTimeJobs.conversionFullTimeJobs`,
+      "conversionFullTimeJobs",
+      "reinstatementFullTimeJobs",
+    ),
+    groupImpacts(
+      items,
+      projectType === "PHOTOVOLTAIC_POWER_PLANT"
+        ? `fullTimeJobs.photovoltaicOperationsFullTimeJobs`
+        : `fullTimeJobs.urbanOperationsFullTimeJobs`,
+      "operationsFullTimeJobs",
+      "oldOperationsFullTimeJobsLoss",
+    ),
+  ];
 
-  const fullTimeJobs = impactsData?.aggregatedReconversionImpacts.impactsMetrics.filter(
-    (item) =>
-      item.name === "conversionFullTimeJobs" ||
-      item.name === "operationsFullTimeJobs" ||
-      item.name === "oldOperationsFullTimeJobsLoss" ||
-      item.name === "reinstatementFullTimeJobs",
-  );
+  return {
+    total: sumListWithKey(details, "total"),
+    details,
+    keyName: "fullTimeJobs" as const,
+  };
+}
 
-  if (fullTimeJobs && fullTimeJobs.length > 0) {
-    const baseOperation =
-      -1 * (fullTimeJobs.find((item) => item.name === "oldOperationsFullTimeJobsLoss")?.total ?? 0);
-    const forecastOperation =
-      fullTimeJobs.find((item) => item.name === "operationsFullTimeJobs")?.total ?? 0;
-
-    const difference = sumListWithKey(fullTimeJobs, "total");
-
-    impacts.push({
-      name: "full_time_jobs",
-      type: "etp",
-      impact: {
-        base: baseOperation,
-        forecast: difference + baseOperation,
-        difference: difference,
-        details: [
-          {
-            name: "conversion_full_time_jobs",
-            impact: {
-              base: 0,
-              forecast: difference + baseOperation - forecastOperation,
-              difference: difference + baseOperation - forecastOperation,
-            },
-          },
-          {
-            name: "operations_full_time_jobs",
-            impact: {
-              base: baseOperation,
-              forecast: forecastOperation,
-              difference: forecastOperation - baseOperation,
-            },
-          },
-        ],
-      },
-    });
-  }
-
-  const accidents = impactsData?.aggregatedReconversionImpacts.impactsMetrics.filter(
-    (item) =>
-      item.name === "avoidedFricheAccidentsDeaths" ||
-      item.name === "avoidedFricheAccidentsSevereInjuries" ||
-      item.name === "avoidedFricheAccidentsMinorInjuries",
-  );
-
-  if (accidents && accidents.length > 0) {
-    const total = sumListWithKey(accidents, "total");
-
-    impacts.push({
-      name: "avoided_friche_accidents",
-      type: "default",
-      impact: {
-        base: 0,
-        forecast: total,
-        difference: total,
-        details: accidents.reduce<
-          {
-            name: SocialImpactDetailsName;
-            impact: ImpactValue;
-          }[]
-        >((result, item) => {
-          switch (item.name) {
-            case "avoidedFricheAccidentsSevereInjuries":
-              return result.concat({
-                name: "avoided_friche_severe_accidents",
-                impact: {
-                  base: 0,
-                  forecast: item.total,
-                  difference: item.total,
-                },
-              });
-
-            case "avoidedFricheAccidentsMinorInjuries":
-              return result.concat({
-                name: "avoided_friche_minor_accidents",
-                impact: {
-                  base: 0,
-                  forecast: item.total,
-                  difference: item.total,
-                },
-              });
-            default:
-              return result;
-          }
-        }, []),
-      },
-    });
-  }
-
-  const avoidedVehiculeKilometers = impactsData?.aggregatedReconversionImpacts.impactsMetrics.find(
-    (item) => item.name === "avoidedVehiculeKilometers",
-  )?.total;
-  if (avoidedVehiculeKilometers) {
-    impacts.push({
-      name: "avoided_vehicule_kilometers",
-      type: "default",
-      impact: {
-        base: 0,
-        forecast: avoidedVehiculeKilometers,
-        difference: avoidedVehiculeKilometers,
-      },
-    });
-  }
-
-  const travelTimeSaved = impactsData?.aggregatedReconversionImpacts.impactsMetrics.find(
-    (item) => item.name === "timeTravelSavedInHours",
-  )?.total;
-
-  if (travelTimeSaved) {
-    impacts.push({
-      name: "travel_time_saved",
-      type: "time",
-      impact: {
-        base: 0,
-        forecast: travelTimeSaved,
-        difference: travelTimeSaved,
-      },
-    });
-  }
-  const avoidedTrafficAccidents = impactsData?.aggregatedReconversionImpacts.impactsMetrics.filter(
-    (item) =>
-      item.name === "avoidedTrafficAccidentsDeaths" ||
-      item.name === "avoidedTrafficAccidentsSevereInjuries" ||
-      item.name === "avoidedTrafficAccidentsMinorInjuries",
-  );
-
-  if (avoidedTrafficAccidents && avoidedTrafficAccidents.length > 0) {
-    const total = sumListWithKey(avoidedTrafficAccidents, "total");
-
-    impacts.push({
-      name: "avoided_traffic_accidents",
-      type: "default",
-      impact: {
-        base: 0,
-        forecast: total,
-        difference: total,
-        details: avoidedTrafficAccidents.reduce<
-          {
-            name: SocialImpactDetailsName;
-            impact: ImpactValue;
-          }[]
-        >((result, item) => {
-          switch (item.name) {
-            case "avoidedTrafficAccidentsSevereInjuries":
-              return result.concat({
-                name: "avoided_traffic_severe_injuries",
-                impact: {
-                  base: 0,
-                  forecast: item.total,
-                  difference: item.total,
-                },
-              });
-
-            case "avoidedTrafficAccidentsMinorInjuries":
-              return result.concat({
-                name: "avoided_traffic_minor_injuries",
-                impact: {
-                  base: 0,
-                  forecast: item.total,
-                  difference: item.total,
-                },
-              });
-
-            case "avoidedTrafficAccidentsDeaths":
-              return result.concat({
-                name: "avoided_traffic_deaths",
-                impact: {
-                  base: 0,
-                  forecast: item.total,
-                  difference: item.total,
-                },
-              });
-            default:
-              return result;
-          }
-        }, []),
-      },
-    });
-  }
-  const householdsPoweredByRenewableEnergy =
-    impactsData?.aggregatedReconversionImpacts.impactsMetrics.find(
-      (item) => item.name === "householdsPoweredByRenewableEnergy",
-    )?.total;
-
-  if (householdsPoweredByRenewableEnergy) {
-    impacts.push({
-      name: "households_powered_by_renewable_energy",
-      type: "default",
-      impact: {
-        base: 0,
-        forecast: householdsPoweredByRenewableEnergy,
-        difference: householdsPoweredByRenewableEnergy,
-      },
-    });
-  }
-
-  return impacts;
+export const groupSocialMetricsByListViewCategory = (
+  indirectImpactMetrics: readonly AggregatedProjectImpactMetric[],
+  projectType: DevelopmentPlanType,
+) => {
+  return {
+    jobs: [groupETPImpacts(indirectImpactMetrics, projectType)].filter(
+      (item) => ("details" in item && item.details.length !== 0) || item.total !== 0,
+    ),
+    localPeopleOrCompany: [
+      groupImpacts(
+        indirectImpactMetrics,
+        "avoidedTrafficAccidents",
+        "avoidedTrafficAccidentsDeaths",
+        "avoidedTrafficAccidentsSevereInjuries",
+        "avoidedTrafficAccidentsMinorInjuries",
+      ),
+      ...filterByName(
+        indirectImpactMetrics,
+        "timeTravelSavedInHours",
+        "avoidedVehiculeKilometers",
+      ).map((item) => ({
+        name: item.name,
+        total: item.total,
+        keyName: item.name,
+      })),
+    ].filter((item) => ("details" in item && item.details.length !== 0) || item.total !== 0),
+    humanity: [
+      groupImpacts(
+        indirectImpactMetrics,
+        "avoidedFricheAccidents",
+        "avoidedFricheAccidentsDeaths",
+        "avoidedFricheAccidentsSevereInjuries",
+        "avoidedFricheAccidentsMinorInjuries",
+      ),
+      ...filterByName(indirectImpactMetrics, "householdsPoweredByRenewableEnergy").map((item) => ({
+        name: item.name,
+        total: item.total,
+        keyName: item.name,
+      })),
+    ].filter((item) => ("details" in item && item.details.length !== 0) || item.total !== 0),
+  };
 };

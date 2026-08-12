@@ -27,59 +27,49 @@ describe("projectImpactsSocial selectors", () => {
       const rootState = store.getState();
       const impacts = selectSocialProjectImpacts(rootState);
 
-      expect(impacts).toContainEqual(
+      expect(impacts.jobs).toContainEqual(
         expect.objectContaining({
-          name: "full_time_jobs",
-          type: "etp",
-          impact: {
-            base: 1,
-            forecast: 3.5,
-            difference: 2.5,
-            details: [
-              {
-                impact: { base: 0, difference: 3, forecast: 3 },
-                name: "conversion_full_time_jobs",
-              },
-              {
-                impact: { base: 1, difference: -0.5, forecast: 0.5 },
-                name: "operations_full_time_jobs",
-              },
-            ],
-          },
+          keyName: "fullTimeJobs",
+          total: 2.5,
+          details: [
+            {
+              total: 3,
+              keyName: "fullTimeJobs.conversionFullTimeJobs",
+              details: expect.any(Object),
+            },
+            {
+              total: -0.5,
+              keyName: "fullTimeJobs.photovoltaicOperationsFullTimeJobs",
+              details: expect.any(Object),
+            },
+          ],
         }),
       );
 
-      expect(impacts).toContainEqual(
+      expect(impacts.humanity).toContainEqual(
         expect.objectContaining({
-          name: "avoided_friche_accidents",
-          type: "default",
-          impact: {
-            base: 0,
-            difference: 3,
-            forecast: 3,
-            details: [
-              {
-                impact: { base: 0, difference: 2, forecast: 2 },
-                name: "avoided_friche_severe_accidents",
-              },
-              {
-                impact: { base: 0, difference: 1, forecast: 1 },
-                name: "avoided_friche_minor_accidents",
-              },
-            ],
-          },
+          keyName: "avoidedFricheAccidents",
+          total: 3,
+          details: [
+            {
+              total: 2,
+              keyName: "avoidedFricheAccidents.avoidedFricheAccidentsSevereInjuries",
+              name: "avoidedFricheAccidentsSevereInjuries",
+            },
+            {
+              total: 1,
+              keyName: "avoidedFricheAccidents.avoidedFricheAccidentsMinorInjuries",
+              name: "avoidedFricheAccidentsMinorInjuries",
+            },
+          ],
         }),
       );
 
-      expect(impacts).toContainEqual(
+      expect(impacts.humanity).toContainEqual(
         expect.objectContaining({
-          name: "households_powered_by_renewable_energy",
-          type: "default",
-          impact: {
-            base: 0,
-            difference: 1000,
-            forecast: 1000,
-          },
+          keyName: "householdsPoweredByRenewableEnergy",
+          name: "householdsPoweredByRenewableEnergy",
+          total: 1000,
         }),
       );
     });

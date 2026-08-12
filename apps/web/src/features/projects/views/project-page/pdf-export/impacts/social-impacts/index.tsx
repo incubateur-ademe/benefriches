@@ -1,6 +1,10 @@
 import { Text, View } from "@react-pdf/renderer";
+import { typedObjectEntries } from "shared";
 
-import { SocialImpact } from "@/features/projects/core/projectImpactsSocial";
+import {
+  SocialImpactMetricMainKeyName,
+  SocialImpactMetricsByListViewCategory,
+} from "@/features/projects/core/projectImpactsSocial";
 
 import { getSocialImpactLabel } from "../../../impacts/getImpactLabel";
 import ImpactItemDetails from "../../components/ImpactItemDetails";
@@ -13,23 +17,36 @@ import { useSectionLabel } from "../../context";
 import { pageIds } from "../../pageIds";
 import { tw } from "../../styles";
 
-const SOCIAL_SECTIONS = {
-  jobs: ["full_time_jobs"],
-  residents: ["avoided_vehicule_kilometers", "travel_time_saved", "avoided_traffic_accidents"],
-  french_society: ["avoided_friche_accidents", "households_powered_by_renewable_energy"],
+const getValueType = (name: SocialImpactMetricMainKeyName) => {
+  switch (name) {
+    case "avoidedFricheAccidents":
+    case "avoidedTrafficAccidents":
+    case "avoidedVehiculeKilometers":
+    case "householdsPoweredByRenewableEnergy":
+      return "default";
+    case "fullTimeJobs":
+      return "etp";
+    case "timeTravelSavedInHours":
+      return "time";
+  }
 };
 
+const getSectionTitle = (name: keyof SocialImpactMetricsByListViewCategory) => {
+  switch (name) {
+    case "humanity":
+      return "Impacts sur la société française";
+    case "localPeopleOrCompany":
+      return "Impacts sur la population locale";
+    case "jobs":
+      return "Impacts sur l'emploi";
+  }
+};
 type Props = {
-  impacts: SocialImpact[];
+  impacts: SocialImpactMetricsByListViewCategory;
 };
 
 const SocialImpactsPage = ({ impacts }: Props) => {
   const sectionLabel = useSectionLabel("impacts-social");
-  const jobsImpacts = impacts.filter(({ name }) => SOCIAL_SECTIONS.jobs.includes(name));
-  const residentsImpacts = impacts.filter(({ name }) => SOCIAL_SECTIONS.residents.includes(name));
-  const frenchSocietyImpacts = impacts.filter(({ name }) =>
-    SOCIAL_SECTIONS.french_society.includes(name),
-  );
 
   return (
     <PdfPage id={pageIds["impacts-social"]}>
@@ -42,70 +59,28 @@ const SocialImpactsPage = ({ impacts }: Props) => {
           <ListItem>sur la société française</ListItem>
         </View>
       </View>
-      {jobsImpacts.length > 0 && (
-        <ImpactsSection title="Impacts sur l'emploi">
-          {jobsImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup key={name}>
-              <ImpactItemDetails
-                label={getSocialImpactLabel(name)}
-                value={impact.difference}
-                data={
-                  impact.details
-                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                        label: getSocialImpactLabel(detailsName),
-                        value: detailsImpact.difference,
-                      }))
-                    : undefined
-                }
-                type={type}
-              />
-            </ImpactItemGroup>
-          ))}
-        </ImpactsSection>
-      )}
-
-      {residentsImpacts.length > 0 && (
-        <ImpactsSection title="Impacts sur la population locale">
-          {residentsImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup key={name}>
-              <ImpactItemDetails
-                label={getSocialImpactLabel(name)}
-                value={impact.difference}
-                data={
-                  impact.details
-                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                        label: getSocialImpactLabel(detailsName),
-                        value: detailsImpact.difference,
-                      }))
-                    : undefined
-                }
-                type={type}
-              />
-            </ImpactItemGroup>
-          ))}
-        </ImpactsSection>
-      )}
-
-      {frenchSocietyImpacts.length > 0 && (
-        <ImpactsSection title="Impacts sur la société française">
-          {frenchSocietyImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup key={name}>
-              <ImpactItemDetails
-                label={getSocialImpactLabel(name)}
-                value={impact.difference}
-                data={
-                  impact.details
-                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                        label: getSocialImpactLabel(detailsName),
-                        value: detailsImpact.difference,
-                      }))
-                    : undefined
-                }
-                type={type}
-              />
-            </ImpactItemGroup>
-          ))}
-        </ImpactsSection>
+      {typedObjectEntries(impacts).map(([group, list]) =>
+        list.length > 0 ? (
+          <ImpactsSection title={getSectionTitle(group)} key={group}>
+            {list.map(({ keyName, total, ...rest }) => (
+              <ImpactItemGroup key={keyName}>
+                <ImpactItemDetails
+                  label={getSocialImpactLabel(keyName)}
+                  value={total}
+                  data={
+                    "details" in rest
+                      ? rest.details.map(({ keyName: detailsName, total: detailsImpact }) => ({
+                          label: getSocialImpactLabel(detailsName),
+                          value: detailsImpact,
+                        }))
+                      : undefined
+                  }
+                  type={getValueType(keyName)}
+                />
+              </ImpactItemGroup>
+            ))}
+          </ImpactsSection>
+        ) : null,
       )}
     </PdfPage>
   );

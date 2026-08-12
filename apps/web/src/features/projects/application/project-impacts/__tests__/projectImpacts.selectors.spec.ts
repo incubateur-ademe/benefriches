@@ -47,7 +47,11 @@ describe("projectImpacts ViewData selectors", () => {
           localAuthority: expect.any(Object),
         }),
         environmentImpacts: expect.any(Array),
-        socialImpacts: expect.any(Array),
+        socialImpacts: expect.objectContaining({
+          humanity: expect.any(Object),
+          localPeopleOrCompany: expect.any(Object),
+          jobs: expect.any(Object),
+        }),
         modalData: expect.objectContaining({
           contextData: expect.any(Object),
           impactsData: expect.any(Object),
