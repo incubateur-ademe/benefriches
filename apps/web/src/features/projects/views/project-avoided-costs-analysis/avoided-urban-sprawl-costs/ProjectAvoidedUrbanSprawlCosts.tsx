@@ -1,7 +1,6 @@
 import { SiteNature, sumListWithKey } from "shared";
 
 import { AvoidedCostsUrbanSprawlAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
-import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
 import { getScenarioPictoUrl } from "@/shared/views/components/ProjectTile/scenarioType";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -40,49 +39,6 @@ const UrbanSprawlBadge = () => (
     Coût de l'étalement urbain
   </Badge>
 );
-
-const ProjectBreakEvenLevelResult = ({
-  breakEvenYear,
-  projectionYears,
-}: {
-  breakEvenYear?: string;
-  projectionYears: string[];
-}) => {
-  const isIconSuccess = breakEvenYear !== undefined;
-  const breakEvenIndex = breakEvenYear ? projectionYears.indexOf(breakEvenYear) : undefined;
-
-  return (
-    <div className="flex items-center gap-2">
-      <span
-        aria-hidden="true"
-        className={classNames(
-          "text-[32px]/tight font-bold rounded-lg",
-          "fr-icon--right fr-icon fr-icon--xl",
-          isIconSuccess
-            ? ["fr-icon-checkbox-circle-fill", "before:bg-development-score-grade-a"]
-            : ["fr-icon-close-circle-fill before:bg-development-score-grade-e"],
-        )}
-      ></span>
-      <div>
-        {projectionYears[0] === breakEvenYear ? (
-          <>
-            <div className="text-xl font-bold">La première année</div>
-            <div>Soit en {breakEvenYear}</div>
-          </>
-        ) : breakEvenIndex ? (
-          <>
-            <div className="text-xl font-bold">
-              En {breakEvenIndex} {breakEvenIndex > 1 ? "ans" : "an"}
-            </div>
-            <div>Soit en {breakEvenYear}</div>
-          </>
-        ) : (
-          <span>Pas avant au moins {projectionYears.at(-1)}</span>
-        )}
-      </div>
-    </div>
-  );
-};
 
 export default function ProjectAvoidedUrbanSprawlCosts({
   projectType,
@@ -162,25 +118,6 @@ export default function ProjectAvoidedUrbanSprawlCosts({
           </div>
         }
       />
-
-      <ComparisonCell firstCol bold size="lg" className="h-28">
-        Coût de l'opération compensé
-        <div className="font-normal text-base mt-3">(par les impacts socio-économiques)</div>
-      </ComparisonCell>
-
-      <ComparisonCell value={pi.aggregatedReconversionImpacts.breakEvenYear ? 1 : -1}>
-        <ProjectBreakEvenLevelResult
-          projectionYears={pi.projectionYears}
-          breakEvenYear={pi.aggregatedReconversionImpacts.breakEvenYear}
-        />
-      </ComparisonCell>
-
-      <ComparisonCell value={uss.breakEvenYear ? 1 : -1}>
-        <ProjectBreakEvenLevelResult
-          projectionYears={uss.projectionYears}
-          breakEvenYear={uss.breakEvenYear}
-        />
-      </ComparisonCell>
 
       <SectionHeader>Coût-bénéfice</SectionHeader>
 
