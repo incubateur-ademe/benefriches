@@ -21,11 +21,12 @@ _Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou 
 
 <If when={props.isUrban}>
   <ProjectFeature value="residentialBuildingsFloorArea" label="Surface de logements prévues" />
-
-- Nombre d’emplois prévus ou superficie de bâtiments à usage économique distinguant les activités
+</If>
+<If when={props.isUrban}>
+  - Nombre d’emplois prévus ou superficie de bâtiments à usage économique distinguant les activités
   tertiaires (bureaux, administration, enseignements) des autres activités (commerce, artisanat,
   industrie)
-  </If>
+</If>
 
 <If when={props.isPhotovoltaic}>
   <ProjectFeature value="electricalPowerKwc" label="Puissance photovoltaïque installée" />
@@ -43,11 +44,11 @@ _Le total des recettes fiscales escomptées en une année est la somme des recet
 
 - imposition forfaitaire des entreprises de réseaux (IFER) : **3,394 €** par kilowatt de puissance électrique installée au 1er janvier de l’année d’imposition
 - [Fiscalité des centrales photovoltaïques](https://www.cre.fr/documents/Publications/Rapports-thematiques/Couts-et-rentabilites-du-grand-photovoltaique-en-metropole-continentale)
-- https://www.vie-publique.fr/en-bref/289611-fiscalite-directe-locale-quelles-evolutions-deux-ans-apres-la-reforme
-- https://www.insee.fr/fr/statistiques/7700305
-- https://www.statistiques.developpement-durable.gouv.fr/sites/default/files/2022-12/datalab\_essentiel\_296\_conditions\_logements\_decembre2022\_0.pdf
+- [Fiscalité directe locale](https://www.vie-publique.fr/en-bref/289611-fiscalite-directe-locale-quelles-evolutions-deux-ans-apres-la-reforme)
+- [ 37,8 millions de logements en France au 1er janvier 2023](https://www.insee.fr/fr/statistiques/7700305)
+- [Les conditions de logement des ménages résidant en France en 2020](https://www.statistiques.developpement-durable.gouv.fr/sites/default/files/2022-12/datalab_essentiel_296_conditions_logements_decembre2022_0.pdf)
 
 ## Aller plus loin
 
-- https://www.economie.gouv.fr/entreprises/impots-locaux
-- https://www.service-public.fr/particuliers/vosdroits/N206
+- [Impôts locaux](https://www.economie.gouv.fr/entreprises/impots-locaux)
+- [Fiscalité locale des particuliers](https://www.service-public.fr/particuliers/vosdroits/N206)
