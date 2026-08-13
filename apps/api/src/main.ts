@@ -31,7 +31,11 @@ async function bootstrap() {
     .setVersion("1.0")
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  const publicPaths = new Set(["/api/friches/cout-inaction", "/api/stats/average-impacts/search"]);
+  const publicPaths = new Set([
+    "/api/friches/cout-inaction",
+    "/api/stats/average-impacts/search",
+    "/api/stats",
+  ]);
   const publicDocument = {
     ...document,
     paths: Object.fromEntries(

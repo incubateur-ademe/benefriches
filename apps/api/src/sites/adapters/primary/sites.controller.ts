@@ -197,7 +197,7 @@ export class SitesController {
   }
 
   @Get("friches/cout-inaction")
-  @Throttle({ default: { ttl: 60_000, limit: 10 } })
+  @Throttle({ default: { ttl: 60_000, limit: 60 } })
   @ApiOperation({ summary: "Calcul du coût d'inaction d'une friche" })
   @ApiQuery({ name: "code_insee", example: "49007" })
   @ApiQuery({ name: "superficie_m2", example: 5000, type: Number })

@@ -9,7 +9,9 @@ import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvid
 import { DateProvider } from "src/shared-kernel/dateProvider";
 import { SqlReconversionProjectAndSiteImpactsQuery } from "src/stats/adapters/secondary/SqlStatsQuery";
 import { ComputeEvaluatedProjectStatsUseCase } from "src/stats/core/usecases/computeEvaluatedProjectStats.usecase";
+import { ComputeStatsWithPeriodicityUseCase } from "src/stats/core/usecases/computeStatsWithPeriodicity.usecase";
 
+import { SqlReconversionProjectByPeriodicityQuery } from "../secondary/SqlPeriodicityStatsQuery";
 import { StatsController } from "./stats.controller";
 
 @Module({
@@ -34,7 +36,14 @@ import { StatsController } from "./stats.controller";
         RealDateProvider,
       ],
     },
+    {
+      provide: ComputeStatsWithPeriodicityUseCase,
+      useFactory: (periodicityStatsQuery: SqlReconversionProjectByPeriodicityQuery) =>
+        new ComputeStatsWithPeriodicityUseCase(periodicityStatsQuery),
+      inject: [SqlReconversionProjectByPeriodicityQuery],
+    },
     SqlReconversionProjectAndSiteImpactsQuery,
+    SqlReconversionProjectByPeriodicityQuery,
     RealDateProvider,
     SqlCarbonStorageQuery,
   ],

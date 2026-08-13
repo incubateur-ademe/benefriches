@@ -45,3 +45,10 @@ export {
   type GetReconversionProjectFeaturesResponseDto,
   type GetReconversionProjectImpactsResultDto,
 } from "./reconversion-projects";
+
+export {
+  getPeriodicityStatsRequestDtoSchema,
+  type GetPeriodicityStatsRequestDto,
+  getPeriodicityStatsResponseDtoSchema,
+  type GetPeriodicityStatsResponseDto,
+} from "./stats";
