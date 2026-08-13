@@ -8,8 +8,8 @@ import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/Mod
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import ModalProjectFeature from "../features/ModalProjectFeature";
-import ModalSiteFeature from "../features/ModalSiteFeature";
+import ModalProjectFeature from "../modal-features/ModalProjectFeature";
+import ModalSiteFeature from "../modal-features/ModalSiteFeature";
 
 type ComponentType = React.ComponentType<{
   components?: MDXComponents;
