@@ -1,6 +1,6 @@
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
-import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
+import { EnvironmentalImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsEnvironmental";
 import { SocialImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 
@@ -12,7 +12,7 @@ import SocioEconomicImpactsListSection from "./sections/SocioEconomicListSection
 type Props = {
   economicBalance: EconomicBalanceByCategory;
   socioEconomicImpacts: SocioEconomicImpactsByBearerListView;
-  environmentImpacts: EnvironmentalImpact[];
+  environmentImpacts: EnvironmentalImpactMetricsByListViewCategory;
   socialImpacts: SocialImpactMetricsByListViewCategory;
   modalData: ModalDataProps;
 };
@@ -34,7 +34,7 @@ const ImpactsListView = ({
         <SocioEconomicImpactsListSection socioEconomicImpacts={socioEconomicImpacts} {...rest} />
       )}
 
-      {environmentImpacts.length > 0 && (
+      {Object.values(environmentImpacts).flat().length > 0 && (
         <EnvironmentalListSection impacts={environmentImpacts} {...rest} />
       )}
 

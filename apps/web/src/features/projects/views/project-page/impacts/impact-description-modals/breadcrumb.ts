@@ -2,6 +2,7 @@ import { ContentState } from "../../../shared/impacts/modals/ImpactModalDescript
 import { BreadcrumbSegment } from "../../../shared/impacts/modals/ModalBreadcrumb";
 import {
   getEconomicBalanceImpactLabel,
+  getEnvironmentalImpactLabel,
   getSocialImpactLabel,
   getSocioEconomicImpactLabel,
 } from "../getImpactLabel";
@@ -69,10 +70,22 @@ const SOCIAL_BREADCRUMBS = {
   },
 } as const;
 
+const ENVIRONMENTAL_BREADCRUMBS = {
+  soils: {
+    label: "Impacts sur les sols",
+    contentState: { sectionName: "environmental", subSectionName: "soils" },
+  },
+
+  co2eq: {
+    label: "Impacts sur le CO2-eq",
+    contentState: { sectionName: "environmental", subSectionName: "co2eq" },
+  },
+} as const;
+
 export const getBreadcrumbProps = (
   contentState: Extract<
     ContentState,
-    { sectionName: "socio_economic" | "social" | "economic_balance" }
+    { sectionName: "socio_economic" | "social" | "economic_balance" | "environmental" }
   >,
 ) => {
   switch (contentState.sectionName) {
@@ -118,6 +131,32 @@ export const getBreadcrumbProps = (
             impactName: contentState.impactName,
             impactDetailsName: contentState.impactDetailsName,
             getLabel: getSocialImpactLabel,
+            getImpactContentState: (impactName) => ({
+              sectionName: contentState.sectionName,
+              subSectionName: contentState.subSectionName,
+              impactName,
+            }),
+          }),
+        ]),
+      };
+    }
+
+    case "environmental": {
+      const subSectionSegment = contentState.subSectionName
+        ? ENVIRONMENTAL_BREADCRUMBS[contentState.subSectionName]
+        : undefined;
+
+      return {
+        section: {
+          label: "Impacts environnementaux",
+          contentState: { sectionName: contentState.sectionName },
+        },
+        segments: buildCascadingBreadcrumb([
+          subSectionSegment,
+          ...buildImpactSegments({
+            impactName: contentState.impactName,
+            impactDetailsName: contentState.impactDetailsName,
+            getLabel: getEnvironmentalImpactLabel,
             getImpactContentState: (impactName) => ({
               sectionName: contentState.sectionName,
               subSectionName: contentState.subSectionName,

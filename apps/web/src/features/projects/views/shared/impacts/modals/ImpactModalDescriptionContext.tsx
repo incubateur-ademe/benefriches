@@ -5,16 +5,16 @@ import {
   EconomicBalanceMainImpactKeyName,
 } from "@/features/projects/core/projectImpactsEconomicBalance";
 import {
-  EnvironmentalImpactDetailsName,
-  EnvironmentalMainImpactName,
+  EnvironmentalImpactMetricDetailsKeyName,
+  EnvironmentalImpactMetricMainKeyName,
 } from "@/features/projects/core/projectImpactsEnvironmental";
 import {
   SocialImpactMetricDetailsKeyName,
   SocialImpactMetricMainKeyName,
 } from "@/features/projects/core/projectImpactsSocial";
 import {
-  SocioEconomicDetailsName,
-  SocioEconomicMainImpactName,
+  SocioEconomicImpactDetailsImpactKeyName,
+  SocioEconomicImpactMainImpactKeyName,
 } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 
@@ -26,7 +26,7 @@ type IsClosedState = {
 
 export type SocioEconomicSubSectionName = "humanity" | "localPeopleOrCompany" | "localAuthority";
 export type SocialSubSectionName = "jobs" | "humanity" | "localPeopleOrCompany";
-export type EnvironmentSubSectionName = "co2" | "soils";
+export type EnvironmentSubSectionName = "co2eq" | "soils";
 
 type IsOpenedState =
   | {
@@ -37,8 +37,8 @@ type IsOpenedState =
   | {
       sectionName: "socio_economic";
       subSectionName?: SocioEconomicSubSectionName;
-      impactName?: SocioEconomicMainImpactName;
-      impactDetailsName?: SocioEconomicDetailsName;
+      impactName?: SocioEconomicImpactMainImpactKeyName;
+      impactDetailsName?: SocioEconomicImpactDetailsImpactKeyName;
     }
   | {
       sectionName: "social";
@@ -49,8 +49,8 @@ type IsOpenedState =
   | {
       sectionName: "environmental";
       subSectionName?: EnvironmentSubSectionName;
-      impactName?: EnvironmentalMainImpactName;
-      impactDetailsName?: EnvironmentalImpactDetailsName;
+      impactName?: EnvironmentalImpactMetricMainKeyName;
+      impactDetailsName?: EnvironmentalImpactMetricDetailsKeyName;
     }
   | {
       sectionName: "summary";

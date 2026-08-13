@@ -1,12 +1,13 @@
+import Button from "@codegouvfr/react-dsfr/Button";
 import type { MDXComponents } from "mdx/types";
-import { lazy, useMemo } from "react";
+import { lazy, useContext, useMemo } from "react";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import LinkToAvoidedKilometersImpact from "../avoided-kilometers-social-impact-link/AvoidedKilometersSocialImpactLink";
 import ModalProjectFeature from "../features/ModalProjectFeature";
 import ModalSiteFeature from "../features/ModalSiteFeature";
 
@@ -45,6 +46,7 @@ export function LazyContentComponent({
   contextData,
 }: Props) {
   const LazyComponent = useMemo(() => lazy<ComponentType>(Component), [Component]);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const siteContaminatedSurfaceArea =
     impactsData.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.find(
@@ -96,7 +98,36 @@ export function LazyContentComponent({
         h3: ModalTitleThree,
         SiteFeature: BoundSiteFeature,
         ProjectFeature: BoundProjectFeature,
-        LinkToAvoidedKilometersImpact: LinkToAvoidedKilometersImpact,
+        LinkToAvoidedKilometersImpact: () => (
+          <Button
+            onClick={() => {
+              updateModalContent({
+                sectionName: "social",
+                subSectionName: "localPeopleOrCompany",
+                impactName: "avoidedVehiculeKilometers",
+              });
+            }}
+            className="px-1"
+            priority="tertiary no outline"
+          >
+            «&nbsp;🚙 Kilomètres évités&nbsp;»
+          </Button>
+        ),
+        LinkToTimeTravelSavedSocialImpact: () => (
+          <Button
+            onClick={() => {
+              updateModalContent({
+                sectionName: "social",
+                subSectionName: "localPeopleOrCompany",
+                impactName: "timeTravelSavedInHours",
+              });
+            }}
+            className="px-1"
+            priority="tertiary no outline"
+          >
+            «&nbsp;⏱️ Temps passé en moins dans les transports&nbsp;»
+          </Button>
+        ),
         If,
       }}
     />

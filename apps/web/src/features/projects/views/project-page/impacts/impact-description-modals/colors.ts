@@ -1,8 +1,9 @@
 import { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
+import { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
 import { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
 import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 
-export const getEconomicBalanceImpactColor = (name: EconomicBalanceImpactKeyName): string => {
+export const getEconomicBalanceImpactColor = (name: EconomicBalanceImpactKeyName) => {
   switch (name) {
     case "realEstateAcquisition":
       return "#C649CA";
@@ -61,9 +62,6 @@ export const getEconomicBalanceImpactColor = (name: EconomicBalanceImpactKeyName
     case "realEstateAcquisition.buildingsResaleRevenue":
     case "realEstateAcquisition.siteResaleRevenue":
       return "#C649CA";
-
-    default:
-      return "";
   }
 };
 
@@ -156,9 +154,6 @@ export const getSocioEconomicImpactColor = (impactName: SocioEconomicImpactImpac
       return "#C649CA";
     case "taxesIncome.projectPhotovoltaicTaxesIncome":
       return "#FF9700";
-
-    default:
-      return "";
   }
 };
 
@@ -170,7 +165,29 @@ export const getSocialImpactColor = (impactName: SocialImpactMetricKeyName) => {
       return "#F6DB1F";
     case "avoidedTrafficAccidents.avoidedTrafficAccidentsDeaths":
       return "#2D163C";
-    default:
-      return "";
+    case "fullTimeJobs.conversionFullTimeJobs":
+      return "#E73518";
+    case "fullTimeJobs.urbanOperationsFullTimeJobs":
+    case "fullTimeJobs.photovoltaicOperationsFullTimeJobs":
+      return "#C4C5C6";
+  }
+};
+
+export const getEnvironmentalImpactColor = (impactName: EnvironmentalImpactMetricKeyName) => {
+  switch (impactName) {
+    case "avoidedCo2eqEmissions.avoidedCO2TonsWithEnergyProduction":
+      return "#F6E900";
+    case "avoidedCo2eqEmissions.avoidedAirConditioningCo2eqEmissions":
+      return "#1F60FB";
+    case "avoidedCo2eqEmissions.avoidedTrafficCo2EqEmissions":
+      return "#C750CA";
+    case "avoidedCo2eqEmissions.newStoredCo2Eq":
+      return "#FF8910";
+    case "nonContaminatedSurfaceArea":
+      return "#FCDF3B";
+    case "newPermeableSurface.newPermeableGreenSurface":
+      return "#7ACA17";
+    case "newPermeableSurface.newPermeableMineralSurface":
+      return "#70706A";
   }
 };

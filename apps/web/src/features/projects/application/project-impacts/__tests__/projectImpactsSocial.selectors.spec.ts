@@ -31,6 +31,7 @@ describe("projectImpactsSocial selectors", () => {
         expect.objectContaining({
           keyName: "fullTimeJobs",
           total: 2.5,
+          breakdown: { base: 1, forecast: 3.5 },
           details: [
             {
               total: 3,
@@ -39,6 +40,7 @@ describe("projectImpactsSocial selectors", () => {
             },
             {
               total: -0.5,
+              breakdown: { base: 1, forecast: 0.5 },
               keyName: "fullTimeJobs.photovoltaicOperationsFullTimeJobs",
               details: expect.any(Object),
             },

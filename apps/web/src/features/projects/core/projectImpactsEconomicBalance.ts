@@ -1,9 +1,10 @@
-import { ProjectEconomicBalance, sumListWithKey } from "shared";
-
-import { filterByName } from "@/shared/core/filter-by-name/filterByName";
+import { ProjectEconomicBalance } from "shared";
 
 import { ProjectImpactsState } from "../application/project-impacts/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType } from "../core/projects.types";
+import { extractDetailsGroup } from "./group-impacts/extractDetailsGroup";
+import { filterNonEmptyImpacts } from "./group-impacts/filterNonEmpty";
+import { groupImpactsByName } from "./group-impacts/groupImpactsByName";
 
 type EconomicBalanceByListViewCategory = ReturnType<typeof groupEconomicBalanceByListViewCategory>;
 
@@ -21,104 +22,30 @@ export type EconomicBalanceImpactKeyName =
   | EconomicBalanceMainImpactKeyName
   | EconomicBalanceDetailsImpactKeyName;
 
-function extractDetails<
-  T extends ProjectEconomicBalance["details"][number],
-  G extends Exclude<
-    T["name"],
-    "projectInstallation" | "sitePurchase" | "siteResaleRevenue" | "buildingsResaleRevenue"
-  >,
->(
-  items: readonly T[],
-  groupName: G,
-): {
-  total: number;
-  keyName: G;
-  details: {
-    name: Extract<T, { name: G }>["details"];
-    total: number;
-    keyName: `${G}.${Extract<T, { name: G }>["details"]}`;
-  }[];
-};
-
-function extractDetails<
-  T extends ProjectEconomicBalance["details"][number],
-  G extends "projectInstallation",
->(
-  items: readonly T[],
-  groupName: G,
-  keyGroupName: "photovoltaicProjectInstallation" | "urbanProjectInstallation",
-): {
-  total: number;
-  keyName: typeof keyGroupName;
-  details: {
-    name: Extract<T, { name: G }>["details"];
-    total: number;
-    keyName: `${typeof keyGroupName}.${Extract<T, { name: G }>["details"]}`;
-  }[];
-};
-
-function extractDetails<
-  T extends ProjectEconomicBalance["details"][number],
-  G extends Exclude<T["name"], "sitePurchase" | "siteResaleRevenue" | "buildingsResaleRevenue">,
->(
-  items: readonly T[],
-  groupName: G,
-  keyGroupName?: "photovoltaicProjectInstallation" | "urbanProjectInstallation",
-) {
-  const details = filterByName(items, groupName).map((item) => ({
-    name: item.details as Extract<T, { name: G }>["details"],
-    total: item.total,
-    keyName: `${keyGroupName ?? groupName}.${item.details}`,
-  }));
-
-  return {
-    total: sumListWithKey(details, "total"),
-    details,
-    keyName: keyGroupName ?? groupName,
-  };
-}
-
-function groupImpacts<T extends ProjectEconomicBalance["details"][number], G extends string>(
-  items: readonly T[],
-  groupName: G,
-  impactList: Extract<T["name"], "sitePurchase" | "siteResaleRevenue" | "buildingsResaleRevenue">[],
-) {
-  const details = filterByName(items, ...impactList).map((item) => ({
-    name: item.name,
-    total: item.total,
-    keyName: `${groupName}.${item.name}` as const,
-  }));
-
-  return {
-    total: sumListWithKey(details, "total"),
-    details,
-    keyName: groupName,
-  };
-}
-
 export const groupEconomicBalanceByListViewCategory = (
   projectType: ProjectDevelopmentPlanType,
   projectEconomicBalance: ProjectEconomicBalance["details"],
 ) => {
-  return [
-    groupImpacts(projectEconomicBalance, "realEstateAcquisition", [
+  return filterNonEmptyImpacts([
+    groupImpactsByName(
+      projectEconomicBalance,
+      "realEstateAcquisition",
       "sitePurchase",
       "siteResaleRevenue",
       "buildingsResaleRevenue",
-    ]),
-    extractDetails(projectEconomicBalance, "siteReinstatement"),
-    extractDetails(
-      projectEconomicBalance,
-      "projectInstallation",
-      projectType === "PHOTOVOLTAIC_POWER_PLANT"
-        ? "photovoltaicProjectInstallation"
-        : "urbanProjectInstallation",
     ),
-    extractDetails(projectEconomicBalance, "projectBuildingsInstallation"),
-    extractDetails(projectEconomicBalance, "financialAssistanceRevenues"),
-    extractDetails(projectEconomicBalance, "projectOperatingExpenses"),
-    extractDetails(projectEconomicBalance, "projectOperatingRevenues"),
-  ].filter((item) => item.details.length !== 0);
+    extractDetailsGroup(projectEconomicBalance, "siteReinstatement"),
+    extractDetailsGroup(projectEconomicBalance, "projectInstallation", {
+      keyGroupName:
+        projectType === "PHOTOVOLTAIC_POWER_PLANT"
+          ? "photovoltaicProjectInstallation"
+          : "urbanProjectInstallation",
+    }),
+    extractDetailsGroup(projectEconomicBalance, "projectBuildingsInstallation"),
+    extractDetailsGroup(projectEconomicBalance, "financialAssistanceRevenues"),
+    extractDetailsGroup(projectEconomicBalance, "projectOperatingExpenses"),
+    extractDetailsGroup(projectEconomicBalance, "projectOperatingRevenues"),
+  ]);
 };
 
 export const buildEconomicBalanceListView = (

@@ -58,7 +58,7 @@ const SummaryNonContaminatedSurfaceAreaDescription = ({ impactData }: Props) => 
                     e.stopPropagation();
                     updateModalContent({
                       sectionName: "environmental",
-                      impactName: "non_contaminated_surface_area",
+                      impactName: "nonContaminatedSurfaceArea",
                     });
                   },
                 }}

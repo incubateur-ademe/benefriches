@@ -1,11 +1,12 @@
 import { Text, View } from "@react-pdf/renderer";
-
-import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
+import { typedObjectEntries } from "shared";
 
 import {
-  getEnvironmentalDetailsImpactLabel,
-  getEnvironmentalImpactLabel,
-} from "../../../impacts/getImpactLabel";
+  EnvironmentalImpactMetricMainKeyName,
+  EnvironmentalImpactMetricsByListViewCategory,
+} from "@/features/projects/core/projectImpactsEnvironmental";
+
+import { getEnvironmentalImpactLabel } from "../../../impacts/getImpactLabel";
 import ImpactItemDetails from "../../components/ImpactItemDetails";
 import ImpactItemGroup from "../../components/ImpactItemGroup";
 import ImpactsSection from "../../components/ImpactsSection";
@@ -16,20 +17,31 @@ import { useSectionLabel } from "../../context";
 import { pageIds } from "../../pageIds";
 import { tw } from "../../styles";
 
-const ENVIRONMENTAL_SECTIONS = {
-  co2: ["co2_benefit"],
-  soils: ["non_contaminated_surface_area", "permeable_surface_area"],
+const getValueType = (name: EnvironmentalImpactMetricMainKeyName) => {
+  switch (name) {
+    case "avoidedCo2eqEmissions":
+      return "co2";
+    case "newPermeableSurface":
+    case "nonContaminatedSurfaceArea":
+      return "surface_area";
+  }
+};
+
+const getSectionTitle = (name: keyof EnvironmentalImpactMetricsByListViewCategory) => {
+  switch (name) {
+    case "co2eq":
+      return "Impacts sur le CO2-eq";
+    case "soils":
+      return "Impacts sur  les sols";
+  }
 };
 
 type Props = {
-  impacts: EnvironmentalImpact[];
+  impacts: EnvironmentalImpactMetricsByListViewCategory;
 };
 
 export default function EnvironmentalImpactsPage({ impacts }: Props) {
   const sectionLabel = useSectionLabel("impacts-environment");
-  const co2Impacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.co2.includes(name));
-  const soilsImpacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.soils.includes(name));
-
   return (
     <PdfPage id={pageIds["impacts-environment"]}>
       <PdfPageSubtitle>{sectionLabel}</PdfPageSubtitle>
@@ -41,47 +53,28 @@ export default function EnvironmentalImpactsPage({ impacts }: Props) {
           <ListItem>la surface perméable, qu'elle soit végétalisée ou non</ListItem>
         </View>
       </View>
-      {co2Impacts.length > 0 && (
-        <ImpactsSection title="Impacts sur le CO2-eq">
-          {co2Impacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup key={name}>
-              <ImpactItemDetails
-                label={getEnvironmentalImpactLabel(name)}
-                value={impact.difference}
-                data={
-                  impact.details
-                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                        label: getEnvironmentalDetailsImpactLabel(name, detailsName),
-                        value: detailsImpact.difference,
-                      }))
-                    : undefined
-                }
-                type={type}
-              />
-            </ImpactItemGroup>
-          ))}
-        </ImpactsSection>
-      )}
-      {soilsImpacts.length > 0 && (
-        <ImpactsSection title="Impacts sur  les sols">
-          {soilsImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup key={name}>
-              <ImpactItemDetails
-                label={getEnvironmentalImpactLabel(name)}
-                value={impact.difference}
-                data={
-                  impact.details
-                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                        label: getEnvironmentalDetailsImpactLabel(name, detailsName),
-                        value: detailsImpact.difference,
-                      }))
-                    : undefined
-                }
-                type={type}
-              />
-            </ImpactItemGroup>
-          ))}
-        </ImpactsSection>
+      {typedObjectEntries(impacts).map(([group, list]) =>
+        list.length > 0 ? (
+          <ImpactsSection title={getSectionTitle(group)} key={group}>
+            {list.map(({ keyName, total, ...rest }) => (
+              <ImpactItemGroup key={keyName}>
+                <ImpactItemDetails
+                  label={getEnvironmentalImpactLabel(keyName)}
+                  value={total}
+                  data={
+                    "details" in rest
+                      ? rest.details.map(({ keyName: detailsName, total: detailsImpact }) => ({
+                          label: getEnvironmentalImpactLabel(detailsName),
+                          value: detailsImpact,
+                        }))
+                      : undefined
+                  }
+                  type={getValueType(keyName)}
+                />
+              </ImpactItemGroup>
+            ))}
+          </ImpactsSection>
+        ) : null,
       )}
     </PdfPage>
   );

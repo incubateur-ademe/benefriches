@@ -60,7 +60,7 @@ const SummaryPermeableSurfaceAreaDescription = ({ impactData }: Props) => {
                 e.stopPropagation();
                 updateModalContent({
                   sectionName: "environmental",
-                  impactName: "permeable_surface_area",
+                  impactName: "newPermeableSurface",
                 });
               },
             }}

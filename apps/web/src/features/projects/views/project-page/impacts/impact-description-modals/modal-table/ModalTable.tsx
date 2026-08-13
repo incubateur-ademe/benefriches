@@ -16,7 +16,7 @@ type Props = {
     label: string;
     actor?: string;
     value: number;
-    onClick: () => void;
+    onClick?: () => void;
   }[];
   formatFn?: (value: number) => string;
 };
@@ -48,8 +48,44 @@ export const Value = ({
   </span>
 );
 
+const mapDataToTableRow = (
+  { label, value, color, onClick, actor }: Props["data"][number],
+  index: number,
+  formatFn: (value: number) => string,
+) => {
+  const row = actor
+    ? [
+        <BagdeLabel
+          key={label}
+          label={label}
+          color={color ?? `var(--highcharts-color-${index})`}
+        />,
+        actor,
+        <Value key={`${label}-value`} value={value} formatFn={formatFn} />,
+      ]
+    : [
+        <BagdeLabel
+          key={label}
+          label={label}
+          color={color ?? `var(--highcharts-color-${index})`}
+        />,
+        <Value key={`${label}-value`} value={value} formatFn={formatFn} />,
+      ];
+  if (onClick) {
+    row.push(
+      <Button priority="tertiary no outline" size="small" key={label} onClick={onClick}>
+        Voir+
+      </Button>,
+    );
+  }
+  return row;
+};
+
 const ModalTable = ({ data, caption, formatFn = formatMonetaryImpact }: Props) => {
+  const tableData = data.map((item, index) => mapDataToTableRow(item, index, formatFn));
+
   const hasActors = data.some(({ actor }) => actor);
+  const hasActions = data.some(({ onClick }) => onClick);
 
   if (hasActors) {
     return (
@@ -58,19 +94,12 @@ const ModalTable = ({ data, caption, formatFn = formatMonetaryImpact }: Props) =
         caption={caption}
         noCaption
         bordered
-        headers={["Gain ou perte", "Bénéficiaire", "Montant", "Détail"]}
-        data={data.map(({ label, value, color, onClick, actor }, index) => [
-          <BagdeLabel
-            key={label}
-            label={label}
-            color={color ?? `var(--highcharts-color-${index})`}
-          />,
-          actor,
-          <Value key={`${label}-value`} value={value} formatFn={formatFn} />,
-          <Button priority="tertiary no outline" size="small" key={label} onClick={onClick}>
-            Voir+
-          </Button>,
-        ])}
+        headers={
+          hasActions
+            ? ["Gain ou perte", "Bénéficiaire", "Montant", "Détail"]
+            : ["Gain ou perte", "Bénéficiaire", "Montant"]
+        }
+        data={tableData}
       />
     );
   }
@@ -81,18 +110,8 @@ const ModalTable = ({ data, caption, formatFn = formatMonetaryImpact }: Props) =
       caption={caption}
       noCaption
       bordered
-      headers={["Gain ou perte", "Montant", "Détail"]}
-      data={data.map(({ label, value, color, onClick }, index) => [
-        <BagdeLabel
-          key={label}
-          label={label}
-          color={color ?? `var(--highcharts-color-${index})`}
-        />,
-        <Value key={`${label}-value`} value={value} formatFn={formatFn} />,
-        <Button priority="tertiary no outline" size="small" key={label} onClick={onClick}>
-          Voir+
-        </Button>,
-      ])}
+      headers={hasActions ? ["Gain ou perte", "Montant", "Détail"] : ["Gain ou perte", "Montant"]}
+      data={tableData}
     />
   );
 };

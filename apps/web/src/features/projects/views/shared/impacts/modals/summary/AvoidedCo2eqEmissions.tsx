@@ -72,7 +72,7 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
 
                 updateModalContent({
                   sectionName: "environmental",
-                  impactName: "co2_benefit",
+                  impactName: "avoidedCo2eqEmissions",
                 });
               },
             }}

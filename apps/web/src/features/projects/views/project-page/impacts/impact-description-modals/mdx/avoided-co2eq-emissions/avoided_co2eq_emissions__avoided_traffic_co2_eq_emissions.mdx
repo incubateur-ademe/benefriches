@@ -8,16 +8,27 @@ La création de logements, équipements publics, espaces verts ou encore locaux 
 
 La réduction des déplacements attendue par la réalisation du projet urbain en centralité conduira à de moindres émissions de CO2 des véhicules (le parc automobile étant encore largement thermique).
 
-**Bénéficiaire** : société française
+<If when={!props.withMonetarisation}>**Bénéficiaire** : humanité</If>
+<If when={props.withMonetarisation}>**Bénéficiaire** : société française</If>
 
 ## Quelles données sont utilisées dans le calcul ?
 
 ### Données systémiques agrégées par Bénéfriches :
 
-- Emission moyenne en CO2 d’un déplacement (exprimé en gCO2/véhicule.km) : variable selon l’année, le parc automobile ayant tendance à être de plus en plus décarboné
-- Valeur tutélaire du carbone (exprimée en €/t éq. CO2) : variable selon l’année, selon une trajectoire à la hausse
-- Taux d'occupation moyen des véhicules (exprimé en nombre de personne / véhicule) : 1,45
-- Pour les autres données, se référer à l’indicateur d’impact social <LinkToAvoidedKilometersImpact />
+<If when={props.withMonetarisation}>
+  - Emission moyenne en CO2 d’un déplacement (exprimé en gCO2/véhicule.km) : variable selon l’année,
+  le parc automobile ayant tendance à être de plus en plus décarboné - Valeur tutélaire du carbone
+  (exprimée en €/t éq. CO2) : variable selon l’année, selon une trajectoire à la hausse - Taux
+  d'occupation moyen des véhicules (exprimé en nombre de personne / véhicule) : 1,45 - Pour les
+  autres données, se référer à l’indicateur d’impact social <LinkToAvoidedKilometersImpact />
+</If>
+
+<If when={!props.withMonetarisation}>
+  - Emission moyenne en CO2 d’un déplacement (exprimé en gCO2/véhicule.km) : variable selon l’année,
+  le parc automobile ayant tendance à être de plus en plus décarboné - Taux d'occupation moyen des
+  véhicules (exprimé en nombre de personne / véhicule) : 1,45 - Pour les autres données, se référer
+  à l’indicateur d’impact social <LinkToAvoidedKilometersImpact />
+</If>
 
 ### Données du projet :
 

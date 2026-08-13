@@ -23,8 +23,8 @@ import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHe
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import ModalGroupTable from "../../shared/ModalGroupTable";
-import ModalColumnSeriesChart from "../../shared/modal-charts/ModalColumnSeriesChart";
+import ModalColumnSeriesChart from "../../modal-charts/ModalColumnSeriesChart";
+import ModalGroupTable from "../../modal-table/ModalGroupTable";
 
 type Props = {
   impactsData: ModalDataProps["impactsData"];

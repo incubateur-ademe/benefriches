@@ -14,7 +14,7 @@ import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/Modal
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import ModalTable from "../shared/ModalTable";
+import ModalTable from "../modal-table/ModalTable";
 
 type Props = {
   impactsData: ModalDataProps["impactsData"];

@@ -1,58 +1,29 @@
 import { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
-import {
-  CO2BenefitDetails,
-  EnvironmentalImpactDetailsName,
-  EnvironmentalMainImpactName,
-  PermeableSoilsDetails,
-} from "@/features/projects/core/projectImpactsEnvironmental";
+import { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
 import { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
 import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { getLabelForBuildingsConstructionExpense } from "@/shared/core/urbanProject";
 
-export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
+export const getEnvironmentalImpactLabel = (name: EnvironmentalImpactMetricKeyName) => {
   switch (name) {
-    case "non_contaminated_surface_area":
+    case "nonContaminatedSurfaceArea":
       return "✨ Surface non polluée";
-    case "co2_benefit":
+    case "avoidedCo2eqEmissions":
       return "☁️ CO2-eq stocké ou évité";
-    case "permeable_surface_area":
+    case "newPermeableSurface":
       return "🌧️ Surface perméable";
-  }
-};
-
-export const getEnvironmentalDetailsImpactLabel = (
-  mainCategory: EnvironmentalMainImpactName,
-  name: EnvironmentalImpactDetailsName,
-) => {
-  switch (mainCategory) {
-    case "permeable_surface_area":
-      return getPermeableSurfaceDetailsImpactLabel(name as PermeableSoilsDetails);
-    case "co2_benefit":
-      return getCO2BenefitDetailsImpactLabel(name as CO2BenefitDetails);
-    default:
-      return "Autre";
-  }
-};
-
-const getCO2BenefitDetailsImpactLabel = (name: CO2BenefitDetails) => {
-  switch (name) {
-    case "stored_co2_eq":
-      return "🍂 CO2-eq stocké dans les sols";
-    case "avoided_co2_eq_emissions_with_production":
-      return "⚡️ Émissions de CO2-eq évitées grâce à la production d'EnR";
-    case "avoided_car_traffic_co2_eq_emissions":
-      return "🚶 Evitées grâce aux déplacements en voiture évités";
-    case "avoided_air_conditioning_co2_eq_emissions":
-      return "❄️ Evitées grâce à l'utilisation réduite de de la climatisation";
-  }
-};
-
-const getPermeableSurfaceDetailsImpactLabel = (name: PermeableSoilsDetails) => {
-  switch (name) {
-    case "mineral_soil":
+    case "newPermeableSurface.newPermeableMineralSurface":
       return "🪨 Surface perméable minérale";
-    case "green_soil":
+    case "newPermeableSurface.newPermeableGreenSurface":
       return "🌱 Surface perméable végétalisée";
+    case "avoidedCo2eqEmissions.newStoredCo2Eq":
+      return "🍂 CO2-eq stocké dans les sols";
+    case "avoidedCo2eqEmissions.avoidedCO2TonsWithEnergyProduction":
+      return "⚡️ Émissions de CO2-eq évitées grâce à la production d'EnR";
+    case "avoidedCo2eqEmissions.avoidedTrafficCo2EqEmissions":
+      return "🚶 Evitées grâce aux déplacements en voiture évités";
+    case "avoidedCo2eqEmissions.avoidedAirConditioningCo2eqEmissions":
+      return "❄️ Evitées grâce à l'utilisation réduite de de la climatisation";
   }
 };
 

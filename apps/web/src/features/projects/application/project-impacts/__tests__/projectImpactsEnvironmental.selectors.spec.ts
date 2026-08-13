@@ -27,59 +27,57 @@ describe("projectImpactsEnvironmental selectors", () => {
       const rootState = store.getState();
       const impacts = selectEnvironmentalProjectImpacts(rootState);
 
-      expect(impacts).toContainEqual(
+      expect(impacts.soils).toContainEqual(
         expect.objectContaining({
-          name: "non_contaminated_surface_area",
-          type: "surface_area",
-          impact: {
+          keyName: "nonContaminatedSurfaceArea",
+          breakdown: {
             base: 70000,
             forecast: 90000,
-            difference: 20000,
           },
+          total: 20000,
         }),
       );
 
-      expect(impacts).toContainEqual(
+      expect(impacts.co2eq).toContainEqual(
         expect.objectContaining({
-          name: "co2_benefit",
-          type: "co2",
-          impact: {
+          keyName: "avoidedCo2eqEmissions",
+          breakdown: {
             base: 59,
-            details: [
-              {
-                impact: { base: 0, difference: 112.3, forecast: 112.3 },
-                name: "avoided_co2_eq_emissions_with_production",
-              },
-              {
-                impact: { base: 59, difference: 0, forecast: 59 },
-                name: "stored_co2_eq",
-              },
-            ],
-            difference: 112.3,
             forecast: 171.3,
           },
+          total: 112.3,
+          details: [
+            {
+              total: 112.3,
+              keyName: "avoidedCo2eqEmissions.avoidedCO2TonsWithEnergyProduction",
+              name: "avoidedCO2TonsWithEnergyProduction",
+            },
+            {
+              total: 0,
+              breakdown: { base: 59, forecast: 59 },
+              keyName: "avoidedCo2eqEmissions.newStoredCo2Eq",
+              name: "newStoredCo2Eq",
+            },
+          ],
         }),
       );
 
-      expect(impacts).toContainEqual(
+      expect(impacts.soils).toContainEqual(
         expect.objectContaining({
-          name: "permeable_surface_area",
-          type: "surface_area",
-          impact: {
+          keyName: "newPermeableSurface",
+          total: -10000,
+          breakdown: {
             base: 60000,
             forecast: 50000,
-            difference: -10000,
-            details: [
-              {
-                impact: { base: 20000, difference: 0, forecast: 20000 },
-                name: "mineral_soil",
-              },
-              {
-                impact: { base: 40000, difference: -10000, forecast: 30000 },
-                name: "green_soil",
-              },
-            ],
           },
+          details: [
+            {
+              total: -10000,
+              breakdown: { base: 40000, forecast: 30000 },
+              keyName: "newPermeableSurface.newPermeableGreenSurface",
+              name: "newPermeableGreenSurface",
+            },
+          ],
         }),
       );
     });

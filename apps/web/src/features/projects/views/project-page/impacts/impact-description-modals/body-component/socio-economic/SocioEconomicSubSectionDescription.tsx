@@ -1,7 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { ReactNode, useContext } from "react";
 
-import { SocioEconomicMainImpactName } from "@/features/projects/core/projectImpactsSocioEconomic";
+import { SocioEconomicImpactMainImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import {
   ImpactModalDescriptionContext,
@@ -13,8 +13,8 @@ import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
-import ModalGroupTable from "../../shared/ModalGroupTable";
-import ModalColumnSeriesChart from "../../shared/modal-charts/ModalColumnSeriesChart";
+import ModalColumnSeriesChart from "../../modal-charts/ModalColumnSeriesChart";
+import ModalGroupTable from "../../modal-table/ModalGroupTable";
 
 type Props = {
   impactsData: {
@@ -23,7 +23,7 @@ type Props = {
       label: string;
       total: number;
       values: {
-        name: SocioEconomicMainImpactName;
+        name: SocioEconomicImpactMainImpactKeyName;
         color?: string;
         label: string;
         value: number;

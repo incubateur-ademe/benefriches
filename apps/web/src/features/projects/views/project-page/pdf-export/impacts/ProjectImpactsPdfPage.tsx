@@ -1,5 +1,5 @@
 import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
-import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
+import { EnvironmentalImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsEnvironmental";
 import { SocialImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 
@@ -11,7 +11,7 @@ import SocioEconomicImpactsPages from "./socio-economic-impacts";
 type Props = {
   impacts: {
     economicBalance: EconomicBalanceByCategory;
-    environment: EnvironmentalImpact[];
+    environment: EnvironmentalImpactMetricsByListViewCategory;
     socioEconomic: SocioEconomicImpactsByBearerListView;
     social: SocialImpactMetricsByListViewCategory;
   };

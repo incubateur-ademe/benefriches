@@ -2,82 +2,67 @@ import { AggregatedProjectImpactMetric, DevelopmentPlanType, sumListWithKey } fr
 
 import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 
-export type SocialImpactMetricKeyName =
-  | SocialImpactMetricMainKeyName
-  | SocialImpactMetricDetailsKeyName;
+import { ExtractDetailsKeyName } from "./group-impacts/extractDetailsKeyName.type";
+import { filterNonEmptyImpacts } from "./group-impacts/filterNonEmpty";
+import { findTotalByName } from "./group-impacts/findTotalByName";
+import { groupImpactsByName } from "./group-impacts/groupImpactsByName";
+import { withBreakdown } from "./group-impacts/withBreakdown";
 
 export type SocialImpactMetricsByListViewCategory = ReturnType<
   typeof groupSocialMetricsByListViewCategory
 >;
-export type SocialImpactMetricMainKeyName =
-  | JobsSectionImpacts["keyName"]
-  | LocalPeopleOrCompanySectionImpacts["keyName"]
-  | HumanitySectionImpacts["keyName"];
-
-export type SocialImpactMetricDetailsKeyName =
-  | ExtractDetails<JobsSectionImpacts, "fullTimeJobs">
-  | ExtractDetails<LocalPeopleOrCompanySectionImpacts, "avoidedTrafficAccidents">
-  | ExtractDetails<HumanitySectionImpacts, "avoidedFricheAccidents">;
 
 type JobsSectionImpacts = SocialImpactMetricsByListViewCategory["jobs"][number];
 type LocalPeopleOrCompanySectionImpacts =
   SocialImpactMetricsByListViewCategory["localPeopleOrCompany"][number];
 type HumanitySectionImpacts = SocialImpactMetricsByListViewCategory["humanity"][number];
 
-type ExtractDetails<
-  T extends JobsSectionImpacts | LocalPeopleOrCompanySectionImpacts | HumanitySectionImpacts,
-  N extends "fullTimeJobs" | "avoidedTrafficAccidents" | "avoidedFricheAccidents",
-> = Extract<
-  T,
-  {
-    keyName: N;
-  }
->["details"][number]["keyName"];
+export type SocialImpactMetricMainKeyName =
+  | JobsSectionImpacts["keyName"]
+  | LocalPeopleOrCompanySectionImpacts["keyName"]
+  | HumanitySectionImpacts["keyName"];
 
-function groupImpacts<
-  T extends AggregatedProjectImpactMetric,
-  G extends string,
-  N extends T["name"],
->(items: readonly T[], groupName: G, ...names: N[]) {
-  const details = filterByName(items, ...names).map((item) => ({
-    name: item.name,
-    total: item.total,
-    keyName: `${groupName}.${item.name}` as const,
-  }));
+export type SocialImpactMetricDetailsKeyName =
+  | ExtractDetailsKeyName<JobsSectionImpacts, "fullTimeJobs">
+  | ExtractDetailsKeyName<LocalPeopleOrCompanySectionImpacts, "avoidedTrafficAccidents">
+  | ExtractDetailsKeyName<HumanitySectionImpacts, "avoidedFricheAccidents">;
 
-  return {
-    total: sumListWithKey(details, "total"),
-    details,
-    keyName: groupName,
-  };
-}
+export type SocialImpactMetricKeyName =
+  | SocialImpactMetricMainKeyName
+  | SocialImpactMetricDetailsKeyName;
 
 function groupETPImpacts(
   items: readonly AggregatedProjectImpactMetric[],
   projectType: DevelopmentPlanType,
 ) {
+  const conversionFullTimeJobs = groupImpactsByName(
+    items,
+    "fullTimeJobs.conversionFullTimeJobs",
+    "conversionFullTimeJobs",
+    "reinstatementFullTimeJobs",
+  );
+  const operationsFullTimeJobs = groupImpactsByName(
+    items,
+    projectType === "PHOTOVOLTAIC_POWER_PLANT"
+      ? "fullTimeJobs.photovoltaicOperationsFullTimeJobs"
+      : "fullTimeJobs.urbanOperationsFullTimeJobs",
+    "operationsFullTimeJobs",
+    "oldOperationsFullTimeJobsLoss",
+  );
+  const baseOperationsFullTimeJobs = findTotalByName(items, "oldOperationsFullTimeJobsLoss") * -1;
   const details = [
-    groupImpacts(
-      items,
-      `fullTimeJobs.conversionFullTimeJobs`,
-      "conversionFullTimeJobs",
-      "reinstatementFullTimeJobs",
-    ),
-    groupImpacts(
-      items,
-      projectType === "PHOTOVOLTAIC_POWER_PLANT"
-        ? `fullTimeJobs.photovoltaicOperationsFullTimeJobs`
-        : `fullTimeJobs.urbanOperationsFullTimeJobs`,
-      "operationsFullTimeJobs",
-      "oldOperationsFullTimeJobsLoss",
-    ),
+    conversionFullTimeJobs,
+    withBreakdown(operationsFullTimeJobs, baseOperationsFullTimeJobs),
   ];
 
-  return {
-    total: sumListWithKey(details, "total"),
-    details,
-    keyName: "fullTimeJobs" as const,
-  };
+  return withBreakdown(
+    {
+      total: sumListWithKey(details, "total"),
+      details,
+      keyName: "fullTimeJobs" as const,
+    },
+    baseOperationsFullTimeJobs,
+  );
 }
 
 export const groupSocialMetricsByListViewCategory = (
@@ -85,11 +70,9 @@ export const groupSocialMetricsByListViewCategory = (
   projectType: DevelopmentPlanType,
 ) => {
   return {
-    jobs: [groupETPImpacts(indirectImpactMetrics, projectType)].filter(
-      (item) => ("details" in item && item.details.length !== 0) || item.total !== 0,
-    ),
-    localPeopleOrCompany: [
-      groupImpacts(
+    jobs: filterNonEmptyImpacts([groupETPImpacts(indirectImpactMetrics, projectType)]),
+    localPeopleOrCompany: filterNonEmptyImpacts([
+      groupImpactsByName(
         indirectImpactMetrics,
         "avoidedTrafficAccidents",
         "avoidedTrafficAccidentsDeaths",
@@ -105,9 +88,9 @@ export const groupSocialMetricsByListViewCategory = (
         total: item.total,
         keyName: item.name,
       })),
-    ].filter((item) => ("details" in item && item.details.length !== 0) || item.total !== 0),
-    humanity: [
-      groupImpacts(
+    ]),
+    humanity: filterNonEmptyImpacts([
+      groupImpactsByName(
         indirectImpactMetrics,
         "avoidedFricheAccidents",
         "avoidedFricheAccidentsDeaths",
@@ -119,6 +102,6 @@ export const groupSocialMetricsByListViewCategory = (
         total: item.total,
         keyName: item.name,
       })),
-    ].filter((item) => ("details" in item && item.details.length !== 0) || item.total !== 0),
+    ]),
   };
 };

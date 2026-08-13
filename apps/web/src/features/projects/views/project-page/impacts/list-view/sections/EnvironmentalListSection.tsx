@@ -1,10 +1,12 @@
-import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import { EnvironmentalImpact } from "@/features/projects/core/projectImpactsEnvironmental";
+import { typedObjectEntries } from "shared";
 
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import {
-  getEnvironmentalDetailsImpactLabel,
-  getEnvironmentalImpactLabel,
-} from "../../getImpactLabel";
+  EnvironmentalImpactMetricMainKeyName,
+  EnvironmentalImpactMetricsByListViewCategory,
+} from "@/features/projects/core/projectImpactsEnvironmental";
+
+import { getEnvironmentalImpactLabel } from "../../getImpactLabel";
 import ImpactModalDescription from "../../impact-description-modals/ImpactModalDescription";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
@@ -12,19 +14,30 @@ import ImpactSection from "../ImpactSection";
 import { getDialogControlButtonProps } from "../dialogControlBtnProps";
 
 type Props = {
-  impacts: EnvironmentalImpact[];
+  impacts: EnvironmentalImpactMetricsByListViewCategory;
   modalData: ModalDataProps;
 };
 
-const ENVIRONMENTAL_SECTIONS = {
-  co2: ["co2_benefit"],
-  soils: ["non_contaminated_surface_area", "permeable_surface_area"],
+const getValueType = (name: EnvironmentalImpactMetricMainKeyName) => {
+  switch (name) {
+    case "avoidedCo2eqEmissions":
+      return "co2";
+    case "newPermeableSurface":
+    case "nonContaminatedSurfaceArea":
+      return "surface_area";
+  }
+};
+
+const getSectionTitle = (name: keyof EnvironmentalImpactMetricsByListViewCategory) => {
+  switch (name) {
+    case "co2eq":
+      return "Impacts sur le CO2-eq";
+    case "soils":
+      return "Impacts sur  les sols";
+  }
 };
 
 const EnvironmentalListSection = ({ impacts, modalData }: Props) => {
-  const co2Impacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.co2.includes(name));
-  const soilsImpacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.soils.includes(name));
-
   return (
     <>
       <ImpactModalDescription
@@ -37,128 +50,70 @@ const EnvironmentalListSection = ({ impacts, modalData }: Props) => {
         title="Impacts environnementaux"
         dialogId={`fr-modal-impacts-environmental-List`}
       >
-        {co2Impacts.length > 0 && (
-          <>
-            <ImpactModalDescription
-              dialogId={`fr-modal-impacts-environmental-co2-List`}
-              initialState={{
-                sectionName: "environmental",
-                subSectionName: "co2",
-              }}
-              {...modalData}
-            />
-
-            <ImpactSection
-              title="Impacts sur le CO2-eq"
-              dialogId={`fr-modal-impacts-environmental-co2-List`}
-            >
-              {co2Impacts.map(({ name, impact, type }) => (
-                <ImpactItemGroup key={name} isClickable>
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts-environmental-co2-${name}-List`}
-                    initialState={{
-                      sectionName: "environmental",
-                      subSectionName: "co2",
-                      impactName: name,
-                    }}
-                    {...modalData}
-                  />
-                  <ImpactItemDetails
-                    label={getEnvironmentalImpactLabel(name)}
-                    value={impact.difference}
-                    labelProps={getDialogControlButtonProps(
-                      `fr-modal-impacts-environmental-co2-${name}-List`,
-                    )}
-                    data={
-                      impact.details
-                        ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                            label: getEnvironmentalDetailsImpactLabel(name, detailsName),
-                            value: detailsImpact.difference,
-                            labelProps: getDialogControlButtonProps(
-                              `fr-modal-impacts-environmental-co2-${name}-${detailsName}-List`,
-                            ),
-                          }))
-                        : undefined
-                    }
-                    type={type}
-                  />
-                  {(impact.details ?? []).map(({ name: detailsName }) => (
+        {typedObjectEntries(impacts).map(([group, list]) =>
+          list.length > 0 ? (
+            <>
+              <ImpactModalDescription
+                dialogId={`fr-modal-impacts-environmental-${group}-Chart`}
+                initialState={{
+                  sectionName: "environmental",
+                  subSectionName: group,
+                }}
+                {...modalData}
+              />
+              <ImpactSection
+                title={getSectionTitle(group)}
+                dialogId={`fr-modal-impacts-environmental-${group}-Chart`}
+              >
+                {list.map(({ keyName, total, ...rest }) => (
+                  <ImpactItemGroup key={keyName} isClickable>
                     <ImpactModalDescription
-                      key={detailsName}
-                      dialogId={`fr-modal-impacts-environmental-co2-${name}-${detailsName}-List`}
+                      dialogId={`fr-modal-impacts-environmental-${group}-${keyName}-Chart`}
                       initialState={{
                         sectionName: "environmental",
-                        impactName: name,
-                        impactDetailsName: detailsName,
+                        subSectionName: group,
+                        impactName: keyName,
                       }}
                       {...modalData}
                     />
-                  ))}
-                </ImpactItemGroup>
-              ))}
-            </ImpactSection>
-          </>
-        )}
-        {soilsImpacts.length > 0 && (
-          <>
-            <ImpactModalDescription
-              dialogId={`fr-modal-impacts-environmental-soils-List`}
-              initialState={{
-                sectionName: "environmental",
-                subSectionName: "soils",
-              }}
-              {...modalData}
-            />
-            <ImpactSection
-              title="Impacts sur  les sols"
-              dialogId="fr-modal-impacts-environmental-soils-List"
-            >
-              {soilsImpacts.map(({ name, impact, type }) => (
-                <ImpactItemGroup key={name} isClickable>
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts-environmental-soils-${name}-List`}
-                    initialState={{
-                      sectionName: "environmental",
-                      subSectionName: "soils",
-                      impactName: name,
-                    }}
-                    {...modalData}
-                  />
-                  <ImpactItemDetails
-                    label={getEnvironmentalImpactLabel(name)}
-                    value={impact.difference}
-                    labelProps={getDialogControlButtonProps(
-                      `fr-modal-impacts-environmental-soils-${name}-List`,
-                    )}
-                    data={
-                      impact.details
-                        ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                            label: getEnvironmentalDetailsImpactLabel(name, detailsName),
-                            value: detailsImpact.difference,
-                            labelProps: getDialogControlButtonProps(
-                              `fr-modal-impacts-environmental-soils-${name}-${detailsName}-List`,
-                            ),
-                          }))
-                        : undefined
-                    }
-                    type={type}
-                  />
-                  {(impact.details ?? []).map(({ name: detailsName }) => (
-                    <ImpactModalDescription
-                      key={detailsName}
-                      dialogId={`fr-modal-impacts-environmental-soils-${name}-${detailsName}-List`}
-                      initialState={{
-                        sectionName: "environmental",
-                        impactName: name,
-                        impactDetailsName: detailsName,
-                      }}
-                      {...modalData}
+                    <ImpactItemDetails
+                      label={getEnvironmentalImpactLabel(keyName)}
+                      value={total}
+                      labelProps={getDialogControlButtonProps(
+                        `fr-modal-impacts-environmental-${group}-${keyName}-Chart`,
+                      )}
+                      data={
+                        "details" in rest
+                          ? rest.details.map((item) => ({
+                              label: getEnvironmentalImpactLabel(item.keyName),
+                              value: item.total,
+                              labelProps: getDialogControlButtonProps(
+                                `fr-modal-impacts-environmental-${group}-${keyName}-${item.keyName}-Chart`,
+                              ),
+                            }))
+                          : undefined
+                      }
+                      type={getValueType(keyName)}
                     />
-                  ))}
-                </ImpactItemGroup>
-              ))}
-            </ImpactSection>
-          </>
+                    {"details" in rest &&
+                      rest.details.map(({ keyName: detailsName }) => (
+                        <ImpactModalDescription
+                          key={detailsName}
+                          dialogId={`fr-modal-impacts-environmental-${group}-${keyName}-${detailsName}-Chart`}
+                          initialState={{
+                            sectionName: "environmental",
+                            subSectionName: group,
+                            impactName: keyName,
+                            impactDetailsName: detailsName,
+                          }}
+                          {...modalData}
+                        />
+                      ))}
+                  </ImpactItemGroup>
+                ))}
+              </ImpactSection>
+            </>
+          ) : null,
         )}
       </ImpactSection>
     </>

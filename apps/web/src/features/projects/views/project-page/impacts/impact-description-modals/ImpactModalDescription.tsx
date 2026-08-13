@@ -13,7 +13,6 @@ import {
 import { SummaryModalWizard } from "../../../shared/impacts/modals/summary/SummaryModalWizard";
 import { ImpactModalContentWizard } from "./ImpactModalContentWizard";
 import CostBenefitAnalysisDescription from "./body-component/CostBenefitAnalysisDescription";
-import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
 
 type ModalDescriptionProviderProps = ModalDataProps & {
   dialogId: string;
@@ -58,6 +57,7 @@ function ImpactModalDescription({
 
   useLayoutEffect(() => {
     const domModalBody = document.querySelector(`#${dialogId} .fr-modal__body`);
+
     if (domModalBody) {
       domModalBody.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
@@ -79,22 +79,13 @@ function ImpactModalDescription({
             switch (contentState.sectionName) {
               case "economic_balance":
               case "socio_economic":
+              case "environmental":
               case "social":
                 return (
                   <ImpactModalContentWizard
                     contextData={contextData}
                     impactsData={impactsData}
                     contentState={contentState}
-                  />
-                );
-              case "environmental":
-                return (
-                  <EnvironmentalModalWizard
-                    contextData={contextData}
-                    impactsData={impactsData}
-                    impactSubSectionName={contentState.subSectionName}
-                    impactName={contentState.impactName}
-                    impactDetailsName={contentState.impactDetailsName}
                   />
                 );
               case "summary":

@@ -8,8 +8,8 @@ import {
   type EconomicBalanceByCategory,
 } from "@/features/projects/core/projectImpactsEconomicBalance";
 import {
-  getEnvironmentalProjectImpacts,
-  type EnvironmentalImpact,
+  groupEnvironmentalMetricsByListViewCategory,
+  type EnvironmentalImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsEnvironmental";
 import {
   groupSocialMetricsByListViewCategory,
@@ -40,7 +40,7 @@ export type ModalDataProps = {
 type ImpactsListViewData = {
   economicBalance: EconomicBalanceByCategory;
   socioEconomicImpacts: SocioEconomicImpactsByBearerListView;
-  environmentImpacts: EnvironmentalImpact[];
+  environmentImpacts: EnvironmentalImpactMetricsByListViewCategory;
   socialImpacts: SocialImpactMetricsByListViewCategory;
   modalData: ModalDataProps;
 };
@@ -76,12 +76,8 @@ export const selectSocialProjectImpacts = createSelector(
 
 export const selectEnvironmentalProjectImpacts = createSelector(
   [selectImpactsCroppedByEvaluationPeriod, selectImpactsContextData],
-  (impacts, contextData) => {
-    if (!impacts) {
-      return [];
-    }
-    return getEnvironmentalProjectImpacts(impacts, contextData?.siteSurfaceArea ?? 0);
-  },
+  (impacts, contextData) =>
+    groupEnvironmentalMetricsByListViewCategory(impacts, contextData?.siteSurfaceArea),
 );
 
 export const selectSocioEconomicProjectImpactsListView = createSelector(

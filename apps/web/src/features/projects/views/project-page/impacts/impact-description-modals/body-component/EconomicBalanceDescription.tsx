@@ -15,8 +15,8 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { getEconomicBalanceImpactLabel } from "../../getImpactLabel";
 import { getEconomicBalanceImpactColor } from "../colors";
-import ModalTable from "../shared/ModalTable";
-import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChart";
+import ModalColumnSeriesChart from "../modal-charts/ModalColumnSeriesChart";
+import ModalTable from "../modal-table/ModalTable";
 
 type Props = {
   impactsData: ModalDataProps["impactsData"];

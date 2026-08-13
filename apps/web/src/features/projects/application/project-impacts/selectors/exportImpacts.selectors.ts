@@ -5,7 +5,7 @@ import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/p
 import { SiteFeatures } from "@/features/sites/core/site.types";
 
 import { EconomicBalanceByCategory } from "../../../core/projectImpactsEconomicBalance";
-import { EnvironmentalImpact } from "../../../core/projectImpactsEnvironmental";
+import { EnvironmentalImpactMetricsByListViewCategory } from "../../../core/projectImpactsEnvironmental";
 import { SocialImpactMetricsByListViewCategory } from "../../../core/projectImpactsSocial";
 import { ProjectFeatures } from "../../../core/projects.types";
 import {
@@ -24,7 +24,7 @@ type ExportImpactsView = {
   evaluationPeriodInYears: number | undefined;
   impacts: {
     economicBalance: EconomicBalanceByCategory;
-    environment: EnvironmentalImpact[];
+    environment: EnvironmentalImpactMetricsByListViewCategory;
     socioEconomic: SocioEconomicImpactsByBearerListView;
     social: SocialImpactMetricsByListViewCategory;
   };
