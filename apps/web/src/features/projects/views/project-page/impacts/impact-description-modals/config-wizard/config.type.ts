@@ -1,9 +1,20 @@
 import { MDXComponents } from "mdx/types";
+import { LazyExoticComponent } from "react";
 
 import { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 
-import { LazyContentComponent } from "../lazy-component/LazyContentComponent";
+export type ContentComponentType = React.ComponentType<{
+  components?: MDXComponents;
+  withMonetarisation?: boolean;
+  isUrban?: boolean;
+  isPhotovoltaic?: boolean;
+}>;
 
+export type BodyComponentType = React.ComponentType<{
+  components?: MDXComponents;
+  impactsData: ModalDataProps["impactsData"];
+  contextData: ModalDataProps["contextData"];
+}>;
 export type ModalImpactConfig =
   | {
       title: string;
@@ -12,15 +23,9 @@ export type ModalImpactConfig =
       type?: "co2" | "surface_area" | "etp";
       unit?: string;
       formatFn?: (val: number) => string;
-      ContentComponent: LazyContentComponent;
+      ContentComponent: LazyExoticComponent<ContentComponentType>;
     }
   | {
-      BodyComponent: () => Promise<{
-        default: React.ComponentType<{
-          components?: MDXComponents;
-          impactsData: ModalDataProps["impactsData"];
-          contextData: ModalDataProps["contextData"];
-        }>;
-      }>;
+      BodyComponent: LazyExoticComponent<BodyComponentType>;
     }
   | undefined;

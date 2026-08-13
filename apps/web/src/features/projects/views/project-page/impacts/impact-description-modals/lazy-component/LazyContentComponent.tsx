@@ -1,6 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import type { MDXComponents } from "mdx/types";
-import { lazy, useContext, useMemo } from "react";
+import { LazyExoticComponent, useContext, useMemo } from "react";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
@@ -8,6 +8,7 @@ import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/Mod
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import { ContentComponentType } from "../config-wizard/config.type";
 import ModalProjectFeature from "../modal-features/ModalProjectFeature";
 import ModalSiteFeature from "../modal-features/ModalSiteFeature";
 
@@ -25,7 +26,7 @@ export type LazyContentComponent = () => Promise<{
 type Props = {
   contextData: ModalDataProps["contextData"];
   impactsData: ModalDataProps["impactsData"];
-  Component: LazyContentComponent;
+  Component: LazyExoticComponent<ContentComponentType>;
   withMonetarisation?: boolean;
 };
 
@@ -40,12 +41,11 @@ const If = ({ when, children }: { when: boolean; children: React.ReactNode }) =>
   when ? children : null;
 
 export function LazyContentComponent({
-  Component,
+  Component: LazyComponent,
   withMonetarisation = false,
   impactsData,
   contextData,
 }: Props) {
-  const LazyComponent = useMemo(() => lazy<ComponentType>(Component), [Component]);
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const siteContaminatedSurfaceArea =

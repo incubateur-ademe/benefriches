@@ -49,7 +49,6 @@ import { ENVIRONMENTAL_METRICS_MODALS } from "./config-wizard/environmentalSecti
 import { SOCIAL_METRICS_MODALS } from "./config-wizard/socialSectionConfig";
 import { SOCIO_ECONOMIC_MODALS } from "./config-wizard/socioEconomicSectionConfig";
 import { getImpactModalData } from "./getImpactData";
-import { LazyBodyComponent } from "./lazy-component/LazyBodyComponent";
 import { LazyContentComponent } from "./lazy-component/LazyContentComponent";
 import ModalAreaChart from "./modal-charts/ModalAreaChart";
 import ModalColumnPointChart from "./modal-charts/ModalColumnPointChart";
@@ -241,13 +240,7 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
   }
 
   if ("BodyComponent" in config) {
-    return (
-      <LazyBodyComponent
-        Component={config.BodyComponent}
-        impactsData={impactsData}
-        contextData={contextData}
-      />
-    );
+    return <config.BodyComponent impactsData={impactsData} contextData={contextData} />;
   }
 
   return (
