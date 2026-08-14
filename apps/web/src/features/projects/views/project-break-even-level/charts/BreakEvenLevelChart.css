@@ -2,11 +2,12 @@
   height: 400px;
 }
 
-.breakeven-graph .highcharts-grid-line {
+.breakeven-graph .highcharts-grid-line,
+.breakeven-column-graph .highcharts-grid-line,
+.breakeven-column-graph .highcharts-column-series .highcharts-point {
   stroke-width: 0;
 }
 
-/* Zone : bleu clair avec ligne visible */
 .breakeven-graph .highcharts-area {
   fill: #7dd3f0;
   fill-opacity: 0.5;
@@ -35,7 +36,6 @@
   fill: #1a3a5c;
 }
 
-/* Badge année */
 .breakeven-badge {
   background: white;
   border: 2px solid #e0e8f0;
@@ -50,7 +50,6 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
 }
-
 .breakeven-badge__check {
   background: #3ab0e0;
   border-radius: 50%;
@@ -61,4 +60,31 @@
   justify-content: center;
   color: white;
   font-size: 12px;
+}
+
+.breakeven-column-badge__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 6px;
+  z-index: 50;
+  background: #3ab0e0;
+  border-radius: 50%;
+  color: white;
+  font-size: 18px;
+  border: 3px solid white;
+}
+
+.breakeven-column-graph .breakeven-column-dashed-plotband {
+  fill: transparent;
+  stroke: #1a3a5c;
+  stroke-dasharray: 4px, 4px;
+  stroke-linejoin: round;
+}
+
+.breakeven-column-graph .breakeven-column-solid-plotband {
+  fill: transparent;
+  stroke: #1a3a5c;
 }

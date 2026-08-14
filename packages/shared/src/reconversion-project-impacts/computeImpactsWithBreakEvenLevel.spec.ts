@@ -818,6 +818,14 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
       });
 
       assert.deepStrictEqual(result.cumulativeBalanceByYear, [-40, -24, -2, 24, 58, 98]);
+      assert.deepStrictEqual(
+        result.cumulativeEconomicBalanceByYear,
+        [-50, -50, -50, -50, -50, -50],
+      );
+      assert.deepStrictEqual(
+        result.cumulativeIndirectEconomicImpactsByYear,
+        [10, 26, 48, 74, 108, 148],
+      );
       assert.deepStrictEqual(result.projectionYears, [
         "2025",
         "2026",
@@ -891,6 +899,12 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
       });
 
       assert.deepStrictEqual(result.cumulativeBalanceByYear, [60, 76, 98, 124, 158, 198]);
+      assert.deepStrictEqual(result.cumulativeEconomicBalanceByYear, [50, 50, 50, 50, 50, 50]);
+      assert.deepStrictEqual(
+        result.cumulativeIndirectEconomicImpactsByYear,
+        [10, 26, 48, 74, 108, 148],
+      );
+
       assert.deepStrictEqual(result.projectionYears, [
         "2025",
         "2026",
@@ -969,6 +983,15 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
       });
 
       assert.deepStrictEqual(result.cumulativeBalanceByYear, [-490, -474, -452, -426, -392, -352]);
+      assert.deepStrictEqual(
+        result.cumulativeEconomicBalanceByYear,
+        [-500, -500, -500, -500, -500, -500],
+      );
+      assert.deepStrictEqual(
+        result.cumulativeIndirectEconomicImpactsByYear,
+        [10, 26, 48, 74, 108, 148],
+      );
+
       assert.deepStrictEqual(result.projectionYears, [
         "2025",
         "2026",
@@ -1038,6 +1061,12 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
       });
 
       assert.deepStrictEqual(result.cumulativeBalanceByYear, [-30, -4, 28, 64, 108, 158]);
+      assert.deepStrictEqual(result.cumulativeEconomicBalanceByYear, [-40, -30, -20, -10, 0, 10]);
+      assert.deepStrictEqual(
+        result.cumulativeIndirectEconomicImpactsByYear,
+        [10, 26, 48, 74, 108, 148],
+      );
+
       assert.deepStrictEqual(result.projectionYears, [
         "2025",
         "2026",
@@ -1107,6 +1136,15 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
       });
 
       assert.deepStrictEqual(result.cumulativeBalanceByYear, [-30, -4, 28, 64, 108, 158]);
+      assert.deepStrictEqual(
+        result.cumulativeEconomicBalanceByYear,
+        [-50, -50, -50, -50, -50, -50],
+      );
+      assert.deepStrictEqual(
+        result.cumulativeIndirectEconomicImpactsByYear,
+        [20, 46, 78, 114, 158, 208],
+      );
+
       assert.deepStrictEqual(result.projectionYears, [
         "2025",
         "2026",

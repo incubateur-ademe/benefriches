@@ -66,6 +66,18 @@ export const cropImpactsByEvaluationPeriod = (
   const croppedCumulativeBalanceByYear =
     impacts.aggregatedReconversionImpacts.cumulativeBalanceByYear.slice(0, evaluationPeriodInYears);
 
+  const croppedCumulativeEconomicBalanceByYear =
+    impacts.aggregatedReconversionImpacts.cumulativeEconomicBalanceByYear.slice(
+      0,
+      evaluationPeriodInYears,
+    );
+
+  const croppedCumulativeIndirectEconomicImpactsByYear =
+    impacts.aggregatedReconversionImpacts.cumulativeIndirectEconomicImpactsByYear.slice(
+      0,
+      evaluationPeriodInYears,
+    );
+
   const croppedEconomicBalance = impacts.projectEconomicBalance.details.map((item) => {
     return item.name === "projectOperatingExpenses" || item.name === "projectOperatingRevenues"
       ? cropAndSumEconomicImpact(item, evaluationPeriodInYears)
@@ -96,6 +108,8 @@ export const cropImpactsByEvaluationPeriod = (
         cropAndSumImpactMetric(item, evaluationPeriodInYears, impacts.projectionYears.length),
       ),
       cumulativeBalanceByYear: croppedCumulativeBalanceByYear,
+      cumulativeIndirectEconomicImpactsByYear: croppedCumulativeIndirectEconomicImpactsByYear,
+      cumulativeEconomicBalanceByYear: croppedCumulativeEconomicBalanceByYear,
       indirectEconomicImpacts: {
         details: croppedAggegratedIndirectEconomicImpactsDetails,
         total: sumListWithKey(croppedAggegratedIndirectEconomicImpactsDetails, "total"),

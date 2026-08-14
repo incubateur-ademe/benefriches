@@ -254,6 +254,14 @@ export const photovoltaicProjectImpactsResultDto = {
   aggregatedReconversionImpacts: {
     cumulativeBalanceByYear: buildYearlySeries(photovoltaicEconomicBalance.total, photovoltaicYears)
       .cumulativeByYear,
+    cumulativeEconomicBalanceByYear: buildYearlySeries(
+      photovoltaicEconomicBalance.total,
+      photovoltaicYears,
+    ).cumulativeByYear,
+    cumulativeIndirectEconomicImpactsByYear: buildYearlySeries(
+      photovoltaicProjectOnSiteIndirectEconomicImpacts.total,
+      photovoltaicYears,
+    ).cumulativeByYear,
     indirectEconomicImpacts: (() => {
       const siteStatuQuo = buildAggregatedSiteStatuQuoIndirectEconomicImpacts(photovoltaicYears);
       const details = [
@@ -435,6 +443,14 @@ export const urbanProjectImpactsResultDto = {
   aggregatedReconversionImpacts: {
     cumulativeBalanceByYear: buildYearlySeries(urbanEconomicBalance.total, urbanYears)
       .cumulativeByYear,
+    cumulativeEconomicBalanceByYear: buildYearlySeries(
+      urbanEconomicBalance.total,
+      photovoltaicYears,
+    ).cumulativeByYear,
+    cumulativeIndirectEconomicImpactsByYear: buildYearlySeries(
+      urbanProjectOnSiteIndirectEconomicImpacts.total,
+      photovoltaicYears,
+    ).cumulativeByYear,
     indirectEconomicImpacts: (() => {
       const siteStatuQuo = buildAggregatedSiteStatuQuoIndirectEconomicImpacts(urbanYears);
       const details = [

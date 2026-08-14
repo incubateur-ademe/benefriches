@@ -2,7 +2,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import * as Highcharts from "highcharts";
 import { HighchartsReact } from "highcharts-react-official";
-import { Fragment, useRef } from "react";
+import { Fragment, ReactNode, useRef } from "react";
 
 import useExportConfig, { ExportingOptionsProps } from "@/shared/views/charts/useExportConfig";
 import classNames, { ClassValue } from "@/shared/views/clsx";
@@ -20,6 +20,7 @@ type ChartCardProps = {
   };
   exportingOptions?: ExportingOptionsProps;
   classes?: { title?: ClassValue };
+  actions?: ReactNode;
 };
 
 const ImpactChartCard = ({
@@ -30,6 +31,7 @@ const ImpactChartCard = ({
   containerProps,
   exportingOptions,
   classes,
+  actions,
 }: ChartCardProps) => {
   const chartRef = useRef<HighchartsReact.RefObject>(null);
   const buttonControlsDialogRef = useRef<HTMLButtonElement>(null);
@@ -72,6 +74,7 @@ const ImpactChartCard = ({
         </div>
 
         <div className="flex">
+          {actions}
           {dialogId && (
             <Button
               title="Menu"

@@ -47,6 +47,8 @@ export type GetReconversionProjectImpactsResultDto = {
       breakEvenYear?: string;
       breakEvenIndex?: number;
       cumulativeBalanceByYear: number[];
+      cumulativeEconomicBalanceByYear: number[];
+      cumulativeIndirectEconomicImpactsByYear: number[];
       indirectEconomicImpacts: AggregatedReconversionIndirectEconomicImpactsDataView;
       impactsMetrics: AggregatedProjectImpactMetric[];
     };

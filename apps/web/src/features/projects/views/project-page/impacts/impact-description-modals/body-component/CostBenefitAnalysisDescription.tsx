@@ -3,7 +3,9 @@ import { HighchartsReact } from "highcharts-react-official";
 import { useContext } from "react";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+// oxlint-disable-next-line import/no-unassigned-import
+import "@/features/projects/views/project-break-even-level/charts/BreakEvenLevelChart.css";
+import { useGetBreakEventLevelColumnChartProps } from "@/features/projects/views/project-break-even-level/charts/chart-options/breakEvenLevelChartOptions";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
@@ -11,7 +13,6 @@ import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
-import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ModalTable from "../modal-table/ModalTable";
@@ -25,6 +26,11 @@ const title = "Analyse coût bénéfice";
 const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
+  const { options, containerProps } = useGetBreakEventLevelColumnChartProps({
+    projectionYears: impactsData.projectionYears,
+    ...impactsData.aggregatedReconversionImpacts,
+  });
+
   return (
     <ModalBody size="large">
       <ModalHeader title={`⚖️ ${title}`} breadcrumbSegments={[{ label: title }]} />
@@ -33,32 +39,9 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
         <ModalData>
           <div className="mb-10">
             <HighchartsReact
-              containerProps={{ className: "highcharts-no-xaxis" }}
+              containerProps={containerProps}
               highcharts={Highcharts}
-              options={withDefaultBarChartOptions({
-                xAxis: {
-                  categories: [
-                    `<strong>Bilan de l'opération</strong><br>${formatMonetaryImpact(impactsData.projectEconomicBalance.total)}`,
-                    `<strong>Impacts socio-économiques</strong><br>${formatMonetaryImpact(impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.total)}`,
-                  ],
-                },
-                tooltip: {
-                  enabled: false,
-                },
-                legend: {
-                  enabled: false,
-                },
-                series: [
-                  {
-                    name: "Analyse coûts/bénéfices",
-                    type: "column",
-                    data: [
-                      impactsData.projectEconomicBalance.total,
-                      impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.total,
-                    ],
-                  },
-                ],
-              })}
+              options={options}
             />
           </div>
 
@@ -68,6 +51,7 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
               {
                 label: "📉 Bilan de l'opération",
                 value: impactsData.projectEconomicBalance.total,
+                color: "#E0A227",
                 onClick: () => {
                   updateModalContent({
                     sectionName: "economic_balance",
@@ -77,6 +61,7 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
               {
                 label: "🌍 Impacts socio-économiques",
                 value: impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.total,
+                color: "#22AFE5",
                 onClick: () => {
                   updateModalContent({
                     sectionName: "socio_economic",

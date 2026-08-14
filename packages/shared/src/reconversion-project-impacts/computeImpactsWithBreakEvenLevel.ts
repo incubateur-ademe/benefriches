@@ -119,14 +119,17 @@ export const computeBreakEvenLevel = ({
     Array(evaluationPeriodInYears).fill(0),
   );
 
-  const cumulativeBalanceByYear = aggregatedIndirectEconomicImpacts.reduce<number[]>(
-    (total, impact) => {
-      impact.cumulativeByYear.forEach((value, index) => {
-        total[index] = (total[index] ?? 0) + value;
-      });
-      return total;
-    },
-    cumulativeEconomicBalanceByYear,
+  const cumulativeIndirectEconomicImpactsByYear = aggregatedIndirectEconomicImpacts.reduce<
+    number[]
+  >((total, impact) => {
+    impact.cumulativeByYear.forEach((value, index) => {
+      total[index] = (total[index] ?? 0) + value;
+    });
+    return total;
+  }, Array(evaluationPeriodInYears).fill(0));
+
+  const cumulativeBalanceByYear = cumulativeIndirectEconomicImpactsByYear.map(
+    (value, index) => (cumulativeEconomicBalanceByYear[index] ?? 0) + value,
   );
 
   const projectionYears = cumulativeBalanceByYear.map(
@@ -140,6 +143,8 @@ export const computeBreakEvenLevel = ({
     breakEvenYear: projectionYears[breakEvenIndex],
     breakEvenIndex: breakEvenIndex === -1 ? undefined : breakEvenIndex,
     projectionYears,
+    cumulativeIndirectEconomicImpactsByYear,
+    cumulativeEconomicBalanceByYear,
     cumulativeBalanceByYear,
   };
 };
@@ -578,14 +583,20 @@ export const computeProjectImpactsWithBreakEvenLevel = ({
     impactMetrics: aggregatedImpactMetrics,
   } = computeAggregatedReconversionImpacts(reconversionImpactsBreakdown);
 
-  const { breakEvenYear, projectionYears, breakEvenIndex, cumulativeBalanceByYear } =
-    computeBreakEvenLevel({
-      stakeholders,
-      operationsFirstYear,
-      evaluationPeriodInYears,
-      projectEconomicBalance,
-      aggregatedIndirectEconomicImpacts,
-    });
+  const {
+    breakEvenYear,
+    projectionYears,
+    breakEvenIndex,
+    cumulativeBalanceByYear,
+    cumulativeEconomicBalanceByYear,
+    cumulativeIndirectEconomicImpactsByYear,
+  } = computeBreakEvenLevel({
+    stakeholders,
+    operationsFirstYear,
+    evaluationPeriodInYears,
+    projectEconomicBalance,
+    aggregatedIndirectEconomicImpacts,
+  });
 
   return {
     stakeholders,
@@ -596,6 +607,8 @@ export const computeProjectImpactsWithBreakEvenLevel = ({
       breakEvenYear,
       breakEvenIndex,
       cumulativeBalanceByYear,
+      cumulativeEconomicBalanceByYear,
+      cumulativeIndirectEconomicImpactsByYear,
       indirectEconomicImpacts: {
         total: sumListWithKey(aggregatedIndirectEconomicImpacts, "total"),
         details: aggregatedIndirectEconomicImpacts,

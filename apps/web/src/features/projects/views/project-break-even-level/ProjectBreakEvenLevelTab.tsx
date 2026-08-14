@@ -29,8 +29,13 @@ export default function ProjectBreakEvenLevelTab({
 }: Props) {
   const { evaluationPeriod = 50 } = useAppSelector(selectImpactsPageViewData);
   const { projectionYears, aggregatedReconversionImpacts } = impacts;
-  const { breakEvenYear, cumulativeBalanceByYear, indirectEconomicImpacts } =
-    aggregatedReconversionImpacts;
+  const {
+    breakEvenYear,
+    cumulativeBalanceByYear,
+    cumulativeEconomicBalanceByYear,
+    cumulativeIndirectEconomicImpactsByYear,
+    indirectEconomicImpacts,
+  } = aggregatedReconversionImpacts;
 
   const breakEvenIndex = breakEvenYear ? projectionYears.indexOf(breakEvenYear) : undefined;
 
@@ -56,8 +61,10 @@ export default function ProjectBreakEvenLevelTab({
         <div className="md:col-start-3 md:col-span-6 highcharts-no-xaxis">
           <BreakEvenLevelChart
             dialogId={`fr-modal-impacts-break-even-level-tab-breakEvenLevel--Chart`}
-            values={cumulativeBalanceByYear}
-            xValues={projectionYears}
+            cumulativeBalanceByYear={cumulativeBalanceByYear}
+            cumulativeEconomicBalanceByYear={cumulativeEconomicBalanceByYear}
+            cumulativeIndirectEconomicImpactsByYear={cumulativeIndirectEconomicImpactsByYear}
+            projectionYears={projectionYears}
             breakEvenIndex={breakEvenIndex}
             breakEvenYear={breakEvenYear}
           />
