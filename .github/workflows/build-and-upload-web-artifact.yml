@@ -20,6 +20,8 @@ jobs:
         run: pnpm --filter shared build
       - name: Build web
         run: pnpm --filter=web build
+        env:
+          VITE_GOOGLE_SITE_VERIFICATION: ${{ vars.VITE_GOOGLE_SITE_VERIFICATION }}
       - name: Create Archive
         run: mkdir -p scalingo/web && cp -r apps/web/dist "$_" && cp -r apps/web/scalingo/* "$_" && cp apps/web/scalingo/.buildpacks "$_" && cp apps/web/scripts/generateEnvVarsJsFile.sh "$_" && tar -czf web-scalingo.tar.gz scalingo
       - name: Archive dist
