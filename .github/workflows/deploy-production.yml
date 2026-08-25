@@ -21,6 +21,7 @@ jobs:
     uses: ./.github/workflows/build-and-upload-web-artifact.yml
     with:
       tag: "v${{ github.run_number }}"
+      environment: production
 
   build-and-upload-api-artifact:
     # jobs are run in parallel by default, we want them to run sequentially
