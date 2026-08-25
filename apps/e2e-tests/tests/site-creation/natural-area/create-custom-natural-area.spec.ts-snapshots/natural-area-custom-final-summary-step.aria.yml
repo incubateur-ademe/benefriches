@@ -1,0 +1,44 @@
+- main:
+  - heading "Récapitulatif du site" [level=2]
+  - heading "📍 Localisation" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Adresse du site
+  - term: Blajan
+  - heading "🌾️ Sols" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Superficie totale du site
+  - term:
+    - strong: /\d+ \d+ ㎡/
+  - button "Menu"
+  - region "Chart. Highcharts interactive chart.":
+    - heading "Chart" [level=3]
+    - text: Pie chart with 2 slices.
+    - button "View as data table, Chart"
+    - img "Interactive chart":
+      - img /Forêt de feuillus, \d+,\d+\. Superficie\./
+      - img /Prairie herbacée, \d+,\d+\. Superficie\./
+    - text: End of interactive chart.
+  - definition: Forêt de feuillus
+  - term: /\d+ \d+ ㎡/
+  - definition: Prairie herbacée
+  - term: /5 \d+ ㎡/
+  - heading "⚙️ Gestion du site" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Propriétaire actuel
+  - term: Mairie de Blajan
+  - heading "✍ Dénomination" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Nature du site
+  - term: Forêt
+  - definition:
+    - strong: Nom du site
+  - term: Forêt de Blajan
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Suivant"

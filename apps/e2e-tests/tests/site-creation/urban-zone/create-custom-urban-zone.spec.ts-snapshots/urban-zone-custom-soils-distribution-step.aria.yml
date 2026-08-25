@@ -1,0 +1,40 @@
+- main:
+  - heading "Quelle est la superficie des différents espaces au sein de la surface d'activité ?" [level=2]
+  - group "Sélection mode de saisie":
+    - text: ""
+    - radio "%"
+    - text: "%"
+    - radio "㎡" [checked]
+    - text: ㎡
+  - text: Bâtiments Bâtiments à usage industriel, commercial, d'habitation...
+  - textbox "Bâtiments Bâtiments à usage industriel, commercial, d'habitation..."
+  - text: ㎡ Sols imperméabilisés Parking ou voirie bitumée, dalle en béton…
+  - textbox "Sols imperméabilisés Parking ou voirie bitumée, dalle en béton…"
+  - text: ㎡ Sols perméables minéraux Parking ou voirie en gravier, sol semi-perméable, sol nu...
+  - textbox "Sols perméables minéraux Parking ou voirie en gravier, sol semi-perméable, sol nu..."
+  - text: ㎡ Sols enherbés et arbustifs Pelouse, haies ou arbustes plantés
+  - textbox "Sols enherbés et arbustifs Pelouse, haies ou arbustes plantés"
+  - text: ㎡ Sol arboré Arbres plantés
+  - textbox "Sol arboré Arbres plantés"
+  - text: ㎡ Prairie herbacée Herbes et fleurs
+  - textbox "Prairie herbacée Herbes et fleurs"
+  - text: ㎡ Prairie arbustive Herbe et arbustes
+  - textbox "Prairie arbustive Herbe et arbustes"
+  - text: ㎡ Prairie arborée Herbe et arbres
+  - textbox "Prairie arborée Herbe et arbres"
+  - text: ㎡ Total de toutes les surfaces
+  - paragraph: /\d+\s\d+ ㎡ manquants/
+  - textbox /Total de toutes les surfaces \d+\s\d+ ㎡ manquants/ [disabled] [invalid]
+  - text: ㎡
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider" [disabled]
+  - region "Chart. Highcharts interactive chart.":
+    - heading "Chart" [level=6]
+    - text: Pie chart with 1 slice.
+    - button "View as data table, Chart"
+    - img "Interactive chart":
+      - img /Non assigné, \d+,\d+\. Superficie\./
+    - text: End of interactive chart.

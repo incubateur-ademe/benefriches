@@ -1,0 +1,20 @@
+- main:
+  - heading "Qui est le propriétaire actuel de la friche" [level=2]
+  - group:
+    - radio "Mon entreprise, ADEME"
+    - text: Mon entreprise, ADEME
+    - radio "Une collectivité"
+    - text: Une collectivité
+    - radio "Une autre entreprise Information contextuelle"
+    - text: Une autre entreprise
+    - button "Information contextuelle"
+    - radio "Un particulier"
+    - text: Un particulier
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider" [disabled]
+  - text: 💡
+  - paragraph: Il n’est pas rare qu'un site ait plusieurs propriétaires (par exemple si elle est composée de plusieurs parcelles cadastrales ou alors si le bien immobilier est en indivision).
+  - paragraph: Dans ce cas, il n’est pas attendu que la totalité des propriétaires soit renseigné, l’information utile pour Bénéfriches étant d’en désigner un (par exemple celui ayant la propriété de la plus grande parcelle), cette donnée étant utilisée pour affecter la partie des impacts correspondant à cette catégorie d’acteur.

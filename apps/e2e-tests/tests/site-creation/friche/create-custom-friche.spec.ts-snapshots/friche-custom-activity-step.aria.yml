@@ -1,0 +1,24 @@
+- main:
+  - heading "De quel type de friche s'agit-il ?" [level=2]
+  - group:
+    - radio "Friche industrielle (usine, mine, carrière...)"
+    - text: Friche industrielle (usine, mine, carrière...)
+    - radio "Friche militaire"
+    - text: Friche militaire
+    - radio "Friche ferroviaire (voies ferrées, gare...)"
+    - text: Friche ferroviaire (voies ferrées, gare...)
+    - radio "Friche portuaire (ports, chantiers navals...)"
+    - text: Friche portuaire (ports, chantiers navals...)
+    - radio "Friche agricole"
+    - text: Friche agricole
+    - radio "Ancienne décharge ou site de recyclage"
+    - text: Ancienne décharge ou site de recyclage
+    - radio "Ancien bâtiment (public, commercial ou d'habitation)"
+    - text: Ancien bâtiment (public, commercial ou d'habitation)
+    - radio "Autre"
+    - text: Autre
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider" [disabled]

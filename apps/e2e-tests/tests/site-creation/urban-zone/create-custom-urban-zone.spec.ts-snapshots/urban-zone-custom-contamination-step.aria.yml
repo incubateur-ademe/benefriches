@@ -1,0 +1,12 @@
+- main:
+  - heading "Les sols de la zone sont-ils pollués ?" [level=2]
+  - group:
+    - radio "Oui"
+    - text: Oui
+    - radio "Non / Ne sait pas"
+    - text: Non / Ne sait pas
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Passer"

@@ -1,0 +1,19 @@
+- main:
+  - heading "💸 Dépenses annuelles liées à l'exploitation" [level=2]
+  - text: Taxes et impôts
+  - textbox "Taxes et impôts": /\d+/
+  - text: € / an Autres charges d'exploitation
+  - textbox "Autres charges d'exploitation": /3\s\d+/
+  - text: € / an
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider"
+  - text: 🪄 D’où viennent les montants pré-remplis ?
+  - paragraph: Montants calculés d’après les informations que vous avez renseigné et les dépenses financiers moyens en France de chaque poste de dépense.
+  - text: "Sources :"
+  - list:
+    - listitem:
+      - link /Résultats économiques des exploitations agricoles en France - Chiffres clés \d+ RICA/:
+        - /url: https://agreste.agriculture.gouv.fr/agreste-web/download/publication/publie/Chd2418/cd2024-18_Rica2023-v2.pdf

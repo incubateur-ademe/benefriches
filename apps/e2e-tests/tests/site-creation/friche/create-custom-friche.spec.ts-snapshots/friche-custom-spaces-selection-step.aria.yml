@@ -1,0 +1,36 @@
+- main:
+  - heading "Quels types d'espaces y a-t-il sur la friche ?" [level=2]
+  - heading "Espaces minéraux" [level=4]:
+    - button "Espaces minéraux" [expanded]
+  - checkbox "Bâtiments À usage industriel, commercial, d'habitation...":
+    - checkbox "Bâtiments À usage industriel, commercial, d'habitation..."
+    - text: ""
+  - checkbox "Aire bitumée, bétonnée ou pavée":
+    - checkbox "Aire bitumée, bétonnée ou pavée"
+    - text: ""
+  - checkbox "Aire en gravier, semi-perméable ou sol nu":
+    - checkbox "Aire en gravier, semi-perméable ou sol nu"
+    - text: ""
+  - heading "Espaces végétalisés artificiels" [level=4]:
+    - button "Espaces végétalisés artificiels" [expanded]
+  - checkbox "Pelouse et buissons":
+    - checkbox "Pelouse et buissons"
+    - text: ""
+  - checkbox "Espace arboré":
+    - checkbox "Espace arboré"
+    - text: ""
+  - heading "Prairies naturelles ou agricoles" [level=4]:
+    - button "Prairies naturelles ou agricoles"
+  - heading "Espaces agricoles" [level=4]:
+    - button "Espaces agricoles"
+  - heading "Forêt" [level=4]:
+    - button "Forêt"
+  - heading "Autre espace naturel" [level=4]:
+    - button "Autre espace naturel"
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider" [disabled]
+  - text: 💡 Pourquoi renseigner les types d’espaces ?
+  - paragraph: Les types d’espace (bâtiments, voies d’accès ou parking, espace végétal, prairie...) vont servir à Bénéfriches à définir la composition des sols et donc à calculer des impacts environnementaux.

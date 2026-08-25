@@ -1,0 +1,48 @@
+- main:
+  - heading "Quels types d'espaces y a-t-il sur l'espace naturel ?" [level=2]
+  - heading "Forêt" [level=4]:
+    - button "Forêt" [expanded]
+  - checkbox "Forêt de feuillus":
+    - checkbox "Forêt de feuillus"
+    - text: ""
+  - checkbox "Forêt de conifères":
+    - checkbox "Forêt de conifères"
+    - text: ""
+  - checkbox "Forêt de peupliers":
+    - checkbox "Forêt de peupliers"
+    - text: ""
+  - checkbox "Forêt mixte":
+    - checkbox "Forêt mixte"
+    - text: ""
+  - heading "Prairie naturelle ou agricole" [level=4]:
+    - button "Prairie naturelle ou agricole" [expanded]
+  - checkbox "Prairie herbacée Composée d'herbe":
+    - checkbox "Prairie herbacée Composée d'herbe"
+    - text: ""
+  - checkbox "Prairie arbustive Composée d'herbe et d'arbustes":
+    - checkbox "Prairie arbustive Composée d'herbe et d'arbustes"
+    - text: ""
+  - checkbox "Prairie arborée Composée d'herbe, d'arbustes et d'arbres":
+    - checkbox "Prairie arborée Composée d'herbe, d'arbustes et d'arbres"
+    - text: ""
+  - heading "Autre espace naturel" [level=4]:
+    - button "Autre espace naturel" [expanded]
+  - checkbox "Plan d'eau":
+    - checkbox "Plan d'eau"
+    - text: ""
+  - checkbox "Zone humide":
+    - checkbox "Zone humide"
+    - text: ""
+  - heading "Espaces minéraux" [level=4]:
+    - button "Espaces minéraux"
+  - heading "Espaces végétalisés artificiels" [level=4]:
+    - button "Espaces végétalisés artificiels"
+  - heading "Espaces agricoles" [level=4]:
+    - button "Espaces agricoles"
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider" [disabled]
+  - text: 💡 Pourquoi renseigner les types d’espaces ?
+  - paragraph: Les types d’espace (bâtiments, voies d’accès ou parking, espace végétal, prairie...) vont servir à Bénéfriches à définir la composition des sols et donc à calculer des impacts environnementaux.

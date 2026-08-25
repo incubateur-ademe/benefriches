@@ -351,6 +351,17 @@ export class SiteCreationPage {
     await expect(this.page.locator('[aria-current="step"]')).toContainText(label);
   }
 
+  /**
+   * Structural regression net: asserts the accessibility tree of the wizard's
+   * <main> region against a committed YAML baseline. Scoped to <main> (rather
+   * than the whole page) so unrelated sidebar/stepper/layout changes don't
+   * churn baselines. Aria snapshots carry no platform suffix, so one baseline
+   * serves both local (macOS) and CI (Ubuntu) runs.
+   */
+  async expectWizardAriaSnapshot(name: string): Promise<void> {
+    await expect(this.page.getByRole("main")).toMatchAriaSnapshot({ name });
+  }
+
   private async submit(): Promise<void> {
     await this.page.getByRole("button", { name: /Valider|Suivant/ }).click();
   }

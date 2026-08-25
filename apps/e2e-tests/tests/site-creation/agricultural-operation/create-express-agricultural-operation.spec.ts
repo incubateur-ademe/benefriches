@@ -19,14 +19,23 @@ test.describe("site creation - agricultural operation - express mode", () => {
 
     await siteCreationPage.expectStepTitle("De quel type d'exploitation agricole s'agit-il");
     await siteCreationPage.expectStepperCurrentStep("Type de site");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-express-activity-step.aria.yml",
+    );
     await siteCreationPage.selectAgriculturalActivity("POLYCULTURE_AND_LIVESTOCK");
 
     await siteCreationPage.expectStepTitle("Où est située l'exploitation agricole ?");
     await siteCreationPage.expectStepperCurrentStep("Adresse");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-express-address-step.aria.yml",
+    );
     await siteCreationPage.fillAddress("Lyon");
 
     await siteCreationPage.expectStepTitle("Quelle est la superficie totale de l'exploitation ?");
     await siteCreationPage.expectStepperCurrentStep("Superficie");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-express-surface-area-step.aria.yml",
+    );
     await siteCreationPage.fillSurfaceArea(50000);
 
     await siteCreationPage.expectCreationSuccessWithDataInList([
@@ -34,6 +43,9 @@ test.describe("site creation - agricultural operation - express mode", () => {
       ["Superficie totale du site", asSquareMeters(50_000)],
       ["Adresse", "Lyon"],
     ]);
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-express-creation-result-step.aria.yml",
+    );
     await siteCreationPage.expectExpressCreationDisclaimer();
     await siteCreationPage.hideExpressCreationDisclaimer();
     await siteCreationPage.expectCreateDemoProjectLink();
