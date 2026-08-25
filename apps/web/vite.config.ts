@@ -3,21 +3,37 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
 import remarkGfm from "remark-gfm";
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig, loadEnv, ViteDevServer } from "vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 const interceptEmbedRouting = () => {
   return {
     name: "intercept-embed-routes-middleware",
-    configureServer(server) {
+    configureServer(server: ViteDevServer) {
       server.middlewares.use((req, _res, next) => {
         const reqUrl = req.originalUrl ?? req.url;
         // Redirect all /embed/* requests to embed.html ; achieved with nginx in production
-        if (reqUrl.startsWith("/embed/")) {
+        if (reqUrl?.startsWith("/embed/")) {
           req.url = "/embed.html";
         }
         next();
       });
+    },
+  };
+};
+
+const injectGoogleVerification = (mode: string) => {
+  const env = loadEnv(mode, process.cwd(), "");
+  return {
+    name: "inject-google-verification",
+    transformIndexHtml(html: string) {
+      if (env.VITE_GOOGLE_SITE_VERIFICATION) {
+        return html.replace(
+          "</head>",
+          `  <meta name="google-site-verification" content="${env.VITE_GOOGLE_SITE_VERIFICATION}" />\n  </head>`,
+        );
+      }
+      return html;
     },
   };
 };
@@ -37,6 +53,7 @@ export default defineConfig(({ mode }) => ({
     { enforce: "pre", ...mdx({ remarkPlugins: [remarkGfm] }) },
     react(),
     interceptEmbedRouting(),
+    injectGoogleVerification(mode),
   ],
   build: {
     rollupOptions: {
