@@ -385,7 +385,7 @@ Several views display project expenses from API data and must be extended to sho
 | Project features page | `features/projects/views/project-page/features/ExpensesAndRevenues.tsx` | New section for construction/rehabilitation expenses (between reinstatement and installation costs) |
 | Installation expenses sub-component | `features/projects/views/project-page/features/DevelopmentPlanInstallationExpenses.tsx` | May need companion `BuildingsConstructionExpenses.tsx` or integration into existing component |
 | PDF export | `features/projects/views/project-page/pdf-export/project-features/expenses-and-incomes/ProjectExpensesAndIncomesPdf.tsx` | Mirror web view changes |
-| Economic balance | `features/projects/domain/projectImpactsEconomicBalance.ts` | Include construction/rehabilitation expenses in cost aggregation |
+| Economic balance | `features/projects/core/projectImpactsEconomicBalance.ts` | Include construction/rehabilitation expenses in cost aggregation |
 | Label function | `shared/core/urbanProject.ts` | New `getLabelForBuildingsConstructionExpensePurpose()` for the 4 purposes |
 
 ### Wizard summary (current phase)

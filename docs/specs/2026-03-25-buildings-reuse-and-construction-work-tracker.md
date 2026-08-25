@@ -274,7 +274,7 @@ Constraints:
   - Includes:
     - `packages/shared/src/reconversion-project-impacts/types.ts` — extend impacts contract with a dedicated buildings construction/rehabilitation cost block
     - `apps/api/src/reconversion-projects/core/model/project-impacts/economic-balance/economicBalanceImpact.ts` — compute and expose those costs in the economic balance result
-    - `apps/web/src/features/projects/domain/projectImpactsEconomicBalance.ts` — add the corresponding aggregation names/details for urban projects
+    - `apps/web/src/features/projects/core/projectImpactsEconomicBalance.ts` — add the corresponding aggregation names/details for urban projects
     - impacts UI/tests — render and validate the new economic balance cost group
   - Done note: Added a dedicated `buildingsConstructionAndRehabilitation` cost block on the shared `EconomicBalanceImpactResult`, plumbed it through the API economic balance computation and SQL impacts query, and surfaced a new `urban_project_buildings_construction_and_rehabilitation` aggregation in the web economic-balance selector with matching label/color helpers and unit/integration tests.
   - Targeted checks:
