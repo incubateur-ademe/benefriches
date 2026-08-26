@@ -1,4 +1,4 @@
-import type { InfoStepHandler, UrbanZoneStepContext } from "../../../stepHandler.type";
+import type { InfoStepHandler, UrbanZoneStepParams } from "../../../stepHandlerRegistry";
 import {
   hasVacantPremises,
   isActivityParkManager,
@@ -9,25 +9,25 @@ import { hasActivity } from "../activityReaders";
 export const ExpensesAndIncomeIntroductionHandler = {
   stepId: "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION",
 
-  getNextStepId(context: UrbanZoneStepContext) {
-    if (isActivityParkManager(context)) {
-      if (hasVacantPremises(context)) {
+  getNextStepId(params: UrbanZoneStepParams) {
+    if (isActivityParkManager(params)) {
+      if (hasVacantPremises(params)) {
         return "URBAN_ZONE_VACANT_PREMISES_EXPENSES";
       }
-      if (hasActivity(context)) {
+      if (hasActivity(params)) {
         return "URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES";
       }
       return "URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY";
     }
-    if (isLocalAuthority(context)) {
+    if (isLocalAuthority(params)) {
       return "URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES";
     }
     // Fallback: should not occur in practice — the MANAGER step only offers the two types above
     return "URBAN_ZONE_NAMING_INTRODUCTION";
   },
 
-  getPreviousStepId(context: UrbanZoneStepContext) {
-    if (hasVacantPremises(context) && !hasActivity(context)) {
+  getPreviousStepId(params: UrbanZoneStepParams) {
+    if (hasVacantPremises(params) && !hasActivity(params)) {
       return "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA";
     }
     return "URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT";

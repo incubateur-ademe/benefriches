@@ -7,7 +7,7 @@ import { selectUrbanZoneNamingViewData } from "../naming/naming.selectors";
 type UrbanZoneCreationResultViewData = {
   siteId: string;
   siteName: string;
-  saveState: "idle" | "loading" | "success" | "error";
+  saveState: "idle" | "dirty" | "loading" | "success" | "error";
 };
 
 export const selectUrbanZoneCreationResultViewData = createSelector(

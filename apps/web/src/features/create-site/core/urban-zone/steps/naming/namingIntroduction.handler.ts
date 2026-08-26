@@ -1,4 +1,4 @@
-import type { InfoStepHandler, UrbanZoneStepContext } from "../../stepHandler.type";
+import type { InfoStepHandler, UrbanZoneStepParams } from "../../stepHandlerRegistry";
 import { isActivityParkManager, isLocalAuthority } from "../management/managementReaders";
 
 export const UrbanZoneNamingIntroductionHandler = {
@@ -8,11 +8,11 @@ export const UrbanZoneNamingIntroductionHandler = {
     return "URBAN_ZONE_NAMING";
   },
 
-  getPreviousStepId(context: UrbanZoneStepContext) {
-    if (isActivityParkManager(context)) {
+  getPreviousStepId(params: UrbanZoneStepParams) {
+    if (isActivityParkManager(params)) {
       return "URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY";
     }
-    if (isLocalAuthority(context)) {
+    if (isLocalAuthority(params)) {
       return "URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES";
     }
     return "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION";

@@ -1,4 +1,4 @@
-import type { InfoStepHandler, UrbanZoneStepContext } from "../../../stepHandler.type";
+import type { InfoStepHandler, UrbanZoneStepParams } from "../../../stepHandlerRegistry";
 import { hasVacantPremises } from "../../management/managementReaders";
 import { hasActivity } from "../activityReaders";
 
@@ -9,11 +9,11 @@ export const ExpensesAndIncomeSummaryHandler = {
     return "URBAN_ZONE_NAMING_INTRODUCTION";
   },
 
-  getPreviousStepId(context: UrbanZoneStepContext) {
-    if (hasActivity(context)) {
+  getPreviousStepId(params: UrbanZoneStepParams) {
+    if (hasActivity(params)) {
       return "URBAN_ZONE_ZONE_MANAGEMENT_INCOME";
     }
-    if (hasVacantPremises(context)) {
+    if (hasVacantPremises(params)) {
       return "URBAN_ZONE_VACANT_PREMISES_EXPENSES";
     }
     // Fallback: should not occur in practice — activity park managers always reach this summary

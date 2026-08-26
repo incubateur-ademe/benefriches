@@ -38,6 +38,8 @@ import {
 import { urbanZoneSiteCreationReducer } from "./urban-zone/urbanZone.reducer";
 import {
   isUrbanZoneStepHandlerStep,
+  type AnswersByStep as UrbanZoneAnswersByStep,
+  type SchematizedAnswerStepId as UrbanZoneSchematizedAnswerStepId,
   type UrbanZoneSiteCreationStep,
   type UrbanZoneStepsState,
 } from "./urban-zone/urbanZoneSteps";
@@ -93,19 +95,22 @@ export type SiteCreationStep =
 
 const FIRST_URBAN_ZONE_STEP: UrbanZoneSiteCreationStep = "URBAN_ZONE_LAND_PARCELS_SELECTION";
 
-export type UrbanZoneSiteCreationState = {
-  currentStep: UrbanZoneSiteCreationStep;
-  stepsSequence: UrbanZoneSiteCreationStep[];
-  firstSequenceStep: UrbanZoneSiteCreationStep;
-  steps: UrbanZoneStepsState;
-  saveState: "idle" | "loading" | "success" | "error";
-};
+export type UrbanZoneSiteCreationState = WizardFormSubState<
+  UrbanZoneSiteCreationStep,
+  UrbanZoneStepsState,
+  StepUpdateResult<
+    UrbanZoneSiteCreationStep,
+    UrbanZoneAnswersByStep,
+    UrbanZoneSchematizedAnswerStepId
+  >
+>;
 
 const INITIAL_URBAN_ZONE_STATE: UrbanZoneSiteCreationState = {
   currentStep: FIRST_URBAN_ZONE_STEP,
   stepsSequence: [],
   firstSequenceStep: FIRST_URBAN_ZONE_STEP,
   steps: {},
+  pendingStepCompletion: undefined,
   saveState: "idle",
 };
 

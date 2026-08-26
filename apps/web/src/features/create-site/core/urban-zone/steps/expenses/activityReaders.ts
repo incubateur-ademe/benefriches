@@ -1,9 +1,9 @@
-import type { UrbanZoneStepContext } from "../../stepHandler.type";
+import type { UrbanZoneStepParams } from "../../stepHandlerRegistry";
 import { getVacantPremisesFootprintSurfaceArea } from "../management/managementReaders";
 
-export function hasActivity(context: UrbanZoneStepContext): boolean {
-  const footprint = getVacantPremisesFootprintSurfaceArea(context.stepsState);
-  const totalSurfaceArea = context.siteData.surfaceArea;
+export function hasActivity(params: UrbanZoneStepParams): boolean {
+  const footprint = getVacantPremisesFootprintSurfaceArea(params.answers);
+  const totalSurfaceArea = params.context.siteData.surfaceArea;
   // Infinity ensures the comparison always passes when surfaceArea is unknown
   return footprint !== undefined && footprint < (totalSurfaceArea ?? Infinity);
 }

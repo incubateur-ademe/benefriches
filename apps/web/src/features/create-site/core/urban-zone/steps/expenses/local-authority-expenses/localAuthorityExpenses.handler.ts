@@ -1,4 +1,4 @@
-import type { AnswerStepHandler } from "../../../stepHandler.type";
+import type { UrbanZoneAnswerStepHandler } from "../../../stepHandlerRegistry";
 
 export const LocalAuthorityExpensesHandler = {
   stepId: "URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES",
@@ -10,4 +10,4 @@ export const LocalAuthorityExpensesHandler = {
   getPreviousStepId() {
     return "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION";
   },
-} satisfies AnswerStepHandler<"URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES">;
+} satisfies UrbanZoneAnswerStepHandler<"URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES">;

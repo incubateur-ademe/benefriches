@@ -1,6 +1,6 @@
 import type { UrbanZoneLandParcelType } from "shared";
 
-import type { AnswerStepHandler } from "../../../stepHandler.type";
+import type { UrbanZoneAnswerStepHandler } from "../../../stepHandlerRegistry";
 
 export const LandParcelsSelectionHandler = {
   stepId: "URBAN_ZONE_LAND_PARCELS_SELECTION",
@@ -9,12 +9,12 @@ export const LandParcelsSelectionHandler = {
     return "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION";
   },
 
-  getShortcut(context, answers) {
+  getShortcut(params, answers) {
     if (answers.landParcelTypes.length !== 1) {
       return undefined;
     }
     const [singleType] = answers.landParcelTypes as [UrbanZoneLandParcelType];
-    const totalSurfaceArea = context.siteData.surfaceArea ?? 0;
+    const totalSurfaceArea = params.context.siteData.surfaceArea ?? 0;
 
     return {
       complete: [
@@ -26,4 +26,4 @@ export const LandParcelsSelectionHandler = {
       next: "URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION",
     };
   },
-} satisfies AnswerStepHandler<"URBAN_ZONE_LAND_PARCELS_SELECTION">;
+} satisfies UrbanZoneAnswerStepHandler<"URBAN_ZONE_LAND_PARCELS_SELECTION">;
