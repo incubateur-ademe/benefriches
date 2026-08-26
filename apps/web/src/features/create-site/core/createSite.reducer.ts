@@ -4,10 +4,13 @@ import { v4 as uuid } from "uuid";
 
 import { RootState } from "@/app/store/store";
 import { SiteCreationData } from "@/features/create-site/core/siteFoncier.types";
+import { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import { WizardFormSubState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { stepReverted } from "./actions/revert.action";
 import { demoSiteCreationReducer } from "./demo/demoFactory";
-import { DemoSiteCreationStep, DemoStepsState } from "./demo/demoSteps";
+import { AnswersByStep, DemoAnswerStepId, DemoSiteCreationStep } from "./demo/demoSteps";
+import { DemoStepsState } from "./demo/stepHandlerRegistry";
 import { revertAddressStep, registerAddressHandlers } from "./steps/address/address.handlers";
 import {
   revertContaminationAndAccidentsStep,
@@ -106,13 +109,11 @@ const INITIAL_URBAN_ZONE_STATE: UrbanZoneSiteCreationState = {
   saveState: "idle",
 };
 
-export type DemoSiteCreationState = {
-  currentStep: DemoSiteCreationStep;
-  stepsSequence: DemoSiteCreationStep[];
-  firstSequenceStep: DemoSiteCreationStep;
-  steps: DemoStepsState;
-  saveState: "idle" | "loading" | "success" | "error";
-};
+export type DemoSiteCreationState = WizardFormSubState<
+  DemoSiteCreationStep,
+  DemoStepsState,
+  StepUpdateResult<DemoSiteCreationStep, AnswersByStep, DemoAnswerStepId>
+>;
 
 const FIRST_DEMO_STEP: DemoSiteCreationStep = "DEMO_INTRODUCTION";
 const INITIAL_DEMO_STATE: DemoSiteCreationState = {
@@ -120,6 +121,7 @@ const INITIAL_DEMO_STATE: DemoSiteCreationState = {
   stepsSequence: [],
   firstSequenceStep: FIRST_DEMO_STEP,
   steps: {},
+  pendingStepCompletion: undefined,
   saveState: "idle",
 };
 

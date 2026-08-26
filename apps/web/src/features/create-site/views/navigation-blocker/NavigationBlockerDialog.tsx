@@ -13,7 +13,7 @@ const DIALOG_DSFR_CSS = [
   "bg-[var(--grey-50-1000)]/[0.64] dark:bg-[var(--grey-1000-100)]/[0.64]",
 ];
 
-type Props = { saveState: "idle" | "loading" | "success" | "error" };
+type Props = { saveState: "idle" | "dirty" | "loading" | "success" | "error" };
 export default function NavigationBlockerDialog({ saveState }: Props) {
   const { isModalOpened, onConfirmNavigation, onCancelNavigation } = useNavigationBlocker({
     shouldBlockNavigation: saveState !== "success",
