@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
 import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
 import { selectBreakEvenLevelTabDataView } from "../../application/project-impacts/selectors/projectBreakEvenLevel.selectors";
-import ImpactModalDescription from "../project-page/impacts/impact-description-modals/ImpactModalDescription";
+import ImpactModalDescription from "../impact-description-modals/ImpactModalDescription";
 import ProjectBreakEvenLevelTab from "./ProjectBreakEvenLevelTab";
 
 type Props = {

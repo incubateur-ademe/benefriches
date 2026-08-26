@@ -6,7 +6,7 @@ import {
   SocialImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsSocial";
 
-import { getSocialImpactLabel } from "../../../impacts/getImpactLabel";
+import { getSocialImpactLabel } from "../../../../shared/getImpactLabel";
 import ImpactItemDetails from "../../components/ImpactItemDetails";
 import ImpactItemGroup from "../../components/ImpactItemGroup";
 import ImpactsSection from "../../components/ImpactsSection";

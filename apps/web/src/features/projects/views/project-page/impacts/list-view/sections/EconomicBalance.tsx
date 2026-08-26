@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 
 import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
-import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/impact-description-modals/ImpactModalDescriptionContext";
 
-import { getEconomicBalanceImpactLabel } from "../../getImpactLabel";
+import { getEconomicBalanceImpactLabel } from "../../../../shared/getImpactLabel";
 import ImpactActorsItem from "../ImpactActorsItem";
 import ImpactSection from "../ImpactSection";
 

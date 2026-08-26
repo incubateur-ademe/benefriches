@@ -1,0 +1,95 @@
+import { useContext } from "react";
+
+import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
+import classNames from "@/shared/views/clsx";
+
+import ImpactItemDetails from "../../../project-page/impacts/list-view/ImpactItemDetails";
+import ImpactItemGroup from "../../../project-page/impacts/list-view/ImpactItemGroup";
+import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
+import ModalBody from "../../modal-layout/ModalBody";
+import ModalContent from "../../modal-layout/ModalContent";
+import ModalHeader from "../../modal-layout/ModalHeader";
+
+type Props = {
+  impactData: Extract<KeyImpactIndicatorData, { name: "projectImpactBalance" }>;
+};
+
+const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
+  const { value, isSuccess } = impactData;
+
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+
+  const { socioEconomicMonetaryImpactsTotal, economicBalanceTotal } = value;
+
+  const title = isSuccess
+    ? "Les impacts compensent le déficit de l'opération\u00a0💰"
+    : "Les impacts ne compensent pas le déficit de l'opération\u00a0💸";
+
+  return (
+    <ModalBody>
+      <ModalHeader
+        title={title}
+        subtitle={
+          <>
+            <span
+              className={classNames(
+                "font-bold",
+                getPositiveNegativeTextClassesFromValue(socioEconomicMonetaryImpactsTotal),
+              )}
+            >
+              {formatMonetaryImpact(socioEconomicMonetaryImpactsTotal)}
+            </span>{" "}
+            d'impacts socio-économiques contre{" "}
+            <span
+              className={classNames(
+                "font-bold",
+                getPositiveNegativeTextClassesFromValue(economicBalanceTotal),
+              )}
+            >
+              {formatMonetaryImpact(economicBalanceTotal)}
+            </span>{" "}
+            de bilan d’opération
+          </>
+        }
+        breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
+      />
+      <ModalContent noTitle>
+        <p>
+          {isSuccess
+            ? "Pour ce projet, la valeur monétaire de tous les impacts socio-économiques et environnementaux est plus élevée que la valeur absolue du déficit d’opération."
+            : "Pour ce projet, la valeur monétaire de tous les impacts socio-économiques et environnementaux est plus faible que la valeur absolue du déficit d’opération. La valeur générée par le projet à moyen / long terme reste inférieure au déficit économique de court terme."}
+        </p>
+        <p>
+          Retrouver les valeurs associées à ces indicateurs et à leurs modalités de calcul via les
+          liens ci-dessous.
+        </p>
+        <ImpactItemGroup isClickable>
+          <ImpactItemDetails
+            impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
+            value={economicBalanceTotal}
+            label="📉 Bilan de l'opération"
+            type="monetary"
+            labelProps={getDetailsLink({
+              sectionName: "economicBalance",
+            })}
+          />
+        </ImpactItemGroup>
+        <ImpactItemGroup isClickable>
+          <ImpactItemDetails
+            impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
+            value={socioEconomicMonetaryImpactsTotal}
+            label="🌍 Impacts socio-économiques"
+            type="monetary"
+            labelProps={getDetailsLink({
+              sectionName: "socioEconomic",
+            })}
+          />
+        </ImpactItemGroup>
+      </ModalContent>
+    </ModalBody>
+  );
+};
+
+export default SummaryProjectBalanceDescription;

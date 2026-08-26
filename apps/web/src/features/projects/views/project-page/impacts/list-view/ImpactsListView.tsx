@@ -4,7 +4,7 @@ import { EnvironmentalImpactMetricsByListViewCategory } from "@/features/project
 import { SocialImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 
-import ImpactModalDescription from "../impact-description-modals/ImpactModalDescription";
+import ImpactModalDescription from "../../../impact-description-modals/ImpactModalDescription";
 import EconomicBalanceListSection from "./sections/EconomicBalance";
 import EnvironmentalListSection from "./sections/EnvironmentalListSection";
 import SocialListSection from "./sections/SocialListSection";

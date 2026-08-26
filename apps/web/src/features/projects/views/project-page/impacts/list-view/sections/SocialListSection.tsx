@@ -5,9 +5,9 @@ import {
   SocialImpactMetricMainKeyName,
   SocialImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsSocial";
-import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/impact-description-modals/ImpactModalDescriptionContext";
 
-import { getSocialImpactLabel } from "../../getImpactLabel";
+import { getSocialImpactLabel } from "../../../../shared/getImpactLabel";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";

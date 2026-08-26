@@ -6,7 +6,7 @@ import {
   EnvironmentalImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsEnvironmental";
 
-import { getEnvironmentalImpactLabel } from "../../../impacts/getImpactLabel";
+import { getEnvironmentalImpactLabel } from "../../../../shared/getImpactLabel";
 import ImpactItemDetails from "../../components/ImpactItemDetails";
 import ImpactItemGroup from "../../components/ImpactItemGroup";
 import ImpactsSection from "../../components/ImpactsSection";

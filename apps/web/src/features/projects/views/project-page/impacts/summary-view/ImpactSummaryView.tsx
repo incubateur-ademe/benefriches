@@ -6,7 +6,7 @@ import {
   PRIORITY_ORDER,
 } from "@/features/projects/core/projectKeyImpactIndicators";
 
-import { ImpactModalDescriptionContext } from "../../../shared/impacts/modals/ImpactModalDescriptionContext";
+import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
 import { getSummaryIndicatorTitle } from "../../../shared/impacts/summary";
 import KeyImpactIndicatorCard from "./KeyImpactIndicatorCard";
 

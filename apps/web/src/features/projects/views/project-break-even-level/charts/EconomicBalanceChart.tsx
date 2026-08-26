@@ -7,10 +7,10 @@ import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 
-import { getEconomicBalanceImpactLabel } from "../../project-page/impacts/getImpactLabel";
-import { getEconomicBalanceImpactColor } from "../../project-page/impacts/impact-description-modals/colors";
+import { getEconomicBalanceImpactColor } from "../../impact-description-modals/colors";
 import ImpactChartCard from "../../shared/charts/ImpactChartCard";
 import { formatMonetaryImpact } from "../../shared/formatImpactValue";
+import { getEconomicBalanceImpactLabel } from "../../shared/getImpactLabel";
 
 type Props = {
   projectEconomicBalanceByCategory: EconomicBalanceByCategory;

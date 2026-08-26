@@ -5,9 +5,9 @@ import {
   EnvironmentalImpactMetricMainKeyName,
   EnvironmentalImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsEnvironmental";
-import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/impact-description-modals/ImpactModalDescriptionContext";
 
-import { getEnvironmentalImpactLabel } from "../../getImpactLabel";
+import { getEnvironmentalImpactLabel } from "../../../../shared/getImpactLabel";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";

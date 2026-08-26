@@ -1,0 +1,67 @@
+import { useContext } from "react";
+
+import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
+import { formatNumberFr, formatPercentage } from "@/shared/core/format-number/formatNumber";
+
+import ImpactItemDetails from "../../../project-page/impacts/list-view/ImpactItemDetails";
+import ImpactItemGroup from "../../../project-page/impacts/list-view/ImpactItemGroup";
+import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
+import ModalBody from "../../modal-layout/ModalBody";
+import ModalContent from "../../modal-layout/ModalContent";
+import ModalHeader from "../../modal-layout/ModalHeader";
+
+type Props = {
+  impactData: Extract<KeyImpactIndicatorData, { name: "fullTimeJobs" }>;
+};
+
+const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
+  const { isSuccess, value } = impactData;
+  const { difference, percentageEvolution } = value;
+
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+
+  const title = isSuccess ? `+ d’emplois\u00a0👷` : `- d’emplois\u00a0👷`;
+
+  return (
+    <ModalBody>
+      <ModalHeader
+        title={title}
+        value={{
+          text: formatNumberFr(difference),
+          state: isSuccess ? "success" : "error",
+          description: isSuccess
+            ? `emploi équivalent temps plein créé ou maintenu (soit ${formatPercentage(percentageEvolution)})`
+            : `emploi équivalent temps plein perdu (soit ${formatPercentage(percentageEvolution)})`,
+        }}
+        breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
+      />
+      <ModalContent noTitle>
+        <p>
+          La concrétisation du projet nécessite généralement une activité économique qui va
+          impliquer des emplois, au minimum de manière transitoire pour la remise en état du site
+          (déconstruction, dépollution, etc.) et pour les étapes d’aménagement et/ou de
+          construction.
+        </p>
+        <p>
+          Ensuite, en cas de finalité économique du projet (ex : services de proximité, bureaux,
+          réindustrialisation), des emplois pourront être pérennisés (ex: déménagement d’entreprise)
+          ou crées.
+        </p>
+        <ImpactItemGroup isClickable>
+          <ImpactItemDetails
+            impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
+            value={difference}
+            label="🧑‍🔧 Emplois équivalent temps plein"
+            type="etp"
+            labelProps={getDetailsLink({
+              sectionName: "social.jobs",
+              impactDetailsName: "fullTimeJobs",
+            })}
+          />
+        </ImpactItemGroup>
+      </ModalContent>
+    </ModalBody>
+  );
+};
+
+export default SummaryFullTimeJobsDescription;

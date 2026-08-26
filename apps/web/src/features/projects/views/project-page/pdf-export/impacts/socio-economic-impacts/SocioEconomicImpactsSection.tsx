@@ -2,7 +2,7 @@ import { View } from "@react-pdf/renderer";
 
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 
-import { getSocioEconomicImpactLabel } from "../../../impacts/getImpactLabel";
+import { getSocioEconomicImpactLabel } from "../../../../shared/getImpactLabel";
 import ImpactItemDetails from "../../components/ImpactItemDetails";
 import ImpactItemGroup from "../../components/ImpactItemGroup";
 import ImpactsSection from "../../components/ImpactsSection";
