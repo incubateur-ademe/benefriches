@@ -45,7 +45,7 @@ function LandParcelBuildingsFloorAreaForm({
       title={`Surface de plancher des bâtiments de la ${parcelLabel.toLowerCase()}`}
       instructions={
         <FormInfo>
-          Pour rappel, la surface au sol des bâtiments est de $
+          Pour rappel, la surface au sol des bâtiments est de{" "}
           {formatSurfaceArea(buildingsFootprintSurfaceArea)}
         </FormInfo>
       }
