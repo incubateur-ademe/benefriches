@@ -5,24 +5,25 @@ import {
   formatCO2Impact,
   formatSurfaceAreaImpact,
 } from "@/features/projects/views/shared/formatImpactValue";
-import { EnvironmentSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import { EnvironmentalSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
 import { ContentComponentType, ModalImpactConfig } from "./config.type";
 
-export const ENVIRONMENTAL_METRICS_MODALS = {
+const ENVIRONMENTAL_METRICS_MODALS = {
   environmental: {
     title: "Impacts environnementaux",
     ContentComponent: lazy<ContentComponentType>(
       () => import("../mdx-component/environmental_section.mdx"),
     ),
   },
-  co2eq: {
+  "environmental.co2eq": {
     title: "Impacts sur le CO2-eq",
     ContentComponent: lazy<ContentComponentType>(
       () => import("../mdx-component/environmental_co2_section.mdx"),
     ),
   },
-  soils: {
+  "environmental.soils": {
     title: "Impacts sur les sols",
     ContentComponent: lazy<ContentComponentType>(
       () => import("../mdx-component/environmental_soils_section.mdx"),
@@ -113,6 +114,17 @@ export const ENVIRONMENTAL_METRICS_MODALS = {
     ),
   },
 } as const satisfies Record<
-  EnvironmentalImpactMetricKeyName | EnvironmentSubSectionName | "environmental",
+  EnvironmentalImpactMetricKeyName | EnvironmentalSectionName,
   ModalImpactConfig
 >;
+
+export const ENVIRONMENTAL_METRICS_MODAL_CONFIG = {
+  sections: [
+    "environmental",
+    "environmental.soils",
+    "environmental.co2eq",
+  ] satisfies readonly EnvironmentalSectionName[],
+  modals: ENVIRONMENTAL_METRICS_MODALS,
+  formatFn: formatNumberFr,
+  caption: "Liste des impacts environmentaux",
+} as const;

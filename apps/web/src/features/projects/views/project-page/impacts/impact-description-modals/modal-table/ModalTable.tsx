@@ -1,6 +1,7 @@
-import Button from "@codegouvfr/react-dsfr/Button";
+import { fr } from "@codegouvfr/react-dsfr";
 import Table from "@codegouvfr/react-dsfr/Table";
-import { CSSProperties } from "react";
+import { CSSProperties, ReactNode } from "react";
+import { Link } from "type-route";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
@@ -16,7 +17,7 @@ type Props = {
     label: string;
     actor?: string;
     value: number;
-    onClick?: () => void;
+    linkProps?: Link;
   }[];
   formatFn?: (value: number) => string;
 };
@@ -49,11 +50,12 @@ export const Value = ({
 );
 
 const mapDataToTableRow = (
-  { label, value, color, onClick, actor }: Props["data"][number],
+  { label, value, color, linkProps, actor }: Props["data"][number],
   index: number,
   formatFn: (value: number) => string,
+  { hasActors, hasLinks }: { hasActors: boolean; hasLinks: boolean },
 ) => {
-  const row = actor
+  const row: ReactNode[] = hasActors
     ? [
         <BagdeLabel
           key={label}
@@ -71,21 +73,31 @@ const mapDataToTableRow = (
         />,
         <Value key={`${label}-value`} value={value} formatFn={formatFn} />,
       ];
-  if (onClick) {
+
+  if (hasLinks) {
     row.push(
-      <Button priority="tertiary no outline" size="small" key={label} onClick={onClick}>
-        Voir+
-      </Button>,
+      linkProps ? (
+        <a
+          className={fr.cx("fr-btn", "fr-btn--sm", "fr-btn--tertiary-no-outline")}
+          key={label}
+          {...linkProps}
+        >
+          Voir+
+        </a>
+      ) : null,
     );
   }
+
   return row;
 };
 
 const ModalTable = ({ data, caption, formatFn = formatMonetaryImpact }: Props) => {
-  const tableData = data.map((item, index) => mapDataToTableRow(item, index, formatFn));
-
   const hasActors = data.some(({ actor }) => actor);
-  const hasActions = data.some(({ onClick }) => onClick);
+  const hasLinks = data.some(({ linkProps }) => linkProps);
+
+  const tableData = data.map((item, index) =>
+    mapDataToTableRow(item, index, formatFn, { hasActors, hasLinks }),
+  );
 
   if (hasActors) {
     return (
@@ -95,7 +107,7 @@ const ModalTable = ({ data, caption, formatFn = formatMonetaryImpact }: Props) =
         noCaption
         bordered
         headers={
-          hasActions
+          hasLinks
             ? ["Gain ou perte", "Bénéficiaire", "Montant", "Détail"]
             : ["Gain ou perte", "Bénéficiaire", "Montant"]
         }
@@ -110,7 +122,7 @@ const ModalTable = ({ data, caption, formatFn = formatMonetaryImpact }: Props) =
       caption={caption}
       noCaption
       bordered
-      headers={hasActions ? ["Gain ou perte", "Montant", "Détail"] : ["Gain ou perte", "Montant"]}
+      headers={hasLinks ? ["Gain ou perte", "Montant", "Détail"] : ["Gain ou perte", "Montant"]}
       data={tableData}
     />
   );

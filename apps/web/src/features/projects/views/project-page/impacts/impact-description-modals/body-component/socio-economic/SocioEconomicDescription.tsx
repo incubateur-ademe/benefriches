@@ -43,7 +43,7 @@ const getLabelForBearer = (name: "localAuthority" | "localPeopleOrCompany" | "hu
 };
 
 const SocioEconomicDescription = ({ impactsData }: Props) => {
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
   const { total, localAuthority, localPeopleOrCompany, humanity } =
     groupIndirectEconomicImpactsByBearerAndCategory<AggregatedReconversionProjectOnSiteImpactItemView>(
       {
@@ -66,12 +66,9 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
           label: getLabelForBearer("localAuthority"),
           total: totalLocalAuthority,
 
-          onClick: () => {
-            updateModalContent({
-              sectionName: "socio_economic",
-              subSectionName: "localAuthority",
-            });
-          },
+          linkProps: getDetailsLink({
+            sectionName: "socioEconomic.localAuthority",
+          }),
           values: typedObjectEntries(localAuthorityList)
             .map(([category, items = []]) => ({
               value: sumListWithKey(items, "total"),
@@ -84,12 +81,11 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
         {
           label: getLabelForBearer("localPeopleOrCompany"),
           total: totalLocalPeopleOrCompany,
-          onClick: () => {
-            updateModalContent({
-              sectionName: "socio_economic",
-              subSectionName: "localPeopleOrCompany",
-            });
-          },
+
+          linkProps: getDetailsLink({
+            sectionName: "socioEconomic.localPeopleOrCompany",
+          }),
+
           values: typedObjectEntries(localPeopleOrCompanyList)
             .map(([category, items = []]) => ({
               value: sumListWithKey(items, "total"),
@@ -102,13 +98,10 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
         {
           label: getLabelForBearer("humanity"),
           total: totalHumanity,
+          linkProps: getDetailsLink({
+            sectionName: "socioEconomic.humanity",
+          }),
 
-          onClick: () => {
-            updateModalContent({
-              sectionName: "socio_economic",
-              subSectionName: "humanity",
-            });
-          },
           values: typedObjectEntries(humanityList)
             .map(([category, items = []]) => ({
               category: category,
@@ -127,7 +120,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
       totalLocalAuthority,
       totalLocalPeopleOrCompany,
       totalHumanity,
-      updateModalContent,
+      getDetailsLink,
     ],
   );
 
@@ -186,12 +179,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
               <Button
                 className="px-1"
                 priority="tertiary no outline"
-                onClick={() => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    subSectionName: "localAuthority",
-                  });
-                }}
+                {...getDetailsLink({ sectionName: "socioEconomic.localAuthority" })}
               >
                 🏛️ les impacts économiques pour la collectivité locale
               </Button>
@@ -200,12 +188,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
               <Button
                 className="px-1"
                 priority="tertiary no outline"
-                onClick={() => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    subSectionName: "localPeopleOrCompany",
-                  });
-                }}
+                {...getDetailsLink({ sectionName: "socioEconomic.localPeopleOrCompany" })}
               >
                 🏘️ les impacts économiques pour les riverains
               </Button>
@@ -214,12 +197,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
               <Button
                 className="px-1"
                 priority="tertiary no outline"
-                onClick={() => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    subSectionName: "humanity",
-                  });
-                }}
+                {...getDetailsLink({ sectionName: "socioEconomic.humanity" })}
               >
                 🌍️ les impacts économiques pour la société française et mondiale
               </Button>

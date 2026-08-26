@@ -1,15 +1,14 @@
-import { MouseEvent, ReactNode, useState } from "react";
+import { HtmlHTMLAttributes, MouseEvent, ReactNode, useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
 import ImpactRowValue from "./ImpactRowValue";
-import { getDialogControlButtonProps } from "./dialogControlBtnProps";
 
 type Props = {
   title: string;
   isMain?: boolean;
   total?: number;
-  dialogId: string;
+  labelProps?: HtmlHTMLAttributes<HTMLButtonElement | HTMLLinkElement | HTMLSpanElement>;
   children: ReactNode;
   initialShowSectionContent?: boolean;
   noMarginBottom?: boolean;
@@ -19,7 +18,7 @@ const ImpactSection = ({
   title,
   total,
   isMain = false,
-  dialogId,
+  labelProps,
   children,
   initialShowSectionContent = true,
   noMarginBottom = false,
@@ -59,7 +58,7 @@ const ImpactSection = ({
             role: "heading",
             "aria-level": isMain ? 3 : 4,
             className: isMain ? "text-xl" : "text-base",
-            ...getDialogControlButtonProps(dialogId),
+            ...labelProps,
           }}
           value={total}
           type="monetary"

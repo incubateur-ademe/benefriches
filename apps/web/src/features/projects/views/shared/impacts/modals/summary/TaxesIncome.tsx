@@ -16,7 +16,7 @@ type Props = {
 
 const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
   const { isSuccess, value } = impactData;
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const title = isSuccess ? `+ de recettes fiscales\u00a0💰` : `- de recettes fiscales\u00a0💸`;
 
@@ -44,16 +44,10 @@ const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
             value={value}
             label="🏛️ Recettes fiscales"
             type="monetary"
-            labelProps={{
-              onClick: (e) => {
-                e.stopPropagation();
-                updateModalContent({
-                  sectionName: "socio_economic",
-                  subSectionName: "localAuthority",
-                  impactName: "taxesIncome",
-                });
-              },
-            }}
+            labelProps={getDetailsLink({
+              sectionName: "socioEconomic.localAuthority",
+              impactDetailsName: "taxesIncome",
+            })}
           />
         </ImpactItemGroup>
       </ModalContent>

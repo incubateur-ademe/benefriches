@@ -1,6 +1,6 @@
 import * as Highcharts from "highcharts";
 import { HighchartsReact } from "highcharts-react-official";
-import { useContext } from "react";
+import { useContext, useId } from "react";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 // oxlint-disable-next-line import/no-unassigned-import
@@ -13,6 +13,7 @@ import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
+import { useChartCustomSerieColors } from "@/shared/views/charts/useChartCustomColors";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ModalTable from "../modal-table/ModalTable";
@@ -24,12 +25,16 @@ type Props = {
 const title = "Analyse coût bénéfice";
 
 const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const { options, containerProps } = useGetBreakEventLevelColumnChartProps({
     projectionYears: impactsData.projectionYears,
     ...impactsData.aggregatedReconversionImpacts,
   });
+
+  const id = useId();
+
+  useChartCustomSerieColors(id, ["#E0A227", "#22AFE5"]);
 
   return (
     <ModalBody size="large">
@@ -39,7 +44,7 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
         <ModalData>
           <div className="mb-10">
             <HighchartsReact
-              containerProps={containerProps}
+              containerProps={{ ...containerProps, id }}
               highcharts={Highcharts}
               options={options}
             />
@@ -52,21 +57,13 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
                 label: "📉 Bilan de l'opération",
                 value: impactsData.projectEconomicBalance.total,
                 color: "#E0A227",
-                onClick: () => {
-                  updateModalContent({
-                    sectionName: "economic_balance",
-                  });
-                },
+                linkProps: getDetailsLink({ sectionName: "economicBalance" }),
               },
               {
                 label: "🌍 Impacts socio-économiques",
                 value: impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.total,
                 color: "#22AFE5",
-                onClick: () => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                  });
-                },
+                linkProps: getDetailsLink({ sectionName: "socioEconomic" }),
               },
             ]}
           />

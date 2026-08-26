@@ -19,7 +19,7 @@ type Props = {
 const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
   const { value, isSuccess } = impactData;
 
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const { socioEconomicMonetaryImpactsTotal, economicBalanceTotal } = value;
 
@@ -71,14 +71,9 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
             value={economicBalanceTotal}
             label="📉 Bilan de l'opération"
             type="monetary"
-            labelProps={{
-              onClick: (e) => {
-                e.stopPropagation();
-                updateModalContent({
-                  sectionName: "economic_balance",
-                });
-              },
-            }}
+            labelProps={getDetailsLink({
+              sectionName: "economicBalance",
+            })}
           />
         </ImpactItemGroup>
         <ImpactItemGroup isClickable>
@@ -87,14 +82,9 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
             value={socioEconomicMonetaryImpactsTotal}
             label="🌍 Impacts socio-économiques"
             type="monetary"
-            labelProps={{
-              onClick: (e) => {
-                e.stopPropagation();
-                updateModalContent({
-                  sectionName: "socio_economic",
-                });
-              },
-            }}
+            labelProps={getDetailsLink({
+              sectionName: "socioEconomic",
+            })}
           />
         </ImpactItemGroup>
       </ModalContent>

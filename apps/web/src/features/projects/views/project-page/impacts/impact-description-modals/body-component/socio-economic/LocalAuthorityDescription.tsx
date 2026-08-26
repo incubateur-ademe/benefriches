@@ -20,7 +20,7 @@ type Props = {
 };
 
 const LocalAuthorityDescription = ({ impactsData }: Props) => {
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const { total, ...impacts } =
     groupIndirectEconomicImpactsByBearerAndCategory<AggregatedReconversionProjectOnSiteImpactItemView>(
@@ -43,16 +43,13 @@ const LocalAuthorityDescription = ({ impactsData }: Props) => {
           value: total,
           label: getSocioEconomicImpactLabel(keyName),
           color: getSocioEconomicImpactColor(keyName),
-          onClick: () => {
-            updateModalContent({
-              sectionName: "socio_economic",
-              subSectionName: "localAuthority",
-              impactName: keyName,
-            });
-          },
+          linkProps: getDetailsLink({
+            sectionName: "socioEconomic.localAuthority",
+            impactDetailsName: keyName,
+          }),
         })),
       })),
-    [impacts, updateModalContent],
+    [impacts, getDetailsLink],
   );
 
   return (
@@ -62,7 +59,6 @@ const LocalAuthorityDescription = ({ impactsData }: Props) => {
         total,
         details,
       }}
-      subSectionName="localAuthority"
     >
       <p>
         Les impacts économiques pour la collectivité locale sont liés, le cas échéant, à la

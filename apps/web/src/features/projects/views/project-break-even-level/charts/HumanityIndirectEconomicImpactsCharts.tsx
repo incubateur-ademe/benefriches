@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { sumListWithKey, typedObjectEntries } from "shared";
+import { Link } from "type-route";
 
 import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 
@@ -8,12 +9,12 @@ import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
   humanityIndirectEconomicImpacts: IndirectEconomicImpactsByBearerAndGroupCategory["humanity"];
-  dialogId: string;
+  linkProps?: Link;
 };
 
 export default function HumanityIndirectEconomicImpactsCharts({
   humanityIndirectEconomicImpacts,
-  dialogId,
+  linkProps,
 }: Props) {
   const { total, ...impacts } = humanityIndirectEconomicImpacts;
 
@@ -27,7 +28,7 @@ export default function HumanityIndirectEconomicImpactsCharts({
 
   return (
     <EconomicColumnChart
-      dialogId={dialogId}
+      linkProps={linkProps}
       title="🌍️ Impacts économiques pour la société française et mondiale"
       legendText="Impact total pour la société"
       legendTotal={total}

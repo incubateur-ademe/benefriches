@@ -16,7 +16,7 @@ type Props = {
 
 const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => {
   const { value } = impactData;
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody>
@@ -42,17 +42,10 @@ const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => 
             value={value}
             label="🏡 Valeur patrimoniale des bâtiments alentour"
             type="monetary"
-            labelProps={{
-              onClick: (e) => {
-                e.stopPropagation();
-                updateModalContent({
-                  sectionName: "socio_economic",
-                  subSectionName: "localPeopleOrCompany",
-
-                  impactName: "localPropertyValueIncrease",
-                });
-              },
-            }}
+            labelProps={getDetailsLink({
+              sectionName: "socioEconomic.localPeopleOrCompany",
+              impactDetailsName: "localPropertyValueIncrease",
+            })}
           />
         </ImpactItemGroup>
       </ModalContent>

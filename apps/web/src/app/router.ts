@@ -5,7 +5,11 @@ import { OnboardingVariant } from "@/features/onboarding/views/pages/when-to-use
 
 const onBoarding = defineRoute("/premiers-pas");
 const projectImpacts = defineRoute(
-  { projectId: param.path.string, documentation: param.query.optional.boolean },
+  {
+    projectId: param.path.string,
+    documentation: param.query.optional.boolean,
+    details: param.query.optional.string,
+  },
   (params) => `/mes-projets/${params.projectId}`,
 );
 
@@ -26,135 +30,138 @@ const onBoardingFeatureSerializer = getEnumValueSerializer([
   "evaluation-impacts",
 ] as OnboardingVariant[]);
 
-const { RouteProvider, useRoute, routes, session } = createRouter({
-  home: defineRoute("/"),
-  landingBenefriches: defineRoute("/commencer-avec-benefriches"),
-  landingMutabilite: defineRoute("/commencer-avec-mutabilite"),
-  // ONBOARDING GLOBAL
-  onBoardingIdentity: onBoarding.extend(
-    {
-      hintEmail: param.query.optional.string,
-      hintFirstName: param.query.optional.string,
-      hintLastName: param.query.optional.string,
-      redirectTo: param.query.optional.string,
-    },
-    () => "/identite",
-  ),
-  onBoardingWhenToUse: onBoarding.extend(
-    { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
-    () => "/quand-utiliser-benefriches",
-  ),
-  onBoardingWhenNotToUse: onBoarding.extend(
-    { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
-    () => "/quand-ne-pas-utiliser-benefriches",
-  ),
-  onBoardingIntroductionHow: onBoarding.extend(
-    { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
-    () => "/comment-ca-marche",
-  ),
-  accessBenefriches: defineRoute(
-    { redirectTo: param.query.optional.string },
-    () => "/acceder-a-benefriches",
-  ),
-  // AUTHENTIFICATION
-  authWithToken: defineRoute(
-    { token: param.query.string, redirectTo: param.query.optional.string },
-    () => "/authentification/token",
-  ),
-  // FORMS
-  createSite: defineRoute(
-    {
-      etape: param.query.optional.string,
-      creationMode: param.path.trailing.optional.ofType(
-        getEnumValueSerializer(["custom", "demo"] as const),
-      ),
-      evaluationMode: param.query.optional.ofType(getEnumValueSerializer(["impacts"] as const)),
-    },
-    (p) => `/creer-site-foncier/${p.creationMode}`,
-  ),
-  createProject: defineRoute(
-    {
-      siteId: param.query.string,
-      etape: param.query.optional.string,
-      projectSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
-    },
-    () => "/creer-projet",
-  ),
-  projectCreationOnboarding: defineRoute(
-    {
-      siteId: param.query.string,
-      siteName: param.query.string,
-      projectSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
-    },
-    () => "/creer-projet/introduction",
-  ),
-  updateProject: defineRoute(
-    {
-      etape: param.query.optional.string,
-      from: param.query.optional.ofType<"impacts" | "evaluations" | "site">(),
-      projectId: param.path.string,
-    },
-    (params) => `/mes-projets/${params.projectId}/modifier`,
-  ),
-  // PROJECT IMPACTS
-  projectImpactsSummary: projectImpacts.extend(`/apercu`),
-  projectImpactsDevelopmentScore: projectImpacts.extend(`/amenagescore`),
-  projectImpactsBreakEvenLevel: projectImpacts.extend(`/analyse-cout-benefice`),
-  projectAvoidedCostsAnalysis: projectImpacts.extend(`/analyse-couts-evites`),
-  projectImpacts: projectImpacts.extend(`/impacts`),
-  projectImpactsOnboarding: projectImpacts.extend(
-    {
-      etape: param.query.optional.string,
-    },
-    () => `/onboarding-impacts`,
-  ),
-  projectFeatures: projectImpacts.extend(`/caracterisques`),
-  // MES EVALUATIONS
-  myEvaluations: defineRoute("/mes-evaluations"),
-  siteFeatures: defineRoute(
-    {
-      siteId: param.path.string,
-      fromCompatibilityEvaluation: param.query.optional.boolean,
-      projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
-    },
-    (params) => `/sites/${params.siteId}/caracteristiques`,
-  ),
-  siteEvaluatedProjects: defineRoute(
-    {
-      siteId: param.path.string,
-      fromCompatibilityEvaluation: param.query.optional.boolean,
-      projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
-    },
-    (params) => `/sites/${params.siteId}/projets-evalues`,
-  ),
-  siteActionsList: defineRoute(
-    {
-      siteId: param.path.string,
-      fromCompatibilityEvaluation: param.query.optional.boolean,
-      projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
-    },
-    (params) => `/sites/${params.siteId}/suivi-du-site`,
-  ),
-  siteCompatibilityEvaluation: defineRoute(
-    {
-      siteId: param.path.string,
-      fromCompatibilityEvaluation: param.query.optional.boolean,
-      projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
-    },
-    (params) => `/sites/${params.siteId}/analyse-de-compatibilite`,
-  ),
-  // RECONVERSION COMPATIBILITY
-  evaluateReconversionCompatibility: defineRoute("/evaluer-compatibilite-friche"),
-  reconversionCompatibilityResults: defineRoute(
-    { mutafrichesId: param.query.string },
-    () => `/evaluer-compatibilite-friche/resultats`,
-  ),
-  // PAGES
-  budget: defineRoute("/budget"),
-  stats: defineRoute("/statistiques"),
-  mentionsLegales: defineRoute("/mentions-legales"),
-  accessibilite: defineRoute("/accessibilite"),
-  politiqueConfidentialite: defineRoute("/politique-de-confidentialite"),
-});
+const { RouteProvider, useRoute, routes, session } = createRouter(
+  { scrollToTop: false },
+  {
+    home: defineRoute("/"),
+    landingBenefriches: defineRoute("/commencer-avec-benefriches"),
+    landingMutabilite: defineRoute("/commencer-avec-mutabilite"),
+    // ONBOARDING GLOBAL
+    onBoardingIdentity: onBoarding.extend(
+      {
+        hintEmail: param.query.optional.string,
+        hintFirstName: param.query.optional.string,
+        hintLastName: param.query.optional.string,
+        redirectTo: param.query.optional.string,
+      },
+      () => "/identite",
+    ),
+    onBoardingWhenToUse: onBoarding.extend(
+      { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
+      () => "/quand-utiliser-benefriches",
+    ),
+    onBoardingWhenNotToUse: onBoarding.extend(
+      { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
+      () => "/quand-ne-pas-utiliser-benefriches",
+    ),
+    onBoardingIntroductionHow: onBoarding.extend(
+      { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
+      () => "/comment-ca-marche",
+    ),
+    accessBenefriches: defineRoute(
+      { redirectTo: param.query.optional.string },
+      () => "/acceder-a-benefriches",
+    ),
+    // AUTHENTIFICATION
+    authWithToken: defineRoute(
+      { token: param.query.string, redirectTo: param.query.optional.string },
+      () => "/authentification/token",
+    ),
+    // FORMS
+    createSite: defineRoute(
+      {
+        etape: param.query.optional.string,
+        creationMode: param.path.trailing.optional.ofType(
+          getEnumValueSerializer(["custom", "demo"] as const),
+        ),
+        evaluationMode: param.query.optional.ofType(getEnumValueSerializer(["impacts"] as const)),
+      },
+      (p) => `/creer-site-foncier/${p.creationMode}`,
+    ),
+    createProject: defineRoute(
+      {
+        siteId: param.query.string,
+        etape: param.query.optional.string,
+        projectSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
+      },
+      () => "/creer-projet",
+    ),
+    projectCreationOnboarding: defineRoute(
+      {
+        siteId: param.query.string,
+        siteName: param.query.string,
+        projectSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
+      },
+      () => "/creer-projet/introduction",
+    ),
+    updateProject: defineRoute(
+      {
+        etape: param.query.optional.string,
+        from: param.query.optional.ofType<"impacts" | "evaluations" | "site">(),
+        projectId: param.path.string,
+      },
+      (params) => `/mes-projets/${params.projectId}/modifier`,
+    ),
+    // PROJECT IMPACTS
+    projectImpactsSummary: projectImpacts.extend(`/apercu`),
+    projectImpactsDevelopmentScore: projectImpacts.extend(`/amenagescore`),
+    projectImpactsBreakEvenLevel: projectImpacts.extend(`/analyse-cout-benefice`),
+    projectAvoidedCostsAnalysis: projectImpacts.extend(`/analyse-couts-evites`),
+    projectImpacts: projectImpacts.extend(`/impacts`),
+    projectImpactsOnboarding: projectImpacts.extend(
+      {
+        etape: param.query.optional.string,
+      },
+      () => `/onboarding-impacts`,
+    ),
+    projectFeatures: projectImpacts.extend(`/caracterisques`),
+    // MES EVALUATIONS
+    myEvaluations: defineRoute("/mes-evaluations"),
+    siteFeatures: defineRoute(
+      {
+        siteId: param.path.string,
+        fromCompatibilityEvaluation: param.query.optional.boolean,
+        projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
+      },
+      (params) => `/sites/${params.siteId}/caracteristiques`,
+    ),
+    siteEvaluatedProjects: defineRoute(
+      {
+        siteId: param.path.string,
+        fromCompatibilityEvaluation: param.query.optional.boolean,
+        projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
+      },
+      (params) => `/sites/${params.siteId}/projets-evalues`,
+    ),
+    siteActionsList: defineRoute(
+      {
+        siteId: param.path.string,
+        fromCompatibilityEvaluation: param.query.optional.boolean,
+        projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
+      },
+      (params) => `/sites/${params.siteId}/suivi-du-site`,
+    ),
+    siteCompatibilityEvaluation: defineRoute(
+      {
+        siteId: param.path.string,
+        fromCompatibilityEvaluation: param.query.optional.boolean,
+        projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
+      },
+      (params) => `/sites/${params.siteId}/analyse-de-compatibilite`,
+    ),
+    // RECONVERSION COMPATIBILITY
+    evaluateReconversionCompatibility: defineRoute("/evaluer-compatibilite-friche"),
+    reconversionCompatibilityResults: defineRoute(
+      { mutafrichesId: param.query.string },
+      () => `/evaluer-compatibilite-friche/resultats`,
+    ),
+    // PAGES
+    budget: defineRoute("/budget"),
+    stats: defineRoute("/statistiques"),
+    mentionsLegales: defineRoute("/mentions-legales"),
+    accessibilite: defineRoute("/accessibilite"),
+    politiqueConfidentialite: defineRoute("/politique-de-confidentialite"),
+  },
+);
 
 export { RouteProvider, useRoute, routes, session };

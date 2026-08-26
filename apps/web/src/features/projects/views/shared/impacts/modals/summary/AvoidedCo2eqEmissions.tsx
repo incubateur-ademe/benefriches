@@ -27,7 +27,7 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
     frenchPersonAnnualEquivalent,
   );
 
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
   const title = isSuccess ? "- d’émissions de CO2\u00a0☁️" : "+ d’émissions de CO2\u00a0☁️";
 
   return (
@@ -66,16 +66,10 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
             value={value}
             label="☁️ CO2-eq stocké ou évité"
             type="co2"
-            labelProps={{
-              onClick: (e) => {
-                e.stopPropagation();
-
-                updateModalContent({
-                  sectionName: "environmental",
-                  impactName: "avoidedCo2eqEmissions",
-                });
-              },
-            }}
+            labelProps={getDetailsLink({
+              sectionName: "environmental",
+              impactDetailsName: "avoidedCo2eqEmissions",
+            })}
           />
         </ImpactItemGroup>
       </ModalContent>

@@ -1,12 +1,10 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { ReactNode, useContext } from "react";
+import { Link } from "type-route";
 
 import { SocioEconomicImpactMainImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
-import {
-  ImpactModalDescriptionContext,
-  SocioEconomicSubSectionName,
-} from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
@@ -27,18 +25,16 @@ type Props = {
         color?: string;
         label: string;
         value: number;
-        onClick?: () => void;
+        linkProps?: Link;
       }[];
     }[];
   };
-  subSectionName: SocioEconomicSubSectionName;
   title: string;
   children: ReactNode;
-  valueDescription?: string;
 };
 
 const SocioEconomicSubSectionDescription = ({ impactsData, title, children }: Props) => {
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody size="large">
@@ -51,7 +47,7 @@ const SocioEconomicSubSectionDescription = ({ impactsData, title, children }: Pr
         breadcrumbSegments={[
           {
             label: "Impacts socio-économiques",
-            contentState: { sectionName: "socio_economic" },
+            contentState: { sectionName: "socioEconomic" },
           },
           { label: title },
         ]}
@@ -77,12 +73,9 @@ const SocioEconomicSubSectionDescription = ({ impactsData, title, children }: Pr
               <Button
                 className="px-1 text-left"
                 priority="tertiary no outline"
-                onClick={() => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    subSectionName: "localAuthority",
-                  });
-                }}
+                {...getDetailsLink({
+                  sectionName: "socioEconomic.localAuthority",
+                })}
               >
                 🏛️ les impacts économiques pour la collectivité locale
               </Button>
@@ -91,12 +84,9 @@ const SocioEconomicSubSectionDescription = ({ impactsData, title, children }: Pr
               <Button
                 className="px-1 text-left"
                 priority="tertiary no outline"
-                onClick={() => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    subSectionName: "localPeopleOrCompany",
-                  });
-                }}
+                {...getDetailsLink({
+                  sectionName: "socioEconomic.localPeopleOrCompany",
+                })}
               >
                 🏘️ les impacts économiques pour les riverains
               </Button>
@@ -105,12 +95,9 @@ const SocioEconomicSubSectionDescription = ({ impactsData, title, children }: Pr
               <Button
                 className="px-1 text-left"
                 priority="tertiary no outline"
-                onClick={() => {
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    subSectionName: "humanity",
-                  });
-                }}
+                {...getDetailsLink({
+                  sectionName: "socioEconomic.humanity",
+                })}
               >
                 🌍️ les impacts économiques pour la société française et mondiale
               </Button>

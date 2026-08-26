@@ -17,9 +17,11 @@ type Props = {
 const ImpactActorsItem = ({ label, actors, type, labelProps }: Props) => {
   const [firstActor, ...othersActors] = actors;
 
+  const isClickable = labelProps && ("href" in labelProps || "onClick" in labelProps);
+
   if (!firstActor?.details) {
     return (
-      <ImpactItemGroup isClickable>
+      <ImpactItemGroup isClickable={isClickable}>
         {firstActor && (
           <ImpactItemDetails
             value={firstActor.value}
@@ -45,7 +47,7 @@ const ImpactActorsItem = ({ label, actors, type, labelProps }: Props) => {
   }
 
   return actors.map(({ label: actor, value, details = [] }) => (
-    <ImpactItemGroup isClickable key={actor}>
+    <ImpactItemGroup isClickable={isClickable} key={actor}>
       <ImpactItemDetails
         value={value}
         label={label}

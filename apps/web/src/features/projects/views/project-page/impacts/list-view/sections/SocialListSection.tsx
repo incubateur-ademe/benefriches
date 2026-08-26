@@ -1,21 +1,19 @@
+import { useContext } from "react";
 import { typedObjectEntries } from "shared";
 
-import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import {
   SocialImpactMetricMainKeyName,
   SocialImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsSocial";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 
 import { getSocialImpactLabel } from "../../getImpactLabel";
-import ImpactModalDescription from "../../impact-description-modals/ImpactModalDescription";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";
-import { getDialogControlButtonProps } from "../dialogControlBtnProps";
 
 type Props = {
   impacts: SocialImpactMetricsByListViewCategory;
-  modalData: ModalDataProps;
 };
 
 const getValueType = (name: SocialImpactMetricMainKeyName) => {
@@ -43,85 +41,51 @@ const getSectionTitle = (name: keyof SocialImpactMetricsByListViewCategory) => {
   }
 };
 
-const SocialListSection = ({ impacts, modalData }: Props) => {
-  return (
-    <>
-      <ImpactModalDescription
-        dialogId="fr-modal-impacts-social-Chart"
-        initialState={{
-          sectionName: "social",
-        }}
-        {...modalData}
-      />
+const SocialListSection = ({ impacts }: Props) => {
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
-      <ImpactSection title="Impacts sociaux" isMain dialogId="fr-modal-impacts-social-Chart">
-        {typedObjectEntries(impacts).map(([group, list]) =>
-          list.length > 0 ? (
-            <>
-              <ImpactModalDescription
-                dialogId={`fr-modal-impacts-social-${group}-Chart`}
-                initialState={{
-                  sectionName: "social",
-                  subSectionName: group,
-                }}
-                {...modalData}
-              />
-              <ImpactSection
-                title={getSectionTitle(group)}
-                dialogId={`fr-modal-impacts-social-${group}-Chart`}
-              >
-                {list.map(({ keyName, total, ...rest }) => (
-                  <ImpactItemGroup key={keyName} isClickable>
-                    <ImpactModalDescription
-                      dialogId={`fr-modal-impacts-social-${group}-${keyName}-Chart`}
-                      initialState={{
-                        sectionName: "social",
-                        subSectionName: group,
-                        impactName: keyName,
-                      }}
-                      {...modalData}
-                    />
-                    <ImpactItemDetails
-                      label={getSocialImpactLabel(keyName)}
-                      value={total}
-                      labelProps={getDialogControlButtonProps(
-                        `fr-modal-impacts-social-${group}-${keyName}-Chart`,
-                      )}
-                      data={
-                        "details" in rest
-                          ? rest.details.map((item) => ({
-                              label: getSocialImpactLabel(item.keyName),
-                              value: item.total,
-                              labelProps: getDialogControlButtonProps(
-                                `fr-modal-impacts-social-${group}-${keyName}-${item.keyName}-Chart`,
-                              ),
-                            }))
-                          : undefined
-                      }
-                      type={getValueType(keyName)}
-                    />
-                    {"details" in rest &&
-                      rest.details.map(({ keyName: detailsName }) => (
-                        <ImpactModalDescription
-                          key={detailsName}
-                          dialogId={`fr-modal-impacts-social-${group}-${keyName}-${detailsName}-Chart`}
-                          initialState={{
-                            sectionName: "social",
-                            subSectionName: group,
-                            impactName: keyName,
-                            impactDetailsName: detailsName,
-                          }}
-                          {...modalData}
-                        />
-                      ))}
-                  </ImpactItemGroup>
-                ))}
-              </ImpactSection>
-            </>
-          ) : null,
-        )}
-      </ImpactSection>
-    </>
+  return (
+    <ImpactSection
+      title="Impacts sociaux"
+      isMain
+      labelProps={getDetailsLink({ sectionName: "social" })}
+    >
+      {typedObjectEntries(impacts).map(([group, list]) =>
+        list.length > 0 ? (
+          <ImpactSection
+            title={getSectionTitle(group)}
+            key={`social.${group}`}
+            labelProps={getDetailsLink({ sectionName: `social.${group}` })}
+          >
+            {list.map(({ keyName, total, ...rest }) => (
+              <ImpactItemGroup key={keyName} isClickable>
+                <ImpactItemDetails
+                  label={getSocialImpactLabel(keyName)}
+                  value={total}
+                  labelProps={getDetailsLink({
+                    sectionName: `social.${group}`,
+                    impactDetailsName: keyName,
+                  })}
+                  data={
+                    "details" in rest
+                      ? rest.details.map((item) => ({
+                          label: getSocialImpactLabel(item.keyName),
+                          value: item.total,
+                          labelProps: getDetailsLink({
+                            sectionName: `social.${group}`,
+                            impactDetailsName: item.keyName,
+                          }),
+                        }))
+                      : undefined
+                  }
+                  type={getValueType(keyName)}
+                />
+              </ImpactItemGroup>
+            ))}
+          </ImpactSection>
+        ) : null,
+      )}
+    </ImpactSection>
   );
 };
 

@@ -1,5 +1,6 @@
 import { Options } from "highcharts";
 import { useId } from "react";
+import { Link } from "type-route";
 
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
@@ -17,7 +18,7 @@ type Props = {
   legendTotal: number;
   legendText: string;
   title: string;
-  dialogId?: string;
+  linkProps?: Link;
 };
 
 const barChartOptions: Options = withDefaultBarChartOptions({
@@ -50,7 +51,7 @@ export default function EconomicColumnChart({
   title,
   legendText,
   legendTotal,
-  dialogId,
+  linkProps,
 }: Props) {
   const chartContainerId = useId();
 
@@ -60,7 +61,7 @@ export default function EconomicColumnChart({
 
   return (
     <ImpactChartCard
-      dialogId={dialogId}
+      linkProps={linkProps}
       containerProps={{
         className: "highcharts-no-xaxis",
         id: chartContainerId,

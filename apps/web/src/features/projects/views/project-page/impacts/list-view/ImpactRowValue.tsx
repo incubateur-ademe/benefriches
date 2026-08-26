@@ -26,7 +26,7 @@ export type ImpactRowValueProps = {
   isAccordionOpened?: boolean;
   buttonInfoAlwaysDisplayed?: boolean;
   type: ImpactFormatType | undefined;
-  labelProps: HtmlHTMLAttributes<HTMLButtonElement> & { "data-fr-opened"?: boolean };
+  labelProps?: HtmlHTMLAttributes<HTMLButtonElement | HTMLLinkElement | HTMLSpanElement>;
 };
 
 const impactTypeFormatterMap = {
@@ -52,7 +52,9 @@ const ImpactRowValue = ({
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
-  const { className: labelClassNames, ...labelPropsRest } = labelProps;
+  const { className: labelClassNames, onClick: labelOnClick, ...labelPropsRest } = labelProps ?? {};
+
+  const Tag = "href" in labelPropsRest ? "a" : "onClick" in labelPropsRest ? "button" : "span";
 
   return (
     <div
@@ -81,7 +83,7 @@ const ImpactRowValue = ({
           title={isAccordionOpened ? "Fermer la section" : "Afficher la section"}
         />
       )}
-      <button
+      <Tag
         className={classNames(
           "col-start-2",
           !actor && "md:col-end-4",
@@ -89,38 +91,49 @@ const ImpactRowValue = ({
           "text-left",
           "group-hover:font-bold",
           "group-focus:font-bold",
-          "group-hover:!bg-inherit",
-          "group-focus:!bg-inherit",
+          "group-hover:bg-inherit!",
+          "group-focus:bg-inherit!",
           "group",
+          "bg-none",
           labelClassNames,
         )}
+        onClick={
+          labelOnClick
+            ? (event) => {
+                event.stopPropagation();
+                labelOnClick(event);
+              }
+            : undefined
+        }
         {...labelPropsRest}
       >
         {label}
-        <span
-          className={classNames(
-            "fr-link",
-            "fr-link--sm",
-            "md:ml-2",
-            "px-2",
-            "transition-opacity",
-            "ease-in",
-            "duration-50",
-            "font-normal",
-            !buttonInfoAlwaysDisplayed && [
-              "group-hover:visible group-hover:opacity-100",
-              "group-focus:visible group-focus:opacity-100",
-              "md:opacity-0 md:invisible duration-0",
-            ],
-          )}
-        >
-          {windowInnerWidth > breakpointsValues.md ? (
-            `En savoir plus`
-          ) : (
-            <span className={fr.cx("fr-icon--sm", "fr-icon-question-line")}></span>
-          )}
-        </span>
-      </button>
+        {(Tag === "a" || Tag === "button") && (
+          <span
+            className={classNames(
+              "fr-link",
+              "fr-link--sm",
+              "md:ml-2",
+              "px-2",
+              "transition-opacity",
+              "ease-in",
+              "duration-50",
+              "font-normal",
+              !buttonInfoAlwaysDisplayed && [
+                "group-hover:visible group-hover:opacity-100",
+                "group-focus:visible group-focus:opacity-100",
+                "md:opacity-0 md:invisible duration-0",
+              ],
+            )}
+          >
+            {windowInnerWidth > breakpointsValues.md ? (
+              `En savoir plus`
+            ) : (
+              <span className={fr.cx("fr-icon--sm", "fr-icon-question-line")}></span>
+            )}
+          </span>
+        )}
+      </Tag>
 
       {actor && <span className="col-start-2 md:col-start-3 pl-3">{actor}</span>}
 

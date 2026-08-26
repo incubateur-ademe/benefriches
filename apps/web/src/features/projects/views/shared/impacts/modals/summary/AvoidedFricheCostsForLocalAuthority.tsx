@@ -23,7 +23,7 @@ const listFormatter = new Intl.ListFormat("fr", {
 const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: Props) => {
   const { value, isSuccess } = impactData;
 
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const title = isSuccess
     ? "- de dépenses de sécurisation\u00a0💰"
@@ -94,17 +94,10 @@ const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: P
               actor={impact.bearerName}
               label={getSocioEconomicImpactLabel(impact.impactName)}
               type="monetary"
-              labelProps={{
-                onClick: (e) => {
-                  e.stopPropagation();
-
-                  updateModalContent({
-                    sectionName: "socio_economic",
-                    subSectionName: "localAuthority",
-                    impactName: impact.impactName,
-                  });
-                },
-              }}
+              labelProps={getDetailsLink({
+                sectionName: "socioEconomic.localAuthority",
+                impactDetailsName: impact.impactName,
+              })}
             />
           </ImpactItemGroup>
         ))}

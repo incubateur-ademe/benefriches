@@ -20,7 +20,7 @@ type Props = {
 };
 
 const HumanityDescription = ({ impactsData }: Props) => {
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const { total, ...impacts } =
     groupIndirectEconomicImpactsByBearerAndCategory<AggregatedReconversionProjectOnSiteImpactItemView>(
@@ -43,16 +43,13 @@ const HumanityDescription = ({ impactsData }: Props) => {
           value: total,
           label: getSocioEconomicImpactLabel(keyName),
           color: getSocioEconomicImpactColor(keyName),
-          onClick: () => {
-            updateModalContent({
-              sectionName: "socio_economic",
-              subSectionName: "humanity",
-              impactName: keyName,
-            });
-          },
+          linkProps: getDetailsLink({
+            sectionName: "socioEconomic.humanity",
+            impactDetailsName: keyName,
+          }),
         })),
       })),
-    [impacts, updateModalContent],
+    [impacts, getDetailsLink],
   );
 
   return (
@@ -62,7 +59,6 @@ const HumanityDescription = ({ impactsData }: Props) => {
         total,
         details,
       }}
-      subSectionName="humanity"
     >
       <p>
         Les impacts pour la société française et l'humanité sont des impacts, plutôt indirects, que

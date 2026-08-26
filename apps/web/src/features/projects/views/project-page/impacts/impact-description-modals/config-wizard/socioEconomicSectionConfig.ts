@@ -1,27 +1,28 @@
 import { lazy } from "react";
 
 import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
-import { SocioEconomicSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { SocioEconomicSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 
 import { BodyComponentType, ContentComponentType, ModalImpactConfig } from "./config.type";
 
-export const SOCIO_ECONOMIC_MODALS = {
-  socio_economic: {
+const SOCIO_ECONOMIC_MODALS = {
+  socioEconomic: {
     BodyComponent: lazy<BodyComponentType>(
       () => import("../body-component/socio-economic/SocioEconomicDescription"),
     ),
   },
-  humanity: {
+  "socioEconomic.humanity": {
     BodyComponent: lazy<BodyComponentType>(
       () => import("../body-component/socio-economic/HumanityDescription"),
     ),
   },
-  localPeopleOrCompany: {
+  "socioEconomic.localPeopleOrCompany": {
     BodyComponent: lazy<BodyComponentType>(
       () => import("../body-component/socio-economic/LocalPeopleOrCompanyDescription"),
     ),
   },
-  localAuthority: {
+  "socioEconomic.localAuthority": {
     BodyComponent: lazy<BodyComponentType>(
       () => import("../body-component/socio-economic/LocalAuthorityDescription"),
     ),
@@ -339,6 +340,18 @@ export const SOCIO_ECONOMIC_MODALS = {
   },
   oldRentalIncomeLoss: undefined,
 } as const satisfies Record<
-  SocioEconomicImpactImpactKeyName | SocioEconomicSubSectionName | "socio_economic",
+  SocioEconomicImpactImpactKeyName | SocioEconomicSectionName,
   ModalImpactConfig
 >;
+
+export const SOCIO_ECONOMIC_MODAL_CONFIG = {
+  sections: [
+    "socioEconomic",
+    "socioEconomic.humanity",
+    "socioEconomic.localPeopleOrCompany",
+    "socioEconomic.localAuthority",
+  ] satisfies readonly SocioEconomicSectionName[],
+  modals: SOCIO_ECONOMIC_MODALS,
+  formatFn: formatMonetaryImpact,
+  caption: "Liste des impacts monétaires positifs et négatifs",
+} as const;

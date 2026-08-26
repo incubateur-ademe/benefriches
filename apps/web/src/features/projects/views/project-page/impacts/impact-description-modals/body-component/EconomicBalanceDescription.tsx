@@ -28,7 +28,7 @@ const EconomicBalanceDescription = ({ impactsData, contextData }: Props) => {
     contextData.projectDevelopmentPlan.type,
     impactsData,
   );
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const impactList = economicBalance.map(({ total, keyName: name }) => ({
     label: getEconomicBalanceImpactLabel(name),
@@ -76,12 +76,10 @@ const EconomicBalanceDescription = ({ impactsData, contextData }: Props) => {
               label,
               value,
               color,
-              onClick: () => {
-                updateModalContent({
-                  sectionName: "economic_balance",
-                  impactName: name,
-                });
-              },
+              linkProps: getDetailsLink({
+                sectionName: "economicBalance",
+                impactDetailsName: name,
+              }),
             }))}
           />
         </ModalData>

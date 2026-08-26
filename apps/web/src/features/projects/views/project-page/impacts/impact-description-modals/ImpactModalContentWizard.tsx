@@ -17,18 +17,18 @@ import {
   getSocioEconomicProjectImpactsGroupedByCategory,
   SocioEconomicImpactImpactKeyName,
 } from "@/features/projects/core/projectImpactsSocioEconomic";
-import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
-import ImpactInProgressDescriptionModal from "@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal";
 import {
   ContentState,
+  EnvironmentalSectionName,
   ImpactModalDescriptionContext,
+  SocialSectionName,
+  SocioEconomicSectionName,
 } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
-import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import {
@@ -44,11 +44,12 @@ import {
   getSocialImpactColor,
   getSocioEconomicImpactColor,
 } from "./colors";
-import { ECONOMIC_BALANCE_MODALS } from "./config-wizard/economicBalanceConfig";
-import { ENVIRONMENTAL_METRICS_MODALS } from "./config-wizard/environmentalSectionConfig";
-import { SOCIAL_METRICS_MODALS } from "./config-wizard/socialSectionConfig";
-import { SOCIO_ECONOMIC_MODALS } from "./config-wizard/socioEconomicSectionConfig";
-import { getImpactModalData } from "./getImpactData";
+import { ModalImpactConfig } from "./config-wizard/config.type";
+import { ECONOMIC_BALANCE_MODAL_CONFIG } from "./config-wizard/economicBalanceConfig";
+import { ENVIRONMENTAL_METRICS_MODAL_CONFIG } from "./config-wizard/environmentalSectionConfig";
+import { SOCIAL_METRICS_MODAL_CONFIG } from "./config-wizard/socialSectionConfig";
+import { SOCIO_ECONOMIC_MODAL_CONFIG } from "./config-wizard/socioEconomicSectionConfig";
+import { getImpactModalData, splitImpactKey } from "./getImpactData";
 import { LazyContentComponent } from "./lazy-component/LazyContentComponent";
 import ModalAreaChart from "./modal-charts/ModalAreaChart";
 import ModalColumnPointChart from "./modal-charts/ModalColumnPointChart";
@@ -57,35 +58,29 @@ import ModalTable from "./modal-table/ModalTable";
 type Props = {
   contentState: Extract<
     ContentState,
-    { sectionName: "socio_economic" | "social" | "economic_balance" | "environmental" }
+    {
+      sectionName:
+        | SocioEconomicSectionName
+        | "economicBalance"
+        | EnvironmentalSectionName
+        | SocialSectionName;
+    }
   >;
   impactsData: ModalDataProps["impactsData"];
   contextData: ModalDataProps["contextData"];
 };
 
-const getInProgressTitle = (contentState: Props["contentState"]) => {
-  if (contentState.sectionName === "socio_economic") {
-    if (contentState.impactDetailsName)
-      return getSocioEconomicImpactLabel(contentState.impactDetailsName);
-    if (contentState.impactName) return getSocioEconomicImpactLabel(contentState.impactName);
-  }
-
-  if (contentState.sectionName === "economic_balance") {
-    if (contentState.impactDetailsName)
-      return getEconomicBalanceImpactLabel(contentState.impactDetailsName);
-    if (contentState.impactName) return getEconomicBalanceImpactLabel(contentState.impactName);
-  }
-
-  if (contentState.sectionName === "social") {
-    if (contentState.impactDetailsName) return getSocialImpactLabel(contentState.impactDetailsName);
-    if (contentState.impactName) return getSocialImpactLabel(contentState.impactName);
-    if (contentState.subSectionName === "humanity")
-      return "Impacts sociaux pour la société française";
-    if (contentState.subSectionName === "localPeopleOrCompany")
-      return "Impacts sociaux pour les riverains";
-  }
-  return "En cours de rédaction...";
-};
+export const MODAL_CONFIG_GROUPS: {
+  sections: readonly ContentState["sectionName"][];
+  modals: Record<string, ModalImpactConfig>;
+  formatFn: (val: number) => string;
+  caption: string;
+}[] = [
+  ECONOMIC_BALANCE_MODAL_CONFIG,
+  SOCIO_ECONOMIC_MODAL_CONFIG,
+  SOCIAL_METRICS_MODAL_CONFIG,
+  ENVIRONMENTAL_METRICS_MODAL_CONFIG,
+];
 
 export function ImpactModalContentWizard({ contentState, impactsData, contextData }: Props) {
   const { stakeholders, aggregatedReconversionImpacts } = impactsData;
@@ -111,112 +106,91 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
     impactsData.projectEconomicBalance.details,
   );
 
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const breadcrumbProps = useMemo(() => getBreadcrumbProps(contentState), [contentState]);
 
   const config = useMemo(() => {
-    switch (contentState.sectionName) {
-      case "socio_economic":
-        return {
-          formatFn: formatMonetaryImpact,
-          caption: "Liste des impacts monétaires positifs et négatifs",
-          ...SOCIO_ECONOMIC_MODALS[
-            contentState.impactDetailsName ??
-              contentState.impactName ??
-              contentState.subSectionName ??
-              contentState.sectionName
-          ],
-        };
-      case "social":
-        return {
-          formatFn: formatNumberFr,
-          caption: `Détails des impacts sociaux`,
-          ...SOCIAL_METRICS_MODALS[
-            contentState.impactDetailsName ??
-              contentState.impactName ??
-              contentState.subSectionName ??
-              contentState.sectionName
-          ],
-        };
-      case "economic_balance":
-        return {
-          formatFn: formatMonetaryImpact,
-          caption: `Liste des recettes et dépenses`,
-          ...ECONOMIC_BALANCE_MODALS[
-            contentState.impactDetailsName ?? contentState.impactName ?? contentState.sectionName
-          ],
-        };
-      case "environmental":
-        return {
-          formatFn: formatNumberFr,
-          caption: `Liste des impacts environmentaux`,
-          ...ENVIRONMENTAL_METRICS_MODALS[
-            contentState.impactDetailsName ?? contentState.impactName ?? contentState.sectionName
-          ],
-        };
-    }
+    const group = MODAL_CONFIG_GROUPS.find((group) =>
+      group.sections.includes(contentState.sectionName),
+    );
+    if (!group) return undefined;
+
+    const key = contentState.impactDetailsName ?? contentState.sectionName;
+
+    return {
+      formatFn: group.formatFn,
+      caption: group.caption,
+      ...group.modals[key],
+    };
   }, [contentState]);
 
   const data = useMemo(() => {
     switch (contentState.sectionName) {
-      case "socio_economic":
-        return contentState.subSectionName && contentState.impactName
+      case "socioEconomic":
+      case "socioEconomic.humanity":
+      case "socioEconomic.localPeopleOrCompany":
+      case "socioEconomic.localAuthority": {
+        const [_, subSection] = splitImpactKey(contentState.sectionName);
+        return subSection && contentState.impactDetailsName
           ? getImpactModalData<SocioEconomicImpactImpactKeyName>(
-              indirectEconomicImpactsByBearerAndCategory[contentState.subSectionName].impacts,
-              contentState.impactDetailsName ?? contentState.impactName,
+              indirectEconomicImpactsByBearerAndCategory[subSection].impacts,
+              contentState.impactDetailsName,
               {
                 getLabel: getSocioEconomicImpactLabel,
                 getColor: getSocioEconomicImpactColor,
-                onClick: (key) => {
-                  updateModalContent({ ...contentState, impactDetailsName: key });
-                },
+                getLinkProps: (key) => getDetailsLink({ ...contentState, impactDetailsName: key }),
               },
             )
           : undefined;
+      }
 
       case "social":
-        return contentState.subSectionName && contentState.impactName
+      case "social.humanity":
+      case "social.jobs":
+      case "social.localPeopleOrCompany": {
+        const [_, subSection] = splitImpactKey(contentState.sectionName);
+        return subSection && contentState.impactDetailsName
           ? getImpactModalData<SocialImpactMetricKeyName>(
-              impactSocialMetricsByCategory[contentState.subSectionName],
-              contentState.impactDetailsName ?? contentState.impactName,
+              impactSocialMetricsByCategory[subSection],
+              contentState.impactDetailsName,
               {
                 getLabel: getSocialImpactLabel,
                 getColor: getSocialImpactColor,
-                onClick: (key) => {
-                  updateModalContent({ ...contentState, impactDetailsName: key });
-                },
+                getLinkProps: (key) => getDetailsLink({ ...contentState, impactDetailsName: key }),
               },
             )
           : undefined;
-      case "economic_balance":
-        return contentState.impactName
+      }
+      case "economicBalance":
+        return contentState.impactDetailsName
           ? getImpactModalData<EconomicBalanceImpactKeyName>(
               projectEconomicBalance,
-              contentState.impactDetailsName ?? contentState.impactName,
+              contentState.impactDetailsName,
               {
                 getLabel: getEconomicBalanceImpactLabel,
                 getColor: getEconomicBalanceImpactColor,
-                onClick: (key) => {
-                  updateModalContent({ ...contentState, impactDetailsName: key });
-                },
+                getLinkProps: (key) => getDetailsLink({ ...contentState, impactDetailsName: key }),
               },
             )
           : undefined;
       case "environmental":
-        return contentState.subSectionName && contentState.impactName
+      case "environmental.co2eq":
+      case "environmental.soils": {
+        const [_, subSection] = splitImpactKey(contentState.sectionName);
+
+        return subSection && contentState.impactDetailsName
           ? getImpactModalData<EnvironmentalImpactMetricKeyName>(
-              impactEnvironmentalMetricsByCategory[contentState.subSectionName],
-              contentState.impactDetailsName ?? contentState.impactName,
+              impactEnvironmentalMetricsByCategory[subSection],
+              contentState.impactDetailsName,
               {
                 getLabel: getEnvironmentalImpactLabel,
                 getColor: getEnvironmentalImpactColor,
-                onClick: (key) => {
-                  updateModalContent({ ...contentState, impactDetailsName: key });
-                },
+                getLinkProps: (key) => getDetailsLink({ ...contentState, impactDetailsName: key }),
               },
             )
           : undefined;
+      }
     }
   }, [
     contentState,
@@ -224,19 +198,11 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
     impactSocialMetricsByCategory,
     impactEnvironmentalMetricsByCategory,
     projectEconomicBalance,
-    updateModalContent,
+    getDetailsLink,
   ]);
 
-  if (!("BodyComponent" in config) && !("ContentComponent" in config)) {
-    return (
-      <ImpactInProgressDescriptionModal
-        title={getInProgressTitle(contentState)}
-        breadcrumbProps={{
-          section: breadcrumbProps.section,
-          segments: breadcrumbProps.segments.slice(0, -1),
-        }}
-      />
-    );
+  if (!config || !("BodyComponent" in config || "ContentComponent" in config)) {
+    return null;
   }
 
   if ("BodyComponent" in config) {
@@ -286,8 +252,8 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
               ) : data?.details ? (
                 <ModalColumnPointChart
                   format={
-                    contentState.sectionName === "socio_economic" ||
-                    contentState.sectionName === "economic_balance"
+                    contentState.sectionName.startsWith("socioEconomic") ||
+                    contentState.sectionName === "economicBalance"
                       ? "monetary"
                       : "default"
                   }
@@ -310,8 +276,8 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
               contextData={contextData}
               impactsData={impactsData}
               withMonetarisation={
-                contentState.sectionName === "socio_economic" ||
-                contentState.sectionName === "economic_balance"
+                contentState.sectionName.startsWith("socioEconomic") ||
+                contentState.sectionName === "economicBalance"
               }
               Component={config.ContentComponent}
             />

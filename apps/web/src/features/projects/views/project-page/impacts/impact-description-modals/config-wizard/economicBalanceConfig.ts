@@ -1,11 +1,12 @@
 import { lazy } from "react";
 
 import { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 import { BodyComponentType, ContentComponentType, ModalImpactConfig } from "./config.type";
 
-export const ECONOMIC_BALANCE_MODALS = {
-  economic_balance: {
+const ECONOMIC_BALANCE_MODALS = {
+  economicBalance: {
     BodyComponent: lazy<BodyComponentType>(
       () => import("../body-component/EconomicBalanceDescription"),
     ),
@@ -169,4 +170,11 @@ export const ECONOMIC_BALANCE_MODALS = {
   "projectOperatingExpenses.maintenance": undefined,
   "projectOperatingExpenses.taxes": undefined,
   "photovoltaicProjectInstallation.development_works": undefined,
-} as const satisfies Record<EconomicBalanceImpactKeyName | "economic_balance", ModalImpactConfig>;
+} as const satisfies Record<EconomicBalanceImpactKeyName | "economicBalance", ModalImpactConfig>;
+
+export const ECONOMIC_BALANCE_MODAL_CONFIG = {
+  sections: ["economicBalance"],
+  modals: ECONOMIC_BALANCE_MODALS,
+  formatFn: formatMonetaryImpact,
+  caption: "Liste des recettes et dépenses",
+} as const;

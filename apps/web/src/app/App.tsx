@@ -8,6 +8,7 @@ import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.acti
 import PublicApp from "@/features/public-pages/PublicApp";
 import classNames from "@/shared/views/clsx";
 
+import { ScrollManager } from "./ScrollManager";
 import { useAppDispatch } from "./hooks/store.hooks";
 import { routes, useRoute } from "./router";
 
@@ -53,6 +54,7 @@ function App() {
         isDark ? "highcharts-dark" : "highcharts-light",
       )}
     >
+      <ScrollManager />
       {(() => {
         if (groups.public.has(route)) {
           return <PublicApp />;

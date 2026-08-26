@@ -17,7 +17,7 @@ type Props = {
 const SummaryNonContaminatedSurfaceAreaDescription = ({ impactData }: Props) => {
   const { isSuccess, value } = impactData;
   const { decontaminatedSurfaceArea, forecastContaminatedSurfaceArea, percentageEvolution } = value;
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
   const title = isSuccess
     ? `Des risques sanitaires réduits\u00a0☢️`
     : `des sols encore pollués\u00a0☢️`;
@@ -53,15 +53,10 @@ const SummaryNonContaminatedSurfaceAreaDescription = ({ impactData }: Props) => 
                 value={decontaminatedSurfaceArea}
                 label="✨ Surface non polluée"
                 type="surface_area"
-                labelProps={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    updateModalContent({
-                      sectionName: "environmental",
-                      impactName: "nonContaminatedSurfaceArea",
-                    });
-                  },
-                }}
+                labelProps={getDetailsLink({
+                  sectionName: "environmental.soils",
+                  impactDetailsName: "nonContaminatedSurfaceArea",
+                })}
               />
             </ImpactItemGroup>
           </>

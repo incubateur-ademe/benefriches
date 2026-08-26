@@ -3,6 +3,7 @@ import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import * as Highcharts from "highcharts";
 import { HighchartsReact } from "highcharts-react-official";
 import { Fragment, ReactNode, useRef } from "react";
+import { Link } from "type-route";
 
 import useExportConfig, { ExportingOptionsProps } from "@/shared/views/charts/useExportConfig";
 import classNames, { ClassValue } from "@/shared/views/clsx";
@@ -13,7 +14,7 @@ type ChartCardProps = {
   title: string;
   subtitle?: string;
   options: HighchartsReact.Props["options"];
-  dialogId?: string;
+  linkProps?: Link;
   containerProps?: {
     className?: ClassValue;
     id?: string;
@@ -27,7 +28,7 @@ const ImpactChartCard = ({
   title,
   subtitle,
   options,
-  dialogId,
+  linkProps,
   containerProps,
   exportingOptions,
   classes,
@@ -74,19 +75,23 @@ const ImpactChartCard = ({
         </div>
 
         <div className="flex">
-          {actions}
-          {dialogId && (
+          {actions && (
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              {actions}
+            </div>
+          )}
+          {linkProps && (
             <Button
               title="Menu"
               priority="tertiary no outline"
               iconId="fr-icon-information-line"
               className="text-text-light"
-              aria-controls={dialogId}
-              data-fr-opened="false"
               ref={buttonControlsDialogRef}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
+              {...linkProps}
             />
           )}
           <Menu>

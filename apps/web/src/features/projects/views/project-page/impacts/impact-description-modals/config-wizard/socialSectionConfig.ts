@@ -2,25 +2,26 @@ import { lazy } from "react";
 
 import { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
 import { formatETPImpact } from "@/features/projects/views/shared/formatImpactValue";
-import { SocialSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import { SocialSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
 import { ContentComponentType, ModalImpactConfig } from "./config.type";
 
-export const SOCIAL_METRICS_MODALS = {
+const SOCIAL_METRICS_MODALS = {
   social: {
     title: "Impacts sociaux",
     ContentComponent: lazy<ContentComponentType>(
       () => import("../mdx-component/social_section.mdx"),
     ),
   },
-  jobs: {
+  "social.jobs": {
     title: "Impacts sur l'emploi",
     ContentComponent: lazy<ContentComponentType>(
       () => import("../mdx-component/social_jobs_section.mdx"),
     ),
   },
-  localPeopleOrCompany: undefined,
-  humanity: undefined,
+  "social.localPeopleOrCompany": undefined,
+  "social.humanity": undefined,
 
   avoidedFricheAccidents: undefined,
   "avoidedFricheAccidents.avoidedFricheAccidentsDeaths": undefined,
@@ -109,7 +110,16 @@ export const SOCIAL_METRICS_MODALS = {
       () => import("../mdx-component/travel_time_saved.mdx"),
     ),
   },
-} as const satisfies Record<
-  SocialImpactMetricKeyName | SocialSubSectionName | "social",
-  ModalImpactConfig
->;
+} as const satisfies Record<SocialImpactMetricKeyName | SocialSectionName, ModalImpactConfig>;
+
+export const SOCIAL_METRICS_MODAL_CONFIG = {
+  sections: [
+    "social",
+    "social.humanity",
+    "social.localPeopleOrCompany",
+    "social.jobs",
+  ] satisfies readonly SocialSectionName[],
+  modals: SOCIAL_METRICS_MODALS,
+  formatFn: formatNumberFr,
+  caption: "Détails des impacts sociaux",
+} as const;

@@ -4,6 +4,7 @@ import { EnvironmentalImpactMetricsByListViewCategory } from "@/features/project
 import { SocialImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 
+import ImpactModalDescription from "../impact-description-modals/ImpactModalDescription";
 import EconomicBalanceListSection from "./sections/EconomicBalance";
 import EnvironmentalListSection from "./sections/EnvironmentalListSection";
 import SocialListSection from "./sections/SocialListSection";
@@ -22,25 +23,27 @@ const ImpactsListView = ({
   socioEconomicImpacts,
   environmentImpacts,
   socialImpacts,
-  ...rest
+  modalData,
 }: Props) => {
   return (
     <section className="max-w-4xl mx-auto mt-10">
-      {economicBalance.economicBalance.length !== 0 && (
-        <EconomicBalanceListSection impact={economicBalance} {...rest} />
-      )}
+      <ImpactModalDescription {...modalData}>
+        {economicBalance.economicBalance.length !== 0 && (
+          <EconomicBalanceListSection impact={economicBalance} />
+        )}
 
-      {socioEconomicImpacts.total !== 0 && (
-        <SocioEconomicImpactsListSection socioEconomicImpacts={socioEconomicImpacts} {...rest} />
-      )}
+        {socioEconomicImpacts.total !== 0 && (
+          <SocioEconomicImpactsListSection socioEconomicImpacts={socioEconomicImpacts} />
+        )}
 
-      {Object.values(environmentImpacts).flat().length > 0 && (
-        <EnvironmentalListSection impacts={environmentImpacts} {...rest} />
-      )}
+        {Object.values(environmentImpacts).flat().length > 0 && (
+          <EnvironmentalListSection impacts={environmentImpacts} />
+        )}
 
-      {Object.values(socialImpacts).flat().length > 0 && (
-        <SocialListSection impacts={socialImpacts} {...rest} />
-      )}
+        {Object.values(socialImpacts).flat().length > 0 && (
+          <SocialListSection impacts={socialImpacts} />
+        )}
+      </ImpactModalDescription>
     </section>
   );
 };

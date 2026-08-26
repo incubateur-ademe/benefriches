@@ -1,5 +1,6 @@
 import { Options } from "highcharts";
 import { useId, useMemo } from "react";
+import { Link } from "type-route";
 
 import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
@@ -13,7 +14,7 @@ import { formatMonetaryImpact } from "../../shared/formatImpactValue";
 
 type Props = {
   projectEconomicBalanceByCategory: EconomicBalanceByCategory;
-  dialogId: string;
+  linkProps?: Link;
 };
 
 const barChartOptions: Options = withDefaultBarChartOptions({
@@ -43,7 +44,7 @@ const barChartOptions: Options = withDefaultBarChartOptions({
 
 export default function EconomicBalanceChart({
   projectEconomicBalanceByCategory,
-  dialogId,
+  linkProps,
 }: Props) {
   const data = useMemo(
     () =>
@@ -62,7 +63,7 @@ export default function EconomicBalanceChart({
 
   return (
     <ImpactChartCard
-      dialogId={dialogId}
+      linkProps={linkProps}
       containerProps={{
         className: "highcharts-no-xaxis",
         id: chartContainerId,

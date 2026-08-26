@@ -1,5 +1,6 @@
 import { SegmentedControl, SegmentedControlProps } from "@codegouvfr/react-dsfr/SegmentedControl";
 import { useState } from "react";
+import { Link } from "type-route";
 
 import useExportConfig from "@/shared/views/charts/useExportConfig";
 
@@ -18,7 +19,7 @@ type Props = {
   projectionYears: string[];
   breakEvenIndex?: number;
   breakEvenYear?: string;
-  dialogId: string;
+  linkProps?: Link;
 };
 
 const BreakEvenLevelChart = (props: Props) => {
@@ -63,7 +64,7 @@ const BreakEvenLevelChart = (props: Props) => {
       title="📈 Évolution de la balance coût-bénéfice"
       options={options}
       containerProps={containerProps}
-      dialogId={props.dialogId}
+      linkProps={props.linkProps}
       exportingOptions={exportConfig}
       actions={<SegmentedControl small legend="type de graphique" hideLegend segments={segments} />}
     />

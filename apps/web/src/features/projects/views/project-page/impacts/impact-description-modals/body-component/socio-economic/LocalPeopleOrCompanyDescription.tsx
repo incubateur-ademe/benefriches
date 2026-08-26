@@ -20,7 +20,7 @@ type Props = {
 };
 
 const LocalPeopleOrCompanyDescription = ({ impactsData }: Props) => {
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
   const { total, ...impacts } =
     groupIndirectEconomicImpactsByBearerAndCategory<AggregatedReconversionProjectOnSiteImpactItemView>(
       {
@@ -43,16 +43,13 @@ const LocalPeopleOrCompanyDescription = ({ impactsData }: Props) => {
           value: total,
           label: getSocioEconomicImpactLabel(keyName),
           color: getSocioEconomicImpactColor(keyName),
-          onClick: () => {
-            updateModalContent({
-              sectionName: "socio_economic",
-              subSectionName: "localPeopleOrCompany",
-              impactName: keyName,
-            });
-          },
+          linkProps: getDetailsLink({
+            sectionName: "socioEconomic.localPeopleOrCompany",
+            impactDetailsName: keyName,
+          }),
         })),
       })),
-    [impacts, updateModalContent],
+    [impacts, getDetailsLink],
   );
 
   return (
@@ -62,7 +59,6 @@ const LocalPeopleOrCompanyDescription = ({ impactsData }: Props) => {
         total,
         details: details,
       }}
-      subSectionName="localPeopleOrCompany"
     >
       <p>
         Les impacts pour les riverains sont des impacts qui touchent la population locale ou les

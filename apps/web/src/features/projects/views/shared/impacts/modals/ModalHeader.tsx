@@ -18,7 +18,7 @@ type Props = {
 };
 
 const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
-  const { dialogId, dialogTitleId } = useContext(ImpactModalDescriptionContext);
+  const { onClose, dialogTitleId } = useContext(ImpactModalDescriptionContext);
   return (
     <div
       className={classNames(
@@ -33,7 +33,7 @@ const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
     >
       <div className="flex justify-around items-start w-full">
         <ModalBreadcrumb segments={breadcrumbSegments} />
-        <button className={fr.cx("fr-btn--close", "fr-btn")} aria-controls={dialogId} type="button">
+        <button className={fr.cx("fr-btn--close", "fr-btn")} onClick={onClose} type="button">
           Fermer
         </button>
       </div>

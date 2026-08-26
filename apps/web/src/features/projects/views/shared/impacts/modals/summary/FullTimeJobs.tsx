@@ -18,7 +18,7 @@ const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
   const { isSuccess, value } = impactData;
   const { difference, percentageEvolution } = value;
 
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const title = isSuccess ? `+ d’emplois\u00a0👷` : `- d’emplois\u00a0👷`;
 
@@ -53,16 +53,10 @@ const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
             value={difference}
             label="🧑‍🔧 Emplois équivalent temps plein"
             type="etp"
-            labelProps={{
-              onClick: (e) => {
-                e.stopPropagation();
-                updateModalContent({
-                  sectionName: "social",
-                  subSectionName: "jobs",
-                  impactName: "fullTimeJobs",
-                });
-              },
-            }}
+            labelProps={getDetailsLink({
+              sectionName: "social.jobs",
+              impactDetailsName: "fullTimeJobs",
+            })}
           />
         </ImpactItemGroup>
       </ModalContent>

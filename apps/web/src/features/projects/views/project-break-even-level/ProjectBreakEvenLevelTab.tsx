@@ -1,9 +1,11 @@
+import { useContext } from "react";
+
 import { useAppSelector } from "@/app/hooks/store.hooks";
 
 import { BreakEvenLevelTabDataView } from "../../application/project-impacts/selectors/projectBreakEvenLevel.selectors";
 import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
 import ProjectPageHeader from "../project-page/header/";
-import ImpactModalDescription from "../project-page/impacts/impact-description-modals/ImpactModalDescription";
+import { ImpactModalDescriptionContext } from "../shared/impacts/modals/ImpactModalDescriptionContext";
 import BreakEvenLevalImpactsActionBar from "./ProjectBreakEvenLevelActionBar";
 import ProjectBreakEvenLevelSection from "./ProjectBreakEvenLevelSection";
 import ProjectBreakEvenLevelSummary from "./ProjectBreakEvenLevelSummary";
@@ -22,7 +24,6 @@ type Props = BreakEvenLevelTabDataView & {
 export default function ProjectBreakEvenLevelTab({
   projectId,
   impacts,
-  contextData,
   indirectEconomicImpactsByBearer,
   projectEconomicBalanceByCategory,
   onEvaluationPeriodChange,
@@ -38,6 +39,8 @@ export default function ProjectBreakEvenLevelTab({
   } = aggregatedReconversionImpacts;
 
   const breakEvenIndex = breakEvenYear ? projectionYears.indexOf(breakEvenYear) : undefined;
+
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   return (
     <div className="flex flex-col gap-10">
@@ -60,21 +63,13 @@ export default function ProjectBreakEvenLevelTab({
 
         <div className="md:col-start-3 md:col-span-6 highcharts-no-xaxis">
           <BreakEvenLevelChart
-            dialogId={`fr-modal-impacts-break-even-level-tab-breakEvenLevel--Chart`}
+            linkProps={getDetailsLink({ sectionName: "breakEvenLevel" })}
             cumulativeBalanceByYear={cumulativeBalanceByYear}
             cumulativeEconomicBalanceByYear={cumulativeEconomicBalanceByYear}
             cumulativeIndirectEconomicImpactsByYear={cumulativeIndirectEconomicImpactsByYear}
             projectionYears={projectionYears}
             breakEvenIndex={breakEvenIndex}
             breakEvenYear={breakEvenYear}
-          />
-          <ImpactModalDescription
-            dialogId={`fr-modal-impacts-break-even-level-tab-breakEvenLevel--Chart`}
-            initialState={{
-              sectionName: "breakEvenLevel",
-            }}
-            contextData={contextData}
-            impactsData={impacts}
           />
         </div>
       </div>
@@ -84,20 +79,10 @@ export default function ProjectBreakEvenLevelTab({
         subtitle="Pour l'aménageur."
         total={projectEconomicBalanceByCategory.total}
         chart={
-          <>
-            <EconomicBalanceChart
-              dialogId="fr-modal-impacts-break-even-level-tab-economicBalance--Chart"
-              projectEconomicBalanceByCategory={projectEconomicBalanceByCategory}
-            />
-            <ImpactModalDescription
-              dialogId={`fr-modal-impacts-break-even-level-tab-economicBalance--Chart`}
-              initialState={{
-                sectionName: "economic_balance",
-              }}
-              contextData={contextData}
-              impactsData={impacts}
-            />
-          </>
+          <EconomicBalanceChart
+            linkProps={getDetailsLink({ sectionName: "economicBalance" })}
+            projectEconomicBalanceByCategory={projectEconomicBalanceByCategory}
+          />
         }
       />
 
@@ -106,25 +91,15 @@ export default function ProjectBreakEvenLevelTab({
         subtitle="Pour la collectivité locale, les riverains, la société fançaise et mondiale."
         total={indirectEconomicImpacts.total}
         chart={
-          <>
-            <IndirectEconomicImpactsChart
-              dialogId={`fr-modal-impacts-break-even-level-tab-socioEconomic--Chart`}
-              indirectEconomicImpactsTotal={indirectEconomicImpacts.total}
-              indirectEconomicImpactsTotalByBearer={{
-                humanity: indirectEconomicImpactsByBearer.humanity.total,
-                localAuthority: indirectEconomicImpactsByBearer.localAuthority.total,
-                localPeopleOrCompany: indirectEconomicImpactsByBearer.localPeopleOrCompany.total,
-              }}
-            />
-            <ImpactModalDescription
-              dialogId={`fr-modal-impacts-break-even-level-tab-socioEconomic--Chart`}
-              initialState={{
-                sectionName: "socio_economic",
-              }}
-              contextData={contextData}
-              impactsData={impacts}
-            />
-          </>
+          <IndirectEconomicImpactsChart
+            linkProps={getDetailsLink({ sectionName: "socioEconomic" })}
+            indirectEconomicImpactsTotal={indirectEconomicImpacts.total}
+            indirectEconomicImpactsTotalByBearer={{
+              humanity: indirectEconomicImpactsByBearer.humanity.total,
+              localAuthority: indirectEconomicImpactsByBearer.localAuthority.total,
+              localPeopleOrCompany: indirectEconomicImpactsByBearer.localPeopleOrCompany.total,
+            }}
+          />
         }
       />
 
@@ -132,21 +107,10 @@ export default function ProjectBreakEvenLevelTab({
         title="pour la collectivité locale"
         total={indirectEconomicImpactsByBearer.localAuthority.total}
         chart={
-          <>
-            <LocalAuthorityIndirectEconomicImpactsCharts
-              dialogId={`fr-modal-impacts-break-even-level-tab-localAuthority--Chart`}
-              localAuthorityIndirectEconomicImpacts={indirectEconomicImpactsByBearer.localAuthority}
-            />
-            <ImpactModalDescription
-              dialogId={`fr-modal-impacts-break-even-level-tab-localAuthority--Chart`}
-              initialState={{
-                sectionName: "socio_economic",
-                subSectionName: "localAuthority",
-              }}
-              contextData={contextData}
-              impactsData={impacts}
-            />
-          </>
+          <LocalAuthorityIndirectEconomicImpactsCharts
+            linkProps={getDetailsLink({ sectionName: "socioEconomic.localAuthority" })}
+            localAuthorityIndirectEconomicImpacts={indirectEconomicImpactsByBearer.localAuthority}
+          />
         }
       />
 
@@ -154,23 +118,12 @@ export default function ProjectBreakEvenLevelTab({
         title="pour les riverains"
         total={indirectEconomicImpactsByBearer.localPeopleOrCompany.total}
         chart={
-          <>
-            <LocalPeopleOrCompanyIndirectEconomicImpactsCharts
-              dialogId={`fr-modal-impacts-break-even-level-tab-localPeopleOrCompany--Chart`}
-              localPeopleOrCompanyIndirectEconomicImpacts={
-                indirectEconomicImpactsByBearer.localPeopleOrCompany
-              }
-            />
-            <ImpactModalDescription
-              dialogId={`fr-modal-impacts-break-even-level-tab-localPeopleOrCompany--Chart`}
-              initialState={{
-                sectionName: "socio_economic",
-                subSectionName: "localPeopleOrCompany",
-              }}
-              contextData={contextData}
-              impactsData={impacts}
-            />
-          </>
+          <LocalPeopleOrCompanyIndirectEconomicImpactsCharts
+            linkProps={getDetailsLink({ sectionName: "socioEconomic.localPeopleOrCompany" })}
+            localPeopleOrCompanyIndirectEconomicImpacts={
+              indirectEconomicImpactsByBearer.localPeopleOrCompany
+            }
+          />
         }
       />
 
@@ -178,21 +131,10 @@ export default function ProjectBreakEvenLevelTab({
         title="pour la société française et mondiale"
         total={indirectEconomicImpactsByBearer.humanity.total}
         chart={
-          <>
-            <HumanityIndirectEconomicImpactsCharts
-              dialogId={`fr-modal-impacts-break-even-level-tab-humanity--Chart`}
-              humanityIndirectEconomicImpacts={indirectEconomicImpactsByBearer.humanity}
-            />
-            <ImpactModalDescription
-              dialogId={`fr-modal-impacts-break-even-level-tab-humanity--Chart`}
-              initialState={{
-                sectionName: "socio_economic",
-                subSectionName: "humanity",
-              }}
-              contextData={contextData}
-              impactsData={impacts}
-            />
-          </>
+          <HumanityIndirectEconomicImpactsCharts
+            linkProps={getDetailsLink({ sectionName: "socioEconomic.humanity" })}
+            humanityIndirectEconomicImpacts={indirectEconomicImpactsByBearer.humanity}
+          />
         }
       />
     </div>

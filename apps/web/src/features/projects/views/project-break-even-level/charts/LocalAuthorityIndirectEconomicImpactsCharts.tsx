@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { sumListWithKey, typedObjectEntries } from "shared";
+import { Link } from "type-route";
 
 import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 
@@ -8,12 +9,12 @@ import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
   localAuthorityIndirectEconomicImpacts: IndirectEconomicImpactsByBearerAndGroupCategory["localAuthority"];
-  dialogId?: string;
+  linkProps?: Link;
 };
 
 export default function LocalAuthorityIndirectEconomicImpactsCharts({
   localAuthorityIndirectEconomicImpacts,
-  dialogId,
+  linkProps,
 }: Props) {
   const { total, ...impacts } = localAuthorityIndirectEconomicImpacts;
 
@@ -27,7 +28,7 @@ export default function LocalAuthorityIndirectEconomicImpactsCharts({
 
   return (
     <EconomicColumnChart
-      dialogId={dialogId}
+      linkProps={linkProps}
       legendText="Impact total pour la collectivité locale"
       legendTotal={total}
       data={data}

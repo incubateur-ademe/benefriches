@@ -18,7 +18,7 @@ const SummaryPermeableSurfaceAreaDescription = ({ impactData }: Props) => {
   const { isSuccess, value } = impactData;
   const { difference, percentageEvolution } = value;
 
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
   const title = isSuccess ? `+ de sols perméables\u00a0☔️` : `- de sols perméables\u00a0☔️`;
 
   return (
@@ -55,15 +55,10 @@ const SummaryPermeableSurfaceAreaDescription = ({ impactData }: Props) => {
             value={difference}
             label="🌧️ Surface perméable"
             type="surface_area"
-            labelProps={{
-              onClick: (e) => {
-                e.stopPropagation();
-                updateModalContent({
-                  sectionName: "environmental",
-                  impactName: "newPermeableSurface",
-                });
-              },
-            }}
+            labelProps={getDetailsLink({
+              sectionName: "environmental.soils",
+              impactDetailsName: "newPermeableSurface",
+            })}
           />
         </ImpactItemGroup>
       </ModalContent>

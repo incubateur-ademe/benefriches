@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import type { MDXComponents } from "mdx/types";
 import { LazyExoticComponent, useContext, useMemo } from "react";
@@ -6,6 +7,7 @@ import type { ModalDataProps } from "@/features/projects/application/project-imp
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
+import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ContentComponentType } from "../config-wizard/config.type";
@@ -46,7 +48,7 @@ export function LazyContentComponent({
   impactsData,
   contextData,
 }: Props) {
-  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const siteContaminatedSurfaceArea =
     impactsData.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.find(
@@ -99,30 +101,23 @@ export function LazyContentComponent({
         SiteFeature: BoundSiteFeature,
         ProjectFeature: BoundProjectFeature,
         LinkToAvoidedKilometersImpact: () => (
-          <Button
-            onClick={() => {
-              updateModalContent({
-                sectionName: "social",
-                subSectionName: "localPeopleOrCompany",
-                impactName: "avoidedVehiculeKilometers",
-              });
-            }}
-            className="px-1"
-            priority="tertiary no outline"
+          <a
+            {...getDetailsLink({
+              sectionName: "social.localPeopleOrCompany",
+              impactDetailsName: "avoidedVehiculeKilometers",
+            })}
+            className={classNames("px-1", fr.cx("fr-btn", "fr-btn--tertiary-no-outline"))}
           >
             «&nbsp;🚙 Kilomètres évités&nbsp;»
-          </Button>
+          </a>
         ),
         LinkToTimeTravelSavedSocialImpact: () => (
           <Button
-            onClick={() => {
-              updateModalContent({
-                sectionName: "social",
-                subSectionName: "localPeopleOrCompany",
-                impactName: "timeTravelSavedInHours",
-              });
-            }}
-            className="px-1"
+            {...getDetailsLink({
+              sectionName: "social.localPeopleOrCompany",
+              impactDetailsName: "timeTravelSavedInHours",
+            })}
+            className={classNames("px-1", fr.cx("fr-btn", "fr-btn--tertiary-no-outline"))}
             priority="tertiary no outline"
           >
             «&nbsp;⏱️ Temps passé en moins dans les transports&nbsp;»

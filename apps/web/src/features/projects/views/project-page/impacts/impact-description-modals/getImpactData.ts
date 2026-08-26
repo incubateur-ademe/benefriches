@@ -1,3 +1,5 @@
+import { Link } from "type-route";
+
 import {
   EconomicBalanceDetailsImpactKeyName,
   EconomicBalanceMainImpactKeyName,
@@ -62,7 +64,7 @@ export type ExtractedImpactData<DetailsKey extends ImpactDetailsKeyName> = {
     value: number;
     breakdown?: { base: number; forecast: number };
     name: DetailsKey;
-    onClick: () => void;
+    linkProps: Link | undefined;
   }[];
 };
 
@@ -72,11 +74,11 @@ export const getImpactModalData = <Key extends ImpactKeyName>(
   {
     getLabel,
     getColor,
-    onClick,
+    getLinkProps,
   }: {
     getLabel: (key: ExtractDetailsKey<Key>) => string;
     getColor: (key: Key) => string | undefined;
-    onClick: (key: ExtractDetailsKey<Key>) => void;
+    getLinkProps: (key: ExtractDetailsKey<Key>) => Link | undefined;
   },
 ): ExtractedImpactData<ExtractDetailsKey<Key>> | undefined => {
   const [impactKeyName, impactDetailsKeyName] = splitImpactKey(keyName);
@@ -102,9 +104,7 @@ export const getImpactModalData = <Key extends ImpactKeyName>(
       value: d.total,
       breakdown: d.breakdown,
       name: d.keyName,
-      onClick: () => {
-        onClick(d.keyName);
-      },
+      linkProps: getLinkProps(d.keyName),
     })),
   };
 };

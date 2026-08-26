@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { typedObjectEntries } from "shared";
+import { Link } from "type-route";
 
 import EconomicColumnChart from "./EconomicColumnChart";
 
@@ -10,7 +11,7 @@ type Props = {
     humanity: number;
   };
   indirectEconomicImpactsTotal: number;
-  dialogId: string;
+  linkProps?: Link;
 };
 
 const getLabelForBearer = (name: keyof Props["indirectEconomicImpactsTotalByBearer"]) => {
@@ -40,7 +41,7 @@ const ORDER = ["localAuthority", "localPeopleOrCompany", "humanity"] as const;
 export default function IndirectEconomicImpactsChart({
   indirectEconomicImpactsTotalByBearer,
   indirectEconomicImpactsTotal,
-  dialogId,
+  linkProps,
 }: Props) {
   const data = useMemo(() => {
     return typedObjectEntries(indirectEconomicImpactsTotalByBearer)
@@ -55,7 +56,7 @@ export default function IndirectEconomicImpactsChart({
 
   return (
     <EconomicColumnChart
-      dialogId={dialogId}
+      linkProps={linkProps}
       title="👥 Impacts socio-économiques"
       legendText="Montant total des impacts"
       legendTotal={indirectEconomicImpactsTotal}

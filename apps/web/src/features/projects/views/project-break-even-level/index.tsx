@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
 import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
 import { selectBreakEvenLevelTabDataView } from "../../application/project-impacts/selectors/projectBreakEvenLevel.selectors";
+import ImpactModalDescription from "../project-page/impacts/impact-description-modals/ImpactModalDescription";
 import ProjectBreakEvenLevelTab from "./ProjectBreakEvenLevelTab";
 
 type Props = {
@@ -16,12 +17,17 @@ export default function ProjectBreakEvenLevelTabContainer({ projectId }: Props) 
     return null;
   }
   return (
-    <ProjectBreakEvenLevelTab
-      projectId={projectId}
-      onEvaluationPeriodChange={(evaluationPeriodInYears: number) => {
-        void dispatch(evaluationPeriodUpdated(evaluationPeriodInYears));
-      }}
-      {...breakEvenLevelView}
-    />
+    <ImpactModalDescription
+      contextData={breakEvenLevelView.contextData}
+      impactsData={breakEvenLevelView.impacts}
+    >
+      <ProjectBreakEvenLevelTab
+        projectId={projectId}
+        onEvaluationPeriodChange={(evaluationPeriodInYears: number) => {
+          void dispatch(evaluationPeriodUpdated(evaluationPeriodInYears));
+        }}
+        {...breakEvenLevelView}
+      />
+    </ImpactModalDescription>
   );
 }

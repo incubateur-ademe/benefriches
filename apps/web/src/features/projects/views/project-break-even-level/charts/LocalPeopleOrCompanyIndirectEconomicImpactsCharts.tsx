@@ -1,5 +1,6 @@
 import { useId, useMemo } from "react";
 import { sumListWithKey, typedObjectEntries } from "shared";
+import { Link } from "type-route";
 
 import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
@@ -9,12 +10,12 @@ import EconomicColumnChart from "./EconomicColumnChart";
 
 type Props = {
   localPeopleOrCompanyIndirectEconomicImpacts: IndirectEconomicImpactsByBearerAndGroupCategory["localPeopleOrCompany"];
-  dialogId: string;
+  linkProps?: Link;
 };
 
 export default function LocalPeopleOrCompanyIndirectEconomicImpactsCharts({
   localPeopleOrCompanyIndirectEconomicImpacts,
-  dialogId,
+  linkProps,
 }: Props) {
   const { total, ...impacts } = localPeopleOrCompanyIndirectEconomicImpacts;
 
@@ -34,7 +35,7 @@ export default function LocalPeopleOrCompanyIndirectEconomicImpactsCharts({
 
   return (
     <EconomicColumnChart
-      dialogId={dialogId}
+      linkProps={linkProps}
       legendText="Impact total pour les riverains"
       legendTotal={total}
       data={data}

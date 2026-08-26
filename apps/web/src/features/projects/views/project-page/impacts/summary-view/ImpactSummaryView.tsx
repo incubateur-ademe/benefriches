@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import {
@@ -6,9 +6,8 @@ import {
   PRIORITY_ORDER,
 } from "@/features/projects/core/projectKeyImpactIndicators";
 
+import { ImpactModalDescriptionContext } from "../../../shared/impacts/modals/ImpactModalDescriptionContext";
 import { getSummaryIndicatorTitle } from "../../../shared/impacts/summary";
-import ImpactModalDescription from "../impact-description-modals/ImpactModalDescription";
-import { getDialogControlButtonProps } from "../list-view/dialogControlBtnProps";
 import KeyImpactIndicatorCard from "./KeyImpactIndicatorCard";
 
 type Props = {
@@ -16,7 +15,8 @@ type Props = {
   modalData: ModalDataProps;
 };
 
-const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
+const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
+  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
   return (
     <section className="mt-10 grid grid-rows-1 lg:grid-cols-3 gap-6">
       {keyImpactIndicatorsList
@@ -24,192 +24,15 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
           ({ name: aName }, { name: bName }) =>
             PRIORITY_ORDER.indexOf(aName) - PRIORITY_ORDER.indexOf(bName),
         )
-        .map(({ name, value, isSuccess }) => {
-          switch (name) {
-            case "zanCompliance":
-              return (
-                <React.Fragment key={name}>
-                  <KeyImpactIndicatorCard
-                    title={getSummaryIndicatorTitle({ name, isSuccess })}
-                    type={isSuccess ? "success" : "error"}
-                    buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
-                  />
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts_${name}-Summary`}
-                    initialState={{
-                      sectionName: "summary",
-                      impactData: { value, isSuccess, name },
-                    }}
-                    {...modalData}
-                  />
-                </React.Fragment>
-              );
-
-            case "projectImpactBalance":
-              return (
-                <React.Fragment key={name}>
-                  <KeyImpactIndicatorCard
-                    type={isSuccess ? "success" : "error"}
-                    title={getSummaryIndicatorTitle({ name, isSuccess })}
-                    buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
-                  />
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts_${name}-Summary`}
-                    initialState={{
-                      sectionName: "summary",
-                      impactData: { value, isSuccess, name },
-                    }}
-                    {...modalData}
-                  />
-                </React.Fragment>
-              );
-
-            case "avoidedFricheCostsForLocalAuthority":
-              return (
-                <React.Fragment key={name}>
-                  <KeyImpactIndicatorCard
-                    type={isSuccess ? "success" : "error"}
-                    title={getSummaryIndicatorTitle({ name, isSuccess })}
-                    buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
-                  />
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts_${name}-Summary`}
-                    initialState={{
-                      sectionName: "summary",
-                      impactData: { value, isSuccess, name },
-                    }}
-                    {...modalData}
-                  />
-                </React.Fragment>
-              );
-            case "taxesIncomesImpact":
-              return (
-                <React.Fragment key={name}>
-                  <KeyImpactIndicatorCard
-                    type={isSuccess ? "success" : "error"}
-                    title={getSummaryIndicatorTitle({ name, isSuccess })}
-                    buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
-                  />
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts_${name}-Summary`}
-                    initialState={{
-                      sectionName: "summary",
-                      impactData: { value, isSuccess, name },
-                    }}
-                    {...modalData}
-                  />
-                </React.Fragment>
-              );
-            case "fullTimeJobs":
-              return (
-                <React.Fragment key={name}>
-                  <KeyImpactIndicatorCard
-                    type={isSuccess ? "success" : "error"}
-                    title={getSummaryIndicatorTitle({ name, isSuccess })}
-                    buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
-                  />
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts_${name}-Summary`}
-                    initialState={{
-                      sectionName: "summary",
-                      impactData: { value, isSuccess, name },
-                    }}
-                    {...modalData}
-                  />
-                </React.Fragment>
-              );
-            case "avoidedCo2eqEmissions":
-              return (
-                <React.Fragment key={name}>
-                  <KeyImpactIndicatorCard
-                    type={isSuccess ? "success" : "error"}
-                    title={getSummaryIndicatorTitle({ name, isSuccess })}
-                    buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
-                  />
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts_${name}-Summary`}
-                    initialState={{
-                      sectionName: "summary",
-                      impactData: { value, isSuccess, name },
-                    }}
-                    {...modalData}
-                  />
-                </React.Fragment>
-              );
-            case "nonContaminatedSurfaceArea":
-              return (
-                <React.Fragment key={name}>
-                  <KeyImpactIndicatorCard
-                    type={isSuccess ? "success" : "error"}
-                    title={getSummaryIndicatorTitle({ name, isSuccess })}
-                    buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
-                  />
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts_${name}-Summary`}
-                    initialState={{
-                      sectionName: "summary",
-                      impactData: { value, isSuccess, name },
-                    }}
-                    {...modalData}
-                  />
-                </React.Fragment>
-              );
-            case "permeableSurfaceArea":
-              return (
-                <React.Fragment key={name}>
-                  <KeyImpactIndicatorCard
-                    type={isSuccess ? "success" : "error"}
-                    title={getSummaryIndicatorTitle({ name, isSuccess })}
-                    buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
-                  />
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts_${name}-Summary`}
-                    initialState={{
-                      sectionName: "summary",
-                      impactData: { value, isSuccess, name },
-                    }}
-                    {...modalData}
-                  />
-                </React.Fragment>
-              );
-            case "householdsPoweredByRenewableEnergy":
-              return (
-                <React.Fragment key={name}>
-                  <KeyImpactIndicatorCard
-                    title={getSummaryIndicatorTitle({ name, isSuccess })}
-                    type="success"
-                    buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
-                  />
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts_${name}-Summary`}
-                    initialState={{
-                      sectionName: "summary",
-                      impactData: { value, isSuccess, name },
-                    }}
-                    {...modalData}
-                  />
-                </React.Fragment>
-              );
-            case "localPropertyValueIncrease":
-              return (
-                <React.Fragment key={name}>
-                  <KeyImpactIndicatorCard
-                    title={getSummaryIndicatorTitle({ name, isSuccess })}
-                    type="success"
-                    buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
-                  />
-                  <ImpactModalDescription
-                    dialogId={`fr-modal-impacts_${name}-Summary`}
-                    initialState={{
-                      sectionName: "summary",
-                      impactData: { value, isSuccess, name },
-                    }}
-                    {...modalData}
-                  />
-                </React.Fragment>
-              );
-          }
-        })}
+        .map(({ name, isSuccess }) => (
+          <React.Fragment key={name}>
+            <KeyImpactIndicatorCard
+              title={getSummaryIndicatorTitle({ name, isSuccess })}
+              type={isSuccess ? "success" : "error"}
+              linkProps={getDetailsLink({ sectionName: "summary", impactDetailsName: name })!}
+            />
+          </React.Fragment>
+        ))}
     </section>
   );
 };

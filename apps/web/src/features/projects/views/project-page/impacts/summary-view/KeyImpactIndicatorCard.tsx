@@ -1,14 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import { Link } from "type-route";
 
 import classNames from "@/shared/views/clsx";
 
 type Props = {
   title: string;
   type: "success" | "error";
-  buttonProps: {
-    "data-fr-opened": boolean;
-    "aria-controls": string;
-  };
+  linkProps: Link;
 };
 
 const POSITIVE_CLASSES = [
@@ -22,10 +20,10 @@ const NEGATIVE_CLASSES = [
   "hover:border-error-light dark:hover:border-error-dark",
 ];
 
-const KeyImpactIndicatorCard = ({ title, type, buttonProps }: Props) => {
+const KeyImpactIndicatorCard = ({ title, type, linkProps }: Props) => {
   return (
-    <button
-      {...buttonProps}
+    <a
+      {...linkProps}
       className={classNames(
         "flex justify-start items-center gap-4",
         "p-4",
@@ -35,6 +33,7 @@ const KeyImpactIndicatorCard = ({ title, type, buttonProps }: Props) => {
         type === "success" ? POSITIVE_CLASSES : NEGATIVE_CLASSES,
         "transition ease-in-out duration-500",
         "text-left",
+        "bg-none",
       )}
     >
       <span
@@ -47,7 +46,7 @@ const KeyImpactIndicatorCard = ({ title, type, buttonProps }: Props) => {
         aria-hidden="true"
       ></span>
       <h4 className="text-lg font-bold mb-0">{title}</h4>
-    </button>
+    </a>
   );
 };
 
