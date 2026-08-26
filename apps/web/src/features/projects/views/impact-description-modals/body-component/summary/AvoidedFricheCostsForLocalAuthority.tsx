@@ -4,8 +4,8 @@ import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKey
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { getSocioEconomicImpactLabel } from "@/features/projects/views/shared/getImpactLabel";
 
-import ImpactItemDetails from "../../../project-page/impacts/list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../../project-page/impacts/list-view/ImpactItemGroup";
+import ImpactItemDetails from "../../../project-impacts/list-view/ImpactItemDetails";
+import ImpactItemGroup from "../../../project-impacts/list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import ModalBody from "../../modal-layout/ModalBody";
 import ModalContent from "../../modal-layout/ModalContent";

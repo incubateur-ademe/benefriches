@@ -17,7 +17,7 @@ import Section from "@/shared/views/components/FeaturesList/FeaturesListSection"
 import {
   getLabelForUrbanProjectCategory,
   getUrbanProjectCategoryFromFeatures,
-} from "../../shared/urbanProjectCategory";
+} from "../shared/urbanProjectCategory";
 import SoilsDistribution from "./SoilsDistribution";
 import UrbanProjectBuildingsSection from "./UrbanProjectBuildingsSection";
 

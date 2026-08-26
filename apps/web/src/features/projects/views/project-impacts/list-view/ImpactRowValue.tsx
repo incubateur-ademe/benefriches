@@ -15,7 +15,7 @@ import {
   formatSurfaceAreaImpact,
   formatTimeImpact,
   ImpactFormatType,
-} from "../../../shared/formatImpactValue";
+} from "../../shared/formatImpactValue";
 
 export type ImpactRowValueProps = {
   value?: number;

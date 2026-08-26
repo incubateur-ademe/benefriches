@@ -24,7 +24,7 @@ const SuccessBadge = ({ children, compact }: { children: ReactNode; compact?: bo
         "bg-blue-ultralight dark:bg-blue-ultradark",
         compact ? "p-2" : ["px-4", "py-3"],
         "mb-4",
-        "fr-icon-checkbox-circle-fill fr-icon--right fr-icon before:[--icon-size:2.5rem] before:bg-[#22AFE5]",
+        "fr-icon-checkbox-circle-fill fr-icon--right fr-icon before:[--icon-size:2.5rem] before:bg-blue-medium",
       )}
     >
       {children}
@@ -43,7 +43,7 @@ const FailBadge = ({ children, compact }: { children: ReactNode; compact?: boole
         "bg-blue-ultralight dark:bg-blue-ultradark",
         compact ? ["px-3", "py-2"] : ["px-4", "py-3"],
         "mb-4",
-        "fr-icon-warning-fill fr-icon--right fr-icon before:[--icon-size:2.5rem] before:bg-[#22AFE5]",
+        "fr-icon-warning-fill fr-icon--right fr-icon before:[--icon-size:2.5rem] before:bg-blue-medium",
       )}
     >
       {children}

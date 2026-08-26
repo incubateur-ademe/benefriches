@@ -10,15 +10,15 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import {
   ProjectImpactsState,
   ViewMode,
-} from "../../../application/project-impacts/projectImpacts.reducer";
-import ImpactModalDescriptionProvider from "../../impact-description-modals/ImpactModalDescription";
-import { exportImpactsModal } from "../../project-page/export-impacts/createExportModal";
-import ProjectImpactsActionBar from "../../shared/actions/ProjectImpactsActionBar";
-import ExportImpactsModal from "../export-impacts/ExportModal";
-import ProjectImpactFooter from "../footer/ProjectImpactFooter";
-import ProjectPageHeader from "../header";
-import ImpactsAccuracyDisclaimer from "../impacts-accuracy-disclaimer/ImpactsAccuracyDisclaimer";
+} from "../../application/project-impacts/projectImpacts.reducer";
+import ImpactModalDescriptionProvider from "../impact-description-modals/ImpactModalDescription";
+import ProjectImpactFooter from "../project-page/footer/ProjectImpactFooter";
+import ProjectPageHeader from "../project-page/header";
+import ProjectImpactsActionBar from "../shared/actions/ProjectImpactsActionBar";
 import AboutImpactsModalButton from "./about-impacts-modal/AboutImpactsModalButton";
+import ExportImpactsModal from "./export-impacts/ExportModal";
+import { exportImpactsModal } from "./export-impacts/createExportModal";
+import ImpactsAccuracyDisclaimer from "./impacts-accuracy-disclaimer/ImpactsAccuracyDisclaimer";
 import ImpactsListViewContainer from "./list-view";
 import ImpactsSummaryViewContainer from "./summary-view";
 

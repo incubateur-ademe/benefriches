@@ -8,7 +8,7 @@ import { selectImpactsPageViewData } from "../../application/project-impacts/sel
 import { ProjectSummaryDataView } from "../../application/project-impacts/selectors/projectSummary.selector";
 import BreakEvenLevalImpactsActionBar from "../project-break-even-level/ProjectBreakEvenLevelActionBar";
 import ProjectBreakEvenLevelSummary from "../project-break-even-level/ProjectBreakEvenLevelSummary";
-import ExportImpactsModal from "../project-page/export-impacts/ExportModal";
+import ExportImpactsModal from "../project-impacts/export-impacts/ExportModal";
 import ProjectImpactFooter from "../project-page/footer/ProjectImpactFooter";
 import ProjectPageHeader from "../project-page/header/";
 import ProjectSummaryComparisonCard from "./ProjectSummaryComparisonCard";

@@ -5,8 +5,8 @@ import {
   PRIORITY_ORDER,
 } from "@/features/projects/core/projectKeyImpactIndicators";
 
-import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
-import { getSummaryIndicatorTitle } from "../../../shared/impacts/summary";
+import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
+import { getSummaryIndicatorTitle } from "../../shared/impacts/summary";
 import KeyImpactIndicatorCard from "./KeyImpactIndicatorCard";
 
 type Props = {

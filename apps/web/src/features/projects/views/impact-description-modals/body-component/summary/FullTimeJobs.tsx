@@ -3,8 +3,8 @@ import { useContext } from "react";
 import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 import { formatNumberFr, formatPercentage } from "@/shared/core/format-number/formatNumber";
 
-import ImpactItemDetails from "../../../project-page/impacts/list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../../project-page/impacts/list-view/ImpactItemGroup";
+import ImpactItemDetails from "../../../project-impacts/list-view/ImpactItemDetails";
+import ImpactItemGroup from "../../../project-impacts/list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import ModalBody from "../../modal-layout/ModalBody";
 import ModalContent from "../../modal-layout/ModalContent";

@@ -3,8 +3,8 @@ import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import classNames from "@/shared/views/clsx";
 
 import { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
-import ImpactsListViewContainer from "../project-page/impacts/list-view";
-import ImpactsSummaryViewContainer from "../project-page/impacts/summary-view";
+import ImpactsListViewContainer from "../project-impacts/list-view";
+import ImpactsSummaryViewContainer from "../project-impacts/summary-view";
 import ImpactsActionBar from "../shared/actions/ActionBar";
 import QuickImpactsCallout from "./Callout";
 import QuickImpactsTitle from "./Title";

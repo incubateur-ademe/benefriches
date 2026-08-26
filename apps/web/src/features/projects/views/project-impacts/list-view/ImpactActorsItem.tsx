@@ -1,4 +1,4 @@
-import { ImpactFormatType } from "../../../shared/formatImpactValue";
+import { ImpactFormatType } from "../../shared/formatImpactValue";
 import ImpactItemDetails, { ImpactItemDetailsProps } from "./ImpactItemDetails";
 import ImpactItemGroup from "./ImpactItemGroup";
 import { ImpactRowValueProps } from "./ImpactRowValue";

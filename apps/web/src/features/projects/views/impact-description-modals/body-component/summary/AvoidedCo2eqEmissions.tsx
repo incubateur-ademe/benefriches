@@ -5,8 +5,8 @@ import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactVa
 import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/core/carbonEmissions";
 import { formatPerFrenchPersonAnnualEquivalent } from "@/shared/core/format-number/formatCarbonStorage";
 
-import ImpactItemDetails from "../../../project-page/impacts/list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../../project-page/impacts/list-view/ImpactItemGroup";
+import ImpactItemDetails from "../../../project-impacts/list-view/ImpactItemDetails";
+import ImpactItemGroup from "../../../project-impacts/list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import ModalBody from "../../modal-layout/ModalBody";
 import ModalContent from "../../modal-layout/ModalContent";

@@ -11,12 +11,12 @@ import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 import ProjectAvoidedCostsAnalysis from "../project-avoided-costs-analysis";
 import ProjectBreakEvenLevelTabContainer from "../project-break-even-level";
 import ProjectDevelopmentScore from "../project-development-score";
+import ProjectFeaturesView from "../project-features";
+import ProjectImpactsView from "../project-impacts";
 import ProjectSummaryTab from "../project-summary/";
 import EconomicImpactsDocumentation from "../shared/impacts/documentation/ImpactDocumentation";
-import ProjectFeaturesView from "./features/index";
 import ProjectPageHeader from "./header/";
 import ProjectPageTabs from "./header/ProjectPageTabs";
-import ProjectImpactsView from "./impacts";
 
 type Props = {
   projectId: string;

@@ -2,7 +2,7 @@ import { MouseEvent, useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import { ImpactFormatType } from "../../../shared/formatImpactValue";
+import { ImpactFormatType } from "../../shared/formatImpactValue";
 import ImpactRowValue, { ImpactRowValueProps } from "./ImpactRowValue";
 
 export type ImpactItemDetailsProps = {

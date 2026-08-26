@@ -3,7 +3,7 @@ import { useId } from "react";
 
 import DsfrA11yDialog from "@/shared/views/components/Dialog/DsfrA11yDialog";
 
-import AboutImpactsContent from "../../../shared/impacts/AboutImpactsContent";
+import AboutImpactsContent from "../../shared/impacts/AboutImpactsContent";
 
 const ABOUT_IMPACTS_DIALOG_ID = "about-benefriches-impacts-modal";
 

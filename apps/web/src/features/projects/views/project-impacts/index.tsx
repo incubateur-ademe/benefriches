@@ -9,8 +9,8 @@ import { loadFeatureAlerts } from "@/features/user-feature-alerts/core/loadFeatu
 import {
   evaluationPeriodUpdated,
   viewModeUpdated,
-} from "../../../application/project-impacts/actions";
-import type { ViewMode } from "../../../application/project-impacts/projectImpacts.reducer";
+} from "../../application/project-impacts/actions";
+import type { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
 import ProjectImpactsView from "./ProjectImpactsView";
 
 type Props = {

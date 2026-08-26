@@ -2,77 +2,76 @@ import { useContext } from "react";
 import { typedObjectEntries } from "shared";
 
 import {
-  SocialImpactMetricMainKeyName,
-  SocialImpactMetricsByListViewCategory,
-} from "@/features/projects/core/projectImpactsSocial";
+  EnvironmentalImpactMetricMainKeyName,
+  EnvironmentalImpactMetricsByListViewCategory,
+} from "@/features/projects/core/projectImpactsEnvironmental";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/impact-description-modals/ImpactModalDescriptionContext";
 
-import { getSocialImpactLabel } from "../../../../shared/getImpactLabel";
+import { getEnvironmentalImpactLabel } from "../../../shared/getImpactLabel";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";
 
 type Props = {
-  impacts: SocialImpactMetricsByListViewCategory;
+  impacts: EnvironmentalImpactMetricsByListViewCategory;
 };
 
-const getValueType = (name: SocialImpactMetricMainKeyName) => {
+const getValueType = (name: EnvironmentalImpactMetricMainKeyName) => {
   switch (name) {
-    case "avoidedFricheAccidents":
-    case "avoidedTrafficAccidents":
-    case "avoidedVehiculeKilometers":
-    case "householdsPoweredByRenewableEnergy":
-      return "default";
-    case "fullTimeJobs":
-      return "etp";
-    case "timeTravelSavedInHours":
-      return "time";
+    case "avoidedCo2eqEmissions":
+      return "co2";
+    case "newPermeableSurface":
+    case "nonContaminatedSurfaceArea":
+      return "surface_area";
   }
 };
 
-const getSectionTitle = (name: keyof SocialImpactMetricsByListViewCategory) => {
+const getSectionTitle = (name: keyof EnvironmentalImpactMetricsByListViewCategory) => {
   switch (name) {
-    case "humanity":
-      return "Impacts sur la société française";
-    case "localPeopleOrCompany":
-      return "Impacts sur la population locale";
-    case "jobs":
-      return "Impacts sur l'emploi";
+    case "co2eq":
+      return "Impacts sur le CO2-eq";
+    case "soils":
+      return "Impacts sur  les sols";
   }
 };
 
-const SocialListSection = ({ impacts }: Props) => {
+const EnvironmentalListSection = ({ impacts }: Props) => {
   const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ImpactSection
-      title="Impacts sociaux"
       isMain
-      labelProps={getDetailsLink({ sectionName: "social" })}
+      title="Impacts environnementaux"
+      labelProps={getDetailsLink({
+        sectionName: "environmental",
+      })}
     >
       {typedObjectEntries(impacts).map(([group, list]) =>
         list.length > 0 ? (
           <ImpactSection
             title={getSectionTitle(group)}
-            key={`social.${group}`}
-            labelProps={getDetailsLink({ sectionName: `social.${group}` })}
+            key={`environmental.${group}`}
+            labelProps={getDetailsLink({
+              sectionName: `environmental.${group}`,
+            })}
           >
             {list.map(({ keyName, total, ...rest }) => (
               <ImpactItemGroup key={keyName} isClickable>
                 <ImpactItemDetails
-                  label={getSocialImpactLabel(keyName)}
+                  label={getEnvironmentalImpactLabel(keyName)}
                   value={total}
                   labelProps={getDetailsLink({
-                    sectionName: `social.${group}`,
+                    sectionName: `environmental.${group}`,
                     impactDetailsName: keyName,
                   })}
                   data={
                     "details" in rest
                       ? rest.details.map((item) => ({
-                          label: getSocialImpactLabel(item.keyName),
+                          label: getEnvironmentalImpactLabel(item.keyName),
                           value: item.total,
+
                           labelProps: getDetailsLink({
-                            sectionName: `social.${group}`,
+                            sectionName: `environmental.${group}`,
                             impactDetailsName: item.keyName,
                           }),
                         }))
@@ -89,4 +88,4 @@ const SocialListSection = ({ impacts }: Props) => {
   );
 };
 
-export default SocialListSection;
+export default EnvironmentalListSection;

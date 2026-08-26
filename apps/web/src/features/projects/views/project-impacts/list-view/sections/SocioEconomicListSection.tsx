@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/impact-description-modals/ImpactModalDescriptionContext";
 
-import { getSocioEconomicImpactLabel } from "../../../../shared/getImpactLabel";
+import { getSocioEconomicImpactLabel } from "../../../shared/getImpactLabel";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";
