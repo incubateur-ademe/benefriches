@@ -1,4 +1,4 @@
-.PHONY: dev-up dev-down dev-logs e2e-up e2e-down e2e-logs e2e-test e2e-test-headed
+.PHONY: dev-up dev-down dev-logs e2e-up e2e-up-build e2e-down e2e-logs e2e-test e2e-test-headed
 
 # ── Dev infra (postgres + mailcatcher) ──────────────────────────────────────
 
@@ -16,6 +16,9 @@ dev-logs:
 e2e-up:
 	docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d --wait
 
+e2e-up-build:
+	docker compose --progress quiet --env-file .env.e2e -f docker-compose.e2e.yml up -d --build --wait
+
 e2e-down:
 	docker compose --env-file .env.e2e -f docker-compose.e2e.yml down
 
@@ -24,10 +27,10 @@ e2e-logs:
 
 # ── E2E tests ────────────────────────────────────────────────────────────────
 
-e2e-test: e2e-up
+e2e-test: e2e-up-build
 	pnpm --filter e2e-tests test:headless
 	$(MAKE) e2e-down
 
-e2e-test-headed: e2e-up
+e2e-test-headed: e2e-up-build
 	pnpm --filter e2e-tests test:headed
 	$(MAKE) e2e-down
