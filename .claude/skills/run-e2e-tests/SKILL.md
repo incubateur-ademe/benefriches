@@ -18,25 +18,16 @@ Run the full e2e test lifecycle: start stack, run tests, stop stack.
 
 Execute these steps sequentially. Stop and report on failure at any step.
 
-### 1. Build Docker images and start the stack
+### 1. Build Docker images, start the stack, and wait for readiness
 
 ```bash
 cd $PROJECT_ROOT
-docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d --build
+make e2e-up-build
 ```
 
-### 2. Wait for the stack to be ready
+This builds quietly and blocks until every service (including `web`) reports healthy via its Docker healthcheck. If it fails or times out, run `docker compose --env-file .env.e2e -f docker-compose.e2e.yml logs --tail=50` to show recent logs, then stop.
 
-Run the wait script (max 120s, every second):
-
-```bash
-cd $PROJECT_ROOT
-node apps/e2e-tests/scripts/wait-for-stack.js
-```
-
-If timeout is reached, run `docker compose --env-file .env.e2e -f docker-compose.e2e.yml logs --tail=50` to show recent logs, then stop.
-
-### 3. Run the tests
+### 2. Run the tests
 
 If `$ARGUMENTS` is provided:
 
@@ -50,7 +41,7 @@ Otherwise:
 pnpm --filter e2e-tests test:headless
 ```
 
-### 4. Tear down the stack
+### 3. Tear down the stack
 
 Only if tests passed:
 

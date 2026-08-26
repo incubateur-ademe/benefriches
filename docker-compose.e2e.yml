@@ -32,6 +32,12 @@ services:
     restart: always
     ports:
       - '${WEBAPP_PORT}:80'
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:80']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 2s
     environment:
       API_HOST_URL: ${API_HOST_URL}
       WEBAPP_MATOMO_URL: ${WEBAPP_MATOMO_URL}
@@ -42,6 +48,9 @@ services:
       # Feature flags
       WEBAPP_FF_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES: ${WEBAPP_FF_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES}
       WEBAPP_FF_SITE_URBAN_ZONE_ENABLED: ${WEBAPP_FF_SITE_URBAN_ZONE_ENABLED}
+    depends_on:
+      api:
+        condition: service_started
 
   api:
     build:
