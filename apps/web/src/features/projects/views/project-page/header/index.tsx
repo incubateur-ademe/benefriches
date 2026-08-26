@@ -1,24 +1,24 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
 import { appSettingUpdated, selectAppSettings } from "@/features/app-settings/core/appSettings";
+import { selectImpactsContextData } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import useDuplicateProject from "@/shared/views/project/useDuplicateProject";
 
-import { selectProjectsImpactsViewData } from "../../../application/project-impacts/projectImpacts.reducer";
 import ProjectPageHeader from "./ProjectPageHeader";
 
 const ProjectPageHeaderContainer = ({ projectId }: { projectId: string }) => {
-  const projectContext = useAppSelector(selectProjectsImpactsViewData);
+  const contextData = useAppSelector(selectImpactsContextData);
   const { onDuplicateProject } = useDuplicateProject(projectId, "impacts");
 
   const dispatch = useAppDispatch();
   const { useBetaAmenageScoreView } = useAppSelector(selectAppSettings);
 
   const headerProps = {
-    projectType: projectContext.type,
-    projectName: projectContext.name,
-    siteName: projectContext.siteName,
-    isExpressProject: projectContext.isExpressProject,
-    siteFeaturesHref: routes.siteFeatures({ siteId: projectContext.siteId }).href,
+    projectType: contextData?.projectDevelopmentPlan.type ?? "URBAN_PROJECT",
+    projectName: contextData?.projectName ?? "",
+    siteName: contextData?.relatedSiteName ?? "",
+    isExpressProject: contextData?.isExpressProject ?? false,
+    siteFeaturesHref: routes.siteFeatures({ siteId: contextData?.relatedSiteId ?? "" }).href,
     onDuplicateProject,
     onSuccessArchiveProject: () => {
       routes.myEvaluations().replace();
@@ -34,7 +34,7 @@ const ProjectPageHeaderContainer = ({ projectId }: { projectId: string }) => {
     },
     projectId,
     updateProjectLinkProps: routes.updateProject({ projectId, from: "impacts" }).link,
-    createProjectLinkProps: routes.createProject({ siteId: projectContext.siteId }).link,
+    createProjectLinkProps: routes.createProject({ siteId: contextData?.relatedSiteId ?? "" }).link,
   };
 
   return <ProjectPageHeader {...headerProps} />;

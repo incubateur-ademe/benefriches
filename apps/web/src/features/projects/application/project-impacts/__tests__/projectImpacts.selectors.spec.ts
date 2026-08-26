@@ -55,10 +55,6 @@ describe("projectImpacts ViewData selectors", () => {
           localPeopleOrCompany: expect.any(Object),
           jobs: expect.any(Object),
         }),
-        modalData: expect.objectContaining({
-          contextData: expect.any(Object),
-          impactsData: expect.any(Object),
-        }),
       });
     });
   });
@@ -72,10 +68,6 @@ describe("projectImpacts ViewData selectors", () => {
 
       expect(viewData).toEqual({
         keyImpactIndicatorsList: expect.any(Array),
-        modalData: expect.objectContaining({
-          contextData: expect.any(Object),
-          impactsData: expect.any(Object),
-        }),
       });
 
       // Verify key indicators are present
@@ -98,13 +90,9 @@ describe("projectImpacts ViewData selectors", () => {
         },
         evaluationPeriod: 20,
         currentViewMode: "list",
-        projectName: "Project photovoltaïque",
-        siteName: "Friche agricole de Blajan",
-        siteId: photovoltaicProjectImpactMockMeta.relatedSiteId,
-        siteNature: "FRICHE",
-        type: "PHOTOVOLTAIC_POWER_PLANT",
-        isExpressProject: false,
         displayImpactsAccuracyDisclaimer: false,
+        contextData: MOCK_STATES.projectImpacts.contextData,
+        impactsData: MOCK_STATES.projectImpacts.impacts,
       });
     });
 
@@ -128,7 +116,7 @@ describe("projectImpacts ViewData selectors", () => {
       const viewData = selectImpactsPageViewData(rootState);
 
       expect(viewData.displayImpactsAccuracyDisclaimer).toBe(true);
-      expect(viewData.isExpressProject).toBe(true);
+      expect(viewData.contextData?.isExpressProject).toBe(true);
     });
   });
 });

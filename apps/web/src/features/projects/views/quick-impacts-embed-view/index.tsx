@@ -1,7 +1,9 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
+import { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { embedRoutes } from "@/embed";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import {
@@ -10,6 +12,8 @@ import {
 } from "../../application/project-impacts/actions";
 import { fetchQuickImpactsForUrbanProjectOnFriche } from "../../application/project-impacts/actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
+import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
+import ImpactModalDescriptionProvider from "../impact-description-modals/ImpactModalDescription";
 import EmbedImpactsView from "./EmbedImpactsView";
 
 type Props = {
@@ -20,11 +24,12 @@ type Props = {
 const DEFAULT_EVALUATION_PERIOD = 30;
 
 export default function EmbedImpactsViewContainer({ siteCityCode, siteSurfaceArea }: Props) {
-  const { dataLoadingState, currentViewMode, evaluationPeriod, contextData } = useAppSelector(
-    (state) => state.projectImpacts,
-  );
+  const { dataLoadingState, currentViewMode, evaluationPeriod, contextData, impactsData } =
+    useAppSelector(selectImpactsPageViewData);
 
   const dispatch = useAppDispatch();
+
+  const route = embedRoutes.useRoute() as Route<typeof embedRoutes.routes.quickImpactsUrbanProject>;
 
   useEffect(() => {
     void dispatch(fetchQuickImpactsForUrbanProjectOnFriche({ siteCityCode, siteSurfaceArea }));
@@ -36,14 +41,21 @@ export default function EmbedImpactsViewContainer({ siteCityCode, siteSurfaceAre
 
   if (dataLoadingState.impacts === "success" && contextData) {
     return (
-      <EmbedImpactsView
-        evaluationPeriod={evaluationPeriod ?? DEFAULT_EVALUATION_PERIOD}
-        currentViewMode={currentViewMode}
-        onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(viewModeUpdated(viewMode))}
-        onEvaluationPeriodChange={(ev: number) => dispatch(evaluationPeriodUpdated(ev))}
-        siteCity={contextData.siteAddress.label}
-        siteSurfaceArea={contextData.siteSurfaceArea}
-      />
+      <ImpactModalDescriptionProvider
+        route={route}
+        contextData={contextData}
+        impactsData={impactsData!}
+        getRouteFn={embedRoutes.routes.quickImpactsUrbanProject}
+      >
+        <EmbedImpactsView
+          evaluationPeriod={evaluationPeriod ?? DEFAULT_EVALUATION_PERIOD}
+          currentViewMode={currentViewMode}
+          onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(viewModeUpdated(viewMode))}
+          onEvaluationPeriodChange={(ev: number) => dispatch(evaluationPeriodUpdated(ev))}
+          siteCity={contextData.siteAddress.label}
+          siteSurfaceArea={contextData.siteSurfaceArea}
+        />
+      </ImpactModalDescriptionProvider>
     );
   }
 

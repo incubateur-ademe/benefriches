@@ -15,11 +15,12 @@ import "./main.css";
 
 startReactDsfr({ defaultColorScheme: "system" });
 
-const embedRoutes = createRouter({
+export const embedRoutes = createRouter({
   quickImpactsUrbanProject: defineRoute(
     {
       siteSurfaceArea: param.query.number,
       siteCityCode: param.query.string,
+      details: param.query.optional.string,
     },
     () => `/embed/calcul-rapide-impacts-projet-urbain`,
   ),

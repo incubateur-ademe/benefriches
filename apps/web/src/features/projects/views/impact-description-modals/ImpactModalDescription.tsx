@@ -1,14 +1,15 @@
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { ReactNode, Suspense, useCallback, useLayoutEffect, useMemo } from "react";
+import { Link, Route } from "type-route";
 
-import { routes, useRoute } from "@/app/router";
+import { routes } from "@/app/router";
+import { embedRoutes } from "@/embed";
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { getKeyImpactIndicatorsList } from "@/features/projects/core/projectKeyImpactIndicators";
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { ProjectRoute } from "../project-page/ProjectPage";
 import { ImpactModalContentWizard, MODAL_CONFIG_GROUPS } from "./ImpactModalContentWizard";
 import {
   ImpactModalDescriptionContext,
@@ -44,13 +45,22 @@ function hasModalConfigFor(args: UpdateModalContentArgs): boolean {
   return group.modals[key] !== undefined;
 }
 
-function ImpactModalDescription({
+type SupportedRoute =
+  | Route<typeof routes.projectImpactsBreakEvenLevel>
+  | Route<typeof routes.projectImpacts>
+  | Route<typeof embedRoutes.routes.quickImpactsUrbanProject>;
+
+function ImpactModalDescriptionProvider<TRoute extends SupportedRoute>({
   contextData,
   impactsData,
   children,
-}: ModalDataProps & { children: ReactNode }) {
-  const route = useRoute() as ProjectRoute;
-
+  route,
+  getRouteFn,
+}: ModalDataProps & {
+  children: ReactNode;
+  route: TRoute;
+  getRouteFn: (params: TRoute["params"]) => { link: Link; push: () => void };
+}) {
   const isOpen = Boolean(route.params.details);
 
   const contentState = useMemo(
@@ -67,17 +77,17 @@ function ImpactModalDescription({
         return undefined;
       }
 
-      return routes[route.name]({
-        projectId: route.params.projectId,
+      return getRouteFn({
+        ...route.params,
         details: serializeContentState(args),
       }).link;
     },
-    [route],
+    [route, getRouteFn],
   );
 
   const handleClose = useCallback(() => {
-    routes[route.name]({ projectId: route.params.projectId }).push();
-  }, [route]);
+    getRouteFn({ ...route.params, details: undefined }).push();
+  }, [route, getRouteFn]);
 
   const impactModalDescriptionContextValue = useMemo(
     () => ({
@@ -154,4 +164,4 @@ function ImpactModalDescription({
   );
 }
 
-export default ImpactModalDescription;
+export default ImpactModalDescriptionProvider;

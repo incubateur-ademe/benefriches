@@ -1,14 +1,9 @@
-import { createReducer, createSelector, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
+import { createReducer, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import {
   GetReconversionProjectImpactsResultDto,
-  SiteNature,
   UrbanSprawlImpactsComparisonResultDto,
 } from "shared";
 
-import { RootState } from "@/app/store/store";
-import { selectAppSettings } from "@/features/app-settings/core/appSettings";
-
-import { ProjectDevelopmentPlanType } from "../../core/projects.types";
 import {
   evaluationPeriodUpdated,
   reconversionProjectImpactsBreakEvenLevelRequested,
@@ -104,39 +99,3 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
     },
   );
 });
-
-const selectSelf = (state: RootState) => state.projectImpacts;
-
-export const selectProjectName = createSelector(
-  selectSelf,
-  (state): string => state.contextData?.projectName ?? "Projet",
-);
-
-type ProjectsImpactsViewData = {
-  name: string;
-  siteName: string;
-  siteNature?: SiteNature;
-  siteId: string;
-  type?: ProjectDevelopmentPlanType;
-  isExpressProject: boolean;
-  displayImpactsAccuracyDisclaimer: boolean;
-};
-export const selectProjectsImpactsViewData = createSelector(
-  [selectSelf, selectAppSettings],
-  (state, appSettings): ProjectsImpactsViewData => {
-    const isExpressProject = !!state.contextData?.isExpressProject;
-    const isExpressSite = !!state.contextData?.isExpressSite;
-    const displayImpactsAccuracyDisclaimer =
-      (isExpressProject || isExpressSite) && appSettings.displayImpactsAccuracyDisclaimer;
-
-    return {
-      name: state.contextData?.projectName ?? "Projet",
-      siteNature: state.contextData?.siteNature,
-      siteName: state.contextData?.relatedSiteName ?? "",
-      siteId: state.contextData?.relatedSiteId ?? "",
-      type: state.contextData?.projectDevelopmentPlan.type,
-      isExpressProject,
-      displayImpactsAccuracyDisclaimer,
-    };
-  },
-);

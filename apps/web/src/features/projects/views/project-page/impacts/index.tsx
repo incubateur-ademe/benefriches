@@ -24,9 +24,9 @@ function ProjectPageContainer({ projectId }: Props) {
     dataLoadingState,
     evaluationPeriod,
     currentViewMode,
-    projectName,
     displayImpactsAccuracyDisclaimer,
-    ...projectContext
+    contextData,
+    impactsData,
   } = useAppSelector(selectImpactsPageViewData);
 
   useEffect(() => {
@@ -36,8 +36,8 @@ function ProjectPageContainer({ projectId }: Props) {
   return (
     <ProjectImpactsView
       projectId={projectId}
-      projectName={projectName}
-      projectContext={{ name: projectName, ...projectContext }}
+      contextData={contextData}
+      impactsData={impactsData}
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}
       currentViewMode={currentViewMode}

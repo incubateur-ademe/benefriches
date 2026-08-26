@@ -1,8 +1,9 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { SiteNature } from "shared";
+import { Route } from "type-route";
 
-import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
+import { routes, useRoute } from "@/app/router";
+import { ImpactsPageViewData } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
@@ -10,6 +11,7 @@ import {
   ProjectImpactsState,
   ViewMode,
 } from "../../../application/project-impacts/projectImpacts.reducer";
+import ImpactModalDescriptionProvider from "../../impact-description-modals/ImpactModalDescription";
 import { exportImpactsModal } from "../../project-page/export-impacts/createExportModal";
 import ProjectImpactsActionBar from "../../shared/actions/ProjectImpactsActionBar";
 import ExportImpactsModal from "../export-impacts/ExportModal";
@@ -22,17 +24,10 @@ import ImpactsSummaryViewContainer from "./summary-view";
 
 type Props = {
   currentViewMode: ViewMode;
-  projectName: string;
   projectId: string;
   dataLoadingState: ProjectImpactsState["dataLoadingState"];
-  projectContext: {
-    name: string;
-    siteName: string;
-    siteNature?: SiteNature;
-    siteId: string;
-    type?: ProjectDevelopmentPlanType;
-    isExpressProject: boolean;
-  };
+  contextData: ImpactsPageViewData["contextData"];
+  impactsData: ImpactsPageViewData["impactsData"];
   onEvaluationPeriodChange: (n: number) => void;
   evaluationPeriod: number | undefined;
   onCurrentViewModeChange: (n: ViewMode) => void;
@@ -42,16 +37,17 @@ type Props = {
 
 const ProjectImpactsView = ({
   currentViewMode,
-  projectName,
   displayImpactsAccuracyDisclaimer,
   projectId,
-  projectContext,
+  contextData,
+  impactsData,
   dataLoadingState,
   onEvaluationPeriodChange,
   evaluationPeriod,
   onCurrentViewModeChange,
   onExportModalOpened,
 }: Props) => {
+  const route = useRoute() as Route<typeof routes.projectImpacts>;
   return (
     <>
       <div className="flex justify-between items-center flex-wrap mb-10 gap-2">
@@ -88,27 +84,32 @@ const ProjectImpactsView = ({
       )}
       {dataLoadingState.impacts === "loading" && <LoadingSpinner />}
       {dataLoadingState.impacts === "success" && (
-        <>
+        <ImpactModalDescriptionProvider
+          route={route}
+          getRouteFn={routes[route.name]}
+          impactsData={impactsData!}
+          contextData={contextData!}
+        >
           {currentViewMode === "summary" && (
             <>
-              <HtmlTitle>{`Synthèse - ${projectName} - Impacts`}</HtmlTitle>
+              <HtmlTitle>{`Synthèse - ${contextData?.projectName} - Impacts`}</HtmlTitle>
               <ImpactsSummaryViewContainer />
             </>
           )}
           {currentViewMode === "list" && (
             <>
-              <HtmlTitle>{`Liste - ${projectName} - Impacts`}</HtmlTitle>
+              <HtmlTitle>{`Liste - ${contextData?.projectName} - Impacts`}</HtmlTitle>
               <ImpactsListViewContainer />
             </>
           )}
           <ProjectImpactFooter
-            siteId={projectContext.siteId}
+            siteId={contextData?.relatedSiteId ?? ""}
             projectId={projectId}
             evaluationPeriod={evaluationPeriod}
             isUpdateEnabled={
-              (projectContext.type === "URBAN_PROJECT" ||
-                projectContext.type === "PHOTOVOLTAIC_POWER_PLANT") &&
-              !projectContext.isExpressProject
+              (contextData?.projectDevelopmentPlan.type === "URBAN_PROJECT" ||
+                contextData?.projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT") &&
+              !contextData.isExpressProject
             }
             onExportModalOpened={onExportModalOpened}
           />
@@ -127,8 +128,8 @@ const ProjectImpactsView = ({
             />
             .
           </div>
-          <ExportImpactsModal projectId={projectId} siteId={projectContext.siteId} />
-        </>
+          <ExportImpactsModal projectId={projectId} siteId={contextData?.relatedSiteId ?? ""} />
+        </ImpactModalDescriptionProvider>
       )}
     </>
   );

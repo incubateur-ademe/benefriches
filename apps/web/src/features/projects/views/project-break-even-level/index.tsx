@@ -1,8 +1,11 @@
+import { Route } from "type-route";
+
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { routes, useRoute } from "@/app/router";
 
 import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
 import { selectBreakEvenLevelTabDataView } from "../../application/project-impacts/selectors/projectBreakEvenLevel.selectors";
-import ImpactModalDescription from "../impact-description-modals/ImpactModalDescription";
+import ImpactModalDescriptionProvider from "../impact-description-modals/ImpactModalDescription";
 import ProjectBreakEvenLevelTab from "./ProjectBreakEvenLevelTab";
 
 type Props = {
@@ -13,11 +16,16 @@ export default function ProjectBreakEvenLevelTabContainer({ projectId }: Props) 
   const breakEvenLevelView = useAppSelector(selectBreakEvenLevelTabDataView);
   const dispatch = useAppDispatch();
 
+  const route = useRoute() as Route<typeof routes.projectImpactsBreakEvenLevel>;
+
   if (!breakEvenLevelView) {
     return null;
   }
+
   return (
-    <ImpactModalDescription
+    <ImpactModalDescriptionProvider
+      route={route}
+      getRouteFn={routes[route.name]}
       contextData={breakEvenLevelView.contextData}
       impactsData={breakEvenLevelView.impacts}
     >
@@ -28,6 +36,6 @@ export default function ProjectBreakEvenLevelTabContainer({ projectId }: Props) 
         }}
         {...breakEvenLevelView}
       />
-    </ImpactModalDescription>
+    </ImpactModalDescriptionProvider>
   );
 }

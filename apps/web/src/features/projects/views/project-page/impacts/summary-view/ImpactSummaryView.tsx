@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 
-import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import {
   KeyImpactIndicatorData,
   PRIORITY_ORDER,
@@ -12,7 +11,6 @@ import KeyImpactIndicatorCard from "./KeyImpactIndicatorCard";
 
 type Props = {
   keyImpactIndicatorsList: KeyImpactIndicatorData[];
-  modalData: ModalDataProps;
 };
 
 const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
