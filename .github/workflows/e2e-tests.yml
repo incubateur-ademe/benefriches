@@ -58,14 +58,14 @@ jobs:
             api.cache-to=type=gha,scope=e2e-api,mode=max
 
       - name: Start E2E stack
-        run: docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d --wait
+        run: make e2e-up
 
       - name: Run Playwright tests
         run: pnpm --filter e2e-tests test:headless
 
       - name: Stop E2E stack
         if: always()
-        run: docker compose --env-file .env.e2e -f docker-compose.e2e.yml down
+        run: make e2e-down
 
       - uses: actions/upload-artifact@v6
         if: ${{ !cancelled() }}

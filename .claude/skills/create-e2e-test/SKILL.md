@@ -154,8 +154,8 @@ test.describe("Feature Name", () => {
 ### 6. Run and Verify
 
 ```bash
-# Start the e2e stack (if not already running)
-docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
+# Start the e2e stack (builds fresh images and waits for readiness)
+make e2e-up-build
 
 # Run specific test file
 pnpm --filter e2e-tests test:headless tests/[feature]/[feature].spec.ts
