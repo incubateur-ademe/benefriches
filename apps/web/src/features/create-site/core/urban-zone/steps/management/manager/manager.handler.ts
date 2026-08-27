@@ -1,4 +1,4 @@
-import type { AnswerStepHandler } from "../../../stepHandler.type";
+import type { UrbanZoneAnswerStepHandler } from "../../../stepHandlerRegistry";
 
 export const UrbanZoneManagerHandler = {
   stepId: "URBAN_ZONE_MANAGER",
@@ -6,4 +6,4 @@ export const UrbanZoneManagerHandler = {
   getNextStepId() {
     return "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT";
   },
-} satisfies AnswerStepHandler<"URBAN_ZONE_MANAGER">;
+} satisfies UrbanZoneAnswerStepHandler<"URBAN_ZONE_MANAGER">;

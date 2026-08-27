@@ -1,0 +1,62 @@
+- main:
+  - heading "Récapitulatif du site" [level=2]
+  - heading "📍 Localisation" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Adresse du site
+  - term: Chartres
+  - definition:
+    - strong: Type de zone urbaine
+  - term: Zone d'activités économiques
+  - heading "🗺️ Surfaces foncières" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Superficie totale
+  - term:
+    - strong: /\d+\s\d+ ㎡/
+  - definition: Surface d'activité
+  - term: /\d+\s\d+ ㎡/
+  - definition: Espaces publics
+  - term: /3\s\d+ ㎡/
+  - heading "🌾️ Sols" [level=3]
+  - button "Fermer la section"
+  - definition: Bâtiments
+  - term: /8\s\d+ ㎡/
+  - definition: Sols imperméabilisés
+  - term: /4\s\d+ ㎡/
+  - definition: Sols perméables minéraux
+  - term: /2\s\d+ ㎡/
+  - definition: Sols enherbés et arbustifs
+  - term: /1\s\d+ ㎡/
+  - heading "☣️ Pollution" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Sols pollués
+  - term: /3\s\d+ ㎡/
+  - heading "💼 Gestion et activité" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Gestionnaire
+  - term: Gestionnaire de parc d'activité
+  - definition:
+    - strong: Emprise des locaux vacants
+  - term: /\d+ ㎡/
+  - definition:
+    - strong: Surface de plancher des locaux vacants
+  - term: /1\s\d+ ㎡/
+  - definition:
+    - strong: Emplois en équivalent temps plein
+  - term: /\d+/
+  - heading "✍ Dénomination" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Nom du site
+  - term: ZAE Chartres
+  - definition:
+    - strong: Description
+  - term: Zone d'activités économiques sur la commune de Chartres.
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Suivant"

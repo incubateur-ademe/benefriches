@@ -1,0 +1,89 @@
+- main:
+  - text: ✅
+  - heading "Le site « Friche industrielle de Blajan » est créé !" [level=2]
+  - text: /💡 Bénéfriches a affecté des données par défaut, en se basant sur les moyennes observées sur ce type de friche \(industrielle\) dans cette zone géographique \(\d+ Blajan\)/
+  - heading "Comment ont été affectées les caractéristiques de ma friche ?" [level=3]
+  - paragraph:
+    - text: Bénéfriches a
+    - strong: automatiquement complété les caractéristiques manquantes
+    - text: (typologie des sols, bâtiments, gestion et sécurisation de la friche, etc.) Bénéfriches se base pour cela sur les valeurs représentatives pour ce type de friche sur la
+    - strong: localisation géographique
+    - text: que vous avez renseigné.
+  - checkbox "J'ai compris"
+  - text: J'ai compris
+  - button "Masquer ce message" [disabled]
+  - heading "📍 Localisation" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Adresse du site
+  - term: Blajan
+  - heading "🌾️ Sols" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Superficie totale du site
+  - term:
+    - strong: /\d+\s\d+ ㎡/
+  - button "Menu"
+  - region "Chart. Highcharts interactive chart.":
+    - heading "Chart" [level=3]
+    - text: Pie chart with 3 slices.
+    - button "View as data table, Chart"
+    - img "Interactive chart":
+      - img /Bâtiments, \d+,\d+\. Superficie\./
+      - img /Sols enherbés et arbustifs, \d+,\d+\. Superficie\./
+      - img /Sols imperméabilisés, \d+,\d+\. Superficie\./
+    - text: End of interactive chart.
+  - definition: Sols enherbés et arbustifs
+  - term: /2\s\d+ ㎡/
+  - definition: Bâtiments
+  - term: /4\s\d+ ㎡/
+  - definition: Sols imperméabilisés
+  - term: /4\s\d+ ㎡/
+  - heading "☣️ Pollution" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Superficie polluée
+  - term: /5\s\d+ ㎡/
+  - heading "💥 Accidents" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Accidents survenus sur le site depuis 5 ans
+  - term:
+    - strong: Aucun
+  - heading "⚙️ Gestion et sécurisation de la friche" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Propriétaire actuel
+  - term: Mairie de Blajan
+  - definition:
+    - strong: Dépenses annuelles de la friche
+  - term: /\d+\s\d+ €/
+  - definition:
+    - strong: Gestion du site
+  - term
+  - definition: Entretien du site
+  - term: /\d+\s\d+ €/
+  - definition: Taxe foncière
+  - term: /\d+\s\d+ €/
+  - definition:
+    - strong: Sécurisation du site
+  - term
+  - definition: Gardiennage
+  - term: /\d+\s\d+ €/
+  - definition: Débarras de dépôt sauvage
+  - term: /\d+ €/
+  - heading "✍ Dénomination" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Type de friche
+  - term: Friche industrielle
+  - definition:
+    - strong: Nom du site
+  - term: Friche industrielle de Blajan
+  - list:
+    - listitem:
+      - link "Retour à mes évaluations":
+        - /url: /mes-evaluations
+    - listitem:
+      - link "Évaluer un projet démo sur ce site":
+        - /url: /\/creer-projet\?siteId=.+/

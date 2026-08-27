@@ -14,14 +14,21 @@ type SearchAddressAutocompleteContainerProps = Omit<
 
 function SearchAddressAutocompleteContainer({
   addressType,
+  selectedAddress,
   ...props
 }: SearchAddressAutocompleteContainerProps) {
   const addressService = useMemo(() => new NationalAddressBaseService(), []);
-  const { searchText, setSearchText, suggestions } = useAddressSearch(addressService, addressType);
+  // display the already selected address (if any) when the component mounts
+  const { searchText, setSearchText, suggestions } = useAddressSearch(
+    addressService,
+    addressType,
+    selectedAddress?.value,
+  );
 
   return (
     <SearchAddressAutocompleteInput
       {...props}
+      selectedAddress={selectedAddress}
       searchText={searchText}
       onSearchTextChange={setSearchText}
       suggestions={suggestions}

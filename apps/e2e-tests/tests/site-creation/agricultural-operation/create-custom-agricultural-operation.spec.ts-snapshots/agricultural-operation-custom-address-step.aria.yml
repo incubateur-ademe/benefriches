@@ -1,0 +1,10 @@
+- main:
+  - heading "Où est située l'exploitation agricole ?" [level=2]
+  - combobox:
+    - text: Adresse * Entrez le nom de la commune, le code postal ou l'adresse complète
+    - searchbox "Adresse * Entrez le nom de la commune, le code postal ou l'adresse complète"
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider" [disabled]

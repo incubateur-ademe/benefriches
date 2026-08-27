@@ -14,13 +14,14 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   siteId: string;
   siteName: string;
-  loadingState: "idle" | "loading" | "success" | "error";
+  loadingState: "idle" | "dirty" | "loading" | "success" | "error";
   onBack: () => void;
 };
 
 function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
   switch (loadingState) {
     case "idle":
+    case "dirty":
       return null;
     case "loading":
       return (

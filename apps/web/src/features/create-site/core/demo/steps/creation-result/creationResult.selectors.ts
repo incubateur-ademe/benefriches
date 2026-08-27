@@ -11,7 +11,7 @@ const selectSelf = (state: RootState) => state.siteCreation;
 type DemoSiteCreationResultViewData = {
   siteId: string;
   siteName: string;
-  saveState: "idle" | "loading" | "success" | "error";
+  saveState: "idle" | "dirty" | "loading" | "success" | "error";
   siteAddress: {
     postCode?: string;
     cityName?: string;

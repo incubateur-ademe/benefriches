@@ -1,0 +1,15 @@
+- main:
+  - heading "Où est située l'exploitation agricole ?" [level=2]
+  - combobox:
+    - text: Commune ou code postal *
+    - searchbox "Commune ou code postal *"
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider" [disabled]
+  - text: "📍 Pourquoi renseigner la commune ?En fonction de la région mais aussi du type de zone (urbaine, périurbaine, rurale), certains indicateurs n’auront pas les mêmes valeurs, comme par exemple:"
+  - list:
+    - listitem: Recettes fiscales
+    - listitem: Temps passé par les riverains dans les transports
+    - listitem: Services écosystémiques

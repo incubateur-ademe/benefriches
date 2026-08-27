@@ -1,0 +1,19 @@
+- main:
+  - heading "De quel type d'espace naturel s'agit-il ?" [level=2]
+  - radio "Prairie Herbacée, arbustive ou arborée":
+    - radio "Prairie Herbacée, arbustive ou arborée"
+    - text: ""
+  - radio "Forêt De feuillus, conifères, peupliers ou mixte":
+    - radio "Forêt De feuillus, conifères, peupliers ou mixte"
+    - text: ""
+  - radio "Zone humide Marais, tourbières, prairies humides, mangrove, lagune...":
+    - radio "Zone humide Marais, tourbières, prairies humides, mangrove, lagune..."
+    - text: ""
+  - radio "Espace naturel mixte Prairie, forêt, zone humide, plan d'eau":
+    - radio "Espace naturel mixte Prairie, forêt, zone humide, plan d'eau"
+    - text: ""
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Suivant"

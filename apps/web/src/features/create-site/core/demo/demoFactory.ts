@@ -1,40 +1,38 @@
-import { createFormFactory } from "../../../../shared/core/reducers/form-factory/createFormUseCaseFactory";
+import { createReducer } from "@reduxjs/toolkit";
+
 import type { SiteCreationState } from "../createSite.reducer";
+import { createDemoFormActions } from "./demo.actions";
+import { addDemoFormCasesToBuilder } from "./demoForm.reducer";
 import { demoSiteSaved } from "./demoSiteSaved.action";
-import {
-  answersByStepSchemas,
-  ANSWER_STEP_IDS,
-  INTRODUCTION_STEPS,
-  SUMMARY_STEPS,
-} from "./demoSteps";
-import { answerStepHandlers, demoStepHandlerRegistry } from "./stepHandlerRegistry";
 
-export const demoFactory = createFormFactory({
-  introductionSteps: INTRODUCTION_STEPS,
-  summarySteps: SUMMARY_STEPS,
-  answerStepIds: ANSWER_STEP_IDS,
-  schemas: answersByStepSchemas,
-  getSlice: (state: SiteCreationState) => state.demo,
-  buildContext: (state: SiteCreationState) => ({
-    siteData: state.siteData,
-    stepsState: state.demo.steps,
-  }),
-  answerStepHandlers: answerStepHandlers,
-  navigationHandlerRegistry: demoStepHandlerRegistry,
-  actionPrefix: "siteCreation/demo",
-  onPreviousStepFallback: (state) => {
-    if (state.stepsHistory.length > 1) {
-      state.stepsHistory = state.stepsHistory.slice(0, -1);
-    }
-  },
-});
+export { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
-export const { ReadStateHelper } = demoFactory;
+const demoFormActions = createDemoFormActions("siteCreation/demo");
 
-export const { previousStepRequested, nextStepRequested, stepCompletionRequested } =
-  demoFactory.actions;
+export const {
+  stepCompletionRequested,
+  stepCompletionConfirmed,
+  stepCompletionCancelled,
+  previousStepRequested,
+  nextStepRequested,
+  stepNavigationRequested,
+} = demoFormActions;
 
-export const demoSiteCreationReducer = demoFactory.createFormUseCaseReducer((builder) => {
+export const demoSiteCreationReducer = createReducer({} as SiteCreationState, (builder) => {
+  addDemoFormCasesToBuilder(builder, demoFormActions, {
+    config: {
+      stepChangesNextMode: "step_order",
+      finalSummaryFallbackStep: "DEMO_CREATION_RESULT",
+      onPreviousStepFallback: (state) => {
+        if (state.stepsHistory.length > 1) {
+          state.stepsHistory = state.stepsHistory.slice(0, -1);
+        }
+      },
+    },
+    selectForm: (state) => state.demo,
+    buildContext: (state) => ({ siteData: state.siteData }),
+  });
+
   builder.addCase(demoSiteSaved.pending, (state) => {
     state.demo.saveState = "loading";
   });

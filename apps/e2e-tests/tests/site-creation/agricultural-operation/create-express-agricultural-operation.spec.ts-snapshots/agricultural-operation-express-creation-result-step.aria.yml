@@ -1,0 +1,82 @@
+- main:
+  - text: ✅
+  - heading "Le site « Exploitation agricole de Lyon » est créé !" [level=2]
+  - text: /💡 Bénéfriches a affecté des données par défaut, en se basant sur les moyennes observées sur ce type d'exploitation agricole \(polyculture ou polyélevage\) dans cette zone géographique \(\d+ Lyon\)/
+  - heading "Comment ont été affectées les caractéristiques de mon site ?" [level=3]
+  - paragraph:
+    - text: Bénéfriches a
+    - strong: automatiquement complété les caractéristiques manquantes
+    - text: (typologie des sols, bâtiments, gestion et sécurisation de la friche, etc.) Bénéfriches se base pour cela sur les valeurs représentatives pour ce type de site sur la
+    - strong: localisation géographique
+    - text: que vous avez renseigné.
+  - checkbox "J'ai compris"
+  - text: J'ai compris
+  - button "Masquer ce message" [disabled]
+  - heading "📍 Localisation" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Adresse du site
+  - term: Lyon
+  - heading "🌾️ Sols" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Superficie totale du site
+  - term:
+    - strong: /\d+\s\d+ ㎡/
+  - button "Menu"
+  - region "Chart. Highcharts interactive chart.":
+    - heading "Chart" [level=3]
+    - text: Pie chart with 3 slices.
+    - button "View as data table, Chart"
+    - img "Interactive chart":
+      - img /Bâtiments, \d+,\d+\. Superficie\./
+      - img /Culture, \d+,\d+\. Superficie\./
+      - img /Prairie herbacée, \d+,\d+\. Superficie\./
+    - text: End of interactive chart.
+  - definition: Bâtiments
+  - term: /2\s\d+ ㎡/
+  - definition: Culture
+  - term: /\d+\s\d+ ㎡/
+  - definition: Prairie herbacée
+  - term: /\d+\s\d+ ㎡/
+  - heading "⚙️ Exploitation du site" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Propriétaire actuel
+  - term: Mairie de Lyon
+  - definition:
+    - strong: Dépenses annuelles du site
+  - term: /\d+\s\d+ €/
+  - definition: Loyer
+  - term: /\d+ €/
+  - definition: Taxes et impôts
+  - term: /\d+ €/
+  - definition: Autres charges d'exploitation
+  - term: /\d+\s\d+ €/
+  - definition:
+    - strong: Recettes annuelles du site
+  - term: /\d+\s\d+ €/
+  - definition: Autres revenus d'exploitation
+  - term: /\d+ €/
+  - definition: Subventions
+  - term: /1\s\d+ €/
+  - definition: Vente de produits
+  - term: /\d+\s\d+ €/
+  - heading "✍ Dénomination" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Type d'exploitation
+  - term: Polyculture / polyélevage
+  - definition:
+    - strong: Nom du site
+  - term: Exploitation agricole de Lyon
+  - definition:
+    - strong: Description
+  - term: Polyculture / polyélevage
+  - list:
+    - listitem:
+      - link "Retour à mes évaluations":
+        - /url: /mes-evaluations
+    - listitem:
+      - link "Évaluer un projet démo sur ce site":
+        - /url: /\/creer-projet\?siteId=.+/

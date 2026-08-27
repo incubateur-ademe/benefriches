@@ -1,4 +1,11 @@
-import type { AnswerStepHandler, InfoStepHandler } from "./stepHandler.type";
+import type {
+  AnswerStepHandler as GenericAnswerStepHandler,
+  InfoStepHandler as GenericInfoStepHandler,
+  StepHandlerParams,
+  StepHandlerRegistry as GenericStepHandlerRegistry,
+} from "@/shared/core/wizard-form/stepHandler.type";
+
+import type { SiteCreationData } from "../siteFoncier.types";
 import { UrbanZoneSoilsContaminationHandler } from "./steps/contamination/soilsContamination.handler";
 import { UrbanZoneSoilsContaminationIntroductionHandler } from "./steps/contamination/soilsContaminationIntroduction.handler";
 import { UrbanZoneCreationResultHandler } from "./steps/creation-result/creationResult.handler";
@@ -25,12 +32,41 @@ import {
 import { SoilsAndSpacesIntroductionHandler } from "./steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.handler";
 import { UrbanZoneSoilsCarbonStorageHandler } from "./steps/summary/soils-carbon-storage/soilsCarbonStorage.handler";
 import { UrbanZoneSoilsSummaryHandler } from "./steps/summary/soils-summary/soilsSummary.handler";
-import type { SchematizedAnswerStepId, UrbanZoneSiteCreationStep } from "./urbanZoneSteps";
+import type {
+  AnswersByStep,
+  SchematizedAnswerStepId,
+  UrbanZoneIntroductionStep,
+  UrbanZoneSiteCreationStep,
+  UrbanZoneSummaryStep,
+} from "./urbanZoneSteps";
 
-// Correlated mapped type: each key K maps to AnswerStepHandler<K>.
-// Lookups with a generic T return AnswerStepHandler<T> without a cast.
+// Urban zone's eager, guaranteed-loaded situational data (see ADR-0015), mirroring
+// demo's/renewable-energy's context shape.
+export type UrbanZoneStepHandlerContext = {
+  siteData: SiteCreationData;
+};
+
+export type UrbanZoneStepParams = StepHandlerParams<UrbanZoneStepHandlerContext, AnswersByStep>;
+
+export type UrbanZoneAnswerStepHandler<K extends SchematizedAnswerStepId> =
+  GenericAnswerStepHandler<
+    UrbanZoneSiteCreationStep,
+    UrbanZoneStepHandlerContext,
+    AnswersByStep,
+    K
+  >;
+
+export type InfoStepHandler = GenericInfoStepHandler<
+  UrbanZoneSiteCreationStep,
+  UrbanZoneSummaryStep | UrbanZoneIntroductionStep,
+  UrbanZoneStepHandlerContext,
+  AnswersByStep
+>;
+
+// Correlated mapped type: each key K maps to UrbanZoneAnswerStepHandler<K>.
+// Lookups with a generic T return UrbanZoneAnswerStepHandler<T> without a cast.
 type AnswerStepHandlerMap = {
-  [K in SchematizedAnswerStepId]: AnswerStepHandler<K>;
+  [K in SchematizedAnswerStepId]: UrbanZoneAnswerStepHandler<K>;
 };
 
 export const answerStepHandlers: AnswerStepHandlerMap = {
@@ -73,9 +109,11 @@ export const answerStepHandlers: AnswerStepHandlerMap = {
 };
 
 // General-purpose registry for navigation and info step lookups.
-export type UrbanZoneStepHandlerRegistry = Record<
+export type UrbanZoneStepHandlerRegistry = GenericStepHandlerRegistry<
   UrbanZoneSiteCreationStep,
-  InfoStepHandler | AnswerStepHandler<SchematizedAnswerStepId>
+  UrbanZoneSummaryStep | UrbanZoneIntroductionStep,
+  UrbanZoneStepHandlerContext,
+  AnswersByStep
 >;
 
 export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {

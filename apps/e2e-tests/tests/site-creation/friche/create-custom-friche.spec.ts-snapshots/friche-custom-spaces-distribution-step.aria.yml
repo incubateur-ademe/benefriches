@@ -1,0 +1,35 @@
+- main:
+  - heading "Quelle superficie font les différents espaces ?" [level=2]
+  - group "Sélection mode de saisie":
+    - text: ""
+    - radio "%" [checked]
+    - text: "%"
+    - radio "㎡"
+    - text: ㎡
+  - text: Bâtiments Bâtiments à usage industriel, commercial, d'habitation...
+  - textbox "Bâtiments Bâtiments à usage industriel, commercial, d'habitation..."
+  - text: "% Sols imperméabilisés Parking ou voirie bitumée, dalle en béton…"
+  - textbox "Sols imperméabilisés Parking ou voirie bitumée, dalle en béton…"
+  - text: "% Sols perméables minéraux Parking ou voirie en gravier, sol semi-perméable, sol nu..."
+  - textbox "Sols perméables minéraux Parking ou voirie en gravier, sol semi-perméable, sol nu..."
+  - text: "% Sols enherbés et arbustifs Pelouse, haies ou arbustes plantés"
+  - textbox "Sols enherbés et arbustifs Pelouse, haies ou arbustes plantés"
+  - text: "% Total de toutes les surfaces"
+  - paragraph: /\d+% manquants/
+  - textbox /Total de toutes les surfaces \d+% manquants/ [disabled] [invalid]
+  - text: "%"
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider" [disabled]
+  - text: 💡 La surface totale du site est de
+  - strong: /\d+\s\d+ ㎡/
+  - text: .
+  - region "Chart. Highcharts interactive chart.":
+    - heading "Chart" [level=6]
+    - text: Pie chart with 1 slice.
+    - button "View as data table, Chart"
+    - img "Interactive chart":
+      - img /Non assigné, \d+,\d+\. Superficie\./
+    - text: End of interactive chart.

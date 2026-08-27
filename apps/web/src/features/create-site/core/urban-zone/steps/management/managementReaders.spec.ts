@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { UrbanZoneStepContext } from "../../stepHandler.type";
+import type { UrbanZoneStepHandlerContext, UrbanZoneStepParams } from "../../stepHandlerRegistry";
 import type { UrbanZoneStepsState } from "../../urbanZoneSteps";
 import {
   getFullTimeJobs,
@@ -16,9 +16,9 @@ import {
 const makeContext = (
   stepsState: UrbanZoneStepsState,
   surfaceArea?: number,
-): UrbanZoneStepContext => ({
-  siteData: { surfaceArea } as UrbanZoneStepContext["siteData"],
-  stepsState,
+): UrbanZoneStepParams => ({
+  context: { siteData: { surfaceArea } as UrbanZoneStepHandlerContext["siteData"] },
+  answers: stepsState,
 });
 
 describe("getManagerStructureType", () => {

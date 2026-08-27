@@ -1,0 +1,34 @@
+- main:
+  - heading "De quel type d'exploitation agricole s'agit-il ?" [level=2]
+  - heading "Culture" [level=4]
+  - group:
+    - radio "Grandes cultures de céréales et oléagineux"
+    - text: Grandes cultures de céréales et oléagineux
+    - radio "Grandes cultures légumières"
+    - text: Grandes cultures légumières
+    - radio "Maraîchage"
+    - text: Maraîchage
+    - radio "Fleurs et horticulture diverses"
+    - text: Fleurs et horticulture diverses
+    - radio "Viticulture"
+    - text: Viticulture
+    - radio "Fruits et autres cultures permanentes"
+    - text: Fruits et autres cultures permanentes
+  - heading "Élevage" [level=4]
+  - group:
+    - radio "Élevage bovin"
+    - text: Élevage bovin
+    - radio "Élevage porcin"
+    - text: Élevage porcin
+    - radio "Élevage de volailles et granivores"
+    - text: Élevage de volailles et granivores
+    - radio "Élevage ovin et caprin"
+    - text: Élevage ovin et caprin
+  - heading "Autre" [level=4]
+  - radio "Polyculture / polyélevage"
+  - text: Polyculture / polyélevage
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider" [disabled]

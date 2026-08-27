@@ -14,6 +14,20 @@ export const PARCEL_TYPE_DESCRIPTIONS: Record<UrbanZoneLandParcelType, string> =
   RESERVED_SURFACE: "Vouée à être viabilisée",
 };
 
+const PARCEL_TYPE_DE_ARTICLES: Record<UrbanZoneLandParcelType, string> = {
+  COMMERCIAL_ACTIVITY_AREA: "de la",
+  PUBLIC_SPACES: "des",
+  SERVICED_SURFACE: "de la",
+  RESERVED_SURFACE: "de la",
+};
+
+/** Returns the parcel type label prefixed with the matching "de" article, e.g. "de la surface d'activité", "des espaces publics" */
+export const getLandParcelTypeLabelWithDeArticle = (
+  parcelType: UrbanZoneLandParcelType,
+): string => {
+  return `${PARCEL_TYPE_DE_ARTICLES[parcelType]} ${PARCEL_TYPE_LABELS[parcelType].toLowerCase()}`;
+};
+
 const PARCEL_TYPE_COLORS: Record<UrbanZoneLandParcelType, string> = {
   COMMERCIAL_ACTIVITY_AREA: "#137FEB",
   PUBLIC_SPACES: "#B0BED9",

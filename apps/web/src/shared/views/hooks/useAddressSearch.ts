@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import type {
   AddressSearchGateway,
@@ -20,12 +20,21 @@ interface UseAddressSearchResult {
 export function useAddressSearch(
   gateway: AddressSearchGateway,
   addressType?: AddressType,
+  initialSearchText = "",
 ): UseAddressSearchResult {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(initialSearchText);
+  // the initial text comes from an already selected address: no need to search for it
+  const hasUserTypedRef = useRef(false);
   const debouncedSearchText = useDebounce(searchText, SEARCH_DEBOUNCE_DELAY_IN_MS);
   const [cache, setCache] = useState(new Map<string, AddressWithBanId[]>());
 
+  const updateSearchText = useCallback((text: string) => {
+    hasUserTypedRef.current = true;
+    setSearchText(text);
+  }, []);
+
   useEffect(() => {
+    if (!hasUserTypedRef.current) return;
     if (debouncedSearchText.length <= MIN_SEARCH_LENGTH) return;
     if (cache.has(debouncedSearchText)) return;
 
@@ -36,7 +45,7 @@ export function useAddressSearch(
 
   return {
     searchText,
-    setSearchText,
+    setSearchText: updateSearchText,
     suggestions: cache.get(debouncedSearchText) ?? [],
   };
 }

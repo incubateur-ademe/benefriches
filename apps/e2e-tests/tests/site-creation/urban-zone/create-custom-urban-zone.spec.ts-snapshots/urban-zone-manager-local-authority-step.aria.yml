@@ -1,0 +1,12 @@
+- main:
+  - heading "Qui est le gestionnaire de la zone commerciale ?" [level=2]
+  - group:
+    - radio "Un gestionnaire de parc d'activité"
+    - text: Un gestionnaire de parc d'activité
+    - radio "Une collectivité"
+    - text: Une collectivité
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Passer" [disabled]

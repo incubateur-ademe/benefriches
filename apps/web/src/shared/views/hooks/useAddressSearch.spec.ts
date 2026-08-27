@@ -173,4 +173,42 @@ describe("useAddressSearch", () => {
     expect(search).toHaveBeenCalledTimes(2);
     expect(result.current.suggestions).toEqual([addressMont]);
   });
+
+  it("starts with the initial search text without searching for it", async () => {
+    const search = vi.fn().mockResolvedValue([]);
+    const gateway: AddressSearchGateway = { search };
+
+    const { result } = renderHook(() =>
+      useAddressSearch(gateway, undefined, "1 rue de la Paix, Paris"),
+    );
+
+    expect(result.current.searchText).toBe("1 rue de la Paix, Paris");
+
+    await act(async () => {
+      vi.advanceTimersByTime(DEBOUNCE_DELAY);
+    });
+
+    expect(search).not.toHaveBeenCalled();
+  });
+
+  it("searches normally once the user edits the initial search text", async () => {
+    const addressMont = createAddress({ value: "Montrouge" });
+    const search = vi.fn().mockResolvedValue([addressMont]);
+    const gateway: AddressSearchGateway = { search };
+
+    const { result } = renderHook(() =>
+      useAddressSearch(gateway, undefined, "1 rue de la Paix, Paris"),
+    );
+
+    act(() => {
+      result.current.setSearchText("Montr");
+    });
+
+    await act(async () => {
+      vi.advanceTimersByTime(DEBOUNCE_DELAY);
+    });
+
+    expect(search).toHaveBeenCalledWith("Montr", { type: undefined });
+    expect(result.current.suggestions).toEqual([addressMont]);
+  });
 });

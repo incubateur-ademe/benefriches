@@ -11,7 +11,7 @@ import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNume
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import { PARCEL_TYPE_LABELS } from "../landParcelTypeMetadata";
+import { getLandParcelTypeLabelWithDeArticle } from "../landParcelTypeMetadata";
 
 export type FormValues = {
   buildingsFloorSurfaceArea: number;
@@ -38,14 +38,14 @@ function LandParcelBuildingsFloorAreaForm({
     },
   });
 
-  const parcelLabel = PARCEL_TYPE_LABELS[currentParcelType];
+  const parcelLabel = getLandParcelTypeLabelWithDeArticle(currentParcelType);
 
   return (
     <WizardFormLayout
-      title={`Surface de plancher des bâtiments de la ${parcelLabel.toLowerCase()}`}
+      title={`Surface de plancher des bâtiments ${parcelLabel}`}
       instructions={
         <FormInfo>
-          Pour rappel, la surface au sol des bâtiments est de $
+          Pour rappel, la surface au sol des bâtiments est de{" "}
           {formatSurfaceArea(buildingsFootprintSurfaceArea)}
         </FormInfo>
       }

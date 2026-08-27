@@ -1,0 +1,11 @@
+- main:
+  - heading "Quelle est la superficie totale de l'exploitation ?" [level=2]
+  - text: Superficie totale *
+  - textbox "Superficie totale *"
+  - text: ㎡
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Suivant" [disabled]
+  - text: 📏 Pourquoi renseigner la superficie ?L’ampleur des impacts sera fonction de la superficie de la friche.

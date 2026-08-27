@@ -1,7 +1,7 @@
 import type { UrbanZoneLandParcelType } from "shared";
 
 import { getSelectedParcelTypes, ReadStateHelper } from "../../stateHelpers";
-import type { AnswerStepHandler } from "../../stepHandler.type";
+import type { UrbanZoneAnswerStepHandler } from "../../stepHandlerRegistry";
 import {
   PARCEL_STEP_IDS,
   getNextParcelType,
@@ -16,13 +16,13 @@ type BuildingsFloorAreaStepId<P extends UrbanZoneLandParcelType> =
 
 export function createParcelSoilsDistributionHandler<P extends UrbanZoneLandParcelType>(
   parcelType: P,
-): AnswerStepHandler<SoilsDistributionStepId<P>> {
+): UrbanZoneAnswerStepHandler<SoilsDistributionStepId<P>> {
   const parcelStepIds = getParcelStepIds(parcelType);
 
   return {
     stepId: parcelStepIds.soilsDistribution,
 
-    getNextStepId(context, answers?) {
+    getNextStepId(params, answers?) {
       const hasBuildingsInSoils = answers
         ? Object.keys(answers.soilsDistribution).includes("BUILDINGS")
         : false;
@@ -31,7 +31,7 @@ export function createParcelSoilsDistributionHandler<P extends UrbanZoneLandParc
         return parcelStepIds.buildingsFloorArea;
       }
 
-      const selectedTypes = getSelectedParcelTypes(context.stepsState);
+      const selectedTypes = getSelectedParcelTypes(params.answers);
       const nextType = getNextParcelType(selectedTypes, parcelType);
       if (nextType) {
         return getParcelStepIds(nextType).soilsDistribution;
@@ -39,23 +39,20 @@ export function createParcelSoilsDistributionHandler<P extends UrbanZoneLandParc
       return "URBAN_ZONE_SOILS_SUMMARY";
     },
 
-    getPreviousStepId(context) {
-      const selectedTypes = getSelectedParcelTypes(context.stepsState);
+    getPreviousStepId(params) {
+      const selectedTypes = getSelectedParcelTypes(params.answers);
       const prevType = getPreviousParcelType(selectedTypes, parcelType);
       if (prevType) {
         const prevStepIds = getParcelStepIds(prevType);
-        const prevStep = ReadStateHelper.getStep(
-          context.stepsState,
-          prevStepIds.buildingsFloorArea,
-        );
+        const prevStep = ReadStateHelper.getStep(params.answers, prevStepIds.buildingsFloorArea);
         return prevStep?.completed ? prevStepIds.buildingsFloorArea : prevStepIds.soilsDistribution;
       }
       return "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION";
     },
 
-    getDefaultAnswers(context) {
+    getDefaultAnswers(params) {
       const stepState = ReadStateHelper.getDefaultAnswers(
-        context.stepsState,
+        params.answers,
         parcelStepIds.soilsDistribution,
       );
       return stepState;
@@ -65,14 +62,14 @@ export function createParcelSoilsDistributionHandler<P extends UrbanZoneLandParc
 
 export function createParcelBuildingsFloorAreaHandler<P extends UrbanZoneLandParcelType>(
   parcelType: P,
-): AnswerStepHandler<BuildingsFloorAreaStepId<P>> {
+): UrbanZoneAnswerStepHandler<BuildingsFloorAreaStepId<P>> {
   const stepIds = getParcelStepIds(parcelType);
 
   return {
     stepId: stepIds.buildingsFloorArea,
 
-    getNextStepId(context) {
-      const selectedTypes = getSelectedParcelTypes(context.stepsState);
+    getNextStepId(params) {
+      const selectedTypes = getSelectedParcelTypes(params.answers);
       const nextType = getNextParcelType(selectedTypes, parcelType);
       if (nextType) {
         return getParcelStepIds(nextType).soilsDistribution;
@@ -84,9 +81,9 @@ export function createParcelBuildingsFloorAreaHandler<P extends UrbanZoneLandPar
       return stepIds.soilsDistribution;
     },
 
-    getDefaultAnswers(context) {
+    getDefaultAnswers(params) {
       const stepState = ReadStateHelper.getDefaultAnswers(
-        context.stepsState,
+        params.answers,
         stepIds.buildingsFloorArea,
       );
       return stepState;

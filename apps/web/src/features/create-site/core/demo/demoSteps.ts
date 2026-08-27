@@ -36,14 +36,6 @@ export type AnswersByStep = {
   [K in SchematizedAnswerStepId]: z.infer<(typeof answersByStepSchemas)[K]>;
 };
 
-export type DemoStepsState = Partial<{
-  [K in SchematizedAnswerStepId]: {
-    completed: boolean;
-    payload?: AnswersByStep[K];
-    defaultValues?: AnswersByStep[K];
-  };
-}>;
-
 const DEMO_STEP_HANDLER_STEPS_SET: ReadonlySet<string> = new Set([
   ...INTRODUCTION_STEPS,
   ...SUMMARY_STEPS,

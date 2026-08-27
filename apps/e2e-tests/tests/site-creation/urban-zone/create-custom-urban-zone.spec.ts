@@ -28,6 +28,9 @@ test.describe("site creation - urban zone - custom mode", () => {
 
     // --- land parcels ---
     await siteCreationPage.expectStepperCurrentStep("Surfaces foncières");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "urban-zone-custom-land-parcels-selection-step.aria.yml",
+    );
     await urbanZoneSiteCreationPage.selectLandParcels([
       "COMMERCIAL_ACTIVITY_AREA",
       "PUBLIC_SPACES",
@@ -40,6 +43,9 @@ test.describe("site creation - urban zone - custom mode", () => {
     // --- soils ---
     await siteCreationPage.expectStepperCurrentStep("Sols et espaces");
     await urbanZoneSiteCreationPage.goToNextStep(); // soils and spaces introduction
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "urban-zone-custom-soils-distribution-step.aria.yml",
+    );
     await urbanZoneSiteCreationPage.fillSoilsDistributionForCurrentParcel({
       BUILDINGS: 8_000,
       IMPERMEABLE_SOILS: 4_000,
@@ -59,6 +65,9 @@ test.describe("site creation - urban zone - custom mode", () => {
     await siteCreationPage.expectStepperCurrentStep("Pollution");
     await siteCreationPage.goToNextStep(); // contamination introduction
     await siteCreationPage.expectStepTitle("Les sols de la zone sont-ils pollués ?");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "urban-zone-custom-contamination-step.aria.yml",
+    );
     await urbanZoneSiteCreationPage.selectSoilsContamination("yes", 3000);
 
     // --- management ---
@@ -66,6 +75,9 @@ test.describe("site creation - urban zone - custom mode", () => {
     await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
     await siteCreationPage.goToNextStep(); // management introduction
     await siteCreationPage.expectStepTitle("Qui est le gestionnaire de la zone commerciale ?");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "urban-zone-manager-activity-park-step.aria.yml",
+    );
     await urbanZoneSiteCreationPage.selectManager("activity_park_manager");
     await siteCreationPage.expectStepTitle(
       "Quelle est l'emprise foncière des locaux commerciaux vacants ou en friche ?",
@@ -114,6 +126,9 @@ test.describe("site creation - urban zone - custom mode", () => {
     await urbanZoneSiteCreationPage.expectFinalSummary();
     await urbanZoneSiteCreationPage.expectFinalSummaryManagerLabel(
       "Gestionnaire de parc d'activité",
+    );
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "urban-zone-manager-activity-park-final-summary-step.aria.yml",
     );
     await urbanZoneSiteCreationPage.createSite();
     await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Chartres");
@@ -189,6 +204,9 @@ test.describe("site creation - urban zone - custom mode", () => {
     await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
     await siteCreationPage.goToNextStep(); // management introduction
     await siteCreationPage.expectStepTitle("Qui est le gestionnaire de la zone commerciale ?");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "urban-zone-no-vacant-premises-manager-step.aria.yml",
+    );
     await urbanZoneSiteCreationPage.selectManager("activity_park_manager");
     await siteCreationPage.expectStepTitle(
       "Quelle est l'emprise foncière des locaux commerciaux vacants ou en friche ?",
@@ -228,6 +246,9 @@ test.describe("site creation - urban zone - custom mode", () => {
     await urbanZoneSiteCreationPage.expectFinalSummary();
     await urbanZoneSiteCreationPage.expectFinalSummaryManagerLabel(
       "Gestionnaire de parc d'activité",
+    );
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "urban-zone-no-vacant-premises-final-summary-step.aria.yml",
     );
     await urbanZoneSiteCreationPage.createSite();
     await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Sans Vacants");
@@ -299,6 +320,9 @@ test.describe("site creation - urban zone - custom mode", () => {
     await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
     await siteCreationPage.goToNextStep(); // management introduction
     await siteCreationPage.expectStepTitle("Qui est le gestionnaire de la zone commerciale ?");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "urban-zone-manager-local-authority-step.aria.yml",
+    );
     await urbanZoneSiteCreationPage.selectManager("local_authority", "municipality");
     await siteCreationPage.expectStepTitle(
       "Quelle est l'emprise foncière des locaux commerciaux vacants ou en friche ?",
@@ -330,6 +354,9 @@ test.describe("site creation - urban zone - custom mode", () => {
     // --- summary and creation ---
     await urbanZoneSiteCreationPage.expectFinalSummary();
     await urbanZoneSiteCreationPage.expectFinalSummaryManagerLabel("Mairie de Chartres");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "urban-zone-manager-local-authority-final-summary-step.aria.yml",
+    );
     await urbanZoneSiteCreationPage.createSite();
     await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Collectivite");
 

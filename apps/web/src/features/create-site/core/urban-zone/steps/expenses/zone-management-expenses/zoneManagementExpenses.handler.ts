@@ -1,4 +1,4 @@
-import type { AnswerStepHandler } from "../../../stepHandler.type";
+import type { UrbanZoneAnswerStepHandler } from "../../../stepHandlerRegistry";
 import { hasVacantPremises } from "../../management/managementReaders";
 
 export const ZoneManagementExpensesHandler = {
@@ -8,10 +8,10 @@ export const ZoneManagementExpensesHandler = {
     return "URBAN_ZONE_ZONE_MANAGEMENT_INCOME";
   },
 
-  getPreviousStepId(context) {
-    if (hasVacantPremises(context)) {
+  getPreviousStepId(params) {
+    if (hasVacantPremises(params)) {
       return "URBAN_ZONE_VACANT_PREMISES_EXPENSES";
     }
     return "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION";
   },
-} satisfies AnswerStepHandler<"URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES">;
+} satisfies UrbanZoneAnswerStepHandler<"URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES">;

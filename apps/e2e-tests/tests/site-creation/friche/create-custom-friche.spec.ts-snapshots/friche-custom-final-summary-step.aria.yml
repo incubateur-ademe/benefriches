@@ -1,0 +1,82 @@
+- main:
+  - heading "Récapitulatif du site" [level=2]
+  - heading "📍 Localisation" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Adresse du site
+  - term: /Sendere \d+ Blajan/
+  - heading "🌾️ Sols" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Superficie totale du site
+  - term:
+    - strong: /\d+\s\d+ ㎡/
+  - button "Menu"
+  - region "Chart. Highcharts interactive chart.":
+    - heading "Chart" [level=3]
+    - text: Pie chart with 4 slices.
+    - button "View as data table, Chart"
+    - img "Interactive chart":
+      - img /Bâtiments, \d+,\d+\. Superficie\./
+      - img /Sols enherbés et arbustifs, \d+,\d+\. Superficie\./
+      - img /Sols imperméabilisés, \d+,\d+\. Superficie\./
+      - img /Sols perméables minéraux, \d+,\d+\. Superficie\./
+    - text: End of interactive chart.
+  - definition: Bâtiments
+  - term: /3\s\d+ ㎡/
+  - definition: Sols imperméabilisés
+  - term: /2\s\d+ ㎡/
+  - definition: Sols perméables minéraux
+  - term: /3\s\d+ ㎡/
+  - definition: Sols enherbés et arbustifs
+  - term: /2\s\d+ ㎡/
+  - heading "☣️ Pollution" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Superficie polluée
+  - term: /5\s\d+ ㎡/
+  - heading "💥 Accidents" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Accidents survenus sur le site depuis 5 ans
+  - term:
+    - strong: Aucun
+  - heading "⚙️ Gestion et sécurisation de la friche" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Propriétaire actuel
+  - term: Mairie de Blajan
+  - definition:
+    - strong: Dépenses annuelles de la friche
+  - term: /\d+\s\d+ €/
+  - definition:
+    - strong: Gestion du site
+  - term
+  - definition: Entretien du site
+  - term: /\d+\s\d+ €/
+  - definition: Taxe foncière
+  - term: /8\s\d+ €/
+  - definition: Autre dépenses de gestion du site
+  - term: 0 €
+  - definition:
+    - strong: Sécurisation du site
+  - term
+  - definition: Gardiennage
+  - term: /\d+\s\d+ €/
+  - definition: Débarras de dépôt sauvage
+  - term: /\d+ €/
+  - definition: Autres frais de sécurisation
+  - term: 0 €
+  - heading "✍ Dénomination" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Type de friche
+  - term: Friche industrielle
+  - definition:
+    - strong: Nom du site
+  - term: Friche industrielle de Blajan
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Suivant"

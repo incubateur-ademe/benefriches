@@ -1,5 +1,5 @@
 import { ReadStateHelper } from "../../stateHelpers";
-import type { UrbanZoneStepContext } from "../../stepHandler.type";
+import type { UrbanZoneStepParams } from "../../stepHandlerRegistry";
 import type { UrbanZoneStepsState } from "../../urbanZoneSteps";
 
 export function getManagerStructureType(
@@ -34,15 +34,15 @@ export function getFullTimeJobs(stepsState: UrbanZoneStepsState): number | undef
     ?.fullTimeJobs;
 }
 
-export function isActivityParkManager(context: UrbanZoneStepContext): boolean {
-  return getManagerStructureType(context.stepsState) === "activity_park_manager";
+export function isActivityParkManager(params: UrbanZoneStepParams): boolean {
+  return getManagerStructureType(params.answers) === "activity_park_manager";
 }
 
-export function isLocalAuthority(context: UrbanZoneStepContext): boolean {
-  return getManagerStructureType(context.stepsState) === "local_authority";
+export function isLocalAuthority(params: UrbanZoneStepParams): boolean {
+  return getManagerStructureType(params.answers) === "local_authority";
 }
 
-export function hasVacantPremises(context: UrbanZoneStepContext): boolean {
-  const footprint = getVacantPremisesFootprintSurfaceArea(context.stepsState);
+export function hasVacantPremises(params: UrbanZoneStepParams): boolean {
+  const footprint = getVacantPremisesFootprintSurfaceArea(params.answers);
   return footprint !== undefined && footprint > 0;
 }

@@ -10,7 +10,7 @@ import { getColorForSoilType } from "@/shared/core/soils";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 
 import { useSurfaceAreaInputMode } from "../../useSurfaceAreaInputMode";
-import { PARCEL_TYPE_LABELS } from "../landParcelTypeMetadata";
+import { getLandParcelTypeLabelWithDeArticle } from "../landParcelTypeMetadata";
 
 type FormValues = SoilsDistribution;
 
@@ -41,11 +41,11 @@ function LandParcelSoilsDistributionForm({
   onBack,
 }: Props) {
   const { inputMode, onInputModeChange } = useSurfaceAreaInputMode();
-  const parcelLabel = PARCEL_TYPE_LABELS[currentParcelType];
+  const parcelLabel = getLandParcelTypeLabelWithDeArticle(currentParcelType);
 
   return (
     <SurfaceAreaDistributionForm
-      title={`Quelle est la superficie des différents espaces au sein de la ${parcelLabel.toLowerCase()} ?`}
+      title={`Quelle est la superficie des différents espaces au sein ${parcelLabel} ?`}
       totalSurfaceArea={totalSurfaceArea}
       maxErrorMessage="La superficie ne peut pas être supérieure à la superficie totale de la parcelle"
       initialValues={initialValues}

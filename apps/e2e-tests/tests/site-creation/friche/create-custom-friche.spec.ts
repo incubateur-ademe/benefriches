@@ -19,10 +19,12 @@ test.describe("site creation - friche - custom mode", () => {
 
     await siteCreationPage.expectStepTitle("De quel type de friche s'agit-il ?");
     await siteCreationPage.expectStepperCurrentStep("Introduction");
+    await siteCreationPage.expectWizardAriaSnapshot("friche-custom-activity-step.aria.yml");
     await siteCreationPage.selectFricheActivity("INDUSTRY");
 
     await siteCreationPage.expectStepTitle("Où est située la friche ?");
     await siteCreationPage.expectStepperCurrentStep("Adresse");
+    await siteCreationPage.expectWizardAriaSnapshot("friche-custom-address-step.aria.yml");
     await siteCreationPage.fillAddress("Sendere Blajan");
 
     await siteCreationPage.expectStepTitle(
@@ -43,6 +45,7 @@ test.describe("site creation - friche - custom mode", () => {
 
     await siteCreationPage.expectStepTitle("Quels types d'espaces y a-t-il sur la friche ?");
     await siteCreationPage.expectStepperCurrentStep("Espaces");
+    await siteCreationPage.expectWizardAriaSnapshot("friche-custom-spaces-selection-step.aria.yml");
     await siteCreationPage.selectSpaces([
       "BUILDINGS",
       "IMPERMEABLE_SOILS",
@@ -58,6 +61,9 @@ test.describe("site creation - friche - custom mode", () => {
 
     await siteCreationPage.expectStepTitle("Quelle superficie font les différents espaces ?");
     await siteCreationPage.expectStepperCurrentStep("Espaces");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "friche-custom-spaces-distribution-step.aria.yml",
+    );
     await siteCreationPage.fillSpacesDistribution({
       BUILDINGS: 3000,
       IMPERMEABLE_SOILS: 2000,
@@ -79,6 +85,9 @@ test.describe("site creation - friche - custom mode", () => {
 
     await siteCreationPage.expectStepTitle("Les sols de la friche sont-ils pollués ?");
     await siteCreationPage.expectStepperCurrentStep("Pollution et accidents");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "friche-custom-soils-contamination-step.aria.yml",
+    );
     await siteCreationPage.selectSoilsContamination("yes", 5000);
 
     await siteCreationPage.expectStepTitle("Des accidents peuvent survenir sur la friche");
@@ -97,6 +106,7 @@ test.describe("site creation - friche - custom mode", () => {
 
     await siteCreationPage.expectStepTitle("Qui est le propriétaire actuel de la friche");
     await siteCreationPage.expectStepperCurrentStep("Gestion du site");
+    await siteCreationPage.expectWizardAriaSnapshot("friche-custom-owner-step.aria.yml");
     await siteCreationPage.selectOwnerLocalAuthority("Mairie de Blajan");
 
     await siteCreationPage.expectStepTitle("La friche est-elle encore louée ?");
@@ -127,6 +137,7 @@ test.describe("site creation - friche - custom mode", () => {
 
     await siteCreationPage.expectStepperCurrentStep("Récapitulatif");
     await siteCreationPage.expectFinalSummary();
+    await siteCreationPage.expectWizardAriaSnapshot("friche-custom-final-summary-step.aria.yml");
 
     await siteCreationPage.expectCreationSuccessWithDataInList([
       ["Superficie totale du site", asSquareMeters(10_000)],

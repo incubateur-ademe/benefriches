@@ -26,7 +26,7 @@ import SiteFeaturesModalView from "./SiteFeaturesContainer";
 type Props = {
   siteId: string;
   siteName: string;
-  loadingState: "idle" | "loading" | "success" | "error";
+  loadingState: "idle" | "dirty" | "loading" | "success" | "error";
   onErrorBack: () => void;
   siteAddress: {
     postCode?: string;
@@ -70,6 +70,7 @@ function SiteCreationResult({
 }: Props) {
   switch (loadingState) {
     case "idle":
+    case "dirty":
       return null;
     case "loading":
       return <LoadingSpinner loadingText="Création du site, veuillez patienter..." />;

@@ -1,0 +1,14 @@
+- main:
+  - heading "Les sols de la friche sont-ils pollués ?" [level=2]
+  - group:
+    - radio "Oui"
+    - text: Oui
+    - radio "Non / Ne sait pas"
+    - text: Non / Ne sait pas
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Passer"
+  - text: 💡 Quid de l’amiante ?
+  - paragraph: La présence d’amiante des bâtiments n'est pas à considérer ici, mais un poste de dépense "désamiantage" pourra être alloué dans la partie “création d'un projet sur la friche”

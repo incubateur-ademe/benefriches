@@ -19,10 +19,16 @@ test.describe("site creation - agricultural operation - custom mode", () => {
 
     await siteCreationPage.expectStepTitle("De quel type d'exploitation agricole s'agit-il");
     await siteCreationPage.expectStepperCurrentStep("Introduction");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-custom-activity-step.aria.yml",
+    );
     await siteCreationPage.selectAgriculturalActivity("CEREALS_AND_OILSEEDS_CULTIVATION");
 
     await siteCreationPage.expectStepTitle("Où est située l'exploitation agricole ?");
     await siteCreationPage.expectStepperCurrentStep("Adresse");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-custom-address-step.aria.yml",
+    );
     await siteCreationPage.fillAddress("Chartres");
 
     await siteCreationPage.expectStepTitle(
@@ -43,6 +49,9 @@ test.describe("site creation - agricultural operation - custom mode", () => {
 
     await siteCreationPage.expectStepTitle("Quels types d'espaces y a-t-il sur l'exploitation ?");
     await siteCreationPage.expectStepperCurrentStep("Espaces");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-custom-spaces-selection-step.aria.yml",
+    );
     await siteCreationPage.selectSpaces([
       "CULTIVATION",
       "PRAIRIE_GRASS",
@@ -58,6 +67,9 @@ test.describe("site creation - agricultural operation - custom mode", () => {
 
     await siteCreationPage.expectStepTitle("Quelle superficie font les différents espaces ?");
     await siteCreationPage.expectStepperCurrentStep("Espaces");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-custom-spaces-distribution-step.aria.yml",
+    );
     await siteCreationPage.fillSpacesDistribution({
       CULTIVATION: 20_000,
       PRAIRIE_GRASS: 2_500,
@@ -79,6 +91,9 @@ test.describe("site creation - agricultural operation - custom mode", () => {
 
     await siteCreationPage.expectStepTitle("Qui est le propriétaire actuel de l'exploitation");
     await siteCreationPage.expectStepperCurrentStep("Gestion du site");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-custom-owner-step.aria.yml",
+    );
     await siteCreationPage.selectOwnerLocalAuthority("Mairie de Chartres");
 
     await siteCreationPage.expectStepTitle("L'exploitation agricole est-elle encore en activité ?");
@@ -97,6 +112,9 @@ test.describe("site creation - agricultural operation - custom mode", () => {
 
     await siteCreationPage.expectStepTitle("Dépenses annuelles liées à l'exploitation");
     await siteCreationPage.expectStepperCurrentStep("Gestion du site");
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-custom-expenses-step.aria.yml",
+    );
     await siteCreationPage.submitExpenses();
 
     await siteCreationPage.expectStepTitle("Recettes annuelles liées à l'exploitation");
@@ -119,6 +137,9 @@ test.describe("site creation - agricultural operation - custom mode", () => {
 
     await siteCreationPage.expectStepperCurrentStep("Récapitulatif");
     await siteCreationPage.expectFinalSummary();
+    await siteCreationPage.expectWizardAriaSnapshot(
+      "agricultural-operation-custom-final-summary-step.aria.yml",
+    );
 
     await siteCreationPage.expectCreationSuccessWithDataInList([
       ["Superficie totale du site", asSquareMeters(25_000)],

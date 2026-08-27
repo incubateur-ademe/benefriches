@@ -1,0 +1,19 @@
+- main:
+  - heading "Quels types de surfaces foncières y a-t-il au sein de la zone commerciale ?" [level=2]
+  - checkbox "Surface d'activité Surface cédée, déjà construite ou imperméabilisée":
+    - checkbox "Surface d'activité Surface cédée, déjà construite ou imperméabilisée"
+    - text: ""
+  - checkbox "Espaces publics Voirie, espaces verts...":
+    - checkbox "Espaces publics Voirie, espaces verts..."
+    - text: ""
+  - checkbox "Surface viabilisée Vouée à être construite":
+    - checkbox "Surface viabilisée Vouée à être construite"
+    - text: ""
+  - checkbox "Surface réservée Vouée à être viabilisée":
+    - checkbox "Surface réservée Vouée à être viabilisée"
+    - text: ""
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Valider" [disabled]

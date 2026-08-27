@@ -1,0 +1,66 @@
+- main:
+  - heading "Récapitulatif du site" [level=2]
+  - heading "📍 Localisation" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Adresse du site
+  - term: Chartres
+  - heading "🌾️ Sols" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Superficie totale du site
+  - term:
+    - strong: /\d+\s\d+ ㎡/
+  - button "Menu"
+  - region "Chart. Highcharts interactive chart.":
+    - heading "Chart" [level=3]
+    - text: Pie chart with 4 slices.
+    - button "View as data table, Chart"
+    - img "Interactive chart":
+      - img /Bâtiments, \d+,\d+\. Superficie\./
+      - img /Culture, \d+,\d+\. Superficie\./
+      - img /Prairie arbustive, \d+,\d+\. Superficie\./
+      - img /Prairie herbacée, \d+,\d+\. Superficie\./
+    - text: End of interactive chart.
+  - definition: Culture
+  - term: /\d+\s\d+ ㎡/
+  - definition: Prairie herbacée
+  - term: /2\s\d+ ㎡/
+  - definition: Prairie arbustive
+  - term: /1\s\d+ ㎡/
+  - definition: Bâtiments
+  - term: /1\s\d+ ㎡/
+  - heading "⚙️ Exploitation du site" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Propriétaire actuel
+  - term: Mairie de Chartres
+  - definition:
+    - strong: Dépenses annuelles du site
+  - term: /3\s\d+ €/
+  - definition: Taxes et impôts
+  - term: /\d+ €/
+  - definition: Autres charges d'exploitation
+  - term: /3\s\d+ €/
+  - definition:
+    - strong: Recettes annuelles du site
+  - term: /4\s\d+ €/
+  - definition: Vente de produits
+  - term: /3\s\d+ €/
+  - definition: Subventions
+  - term: /\d+ €/
+  - definition: Autres revenus d'exploitation
+  - term: /\d+ €/
+  - heading "✍ Dénomination" [level=3]
+  - button "Fermer la section"
+  - definition:
+    - strong: Type d'exploitation
+  - term: Grandes cultures de céréales et oléagineux
+  - definition:
+    - strong: Nom du site
+  - term: Exploitation céréalière de Chartres
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Suivant"
