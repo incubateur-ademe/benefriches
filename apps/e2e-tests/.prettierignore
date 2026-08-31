@@ -2,3 +2,4 @@ playwright-report/
 test-results/
 node_modules/
 .git/
+**/*.spec.ts-snapshots/**
