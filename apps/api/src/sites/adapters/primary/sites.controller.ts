@@ -15,7 +15,6 @@ import {
   InternalServerErrorException,
 } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
-import { Throttle } from "@nestjs/throttler";
 import { ZodValidationPipe } from "nestjs-zod";
 import {
   createCustomSiteDtoSchema,
@@ -197,7 +196,6 @@ export class SitesController {
   }
 
   @Get("friches/cout-inaction")
-  @Throttle({ default: { ttl: 60_000, limit: 60 } })
   @ApiOperation({ summary: "Calcul du coût d'inaction d'une friche" })
   @ApiQuery({ name: "code_insee", example: "49007" })
   @ApiQuery({ name: "superficie_m2", example: 5000, type: Number })

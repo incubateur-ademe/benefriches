@@ -89,7 +89,6 @@ export class StatsController {
   }
 
   @Get("")
-  @Throttle({ default: { ttl: 60_000, limit: 60 } })
   @ApiOperation({ summary: "Statistiques publiques" })
   @ApiQuery({ name: "periodicity", enum: ["day", "week", "month", "year"], required: false })
   @ApiQuery({ name: "since", type: "number", required: false })

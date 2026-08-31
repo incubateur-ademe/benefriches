@@ -58,8 +58,10 @@ class DomainEventsHandler {
     ThrottlerModule.forRoot({
       throttlers: [
         {
-          ttl: 60000,
-          limit: 10,
+          // 5 requests/second per IP. Public API consumers pacing their calls
+          // (a short sleep between requests) stay under this comfortably.
+          ttl: 1000,
+          limit: 5,
         },
       ],
       // Disable rate limiting in tests so suites firing many requests from the
