@@ -67,10 +67,31 @@
       "mcp__context7__resolve-library-id",
       "mcp__context7__query-docs"
     ],
-    "deny": ["Bash(git commit --no-verify)"],
+    "deny": [
+      "Bash(git commit --no-verify)",
+      "Read(.env)",
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Read(**/.env.production)",
+      "Edit(**/.env)",
+      "Edit(**/.env.local)",
+      "Edit(**/.env.production)"
+    ],
     "ask": []
   },
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-env-read.sh",
+            "statusMessage": "Checking command for .env access..."
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
