@@ -7,7 +7,11 @@ export const registerAddressHandlers = (
   builder: ActionReducerMapBuilder<SiteCreationState>,
 ): void => {
   builder.addCase(addressStepCompleted, (state, action) => {
+    const answeredStep = state.stepsHistory.at(-1);
     state.siteData.address = action.payload.address;
+    if (answeredStep) {
+      state.answers[answeredStep] = { address: action.payload.address };
+    }
     if (state.siteData.nature === "URBAN_ZONE") {
       state.stepsHistory.push("URBAN_ZONE_LAND_PARCELS_INTRODUCTION");
     } else {
@@ -17,9 +21,11 @@ export const registerAddressHandlers = (
 };
 
 export const revertAddressStep = (state: SiteCreationState): void => {
-  switch (state.stepsHistory.at(-1)) {
+  const revertedStep = state.stepsHistory.at(-1);
+  switch (revertedStep) {
     case "ADDRESS":
       state.siteData.address = undefined;
+      state.answers[revertedStep] = undefined;
       break;
   }
 };

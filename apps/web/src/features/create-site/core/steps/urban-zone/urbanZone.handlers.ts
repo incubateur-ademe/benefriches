@@ -11,8 +11,12 @@ export const registerUrbanZoneHandlers = (
 ): void => {
   builder
     .addCase(urbanZoneTypeCompleted, (state, action) => {
+      const answeredStep = state.stepsHistory.at(-1);
       state.siteData.urbanZoneType = action.payload.urbanZoneType;
       state.createMode = "custom";
+      if (answeredStep) {
+        state.answers[answeredStep] = { urbanZoneType: action.payload.urbanZoneType };
+      }
       state.stepsHistory.push("ADDRESS");
     })
     .addCase(urbanZoneLandParcelsIntroductionCompleted, (state) => {
@@ -21,9 +25,11 @@ export const registerUrbanZoneHandlers = (
 };
 
 export const revertUrbanZoneStep = (state: SiteCreationState): void => {
-  switch (state.stepsHistory.at(-1)) {
+  const revertedStep = state.stepsHistory.at(-1);
+  switch (revertedStep) {
     case "URBAN_ZONE_TYPE":
       state.siteData.urbanZoneType = undefined;
+      state.answers[revertedStep] = undefined;
       break;
   }
 };

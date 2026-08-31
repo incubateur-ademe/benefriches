@@ -11,6 +11,7 @@ import { stepReverted } from "./actions/revert.action";
 import { demoSiteCreationReducer } from "./demo/demoFactory";
 import { AnswersByStep, DemoAnswerStepId, DemoSiteCreationStep } from "./demo/demoSteps";
 import { DemoStepsState } from "./demo/stepHandlerRegistry";
+import type { SiteCreationAnswers } from "./siteCreationAnswers";
 import { revertAddressStep, registerAddressHandlers } from "./steps/address/address.handlers";
 import {
   revertContaminationAndAccidentsStep,
@@ -133,6 +134,11 @@ const INITIAL_DEMO_STATE: DemoSiteCreationState = {
 export type SiteCreationState = {
   stepsHistory: SiteCreationStep[];
   siteData: SiteCreationData;
+  /**
+   * Per-step answers for the legacy custom flow, maintained in parallel with `siteData`.
+   * See `siteCreationAnswers.ts` — the two representations must always agree.
+   */
+  answers: SiteCreationAnswers;
   createMode?: "express" | "custom";
   useMutability?: boolean;
   skipUseMutability: boolean;
@@ -159,6 +165,7 @@ export const getInitialState = (props?: {
       yearlyExpenses: [],
       yearlyIncomes: [],
     },
+    answers: {},
     surfaceAreaInputMode: "percentage",
     urbanZone: INITIAL_URBAN_ZONE_STATE,
     demo: INITIAL_DEMO_STATE,

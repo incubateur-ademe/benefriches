@@ -26,12 +26,19 @@ export const registerIntroductionHandlers = (
     })
     .addCase(isFricheCompleted, (state, action) => {
       const { isFriche } = action.payload;
+      const answeredStep = state.stepsHistory.at(-1);
 
       state.siteData.isFriche = isFriche;
       if (isFriche) {
         state.siteData.nature = "FRICHE";
+        if (answeredStep) {
+          state.answers[answeredStep] = { isFriche, nature: "FRICHE" };
+        }
         state.stepsHistory.push(state.skipUseMutability ? "FRICHE_ACTIVITY" : "USE_MUTABILITY");
       } else {
+        if (answeredStep) {
+          state.answers[answeredStep] = { isFriche };
+        }
         state.stepsHistory.push("SITE_NATURE");
       }
     })
@@ -42,7 +49,11 @@ export const registerIntroductionHandlers = (
       }
     })
     .addCase(siteNatureCompleted, (state, action) => {
+      const answeredStep = state.stepsHistory.at(-1);
       state.siteData.nature = action.payload.nature;
+      if (answeredStep) {
+        state.answers[answeredStep] = { nature: action.payload.nature };
+      }
       switch (action.payload.nature) {
         case "FRICHE":
           state.stepsHistory.push("FRICHE_ACTIVITY");
@@ -67,12 +78,15 @@ export const registerIntroductionHandlers = (
 };
 
 export const revertIntroductionStep = (state: SiteCreationState): void => {
-  switch (state.stepsHistory.at(-1)) {
+  const revertedStep = state.stepsHistory.at(-1);
+  switch (revertedStep) {
     case "IS_FRICHE":
       state.siteData.isFriche = undefined;
+      state.answers[revertedStep] = undefined;
       break;
     case "SITE_NATURE":
       state.siteData.nature = undefined;
+      state.answers[revertedStep] = undefined;
       break;
   }
 };

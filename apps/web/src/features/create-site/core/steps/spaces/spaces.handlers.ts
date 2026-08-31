@@ -32,7 +32,11 @@ export const registerSpacesHandlers = (
       state.stepsHistory.push("SURFACE_AREA");
     })
     .addCase(siteSurfaceAreaStepCompleted, (state, action) => {
+      const answeredStep = state.stepsHistory.at(-1);
       state.siteData.surfaceArea = action.payload.surfaceArea;
+      if (answeredStep) {
+        state.answers[answeredStep] = { surfaceArea: action.payload.surfaceArea };
+      }
       if (state.createMode === "custom" && state.siteData.nature === "URBAN_ZONE") {
         // Enter the step handler system for urban zone
         state.urbanZone.currentStep = state.urbanZone.firstSequenceStep;
@@ -42,8 +46,12 @@ export const registerSpacesHandlers = (
       }
     })
     .addCase(spacesKnowledgeStepCompleted, (state, action) => {
+      const answeredStep = state.stepsHistory.at(-1);
       state.siteData.spacesDistributionKnowledge = action.payload.knowsSpaces;
       if (action.payload.knowsSpaces) {
+        if (answeredStep) {
+          state.answers[answeredStep] = { spacesDistributionKnowledge: action.payload.knowsSpaces };
+        }
         state.stepsHistory.push("SPACES_SELECTION");
       } else {
         const surfaceArea = state.siteData.surfaceArea ?? 0;
@@ -74,10 +82,18 @@ export const registerSpacesHandlers = (
             break;
         }
         state.siteData.soils = typedObjectKeys(state.siteData.soilsDistribution ?? {});
+        if (answeredStep) {
+          state.answers[answeredStep] = {
+            spacesDistributionKnowledge: action.payload.knowsSpaces,
+            soilsDistribution: state.siteData.soilsDistribution,
+            soils: state.siteData.soils,
+          };
+        }
         state.stepsHistory.push("SOILS_SUMMARY");
       }
     })
     .addCase(soilsSelectionStepCompleted, (state, action) => {
+      const answeredStep = state.stepsHistory.at(-1);
       const { soils } = action.payload;
       state.siteData.soils = soils;
 
@@ -87,12 +103,22 @@ export const registerSpacesHandlers = (
         soilsDistribution.addSurface(soils[0] as SoilType, totalSurface);
 
         state.siteData.soilsDistribution = soilsDistribution.toJSON();
+        if (answeredStep) {
+          state.answers[answeredStep] = {
+            soils,
+            soilsDistribution: state.siteData.soilsDistribution,
+          };
+        }
         state.stepsHistory.push("SOILS_CARBON_STORAGE");
       } else {
+        if (answeredStep) {
+          state.answers[answeredStep] = { soils };
+        }
         state.stepsHistory.push("SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE");
       }
     })
     .addCase(spacesSurfaceAreaDistributionKnowledgeCompleted, (state, action) => {
+      const answeredStep = state.stepsHistory.at(-1);
       const { knowsSurfaceAreas } = action.payload;
       if (!knowsSurfaceAreas) {
         const totalSurface = state.siteData.surfaceArea ?? 0;
@@ -105,11 +131,21 @@ export const registerSpacesHandlers = (
         state.siteData.soilsDistribution = soilsDistribution;
       }
       state.siteData.spacesDistributionKnowledge = knowsSurfaceAreas;
+      if (answeredStep) {
+        state.answers[answeredStep] = {
+          spacesDistributionKnowledge: knowsSurfaceAreas,
+          ...(!knowsSurfaceAreas ? { soilsDistribution: state.siteData.soilsDistribution } : {}),
+        };
+      }
       const nextStep = knowsSurfaceAreas ? "SPACES_SURFACE_AREA_DISTRIBUTION" : "SOILS_SUMMARY";
       state.stepsHistory.push(nextStep);
     })
     .addCase(soilsDistributionStepCompleted, (state, action) => {
+      const answeredStep = state.stepsHistory.at(-1);
       state.siteData.soilsDistribution = action.payload.distribution;
+      if (answeredStep) {
+        state.answers[answeredStep] = { soilsDistribution: action.payload.distribution };
+      }
       state.stepsHistory.push("SOILS_SUMMARY");
     })
     .addCase(soilsSummaryStepCompleted, (state) => {
@@ -127,23 +163,29 @@ export const registerSpacesHandlers = (
 };
 
 export const revertSpacesStep = (state: SiteCreationState): void => {
-  switch (state.stepsHistory.at(-1)) {
+  const revertedStep = state.stepsHistory.at(-1);
+  switch (revertedStep) {
     case "SURFACE_AREA":
       state.siteData.surfaceArea = undefined;
+      state.answers[revertedStep] = undefined;
       break;
     case "SPACES_KNOWLEDGE":
       state.siteData.soils = [];
       state.siteData.soilsDistribution = undefined;
+      state.answers[revertedStep] = undefined;
       break;
     case "SPACES_SELECTION":
       state.siteData.soils = [];
+      state.answers[revertedStep] = undefined;
       break;
     case "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE":
       state.siteData.spacesDistributionKnowledge = undefined;
       state.siteData.soilsDistribution = undefined;
+      state.answers[revertedStep] = undefined;
       break;
     case "SPACES_SURFACE_AREA_DISTRIBUTION":
       state.siteData.soilsDistribution = undefined;
+      state.answers[revertedStep] = undefined;
       break;
   }
 };
