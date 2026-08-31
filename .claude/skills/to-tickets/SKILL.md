@@ -68,17 +68,17 @@ The end-to-end behavior this ticket makes work, from the user's perspective — 
 
 ## Acceptance criteria
 
+Write each criterion as one thing that is either true or false about the finished code.
+Whoever reviews the work rules on these one at a time, so a compound or vague criterion
+becomes a vague verdict.
+
 - [ ] Criterion 1
 - [ ] Criterion 2
-
-## Validation
-
-The commands that must pass before this ticket is done, per the `Required Tests by Change Type` table in the root `CLAUDE.md` (e.g. `pnpm --filter api test`, `pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test`, or the full `pnpm --filter shared build && pnpm -r typecheck && pnpm -r test` sequence if `shared` is touched).
 
 </ticket-template>
 
 ### 6. Hand off
 
-Report the published ticket paths. Work the **frontier**: the next actionable ticket is any one whose blockers are all `done`. Implementing a ticket is a separate step, not part of this skill — when the user is ready, point them at the ticket file and let them (or an agent) drive it following this project's normal TDD/testing conventions (`.claude/rules/testing.md`), gated by the `code-reviewer` skill and `/generate-commit-message` before committing.
+Report the published ticket paths. Work the **frontier**: the next actionable ticket is any one whose blockers are all `done`.
 
 Do not close, modify, or reorder existing ticket files beyond what the user approved in step 4.
