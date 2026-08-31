@@ -1,191 +1,117 @@
-import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 import {
   getSoilsDistributionForAgriculturalOperationActivity,
   getSoilsDistributionForFricheActivity,
   getSoilsDistributionForNaturalAreaType,
   SoilsDistribution,
-  SoilType,
   SurfaceAreaDistribution,
   typedObjectKeys,
 } from "shared";
 
 import { splitEvenly } from "@/shared/core/split-number/splitNumber";
 
-import type { SiteCreationState } from "../../createSite.reducer";
-import {
-  siteSurfaceAreaStepCompleted,
-  soilsCarbonStorageStepCompleted,
-  soilsDistributionStepCompleted,
-  soilsIntroductionStepCompleted,
-  soilsSelectionStepCompleted,
-  soilsSummaryStepCompleted,
-  spacesSurfaceAreaDistributionKnowledgeCompleted,
-  spacesKnowledgeStepCompleted,
-  surfaceAreaInputModeUpdated,
-} from "./spaces.actions";
+import type { CustomAnswerStepHandler } from "../../custom/stepHandlerRegistry";
 
-export const registerSpacesHandlers = (
-  builder: ActionReducerMapBuilder<SiteCreationState>,
-): void => {
-  builder
-    .addCase(soilsIntroductionStepCompleted, (state) => {
-      state.stepsHistory.push("SURFACE_AREA");
-    })
-    .addCase(siteSurfaceAreaStepCompleted, (state, action) => {
-      const answeredStep = state.stepsHistory.at(-1);
-      state.siteData.surfaceArea = action.payload.surfaceArea;
-      if (answeredStep) {
-        state.answers[answeredStep] = { surfaceArea: action.payload.surfaceArea };
-      }
-      if (state.createMode === "custom" && state.siteData.nature === "URBAN_ZONE") {
-        // Enter the step handler system for urban zone
-        state.urbanZone.currentStep = state.urbanZone.firstSequenceStep;
-        state.stepsHistory.push(state.urbanZone.firstSequenceStep);
-      } else if (state.createMode === "custom") {
-        state.stepsHistory.push("SPACES_KNOWLEDGE");
-      }
-    })
-    .addCase(spacesKnowledgeStepCompleted, (state, action) => {
-      const answeredStep = state.stepsHistory.at(-1);
-      state.siteData.spacesDistributionKnowledge = action.payload.knowsSpaces;
-      if (action.payload.knowsSpaces) {
-        if (answeredStep) {
-          state.answers[answeredStep] = { spacesDistributionKnowledge: action.payload.knowsSpaces };
-        }
-        state.stepsHistory.push("SPACES_SELECTION");
-      } else {
-        const surfaceArea = state.siteData.surfaceArea ?? 0;
+export const spacesHandlers = {
+  // Cross-flow hand-off: when the site is an urban zone, the surface area is the last step this
+  // registry owns — the wizard-form engine hands control to the urban-zone sub-flow right after
+  // (see custom.reducer.ts's stepCompletionRequested case). getNextStepId still needs to return
+  // a value known to this registry, so it self-targets; this "next" is never actually shown —
+  // the reducer overrides `currentStep` immediately after applying this step's changes.
+  SURFACE_AREA: {
+    stepId: "SURFACE_AREA",
+    getNextStepId: ({ context }) =>
+      context.siteData.nature === "URBAN_ZONE" ? "SURFACE_AREA" : "SPACES_KNOWLEDGE",
+  } satisfies CustomAnswerStepHandler<"SURFACE_AREA">,
 
-        switch (state.siteData.nature) {
-          case "FRICHE":
-            state.siteData.soilsDistribution = getSoilsDistributionForFricheActivity(
+  SPACES_KNOWLEDGE: {
+    stepId: "SPACES_KNOWLEDGE",
+    getNextStepId: (_params, answers) =>
+      answers?.knowsSpaces ? "SPACES_SELECTION" : "SOILS_SUMMARY",
+    updateAnswersMiddleware: ({ context }, answers) => {
+      const knowsSpaces = answers.knowsSpaces;
+      if (knowsSpaces) {
+        return { knowsSpaces };
+      }
+
+      const surfaceArea = context.siteData.surfaceArea ?? 0;
+      let soilsDistribution: SoilsDistribution | undefined;
+
+      switch (context.siteData.nature) {
+        case "FRICHE":
+          soilsDistribution = getSoilsDistributionForFricheActivity(
+            surfaceArea,
+            context.siteData.fricheActivity ?? "OTHER",
+          );
+          break;
+        case "AGRICULTURAL_OPERATION":
+          if (context.siteData.agriculturalOperationActivity) {
+            soilsDistribution = getSoilsDistributionForAgriculturalOperationActivity(
               surfaceArea,
-              state.siteData.fricheActivity ?? "OTHER",
+              context.siteData.agriculturalOperationActivity,
             );
-            break;
-          case "AGRICULTURAL_OPERATION":
-            if (state.siteData.agriculturalOperationActivity) {
-              state.siteData.soilsDistribution =
-                getSoilsDistributionForAgriculturalOperationActivity(
-                  surfaceArea,
-                  state.siteData.agriculturalOperationActivity,
-                );
-            }
-            break;
-          case "NATURAL_AREA":
-            if (state.siteData.naturalAreaType) {
-              state.siteData.soilsDistribution = getSoilsDistributionForNaturalAreaType(
-                surfaceArea,
-                state.siteData.naturalAreaType,
-              );
-            }
-            break;
-        }
-        state.siteData.soils = typedObjectKeys(state.siteData.soilsDistribution ?? {});
-        if (answeredStep) {
-          state.answers[answeredStep] = {
-            spacesDistributionKnowledge: action.payload.knowsSpaces,
-            soilsDistribution: state.siteData.soilsDistribution,
-            soils: state.siteData.soils,
-          };
-        }
-        state.stepsHistory.push("SOILS_SUMMARY");
+          }
+          break;
+        case "NATURAL_AREA":
+          if (context.siteData.naturalAreaType) {
+            soilsDistribution = getSoilsDistributionForNaturalAreaType(
+              surfaceArea,
+              context.siteData.naturalAreaType,
+            );
+          }
+          break;
       }
-    })
-    .addCase(soilsSelectionStepCompleted, (state, action) => {
-      const answeredStep = state.stepsHistory.at(-1);
-      const { soils } = action.payload;
-      state.siteData.soils = soils;
 
-      if (soils.length === 1) {
-        const totalSurface = state.siteData.surfaceArea ?? 0;
-        const soilsDistribution = new SurfaceAreaDistribution();
-        soilsDistribution.addSurface(soils[0] as SoilType, totalSurface);
+      return {
+        knowsSpaces,
+        soilsDistribution,
+        soils: typedObjectKeys(soilsDistribution ?? {}),
+      };
+    },
+  } satisfies CustomAnswerStepHandler<"SPACES_KNOWLEDGE">,
 
-        state.siteData.soilsDistribution = soilsDistribution.toJSON();
-        if (answeredStep) {
-          state.answers[answeredStep] = {
-            soils,
-            soilsDistribution: state.siteData.soilsDistribution,
-          };
-        }
-        state.stepsHistory.push("SOILS_CARBON_STORAGE");
-      } else {
-        if (answeredStep) {
-          state.answers[answeredStep] = { soils };
-        }
-        state.stepsHistory.push("SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE");
+  SPACES_SELECTION: {
+    stepId: "SPACES_SELECTION",
+    getNextStepId: (_params, answers) =>
+      (answers?.soils.length ?? 0) === 1
+        ? "SOILS_CARBON_STORAGE"
+        : "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE",
+    updateAnswersMiddleware: ({ context }, answers) => {
+      if (answers.soils.length !== 1) {
+        return { soils: answers.soils };
       }
-    })
-    .addCase(spacesSurfaceAreaDistributionKnowledgeCompleted, (state, action) => {
-      const answeredStep = state.stepsHistory.at(-1);
-      const { knowsSurfaceAreas } = action.payload;
-      if (!knowsSurfaceAreas) {
-        const totalSurface = state.siteData.surfaceArea ?? 0;
-        const soils = state.siteData.soils;
-        const surfaceSplit = splitEvenly(totalSurface, soils.length);
-        const soilsDistribution: SoilsDistribution = {};
-        soils.forEach((soilType, index) => {
-          soilsDistribution[soilType] = surfaceSplit[index];
-        });
-        state.siteData.soilsDistribution = soilsDistribution;
-      }
-      state.siteData.spacesDistributionKnowledge = knowsSurfaceAreas;
-      if (answeredStep) {
-        state.answers[answeredStep] = {
-          spacesDistributionKnowledge: knowsSurfaceAreas,
-          ...(!knowsSurfaceAreas ? { soilsDistribution: state.siteData.soilsDistribution } : {}),
-        };
-      }
-      const nextStep = knowsSurfaceAreas ? "SPACES_SURFACE_AREA_DISTRIBUTION" : "SOILS_SUMMARY";
-      state.stepsHistory.push(nextStep);
-    })
-    .addCase(soilsDistributionStepCompleted, (state, action) => {
-      const answeredStep = state.stepsHistory.at(-1);
-      state.siteData.soilsDistribution = action.payload.distribution;
-      if (answeredStep) {
-        state.answers[answeredStep] = { soilsDistribution: action.payload.distribution };
-      }
-      state.stepsHistory.push("SOILS_SUMMARY");
-    })
-    .addCase(soilsSummaryStepCompleted, (state) => {
-      state.stepsHistory.push("SOILS_CARBON_STORAGE");
-    })
-    .addCase(soilsCarbonStorageStepCompleted, (state) => {
-      const nextStep = state.siteData.isFriche
-        ? "SOILS_CONTAMINATION_INTRODUCTION"
-        : "MANAGEMENT_INTRODUCTION";
-      state.stepsHistory.push(nextStep);
-    })
-    .addCase(surfaceAreaInputModeUpdated, (state, action) => {
-      state.surfaceAreaInputMode = action.payload;
-    });
-};
 
-export const revertSpacesStep = (state: SiteCreationState): void => {
-  const revertedStep = state.stepsHistory.at(-1);
-  switch (revertedStep) {
-    case "SURFACE_AREA":
-      state.siteData.surfaceArea = undefined;
-      state.answers[revertedStep] = undefined;
-      break;
-    case "SPACES_KNOWLEDGE":
-      state.siteData.soils = [];
-      state.siteData.soilsDistribution = undefined;
-      state.answers[revertedStep] = undefined;
-      break;
-    case "SPACES_SELECTION":
-      state.siteData.soils = [];
-      state.answers[revertedStep] = undefined;
-      break;
-    case "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE":
-      state.siteData.spacesDistributionKnowledge = undefined;
-      state.siteData.soilsDistribution = undefined;
-      state.answers[revertedStep] = undefined;
-      break;
-    case "SPACES_SURFACE_AREA_DISTRIBUTION":
-      state.siteData.soilsDistribution = undefined;
-      state.answers[revertedStep] = undefined;
-      break;
-  }
+      const totalSurface = context.siteData.surfaceArea ?? 0;
+      const distribution = new SurfaceAreaDistribution();
+      distribution.addSurface(answers.soils[0]!, totalSurface);
+
+      return { soils: answers.soils, soilsDistribution: distribution.toJSON() };
+    },
+  } satisfies CustomAnswerStepHandler<"SPACES_SELECTION">,
+
+  SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE: {
+    stepId: "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE",
+    getNextStepId: (_params, answers) =>
+      answers?.knowsSurfaceAreas ? "SPACES_SURFACE_AREA_DISTRIBUTION" : "SOILS_SUMMARY",
+    updateAnswersMiddleware: ({ context }, answers) => {
+      const { knowsSurfaceAreas } = answers;
+      if (knowsSurfaceAreas) {
+        return { knowsSurfaceAreas };
+      }
+
+      const totalSurface = context.siteData.surfaceArea ?? 0;
+      const soils = context.siteData.soils;
+      const surfaceSplit = splitEvenly(totalSurface, soils.length);
+      const soilsDistribution: SoilsDistribution = {};
+      soils.forEach((soilType, index) => {
+        soilsDistribution[soilType] = surfaceSplit[index];
+      });
+
+      return { knowsSurfaceAreas, soilsDistribution };
+    },
+  } satisfies CustomAnswerStepHandler<"SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE">,
+
+  SPACES_SURFACE_AREA_DISTRIBUTION: {
+    stepId: "SPACES_SURFACE_AREA_DISTRIBUTION",
+    getNextStepId: () => "SOILS_SUMMARY",
+  } satisfies CustomAnswerStepHandler<"SPACES_SURFACE_AREA_DISTRIBUTION">,
 };

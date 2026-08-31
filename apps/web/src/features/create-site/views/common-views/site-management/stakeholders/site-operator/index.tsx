@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import type { Tenant } from "@/features/create-site/core/siteFoncier.types";
 import type { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
-import { operatorStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
 import { selectSiteOperatorFormViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
 
 import SiteOperatorForm, { type FormValues } from "./SiteOperatorForm";
@@ -48,11 +50,16 @@ function SiteOperatorFormContainer() {
   }, [dispatch]);
 
   const onSubmit = (data: FormValues) => {
-    dispatch(operatorStepCompleted({ tenant: getTenant(data, localAuthoritiesList) }));
+    dispatch(
+      stepCompletionRequested({
+        stepId: "OPERATOR",
+        answers: { tenant: getTenant(data, localAuthoritiesList) },
+      }),
+    );
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(previousStepRequested());
   };
 
   return (

@@ -1,6 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import type { SiteCreationState } from "../createSite.reducer";
+import { deriveSiteDataFromCustomSteps } from "../custom/customSteps";
 import { urbanZoneFormActions } from "./urban-zone.actions";
 import { addUrbanZoneFormCasesToBuilder } from "./urbanZoneForm.reducer";
 
@@ -12,12 +13,18 @@ export const urbanZoneSiteCreationReducer = createReducer({} as SiteCreationStat
       stepChangesNextMode: "step_order",
       finalSummaryFallbackStep: "URBAN_ZONE_CREATION_RESULT",
       onPreviousStepFallback: (state) => {
-        if (state.stepsHistory.length > 1) {
-          state.stepsHistory = state.stepsHistory.slice(0, -1);
-        }
+        // Backing out of the urban-zone sub-flow's own first step hands control back to the
+        // custom engine's SURFACE_AREA step (where the hand-off happened) — see
+        // custom/customForm.reducer.ts.
+        state.customHandedOffToUrbanZone = false;
       },
     },
     selectForm: (state) => state.urbanZone,
-    buildContext: (state) => ({ siteData: state.siteData }),
+    buildContext: (state) => ({
+      siteData: deriveSiteDataFromCustomSteps(
+        { ...state.initialSiteData, isFriche: state.isFriche, nature: state.nature },
+        state.custom.steps,
+      ),
+    }),
   });
 });

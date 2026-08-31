@@ -3,6 +3,7 @@ import { type SoilsDistribution, type UrbanZoneLandParcelType, type UrbanZoneTyp
 
 import type { RootState } from "@/app/store/store";
 
+import { selectDerivedSiteData } from "../../../selectors/createSite.selectors";
 import { ReadStateHelper } from "../../stateHelpers";
 import {
   getFullTimeJobs,
@@ -33,10 +34,7 @@ export type UrbanZoneFinalSummaryViewData = {
 };
 
 export const selectUrbanZoneFinalSummaryViewData = createSelector(
-  [
-    (state: RootState) => state.siteCreation.urbanZone.steps,
-    (state: RootState) => state.siteCreation.siteData,
-  ],
+  [(state: RootState) => state.siteCreation.urbanZone.steps, selectDerivedSiteData],
   (steps, siteData): UrbanZoneFinalSummaryViewData => {
     const parcelSurfaceAreas =
       ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION")

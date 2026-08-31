@@ -24,7 +24,7 @@ export const demoSiteSaved = createAppAsyncThunk(
     const siteActivity = DEMO_SITE_ACTIVITY_SELECTION?.payload;
 
     const siteToCreate: CreateExpressSiteDto = createExpressSiteDtoSchema.parse({
-      id: siteCreation.siteData.id,
+      id: siteCreation.initialSiteData.id,
       surfaceArea: DEMO_SITE_SURFACE_AREA?.payload?.surfaceArea,
       address: DEMO_SITE_ADDRESS?.payload?.address,
       nature: DEMO_SITE_NATURE_SELECTION?.payload?.siteNature,

@@ -1,7 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import { selectSiteAccidentsData } from "@/features/create-site/core/selectors/createSite.selectors";
-import { fricheAccidentsStepCompleted } from "@/features/create-site/core/steps/contamination-and-accidents/contaminationAndAccidents.actions";
 
 import FricheAccidentsForm, { FormValues } from "./FricheAccidentsForm";
 
@@ -30,16 +32,23 @@ function FricheAccidentsFormContainer() {
     <FricheAccidentsForm
       initialValues={mapInitialValues(siteAccidentsData)}
       onSubmit={(data: FormValues) => {
-        const { hasRecentAccidents, ...dataRest } = data;
         dispatch(
-          fricheAccidentsStepCompleted({
-            hasRecentAccidents: hasRecentAccidents === "yes",
-            ...dataRest,
+          stepCompletionRequested({
+            stepId: "FRICHE_ACCIDENTS",
+            answers:
+              data.hasRecentAccidents === "yes"
+                ? {
+                    hasRecentAccidents: true,
+                    accidentsMinorInjuries: data.accidentsMinorInjuries,
+                    accidentsSevereInjuries: data.accidentsSevereInjuries,
+                    accidentsDeaths: data.accidentsDeaths,
+                  }
+                : { hasRecentAccidents: false },
           }),
         );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
     />
   );

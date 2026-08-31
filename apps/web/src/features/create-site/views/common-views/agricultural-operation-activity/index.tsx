@@ -1,23 +1,28 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { agriculturalOperationActivityCompleted } from "@/features/create-site/core/steps/site-activity/siteActivity.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
+import { selectDerivedSiteData } from "@/features/create-site/core/selectors/createSite.selectors";
 
 import AgriculturalOperationActivityForm, { FormValues } from "./AgriculturalOperationActivityForm";
 
 export default function AgriculturalOperationActivityFormContainer() {
   const dispatch = useAppDispatch();
   const activity = useAppSelector(
-    (state) => state.siteCreation.siteData.agriculturalOperationActivity,
+    (state) => selectDerivedSiteData(state).agriculturalOperationActivity,
   );
 
   return (
     <AgriculturalOperationActivityForm
       initialValues={activity ? { activity } : undefined}
       onSubmit={(data: FormValues) => {
-        dispatch(agriculturalOperationActivityCompleted(data));
+        dispatch(
+          stepCompletionRequested({ stepId: "AGRICULTURAL_OPERATION_ACTIVITY", answers: data }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
     />
   );

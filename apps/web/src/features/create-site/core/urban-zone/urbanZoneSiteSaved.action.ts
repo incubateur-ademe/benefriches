@@ -7,6 +7,7 @@ import {
 } from "@/features/create-site/core/createSiteGateway";
 import type { SiteCreationData } from "@/features/create-site/core/siteFoncier.types";
 
+import { deriveSiteDataFromCustomSteps } from "../custom/customSteps";
 import { ReadStateHelper, getSelectedParcelTypes } from "./stateHelpers";
 import { getExpensesAndIncomeSummaryViewData } from "./steps/expenses/expenses-summary/expensesAndIncomeSummary.selectors";
 import { getManagerName } from "./steps/management/managementReaders";
@@ -135,7 +136,15 @@ export const urbanZoneSiteSaved = createAppAsyncThunk(
   makeUrbanZoneActionType("saved"),
   async (_, { getState, extra }) => {
     const { siteCreation, currentUser } = getState();
-    const { siteData, urbanZone } = siteCreation;
+    const { urbanZone } = siteCreation;
+    const siteData = deriveSiteDataFromCustomSteps(
+      {
+        ...siteCreation.initialSiteData,
+        isFriche: siteCreation.isFriche,
+        nature: siteCreation.nature,
+      },
+      siteCreation.custom.steps,
+    );
 
     const siteToCreate: CustomSitePayload = customSiteSchema.parse({
       createdBy: currentUser.currentUser?.id,

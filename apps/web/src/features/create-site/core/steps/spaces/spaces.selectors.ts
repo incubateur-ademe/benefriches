@@ -16,6 +16,7 @@ import type {
 import { RootState } from "@/app/store/store";
 
 import {
+  selectDerivedSiteData,
   selectSiteNature,
   selectSiteSoils,
   selectSiteSurfaceArea,
@@ -47,8 +48,9 @@ type SiteSoilsDistributionViewData = {
 };
 
 export const selectSiteSoilsDistributionViewData = createSelector(
-  (state: RootState) => state.siteCreation,
-  ({ siteData, surfaceAreaInputMode }): SiteSoilsDistributionViewData => {
+  selectDerivedSiteData,
+  (state: RootState) => state.siteCreation.surfaceAreaInputMode,
+  (siteData, surfaceAreaInputMode): SiteSoilsDistributionViewData => {
     const siteSoils = siteData.soils;
     const siteSurfaceArea = siteData.surfaceArea ?? 0;
 
@@ -73,18 +75,17 @@ type SiteSoilsSummaryViewData = {
 };
 
 export const selectSiteSoilsSummaryViewData = createSelector(
-  (state: RootState) => state.siteCreation,
-  (siteCreation): SiteSoilsSummaryViewData => {
+  selectDerivedSiteData,
+  (siteData): SiteSoilsSummaryViewData => {
     return {
-      totalSurfaceArea: siteCreation.siteData.surfaceArea ?? 0,
-      soilsDistribution: siteCreation.siteData.soilsDistribution ?? {},
-      wasSoilsDistributionAssignedByBenefriches:
-        siteCreation.siteData.spacesDistributionKnowledge === false,
-      siteNature: siteCreation.siteData.nature,
-      agriculturalOperationActivity: siteCreation.siteData.agriculturalOperationActivity,
-      fricheActivity: siteCreation.siteData.fricheActivity,
-      naturalAreaType: siteCreation.siteData.naturalAreaType,
-      urbanZoneType: siteCreation.siteData.urbanZoneType,
+      totalSurfaceArea: siteData.surfaceArea ?? 0,
+      soilsDistribution: siteData.soilsDistribution ?? {},
+      wasSoilsDistributionAssignedByBenefriches: siteData.spacesDistributionKnowledge === false,
+      siteNature: siteData.nature,
+      agriculturalOperationActivity: siteData.agriculturalOperationActivity,
+      fricheActivity: siteData.fricheActivity,
+      naturalAreaType: siteData.naturalAreaType,
+      urbanZoneType: siteData.urbanZoneType,
     };
   },
 );

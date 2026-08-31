@@ -1,135 +1,60 @@
-import {
-  expectNewCurrentStep,
-  expectSiteDataDiff,
-  expectStepReverted,
-  StoreBuilder,
-} from "../../../__tests__/creation-steps/testUtils";
-import { stepReverted } from "../../../actions/revert.action";
-import {
-  agriculturalOperationActivityCompleted,
-  fricheActivityStepCompleted,
-  naturalAreaTypeCompleted,
-} from "../siteActivity.actions";
+import { describe, expect, it } from "vitest";
+
+import { StoreBuilder, expectCurrentStep } from "../../../__tests__/creation-steps/testUtils";
+import { customFormActions } from "../../../custom/custom.actions";
 
 describe("Site creation: site activity steps", () => {
-  describe("AGRICULTURAL_OPERATION_ACTIVITY", () => {
-    it("goes to ADDRESS step when completed", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["AGRICULTURAL_OPERATION_ACTIVITY"])
-        .withCreationData({
-          isFriche: false,
-          nature: "AGRICULTURAL_OPERATION",
-        })
-        .build();
+  it("AGRICULTURAL_OPERATION_ACTIVITY: stores the activity and goes to ADDRESS", () => {
+    const store = new StoreBuilder().withCustomStep("AGRICULTURAL_OPERATION_ACTIVITY").build();
 
-      const initialRootState = store.getState();
+    store.dispatch(
+      customFormActions.stepCompletionRequested({
+        stepId: "AGRICULTURAL_OPERATION_ACTIVITY",
+        answers: { activity: "LARGE_VEGETABLE_CULTIVATION" },
+      }),
+    );
 
-      store.dispatch(
-        agriculturalOperationActivityCompleted({ activity: "LARGE_VEGETABLE_CULTIVATION" }),
-      );
+    expectCurrentStep(store, "ADDRESS");
+    expect(
+      store.getState().siteCreation.custom.steps.AGRICULTURAL_OPERATION_ACTIVITY?.payload,
+    ).toEqual({ activity: "LARGE_VEGETABLE_CULTIVATION" });
+  });
 
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "ADDRESS");
-      expectSiteDataDiff(initialRootState, newState, {
-        agriculturalOperationActivity: "LARGE_VEGETABLE_CULTIVATION",
-      });
-    });
-    it("goes to previous step and unsets agricultural operation activity when reverted", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["CREATE_MODE_SELECTION", "AGRICULTURAL_OPERATION_ACTIVITY"])
-        .withCreationData({
-          isFriche: false,
-          nature: "AGRICULTURAL_OPERATION",
-          agriculturalOperationActivity: "CATTLE_FARMING",
-        })
-        .build();
+  it("NATURAL_AREA_TYPE: stores the type and goes to ADDRESS", () => {
+    const store = new StoreBuilder().withCustomStep("NATURAL_AREA_TYPE").build();
 
-      const initialRootState = store.getState();
+    store.dispatch(
+      customFormActions.stepCompletionRequested({
+        stepId: "NATURAL_AREA_TYPE",
+        answers: { naturalAreaType: "PRAIRIE" },
+      }),
+    );
 
-      store.dispatch(stepReverted());
-
-      const newState = store.getState();
-      expectStepReverted(initialRootState, newState);
-      expectSiteDataDiff(initialRootState, newState, {
-        agriculturalOperationActivity: undefined,
-      });
+    expectCurrentStep(store, "ADDRESS");
+    expect(store.getState().siteCreation.custom.steps.NATURAL_AREA_TYPE?.payload).toEqual({
+      naturalAreaType: "PRAIRIE",
     });
   });
-  describe("NATURAL_AREA_TYPE", () => {
-    it("goes to ADDRESS step when completed", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["NATURAL_AREA_TYPE"])
-        .withCreationData({
-          isFriche: false,
-          nature: "NATURAL_AREA",
-        })
-        .build();
 
-      const initialRootState = store.getState();
+  it("FRICHE_ACTIVITY: stores the activity and goes to ADDRESS", () => {
+    const store = new StoreBuilder().withCustomStep("FRICHE_ACTIVITY").build();
 
-      store.dispatch(naturalAreaTypeCompleted({ naturalAreaType: "PRAIRIE" }));
+    store.dispatch(
+      customFormActions.stepCompletionRequested({
+        stepId: "FRICHE_ACTIVITY",
+        answers: "INDUSTRY",
+      }),
+    );
 
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "ADDRESS");
-      expectSiteDataDiff(initialRootState, newState, {
-        naturalAreaType: "PRAIRIE",
-      });
-    });
-    it("goes to previous step and unsets agricultural operation activity when reverted", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["CREATE_MODE_SELECTION", "NATURAL_AREA_TYPE"])
-        .withCreationData({
-          isFriche: false,
-          nature: "AGRICULTURAL_OPERATION",
-          naturalAreaType: "PRAIRIE",
-        })
-        .build();
-
-      const initialRootState = store.getState();
-
-      store.dispatch(stepReverted());
-
-      const newState = store.getState();
-      expectStepReverted(initialRootState, newState);
-      expectSiteDataDiff(initialRootState, newState, {
-        naturalAreaType: undefined,
-      });
-    });
+    expectCurrentStep(store, "ADDRESS");
+    expect(store.getState().siteCreation.custom.steps.FRICHE_ACTIVITY?.payload).toEqual("INDUSTRY");
   });
-  describe("FRICHE_ACTIVITY", () => {
-    describe("complete", () => {
-      it("goes to ADDRESS step and sets friche activity when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["FRICHE_ACTIVITY"]).build();
-        const initialRootState = store.getState();
 
-        store.dispatch(fricheActivityStepCompleted("INDUSTRY"));
+  it("FRICHE_ACTIVITY: going back leaves the custom engine (first step of the branch)", () => {
+    const store = new StoreBuilder().withCustomStep("FRICHE_ACTIVITY").build();
 
-        const newState = store.getState();
-        expectSiteDataDiff(initialRootState, newState, {
-          fricheActivity: "INDUSTRY",
-        });
-        expectNewCurrentStep(initialRootState, newState, "ADDRESS");
-      });
-    });
-    describe("revert", () => {
-      it("goes to previous step and unset friche activity", () => {
-        const store = new StoreBuilder()
-          .withStepsHistory(["IS_FRICHE", "FRICHE_ACTIVITY"])
-          .withCreationData({
-            isFriche: true,
-            fricheActivity: "BUILDING",
-          })
-          .build();
-        const initialRootState = store.getState();
+    store.dispatch(customFormActions.previousStepRequested());
 
-        store.dispatch(stepReverted());
-
-        const newState = store.getState();
-        expectSiteDataDiff(initialRootState, newState, {
-          fricheActivity: undefined,
-        });
-        expectStepReverted(initialRootState, newState);
-      });
-    });
+    expect(store.getState().siteCreation.customFlowStarted).toBe(false);
   });
 });

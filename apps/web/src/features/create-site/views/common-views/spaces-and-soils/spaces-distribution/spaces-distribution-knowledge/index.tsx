@@ -1,25 +1,29 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { spacesSurfaceAreaDistributionKnowledgeCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
+import { selectSiteNature } from "@/features/create-site/core/selectors/createSite.selectors";
 
 import SiteSpacesDistributionKnowledgeForm, {
   type FormValues,
 } from "./SiteSpacesDistributionKnowledgeForm";
 
 function SiteSpacesDistributionKnowledgeFormContainer() {
-  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
+  const siteNature = useAppSelector(selectSiteNature);
   const dispatch = useAppDispatch();
 
   const onSubmit = ({ knowsSurfaceAreas }: FormValues) => {
     dispatch(
-      spacesSurfaceAreaDistributionKnowledgeCompleted({
-        knowsSurfaceAreas: knowsSurfaceAreas === "yes",
+      stepCompletionRequested({
+        stepId: "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE",
+        answers: { knowsSurfaceAreas: knowsSurfaceAreas === "yes" },
       }),
     );
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(previousStepRequested());
   };
 
   return (

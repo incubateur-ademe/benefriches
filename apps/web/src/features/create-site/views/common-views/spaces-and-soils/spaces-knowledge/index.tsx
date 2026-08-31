@@ -1,20 +1,28 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { spacesKnowledgeStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
+import { selectSiteNature } from "@/features/create-site/core/selectors/createSite.selectors";
 
 import { SpacesKnowledgeForm } from "./SpacesKnowledgeForm";
 
 export default function SpacesKnowledgeFormContainer() {
   const dispatch = useAppDispatch();
-  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
+  const siteNature = useAppSelector(selectSiteNature);
 
   return (
     <SpacesKnowledgeForm
       onSubmit={(data) => {
-        dispatch(spacesKnowledgeStepCompleted({ knowsSpaces: data.knowsSpaces === "yes" }));
+        dispatch(
+          stepCompletionRequested({
+            stepId: "SPACES_KNOWLEDGE",
+            answers: { knowsSpaces: data.knowsSpaces === "yes" },
+          }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
       siteNature={siteNature}
     />

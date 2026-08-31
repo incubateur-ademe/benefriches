@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { soilsContaminationStepCompleted } from "@/features/create-site/core/steps/contamination-and-accidents/contaminationAndAccidents.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import { selectSoilContaminationFormViewData } from "@/features/create-site/core/steps/contamination-and-accidents/contaminationAndAccidents.selectors";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
@@ -29,11 +31,14 @@ function SoilContaminationFormController() {
       siteSurfaceArea={siteSurfaceArea ?? 0}
       onSubmit={({ hasContaminatedSoils, contaminatedSoilSurface }) => {
         dispatch(
-          soilsContaminationStepCompleted({ hasContaminatedSoils, contaminatedSoilSurface }),
+          stepCompletionRequested({
+            stepId: "SOILS_CONTAMINATION",
+            answers: { hasContaminatedSoils, contaminatedSoilSurface },
+          }),
         );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
     />
   );

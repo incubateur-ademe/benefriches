@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import type { LocalAuthority } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import type { Owner } from "@/features/create-site/core/siteFoncier.types";
 import type { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
-import { ownerStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
 import { selectSiteOwnerFormViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
 import type { UserStructure } from "@/features/onboarding/core/user";
 
@@ -103,14 +105,17 @@ function SiteOwnerFormContainer() {
 
   const onSubmit = (data: FormValues) => {
     dispatch(
-      ownerStepCompleted({
-        owner: convertFormValuesForStore(data, localAuthoritiesList, currentUserStructure),
+      stepCompletionRequested({
+        stepId: "OWNER",
+        answers: {
+          owner: convertFormValuesForStore(data, localAuthoritiesList, currentUserStructure),
+        },
       }),
     );
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(previousStepRequested());
   };
 
   useEffect(() => {

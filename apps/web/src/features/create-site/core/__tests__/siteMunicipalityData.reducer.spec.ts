@@ -227,8 +227,8 @@ describe("Site public authorities selectors", () => {
         ...defaultState,
         siteCreation: {
           ...defaultState.siteCreation,
-          siteData: {
-            ...defaultState.siteCreation.siteData,
+          initialSiteData: {
+            ...defaultState.siteCreation.initialSiteData,
             owner: {
               name: grenobleLocalAuthorities.epci.name,
               structureType: "epci",

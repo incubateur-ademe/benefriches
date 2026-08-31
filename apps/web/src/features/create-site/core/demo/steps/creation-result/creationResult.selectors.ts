@@ -69,7 +69,7 @@ export const selectDemoSiteCreationResultViewData = createSelector(
     siteActivity,
     siteFeaturesViewData,
   ): DemoSiteCreationResultViewData => ({
-    siteId: siteCreation.siteData.id,
+    siteId: siteCreation.initialSiteData.id,
     siteName: siteFeaturesViewData.siteFeatures?.name ?? "",
     saveState: siteCreation.demo.saveState,
     siteAddress,

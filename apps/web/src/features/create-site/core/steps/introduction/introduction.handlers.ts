@@ -1,5 +1,6 @@
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
+import type { SiteCreationCustomStep } from "../../createSite.reducer";
 import type { SiteCreationState } from "../../createSite.reducer";
 import { getInitialState } from "../../createSite.reducer";
 import {
@@ -10,6 +11,18 @@ import {
   siteCreationInitiated,
   siteNatureCompleted,
 } from "./introduction.actions";
+
+/**
+ * Hands the flow off from the pre-engine steps to the custom wizard-form engine's first step:
+ * seeds both `currentStep` and `firstSequenceStep` (the custom flow has four possible entry
+ * steps, one per nature — see createSite.reducer.ts) and flips `customFlowStarted`, which is
+ * what `selectCurrentStep` gates on.
+ */
+const enterCustomFlow = (state: SiteCreationState, firstStep: SiteCreationCustomStep): void => {
+  state.customFlowStarted = true;
+  state.custom.currentStep = firstStep;
+  state.custom.firstSequenceStep = firstStep;
+};
 
 export const registerIntroductionHandlers = (
   builder: ActionReducerMapBuilder<SiteCreationState>,
@@ -26,46 +39,38 @@ export const registerIntroductionHandlers = (
     })
     .addCase(isFricheCompleted, (state, action) => {
       const { isFriche } = action.payload;
-      const answeredStep = state.stepsHistory.at(-1);
-
-      state.siteData.isFriche = isFriche;
+      state.isFriche = isFriche;
       if (isFriche) {
-        state.siteData.nature = "FRICHE";
-        if (answeredStep) {
-          state.answers[answeredStep] = { isFriche, nature: "FRICHE" };
+        state.nature = "FRICHE";
+        if (state.skipUseMutability) {
+          enterCustomFlow(state, "FRICHE_ACTIVITY");
+        } else {
+          state.stepsHistory.push("USE_MUTABILITY");
         }
-        state.stepsHistory.push(state.skipUseMutability ? "FRICHE_ACTIVITY" : "USE_MUTABILITY");
       } else {
-        if (answeredStep) {
-          state.answers[answeredStep] = { isFriche };
-        }
         state.stepsHistory.push("SITE_NATURE");
       }
     })
     .addCase(mutabilityOrImpactsSelectionCompleted, (state, action) => {
       state.useMutability = action.payload.useMutability;
       if (!action.payload.useMutability) {
-        state.stepsHistory.push("FRICHE_ACTIVITY");
+        enterCustomFlow(state, "FRICHE_ACTIVITY");
       }
     })
     .addCase(siteNatureCompleted, (state, action) => {
-      const answeredStep = state.stepsHistory.at(-1);
-      state.siteData.nature = action.payload.nature;
-      if (answeredStep) {
-        state.answers[answeredStep] = { nature: action.payload.nature };
-      }
+      state.nature = action.payload.nature;
       switch (action.payload.nature) {
         case "FRICHE":
-          state.stepsHistory.push("FRICHE_ACTIVITY");
+          enterCustomFlow(state, "FRICHE_ACTIVITY");
           break;
         case "AGRICULTURAL_OPERATION":
-          state.stepsHistory.push("AGRICULTURAL_OPERATION_ACTIVITY");
+          enterCustomFlow(state, "AGRICULTURAL_OPERATION_ACTIVITY");
           break;
         case "NATURAL_AREA":
-          state.stepsHistory.push("NATURAL_AREA_TYPE");
+          enterCustomFlow(state, "NATURAL_AREA_TYPE");
           break;
         case "URBAN_ZONE":
-          state.stepsHistory.push("URBAN_ZONE_TYPE");
+          enterCustomFlow(state, "URBAN_ZONE_TYPE");
           break;
         default:
           break;
@@ -75,18 +80,4 @@ export const registerIntroductionHandlers = (
       state.createMode = action.payload.createMode;
       state.stepsHistory.push("INTRODUCTION");
     });
-};
-
-export const revertIntroductionStep = (state: SiteCreationState): void => {
-  const revertedStep = state.stepsHistory.at(-1);
-  switch (revertedStep) {
-    case "IS_FRICHE":
-      state.siteData.isFriche = undefined;
-      state.answers[revertedStep] = undefined;
-      break;
-    case "SITE_NATURE":
-      state.siteData.nature = undefined;
-      state.answers[revertedStep] = undefined;
-      break;
-  }
 };

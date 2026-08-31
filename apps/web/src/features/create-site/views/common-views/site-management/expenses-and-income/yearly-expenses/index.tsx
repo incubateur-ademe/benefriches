@@ -1,7 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import type { SiteYearlyExpensesConfig } from "@/features/create-site/core/steps/site-management/expenses.functions";
-import { yearlyExpensesStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
 import { selectSiteYearlyExpensesViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
 
 import SiteYearlyExpensesForm, { type FormValues } from "./SiteYearlyExpensesForm";
@@ -29,11 +31,11 @@ function SiteYearlyExpensesFormContainer() {
       hasTenant={hasTenant}
       initialValues={getInitialValues(expensesBaseconfig, expensesInStore, estimatedAmounts)}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
       onSubmit={(formData: FormValues) => {
         const expenses = mapFormDataToExpenses(formData, expensesBaseconfig);
-        dispatch(yearlyExpensesStepCompleted(expenses));
+        dispatch(stepCompletionRequested({ stepId: "YEARLY_EXPENSES", answers: expenses }));
       }}
       siteManagementYearlyExpensesConfig={managementExpensesConfig}
       siteSecurityExpensesConfig={securityExpensesConfig}

@@ -1,6 +1,8 @@
 import { useAppDispatch } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { soilsContaminationIntroductionStepCompleted } from "@/features/create-site/core/steps/contamination-and-accidents/contaminationAndAccidents.actions";
+import {
+  nextStepRequested,
+  previousStepRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 
 import SoilContaminationIntroduction from "./SoilContaminationIntroduction";
 
@@ -10,10 +12,10 @@ function SoilContaminationIntroductionContainer() {
   return (
     <SoilContaminationIntroduction
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
       onNext={() => {
-        dispatch(soilsContaminationIntroductionStepCompleted());
+        dispatch(nextStepRequested());
       }}
     />
   );

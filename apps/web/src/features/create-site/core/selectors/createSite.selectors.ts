@@ -5,20 +5,38 @@ import { SurfaceAreaDistribution, typedObjectEntries } from "shared";
 import { RootState } from "@/app/store/store";
 
 import { selectCurrentStep, type SiteCreationStep } from "../createSite.reducer";
+import { deriveSiteDataFromCustomSteps } from "../custom/customSteps";
+import type { SiteCreationData } from "../siteFoncier.types";
 import { getSelectedParcelTypes, ReadStateHelper } from "../urban-zone/stateHelpers";
 import { getParcelStepIds } from "../urban-zone/steps/per-parcel-soils/parcelStepMapping";
 
 const selectSelf = (state: RootState) => state.siteCreation;
 
-export const selectSiteAddress = createSelector(
+/**
+ * The custom flow's `SiteCreationData`, folded from the per-step answers map plus the
+ * pre-engine-set `isFriche`/`nature` fields (see custom/customSteps.ts). This is the single
+ * choke point every other selector below reads `siteData`-shaped fields through — no selector
+ * or view should read `state.siteCreation.custom.steps` or `initialSiteData` directly.
+ */
+export const selectDerivedSiteData = createSelector(
   selectSelf,
-  (state): Address | undefined => state.siteData.address,
+  (state): SiteCreationData =>
+    deriveSiteDataFromCustomSteps(
+      { ...state.initialSiteData, isFriche: state.isFriche, nature: state.nature },
+      state.custom.steps,
+    ),
+);
+
+export const selectSiteAddress = createSelector(
+  selectDerivedSiteData,
+  (siteData): Address | undefined => siteData.address,
 );
 
 export const selectSiteSoilsDistribution = createSelector(
   selectSelf,
-  (state): SoilsDistribution => {
-    if (state.siteData.nature === "URBAN_ZONE") {
+  selectDerivedSiteData,
+  (state, siteData): SoilsDistribution => {
+    if (siteData.nature === "URBAN_ZONE") {
       const aggregated = new SurfaceAreaDistribution<SoilType>();
       for (const parcelType of getSelectedParcelTypes(state.urbanZone.steps)) {
         const stepId = getParcelStepIds(parcelType).soilsDistribution;
@@ -34,43 +52,43 @@ export const selectSiteSoilsDistribution = createSelector(
       }
       return aggregated.toJSON();
     }
-    return state.siteData.soilsDistribution ?? {};
+    return siteData.soilsDistribution ?? {};
   },
 );
 
 export const selectFricheActivity = createSelector(
-  selectSelf,
-  (state) => state.siteData.fricheActivity,
+  selectDerivedSiteData,
+  (siteData) => siteData.fricheActivity,
 );
 
 export const selectSiteSurfaceArea = createSelector(
-  selectSelf,
-  (state) => state.siteData.surfaceArea,
+  selectDerivedSiteData,
+  (siteData) => siteData.surfaceArea,
 );
 
 export const selectSiteNature = createSelector(
-  selectSelf,
-  (state): SiteNature | undefined => state.siteData.nature,
+  selectDerivedSiteData,
+  (siteData): SiteNature | undefined => siteData.nature,
 );
 
 export const selectSiteSoils = createSelector(
-  selectSelf,
-  (state): SoilType[] | undefined => state.siteData.soils,
+  selectDerivedSiteData,
+  (siteData): SoilType[] | undefined => siteData.soils,
 );
 
-export const selectSiteSoilsContamination = createSelector(selectSelf, (state) => {
+export const selectSiteSoilsContamination = createSelector(selectDerivedSiteData, (siteData) => {
   return {
-    hasContaminatedSoils: state.siteData.hasContaminatedSoils,
-    contaminatedSoilSurface: state.siteData.contaminatedSoilSurface,
+    hasContaminatedSoils: siteData.hasContaminatedSoils,
+    contaminatedSoilSurface: siteData.contaminatedSoilSurface,
   };
 });
 
-export const selectSiteAccidentsData = createSelector(selectSelf, (state) => {
+export const selectSiteAccidentsData = createSelector(selectDerivedSiteData, (siteData) => {
   return {
-    hasRecentAccidents: state.siteData.hasRecentAccidents,
-    accidentsMinorInjuries: state.siteData.accidentsMinorInjuries,
-    accidentsSevereInjuries: state.siteData.accidentsSevereInjuries,
-    accidentsDeaths: state.siteData.accidentsDeaths,
+    hasRecentAccidents: siteData.hasRecentAccidents,
+    accidentsMinorInjuries: siteData.accidentsMinorInjuries,
+    accidentsSevereInjuries: siteData.accidentsSevereInjuries,
+    accidentsDeaths: siteData.accidentsDeaths,
   };
 });
 
@@ -79,7 +97,7 @@ export const selectSurfaceAreaInputMode = createSelector(
   (state) => state.surfaceAreaInputMode,
 );
 
-export const selectSiteOwner = createSelector(selectSelf, (state) => state.siteData.owner);
+export const selectSiteOwner = createSelector(selectDerivedSiteData, (siteData) => siteData.owner);
 
 export const selectCreateMode = createSelector(
   selectSelf,
@@ -111,7 +129,7 @@ export const selectSiteCreationWizardViewData = createSelector(
   selectSelf,
   (currentStep, siteCreation): SiteCreationWizardViewData => ({
     currentStep,
-    isFriche: siteCreation.siteData.isFriche,
+    isFriche: siteCreation.isFriche,
     createMode: siteCreation.createMode,
   }),
 );

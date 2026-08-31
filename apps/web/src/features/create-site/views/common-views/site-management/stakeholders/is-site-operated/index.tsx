@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { isSiteOperatedStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import { selectIsSiteOperatedFormViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
 
 import IsSiteOperatedForm, { type FormValues } from "./IsSiteOperatedForm";
@@ -19,11 +21,16 @@ function IsSiteOperatedFormContainer() {
   const dispatch = useAppDispatch();
 
   const onSubmit = ({ isSiteOperated }: FormValues) => {
-    dispatch(isSiteOperatedStepCompleted({ isSiteOperated: isSiteOperated === "yes" }));
+    dispatch(
+      stepCompletionRequested({
+        stepId: "IS_SITE_OPERATED",
+        answers: { isSiteOperated: isSiteOperated === "yes" },
+      }),
+    );
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(previousStepRequested());
   };
 
   return (

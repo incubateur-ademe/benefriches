@@ -2,8 +2,10 @@ import type { SiteYearlyIncome } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import type { AppDispatch } from "@/app/store/store";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { yearlyIncomeStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import { selectYearlyIncomeFormViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
 
 import SiteYearlyIncomeForm, { type FormValues } from "./SiteYearlyIncomeForm";
@@ -17,10 +19,15 @@ const mapProps = (
   return {
     initialValues: getInitialValues(incomesInStore, estimatedIncomeAmounts),
     onBack: () => {
-      dispatch(stepReverted());
+      dispatch(previousStepRequested());
     },
     onSubmit: (formData: FormValues) => {
-      dispatch(yearlyIncomeStepCompleted(mapFormDataToIncomes(formData)));
+      dispatch(
+        stepCompletionRequested({
+          stepId: "YEARLY_INCOME",
+          answers: mapFormDataToIncomes(formData),
+        }),
+      );
     },
   };
 };

@@ -1,8 +1,10 @@
 import { createSoilSurfaceAreaDistribution } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { soilsDistributionStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import { selectSiteSoilsDistributionViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
 
 import SiteSpacesDistributionForm, { FormValues } from "./SiteSpacesDistributionForm";
@@ -15,14 +17,15 @@ export default function SiteSpacesDistributionContainer() {
 
   const onSubmit = (formData: FormValues) => {
     dispatch(
-      soilsDistributionStepCompleted({
-        distribution: createSoilSurfaceAreaDistribution(formData).toJSON(),
+      stepCompletionRequested({
+        stepId: "SPACES_SURFACE_AREA_DISTRIBUTION",
+        answers: { distribution: createSoilSurfaceAreaDistribution(formData).toJSON() },
       }),
     );
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(previousStepRequested());
   };
 
   return (

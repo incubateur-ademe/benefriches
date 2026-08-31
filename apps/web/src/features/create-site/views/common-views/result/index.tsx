@@ -1,23 +1,22 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
+import { previousStepRequested } from "@/features/create-site/core/custom/custom.actions";
+import { selectSiteCreationResultViewData } from "@/features/create-site/core/steps/final/final.selectors";
 
 import SiteCreationResult from "./SiteCreationResult";
 
 function SiteCreationResultContainer() {
-  const { siteData, saveLoadingState: creationLoadingState } = useAppSelector(
-    (state) => state.siteCreation,
-  );
+  const { siteId, siteName, loadingState } = useAppSelector(selectSiteCreationResultViewData);
   const dispatch = useAppDispatch();
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(previousStepRequested());
   };
 
   return (
     <SiteCreationResult
-      siteId={siteData.id}
-      siteName={siteData.name ?? ""}
-      loadingState={creationLoadingState}
+      siteId={siteId}
+      siteName={siteName}
+      loadingState={loadingState}
       onBack={onBack}
     />
   );

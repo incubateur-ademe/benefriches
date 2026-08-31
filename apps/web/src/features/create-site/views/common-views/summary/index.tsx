@@ -1,11 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
+import { previousStepRequested } from "@/features/create-site/core/custom/custom.actions";
+import { selectDerivedSiteData } from "@/features/create-site/core/selectors/createSite.selectors";
 import { customSiteSaved } from "@/features/create-site/core/steps/final/final.actions";
 
 import SiteDataSummary from "./SiteDataSummary";
 
 function SiteDataSummaryContainer() {
-  const siteData = useAppSelector((state) => state.siteCreation.siteData);
+  const siteData = useAppSelector(selectDerivedSiteData);
   const dispatch = useAppDispatch();
 
   const onNext = () => {
@@ -13,7 +14,7 @@ function SiteDataSummaryContainer() {
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(previousStepRequested());
   };
 
   return (

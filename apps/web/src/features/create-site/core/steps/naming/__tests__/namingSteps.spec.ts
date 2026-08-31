@@ -1,63 +1,46 @@
-import {
-  expectNewCurrentStep,
-  expectSiteDataDiff,
-  expectSiteDataUnchanged,
-  expectStepReverted,
-  StoreBuilder,
-} from "../../../__tests__/creation-steps/testUtils";
-import { stepReverted } from "../../../actions/revert.action";
-import { siteWithExhaustiveData } from "../../../siteData.mock";
-import { namingIntroductionStepCompleted, namingStepCompleted } from "../naming.actions";
+import { describe, expect, it } from "vitest";
+
+import { StoreBuilder, expectCurrentStep } from "../../../__tests__/creation-steps/testUtils";
+import { customFormActions } from "../../../custom/custom.actions";
 
 describe("Site creation: naming steps", () => {
-  describe("NAMING_INTRODUCTION", () => {
-    describe("complete", () => {
-      it("goes to NAMING step when completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["NAMING_INTRODUCTION"]).build();
-        const initialRootState = store.getState();
+  it("NAMING_INTRODUCTION: goes to NAMING", () => {
+    const store = new StoreBuilder().withCustomStep("NAMING_INTRODUCTION").build();
 
-        store.dispatch(namingIntroductionStepCompleted());
+    store.dispatch(customFormActions.nextStepRequested());
 
-        const newState = store.getState();
-        expectSiteDataUnchanged(initialRootState, newState);
-        expectNewCurrentStep(initialRootState, newState, "NAMING");
-      });
+    expectCurrentStep(store, "NAMING");
+  });
+
+  it("NAMING: stores name and description, goes to FINAL_SUMMARY", () => {
+    const store = new StoreBuilder().withCustomStep("NAMING").build();
+
+    store.dispatch(
+      customFormActions.stepCompletionRequested({
+        stepId: "NAMING",
+        answers: { name: "Friche Blajan", description: "Une friche" },
+      }),
+    );
+
+    expectCurrentStep(store, "FINAL_SUMMARY");
+    expect(store.getState().siteCreation.custom.steps.NAMING?.payload).toEqual({
+      name: "Friche Blajan",
+      description: "Une friche",
     });
   });
-  describe("NAMING", () => {
-    describe("complete", () => {
-      it("goes to FINAL_SUMMARY step and sets name and description when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["NAMING"]).build();
-        const initialRootState = store.getState();
 
-        const { name, description } = siteWithExhaustiveData;
-        store.dispatch(namingStepCompleted({ name, description }));
+  it("NAMING: omits the description when none is given", () => {
+    const store = new StoreBuilder().withCustomStep("NAMING").build();
 
-        const newState = store.getState();
-        expectSiteDataDiff(initialRootState, newState, {
-          name,
-          description,
-        });
-        expectNewCurrentStep(initialRootState, newState, "FINAL_SUMMARY");
-      });
-    });
-    describe("revert", () => {
-      it("goes to previous step and unset naming", () => {
-        const store = new StoreBuilder()
-          .withStepsHistory(["IS_FRICHE", "ADDRESS", "NAMING"])
-          .withCreationData({ isFriche: true, name: "site 1", description: "blabla" })
-          .build();
-        const initialRootState = store.getState();
+    store.dispatch(
+      customFormActions.stepCompletionRequested({
+        stepId: "NAMING",
+        answers: { name: "Friche Blajan" },
+      }),
+    );
 
-        store.dispatch(stepReverted());
-
-        const newState = store.getState();
-        expectSiteDataDiff(initialRootState, newState, {
-          name: undefined,
-          description: undefined,
-        });
-        expectStepReverted(initialRootState, newState);
-      });
+    expect(store.getState().siteCreation.custom.steps.NAMING?.payload).toEqual({
+      name: "Friche Blajan",
     });
   });
 });

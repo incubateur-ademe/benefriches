@@ -4,7 +4,10 @@ import type {
   SoilsCarbonStorageResult,
 } from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 
-import { selectSiteSoilsDistribution } from "../selectors/createSite.selectors";
+import {
+  selectDerivedSiteData,
+  selectSiteSoilsDistribution,
+} from "../selectors/createSite.selectors";
 import { SiteCarbonStorage } from "../siteSoilsCarbonStorage.reducer";
 
 export type { SoilsCarbonStorageGateway } from "@/shared/core/gateways/SoilsCarbonStorageGateway";
@@ -18,7 +21,7 @@ export const fetchSiteSoilsCarbonStorage = createAppAsyncThunk<SiteCarbonStorage
   async (_, { extra, getState }) => {
     const rootState = getState();
     const soilsDistribution = selectSiteSoilsDistribution(rootState);
-    const siteAddress = rootState.siteCreation.siteData.address;
+    const siteAddress = selectDerivedSiteData(rootState).address;
 
     if (!siteAddress) throw new Error("No address in store");
 

@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { siteSurfaceAreaStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import { selectSiteSurfaceAreaFormViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
 
 import SiteSurfaceAreaForm from "../../SiteSurfaceAreaForm";
@@ -14,10 +16,15 @@ function SiteSurfaceAreaFormContainer() {
       initialValues={{ surfaceArea: siteSurfaceArea }}
       siteNature={siteNature}
       onSubmit={(formData: { surfaceArea: number }) => {
-        dispatch(siteSurfaceAreaStepCompleted({ surfaceArea: formData.surfaceArea }));
+        dispatch(
+          stepCompletionRequested({
+            stepId: "SURFACE_AREA",
+            answers: { surfaceArea: formData.surfaceArea },
+          }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
     />
   );

@@ -2,6 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
 
+import { selectSiteSurfaceArea } from "../../../../selectors/createSite.selectors";
 import { ReadStateHelper } from "../../../stateHelpers";
 
 type VacantCommercialPremisesFootprintViewData = {
@@ -10,10 +11,7 @@ type VacantCommercialPremisesFootprintViewData = {
 };
 
 export const selectVacantCommercialPremisesFootprintViewData = createSelector(
-  [
-    (state: RootState) => state.siteCreation.urbanZone.steps,
-    (state: RootState) => state.siteCreation.siteData.surfaceArea,
-  ],
+  [(state: RootState) => state.siteCreation.urbanZone.steps, selectSiteSurfaceArea],
   (steps, siteSurfaceArea): VacantCommercialPremisesFootprintViewData => {
     const answers = ReadStateHelper.getStepAnswers(
       steps,

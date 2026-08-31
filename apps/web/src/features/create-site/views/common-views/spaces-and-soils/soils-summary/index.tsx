@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { soilsSummaryStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
+import {
+  nextStepRequested,
+  previousStepRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import { selectSiteSoilsSummaryViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
 
 import SiteSoilsSummary from "./SiteSoilsSummary";
@@ -20,9 +22,9 @@ function SiteSoilsSummaryContainer() {
 
   return (
     <SiteSoilsSummary
-      onNext={() => dispatch(soilsSummaryStepCompleted())}
+      onNext={() => dispatch(nextStepRequested())}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
       soilsDistribution={soilsDistribution}
       totalSurfaceArea={totalSurfaceArea}

@@ -3,6 +3,7 @@ import type { UrbanZoneLandParcelType } from "shared";
 
 import type { RootState } from "@/app/store/store";
 
+import { selectSiteSurfaceArea } from "../../../../selectors/createSite.selectors";
 import { ReadStateHelper } from "../../../stateHelpers";
 
 type LandParcelsSurfaceDistributionViewData = {
@@ -12,10 +13,7 @@ type LandParcelsSurfaceDistributionViewData = {
 };
 
 export const selectLandParcelsSurfaceDistributionViewData = createSelector(
-  [
-    (state: RootState) => state.siteCreation.urbanZone.steps,
-    (state: RootState) => state.siteCreation.siteData.surfaceArea,
-  ],
+  [(state: RootState) => state.siteCreation.urbanZone.steps, selectSiteSurfaceArea],
   (steps, totalSurfaceArea): LandParcelsSurfaceDistributionViewData => {
     const selectionAnswers = ReadStateHelper.getStepAnswers(
       steps,

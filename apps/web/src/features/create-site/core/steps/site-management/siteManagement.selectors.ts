@@ -13,6 +13,7 @@ import { RootState } from "@/app/store/store";
 import type { UserStructure } from "@/features/onboarding/core/user";
 import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
 
+import { selectDerivedSiteData } from "../../selectors/createSite.selectors";
 import type { Owner, Tenant } from "../../siteFoncier.types";
 import type { SiteCreationData } from "../../siteFoncier.types";
 import {
@@ -28,9 +29,7 @@ import {
   FricheSecurityYearlyExpensesConfig,
 } from "./expenses.functions";
 
-const selectSiteCreation = (state: RootState) => state.siteCreation;
-
-const selectSiteData = createSelector(selectSiteCreation, (siteCreation) => siteCreation.siteData);
+const selectSiteData = selectDerivedSiteData;
 
 const selectSiteNature = createSelector(
   selectSiteData,
@@ -48,8 +47,8 @@ const selectSiteTenant = createSelector(
 );
 
 const selectIsSiteOperated = createSelector(
-  selectSiteCreation,
-  (state): boolean | undefined => state.siteData.isSiteOperated,
+  selectSiteData,
+  (siteData): boolean | undefined => siteData.isSiteOperated,
 );
 
 // ============================================================================

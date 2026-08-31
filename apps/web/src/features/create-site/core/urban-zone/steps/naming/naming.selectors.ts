@@ -3,6 +3,7 @@ import { generateSiteName } from "shared";
 
 import type { RootState } from "@/app/store/store";
 
+import { selectDerivedSiteData } from "../../../selectors/createSite.selectors";
 import { ReadStateHelper } from "../../stateHelpers";
 
 type NamingViewData = {
@@ -14,10 +15,7 @@ type NamingViewData = {
 };
 
 export const selectUrbanZoneNamingViewData = createSelector(
-  [
-    (state: RootState) => state.siteCreation.urbanZone.steps,
-    (state: RootState) => state.siteCreation.siteData,
-  ],
+  [(state: RootState) => state.siteCreation.urbanZone.steps, selectDerivedSiteData],
   (steps, siteData): NamingViewData => {
     const answer = ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_NAMING");
     const initialName =

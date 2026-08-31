@@ -1,18 +1,21 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { yearlyExpensesAndIncomeIntroductionCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
+import {
+  nextStepRequested,
+  previousStepRequested,
+} from "@/features/create-site/core/custom/custom.actions";
+import { selectSiteNature } from "@/features/create-site/core/selectors/createSite.selectors";
 
 import SiteExpensesAndIncomeIntroduction from "./SiteExpensesAndIncomeIntroduction";
 
 function SiteExpensesAndIncomeIntroductionContainer() {
   const dispatch = useAppDispatch();
-  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
+  const siteNature = useAppSelector(selectSiteNature);
 
   return (
     <SiteExpensesAndIncomeIntroduction
       siteNature={siteNature}
-      onNext={() => dispatch(yearlyExpensesAndIncomeIntroductionCompleted())}
-      onBack={() => dispatch(stepReverted())}
+      onNext={() => dispatch(nextStepRequested())}
+      onBack={() => dispatch(previousStepRequested())}
     />
   );
 }

@@ -60,9 +60,9 @@ describe("createSite ViewData selectors", () => {
         ...defaultState,
         siteCreation: {
           ...defaultState.siteCreation,
-          siteData: {
-            ...defaultState.siteCreation.siteData,
-            nature: "FRICHE" as const,
+          nature: "FRICHE" as const,
+          initialSiteData: {
+            ...defaultState.siteCreation.initialSiteData,
             owner: {
               name: "Ma Société",
               structureType: "company" as const,
@@ -114,8 +114,8 @@ describe("createSite ViewData selectors", () => {
         ...defaultState,
         siteCreation: {
           ...defaultState.siteCreation,
-          siteData: {
-            ...defaultState.siteCreation.siteData,
+          initialSiteData: {
+            ...defaultState.siteCreation.initialSiteData,
             owner: {
               name: "Mairie de Grenoble",
               structureType: "municipality" as const,
@@ -175,8 +175,8 @@ describe("createSite ViewData selectors", () => {
         ...defaultState,
         siteCreation: {
           ...defaultState.siteCreation,
-          siteData: {
-            ...defaultState.siteCreation.siteData,
+          initialSiteData: {
+            ...defaultState.siteCreation.initialSiteData,
             owner: {
               name: "Propriétaire Agricole",
               structureType: "private_individual" as const,
@@ -291,7 +291,7 @@ describe("createSite ViewData selectors", () => {
     it("returns site id and save loading state", () => {
       const store = new StoreBuilder().withCreationData({}).build();
       const state = store.getState();
-      const siteId = state.siteCreation.siteData.id;
+      const siteId = state.siteCreation.initialSiteData.id;
 
       const viewData = selectExpressResultViewData(state);
 

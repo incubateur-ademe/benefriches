@@ -9,7 +9,9 @@ export const registerFinalHandlers = (
 ): void => {
   builder
     .addCase(customSiteSaved.pending, (state) => {
-      state.stepsHistory.push("CREATION_RESULT");
+      state.customFlowStarted = true;
+      state.customHandedOffToUrbanZone = false;
+      state.custom.currentStep = "CREATION_RESULT";
       state.saveLoadingState = "loading";
     })
     .addCase(customSiteSaved.fulfilled, (state) => {
@@ -19,6 +21,8 @@ export const registerFinalHandlers = (
       state.saveLoadingState = "error";
     })
     .addCase(urbanZoneSiteSaved.pending, (state) => {
+      state.customFlowStarted = true;
+      state.customHandedOffToUrbanZone = true;
       state.urbanZone.currentStep = "URBAN_ZONE_CREATION_RESULT";
       state.urbanZone.saveState = "loading";
       // NavigationBlockerDialog still keys off the legacy top-level save state,

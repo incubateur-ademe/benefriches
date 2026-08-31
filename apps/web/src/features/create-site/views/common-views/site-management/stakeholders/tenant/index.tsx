@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import type { Tenant } from "@/features/create-site/core/siteFoncier.types";
 import type { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
-import { tenantStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
 import { selectSiteTenantFormViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
 
 import FricheTenantForm, { type FormValues } from "./SiteTenantForm";
@@ -78,11 +80,11 @@ function FricheTenantFormContainer() {
 
   const onSubmit = (data: FormValues) => {
     const tenantData = convertFormValuesForStore(data, localAuthoritiesList);
-    dispatch(tenantStepCompleted({ tenant: tenantData }));
+    dispatch(stepCompletionRequested({ stepId: "TENANT", answers: { tenant: tenantData } }));
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(previousStepRequested());
   };
 
   return (

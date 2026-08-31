@@ -49,12 +49,19 @@ export class StoreBuilder {
     return this;
   }
 
-  withSiteData(siteData: Partial<SiteCreationState["siteData"]>): this {
+  withSiteData(
+    siteData: Partial<
+      SiteCreationState["initialSiteData"] & Pick<SiteCreationState, "isFriche" | "nature">
+    >,
+  ): this {
+    const { isFriche, nature, ...rest } = siteData;
     this.preloadedRootState.siteCreation = {
       ...this.preloadedRootState.siteCreation,
-      siteData: {
-        ...this.preloadedRootState.siteCreation.siteData,
-        ...siteData,
+      ...(isFriche !== undefined && { isFriche }),
+      ...(nature !== undefined && { nature }),
+      initialSiteData: {
+        ...this.preloadedRootState.siteCreation.initialSiteData,
+        ...rest,
       },
     };
     return this;

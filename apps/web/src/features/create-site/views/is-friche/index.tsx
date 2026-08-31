@@ -11,7 +11,7 @@ const mapIsFricheValue = (isFriche: boolean | undefined) => {
 
 function IsFricheFormContainer() {
   const dispatch = useAppDispatch();
-  const isFriche = useAppSelector((state) => state.siteCreation.siteData.isFriche);
+  const isFriche = useAppSelector((state) => state.siteCreation.isFriche);
 
   return (
     <IsFricheForm

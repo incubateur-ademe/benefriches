@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { soilsSelectionStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/custom/custom.actions";
 import { selectSpacesSelectionFormViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
 
 import SiteSpacesSelectionForm, { type FormValues } from "./SpacesSelectionForm";
@@ -16,10 +18,15 @@ const SiteSpacesSelectionFormContainer = () => {
         soils,
       }}
       onSubmit={(formData: FormValues) => {
-        dispatch(soilsSelectionStepCompleted({ soils: formData.soils }));
+        dispatch(
+          stepCompletionRequested({
+            stepId: "SPACES_SELECTION",
+            answers: { soils: formData.soils },
+          }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
     />
   );

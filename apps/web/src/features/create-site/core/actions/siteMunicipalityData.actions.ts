@@ -1,14 +1,17 @@
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import type { GetMunicipalityDataResult } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 
+import { selectDerivedSiteData } from "../selectors/createSite.selectors";
+
 export type { GetMunicipalityDataResult } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 export type { AdministrativeDivisionGateway as SiteMunicipalityDataGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 
 export const fetchSiteMunicipalityData = createAppAsyncThunk<GetMunicipalityDataResult>(
   "site/fetchSiteMunicipalityData",
   async (_, { extra, getState }) => {
-    const { siteCreation, siteMunicipalityData } = getState();
-    const cityCode = siteCreation.siteData.address?.cityCode;
+    const rootState = getState();
+    const { siteMunicipalityData } = rootState;
+    const cityCode = selectDerivedSiteData(rootState).address?.cityCode;
 
     if (!cityCode) {
       throw new Error("fetchSiteMunicipalityData: Missing city code");

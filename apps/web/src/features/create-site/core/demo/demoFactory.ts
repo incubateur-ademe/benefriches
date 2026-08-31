@@ -30,7 +30,7 @@ export const demoSiteCreationReducer = createReducer({} as SiteCreationState, (b
       },
     },
     selectForm: (state) => state.demo,
-    buildContext: (state) => ({ siteData: state.siteData }),
+    buildContext: (state) => ({ siteData: state.initialSiteData }),
   });
 
   builder.addCase(demoSiteSaved.pending, (state) => {

@@ -1,196 +1,90 @@
-import {
-  expectNewCurrentStep,
-  expectSiteDataDiff,
-  expectStepReverted,
-  StoreBuilder,
-} from "../../../__tests__/creation-steps/testUtils";
-import { stepReverted } from "../../../actions/revert.action";
-import { addressStepCompleted } from "../../address/address.actions";
-import { siteNatureCompleted } from "../../introduction/introduction.actions";
-import { siteSurfaceAreaStepCompleted } from "../../spaces/spaces.actions";
-import { urbanZoneTypeCompleted } from "../urbanZone.actions";
+import { describe, expect, it } from "vitest";
 
-describe("Site creation: urban zone steps", () => {
-  describe("SITE_NATURE → URBAN_ZONE_TYPE routing", () => {
-    it("goes to URBAN_ZONE_TYPE step when URBAN_ZONE nature is selected", () => {
-      const store = new StoreBuilder().withStepsHistory(["SITE_NATURE"]).build();
-      const initialRootState = store.getState();
+import { StoreBuilder, expectCurrentStep } from "../../../__tests__/creation-steps/testUtils";
+import { customFormActions } from "../../../custom/custom.actions";
 
-      store.dispatch(siteNatureCompleted({ nature: "URBAN_ZONE" }));
+const ADDRESS = {
+  value: "1 rue de la Paix, 75001 Paris",
+  city: "Paris",
+  cityCode: "75001",
+  postCode: "75001",
+  banId: "75056_9575_00001",
+  lat: 48.8698,
+  long: 2.3322,
+};
 
-      const newState = store.getState();
-      expectSiteDataDiff(initialRootState, newState, { nature: "URBAN_ZONE" });
-      expectNewCurrentStep(initialRootState, newState, "URBAN_ZONE_TYPE");
-    });
+describe("Site creation: urban zone hand-off steps", () => {
+  it("URBAN_ZONE_TYPE: stores the type, sets createMode to custom, goes to ADDRESS", () => {
+    const store = new StoreBuilder().withCustomStep("URBAN_ZONE_TYPE").build();
 
-    it("goes to AGRICULTURAL_OPERATION_ACTIVITY step for AGRICULTURAL_OPERATION site", () => {
-      const store = new StoreBuilder().withStepsHistory(["SITE_NATURE"]).build();
-      const initialRootState = store.getState();
-
-      store.dispatch(siteNatureCompleted({ nature: "AGRICULTURAL_OPERATION" }));
-
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "AGRICULTURAL_OPERATION_ACTIVITY");
-    });
-  });
-
-  describe("URBAN_ZONE_TYPE", () => {
-    it("goes to ADDRESS step and sets createMode to custom when urban zone type is selected", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["SITE_NATURE", "URBAN_ZONE_TYPE"])
-        .withCreationData({ nature: "URBAN_ZONE" })
-        .build();
-      const initialRootState = store.getState();
-
-      store.dispatch(urbanZoneTypeCompleted({ urbanZoneType: "ECONOMIC_ACTIVITY_ZONE" }));
-
-      const newState = store.getState();
-      expectSiteDataDiff(initialRootState, newState, { urbanZoneType: "ECONOMIC_ACTIVITY_ZONE" });
-      expectNewCurrentStep(initialRootState, newState, "ADDRESS");
-      expect(newState.siteCreation.createMode).toBe("custom");
-    });
-
-    it("goes to previous step and unsets urban zone type when step is reverted", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["SITE_NATURE", "URBAN_ZONE_TYPE"])
-        .withCreationData({ nature: "URBAN_ZONE", urbanZoneType: "ECONOMIC_ACTIVITY_ZONE" })
-        .build();
-      const initialRootState = store.getState();
-
-      store.dispatch(stepReverted());
-
-      const newState = store.getState();
-      expectSiteDataDiff(initialRootState, newState, { urbanZoneType: undefined });
-      expectStepReverted(initialRootState, newState);
-    });
-  });
-
-  describe("ADDRESS → URBAN_ZONE_LAND_PARCELS_INTRODUCTION routing for URBAN_ZONE", () => {
-    it("goes to URBAN_ZONE_LAND_PARCELS_INTRODUCTION step when address is completed for urban zone", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["ADDRESS"])
-        .withCreateMode("custom")
-        .withCreationData({
-          nature: "URBAN_ZONE",
-          address: {
-            value: "1 rue de la Paix, 75001 Paris",
-            city: "Paris",
-            cityCode: "75001",
-            postCode: "75001",
-            banId: "75056_9575_00001",
-            lat: 48.8698,
-            long: 2.3322,
-          },
-        })
-        .build();
-      const initialRootState = store.getState();
-
-      store.dispatch(
-        addressStepCompleted({
-          address: {
-            value: "1 rue de la Paix, 75001 Paris",
-            city: "Paris",
-            cityCode: "75001",
-            postCode: "75001",
-            banId: "75056_9575_00001",
-            lat: 48.8698,
-            long: 2.3322,
-          },
-        }),
-      );
-
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "URBAN_ZONE_LAND_PARCELS_INTRODUCTION");
-    });
-
-    it.each(["FRICHE", "AGRICULTURAL_OPERATION", "NATURAL_AREA"] as const)(
-      "goes to SPACES_INTRODUCTION for site nature: %s",
-      (siteNature) => {
-        const store = new StoreBuilder()
-          .withStepsHistory(["ADDRESS"])
-          .withCreationData({ nature: siteNature })
-          .build();
-        const initialRootState = store.getState();
-
-        store.dispatch(
-          addressStepCompleted({
-            address: {
-              value: "1 rue de la Paix, 75001 Paris",
-              city: "Paris",
-              cityCode: "75001",
-              postCode: "75001",
-              banId: "75056_9575_00001",
-              lat: 48.8698,
-              long: 2.3322,
-            },
-          }),
-        );
-
-        const newState = store.getState();
-        expectNewCurrentStep(initialRootState, newState, "SPACES_INTRODUCTION");
-      },
+    store.dispatch(
+      customFormActions.stepCompletionRequested({
+        stepId: "URBAN_ZONE_TYPE",
+        answers: { urbanZoneType: "ECONOMIC_ACTIVITY_ZONE" },
+      }),
     );
 
-    it("still goes to SPACES_INTRODUCTION for non-urban-zone custom sites", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["ADDRESS"])
-        .withCreateMode("custom")
-        .withCreationData({ nature: "AGRICULTURAL_OPERATION" })
-        .build();
-      const initialRootState = store.getState();
-
-      store.dispatch(
-        addressStepCompleted({
-          address: {
-            value: "1 rue de la Paix, 75001 Paris",
-            city: "Paris",
-            cityCode: "75001",
-            postCode: "75001",
-            banId: "75056_9575_00001",
-            lat: 48.8698,
-            long: 2.3322,
-          },
-        }),
-      );
-
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "SPACES_INTRODUCTION");
+    const newState = store.getState().siteCreation;
+    expect(newState.custom.steps.URBAN_ZONE_TYPE?.payload).toEqual({
+      urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
     });
+    expectCurrentStep(store, "ADDRESS");
   });
 
-  describe("SURFACE_AREA → LAND_PARCELS_SELECTION for URBAN_ZONE", () => {
-    it("advances to land parcels selection when surface area is completed for urban zone", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["SURFACE_AREA"])
-        .withCreateMode("custom")
-        .withCreationData({ nature: "URBAN_ZONE" })
-        .build();
-      const initialRootState = store.getState();
+  it("ADDRESS: goes to URBAN_ZONE_LAND_PARCELS_INTRODUCTION when the nature is URBAN_ZONE", () => {
+    const store = new StoreBuilder().withNature("URBAN_ZONE").withCustomStep("ADDRESS").build();
 
-      store.dispatch(siteSurfaceAreaStepCompleted({ surfaceArea: 15000 }));
+    store.dispatch(
+      customFormActions.stepCompletionRequested({
+        stepId: "ADDRESS",
+        answers: { address: ADDRESS },
+      }),
+    );
 
-      const newState = store.getState();
-      expectSiteDataDiff(initialRootState, newState, { surfaceArea: 15000 });
-      // Steps history should include the urban zone step handler entry
-      expect(newState.siteCreation.stepsHistory).toEqual([
-        "SURFACE_AREA",
-        "URBAN_ZONE_LAND_PARCELS_SELECTION",
-      ]);
-      expect(newState.siteCreation.urbanZone.currentStep).toBe("URBAN_ZONE_LAND_PARCELS_SELECTION");
-    });
+    expectCurrentStep(store, "URBAN_ZONE_LAND_PARCELS_INTRODUCTION");
+  });
 
-    it("still goes to SPACES_KNOWLEDGE for non-urban-zone custom sites", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["SURFACE_AREA"])
-        .withCreateMode("custom")
-        .withCreationData({ nature: "AGRICULTURAL_OPERATION" })
-        .build();
-      const initialRootState = store.getState();
+  it("URBAN_ZONE_LAND_PARCELS_INTRODUCTION: goes to SURFACE_AREA", () => {
+    const store = new StoreBuilder().withCustomStep("URBAN_ZONE_LAND_PARCELS_INTRODUCTION").build();
 
-      store.dispatch(siteSurfaceAreaStepCompleted({ surfaceArea: 15000 }));
+    store.dispatch(customFormActions.nextStepRequested());
 
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "SPACES_KNOWLEDGE");
-    });
+    expectCurrentStep(store, "SURFACE_AREA");
+  });
+
+  it("SURFACE_AREA: hands off to the urban-zone sub-flow's first step for URBAN_ZONE nature", () => {
+    const store = new StoreBuilder()
+      .withNature("URBAN_ZONE")
+      .withCustomStep("SURFACE_AREA")
+      .build();
+
+    store.dispatch(
+      customFormActions.stepCompletionRequested({
+        stepId: "SURFACE_AREA",
+        answers: { surfaceArea: 15000 },
+      }),
+    );
+
+    const newState = store.getState().siteCreation;
+    expect(newState.customHandedOffToUrbanZone).toBe(true);
+    expect(newState.urbanZone.currentStep).toBe("URBAN_ZONE_LAND_PARCELS_SELECTION");
+    expectCurrentStep(store, "URBAN_ZONE_LAND_PARCELS_SELECTION");
+  });
+
+  it("SURFACE_AREA: still goes to SPACES_KNOWLEDGE for non-urban-zone custom sites", () => {
+    const store = new StoreBuilder()
+      .withNature("AGRICULTURAL_OPERATION")
+      .withCustomStep("SURFACE_AREA")
+      .build();
+
+    store.dispatch(
+      customFormActions.stepCompletionRequested({
+        stepId: "SURFACE_AREA",
+        answers: { surfaceArea: 15000 },
+      }),
+    );
+
+    expect(store.getState().siteCreation.customHandedOffToUrbanZone).toBe(false);
+    expectCurrentStep(store, "SPACES_KNOWLEDGE");
   });
 });

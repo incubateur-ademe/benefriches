@@ -4,11 +4,8 @@ import { v4 as uuid } from "uuid";
 import { buildUser } from "@/features/onboarding/core/user.mock";
 
 import { InMemoryCreateSiteService } from "../../../../infrastructure/create-site-service/inMemoryCreateSiteApi";
-import {
-  expectNewCurrentStep,
-  expectSiteDataUnchanged,
-  StoreBuilder,
-} from "../../../__tests__/creation-steps/testUtils";
+import { StoreBuilder, expectCurrentStep } from "../../../__tests__/creation-steps/testUtils";
+import { customFormActions } from "../../../custom/custom.actions";
 import {
   expressFricheCreationData,
   fricheWithExhaustiveData,
@@ -17,6 +14,7 @@ import {
 } from "../../../siteData.mock";
 import { SiteCreationData, SiteExpressCreationData } from "../../../siteFoncier.types";
 import { customSiteSaved, expressSiteSaved } from "../final.actions";
+import { selectSiteCreationResultViewData } from "../final.selectors";
 
 const BLAJAN_ADDRESS: Address = {
   banId: "31070_p4ur8e",
@@ -34,24 +32,18 @@ describe("Save created site", () => {
     it("should be in error state when site data in store is not valid (missing name)", async () => {
       const siteData = { ...siteWithMinimalData, name: undefined };
       const store = new StoreBuilder().withCreationData(siteData).build();
-      const initialRootState = store.getState();
       await store.dispatch(customSiteSaved());
 
-      const newState = store.getState();
-      expectSiteDataUnchanged(initialRootState, newState);
-      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
-      expect(newState.siteCreation.saveLoadingState).toEqual("error");
+      expectCurrentStep(store, "CREATION_RESULT");
+      expect(store.getState().siteCreation.saveLoadingState).toEqual("error");
     });
 
     it("should be in error state when no user id in store", async () => {
       const store = new StoreBuilder().withCreationData(siteWithMinimalData).build();
-      const initialRootState = store.getState();
       await store.dispatch(customSiteSaved());
 
-      const newState = store.getState();
-      expectSiteDataUnchanged(initialRootState, newState);
-      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
-      expect(newState.siteCreation.saveLoadingState).toEqual("error");
+      expectCurrentStep(store, "CREATION_RESULT");
+      expect(store.getState().siteCreation.saveLoadingState).toEqual("error");
     });
 
     it("should be in error state when createSiteService fails", async () => {
@@ -63,13 +55,10 @@ describe("Save created site", () => {
         .withAppDependencies({ createSiteService: failingCreateService })
         .withCurrentUser(buildUser())
         .build();
-      const initialRootState = store.getState();
       await store.dispatch(customSiteSaved());
 
-      const newState = store.getState();
-      expectSiteDataUnchanged(initialRootState, newState);
-      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
-      expect(newState.siteCreation.saveLoadingState).toEqual("error");
+      expectCurrentStep(store, "CREATION_RESULT");
+      expect(store.getState().siteCreation.saveLoadingState).toEqual("error");
     });
 
     it.each([
@@ -95,13 +84,11 @@ describe("Save created site", () => {
           .withCurrentUser(buildUser())
           .withAppDependencies({ createSiteService })
           .build();
-        const initialRootState = store.getState();
 
         await store.dispatch(customSiteSaved());
 
-        const newState = store.getState();
-        expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
-        expect(newState.siteCreation.saveLoadingState).toEqual("success");
+        expectCurrentStep(store, "CREATION_RESULT");
+        expect(store.getState().siteCreation.saveLoadingState).toEqual("success");
         expect(createSiteService._customSites).toEqual([
           {
             id: siteData.id,
@@ -127,6 +114,27 @@ describe("Save created site", () => {
         ]);
       },
     );
+
+    it("should show the name entered at the NAMING step on the creation result view data", async () => {
+      const createSiteService = new InMemoryCreateSiteService();
+      const store = new StoreBuilder()
+        .withCreationData({ ...fricheWithMinimalData, name: undefined })
+        .withCurrentUser(buildUser())
+        .withAppDependencies({ createSiteService })
+        .build();
+      store.dispatch(
+        customFormActions.stepCompletionRequested({
+          stepId: "NAMING",
+          answers: { name: "Friche industrielle de Blajan" },
+        }),
+      );
+
+      await store.dispatch(customSiteSaved());
+
+      expect(selectSiteCreationResultViewData(store.getState()).siteName).toEqual(
+        "Friche industrielle de Blajan",
+      );
+    });
   });
 
   describe("express creation", () => {
@@ -135,26 +143,22 @@ describe("Save created site", () => {
         .withCreationData({ ...expressFricheCreationData, nature: undefined })
         .withCurrentUser(buildUser())
         .build();
-      const initialRootState = store.getState();
 
       await store.dispatch(expressSiteSaved());
 
-      const newState = store.getState();
-      expect(newState.siteCreation.saveLoadingState).toEqual("error");
-      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
+      expect(store.getState().siteCreation.saveLoadingState).toEqual("error");
+      expectCurrentStep(store, "CREATION_RESULT");
     });
 
     it("should be in error state when no user id in store", async () => {
       const store = new StoreBuilder()
         .withCreationData({ ...expressFricheCreationData, surfaceArea: undefined })
         .build();
-      const initialRootState = store.getState();
 
       await store.dispatch(expressSiteSaved());
 
-      const newState = store.getState();
-      expect(newState.siteCreation.saveLoadingState).toEqual("error");
-      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
+      expect(store.getState().siteCreation.saveLoadingState).toEqual("error");
+      expectCurrentStep(store, "CREATION_RESULT");
     });
 
     it("should be in error state and move to CREATION_RESULT step when createSiteService fails", async () => {
@@ -166,13 +170,11 @@ describe("Save created site", () => {
         .withCurrentUser(buildUser())
         .withAppDependencies({ createSiteService: failingCreateService })
         .build();
-      const initialRootState = store.getState();
 
       await store.dispatch(expressSiteSaved());
 
-      const newState = store.getState();
-      expect(newState.siteCreation.saveLoadingState).toEqual("error");
-      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
+      expect(store.getState().siteCreation.saveLoadingState).toEqual("error");
+      expectCurrentStep(store, "CREATION_RESULT");
     });
 
     it.each([
@@ -219,13 +221,11 @@ describe("Save created site", () => {
           .withCurrentUser(buildUser())
           .withAppDependencies({ createSiteService })
           .build();
-        const initialRootState = store.getState();
 
         await store.dispatch(expressSiteSaved());
 
-        const newState = store.getState();
-        expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
-        expect(newState.siteCreation.saveLoadingState).toEqual("success");
+        expectCurrentStep(store, "CREATION_RESULT");
+        expect(store.getState().siteCreation.saveLoadingState).toEqual("success");
         expect(createSiteService._expressSites).toEqual([
           {
             id: siteData.id,

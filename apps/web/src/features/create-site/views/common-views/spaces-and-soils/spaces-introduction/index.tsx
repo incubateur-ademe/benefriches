@@ -1,19 +1,22 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { soilsIntroductionStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
+import {
+  nextStepRequested,
+  previousStepRequested,
+} from "@/features/create-site/core/custom/custom.actions";
+import { selectSiteNature } from "@/features/create-site/core/selectors/createSite.selectors";
 
 import SiteSpacesIntroduction from "./SpacesIntroduction";
 
 function SiteSpacesIntroductionContainer() {
   const dispatch = useAppDispatch();
-  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
+  const siteNature = useAppSelector(selectSiteNature);
 
   return (
     <SiteSpacesIntroduction
       siteNature={siteNature}
-      onNext={() => dispatch(soilsIntroductionStepCompleted())}
+      onNext={() => dispatch(nextStepRequested())}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
     />
   );

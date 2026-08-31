@@ -6,7 +6,7 @@ import SiteNatureForm, { FormValues } from "./SiteNatureForm";
 
 function SiteNatureFormContainer() {
   const dispatch = useAppDispatch();
-  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
+  const siteNature = useAppSelector((state) => state.siteCreation.nature);
 
   return (
     <SiteNatureForm

@@ -1,79 +1,46 @@
-import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
+import type {
+  CustomAnswerStepHandler,
+  CustomInfoStepHandler,
+} from "../../custom/stepHandlerRegistry";
 
-import type { SiteCreationState } from "../../createSite.reducer";
-import {
-  fricheAccidentsIntroductionStepCompleted,
-  fricheAccidentsStepCompleted,
-  soilsContaminationIntroductionStepCompleted,
-  soilsContaminationStepCompleted,
-} from "./contaminationAndAccidents.actions";
+export const contaminationAndAccidentsHandlers = {
+  answerSteps: {
+    SOILS_CONTAMINATION: {
+      stepId: "SOILS_CONTAMINATION",
+      getNextStepId: () => "FRICHE_ACCIDENTS_INTRODUCTION",
+      updateAnswersMiddleware: (_params, answers) => ({
+        hasContaminatedSoils: answers.hasContaminatedSoils,
+        ...(answers.hasContaminatedSoils &&
+          answers.contaminatedSoilSurface !== undefined && {
+            contaminatedSoilSurface: answers.contaminatedSoilSurface,
+          }),
+      }),
+    } satisfies CustomAnswerStepHandler<"SOILS_CONTAMINATION">,
 
-export const registerContaminationAndAccidentsHandlers = (
-  builder: ActionReducerMapBuilder<SiteCreationState>,
-): void => {
-  builder
-    .addCase(soilsContaminationIntroductionStepCompleted, (state) => {
-      state.stepsHistory.push("SOILS_CONTAMINATION");
-    })
-    .addCase(soilsContaminationStepCompleted, (state, action) => {
-      const answeredStep = state.stepsHistory.at(-1);
-      const { hasContaminatedSoils, contaminatedSoilSurface } = action.payload;
-      state.siteData.hasContaminatedSoils = hasContaminatedSoils;
+    FRICHE_ACCIDENTS: {
+      stepId: "FRICHE_ACCIDENTS",
+      getNextStepId: () => "MANAGEMENT_INTRODUCTION",
+      updateAnswersMiddleware: (_params, answers) =>
+        answers.hasRecentAccidents
+          ? {
+              hasRecentAccidents: true,
+              accidentsMinorInjuries: answers.accidentsMinorInjuries ?? 0,
+              accidentsSevereInjuries: answers.accidentsSevereInjuries ?? 0,
+              accidentsDeaths: answers.accidentsDeaths ?? 0,
+            }
+          : { hasRecentAccidents: false },
+    } satisfies CustomAnswerStepHandler<"FRICHE_ACCIDENTS">,
+  },
 
-      if (hasContaminatedSoils && contaminatedSoilSurface) {
-        state.siteData.contaminatedSoilSurface = contaminatedSoilSurface;
-      }
-      if (answeredStep) {
-        state.answers[answeredStep] = {
-          hasContaminatedSoils,
-          ...(hasContaminatedSoils && contaminatedSoilSurface ? { contaminatedSoilSurface } : {}),
-        };
-      }
-      state.stepsHistory.push("FRICHE_ACCIDENTS_INTRODUCTION");
-    })
-    .addCase(fricheAccidentsIntroductionStepCompleted, (state) => {
-      state.stepsHistory.push("FRICHE_ACCIDENTS");
-    })
-    .addCase(fricheAccidentsStepCompleted, (state, action) => {
-      const answeredStep = state.stepsHistory.at(-1);
-      const { hasRecentAccidents } = action.payload;
-      state.siteData.hasRecentAccidents = hasRecentAccidents;
+  infoSteps: {
+    SOILS_CONTAMINATION_INTRODUCTION: {
+      stepId: "SOILS_CONTAMINATION_INTRODUCTION",
+      getNextStepId: () => "SOILS_CONTAMINATION",
+    } satisfies CustomInfoStepHandler,
 
-      if (hasRecentAccidents) {
-        state.siteData.accidentsMinorInjuries = action.payload.accidentsMinorInjuries ?? 0;
-        state.siteData.accidentsSevereInjuries = action.payload.accidentsSevereInjuries ?? 0;
-        state.siteData.accidentsDeaths = action.payload.accidentsDeaths ?? 0;
-      }
-      if (answeredStep) {
-        state.answers[answeredStep] = {
-          hasRecentAccidents,
-          ...(hasRecentAccidents
-            ? {
-                accidentsMinorInjuries: state.siteData.accidentsMinorInjuries,
-                accidentsSevereInjuries: state.siteData.accidentsSevereInjuries,
-                accidentsDeaths: state.siteData.accidentsDeaths,
-              }
-            : {}),
-        };
-      }
-      state.stepsHistory.push("MANAGEMENT_INTRODUCTION");
-    });
-};
-
-export const revertContaminationAndAccidentsStep = (state: SiteCreationState): void => {
-  const revertedStep = state.stepsHistory.at(-1);
-  switch (revertedStep) {
-    case "SOILS_CONTAMINATION":
-      state.siteData.hasContaminatedSoils = undefined;
-      state.siteData.contaminatedSoilSurface = undefined;
-      state.answers[revertedStep] = undefined;
-      break;
-    case "FRICHE_ACCIDENTS":
-      state.siteData.hasRecentAccidents = undefined;
-      state.siteData.accidentsMinorInjuries = undefined;
-      state.siteData.accidentsSevereInjuries = undefined;
-      state.siteData.accidentsDeaths = undefined;
-      state.answers[revertedStep] = undefined;
-      break;
-  }
+    FRICHE_ACCIDENTS_INTRODUCTION: {
+      stepId: "FRICHE_ACCIDENTS_INTRODUCTION",
+      getNextStepId: () => "FRICHE_ACCIDENTS",
+    } satisfies CustomInfoStepHandler,
+  },
 };

@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/store/store";
-import { selectSiteFeaturesViewData } from "@/features/sites/core/siteFeatures.selectors";
+
+import { selectDerivedSiteData } from "../../selectors/createSite.selectors";
 
 const selectSelf = (state: RootState) => state.siteCreation;
 
@@ -13,10 +14,10 @@ type SiteCreationResultViewData = {
 };
 
 export const selectSiteCreationResultViewData = createSelector(
-  [selectSelf, selectSiteFeaturesViewData],
-  (siteCreation, siteFeaturesViewData): SiteCreationResultViewData => ({
-    siteId: siteCreation.siteData.id,
-    siteName: siteFeaturesViewData.siteFeatures?.name ?? "",
+  [selectSelf, selectDerivedSiteData],
+  (siteCreation, siteData): SiteCreationResultViewData => ({
+    siteId: siteData.id,
+    siteName: siteData.name ?? "",
     loadingState: siteCreation.saveLoadingState,
   }),
 );
@@ -30,7 +31,7 @@ type ExpressResultViewData = {
 export const selectExpressResultViewData = createSelector(
   selectSelf,
   (siteCreation): ExpressResultViewData => ({
-    siteId: siteCreation.siteData.id,
+    siteId: siteCreation.initialSiteData.id,
     saveLoadingState: siteCreation.saveLoadingState,
   }),
 );

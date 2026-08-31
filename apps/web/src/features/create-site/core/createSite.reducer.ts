@@ -1,5 +1,6 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
 import reduceReducers from "reduce-reducers";
+import type { SiteNature } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { RootState } from "@/app/store/store";
@@ -8,82 +9,28 @@ import { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepC
 import { WizardFormSubState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { stepReverted } from "./actions/revert.action";
+import { customSiteCreationReducer } from "./custom/custom.reducer";
+import type {
+  CustomAnswerStepId,
+  CustomAnswersByStep,
+  CustomStepsState,
+  SiteCreationCustomStep,
+} from "./custom/customSteps";
 import { demoSiteCreationReducer } from "./demo/demoFactory";
 import { AnswersByStep, DemoAnswerStepId, DemoSiteCreationStep } from "./demo/demoSteps";
 import { DemoStepsState } from "./demo/stepHandlerRegistry";
-import type { SiteCreationAnswers } from "./siteCreationAnswers";
-import { revertAddressStep, registerAddressHandlers } from "./steps/address/address.handlers";
-import {
-  revertContaminationAndAccidentsStep,
-  registerContaminationAndAccidentsHandlers,
-} from "./steps/contamination-and-accidents/contaminationAndAccidents.handlers";
 import { registerFinalHandlers } from "./steps/final/final.handlers";
-import {
-  revertIntroductionStep,
-  registerIntroductionHandlers,
-} from "./steps/introduction/introduction.handlers";
-import { revertNamingStep, registerNamingHandlers } from "./steps/naming/naming.handlers";
-import {
-  revertSiteActivityStep,
-  registerSiteActivityHandlers,
-} from "./steps/site-activity/siteActivity.handlers";
-import {
-  revertSiteManagementStep,
-  registerSiteManagementHandlers,
-} from "./steps/site-management/siteManagement.handlers";
-import { revertSpacesStep, registerSpacesHandlers } from "./steps/spaces/spaces.handlers";
-import {
-  revertUrbanZoneStep,
-  registerUrbanZoneHandlers,
-} from "./steps/urban-zone/urbanZone.handlers";
+import { registerIntroductionHandlers } from "./steps/introduction/introduction.handlers";
+import { surfaceAreaInputModeUpdated } from "./steps/spaces/spaces.actions";
 import { urbanZoneSiteCreationReducer } from "./urban-zone/urbanZone.reducer";
 import {
-  isUrbanZoneStepHandlerStep,
   type AnswersByStep as UrbanZoneAnswersByStep,
   type SchematizedAnswerStepId as UrbanZoneSchematizedAnswerStepId,
   type UrbanZoneSiteCreationStep,
   type UrbanZoneStepsState,
 } from "./urban-zone/urbanZoneSteps";
 
-export type SiteCreationCustomStep =
-  | "FRICHE_ACTIVITY"
-  | "AGRICULTURAL_OPERATION_ACTIVITY"
-  | "NATURAL_AREA_TYPE"
-  | "ADDRESS"
-  // soils
-  | "SPACES_INTRODUCTION"
-  | "SURFACE_AREA"
-  | "SPACES_KNOWLEDGE"
-  | "SPACES_SELECTION"
-  | "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE"
-  | "SPACES_SURFACE_AREA_DISTRIBUTION"
-  | "SOILS_SUMMARY"
-  | "SOILS_CARBON_STORAGE"
-  // soils contamination and accidents
-  | "SOILS_CONTAMINATION_INTRODUCTION"
-  | "SOILS_CONTAMINATION"
-  | "FRICHE_ACCIDENTS_INTRODUCTION"
-  | "FRICHE_ACCIDENTS"
-  // site management
-  | "MANAGEMENT_INTRODUCTION"
-  | "OWNER"
-  | "IS_FRICHE_LEASED"
-  | "IS_SITE_OPERATED"
-  | "TENANT"
-  | "OPERATOR"
-  | "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION"
-  | "YEARLY_EXPENSES"
-  | "YEARLY_INCOME"
-  | "YEARLY_EXPENSES_SUMMARY"
-  // NAMING
-  | "NAMING_INTRODUCTION"
-  | "NAMING"
-  // SUMARRY
-  | "FINAL_SUMMARY"
-  | "CREATION_RESULT"
-  // urban zone (old-pattern steps, handled before step handler system)
-  | "URBAN_ZONE_TYPE"
-  | "URBAN_ZONE_LAND_PARCELS_INTRODUCTION";
+export type { SiteCreationCustomStep } from "./custom/customSteps";
 
 export type SiteCreationStep =
   | "INTRODUCTION"
@@ -131,19 +78,49 @@ const INITIAL_DEMO_STATE: DemoSiteCreationState = {
   saveState: "idle",
 };
 
+export type CustomSiteCreationState = WizardFormSubState<
+  SiteCreationCustomStep,
+  CustomStepsState,
+  StepUpdateResult<SiteCreationCustomStep, CustomAnswersByStep, CustomAnswerStepId>
+>;
+
+// Arbitrary — the custom flow has four possible entry steps (one per nature); whichever one is
+// actually chosen (see registerIntroductionHandlers) overwrites both currentStep and
+// firstSequenceStep before the engine is ever read from (selectCurrentStep gates on
+// `customFlowStarted`).
+const FIRST_CUSTOM_STEP: SiteCreationCustomStep = "FRICHE_ACTIVITY";
+const INITIAL_CUSTOM_STATE: CustomSiteCreationState = {
+  currentStep: FIRST_CUSTOM_STEP,
+  stepsSequence: [],
+  firstSequenceStep: FIRST_CUSTOM_STEP,
+  steps: {},
+  pendingStepCompletion: undefined,
+  saveState: "idle",
+};
+
 export type SiteCreationState = {
+  // Pre-engine steps only from here on (INTRODUCTION/IS_FRICHE/USE_MUTABILITY/SITE_NATURE/
+  // CREATE_MODE_SELECTION) — the legacy custom flow's own steps are driven by `custom` below.
   stepsHistory: SiteCreationStep[];
-  siteData: SiteCreationData;
   /**
-   * Per-step answers for the legacy custom flow, maintained in parallel with `siteData`.
-   * See `siteCreationAnswers.ts` — the two representations must always agree.
+   * The custom flow's static base: an id generated once at flow start, plus the accumulator's
+   * empty defaults. Combined with `isFriche`/`nature` and `custom.steps` via
+   * `deriveSiteDataFromCustomSteps` (see core/custom/customSteps.ts) to get the full
+   * `SiteCreationData` wherever it's needed (selectors, save thunks).
    */
-  answers: SiteCreationAnswers;
+  initialSiteData: SiteCreationData;
+  isFriche?: boolean;
+  nature?: SiteNature;
   createMode?: "express" | "custom";
   useMutability?: boolean;
   skipUseMutability: boolean;
   saveLoadingState: "idle" | "loading" | "success" | "error";
   surfaceAreaInputMode: "percentage" | "squareMeters";
+  /** True once a pre-engine step has handed off into the custom wizard-form engine. */
+  customFlowStarted: boolean;
+  /** True once the custom engine has handed off to the urban-zone sub-flow (see SURFACE_AREA). */
+  customHandedOffToUrbanZone: boolean;
+  custom: CustomSiteCreationState;
   urbanZone: UrbanZoneSiteCreationState;
   demo: DemoSiteCreationState;
 };
@@ -159,14 +136,18 @@ export const getInitialState = (props?: {
     saveLoadingState: "idle",
     createMode: props?.createMode,
     skipUseMutability: props?.skipUseMutability ? props?.skipUseMutability : false,
-    siteData: {
+    initialSiteData: {
       id: uuid(),
       soils: [],
       yearlyExpenses: [],
       yearlyIncomes: [],
     },
-    answers: {},
+    isFriche: undefined,
+    nature: undefined,
     surfaceAreaInputMode: "percentage",
+    customFlowStarted: false,
+    customHandedOffToUrbanZone: false,
+    custom: INITIAL_CUSTOM_STATE,
     urbanZone: INITIAL_URBAN_ZONE_STATE,
     demo: INITIAL_DEMO_STATE,
   } as const;
@@ -174,47 +155,42 @@ export const getInitialState = (props?: {
 
 const siteCreationReducer = createReducer(getInitialState(), (builder) => {
   registerIntroductionHandlers(builder);
-  registerSiteActivityHandlers(builder);
-  registerAddressHandlers(builder);
-  registerSpacesHandlers(builder);
-  registerContaminationAndAccidentsHandlers(builder);
-  registerSiteManagementHandlers(builder);
-  registerNamingHandlers(builder);
   registerFinalHandlers(builder);
-  registerUrbanZoneHandlers(builder);
 
+  // Deviation from the ticket's plan: the plan called for deleting `stepReverted` outright, but
+  // the 5 pre-engine steps (INTRODUCTION/IS_FRICHE/USE_MUTABILITY/SITE_NATURE/
+  // CREATE_MODE_SELECTION) stay outside the wizard-form engine and still need *some* back-nav
+  // mechanism over `stepsHistory` — the ticket itself describes them as unchanged. Kept here,
+  // trimmed to just the history pop (the old per-step `revert*Step` field-clearing calls are
+  // gone along with the accumulator they used to clear).
   builder.addCase(stepReverted, (state) => {
-    revertIntroductionStep(state);
-    revertSiteActivityStep(state);
-    revertAddressStep(state);
-    revertSpacesStep(state);
-    revertContaminationAndAccidentsStep(state);
-    revertSiteManagementStep(state);
-    revertNamingStep(state);
-    revertUrbanZoneStep(state);
-
     if (state.stepsHistory.length > 1) {
       state.stepsHistory = state.stepsHistory.slice(0, -1);
     }
+  });
+
+  builder.addCase(surfaceAreaInputModeUpdated, (state, action) => {
+    state.surfaceAreaInputMode = action.payload;
   });
 });
 
 export const selectCurrentStep = createSelector(
   [(state: RootState) => state.siteCreation],
   (state): SiteCreationStep => {
-    const lastStep = state.stepsHistory.at(-1) || "IS_FRICHE";
-    // When the last old-pattern step is an urban zone step handler sentinel,
-    // return the urban zone sub-state's current step instead
-    if (isUrbanZoneStepHandlerStep(lastStep)) {
-      return state.urbanZone.currentStep;
+    if (state.createMode === "custom" && state.customFlowStarted) {
+      if (state.customHandedOffToUrbanZone) {
+        return state.urbanZone.currentStep;
+      }
+      return state.custom.currentStep;
     }
-    return lastStep;
+    return state.stepsHistory.at(-1) || "IS_FRICHE";
   },
 );
 
 const siteCreationRootReducer = reduceReducers<SiteCreationState>(
   getInitialState(),
   siteCreationReducer,
+  customSiteCreationReducer,
   urbanZoneSiteCreationReducer,
   demoSiteCreationReducer,
 );
