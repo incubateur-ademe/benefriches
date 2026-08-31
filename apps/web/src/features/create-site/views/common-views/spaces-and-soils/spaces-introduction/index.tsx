@@ -1,22 +1,18 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectSiteNature } from "@/features/create-site/core/selectors/createSite.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteSpacesIntroduction from "./SpacesIntroduction";
 
 function SiteSpacesIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext, selectSiteNature } = useCustomSiteForm();
   const siteNature = useAppSelector(selectSiteNature);
 
   return (
     <SiteSpacesIntroduction
       siteNature={siteNature}
-      onNext={() => dispatch(nextStepRequested())}
+      onNext={onNext}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

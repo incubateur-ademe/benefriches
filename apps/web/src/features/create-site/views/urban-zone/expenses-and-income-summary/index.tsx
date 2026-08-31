@@ -1,22 +1,18 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { selectExpensesAndIncomeSummaryViewData } from "@/features/create-site/core/urban-zone/steps/expenses/expenses-summary/expensesAndIncomeSummary.selectors";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 import UrbanZoneExpensesAndIncomeSummary from "./UrbanZoneExpensesAndIncomeSummary";
 
 function ExpensesAndIncomeSummaryContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext, selectExpensesAndIncomeSummaryViewData } = useUrbanZoneSiteForm();
   const { ownerExpenses, ownerIncome } = useAppSelector(selectExpensesAndIncomeSummaryViewData);
 
   return (
     <UrbanZoneExpensesAndIncomeSummary
       ownerExpenses={ownerExpenses}
       ownerIncome={ownerIncome}
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
+      onNext={onNext}
+      onBack={onBack}
     />
   );
 }

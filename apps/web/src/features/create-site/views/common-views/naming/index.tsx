@@ -1,16 +1,12 @@
 import { generateSiteName } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectDerivedSiteData } from "@/features/create-site/core/selectors/createSite.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteNameAndDescriptionForm, { FormValues } from "./SiteNameAndDescription";
 
 function SiteNameAndDescriptionFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectDerivedSiteData } = useCustomSiteForm();
   const siteData = useAppSelector(selectDerivedSiteData);
 
   return (
@@ -28,10 +24,10 @@ function SiteNameAndDescriptionFormContainer() {
         description: siteData.description ?? "",
       }}
       onSubmit={(formData: FormValues) => {
-        dispatch(stepCompletionRequested({ stepId: "NAMING", answers: formData }));
+        onRequestStepCompletion({ stepId: "NAMING", answers: formData });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

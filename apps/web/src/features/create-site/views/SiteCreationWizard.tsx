@@ -26,6 +26,9 @@ import UseMutabilityForm from "./friche/use-mutability";
 import SiteCreationIntroduction from "./introduction";
 import IsFricheForm from "./is-friche";
 import NavigationBlockerDialog from "./navigation-blocker";
+import { CustomSiteFormProvider } from "./site-form/CustomSiteFormProvider";
+import { DemoSiteFormProvider } from "./site-form/DemoSiteFormProvider";
+import { UrbanZoneSiteFormProvider } from "./site-form/UrbanZoneSiteFormProvider";
 import SiteNatureForm from "./site-nature";
 import UrbanZoneTypeForm from "./urban-zone-type";
 import SiteCreationUrbanZoneStepContent from "./urban-zone/StepContent";
@@ -34,14 +37,23 @@ import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRout
 
 export const HTML_MAIN_TITLE = "Renseignement du site";
 
+// Pre-engine steps only: INTRODUCTION/IS_FRICHE/USE_MUTABILITY/SITE_NATURE dispatch through
+// `stepReverted` + the per-step `*Completed` actions (core/steps/introduction), not the custom
+// wizard-form engine, so they render outside any form-context provider.
 const STEP_CONFIG: Partial<Record<SiteCreationStep, { title: string; content: React.ReactNode }>> =
   {
     INTRODUCTION: { title: "Introduction", content: <SiteCreationIntroduction /> },
     IS_FRICHE: { title: "Type de site", content: <IsFricheForm /> },
     USE_MUTABILITY: { title: "Type d'évaluation", content: <UseMutabilityForm /> },
     SITE_NATURE: { title: "Catégorie du site", content: <SiteNatureForm /> },
-    URBAN_ZONE_TYPE: { title: "Type de zone urbaine", content: <UrbanZoneTypeForm /> },
   };
+
+// URBAN_ZONE_TYPE is a real custom-flow engine step (it dispatches through `customFormActions`,
+// see custom/customSteps.ts) that the wizard nonetheless renders with the same single-step
+// stepper as the pre-engine steps above, ahead of the full custom step content. Deviation from
+// the plan's file list, which grouped it with the 5 pre-engine steps: it needs
+// `CustomSiteFormProvider`, the others don't.
+const URBAN_ZONE_TYPE_STEP_TITLE = "Type de zone urbaine";
 
 type UseSiteCreationWizardLayoutProps = {
   isFriche: boolean | undefined;
@@ -57,8 +69,16 @@ export function useSiteCreationWizardLayout({
     if (createMode === "express") {
       return {
         htmlTitle: HTML_MAIN_TITLE,
-        sidebarChildren: <SiteCreationExpressStepper />,
-        mainChildren: <SiteCreationExpressStepContent />,
+        sidebarChildren: (
+          <DemoSiteFormProvider mode="create">
+            <SiteCreationExpressStepper />
+          </DemoSiteFormProvider>
+        ),
+        mainChildren: (
+          <DemoSiteFormProvider mode="create">
+            <SiteCreationExpressStepContent />
+          </DemoSiteFormProvider>
+        ),
       };
     }
 
@@ -66,12 +86,30 @@ export function useSiteCreationWizardLayout({
       if (isUrbanZoneStepHandlerStep(currentStep)) {
         return {
           htmlTitle: HTML_MAIN_TITLE,
-          mainChildren: <SiteCreationUrbanZoneStepContent />,
+          mainChildren: (
+            <UrbanZoneSiteFormProvider mode="create">
+              <SiteCreationUrbanZoneStepContent />
+            </UrbanZoneSiteFormProvider>
+          ),
           sidebarChildren: (
-            <>
+            <UrbanZoneSiteFormProvider mode="create">
               <NavigationBlockerDialog />
               <UrbanZoneStepper step={currentStep} />
-            </>
+            </UrbanZoneSiteFormProvider>
+          ),
+        };
+      }
+
+      if (currentStep === "URBAN_ZONE_TYPE") {
+        return {
+          htmlTitle: `${URBAN_ZONE_TYPE_STEP_TITLE} - ${HTML_MAIN_TITLE}`,
+          mainChildren: (
+            <CustomSiteFormProvider mode="create">
+              <UrbanZoneTypeForm />
+            </CustomSiteFormProvider>
+          ),
+          sidebarChildren: (
+            <FormStepper currentStepIndex={0} steps={["Introduction"]} isDone={false} />
           ),
         };
       }
@@ -90,16 +128,18 @@ export function useSiteCreationWizardLayout({
       return {
         htmlTitle: HTML_MAIN_TITLE,
         mainChildren: (
-          <>
+          <CustomSiteFormProvider mode="create">
             <NavigationBlockerDialog />
             <SiteCreationCustomStepContent />
-          </>
+          </CustomSiteFormProvider>
         ),
         sidebarChildren: (
-          <SiteCreationCustomStepper
-            isFriche={isFriche}
-            step={currentStep as SiteCreationCustomStep}
-          />
+          <CustomSiteFormProvider mode="create">
+            <SiteCreationCustomStepper
+              isFriche={isFriche}
+              step={currentStep as SiteCreationCustomStep}
+            />
+          </CustomSiteFormProvider>
         ),
       };
     }

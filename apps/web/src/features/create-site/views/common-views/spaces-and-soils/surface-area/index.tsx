@@ -1,14 +1,11 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectSiteSurfaceAreaFormViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteSurfaceAreaForm from "../../SiteSurfaceAreaForm";
 
 function SiteSurfaceAreaFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectSiteSurfaceAreaFormViewData } =
+    useCustomSiteForm();
   const { siteSurfaceArea, siteNature } = useAppSelector(selectSiteSurfaceAreaFormViewData);
 
   return (
@@ -16,15 +13,13 @@ function SiteSurfaceAreaFormContainer() {
       initialValues={{ surfaceArea: siteSurfaceArea }}
       siteNature={siteNature}
       onSubmit={(formData: { surfaceArea: number }) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "SURFACE_AREA",
-            answers: { surfaceArea: formData.surfaceArea },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "SURFACE_AREA",
+          answers: { surfaceArea: formData.surfaceArea },
+        });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

@@ -1,23 +1,13 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectSiteNature } from "@/features/create-site/core/selectors/createSite.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteManagementIntroduction from "./SiteManagementIntroduction";
 
 function SiteManagementIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext, selectSiteNature } = useCustomSiteForm();
   const siteNature = useAppSelector(selectSiteNature);
 
-  return (
-    <SiteManagementIntroduction
-      siteNature={siteNature}
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
-    />
-  );
+  return <SiteManagementIntroduction siteNature={siteNature} onNext={onNext} onBack={onBack} />;
 }
 
 export default SiteManagementIntroductionContainer;

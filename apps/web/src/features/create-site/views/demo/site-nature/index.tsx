@@ -1,29 +1,23 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/demo/demoFactory";
-import { selectSiteNatureViewData } from "@/features/create-site/core/demo/steps/site-nature/siteNature.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useDemoSiteForm } from "@/features/create-site/views/site-form/useDemoSiteForm";
 
 import SiteNatureForm, { FormValues } from "./SiteNatureForm";
 
 function SiteNatureFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectSiteNatureViewData } = useDemoSiteForm();
   const { initialValues } = useAppSelector(selectSiteNatureViewData);
 
   return (
     <SiteNatureForm
       initialValues={initialValues}
       onSubmit={(data: FormValues) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "DEMO_SITE_NATURE_SELECTION",
-            answers: data,
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "DEMO_SITE_NATURE_SELECTION",
+          answers: data,
+        });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

@@ -1,13 +1,9 @@
 import { useMemo } from "react";
 import type { UrbanZoneLandParcelType } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { createParcelBuildingsFloorAreaSelector } from "@/features/create-site/core/urban-zone/steps/per-parcel-soils/parcelBuildingsFloorArea.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { getParcelStepIds } from "@/features/create-site/core/urban-zone/steps/per-parcel-soils/parcelStepMapping";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 import LandParcelBuildingsFloorAreaForm, {
   type FormValues,
@@ -18,10 +14,11 @@ type Props = {
 };
 
 function LandParcelBuildingsFloorAreaContainer({ parcelType }: Props) {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, createParcelBuildingsFloorAreaSelector } =
+    useUrbanZoneSiteForm();
   const selectViewData = useMemo(
     () => createParcelBuildingsFloorAreaSelector(parcelType),
-    [parcelType],
+    [parcelType, createParcelBuildingsFloorAreaSelector],
   );
   const { initialBuildingsFloorSurfaceArea, buildingsFootprintSurfaceArea } =
     useAppSelector(selectViewData);
@@ -33,15 +30,13 @@ function LandParcelBuildingsFloorAreaContainer({ parcelType }: Props) {
       buildingsFootprintSurfaceArea={buildingsFootprintSurfaceArea}
       initialValue={initialBuildingsFloorSurfaceArea}
       onSubmit={(data: FormValues) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId,
-            answers: { buildingsFloorSurfaceArea: data.buildingsFloorSurfaceArea },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId,
+          answers: { buildingsFloorSurfaceArea: data.buildingsFloorSurfaceArea },
+        });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

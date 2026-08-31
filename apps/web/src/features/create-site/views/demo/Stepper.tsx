@@ -1,17 +1,18 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-import { selectDemoCurrentStep } from "../../core/demo/demo.selectors";
 import {
   DEMO_STEP_GROUP_IDS,
   DEMO_STEP_GROUP_LABELS,
   DEMO_STEP_TO_GROUP,
 } from "../../core/demo/demoStepperConfig";
+import { useDemoSiteForm } from "../site-form/useDemoSiteForm";
 
 const stepCategories = DEMO_STEP_GROUP_IDS.map((id) => DEMO_STEP_GROUP_LABELS[id]);
 
 function DemoSiteCreationStepper() {
-  const currentStep = useAppSelector(selectDemoCurrentStep);
+  const { selectCurrentStep } = useDemoSiteForm();
+  const currentStep = useAppSelector(selectCurrentStep);
 
   const { groupId } = DEMO_STEP_TO_GROUP[currentStep];
   const currentStepIndex = DEMO_STEP_GROUP_IDS.indexOf(groupId);

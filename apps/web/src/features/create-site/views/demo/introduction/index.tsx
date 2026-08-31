@@ -1,10 +1,9 @@
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-import { nextStepRequested } from "@/features/create-site/core/demo/demoFactory";
+import { useDemoSiteForm } from "@/features/create-site/views/site-form/useDemoSiteForm";
 
 import DemoSiteIntroduction from "./DemoSiteIntroduction";
 
 export default function DemoSiteIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onNext } = useDemoSiteForm();
 
-  return <DemoSiteIntroduction onNext={() => dispatch(nextStepRequested())} />;
+  return <DemoSiteIntroduction onNext={onNext} />;
 }

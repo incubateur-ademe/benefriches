@@ -1,21 +1,17 @@
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/custom/custom.actions";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SoilContaminationIntroduction from "./SoilContaminationIntroduction";
 
 function SoilContaminationIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useCustomSiteForm();
 
   return (
     <SoilContaminationIntroduction
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
       onNext={() => {
-        dispatch(nextStepRequested());
+        onNext();
       }}
     />
   );

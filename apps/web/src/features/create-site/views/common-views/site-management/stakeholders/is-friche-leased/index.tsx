@@ -1,9 +1,5 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectDerivedSiteData } from "@/features/create-site/core/selectors/createSite.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import IsFricheLeasedForm, { FormValues } from "./IsFricheLeasedForm";
 
@@ -17,20 +13,14 @@ const mapInitialValues = (isFricheLeased: boolean | undefined): FormValues => {
 };
 
 function IsFricheLeasedFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectDerivedSiteData } = useCustomSiteForm();
   const isFricheLeased = useAppSelector((state) => selectDerivedSiteData(state).isFricheLeased);
 
   const onSubmit = ({ isFricheLeased }: FormValues) => {
-    dispatch(
-      stepCompletionRequested({
-        stepId: "IS_FRICHE_LEASED",
-        answers: { isFricheLeased: isFricheLeased === "yes" },
-      }),
-    );
-  };
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
+    onRequestStepCompletion({
+      stepId: "IS_FRICHE_LEASED",
+      answers: { isFricheLeased: isFricheLeased === "yes" },
+    });
   };
 
   return (

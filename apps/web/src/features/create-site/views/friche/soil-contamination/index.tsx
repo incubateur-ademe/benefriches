@@ -1,15 +1,12 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectSoilContaminationFormViewData } from "@/features/create-site/core/steps/contamination-and-accidents/contaminationAndAccidents.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 import SoilContaminationForm from "./SoilContaminationForm";
 
 function SoilContaminationFormController() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectSoilContaminationFormViewData } =
+    useCustomSiteForm();
   const { siteSurfaceArea, siteContamination } = useAppSelector(
     selectSoilContaminationFormViewData,
   );
@@ -30,15 +27,13 @@ function SoilContaminationFormController() {
       initialValues={siteContamination}
       siteSurfaceArea={siteSurfaceArea ?? 0}
       onSubmit={({ hasContaminatedSoils, contaminatedSoilSurface }) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "SOILS_CONTAMINATION",
-            answers: { hasContaminatedSoils, contaminatedSoilSurface },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "SOILS_CONTAMINATION",
+          answers: { hasContaminatedSoils, contaminatedSoilSurface },
+        });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

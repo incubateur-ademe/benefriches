@@ -1,20 +1,11 @@
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/custom/custom.actions";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import LandParcelsIntroduction from "./LandParcelsIntroduction";
 
 function LandParcelsIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useCustomSiteForm();
 
-  return (
-    <LandParcelsIntroduction
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
-    />
-  );
+  return <LandParcelsIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default LandParcelsIntroductionContainer;

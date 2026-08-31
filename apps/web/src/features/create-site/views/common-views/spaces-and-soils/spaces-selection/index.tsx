@@ -1,14 +1,11 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectSpacesSelectionFormViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteSpacesSelectionForm, { type FormValues } from "./SpacesSelectionForm";
 
 const SiteSpacesSelectionFormContainer = () => {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectSpacesSelectionFormViewData } =
+    useCustomSiteForm();
   const { siteNature, soils } = useAppSelector(selectSpacesSelectionFormViewData);
 
   return (
@@ -18,15 +15,13 @@ const SiteSpacesSelectionFormContainer = () => {
         soils,
       }}
       onSubmit={(formData: FormValues) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "SPACES_SELECTION",
-            answers: { soils: formData.soils },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "SPACES_SELECTION",
+          answers: { soils: formData.soils },
+        });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

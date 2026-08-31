@@ -1,26 +1,22 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { fetchSiteSoilsCarbonStorage } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/custom/custom.actions";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
 function SiteSoilsCarbonStorageContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext, onFetchSiteSoilsCarbonStorage } = useCustomSiteForm();
   const { carbonStorage, loadingState } = useAppSelector((state) => state.siteCarbonStorage);
 
   return (
     <SiteSoilsCarbonStorage
       onNext={() => {
-        dispatch(nextStepRequested());
+        onNext();
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
       fetchSiteCarbonStorage={async () => {
-        await dispatch(fetchSiteSoilsCarbonStorage());
+        await onFetchSiteSoilsCarbonStorage();
       }}
       loadingState={loadingState}
       siteCarbonStorage={carbonStorage}

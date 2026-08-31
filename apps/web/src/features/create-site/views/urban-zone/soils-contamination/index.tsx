@@ -1,13 +1,10 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { selectSoilsContaminationViewData } from "@/features/create-site/core/urban-zone/steps/contamination/soilsContamination.selectors";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import SoilContaminationForm from "@/features/create-site/views/friche/soil-contamination/SoilContaminationForm";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 function SoilsContaminationContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectSoilsContaminationViewData } =
+    useUrbanZoneSiteForm();
   const { siteSurfaceArea, initialValues } = useAppSelector(selectSoilsContaminationViewData);
 
   return (
@@ -16,15 +13,13 @@ function SoilsContaminationContainer() {
       initialValues={initialValues}
       siteSurfaceArea={siteSurfaceArea}
       onSubmit={({ hasContaminatedSoils, contaminatedSoilSurface }) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "URBAN_ZONE_SOILS_CONTAMINATION",
-            answers: { hasContaminatedSoils, contaminatedSoilSurface },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_ZONE_SOILS_CONTAMINATION",
+          answers: { hasContaminatedSoils, contaminatedSoilSurface },
+        });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

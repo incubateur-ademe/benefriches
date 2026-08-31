@@ -1,14 +1,10 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectDerivedSiteData } from "@/features/create-site/core/selectors/createSite.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import AgriculturalOperationActivityForm, { FormValues } from "./AgriculturalOperationActivityForm";
 
 export default function AgriculturalOperationActivityFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectDerivedSiteData } = useCustomSiteForm();
   const activity = useAppSelector(
     (state) => selectDerivedSiteData(state).agriculturalOperationActivity,
   );
@@ -17,12 +13,10 @@ export default function AgriculturalOperationActivityFormContainer() {
     <AgriculturalOperationActivityForm
       initialValues={activity ? { activity } : undefined}
       onSubmit={(data: FormValues) => {
-        dispatch(
-          stepCompletionRequested({ stepId: "AGRICULTURAL_OPERATION_ACTIVITY", answers: data }),
-        );
+        onRequestStepCompletion({ stepId: "AGRICULTURAL_OPERATION_ACTIVITY", answers: data });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

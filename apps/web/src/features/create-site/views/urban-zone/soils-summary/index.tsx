@@ -1,13 +1,9 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { selectUrbanZoneSoilsSummaryViewData } from "@/features/create-site/core/urban-zone/steps/summary/soils-summary/soilsSummary.selectors";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import SiteSoilsSummary from "@/features/create-site/views/common-views/spaces-and-soils/soils-summary/SiteSoilsSummary";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 function UrbanZoneSoilsSummaryContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext, selectUrbanZoneSoilsSummaryViewData } = useUrbanZoneSiteForm();
   const { soilsDistribution, totalSurfaceArea } = useAppSelector(
     selectUrbanZoneSoilsSummaryViewData,
   );
@@ -17,8 +13,8 @@ function UrbanZoneSoilsSummaryContainer() {
       soilsDistribution={soilsDistribution}
       totalSurfaceArea={totalSurfaceArea}
       wasSoilsDistributionAssignedByBenefriches={false}
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
+      onNext={onNext}
+      onBack={onBack}
     />
   );
 }

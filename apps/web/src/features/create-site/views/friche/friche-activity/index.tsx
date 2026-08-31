@@ -1,26 +1,20 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectFricheActivity } from "@/features/create-site/core/selectors/createSite.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import FricheActivityForm, { FormValues } from "./FricheActivityForm";
 
 function FricheActivityFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectFricheActivity } = useCustomSiteForm();
   const fricheActivity = useAppSelector(selectFricheActivity);
 
   return (
     <FricheActivityForm
       initialValues={{ activity: fricheActivity }}
       onSubmit={(formData: FormValues) => {
-        dispatch(
-          stepCompletionRequested({ stepId: "FRICHE_ACTIVITY", answers: formData.activity }),
-        );
+        onRequestStepCompletion({ stepId: "FRICHE_ACTIVITY", answers: formData.activity });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

@@ -1,13 +1,9 @@
 import { useMemo } from "react";
 import type { SoilsDistribution, UrbanZoneLandParcelType } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { createParcelSoilsDistributionSelector } from "@/features/create-site/core/urban-zone/steps/per-parcel-soils/parcelSoilsDistribution.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { getParcelStepIds } from "@/features/create-site/core/urban-zone/steps/per-parcel-soils/parcelStepMapping";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 import LandParcelSoilsDistributionForm from "./LandParcelSoilsDistributionForm";
 
@@ -16,10 +12,11 @@ type Props = {
 };
 
 function LandParcelSoilsDistributionContainer({ parcelType }: Props) {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, createParcelSoilsDistributionSelector } =
+    useUrbanZoneSiteForm();
   const selectViewData = useMemo(
     () => createParcelSoilsDistributionSelector(parcelType),
-    [parcelType],
+    [parcelType, createParcelSoilsDistributionSelector],
   );
   const { totalSurfaceArea, initialSoilsDistribution } = useAppSelector(selectViewData);
   const stepId = getParcelStepIds(parcelType).soilsDistribution;
@@ -30,15 +27,13 @@ function LandParcelSoilsDistributionContainer({ parcelType }: Props) {
       totalSurfaceArea={totalSurfaceArea}
       initialValues={initialSoilsDistribution}
       onSubmit={(data: SoilsDistribution) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId,
-            answers: { soilsDistribution: data },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId,
+          answers: { soilsDistribution: data },
+        });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

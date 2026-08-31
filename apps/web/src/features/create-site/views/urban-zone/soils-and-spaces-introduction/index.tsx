@@ -1,20 +1,11 @@
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 import SoilsAndSpacesIntroduction from "./SoilsAndSpacesIntroduction";
 
 function SoilsAndSpacesIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useUrbanZoneSiteForm();
 
-  return (
-    <SoilsAndSpacesIntroduction
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
-    />
-  );
+  return <SoilsAndSpacesIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default SoilsAndSpacesIntroductionContainer;

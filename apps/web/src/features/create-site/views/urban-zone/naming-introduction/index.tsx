@@ -1,19 +1,10 @@
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
 import SiteNamingIntroduction from "@/features/create-site/views/common-views/naming/introduction/SiteNamingIntroduction";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 function UrbanZoneNamingIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useUrbanZoneSiteForm();
 
-  return (
-    <SiteNamingIntroduction
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
-    />
-  );
+  return <SiteNamingIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default UrbanZoneNamingIntroductionContainer;

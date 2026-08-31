@@ -1,29 +1,24 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { selectFullTimeJobsEquivalentViewData } from "@/features/create-site/core/urban-zone/steps/management/full-time-jobs-equivalent/fullTimeJobsEquivalent.selectors";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 import FullTimeJobsEquivalentForm from "./FullTimeJobsEquivalentForm";
 
 function FullTimeJobsEquivalentContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectFullTimeJobsEquivalentViewData } =
+    useUrbanZoneSiteForm();
   const { initialValue } = useAppSelector(selectFullTimeJobsEquivalentViewData);
 
   return (
     <FullTimeJobsEquivalentForm
       initialValue={initialValue}
       onSubmit={({ fullTimeJobs }) => {
-        dispatch(
-          stepCompletionRequested({
-            stepId: "URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT",
-            answers: { fullTimeJobs },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT",
+          answers: { fullTimeJobs },
+        });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

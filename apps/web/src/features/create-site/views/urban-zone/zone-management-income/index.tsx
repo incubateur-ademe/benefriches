@@ -1,32 +1,23 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import type { ZoneManagementIncome } from "@/features/create-site/core/urban-zone/steps/expenses/zone-management-income/zoneManagementIncome.schema";
-import { selectZoneManagementIncomeViewData } from "@/features/create-site/core/urban-zone/steps/expenses/zone-management-income/zoneManagementIncome.selectors";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 import ZoneManagementIncomeForm from "./ZoneManagementIncomeForm";
 
 function ZoneManagementIncomeContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectZoneManagementIncomeViewData } =
+    useUrbanZoneSiteForm();
   const { initialValues } = useAppSelector(selectZoneManagementIncomeViewData);
 
   const onSubmit = (data: ZoneManagementIncome) => {
-    dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_ZONE_ZONE_MANAGEMENT_INCOME",
-        answers: data,
-      }),
-    );
+    onRequestStepCompletion({
+      stepId: "URBAN_ZONE_ZONE_MANAGEMENT_INCOME",
+      answers: data,
+    });
   };
 
   return (
-    <ZoneManagementIncomeForm
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      onBack={() => dispatch(previousStepRequested())}
-    />
+    <ZoneManagementIncomeForm initialValues={initialValues} onSubmit={onSubmit} onBack={onBack} />
   );
 }
 

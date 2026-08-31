@@ -1,21 +1,11 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { previousStepRequested } from "@/features/create-site/core/custom/custom.actions";
-import { selectDerivedSiteData } from "@/features/create-site/core/selectors/createSite.selectors";
-import { customSiteSaved } from "@/features/create-site/core/steps/final/final.actions";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteDataSummary from "./SiteDataSummary";
 
 function SiteDataSummaryContainer() {
+  const { onBack, onSave, selectDerivedSiteData } = useCustomSiteForm();
   const siteData = useAppSelector(selectDerivedSiteData);
-  const dispatch = useAppDispatch();
-
-  const onNext = () => {
-    void dispatch(customSiteSaved());
-  };
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
-  };
 
   return (
     <SiteDataSummary
@@ -43,7 +33,7 @@ function SiteDataSummaryContainer() {
         agriculturalOperationActivity: siteData.agriculturalOperationActivity,
         naturalAreaType: siteData.naturalAreaType,
       }}
-      onNext={onNext}
+      onNext={onSave}
       onBack={onBack}
     />
   );

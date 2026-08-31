@@ -1,15 +1,10 @@
 import { useEffect } from "react";
 import type { LocalAuthority } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import type { Owner } from "@/features/create-site/core/siteFoncier.types";
 import type { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
-import { selectSiteOwnerFormViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 import type { UserStructure } from "@/features/onboarding/core/user";
 
 import SiteOwnerForm, { type FormValues } from "./SiteOwnerForm";
@@ -98,29 +93,28 @@ const mapInitialValues = (
 };
 
 function SiteOwnerFormContainer() {
+  const {
+    onBack,
+    onRequestStepCompletion,
+    onFetchSiteMunicipalityData,
+    selectSiteOwnerFormViewData,
+  } = useCustomSiteForm();
   const { currentUserStructure, siteNature, owner, localAuthoritiesList } = useAppSelector(
     selectSiteOwnerFormViewData,
   );
-  const dispatch = useAppDispatch();
 
   const onSubmit = (data: FormValues) => {
-    dispatch(
-      stepCompletionRequested({
-        stepId: "OWNER",
-        answers: {
-          owner: convertFormValuesForStore(data, localAuthoritiesList, currentUserStructure),
-        },
-      }),
-    );
-  };
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
+    onRequestStepCompletion({
+      stepId: "OWNER",
+      answers: {
+        owner: convertFormValuesForStore(data, localAuthoritiesList, currentUserStructure),
+      },
+    });
   };
 
   useEffect(() => {
-    void dispatch(fetchSiteMunicipalityData());
-  }, [dispatch]);
+    void onFetchSiteMunicipalityData();
+  }, [onFetchSiteMunicipalityData]);
 
   return (
     <SiteOwnerForm

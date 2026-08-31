@@ -1,19 +1,15 @@
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/custom/custom.actions";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteNamingIntroduction from "./SiteNamingIntroduction";
 
 function SiteNamingIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useCustomSiteForm();
 
   return (
     <SiteNamingIntroduction
-      onNext={() => dispatch(nextStepRequested())}
+      onNext={onNext}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

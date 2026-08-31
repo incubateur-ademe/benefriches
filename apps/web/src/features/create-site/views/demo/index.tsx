@@ -1,11 +1,13 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 
-import { selectDemoUseCaseContentWizardViewData } from "../../core/demo/demo.selectors";
 import NavigationBlockerDialog from "../navigation-blocker/NavigationBlockerDialog";
+import { useDemoSiteForm } from "../site-form/useDemoSiteForm";
 import DemoSiteCreationStepContent from "./StepContent";
 
 function DemoSiteCreationStepContentWizard() {
-  const { saveState, currentStep } = useAppSelector(selectDemoUseCaseContentWizardViewData);
+  const { selectCurrentStep, selectSaveState } = useDemoSiteForm();
+  const currentStep = useAppSelector(selectCurrentStep);
+  const saveState = useAppSelector(selectSaveState);
 
   return (
     <>

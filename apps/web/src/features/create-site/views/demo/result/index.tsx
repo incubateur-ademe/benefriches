@@ -1,18 +1,13 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { previousStepRequested } from "@/features/create-site/core/demo/demoFactory";
-import { selectDemoSiteCreationResultViewData } from "@/features/create-site/core/demo/steps/creation-result/creationResult.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useDemoSiteForm } from "@/features/create-site/views/site-form/useDemoSiteForm";
 
 import SiteCreationResult from "./SiteCreationResult";
 
 function DemoSiteCreationResultContainer() {
+  const { onBack, selectDemoSiteCreationResultViewData } = useDemoSiteForm();
   const { saveState, siteName, siteId, siteActivity, siteAddress } = useAppSelector(
     selectDemoSiteCreationResultViewData,
   );
-  const dispatch = useAppDispatch();
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
-  };
 
   return (
     <SiteCreationResult

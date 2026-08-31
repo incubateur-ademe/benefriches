@@ -1,18 +1,13 @@
 import { SiteYearlyIncome } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { AppDispatch } from "@/app/store/store";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectDerivedSiteData } from "@/features/create-site/core/selectors/createSite.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { hasTenant } from "@/features/create-site/core/site.functions";
 import type { SiteCreationData } from "@/features/create-site/core/siteFoncier.types";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteExpensesSummary from "./SiteExpensesIncomeSummary";
 
-const mapProps = (dispatch: AppDispatch, siteData: SiteCreationData) => {
+const mapProps = (onNext: () => void, onBack: () => void, siteData: SiteCreationData) => {
   const rent = siteData.yearlyExpenses
     .filter(({ purpose }) => purpose === "rent")
     .map(({ purpose, amount }) => ({ source: purpose, amount })) as SiteYearlyIncome[];
@@ -27,20 +22,16 @@ const mapProps = (dispatch: AppDispatch, siteData: SiteCreationData) => {
     tenantExpenses: siteData.yearlyExpenses.filter(({ bearer }) => bearer === "tenant"),
     ownerIncome: siteHasTenant ? rent : operationsIncome,
     tenantIncome: siteHasTenant ? operationsIncome : [],
-    onNext: () => {
-      dispatch(nextStepRequested());
-    },
-    onBack: () => {
-      dispatch(previousStepRequested());
-    },
+    onNext,
+    onBack,
   };
 };
 
 function SiteExpensesIncomeSummaryContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext, selectDerivedSiteData } = useCustomSiteForm();
   const siteData = useAppSelector(selectDerivedSiteData);
 
-  return <SiteExpensesSummary {...mapProps(dispatch, siteData)} />;
+  return <SiteExpensesSummary {...mapProps(onNext, onBack, siteData)} />;
 }
 
 export default SiteExpensesIncomeSummaryContainer;

@@ -1,9 +1,5 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/demo/demoFactory";
-import { selectSiteActivityViewData } from "@/features/create-site/core/demo/steps/site-activity/siteActivity.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useDemoSiteForm } from "@/features/create-site/views/site-form/useDemoSiteForm";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
@@ -13,13 +9,9 @@ import NaturalAreaTypeForm from "../../common-views/natural-area-type/NaturalAre
 import FricheActivityForm from "../../friche/friche-activity/FricheActivityForm";
 
 function SiteActivitySelectionFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectSiteActivityViewData } = useDemoSiteForm();
   const { siteNature, agriculturalOperationActivity, naturalAreaType, fricheActivity } =
     useAppSelector(selectSiteActivityViewData);
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
-  };
 
   if (siteNature === "AGRICULTURAL_OPERATION") {
     return (
@@ -28,12 +20,10 @@ function SiteActivitySelectionFormContainer() {
         <AgriculturalOperationActivityForm
           onBack={onBack}
           onSubmit={(data) => {
-            dispatch(
-              stepCompletionRequested({
-                stepId: "DEMO_SITE_ACTIVITY_SELECTION",
-                answers: { siteNature, agriculturalOperationActivity: data.activity },
-              }),
-            );
+            onRequestStepCompletion({
+              stepId: "DEMO_SITE_ACTIVITY_SELECTION",
+              answers: { siteNature, agriculturalOperationActivity: data.activity },
+            });
           }}
           instructions={
             <FormInfo emoji="🌽">
@@ -62,12 +52,10 @@ function SiteActivitySelectionFormContainer() {
         <FricheActivityForm
           onBack={onBack}
           onSubmit={(data) => {
-            dispatch(
-              stepCompletionRequested({
-                stepId: "DEMO_SITE_ACTIVITY_SELECTION",
-                answers: { siteNature, fricheActivity: data.activity },
-              }),
-            );
+            onRequestStepCompletion({
+              stepId: "DEMO_SITE_ACTIVITY_SELECTION",
+              answers: { siteNature, fricheActivity: data.activity },
+            });
           }}
           instructions={
             <FormInfo emoji="🏭">
@@ -94,12 +82,10 @@ function SiteActivitySelectionFormContainer() {
         <NaturalAreaTypeForm
           onBack={onBack}
           onSubmit={(data) => {
-            dispatch(
-              stepCompletionRequested({
-                stepId: "DEMO_SITE_ACTIVITY_SELECTION",
-                answers: { siteNature, naturalAreaType: data.type },
-              }),
-            );
+            onRequestStepCompletion({
+              stepId: "DEMO_SITE_ACTIVITY_SELECTION",
+              answers: { siteNature, naturalAreaType: data.type },
+            });
           }}
           initialValues={{ type: naturalAreaType }}
           instructions={

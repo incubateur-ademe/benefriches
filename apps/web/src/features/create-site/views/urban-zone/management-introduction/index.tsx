@@ -1,20 +1,11 @@
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 import UrbanZoneManagementIntroduction from "./UrbanZoneManagementIntroduction";
 
 function ManagementIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useUrbanZoneSiteForm();
 
-  return (
-    <UrbanZoneManagementIntroduction
-      onNext={() => dispatch(nextStepRequested())}
-      onBack={() => dispatch(previousStepRequested())}
-    />
-  );
+  return <UrbanZoneManagementIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default ManagementIntroductionContainer;

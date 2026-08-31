@@ -1,31 +1,22 @@
 import { createSoilSurfaceAreaDistribution } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectSiteSoilsDistributionViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteSpacesDistributionForm, { FormValues } from "./SiteSpacesDistributionForm";
 
 export default function SiteSpacesDistributionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectSiteSoilsDistributionViewData } =
+    useCustomSiteForm();
   const { siteSoils, siteSurfaceArea, initialValues } = useAppSelector(
     selectSiteSoilsDistributionViewData,
   );
 
   const onSubmit = (formData: FormValues) => {
-    dispatch(
-      stepCompletionRequested({
-        stepId: "SPACES_SURFACE_AREA_DISTRIBUTION",
-        answers: { distribution: createSoilSurfaceAreaDistribution(formData).toJSON() },
-      }),
-    );
-  };
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
+    onRequestStepCompletion({
+      stepId: "SPACES_SURFACE_AREA_DISTRIBUTION",
+      answers: { distribution: createSoilSurfaceAreaDistribution(formData).toJSON() },
+    });
   };
 
   return (

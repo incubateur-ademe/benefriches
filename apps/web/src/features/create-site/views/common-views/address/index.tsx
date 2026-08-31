@@ -1,16 +1,12 @@
 import type { Address } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectAddressFormViewData } from "@/features/create-site/core/steps/address/address.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import AddressForm from "./AddressForm";
 
 function AddressFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectAddressFormViewData } = useCustomSiteForm();
   const { siteNature, address } = useAppSelector(selectAddressFormViewData);
 
   return (
@@ -18,10 +14,10 @@ function AddressFormContainer() {
       selectedAddress={address}
       siteNature={siteNature}
       onSubmit={(addressData: Address) => {
-        dispatch(stepCompletionRequested({ stepId: "ADDRESS", answers: { address: addressData } }));
+        onRequestStepCompletion({ stepId: "ADDRESS", answers: { address: addressData } });
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );

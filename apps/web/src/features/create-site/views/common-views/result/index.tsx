@@ -1,16 +1,11 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { previousStepRequested } from "@/features/create-site/core/custom/custom.actions";
-import { selectSiteCreationResultViewData } from "@/features/create-site/core/steps/final/final.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteCreationResult from "./SiteCreationResult";
 
 function SiteCreationResultContainer() {
+  const { onBack, selectSiteCreationResultViewData } = useCustomSiteForm();
   const { siteId, siteName, loadingState } = useAppSelector(selectSiteCreationResultViewData);
-  const dispatch = useAppDispatch();
-
-  const onBack = () => {
-    dispatch(previousStepRequested());
-  };
 
   return (
     <SiteCreationResult

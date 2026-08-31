@@ -1,14 +1,10 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectSiteSoilsSummaryViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteSoilsSummary from "./SiteSoilsSummary";
 
 function SiteSoilsSummaryContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext, selectSiteSoilsSummaryViewData } = useCustomSiteForm();
   const {
     soilsDistribution,
     totalSurfaceArea,
@@ -22,9 +18,9 @@ function SiteSoilsSummaryContainer() {
 
   return (
     <SiteSoilsSummary
-      onNext={() => dispatch(nextStepRequested())}
+      onNext={onNext}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
       soilsDistribution={soilsDistribution}
       totalSurfaceArea={totalSurfaceArea}

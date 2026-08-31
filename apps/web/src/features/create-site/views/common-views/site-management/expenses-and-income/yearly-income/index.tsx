@@ -1,42 +1,39 @@
 import type { SiteYearlyIncome } from "shared";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import type { AppDispatch } from "@/app/store/store";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/custom/custom.actions";
-import { selectYearlyIncomeFormViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import type { StepCompletionPayload } from "@/features/create-site/core/custom/custom.actions";
+import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteYearlyIncomeForm, { type FormValues } from "./SiteYearlyIncomeForm";
 import { getInitialValues, mapFormDataToIncomes } from "./mappers";
 
 const mapProps = (
-  dispatch: AppDispatch,
+  onBack: () => void,
+  onRequestStepCompletion: (payload: StepCompletionPayload) => void,
   incomesInStore: SiteYearlyIncome[],
   estimatedIncomeAmounts: SiteYearlyIncome[],
 ) => {
   return {
     initialValues: getInitialValues(incomesInStore, estimatedIncomeAmounts),
-    onBack: () => {
-      dispatch(previousStepRequested());
-    },
+    onBack,
     onSubmit: (formData: FormValues) => {
-      dispatch(
-        stepCompletionRequested({
-          stepId: "YEARLY_INCOME",
-          answers: mapFormDataToIncomes(formData),
-        }),
-      );
+      onRequestStepCompletion({
+        stepId: "YEARLY_INCOME",
+        answers: mapFormDataToIncomes(formData),
+      });
     },
   };
 };
 
 function SiteYearlyIncomeFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectYearlyIncomeFormViewData } = useCustomSiteForm();
   const { incomesInStore, estimatedIncomeAmounts } = useAppSelector(selectYearlyIncomeFormViewData);
 
-  return <SiteYearlyIncomeForm {...mapProps(dispatch, incomesInStore, estimatedIncomeAmounts)} />;
+  return (
+    <SiteYearlyIncomeForm
+      {...mapProps(onBack, onRequestStepCompletion, incomesInStore, estimatedIncomeAmounts)}
+    />
+  );
 }
 
 export default SiteYearlyIncomeFormContainer;

@@ -1,25 +1,21 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { fetchSiteSoilsCarbonStorage } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
-import {
-  nextStepRequested,
-  previousStepRequested,
-} from "@/features/create-site/core/urban-zone/urban-zone.actions";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import SiteSoilsCarbonStorage from "@/features/create-site/views/common-views/spaces-and-soils/soils-carbon-storage/SiteSoilsCarbonStorage";
+import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 
 function UrbanZoneSoilsCarbonStorageContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext, onFetchSiteSoilsCarbonStorage } = useUrbanZoneSiteForm();
   const { carbonStorage, loadingState } = useAppSelector((state) => state.siteCarbonStorage);
 
   return (
     <SiteSoilsCarbonStorage
       onNext={() => {
-        dispatch(nextStepRequested());
+        onNext();
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
       fetchSiteCarbonStorage={async () => {
-        await dispatch(fetchSiteSoilsCarbonStorage());
+        await onFetchSiteSoilsCarbonStorage();
       }}
       loadingState={loadingState}
       siteCarbonStorage={carbonStorage}

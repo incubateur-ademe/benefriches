@@ -1,16 +1,12 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import {
-  previousStepRequested,
-  stepCompletionRequested,
-} from "@/features/create-site/core/demo/demoFactory";
-import { demoSiteSaved } from "@/features/create-site/core/demo/demoSiteSaved.action";
-import { selectSiteSurfaceAreaFormViewData } from "@/features/create-site/core/demo/steps/surface-area/surfaceArea.selectors";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useDemoSiteForm } from "@/features/create-site/views/site-form/useDemoSiteForm";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 import SiteSurfaceAreaForm from "../../common-views/SiteSurfaceAreaForm";
 
 function SiteSurfaceAreaFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, onSave, selectSiteSurfaceAreaFormViewData } =
+    useDemoSiteForm();
   const { initialValues, siteNature } = useAppSelector(selectSiteSurfaceAreaFormViewData);
 
   return (
@@ -24,13 +20,11 @@ function SiteSurfaceAreaFormContainer() {
       }
       siteNature={siteNature}
       onSubmit={({ surfaceArea }) => {
-        dispatch(
-          stepCompletionRequested({ stepId: "DEMO_SITE_SURFACE_AREA", answers: { surfaceArea } }),
-        );
-        void dispatch(demoSiteSaved());
+        onRequestStepCompletion({ stepId: "DEMO_SITE_SURFACE_AREA", answers: { surfaceArea } });
+        onSave();
       }}
       onBack={() => {
-        dispatch(previousStepRequested());
+        onBack();
       }}
     />
   );
