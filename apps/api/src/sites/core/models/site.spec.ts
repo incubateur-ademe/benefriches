@@ -12,7 +12,9 @@ import {
   CreateUrbanZoneSiteProps,
   Friche,
   UrbanZoneSite,
+  updateSite,
 } from "./site";
+import { buildFricheProps } from "./site.mock";
 
 describe("Site core logic", () => {
   describe("createFriche", () => {
@@ -490,6 +492,50 @@ describe("Site core logic", () => {
         vacantCommercialPremisesFloorArea: 800,
         fullTimeJobsEquivalent: 42.5,
       });
+    });
+  });
+
+  describe("updateSite", () => {
+    it("rejects an update whose nature differs from the persisted site's nature", () => {
+      const fricheProps: CreateFricheProps & { nature: "FRICHE" } = {
+        ...buildFricheProps(),
+        nature: "FRICHE",
+      };
+
+      const result = updateSite("URBAN_ZONE", fricheProps);
+
+      assert.strictEqual(result.success, false);
+      // oxlint-disable-next-line typescript/no-unnecessary-type-assertion
+      const errorResult = result as Extract<typeof result, { success: false }>;
+      assert.deepStrictEqual(errorResult.error, {
+        formErrors: ["Site nature cannot be changed"],
+        fieldErrors: {},
+      });
+    });
+
+    it("succeeds and produces the same friche as createFriche when creating (currentNature undefined)", () => {
+      const fricheProps: CreateFricheProps & { nature: "FRICHE" } = {
+        ...buildFricheProps(),
+        nature: "FRICHE",
+      };
+
+      const resultFromUpdateSite = updateSite(undefined, fricheProps);
+      const resultFromCreateFriche = createFriche(fricheProps);
+
+      assert.strictEqual(resultFromUpdateSite.success, true);
+      assert.strictEqual(resultFromCreateFriche.success, true);
+      assert.deepStrictEqual(resultFromUpdateSite, resultFromCreateFriche);
+    });
+
+    it("succeeds when the submitted nature matches the site's persisted nature", () => {
+      const fricheProps: CreateFricheProps & { nature: "FRICHE" } = {
+        ...buildFricheProps(),
+        nature: "FRICHE",
+      };
+
+      const result = updateSite("FRICHE", fricheProps);
+
+      assert.strictEqual(result.success, true);
     });
   });
 });

@@ -12,7 +12,7 @@ import {
   SqlSiteSoilsDistribution,
   SqlSiteUrbanZoneFeatures,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
+import { SiteMetadata, SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
 
 export class SqlSiteRepository implements SitesRepository {
@@ -139,6 +139,122 @@ export class SqlSiteRepository implements SitesRepository {
     });
   }
 
+  async update(site: SiteEntity): Promise<void> {
+    await this.sqlConnection.transaction(async (trx) => {
+      const natureRelatedRows = (() => {
+        switch (site.nature) {
+          case "FRICHE":
+            return {
+              friche_activity: site.fricheActivity,
+              friche_accidents_deaths: site.accidentsDeaths,
+              friche_accidents_severe_injuries: site.accidentsSevereInjuries,
+              friche_accidents_minor_injuries: site.accidentsMinorInjuries,
+              friche_contaminated_soil_surface_area: site.contaminatedSoilSurface,
+              friche_has_contaminated_soils: site.hasContaminatedSoils,
+            };
+          case "AGRICULTURAL_OPERATION":
+            return {
+              agricultural_operation_activity: site.agriculturalOperationActivity,
+              is_operated: site.isSiteOperated,
+            };
+
+          case "NATURAL_AREA":
+            return {
+              natural_area_type: site.naturalAreaType,
+            };
+          case "URBAN_ZONE":
+            return {};
+        }
+      })();
+
+      await trx<SqlSite>("sites")
+        .where({ id: site.id })
+        .update({
+          name: site.name,
+          description: site.description,
+          surface_area: site.surfaceArea,
+          owner_name: site.owner.name,
+          owner_structure_type: site.owner.structureType,
+          tenant_name: site.tenant?.name,
+          tenant_structure_type: site.tenant?.structureType,
+          updated_at: site.updatedAt,
+          ...natureRelatedRows,
+        });
+
+      await trx<SqlAddress>("addresses").where({ site_id: site.id }).update({
+        ban_id: site.address.banId,
+        value: site.address.value,
+        city: site.address.city,
+        city_code: site.address.cityCode,
+        post_code: site.address.postCode,
+        street_number: site.address.streetNumber,
+        street_name: site.address.streetName,
+        long: site.address.long,
+        lat: site.address.lat,
+      });
+
+      if (site.nature === "URBAN_ZONE") {
+        await trx<SqlSiteUrbanZoneFeatures>("site_urban_zone_features")
+          .where({ site_id: site.id })
+          .update({
+            urban_zone_type: site.urbanZoneType,
+            land_parcels: JSON.stringify(site.landParcels),
+            has_contaminated_soils: site.hasContaminatedSoils ?? null,
+            contaminated_soil_surface: site.contaminatedSoilSurface ?? null,
+            manager_structure_type: site.manager.structureType,
+            manager_name: site.manager.name,
+            vacant_commercial_premises_footprint: site.vacantCommercialPremisesFootprint,
+            vacant_commercial_premises_floor_area: site.vacantCommercialPremisesFloorArea ?? null,
+            full_time_jobs_equivalent: site.fullTimeJobsEquivalent ?? null,
+          });
+      } else {
+        await trx<SqlSiteSoilsDistribution>("site_soils_distributions")
+          .where({ site_id: site.id })
+          .delete();
+
+        const soilsDistributionToInsert: SqlSiteSoilsDistribution[] = Object.entries(
+          site.soilsDistribution.toJSON(),
+        ).map(([soilType, surfaceArea]) => {
+          return {
+            id: uuid(),
+            soil_type: soilType as SoilType,
+            surface_area: surfaceArea,
+            site_id: site.id,
+          };
+        });
+        await trx<SqlSiteSoilsDistribution[]>("site_soils_distributions").insert(
+          soilsDistributionToInsert,
+        );
+      }
+
+      await trx<SqlSiteExpense>("site_expenses").where({ site_id: site.id }).delete();
+      if (site.yearlyExpenses.length > 0) {
+        const siteExpensesToInsert: SqlSiteExpense[] = site.yearlyExpenses.map((expense) => {
+          return {
+            id: uuid(),
+            site_id: site.id,
+            amount: expense.amount,
+            bearer: expense.bearer,
+            purpose: expense.purpose,
+          };
+        });
+        await trx<SqlSiteExpense[]>("site_expenses").insert(siteExpensesToInsert);
+      }
+
+      await trx<SqlSiteIncome>("site_incomes").where({ site_id: site.id }).delete();
+      if (site.yearlyIncomes.length > 0) {
+        const siteIncomesToInsert: SqlSiteIncome[] = site.yearlyIncomes.map((income) => {
+          return {
+            id: uuid(),
+            site_id: site.id,
+            ...income,
+          };
+        });
+        await trx<SqlSiteIncome[]>("site_incomes").insert(siteIncomesToInsert);
+      }
+    });
+  }
+
   async existsWithId(siteId: string): Promise<boolean> {
     const exists = await this.sqlConnection<SqlSite>("sites")
       .select("id")
@@ -153,6 +269,35 @@ export class SqlSiteRepository implements SitesRepository {
       .where({ id: siteId })
       .first();
     return exists?.created_by;
+  }
+
+  async getMetadataById(siteId: string): Promise<SiteMetadata | undefined> {
+    const row = await this.sqlConnection<SqlSite>("sites")
+      .select("nature", "created_by", "creation_mode", "created_at", "status")
+      .where({ id: siteId })
+      .first();
+
+    if (!row) return undefined;
+
+    return {
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion
+      nature: row.nature as SiteMetadata["nature"],
+      createdBy: row.created_by,
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion
+      creationMode: row.creation_mode as SiteMetadata["creationMode"],
+      createdAt: row.created_at,
+      status: row.status,
+    };
+  }
+
+  async hasActiveReconversionProject(siteId: string): Promise<boolean> {
+    const activeProject = await this.sqlConnection("reconversion_projects")
+      .select("id")
+      .where("related_site_id", siteId)
+      .where("status", "=", "active")
+      .first();
+
+    return !!activeProject;
   }
 
   async patch(

@@ -1,11 +1,23 @@
-import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
+import { SiteMetadata, SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
 
 export class InMemorySitesRepository implements SitesRepository {
   private sites: SiteEntity[] = [];
+  private sitesWithActiveReconversionProjects = new Set<string>();
 
   async save(site: SiteEntity) {
     this.sites.push(site);
+    await Promise.resolve();
+  }
+
+  async update(site: SiteEntity) {
+    const existing = this.sites.find(({ id }) => id === site.id);
+    if (!existing) {
+      throw new Error("InMemorySitesRepository > update: site not found");
+    }
+    this.sites = this.sites.map((existingSite) =>
+      existingSite.id === site.id ? site : existingSite,
+    );
     await Promise.resolve();
   }
 
@@ -19,12 +31,27 @@ export class InMemorySitesRepository implements SitesRepository {
     return Promise.resolve(foundSite?.createdBy);
   }
 
+  getMetadataById(siteId: string): Promise<SiteMetadata | undefined> {
+    const foundSite = this.sites.find(({ id }) => id === siteId);
+    if (!foundSite) return Promise.resolve(undefined);
+    const { nature, createdBy, creationMode, createdAt, status } = foundSite;
+    return Promise.resolve({ nature, createdBy, creationMode, createdAt, status });
+  }
+
+  hasActiveReconversionProject(siteId: string): Promise<boolean> {
+    return Promise.resolve(this.sitesWithActiveReconversionProjects.has(siteId));
+  }
+
   _getSites() {
     return this.sites;
   }
 
   _setSites(sites: SiteEntity[]) {
     this.sites = sites;
+  }
+
+  _setSitesWithActiveReconversionProjects(siteIds: string[]) {
+    this.sitesWithActiveReconversionProjects = new Set(siteIds);
   }
 
   async patch(

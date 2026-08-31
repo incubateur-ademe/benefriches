@@ -2,7 +2,12 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import type { Knex } from "knex";
 import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
-import { CreateCustomSiteDto, CreateExpressSiteDto, GetSiteImpactsDto } from "shared";
+import {
+  CreateCustomSiteDto,
+  CreateExpressSiteDto,
+  GetSiteImpactsDto,
+  UpdateCustomSiteDto,
+} from "shared";
 import supertest from "supertest";
 import { assertShapeEquals, isDate, isNumber } from "test/assertShapeEquals";
 import { authenticateUser, createTestApp } from "test/testApp";
@@ -12,6 +17,9 @@ import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTo
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
 import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/MutafrichesEvaluationQuery";
+import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
+import { buildFriche } from "src/sites/core/models/site.mock";
+import { SiteEntity } from "src/sites/core/models/siteEntity";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
 type BadRequestResponseBody = {
@@ -33,11 +41,13 @@ function assertBadRequestWithMissingField(
 describe("Sites controller", () => {
   let app: NestExpressApplication;
   let sqlConnection: Knex;
+  let sqlSiteRepository: SqlSiteRepository;
 
   before(async () => {
     app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
+    sqlSiteRepository = app.get(SqlSiteRepository);
   });
 
   after(async () => {
@@ -1424,6 +1434,177 @@ describe("Sites controller", () => {
       assert.strictEqual(sites.length, 1);
       assert.strictEqual(sites[0]?.status, "archived");
       assert.ok(sites[0]?.updated_at !== undefined);
+    });
+  });
+
+  describe("PUT /sites/:siteId", () => {
+    function buildUpdateDto(overrides?: { name?: string }): UpdateCustomSiteDto {
+      return {
+        nature: "FRICHE",
+        name: overrides?.name ?? "Corrected friche name",
+        address: {
+          city: "Lyon",
+          cityCode: "69123",
+          postCode: "69001",
+          banId: "69123_abc",
+          lat: 45.764,
+          long: 4.8357,
+          value: "1 rue de la République, 69001 Lyon",
+        },
+        soilsDistribution: {
+          BUILDINGS: 2000,
+          MINERAL_SOIL: 3000,
+        },
+        yearlyExpenses: [],
+        yearlyIncomes: [],
+      };
+    }
+
+    async function seedSite(overrides: {
+      createdBy: string;
+      creationMode?: SiteEntity["creationMode"];
+    }): Promise<{ siteId: string }> {
+      const siteId = uuid();
+      const site = buildFriche({ id: siteId });
+      await sqlSiteRepository.save({
+        ...site,
+        createdAt: new Date(),
+        createdBy: overrides.createdBy,
+        creationMode: overrides.creationMode ?? "custom",
+        status: "active",
+      });
+      return { siteId };
+    }
+
+    it("gets a 401 when not authenticated", async () => {
+      const response = await supertest(app.getHttpServer())
+        .put(`/api/sites/${uuid()}`)
+        .send(buildUpdateDto());
+
+      assert.strictEqual(response.status, 401);
+    });
+
+    it("gets a 404 when site does not exist", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      const response = await supertest(app.getHttpServer())
+        .put(`/api/sites/${uuid()}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send(buildUpdateDto());
+
+      assert.strictEqual(response.status, 404);
+    });
+
+    it("gets a 403 when user is not the creator of the site", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const { siteId } = await seedSite({ createdBy: uuid() });
+
+      const response = await supertest(app.getHttpServer())
+        .put(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send(buildUpdateDto());
+
+      assert.strictEqual(response.status, 403);
+    });
+
+    it("gets a 403 when the site is express-created (not custom)", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const { siteId } = await seedSite({
+        createdBy: authenticatedUser.id,
+        creationMode: "express",
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .put(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send(buildUpdateDto());
+
+      assert.strictEqual(response.status, 403);
+    });
+
+    it("gets a 403 when the site is csv-import-created (not custom)", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const { siteId } = await seedSite({
+        createdBy: authenticatedUser.id,
+        creationMode: "csv-import",
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .put(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send(buildUpdateDto());
+
+      assert.strictEqual(response.status, 403);
+    });
+
+    it("gets a 409 when the site has an active reconversion project", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const { siteId } = await seedSite({ createdBy: authenticatedUser.id });
+
+      await sqlConnection("reconversion_projects").insert({
+        id: uuid(),
+        name: "Active project",
+        related_site_id: siteId,
+        created_by: authenticatedUser.id,
+        creation_mode: "custom",
+        status: "active",
+        created_at: new Date(),
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .put(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send(buildUpdateDto());
+
+      assert.strictEqual(response.status, 409);
+    });
+
+    it("succeeds when the site's only reconversion project is archived", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const { siteId } = await seedSite({ createdBy: authenticatedUser.id });
+
+      await sqlConnection("reconversion_projects").insert({
+        id: uuid(),
+        name: "Archived project",
+        related_site_id: siteId,
+        created_by: authenticatedUser.id,
+        creation_mode: "custom",
+        status: "archived",
+        created_at: new Date(),
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .put(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send(buildUpdateDto());
+
+      assert.strictEqual(response.status, 200);
+    });
+
+    it("updates a site the authenticated user created and persists the change", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const { siteId } = await seedSite({ createdBy: authenticatedUser.id });
+
+      const response = await supertest(app.getHttpServer())
+        .put(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send(buildUpdateDto({ name: "Renamed friche" }));
+
+      assert.strictEqual(response.status, 200);
+
+      const getResponse = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}/features`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
+
+      assert.strictEqual(getResponse.status, 200);
+      assert.strictEqual((getResponse.body as { name: string }).name, "Renamed friche");
     });
   });
 

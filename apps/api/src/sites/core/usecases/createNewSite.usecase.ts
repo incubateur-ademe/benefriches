@@ -7,12 +7,12 @@ import { UseCase } from "src/shared-kernel/usecase";
 import { createSiteCreatedEvent } from "../events/siteCreated.event";
 import { SitesRepository } from "../gateways/SitesRepository";
 import {
-  createAgriculturalOrNaturalSite,
   CreateAgriculturalOrNaturalSiteProps,
-  createFriche,
   CreateFricheProps,
-  createUrbanZoneSite,
   CreateUrbanZoneSiteProps,
+  createAgriculturalOrNaturalSite,
+  createFriche,
+  createUrbanZoneSite,
 } from "../models/site";
 import { SiteEntity } from "../models/siteEntity";
 

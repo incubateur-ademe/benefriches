@@ -10,6 +10,8 @@ export {
 export {
   createCustomSiteDtoSchema,
   type CreateCustomSiteDto,
+  updateCustomSiteDtoSchema,
+  type UpdateCustomSiteDto,
   createExpressSiteDtoSchema,
   type CreateExpressSiteDto,
   getSiteFeaturesResponseDtoSchema,

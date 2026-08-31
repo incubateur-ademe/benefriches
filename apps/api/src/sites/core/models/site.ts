@@ -113,6 +113,13 @@ export interface NaturalAreaSite extends BaseSite {
 
 export type AgriculturalOrNaturalSite = AgriculturalOperationSite | NaturalAreaSite;
 
+function withDefaultOwner(props: { owner?: { structureType: string; name: string } }): {
+  structureType: string;
+  name: string;
+} {
+  return props.owner ?? { name: "Propriétaire inconnu", structureType: "unknown" };
+}
+
 type AgriculturalOperationCreationResult =
   | { success: true; site: AgriculturalOperationSite }
   | { success: false; error: $ZodFlattenedError<z.infer<typeof agriculturalOperationSchema>> };
@@ -150,7 +157,7 @@ export type CreateAgriculturalOrNaturalSiteProps =
 export function createAgriculturalOrNaturalSite(
   props: CreateAgriculturalOrNaturalSiteProps,
 ): AgriculturalOperationCreationResult | NaturalAreaCreationResult {
-  const owner = props.owner ?? { name: "Propriétaire inconnu", structureType: "unknown" };
+  const owner = withDefaultOwner(props);
   const soilsDistribution = createSoilSurfaceAreaDistribution(props.soilsDistribution);
   const surfaceArea = soilsDistribution.getTotalSurfaceArea();
 
@@ -226,7 +233,7 @@ type FricheCreationResult =
 
 export function createFriche(props: CreateFricheProps): FricheCreationResult {
   const fricheActivity = props.fricheActivity ?? "OTHER";
-  const owner = props.owner ?? { name: "Propriétaire inconnu", structureType: "unknown" };
+  const owner = withDefaultOwner(props);
   const soilsDistribution = createSoilSurfaceAreaDistribution(props.soilsDistribution);
   const surfaceArea = soilsDistribution.getTotalSurfaceArea();
   const hasContaminatedSoils = !!props.contaminatedSoilSurface;
@@ -334,7 +341,7 @@ export function aggregateSoilsFromParcels(
 }
 
 export function createUrbanZoneSite(props: CreateUrbanZoneSiteProps): UrbanZoneSiteCreationResult {
-  const owner = props.owner ?? { name: "Propriétaire inconnu", structureType: "unknown" };
+  const owner = withDefaultOwner(props);
   const soilsDistribution = aggregateSoilsFromParcels(props.landParcels);
   const surfaceArea = soilsDistribution.getTotalSurfaceArea();
 
@@ -374,3 +381,51 @@ export function createUrbanZoneSite(props: CreateUrbanZoneSiteProps): UrbanZoneS
 }
 
 export type Site = Friche | AgriculturalOperationSite | NaturalAreaSite | UrbanZoneSite;
+
+export type SiteNature = Site["nature"];
+
+type UpdateSiteProps =
+  | (CreateFricheProps & { nature: "FRICHE" })
+  | (CreateUrbanZoneSiteProps & { nature: "URBAN_ZONE" })
+  | CreateAgriculturalOrNaturalSiteProps;
+
+type SiteUpdateResult =
+  | { success: true; site: Site }
+  | {
+      success: false;
+      error: $ZodFlattenedError<
+        | z.infer<typeof fricheSchema>
+        | z.infer<typeof urbanZoneSiteSchema>
+        | z.infer<typeof agriculturalOperationSchema>
+        | z.infer<typeof naturalAreaSchema>
+      >;
+    };
+
+/**
+ * Applies the invariants for updating an existing site's props.
+ *
+ * `currentNature` is the nature already persisted for the site. A site's
+ * nature can never change: if `props.nature` differs from `currentNature`, the update
+ * is rejected before dispatching to the per-nature builder. `currentNature` may be
+ * `undefined`, in which case the nature check is a no-op.
+ */
+export function updateSite(
+  currentNature: SiteNature | undefined,
+  props: UpdateSiteProps,
+): SiteUpdateResult {
+  if (currentNature !== undefined && props.nature !== currentNature) {
+    return {
+      success: false,
+      error: { formErrors: ["Site nature cannot be changed"], fieldErrors: {} },
+    };
+  }
+
+  switch (props.nature) {
+    case "FRICHE":
+      return createFriche(props);
+    case "URBAN_ZONE":
+      return createUrbanZoneSite(props);
+    default:
+      return createAgriculturalOrNaturalSite(props);
+  }
+}

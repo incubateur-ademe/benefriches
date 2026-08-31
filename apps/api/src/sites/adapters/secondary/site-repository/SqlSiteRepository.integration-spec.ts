@@ -448,6 +448,214 @@ describe("SqlSiteRepository integration", () => {
     });
   });
 
+  describe("update", () => {
+    it("Replaces friche fields, address and fully replaces soils distribution / expenses / incomes", async () => {
+      const site: SiteEntity = buildFricheEntity({
+        name: "Initial friche name",
+        soilsDistribution: {
+          BUILDINGS: 1000,
+          MINERAL_SOIL: 500,
+        },
+        yearlyExpenses: [{ amount: 1000, bearer: "owner", purpose: "security" }],
+        fricheActivity: "BUILDING",
+        contaminatedSoilSurface: 100,
+      });
+      await siteRepository.save(site);
+
+      const updatedAt = new Date();
+      const updatedSite: SiteEntity = {
+        ...buildFricheEntity({
+          id: site.id,
+          name: "Corrected friche name",
+          address: {
+            banId: "75056_9997_00001",
+            value: "1 rue de Rivoli, 75001 Paris",
+            city: "Paris",
+            cityCode: "75056",
+            postCode: "75001",
+            long: 2.3522,
+            lat: 48.8566,
+            streetName: "rue de Rivoli",
+          },
+          soilsDistribution: {
+            FOREST_MIXED: 8000,
+          },
+          yearlyExpenses: [{ amount: 2500, bearer: "tenant", purpose: "maintenance" }],
+          fricheActivity: "INDUSTRY",
+          contaminatedSoilSurface: 250,
+        }),
+        createdAt: site.createdAt,
+        createdBy: site.createdBy,
+        creationMode: site.creationMode,
+        status: site.status,
+        updatedAt,
+      };
+
+      await siteRepository.update(updatedSite);
+
+      const sitesResult = await sqlConnection("sites").select("*").where({ id: site.id });
+      assert.strictEqual(sitesResult.length, 1);
+      assert.strictEqual(sitesResult[0]?.name, "Corrected friche name");
+      assert.strictEqual(sitesResult[0]?.friche_activity, "INDUSTRY");
+      assert.strictEqual(sitesResult[0]?.friche_contaminated_soil_surface_area, 250);
+      assert.deepStrictEqual(sitesResult[0]?.updated_at, updatedAt);
+
+      const addressResult = await sqlConnection("addresses")
+        .select("*")
+        .where({ site_id: site.id });
+      assert.strictEqual(addressResult.length, 1);
+      assert.strictEqual(addressResult[0]?.value, "1 rue de Rivoli, 75001 Paris");
+      assert.strictEqual(addressResult[0]?.city, "Paris");
+
+      const soilsDistributionResult = await sqlConnection("site_soils_distributions")
+        .select("soil_type", "surface_area")
+        .where({ site_id: site.id });
+      assert.deepStrictEqual(soilsDistributionResult, [
+        { soil_type: "FOREST_MIXED", surface_area: 8000.0 },
+      ]);
+
+      const expensesResult = await sqlConnection("site_expenses")
+        .select("amount", "purpose", "bearer")
+        .where({ site_id: site.id });
+      assert.deepStrictEqual(expensesResult, [
+        { amount: 2500.0, purpose: "maintenance", bearer: "tenant" },
+      ]);
+    });
+
+    it("Replaces urban zone features and address without touching soils distribution table", async () => {
+      const site: SiteEntity = buildUrbanZoneSiteEntity({
+        name: "Initial urban zone",
+        vacantCommercialPremisesFootprint: 500,
+        landParcels: [
+          {
+            type: "COMMERCIAL_ACTIVITY_AREA",
+            surfaceArea: 5000,
+            soilsDistribution: { BUILDINGS: 5000 },
+          },
+        ],
+      });
+      await siteRepository.save(site);
+
+      const updatedAt = new Date();
+      const updatedSite: SiteEntity = {
+        ...buildUrbanZoneSiteEntity({
+          id: site.id,
+          name: "Corrected urban zone",
+          vacantCommercialPremisesFootprint: 1200,
+          landParcels: [
+            {
+              type: "PUBLIC_SPACES",
+              surfaceArea: 3000,
+              soilsDistribution: { MINERAL_SOIL: 3000 },
+            },
+          ],
+        }),
+        createdAt: site.createdAt,
+        createdBy: site.createdBy,
+        creationMode: site.creationMode,
+        status: site.status,
+        updatedAt,
+      };
+
+      await siteRepository.update(updatedSite);
+
+      const sitesResult = await sqlConnection("sites").select("*").where({ id: site.id });
+      assert.strictEqual(sitesResult.length, 1);
+      assert.strictEqual(sitesResult[0]?.name, "Corrected urban zone");
+      assert.deepStrictEqual(sitesResult[0]?.updated_at, updatedAt);
+
+      const urbanZoneResult = await sqlConnection("site_urban_zone_features")
+        .select("vacant_commercial_premises_footprint", "land_parcels")
+        .where({ site_id: site.id });
+      assert.strictEqual(urbanZoneResult.length, 1);
+      assert.strictEqual(urbanZoneResult[0]?.vacant_commercial_premises_footprint, 1200);
+      assert.deepStrictEqual(urbanZoneResult[0]?.land_parcels, [
+        {
+          type: "PUBLIC_SPACES",
+          surfaceArea: 3000,
+          soilsDistribution: { MINERAL_SOIL: 3000 },
+        },
+      ]);
+
+      const soilsDistributionResult = await sqlConnection("site_soils_distributions")
+        .select("site_id")
+        .where({ site_id: site.id });
+      assert.deepStrictEqual(soilsDistributionResult, []);
+    });
+  });
+
+  describe("getMetadataById", () => {
+    it("returns the site metadata when it exists", async () => {
+      const site: SiteEntity = buildFricheEntity();
+      await siteRepository.save(site);
+
+      const result = await siteRepository.getMetadataById(site.id);
+
+      assert.deepStrictEqual(result, {
+        nature: "FRICHE",
+        createdBy: site.createdBy,
+        creationMode: "custom",
+        createdAt: now,
+        status: "active",
+      });
+    });
+
+    it("returns undefined when the site does not exist", async () => {
+      const result = await siteRepository.getMetadataById(uuid());
+
+      assert.strictEqual(result, undefined);
+    });
+  });
+
+  describe("hasActiveReconversionProject", () => {
+    it("returns false when the site has no reconversion project", async () => {
+      const site: SiteEntity = buildFricheEntity();
+      await siteRepository.save(site);
+
+      const result = await siteRepository.hasActiveReconversionProject(site.id);
+
+      assert.strictEqual(result, false);
+    });
+
+    it("returns true when the site has an active reconversion project", async () => {
+      const site: SiteEntity = buildFricheEntity();
+      await siteRepository.save(site);
+
+      await sqlConnection("reconversion_projects").insert({
+        id: uuid(),
+        name: "Project on this site",
+        related_site_id: site.id,
+        created_by: site.createdBy,
+        creation_mode: "custom",
+        status: "active",
+        created_at: now,
+      });
+
+      const result = await siteRepository.hasActiveReconversionProject(site.id);
+
+      assert.strictEqual(result, true);
+    });
+
+    it("returns false when the site's only reconversion project is archived (deleted)", async () => {
+      const site: SiteEntity = buildFricheEntity();
+      await siteRepository.save(site);
+
+      await sqlConnection("reconversion_projects").insert({
+        id: uuid(),
+        name: "Archived project on this site",
+        related_site_id: site.id,
+        created_by: site.createdBy,
+        creation_mode: "custom",
+        status: "archived",
+        created_at: now,
+      });
+
+      const result = await siteRepository.hasActiveReconversionProject(site.id);
+
+      assert.strictEqual(result, false);
+    });
+  });
+
   describe("patch", () => {
     it("Updates site status", async () => {
       const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({

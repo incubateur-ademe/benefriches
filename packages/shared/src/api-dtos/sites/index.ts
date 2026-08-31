@@ -1,5 +1,7 @@
 export { createCustomSiteDtoSchema, type CreateCustomSiteDto } from "./createCustomSite.dto";
 
+export { updateCustomSiteDtoSchema, type UpdateCustomSiteDto } from "./updateCustomSite.dto";
+
 export { createExpressSiteDtoSchema, type CreateExpressSiteDto } from "./createExpressSite.dto";
 
 export {

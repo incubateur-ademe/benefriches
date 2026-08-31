@@ -2,7 +2,9 @@ import z from "zod";
 
 import {
   addressSchema,
+  agriculturalOperationActivitySchema,
   fricheActivitySchema,
+  naturalAreaTypeSchema,
   siteNatureSchema,
   siteYearlyExpenseSchema,
   siteYearlyIncomeSchema,
@@ -11,7 +13,7 @@ import {
 } from "../../site";
 import { soilsDistributionSchema } from "../../soils";
 
-const baseSchema = z.object({
+export const baseCustomSiteSchema = z.object({
   createdBy: z.string(),
   id: z.string(),
   name: z.string(),
@@ -23,7 +25,7 @@ const baseSchema = z.object({
   yearlyIncomes: siteYearlyIncomeSchema.array(),
 });
 
-const fricheCustomDtoSchema = baseSchema.extend({
+export const fricheCustomSiteFieldsSchema = z.object({
   nature: siteNatureSchema.extract(["FRICHE"]),
   fricheActivity: fricheActivitySchema.optional(),
   soilsDistribution: soilsDistributionSchema,
@@ -33,32 +35,20 @@ const fricheCustomDtoSchema = baseSchema.extend({
   accidentsDeaths: z.number().optional(),
 });
 
-const agriculturalCustomSiteDtoSchema = baseSchema.extend({
+export const agriculturalCustomSiteFieldsSchema = z.object({
   nature: siteNatureSchema.extract(["AGRICULTURAL_OPERATION"]),
-  agriculturalOperationActivity: z.enum([
-    "CEREALS_AND_OILSEEDS_CULTIVATION",
-    "LARGE_VEGETABLE_CULTIVATION",
-    "MARKET_GARDENING",
-    "FLOWERS_AND_HORTICULTURE",
-    "VITICULTURE",
-    "FRUITS_AND_OTHER_PERMANENT_CROPS",
-    "CATTLE_FARMING",
-    "PIG_FARMING",
-    "POULTRY_FARMING",
-    "SHEEP_AND_GOAT_FARMING",
-    "POLYCULTURE_AND_LIVESTOCK",
-  ]),
+  agriculturalOperationActivity: agriculturalOperationActivitySchema,
   soilsDistribution: soilsDistributionSchema,
   isSiteOperated: z.boolean(),
 });
 
-const naturalCustomSiteDtoSchema = baseSchema.extend({
+export const naturalCustomSiteFieldsSchema = z.object({
   nature: siteNatureSchema.extract(["NATURAL_AREA"]),
-  naturalAreaType: z.enum(["PRAIRIE", "FOREST", "WET_LAND", "MIXED_NATURAL_AREA"]),
+  naturalAreaType: naturalAreaTypeSchema,
   soilsDistribution: soilsDistributionSchema,
 });
 
-const urbanZoneCustomSiteDtoSchema = baseSchema.extend({
+export const urbanZoneCustomSiteFieldsSchema = z.object({
   nature: siteNatureSchema.extract(["URBAN_ZONE"]),
   urbanZoneType: urbanZoneTypeSchema,
   landParcels: urbanZoneLandParcelSchema.array().nonempty(),
@@ -69,6 +59,18 @@ const urbanZoneCustomSiteDtoSchema = baseSchema.extend({
   vacantCommercialPremisesFloorArea: z.number().optional(),
   fullTimeJobsEquivalent: z.number().optional(),
 });
+
+const fricheCustomDtoSchema = baseCustomSiteSchema.extend(fricheCustomSiteFieldsSchema.shape);
+
+const agriculturalCustomSiteDtoSchema = baseCustomSiteSchema.extend(
+  agriculturalCustomSiteFieldsSchema.shape,
+);
+
+const naturalCustomSiteDtoSchema = baseCustomSiteSchema.extend(naturalCustomSiteFieldsSchema.shape);
+
+const urbanZoneCustomSiteDtoSchema = baseCustomSiteSchema.extend(
+  urbanZoneCustomSiteFieldsSchema.shape,
+);
 
 export const createCustomSiteDtoSchema = z.discriminatedUnion("nature", [
   fricheCustomDtoSchema,

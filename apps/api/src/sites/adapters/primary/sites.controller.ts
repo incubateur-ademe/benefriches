@@ -7,6 +7,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   UseGuards,
   Req,
   ForbiddenException,
@@ -19,6 +20,8 @@ import { ZodValidationPipe } from "nestjs-zod";
 import {
   createCustomSiteDtoSchema,
   type CreateCustomSiteDto,
+  updateCustomSiteDtoSchema,
+  type UpdateCustomSiteDto,
   createExpressSiteDtoSchema,
   type CreateExpressSiteDto,
   type GetSiteFeaturesResponseDto,
@@ -40,10 +43,15 @@ import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSit
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
 import { GetSiteRealEstateValuationUseCase } from "src/sites/core/usecases/getSiteRealEstateValuation.usecase";
 import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
+import {
+  UpdateCustomSiteUseCase,
+  type SiteNotEditableReason,
+} from "src/sites/core/usecases/updateCustomSite.usecase";
 
 @Controller()
 export class SitesController {
   private readonly createNewSiteUseCase: CreateNewCustomSiteUseCase;
+  private readonly updateCustomSiteUseCase: UpdateCustomSiteUseCase;
   private readonly createNewExpressSiteUseCase: CreateNewExpressSiteUseCase;
   private readonly getSiteByIdUseCase: GetSiteByIdUseCase;
   private readonly getSiteViewByIdUseCase: GetSiteViewByIdUseCase;
@@ -53,6 +61,7 @@ export class SitesController {
   private readonly getSiteImpactsUseCase: ComputeSiteImpactsUseCase;
   constructor(
     createNewSiteUseCase: CreateNewCustomSiteUseCase,
+    updateCustomSiteUseCase: UpdateCustomSiteUseCase,
     createNewExpressSiteUseCase: CreateNewExpressSiteUseCase,
     getSiteByIdUseCase: GetSiteByIdUseCase,
     getSiteViewByIdUseCase: GetSiteViewByIdUseCase,
@@ -62,6 +71,7 @@ export class SitesController {
     getSiteImpactsUseCase: ComputeSiteImpactsUseCase,
   ) {
     this.createNewSiteUseCase = createNewSiteUseCase;
+    this.updateCustomSiteUseCase = updateCustomSiteUseCase;
     this.createNewExpressSiteUseCase = createNewExpressSiteUseCase;
     this.getSiteByIdUseCase = getSiteByIdUseCase;
     this.getSiteViewByIdUseCase = getSiteViewByIdUseCase;
@@ -89,6 +99,56 @@ export class SitesController {
           throw new ConflictException({
             error: "SITE_ALREADY_EXISTS",
             message: "A site with this ID already exists",
+          });
+      }
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put("/sites/:siteId")
+  async updateCustomSite(
+    @Param("siteId") siteId: string,
+    @Body(new ZodValidationPipe(updateCustomSiteDtoSchema)) updateSiteDto: UpdateCustomSiteDto,
+    @Req() req: RequestWithAuthenticatedUser,
+  ) {
+    const authenticatedUserId = req.accessTokenPayload.userId;
+
+    const result = await this.updateCustomSiteUseCase.execute({
+      siteId,
+      userId: authenticatedUserId,
+      siteProps: updateSiteDto,
+    });
+
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "SiteNotFound":
+          throw new NotFoundException({
+            error: "SITE_NOT_FOUND",
+            message: `Site with ID ${siteId} not found`,
+          });
+        case "UserNotAuthorized":
+          throw new ForbiddenException();
+        case "SiteNotEditable": {
+          const issues = result.getIssues() as SiteNotEditableReason;
+          switch (issues.reason) {
+            case "NOT_CUSTOM":
+              throw new ForbiddenException({
+                error: "SITE_NOT_CUSTOM",
+                message: "Only custom sites can be updated",
+                creationMode: issues.creationMode,
+              });
+            case "ACTIVE_RECONVERSION_PROJECT":
+              throw new ConflictException({
+                error: "SITE_HAS_ACTIVE_RECONVERSION_PROJECT",
+                message: "Site has an active reconversion project and cannot be updated",
+              });
+          }
+          break;
+        }
+        case "ValidationError":
+          throw new BadRequestException({
+            error: "VALIDATION_ERROR",
+            message: "Invalid site data provided",
           });
       }
     }

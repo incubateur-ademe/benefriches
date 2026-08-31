@@ -27,6 +27,7 @@ import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSit
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
 import { GetSiteRealEstateValuationUseCase } from "src/sites/core/usecases/getSiteRealEstateValuation.usecase";
 import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
+import { UpdateCustomSiteUseCase } from "src/sites/core/usecases/updateCustomSite.usecase";
 import { TerritoryModule } from "src/territory/adapters/primary/territory.module";
 import { SqlCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/SqlCityRuralityQuery";
 import { SqlCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/SqlCityStatsQuery";
@@ -104,6 +105,13 @@ import { SitesController } from "./sites.controller";
       useFactory: (sitesQuery: SitesQuery, cityStatsProvider: CityStatsProvider) =>
         new GetSiteRealEstateValuationUseCase(sitesQuery, cityStatsProvider),
       inject: [SqlSitesQuery, SqlCityStatsQuery],
+    },
+    {
+      provide: UpdateCustomSiteUseCase,
+      useFactory(repository: SitesRepository, dateProvider: DateProvider) {
+        return new UpdateCustomSiteUseCase(repository, dateProvider);
+      },
+      inject: [SqlSiteRepository, RealDateProvider],
     },
     {
       provide: ArchiveSiteUseCase,
