@@ -1,11 +1,12 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
+import { selectSiteSoilsCarbonStorageViewData } from "@/features/create-site/core/siteSoilsCarbonStorage.reducer";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
 import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
 function SiteSoilsCarbonStorageContainer() {
   const { onBack, onNext, onFetchSiteSoilsCarbonStorage } = useCustomSiteForm();
-  const { carbonStorage, loadingState } = useAppSelector((state) => state.siteCarbonStorage);
+  const { carbonStorage, loadingState } = useAppSelector(selectSiteSoilsCarbonStorageViewData);
 
   return (
     <SiteSoilsCarbonStorage

@@ -18,6 +18,7 @@ import { selectSiteCreationWizardViewData } from "../core/selectors/createSite.s
 import { siteCreationInitiated } from "../core/steps/introduction/introduction.actions";
 import { isUrbanZoneStepHandlerStep } from "../core/urban-zone/urbanZoneSteps";
 import CreateModeSelectionForm from "./create-mode-selection";
+import CustomSiteCascadingUpdateDialog from "./custom/CustomSiteCascadingUpdateDialog";
 import SiteCreationCustomStepContent from "./custom/StepContent";
 import SiteCreationCustomStepper from "./custom/Stepper";
 import SiteCreationExpressStepContent from "./demo";
@@ -130,6 +131,7 @@ export function useSiteCreationWizardLayout({
         mainChildren: (
           <CustomSiteFormProvider mode="create">
             <NavigationBlockerDialog />
+            <CustomSiteCascadingUpdateDialog />
             <SiteCreationCustomStepContent />
           </CustomSiteFormProvider>
         ),

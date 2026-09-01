@@ -8,7 +8,7 @@ import {
   selectDerivedSiteData,
   selectSiteSoilsDistribution,
 } from "../selectors/createSite.selectors";
-import { SiteCarbonStorage } from "../siteSoilsCarbonStorage.reducer";
+import { SiteCarbonStorageResult } from "../siteSoilsCarbonStorage.reducer";
 
 export type { SoilsCarbonStorageGateway } from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 
@@ -16,7 +16,7 @@ export type GetSiteSoilsCarbonStoragePayload = GetSoilsCarbonStoragePayload;
 
 export type SiteSoilsCarbonStorageResult = SoilsCarbonStorageResult;
 
-export const fetchSiteSoilsCarbonStorage = createAppAsyncThunk<SiteCarbonStorage>(
+export const fetchSiteSoilsCarbonStorage = createAppAsyncThunk<SiteCarbonStorageResult>(
   "site/fetchSiteSoilsCarbonStorage",
   async (_, { extra, getState }) => {
     const rootState = getState();
@@ -31,8 +31,11 @@ export const fetchSiteSoilsCarbonStorage = createAppAsyncThunk<SiteCarbonStorage
     });
 
     return {
-      total: result.totalCarbonStorage,
-      soils: result.soilsStorage,
+      cityCode: siteAddress.cityCode,
+      carbonStorage: {
+        total: result.totalCarbonStorage,
+        soils: result.soilsStorage,
+      },
     };
   },
 );

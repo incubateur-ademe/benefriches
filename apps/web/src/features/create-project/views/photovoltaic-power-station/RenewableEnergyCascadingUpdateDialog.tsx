@@ -10,8 +10,7 @@ import {
 } from "@/features/create-project/core/renewable-energy/step-handlers/renewableEnergyStepperConfig";
 import { updateProjectFormRenewableEnergyActions } from "@/features/update-project/core/updateProject.actions";
 import { updateRenewableEnergyFormSelectors } from "@/features/update-project/core/updateProject.selectors";
-
-import CascadingChangesAlertDialog from "../project-form/CascadingChangesAlertDialog";
+import CascadingChangesAlertDialog from "@/shared/views/components/CascadingChangesAlertDialog/CascadingChangesAlertDialog";
 
 const getStepLabel = (stepId: AnswerStepId): string => {
   const { groupId } = RENEWABLE_ENERGY_STEP_TO_GROUP[stepId];

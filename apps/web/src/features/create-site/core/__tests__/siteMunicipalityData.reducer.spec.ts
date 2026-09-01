@@ -216,6 +216,48 @@ describe("Site public authorities selectors", () => {
         },
       ]);
     });
+
+    it("should fall back to generic names when the cached city no longer matches the site's address", () => {
+      const defaultState = createStore(getTestAppDependencies()).getState();
+
+      const state = {
+        ...defaultState,
+        siteCreation: {
+          ...defaultState.siteCreation,
+          initialSiteData: {
+            ...defaultState.siteCreation.initialSiteData,
+            address: GRENOBLE_ADDRESS_MOCK,
+          },
+        },
+        // Cached for Paris — stale now that the site's address is Grenoble.
+        siteMunicipalityData: {
+          loadingState: "success",
+          localAuthorities: API_MOCKED_RESULT["75110"].localAuthorities,
+          population: 83459,
+        },
+      } satisfies RootState;
+
+      const result = selectAvailableLocalAuthorities(state);
+
+      expect(result).toEqual([
+        {
+          type: "municipality",
+          name: "Mairie",
+        },
+        {
+          type: "epci",
+          name: "Établissement public de coopération intercommunale",
+        },
+        {
+          type: "department",
+          name: "Département",
+        },
+        {
+          type: "region",
+          name: "Région",
+        },
+      ]);
+    });
   });
 
   describe("selectAvailableLocalAuthoritiesWithoutCurrentOwner", () => {

@@ -5,8 +5,7 @@ import {
 } from "@/features/create-project/core/urban-project/stepperConfig";
 import { AnswerStepId } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
-
-import CascadingChangesAlertDialog from "./CascadingChangesAlertDialog";
+import CascadingChangesAlertDialog from "@/shared/views/components/CascadingChangesAlertDialog/CascadingChangesAlertDialog";
 
 const getStepLabel = (stepId: AnswerStepId) => {
   const { groupId, subGroupId } = STEP_TO_GROUP_MAPPING[stepId];

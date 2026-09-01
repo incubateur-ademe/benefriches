@@ -37,11 +37,16 @@ type UrbanZoneWizardFormDefinition = Pick<
 >;
 
 // Urban zone's WizardFormDefinition-shaped wiring, mirroring the PV "degenerate" template
-// (renewableEnergyForm.reducer.ts) and demoForm.reducer.ts: no handler currently implements
-// getDependencyRules, so `computeStepChanges` always yields empty cascadingChanges and
-// `applyStepChanges` runs unconditionally — there is no pending-confirmation state to wire up in
-// practice, but the full action set is still wired for consistency with the shared engine
-// contract (and future dependency rules, per ADR-0008).
+// (renewableEnergyForm.reducer.ts) and demoForm.reducer.ts: no handler in THIS registry
+// (urban-zone's own step handlers) implements getDependencyRules, so `computeStepChanges`
+// always yields empty cascadingChanges for urban-zone's own sub-flow — there is no
+// pending-confirmation state to wire up here in practice, but the full action set is still
+// wired for consistency with the shared engine contract (and future dependency rules, per
+// ADR-0008). This is no longer true of the site wizard as a whole: the custom flow's own
+// ADDRESS handler (../steps/address/address.handlers.ts) declares rules and its
+// pending-confirmation dialog is wired in views/custom/CustomSiteCascadingUpdateDialog.tsx — see
+// ticket 12. A user can still reach ADDRESS from within urban-zone via `onPreviousStepFallback`;
+// any resulting cascade is computed and confirmed there, in the custom-flow's own state, not here.
 export const addUrbanZoneFormCasesToBuilder = (
   builder: ActionReducerMapBuilder<SiteCreationState>,
   actions: UrbanZoneFormPureActions,

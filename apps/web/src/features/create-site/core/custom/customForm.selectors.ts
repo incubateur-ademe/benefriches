@@ -52,8 +52,16 @@ export const createCustomFormSelectors = (lens: SiteFormLens) => {
     (state): SiteCreationCustomStep => state.custom.currentStep,
   );
 
+  // Exposes the engine's parked cascading changes (see customForm.reducer.ts) so a view can
+  // render a confirmation dialog before an address change discards a stakeholder answer.
+  const selectPendingStepCompletion = createSelector(
+    lens.selectSiteForm,
+    (state) => state.custom.pendingStepCompletion,
+  );
+
   return {
     selectCurrentStep,
+    selectPendingStepCompletion,
     selectDerivedSiteData,
     selectFricheActivity,
     selectSiteNature,

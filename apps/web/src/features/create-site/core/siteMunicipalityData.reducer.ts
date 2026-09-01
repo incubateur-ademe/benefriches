@@ -4,7 +4,7 @@ import { formatLocalAuthorityName, LocalAuthority } from "shared";
 import { RootState } from "@/app/store/store";
 
 import { fetchSiteMunicipalityData } from "./actions/siteMunicipalityData.actions";
-import { selectSiteOwner } from "./selectors/createSite.selectors";
+import { selectSiteAddress, selectSiteOwner } from "./selectors/createSite.selectors";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -45,10 +45,22 @@ export type AvailableLocalAuthority = {
   name: string;
 };
 
+// City-aware: the fetched local authorities are cached under whatever cityCode they were last
+// fetched for. If the site's current address has since moved to a different city (e.g. the
+// ADDRESS step was re-answered — see steps/address/address.handlers.ts), fall back to the
+// generic names while the refetch is in flight, rather than momentarily offering the previous
+// city's "Mairie de <old city>" as a choice. When there is no current address yet, the cache
+// can't be stale by definition — nothing has changed since it was fetched — so it is trusted.
 export const selectAvailableLocalAuthorities = createSelector(
   (state: RootState) => state.siteMunicipalityData,
-  (siteMunicipalityData): AvailableLocalAuthority[] => {
-    const { city, department, region, epci } = siteMunicipalityData.localAuthorities ?? {};
+  selectSiteAddress,
+  (siteMunicipalityData, siteAddress): AvailableLocalAuthority[] => {
+    const isStale =
+      siteAddress !== undefined &&
+      siteMunicipalityData.localAuthorities?.city.code !== siteAddress.cityCode;
+    const { city, department, region, epci } = isStale
+      ? {}
+      : (siteMunicipalityData.localAuthorities ?? {});
 
     return [
       {
