@@ -1040,6 +1040,7 @@ describe("Sites controller", () => {
       await sqlConnection("sites").insert({
         id: siteId,
         created_by: user.id,
+        creation_mode: "custom",
         name: "Friche with projects",
         nature: "FRICHE",
         description: "Site description",
@@ -1168,6 +1169,8 @@ describe("Sites controller", () => {
           },
         ],
         compatibilityEvaluation: null,
+        isEditable: false,
+        notEditableReason: "ACTIVE_RECONVERSION_PROJECT",
       });
     });
 
@@ -1200,6 +1203,7 @@ describe("Sites controller", () => {
       await sqlConnection("sites").insert({
         id: siteId,
         created_by: user.id,
+        creation_mode: "custom",
         name: "Friche with compatibility evaluation",
         nature: "FRICHE",
         description: "Site with evaluation",
@@ -1288,7 +1292,162 @@ describe("Sites controller", () => {
           ],
           reliabilityScore: 3,
         },
+        isEditable: true,
+        notEditableReason: null,
       });
+    });
+
+    it("returns notEditableReason NOT_CREATOR when the requester did not create the site", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const site = buildFriche({ id: uuid() });
+      await sqlSiteRepository.save({
+        ...site,
+        createdAt: new Date(),
+        createdBy: uuid(),
+        creationMode: "custom",
+        status: "active",
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${site.id}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual((response.body as { isEditable: boolean }).isEditable, false);
+      assert.strictEqual(
+        (response.body as { notEditableReason: string }).notEditableReason,
+        "NOT_CREATOR",
+      );
+    });
+
+    it("returns notEditableReason NOT_CUSTOM for an express site", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const site = buildFriche({ id: uuid() });
+      await sqlSiteRepository.save({
+        ...site,
+        createdAt: new Date(),
+        createdBy: user.id,
+        creationMode: "express",
+        status: "active",
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${site.id}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual((response.body as { isEditable: boolean }).isEditable, false);
+      assert.strictEqual(
+        (response.body as { notEditableReason: string }).notEditableReason,
+        "NOT_CUSTOM",
+      );
+    });
+
+    it("returns notEditableReason NOT_CUSTOM for a csv-imported site, while features.isExpressSite stays false", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const site = buildFriche({ id: uuid() });
+      await sqlSiteRepository.save({
+        ...site,
+        createdAt: new Date(),
+        createdBy: user.id,
+        creationMode: "csv-import",
+        status: "active",
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${site.id}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(response.status, 200);
+      const body = response.body as {
+        isEditable: boolean;
+        notEditableReason: string;
+        features: { isExpressSite: boolean };
+      };
+      assert.strictEqual(body.isEditable, false);
+      assert.strictEqual(body.notEditableReason, "NOT_CUSTOM");
+      assert.strictEqual(body.features.isExpressSite, false);
+    });
+
+    it("returns notEditableReason ACTIVE_RECONVERSION_PROJECT when the site has an active reconversion project", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const site = buildFriche({ id: uuid() });
+      await sqlSiteRepository.save({
+        ...site,
+        createdAt: new Date(),
+        createdBy: user.id,
+        creationMode: "custom",
+        status: "active",
+      });
+
+      await sqlConnection("reconversion_projects").insert({
+        id: uuid(),
+        name: "Active project",
+        related_site_id: site.id,
+        created_by: user.id,
+        creation_mode: "custom",
+        status: "active",
+        created_at: new Date(),
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${site.id}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual((response.body as { isEditable: boolean }).isEditable, false);
+      assert.strictEqual(
+        (response.body as { notEditableReason: string }).notEditableReason,
+        "ACTIVE_RECONVERSION_PROJECT",
+      );
+    });
+
+    it("returns isEditable true when the site's only reconversion project is archived", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const site = buildFriche({ id: uuid() });
+      await sqlSiteRepository.save({
+        ...site,
+        createdAt: new Date(),
+        createdBy: user.id,
+        creationMode: "custom",
+        status: "active",
+      });
+
+      await sqlConnection("reconversion_projects").insert({
+        id: uuid(),
+        name: "Archived project",
+        related_site_id: site.id,
+        created_by: user.id,
+        creation_mode: "custom",
+        status: "archived",
+        created_at: new Date(),
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${site.id}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual((response.body as { isEditable: boolean }).isEditable, true);
+      assert.strictEqual(
+        (response.body as { notEditableReason: string | null }).notEditableReason,
+        null,
+      );
     });
   });
 

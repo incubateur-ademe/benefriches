@@ -9,6 +9,7 @@ import {
   CreateUrbanZoneSiteProps,
   updateSite,
 } from "../models/site";
+import { getSiteEditability } from "../models/siteEditability";
 import { SiteEntity } from "../models/siteEntity";
 
 type DistributiveOmit<T, K extends keyof T> = T extends unknown ? Omit<T, K> : never;
@@ -22,7 +23,7 @@ type Request = {
     | (DistributiveOmit<CreateUrbanZoneSiteProps, "id"> & { nature: "URBAN_ZONE" });
 };
 
-export type SiteNotEditableReason =
+export type SiteNotEditableIssues =
   | { reason: "NOT_CUSTOM"; creationMode: SiteEntity["creationMode"] }
   | { reason: "ACTIVE_RECONVERSION_PROJECT" };
 
@@ -44,17 +45,35 @@ export class UpdateCustomSiteUseCase implements UseCase<Request, UpdateCustomSit
     const existingSite = await this.sitesRepository.getMetadataById(siteId);
 
     if (!existingSite) return fail("SiteNotFound");
-    if (existingSite.createdBy !== userId) return fail("UserNotAuthorized");
-    if (existingSite.creationMode !== "custom")
-      return fail("SiteNotEditable", {
-        reason: "NOT_CUSTOM",
-        creationMode: existingSite.creationMode,
-      });
 
+    // The definition of "has an active reconversion project" must stay identical across the
+    // write path and the read paths (getSiteViewById, getUserSiteEvaluations) — all three derive
+    // it from a `status = 'active'` filter, and diverging would let the API contradict itself.
     const hasActiveReconversionProject =
       await this.sitesRepository.hasActiveReconversionProject(siteId);
-    if (hasActiveReconversionProject)
-      return fail("SiteNotEditable", { reason: "ACTIVE_RECONVERSION_PROJECT" });
+
+    const editability = getSiteEditability(
+      {
+        createdBy: existingSite.createdBy,
+        creationMode: existingSite.creationMode,
+        hasActiveReconversionProject,
+      },
+      userId,
+    );
+
+    if (!editability.isEditable) {
+      switch (editability.notEditableReason) {
+        case "NOT_CREATOR":
+          return fail("UserNotAuthorized");
+        case "NOT_CUSTOM":
+          return fail("SiteNotEditable", {
+            reason: "NOT_CUSTOM",
+            creationMode: existingSite.creationMode,
+          });
+        case "ACTIVE_RECONVERSION_PROJECT":
+          return fail("SiteNotEditable", { reason: "ACTIVE_RECONVERSION_PROJECT" });
+      }
+    }
 
     const result = updateSite(existingSite.nature, { ...siteProps, id: siteId });
 

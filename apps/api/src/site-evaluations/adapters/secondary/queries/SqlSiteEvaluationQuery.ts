@@ -26,6 +26,8 @@ export class SqlSiteEvaluationQuery implements SiteEvaluationQuery {
         "sites.id as siteId",
         "sites.name as siteName",
         "sites.nature as siteNature",
+        "sites.created_by as siteCreatedBy",
+        "sites.creation_mode as siteCreationMode",
         this.sqlConnection.raw(
           `COALESCE(sites.creation_mode = 'express', false) as "isExpressSite"`,
         ),

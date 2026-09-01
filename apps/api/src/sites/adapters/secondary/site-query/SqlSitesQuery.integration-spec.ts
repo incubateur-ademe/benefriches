@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { buildUrbanZoneSite } from "src/sites/core/models/site.mock";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
-import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
+import { SiteFeaturesView, SiteViewData } from "src/sites/core/models/views";
 
 import { SqlSiteRepository } from "../site-repository/SqlSiteRepository";
 import { SqlSitesQuery } from "./SqlSitesQuery";
@@ -524,6 +524,7 @@ describe("SqlSitesQuery integration", () => {
       await sqlConnection("sites").insert({
         id: siteId,
         created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        creation_mode: "custom",
         name: "Site without projects",
         nature: "FRICHE",
         surface_area: 14000,
@@ -584,12 +585,13 @@ describe("SqlSitesQuery integration", () => {
         accidentsDeaths: undefined,
       };
 
-      const expectedResult: SiteView = {
+      const expectedResult: SiteViewData = {
         id: siteId,
+        createdBy: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        creationMode: "custom",
         features: expectedFeatures,
         actions: [],
         reconversionProjects: [],
-        compatibilityEvaluation: null,
       };
 
       assert.deepStrictEqual(result, expectedResult);
@@ -604,6 +606,7 @@ describe("SqlSitesQuery integration", () => {
       await sqlConnection("sites").insert({
         id: siteId,
         created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        creation_mode: "custom",
         name: "Site with projects",
         nature: "FRICHE",
         surface_area: 20000,
@@ -716,8 +719,10 @@ describe("SqlSitesQuery integration", () => {
         accidentsDeaths: undefined,
       };
 
-      const expectedResult: SiteView = {
+      const expectedResult: SiteViewData = {
         id: siteId,
+        createdBy: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        creationMode: "custom",
         features: expectedFeatures,
         actions: [],
         reconversionProjects: [
@@ -734,7 +739,6 @@ describe("SqlSitesQuery integration", () => {
             express: true,
           },
         ],
-        compatibilityEvaluation: null,
       };
 
       assert.deepStrictEqual(result, expectedResult);

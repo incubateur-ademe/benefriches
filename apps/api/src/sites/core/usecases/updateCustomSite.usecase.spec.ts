@@ -8,7 +8,7 @@ import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 
 import { buildFriche, buildFricheProps } from "../models/site.mock";
-import { UpdateCustomSiteUseCase, type SiteNotEditableReason } from "./updateCustomSite.usecase";
+import { UpdateCustomSiteUseCase, type SiteNotEditableIssues } from "./updateCustomSite.usecase";
 
 describe("UpdateCustomSite use case", () => {
   const fakeNow = new Date("2024-01-10T13:00:00");
@@ -79,7 +79,7 @@ describe("UpdateCustomSite use case", () => {
       });
 
       assert.strictEqual(result.isFailure(), true);
-      const failure = result as FailureResult<"SiteNotEditable", SiteNotEditableReason>;
+      const failure = result as FailureResult<"SiteNotEditable", SiteNotEditableIssues>;
       assert.strictEqual(failure.getError(), "SiteNotEditable");
       assert.deepStrictEqual(failure.getIssues(), {
         reason: "NOT_CUSTOM",
@@ -107,7 +107,7 @@ describe("UpdateCustomSite use case", () => {
       });
 
       assert.strictEqual(result.isFailure(), true);
-      const failure = result as FailureResult<"SiteNotEditable", SiteNotEditableReason>;
+      const failure = result as FailureResult<"SiteNotEditable", SiteNotEditableIssues>;
       assert.strictEqual(failure.getError(), "SiteNotEditable");
       assert.deepStrictEqual(failure.getIssues(), {
         reason: "NOT_CUSTOM",
@@ -136,7 +136,7 @@ describe("UpdateCustomSite use case", () => {
       });
 
       assert.strictEqual(result.isFailure(), true);
-      const failure = result as FailureResult<"SiteNotEditable", SiteNotEditableReason>;
+      const failure = result as FailureResult<"SiteNotEditable", SiteNotEditableIssues>;
       assert.strictEqual(failure.getError(), "SiteNotEditable");
       assert.deepStrictEqual(failure.getIssues(), {
         reason: "ACTIVE_RECONVERSION_PROJECT",

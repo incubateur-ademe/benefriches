@@ -5,6 +5,7 @@ import {
   ReconversionProjectCreationMode,
   SiteActionStatus,
   SiteActionType,
+  SiteCreationMode,
   SiteNature,
   SurfaceAreaDistribution,
   type SoilType,
@@ -23,7 +24,7 @@ import {
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { SitesQuery, SiteSurfaceAreaAndCityCode } from "src/sites/core/gateways/SitesQuery";
 import { aggregateSoilsFromParcels } from "src/sites/core/models/site";
-import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
+import { SiteFeaturesView, SiteViewData } from "src/sites/core/models/views";
 
 export class SqlSitesQuery implements SitesQuery {
   private readonly sqlConnection: Knex;
@@ -263,9 +264,14 @@ export class SqlSitesQuery implements SitesQuery {
     }
   }
 
-  async getViewById(siteId: string): Promise<SiteView | undefined> {
+  async getViewById(siteId: string): Promise<SiteViewData | undefined> {
     const siteFeatures = await this.getSiteFeaturesById(siteId);
     if (!siteFeatures) return undefined;
+
+    const siteMetadataResult = (await this.sqlConnection("sites")
+      .where("id", siteId)
+      .select("created_by", "creation_mode")
+      .first()) as { created_by: SqlSite["created_by"]; creation_mode: SqlSite["creation_mode"] };
 
     const projectsResult = (await this.sqlConnection("reconversion_projects")
       .where("reconversion_projects.related_site_id", siteId)
@@ -305,10 +311,12 @@ export class SqlSitesQuery implements SitesQuery {
 
     return {
       id: siteId,
+      createdBy: siteMetadataResult.created_by,
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion
+      creationMode: siteMetadataResult.creation_mode as SiteCreationMode,
       features: siteFeatures,
       actions,
       reconversionProjects,
-      compatibilityEvaluation: null,
     };
   }
 

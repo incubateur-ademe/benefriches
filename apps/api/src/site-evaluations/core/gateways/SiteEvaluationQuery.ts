@@ -1,4 +1,4 @@
-import { DevelopmentPlanType, SiteNature } from "shared";
+import { DevelopmentPlanType, SiteCreationMode, SiteNature } from "shared";
 
 import { ReconversionCompatibilityEvaluation } from "src/reconversion-compatibility/core/reconversionCompatibilityEvaluation";
 
@@ -7,6 +7,8 @@ export type SiteEvaluationDataView = {
   siteName: string;
   isExpressSite: boolean;
   siteNature: SiteNature;
+  siteCreatedBy: string;
+  siteCreationMode: SiteCreationMode;
   compatibilityEvaluation?: Pick<
     ReconversionCompatibilityEvaluation,
     "mutafrichesEvaluationId" | "id"

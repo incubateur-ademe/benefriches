@@ -1,9 +1,9 @@
 import { SitesQuery, SiteSurfaceAreaAndCityCode } from "src/sites/core/gateways/SitesQuery";
-import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
+import { SiteFeaturesView, SiteViewData } from "src/sites/core/models/views";
 
 export class InMemorySitesQuery implements SitesQuery {
   sites: SiteFeaturesView[] = [];
-  sitesWithProjects: SiteView[] = [];
+  sitesWithProjects: SiteViewData[] = [];
   mutafrichesIds: Map<string, string | null> = new Map();
   siteSurfaceAreaAndCityCodes: Map<string, SiteSurfaceAreaAndCityCode> = new Map();
 
@@ -11,7 +11,7 @@ export class InMemorySitesQuery implements SitesQuery {
     this.sites = sites;
   }
 
-  _setSitesWithProjects(sitesWithProjects: SiteView[]) {
+  _setSitesWithProjects(sitesWithProjects: SiteViewData[]) {
     this.sitesWithProjects = sitesWithProjects;
   }
 
@@ -27,7 +27,7 @@ export class InMemorySitesQuery implements SitesQuery {
     return Promise.resolve(this.sites.find(({ id }) => id === siteId));
   }
 
-  getViewById(siteId: string): Promise<SiteView | undefined> {
+  getViewById(siteId: string): Promise<SiteViewData | undefined> {
     return Promise.resolve(this.sitesWithProjects.find(({ id }) => id === siteId));
   }
 

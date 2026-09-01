@@ -1,4 +1,4 @@
-import { SiteFeaturesView, SiteView } from "../models/views";
+import { SiteFeaturesView, SiteViewData } from "../models/views";
 
 export type SiteSurfaceAreaAndCityCode = {
   surfaceArea: number;
@@ -7,7 +7,7 @@ export type SiteSurfaceAreaAndCityCode = {
 
 export interface SitesQuery {
   getSiteFeaturesById(siteId: string): Promise<SiteFeaturesView | undefined>;
-  getViewById(siteId: string): Promise<SiteView | undefined>;
+  getViewById(siteId: string): Promise<SiteViewData | undefined>;
   getMutafrichesIdBySiteId(siteId: string): Promise<string | null>;
   getSiteSurfaceAreaAndCityCode(siteId: string): Promise<SiteSurfaceAreaAndCityCode | undefined>;
 }

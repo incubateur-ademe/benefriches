@@ -45,7 +45,7 @@ import { GetSiteRealEstateValuationUseCase } from "src/sites/core/usecases/getSi
 import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
 import {
   UpdateCustomSiteUseCase,
-  type SiteNotEditableReason,
+  type SiteNotEditableIssues,
 } from "src/sites/core/usecases/updateCustomSite.usecase";
 
 @Controller()
@@ -129,7 +129,7 @@ export class SitesController {
         case "UserNotAuthorized":
           throw new ForbiddenException();
         case "SiteNotEditable": {
-          const issues = result.getIssues() as SiteNotEditableReason;
+          const issues = result.getIssues() as SiteNotEditableIssues;
           switch (issues.reason) {
             case "NOT_CUSTOM":
               throw new ForbiddenException({
@@ -195,8 +195,16 @@ export class SitesController {
 
   @UseGuards(JwtAuthGuard)
   @Get("sites/:siteId")
-  async getSiteViewById(@Param("siteId") siteId: string): Promise<GetSiteViewResponseDto> {
-    const result = await this.getSiteViewByIdUseCase.execute({ siteId });
+  async getSiteViewById(
+    @Param("siteId") siteId: string,
+    @Req() req: RequestWithAuthenticatedUser,
+  ): Promise<GetSiteViewResponseDto> {
+    const authenticatedUserId = req.accessTokenPayload.userId;
+
+    const result = await this.getSiteViewByIdUseCase.execute({
+      siteId,
+      userId: authenticatedUserId,
+    });
 
     if (result.isFailure()) {
       switch (result.getError()) {

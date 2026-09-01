@@ -72,6 +72,7 @@ describe("SiteEvaluations controller", () => {
         tenant_structure_type: "company",
         created_at: new Date("2024-02-01"),
         nature: "NATURAL_AREA",
+        creation_mode: "custom",
       };
       const projectInDb1 = {
         id: uuid(),
@@ -146,6 +147,8 @@ describe("SiteEvaluations controller", () => {
           siteId: siteInDb1.id,
           siteNature: siteInDb1.nature,
           isExpressSite: true,
+          isEditable: false,
+          notEditableReason: "NOT_CUSTOM",
           compatibilityEvaluation: {
             id: compatibilityEvaluation.id,
             mutafrichesEvaluationId: compatibilityEvaluation.mutafriches_evaluation_id,
@@ -190,9 +193,121 @@ describe("SiteEvaluations controller", () => {
           siteId: siteInDb2.id,
           siteNature: siteInDb2.nature,
           isExpressSite: false,
+          isEditable: true,
+          notEditableReason: null,
           reconversionProjects: { total: 0, lastProjects: [] },
         },
       ]);
+    });
+
+    it("reports a csv-imported site as not editable while still reporting it as not express", async () => {
+      const userId = uuid();
+      const siteInDb = {
+        id: uuid(),
+        created_by: userId,
+        name: "Csv-imported site",
+        nature: "FRICHE",
+        surface_area: 10000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+        creation_mode: "csv-import",
+      };
+      await sqlConnection("sites").insert(siteInDb);
+
+      const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .get("/api/site-evaluations")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(response.status, 200);
+      const body = response.body as {
+        isExpressSite: boolean;
+        isEditable: boolean;
+        notEditableReason: string;
+      }[];
+      assert.strictEqual(body[0]?.isExpressSite, false);
+      assert.strictEqual(body[0]?.isEditable, false);
+      assert.strictEqual(body[0]?.notEditableReason, "NOT_CUSTOM");
+    });
+
+    it("reports a site with an active reconversion project as not editable", async () => {
+      const userId = uuid();
+      const siteInDb = {
+        id: uuid(),
+        created_by: userId,
+        name: "Site with active project",
+        nature: "FRICHE",
+        surface_area: 10000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+        creation_mode: "custom",
+      };
+      await sqlConnection("sites").insert(siteInDb);
+      await sqlConnection("reconversion_projects").insert({
+        id: uuid(),
+        created_by: userId,
+        name: "Active project",
+        related_site_id: siteInDb.id,
+        created_at: new Date(),
+        creation_mode: "custom",
+        status: "active",
+      });
+
+      const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .get("/api/site-evaluations")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(response.status, 200);
+      const body = response.body as { isEditable: boolean; notEditableReason: string }[];
+      assert.strictEqual(body[0]?.isEditable, false);
+      assert.strictEqual(body[0]?.notEditableReason, "ACTIVE_RECONVERSION_PROJECT");
+    });
+
+    it("reports a site whose only reconversion project is archived as editable", async () => {
+      const userId = uuid();
+      const siteInDb = {
+        id: uuid(),
+        created_by: userId,
+        name: "Site with archived project",
+        nature: "FRICHE",
+        surface_area: 10000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+        creation_mode: "custom",
+      };
+      await sqlConnection("sites").insert(siteInDb);
+      await sqlConnection("reconversion_projects").insert({
+        id: uuid(),
+        created_by: userId,
+        name: "Archived project",
+        related_site_id: siteInDb.id,
+        created_at: new Date(),
+        creation_mode: "custom",
+        status: "archived",
+      });
+
+      const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .get("/api/site-evaluations")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(response.status, 200);
+      const body = response.body as {
+        isEditable: boolean;
+        notEditableReason: string | null;
+      }[];
+      assert.strictEqual(body[0]?.isEditable, true);
+      assert.strictEqual(body[0]?.notEditableReason, null);
     });
   });
 });

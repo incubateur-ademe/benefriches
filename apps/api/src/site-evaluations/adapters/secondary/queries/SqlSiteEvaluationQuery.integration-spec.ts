@@ -82,6 +82,8 @@ describe("SqlSiteEvaluationQuery integration", () => {
           siteId: siteInDb.id,
           siteNature: siteInDb.nature,
           isExpressSite: false,
+          siteCreatedBy: siteInDb.created_by,
+          siteCreationMode: siteInDb.creation_mode,
           reconversionProjects: { total: 0, lastProjects: [] },
         },
       ] satisfies SiteEvaluationDataView[]);
@@ -102,6 +104,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
         tenant_structure_type: "company",
         created_at: new Date("2025-02-01"),
         nature: "AGRICULTURAL_OPERATION",
+        creation_mode: "custom",
       } as const;
 
       const siteInDb2 = {
@@ -260,6 +263,8 @@ describe("SqlSiteEvaluationQuery integration", () => {
           siteId: siteInDb2.id,
           siteNature: siteInDb2.nature,
           isExpressSite: true,
+          siteCreatedBy: siteInDb2.created_by,
+          siteCreationMode: siteInDb2.creation_mode,
           reconversionProjects: {
             total: 2,
             lastProjects: [
@@ -283,6 +288,8 @@ describe("SqlSiteEvaluationQuery integration", () => {
           siteId: siteInDb3.id,
           isExpressSite: false,
           siteNature: siteInDb3.nature,
+          siteCreatedBy: siteInDb3.created_by,
+          siteCreationMode: siteInDb3.creation_mode,
           compatibilityEvaluation: {
             id: compatibilityEvaluations[2]?.id,
             mutafrichesEvaluationId: compatibilityEvaluations[2]?.mutafriches_evaluation_id,
@@ -322,6 +329,8 @@ describe("SqlSiteEvaluationQuery integration", () => {
           siteId: siteInDb1.id,
           isExpressSite: false,
           siteNature: siteInDb1.nature,
+          siteCreatedBy: siteInDb1.created_by,
+          siteCreationMode: siteInDb1.creation_mode,
           compatibilityEvaluation: {
             id: compatibilityEvaluations[0]?.id,
             mutafrichesEvaluationId: compatibilityEvaluations[0]?.mutafriches_evaluation_id,
