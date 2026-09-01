@@ -56,9 +56,10 @@ We deliberately do not use a top-level `apps/api/src/scripts/` directory: keepin
 
 ## Current tasks
 
-| Task                         | Schedule (UTC)            | Command                                                                                           | Purpose                                                                                       |
-| ---------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Newsletter subscription sync | `0 4 * * *` (daily 04:00) | `cd apps/api && node ./dist/src/marketing/adapters/primary/syncNewsletterSubscriptions.script.js` | Pulls newsletter subscription status from the ADEME CRM into `users.subscribed_to_newsletter` |
+| Task                         | Schedule (UTC)              | Command                                                                                           | Purpose                                                                                                                                                                                                                                           |
+| ---------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Newsletter subscription sync | `0 4 * * *` (daily 04:00)   | `cd apps/api && node ./dist/src/marketing/adapters/primary/syncNewsletterSubscriptions.script.js` | Pulls newsletter subscription status from the ADEME CRM into `users.subscribed_to_newsletter`                                                                                                                                                     |
+| Revoke pending auth tokens   | Not scheduled — manual only | `cd apps/api && node ./dist/src/auth/adapters/primary/revokePendingAuthTokens.script.js`          | Revokes any outstanding (unused, unexpired, not-yet-revoked) magic-link authentication attempts, stamping their `revoked_at`. Not wired into `cron.json` yet — run on demand, e.g. to invalidate all pending login links as a security precaution |
 
 ## Running a task manually (incl. dry-run)
 
@@ -69,6 +70,12 @@ scalingo --region <region> run --app <app-name> "cd apps/api && node ./dist/src/
 ```
 
 Without `--dry-run`, the same command performs the real run.
+
+The revoke-pending-auth-tokens script has no cron entry — it is invoked the same way, on demand, and has no `--dry-run` option:
+
+```bash
+scalingo --region <region> run --app <app-name> "cd apps/api && node ./dist/src/auth/adapters/primary/revokePendingAuthTokens.script.js"
+```
 
 ## Observability
 
