@@ -13,14 +13,8 @@ import type {
   UrbanZoneType,
 } from "shared";
 
-import { RootState } from "@/app/store/store";
-
-import {
-  selectDerivedSiteData,
-  selectSiteNature,
-  selectSiteSoils,
-  selectSiteSurfaceArea,
-} from "../../selectors/createSite.selectors";
+import type { createSiteFormRootSelectors } from "../../selectors/createSite.selectors";
+import { siteCreationRootSelectors } from "../../selectors/createSite.selectors";
 
 type SurfaceAreaDistributionWithUnit<TSurface extends string> = {
   unit: "percentage" | "squareMeters";
@@ -47,22 +41,6 @@ type SiteSoilsDistributionViewData = {
   siteSurfaceArea: number;
 };
 
-export const selectSiteSoilsDistributionViewData = createSelector(
-  selectDerivedSiteData,
-  (state: RootState) => state.siteCreation.surfaceAreaInputMode,
-  (siteData, surfaceAreaInputMode): SiteSoilsDistributionViewData => {
-    const siteSoils = siteData.soils;
-    const siteSurfaceArea = siteData.surfaceArea ?? 0;
-
-    const initialValues = getSurfaceAreaDistributionWithUnit(
-      siteData.soilsDistribution ?? {},
-      surfaceAreaInputMode,
-    );
-
-    return { initialValues, siteSoils, siteSurfaceArea };
-  },
-);
-
 type SiteSoilsSummaryViewData = {
   totalSurfaceArea: number;
   soilsDistribution: SoilsDistribution;
@@ -74,35 +52,11 @@ type SiteSoilsSummaryViewData = {
   urbanZoneType?: UrbanZoneType;
 };
 
-export const selectSiteSoilsSummaryViewData = createSelector(
-  selectDerivedSiteData,
-  (siteData): SiteSoilsSummaryViewData => {
-    return {
-      totalSurfaceArea: siteData.surfaceArea ?? 0,
-      soilsDistribution: siteData.soilsDistribution ?? {},
-      wasSoilsDistributionAssignedByBenefriches: siteData.spacesDistributionKnowledge === false,
-      siteNature: siteData.nature,
-      agriculturalOperationActivity: siteData.agriculturalOperationActivity,
-      fricheActivity: siteData.fricheActivity,
-      naturalAreaType: siteData.naturalAreaType,
-      urbanZoneType: siteData.urbanZoneType,
-    };
-  },
-);
-
 // Site Surface Area Form ViewData
 type SiteSurfaceAreaFormViewData = {
   siteSurfaceArea: number | undefined;
   siteNature: SiteNature | undefined;
 };
-
-export const selectSiteSurfaceAreaFormViewData = createSelector(
-  [selectSiteSurfaceArea, selectSiteNature],
-  (siteSurfaceArea, siteNature): SiteSurfaceAreaFormViewData => ({
-    siteSurfaceArea,
-    siteNature,
-  }),
-);
 
 // Spaces Selection Form ViewData
 type SpacesSelectionFormViewData = {
@@ -110,10 +64,68 @@ type SpacesSelectionFormViewData = {
   soils: SoilType[];
 };
 
-export const selectSpacesSelectionFormViewData = createSelector(
-  [selectSiteNature, selectSiteSoils],
-  (siteNature, soils): SpacesSelectionFormViewData => ({
-    siteNature,
-    soils: soils ?? [],
-  }),
-);
+export const createSpacesSelectors = (
+  rootSelectors: ReturnType<typeof createSiteFormRootSelectors>,
+) => {
+  const selectSiteSoilsDistributionViewData = createSelector(
+    rootSelectors.selectDerivedSiteData,
+    rootSelectors.selectSurfaceAreaInputMode,
+    (siteData, surfaceAreaInputMode): SiteSoilsDistributionViewData => {
+      const siteSoils = siteData.soils;
+      const siteSurfaceArea = siteData.surfaceArea ?? 0;
+
+      const initialValues = getSurfaceAreaDistributionWithUnit(
+        siteData.soilsDistribution ?? {},
+        surfaceAreaInputMode,
+      );
+
+      return { initialValues, siteSoils, siteSurfaceArea };
+    },
+  );
+
+  const selectSiteSoilsSummaryViewData = createSelector(
+    rootSelectors.selectDerivedSiteData,
+    (siteData): SiteSoilsSummaryViewData => {
+      return {
+        totalSurfaceArea: siteData.surfaceArea ?? 0,
+        soilsDistribution: siteData.soilsDistribution ?? {},
+        wasSoilsDistributionAssignedByBenefriches: siteData.spacesDistributionKnowledge === false,
+        siteNature: siteData.nature,
+        agriculturalOperationActivity: siteData.agriculturalOperationActivity,
+        fricheActivity: siteData.fricheActivity,
+        naturalAreaType: siteData.naturalAreaType,
+        urbanZoneType: siteData.urbanZoneType,
+      };
+    },
+  );
+
+  const selectSiteSurfaceAreaFormViewData = createSelector(
+    [rootSelectors.selectSiteSurfaceArea, rootSelectors.selectSiteNature],
+    (siteSurfaceArea, siteNature): SiteSurfaceAreaFormViewData => ({
+      siteSurfaceArea,
+      siteNature,
+    }),
+  );
+
+  const selectSpacesSelectionFormViewData = createSelector(
+    [rootSelectors.selectSiteNature, rootSelectors.selectSiteSoils],
+    (siteNature, soils): SpacesSelectionFormViewData => ({
+      siteNature,
+      soils: soils ?? [],
+    }),
+  );
+
+  return {
+    selectSiteSoilsDistributionViewData,
+    selectSiteSoilsSummaryViewData,
+    selectSiteSurfaceAreaFormViewData,
+    selectSpacesSelectionFormViewData,
+  };
+};
+
+export const {
+  selectSiteSoilsDistributionViewData,
+  selectSiteSoilsSummaryViewData,
+  selectSiteSurfaceAreaFormViewData,
+  selectSpacesSelectionFormViewData,
+} = createSpacesSelectors(siteCreationRootSelectors);

@@ -19,6 +19,7 @@ import { ReconversionCompatibilityEvaluationGateway } from "@/features/reconvers
 import type { SiteGateway } from "@/features/sites/core/gateways/SiteGateway";
 import type { SupportChatGateway } from "@/features/support/core/gateways/SupportChatGateway";
 import { UpdateProjectServiceGateway } from "@/features/update-project/core/updateProject.types";
+import { UpdateSiteServiceGateway } from "@/features/update-site/core/updateSite.types";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 import type { AdministrativeDivisionGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 import { RealEstateValuationGateway } from "@/shared/core/gateways/RealEstateValuationGateway";
@@ -48,6 +49,7 @@ export type AppDependencies = {
   urbanSprawlImpactsComparisonService: UrbanSprawlImpactsComparisonGateway;
   reconversionCompatibilityEvaluationService: ReconversionCompatibilityEvaluationGateway;
   updateProjectService: UpdateProjectServiceGateway;
+  updateSiteService: UpdateSiteServiceGateway;
   realEstateValuationService: RealEstateValuationGateway;
   supportChatService: SupportChatGateway;
   analyticsService: AnalyticsGateway;

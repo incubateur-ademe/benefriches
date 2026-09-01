@@ -67,6 +67,7 @@ export class SqlSitesQuery implements SitesQuery {
         "sites.friche_activity",
         "sites.agricultural_operation_activity",
         "sites.natural_area_type",
+        "sites.is_operated",
         "sites.description",
         "sites.owner_name",
         "sites.owner_structure_type",
@@ -100,8 +101,9 @@ export class SqlSitesQuery implements SitesQuery {
           jsonb_agg(
             distinct jsonb_build_object(
               'amount', expenses.amount,
-              'purpose', expenses.purpose
-            ) 
+              'purpose', expenses.purpose,
+              'bearer', expenses.bearer
+            )
           ) FILTER (WHERE expenses.id IS NOT NULL) AS "yearly_expenses"
         `),
         this.sqlConnection.raw(`
@@ -132,6 +134,7 @@ export class SqlSitesQuery implements SitesQuery {
           friche_activity: SqlSite["friche_activity"];
           agricultural_operation_activity: SqlSite["agricultural_operation_activity"];
           natural_area_type: SqlSite["natural_area_type"];
+          is_operated: SqlSite["is_operated"];
           surface_area: SqlSite["surface_area"];
           owner_name: SqlSite["owner_name"];
           owner_structure_type: SqlSite["owner_structure_type"];
@@ -165,7 +168,9 @@ export class SqlSitesQuery implements SitesQuery {
             | null;
           full_time_jobs_equivalent: SqlSiteUrbanZoneFeatures["full_time_jobs_equivalent"] | null;
           soils_distribution: Pick<SqlSiteSoilsDistribution, "soil_type" | "surface_area">[] | null;
-          yearly_expenses: Pick<SqlSiteExpense, "amount" | "purpose">[] | null;
+          yearly_expenses:
+            | (Pick<SqlSiteExpense, "amount" | "purpose"> & { bearer: "owner" | "tenant" })[]
+            | null;
           yearly_incomes: Pick<SqlSiteIncome, "amount" | "source">[] | null;
         }[];
 
@@ -228,6 +233,7 @@ export class SqlSitesQuery implements SitesQuery {
           nature: "AGRICULTURAL_OPERATION",
           description: sqlSite.description ?? undefined,
           agriculturalOperationActivity: sqlSite.agricultural_operation_activity ?? undefined,
+          isSiteOperated: sqlSite.is_operated ?? undefined,
         };
       case "NATURAL_AREA":
         return {

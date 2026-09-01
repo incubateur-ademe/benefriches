@@ -102,8 +102,8 @@ describe("SqlSitesQuery integration", () => {
         tenant: { name: "Tenant name", structureType: "company" },
         hasContaminatedSoils: true,
         yearlyExpenses: [
-          { amount: 45000, purpose: "rent" },
-          { amount: 55000, purpose: "maintenance" },
+          { amount: 45000, purpose: "rent", bearer: "tenant" },
+          { amount: 55000, purpose: "maintenance", bearer: "tenant" },
         ],
         yearlyIncomes: [],
         contaminatedSoilSurface: 1200,
@@ -182,6 +182,7 @@ describe("SqlSitesQuery integration", () => {
         soilsDistribution: {},
         description: undefined,
         agriculturalOperationActivity: undefined,
+        isSiteOperated: undefined,
       };
 
       assert.deepStrictEqual(result, expectedResult);
@@ -247,7 +248,7 @@ describe("SqlSitesQuery integration", () => {
         isExpressSite: true,
         owner: { name: undefined, structureType: "company" },
         tenant: undefined,
-        yearlyExpenses: [{ amount: 3300, purpose: "security" }],
+        yearlyExpenses: [{ amount: 3300, purpose: "security", bearer: "owner" }],
         yearlyIncomes: [{ amount: 5000, source: "product-sales" }],
         address: {
           city: "Paris",
@@ -266,6 +267,7 @@ describe("SqlSitesQuery integration", () => {
         },
         description: undefined,
         agriculturalOperationActivity: "CATTLE_FARMING",
+        isSiteOperated: undefined,
       };
 
       assert.deepStrictEqual(result, expectedResult);

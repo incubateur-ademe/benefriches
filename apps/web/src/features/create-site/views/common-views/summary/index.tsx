@@ -4,8 +4,9 @@ import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCus
 import SiteDataSummary from "./SiteDataSummary";
 
 function SiteDataSummaryContainer() {
-  const { onBack, onSave, selectDerivedSiteData } = useCustomSiteForm();
+  const { onBack, onSave, selectDerivedSiteData, selectSaveState } = useCustomSiteForm();
   const siteData = useAppSelector(selectDerivedSiteData);
+  const saveState = useAppSelector(selectSaveState);
 
   return (
     <SiteDataSummary
@@ -35,6 +36,7 @@ function SiteDataSummaryContainer() {
       }}
       onNext={onSave}
       onBack={onBack}
+      saveState={saveState}
     />
   );
 }

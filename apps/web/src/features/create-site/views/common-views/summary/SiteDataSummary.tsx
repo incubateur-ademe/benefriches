@@ -1,3 +1,4 @@
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import type {
   AgriculturalOperationActivity,
   FricheActivity,
@@ -85,14 +86,33 @@ type Props = {
   siteData: SiteData;
   onNext: () => void;
   onBack: () => void;
+  saveState?: "idle" | "dirty" | "loading" | "success" | "error";
 };
 
-function SiteDataSummary({ siteData, onNext, onBack }: Props) {
+const NEXT_LABEL_BY_SAVE_STATE: Partial<Record<NonNullable<Props["saveState"]>, string>> = {
+  loading: "Sauvegarde en cours…",
+  success: "Modifications sauvegardées",
+};
+
+function SiteDataSummary({ siteData, onNext, onBack, saveState }: Props) {
   return (
     <WizardFormLayout title="Récapitulatif du site">
+      {saveState === "error" && (
+        <Alert
+          className="mb-4"
+          severity="error"
+          title="La sauvegarde a échoué"
+          description="Une erreur s'est produite lors de l'enregistrement des modifications. Veuillez réessayer."
+        />
+      )}
       <SiteFeaturesList siteFeatures={toSiteFeatures(siteData)} />
       <div className="mt-8">
-        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          onNext={onNext}
+          disabled={saveState === "loading"}
+          nextLabel={saveState ? NEXT_LABEL_BY_SAVE_STATE[saveState] : undefined}
+        />
       </div>
     </WizardFormLayout>
   );

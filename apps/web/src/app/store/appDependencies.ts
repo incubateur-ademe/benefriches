@@ -20,6 +20,7 @@ import { HttpSiteService } from "@/features/sites/infra/site-service/HttpSiteSer
 import { CrispSupportChatService } from "@/features/support/infrastructure/support-chat-service/CrispSupportChatService";
 import { NoopSupportChatService } from "@/features/support/infrastructure/support-chat-service/NoopSupportChatService";
 import { HttpUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/HttpUpdateReconversionProjectService";
+import { HttpUpdateSiteService } from "@/features/update-site/infrastructure/update-site-service/HttpUpdateSiteService";
 import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/CreateFeatureAlertService";
 import { MunicipalityDataService } from "@/shared/infrastructure/administrative-division-service/municipalityDataService";
 import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
@@ -48,6 +49,7 @@ export const appDependencies: AppDependencies = {
   urbanSprawlImpactsComparisonService: new HttpUrbanSprawlImpactsComparisonService(),
   reconversionCompatibilityEvaluationService: new HttpReconversionCompatibilityEvaluation(),
   updateProjectService: new HttpUpdateReconversionProjectService(),
+  updateSiteService: new HttpUpdateSiteService(),
   realEstateValuationService: new DisabledRealEstateValuationService(),
   supportChatService: BENEFRICHES_ENV.crispEnabled
     ? new CrispSupportChatService(BENEFRICHES_ENV.crispWebsiteId)

@@ -118,21 +118,34 @@ export const selectAvailableLocalAuthoritiesWithoutCurrentUser = createSelector(
   },
 );
 
+// Both creation's and the update flow's fetch-municipality-data thunks (distinct action-type
+// prefixes, "site/..." vs "siteUpdate/...") feed this single global slice, keyed only by city
+// code — matched by suffix rather than importing the update instance here, which would invert
+// the create -> update dependency direction (update-site imports create-site, never the
+// reverse).
+const isFetchSiteMunicipalityDataAction = (suffix: "pending" | "fulfilled" | "rejected") => {
+  return (action: { type: string }): boolean =>
+    action.type.endsWith(`/fetchSiteMunicipalityData/${suffix}`);
+};
+
 const siteMunicipalityData = createSlice({
   name: "siteMunicipalityData",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchSiteMunicipalityData.pending, (state) => {
+    builder.addMatcher(isFetchSiteMunicipalityDataAction("pending"), (state) => {
       state.loadingState = "loading";
     });
-    builder.addCase(fetchSiteMunicipalityData.fulfilled, (state, action) => {
-      state.loadingState = "success";
-      state.localAuthorities = action.payload.localAuthorities;
-      state.population = action.payload.population;
-      state.isRural = action.payload.isRural;
-    });
-    builder.addCase(fetchSiteMunicipalityData.rejected, (state) => {
+    builder.addMatcher(
+      isFetchSiteMunicipalityDataAction("fulfilled"),
+      (state, action: ReturnType<typeof fetchSiteMunicipalityData.fulfilled>) => {
+        state.loadingState = "success";
+        state.localAuthorities = action.payload.localAuthorities;
+        state.population = action.payload.population;
+        state.isRural = action.payload.isRural;
+      },
+    );
+    builder.addMatcher(isFetchSiteMunicipalityDataAction("rejected"), (state) => {
       state.loadingState = "error";
     });
   },

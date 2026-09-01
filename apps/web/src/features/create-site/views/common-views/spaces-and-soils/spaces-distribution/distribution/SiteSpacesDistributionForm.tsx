@@ -1,6 +1,5 @@
 import { SoilType, SurfaceAreaDistributionJson } from "shared";
 
-import { useSurfaceAreaInputMode } from "@/features/create-site/views/useSurfaceAreaInputMode";
 import {
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
@@ -18,6 +17,8 @@ type Props = {
   initialValues: SurfaceAreaDistributionJson<SoilType>;
   siteSoils: SoilType[];
   totalSurfaceArea: number;
+  inputMode: "percentage" | "squareMeters";
+  onInputModeChange: (inputMode: "percentage" | "squareMeters") => void;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -28,10 +29,11 @@ function SiteSpacesDistributionForm({
   initialValues,
   siteSoils,
   totalSurfaceArea,
+  inputMode,
+  onInputModeChange,
   onSubmit,
   onBack,
 }: Props) {
-  const { inputMode, onInputModeChange } = useSurfaceAreaInputMode();
   return (
     <SurfaceAreaDistributionForm
       initialValues={initialValues}

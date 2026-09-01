@@ -38,21 +38,32 @@ const initialState: State = {
   cityCode: undefined,
 };
 
+// Both creation's and the update flow's fetch-soils-carbon-storage thunks feed this single
+// global slice — matched by suffix rather than importing the update instance here (see the
+// identical note in siteMunicipalityData.reducer.ts).
+const isFetchSiteSoilsCarbonStorageAction = (suffix: "pending" | "fulfilled" | "rejected") => {
+  return (action: { type: string }): boolean =>
+    action.type.endsWith(`/fetchSiteSoilsCarbonStorage/${suffix}`);
+};
+
 const siteCarbonStorage = createSlice({
   name: "carbonStorage",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchSiteSoilsCarbonStorage.pending, (state) => {
+    builder.addMatcher(isFetchSiteSoilsCarbonStorageAction("pending"), (state) => {
       state.loadingState = "loading";
       state.cityCode = undefined;
     });
-    builder.addCase(fetchSiteSoilsCarbonStorage.fulfilled, (state, action) => {
-      state.loadingState = "success";
-      state.carbonStorage = action.payload.carbonStorage;
-      state.cityCode = action.payload.cityCode;
-    });
-    builder.addCase(fetchSiteSoilsCarbonStorage.rejected, (state) => {
+    builder.addMatcher(
+      isFetchSiteSoilsCarbonStorageAction("fulfilled"),
+      (state, action: ReturnType<typeof fetchSiteSoilsCarbonStorage.fulfilled>) => {
+        state.loadingState = "success";
+        state.carbonStorage = action.payload.carbonStorage;
+        state.cityCode = action.payload.cityCode;
+      },
+    );
+    builder.addMatcher(isFetchSiteSoilsCarbonStorageAction("rejected"), (state) => {
       state.loadingState = "error";
       state.cityCode = undefined;
     });

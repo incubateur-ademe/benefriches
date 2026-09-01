@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { Address, SiteNature } from "shared";
 
-import { selectSiteAddress, selectSiteNature } from "../../selectors/createSite.selectors";
+import type { createSiteFormRootSelectors } from "../../selectors/createSite.selectors";
+import { siteCreationRootSelectors } from "../../selectors/createSite.selectors";
 
 // Address Form ViewData
 type AddressFormViewData = {
@@ -9,10 +10,18 @@ type AddressFormViewData = {
   address: Address | undefined;
 };
 
-export const selectAddressFormViewData = createSelector(
-  [selectSiteNature, selectSiteAddress],
-  (siteNature, address): AddressFormViewData => ({
-    siteNature,
-    address,
-  }),
-);
+export const createAddressSelectors = (
+  rootSelectors: ReturnType<typeof createSiteFormRootSelectors>,
+) => {
+  const selectAddressFormViewData = createSelector(
+    [rootSelectors.selectSiteNature, rootSelectors.selectSiteAddress],
+    (siteNature, address): AddressFormViewData => ({
+      siteNature,
+      address,
+    }),
+  );
+
+  return { selectAddressFormViewData };
+};
+
+export const { selectAddressFormViewData } = createAddressSelectors(siteCreationRootSelectors);

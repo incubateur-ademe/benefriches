@@ -17,14 +17,16 @@ import {
   customStepHandlerRegistry,
 } from "./stepHandlerRegistry";
 
-// The legacy custom flow has exactly one consumer today (create), so this is typed directly
-// against the concrete SiteCreationState — same pattern as urbanZoneForm.reducer.ts.
-export type CustomWizardFormDefinition = Pick<
+// Generic over `S` (a structural superset of `SiteCreationState`, mirroring the project side's
+// `S extends RenewableEnergyHostState`) so both creation (`SiteCreationState` itself) and the
+// update flow (`SiteUpdateState`, features/update-site/core/updateSite.reducer.ts) can drive
+// this case-adder against their own concrete state.
+export type CustomWizardFormDefinition<S extends SiteCreationState = SiteCreationState> = Pick<
   WizardFormDefinition<
     SiteCreationCustomStep,
     CustomStepHandlerContext,
-    Draft<SiteCreationState>["custom"]["steps"],
-    Draft<SiteCreationState>,
+    Draft<S>["custom"]["steps"],
+    Draft<S>,
     StepUpdateResult<SiteCreationCustomStep, CustomAnswersByStep, CustomAnswerStepId>
   >,
   "config" | "selectForm" | "buildContext"
@@ -37,9 +39,9 @@ export type CustomWizardFormDefinition = Pick<
  * behaviour-net oracle (see legacyActionsAdapter.ts) drive the exact same engine path — there is
  * only one wizard engine underneath either call site.
  */
-export const completeCustomStep = (
-  state: Draft<SiteCreationState>,
-  definition: CustomWizardFormDefinition,
+export const completeCustomStep = <S extends SiteCreationState>(
+  state: Draft<S>,
+  definition: CustomWizardFormDefinition<S>,
   payload: StepCompletionPayload,
 ): void => {
   const { config, selectForm, buildContext } = definition;
@@ -66,6 +68,7 @@ export const completeCustomStep = (
       {
         nextMode: config.stepChangesNextMode,
         finalSummaryFallbackStep: config.finalSummaryFallbackStep,
+        groupOf: config.groupOf,
       },
     );
   }
@@ -87,9 +90,9 @@ export const completeCustomStep = (
 };
 
 /** Advances from the current (info) step via its own `getNextStepId` — no answer to store. */
-export const advanceCustomStep = (
-  state: Draft<SiteCreationState>,
-  definition: CustomWizardFormDefinition,
+export const advanceCustomStep = <S extends SiteCreationState>(
+  state: Draft<S>,
+  definition: CustomWizardFormDefinition<S>,
 ): void => {
   advanceFromStep(state, definition, definition.selectForm(state).currentStep);
 };
@@ -103,9 +106,9 @@ export const advanceCustomStep = (
  * even when a distinct-but-equivalent step (e.g. SOILS_SUMMARY vs SOILS_CARBON_STORAGE, both
  * skipped straight through for a not-yet-fully-known reason) is technically current.
  */
-export const advanceFromStep = (
-  state: Draft<SiteCreationState>,
-  definition: CustomWizardFormDefinition,
+export const advanceFromStep = <S extends SiteCreationState>(
+  state: Draft<S>,
+  definition: CustomWizardFormDefinition<S>,
   stepId: SiteCreationCustomStep,
 ): void => {
   const { selectForm, buildContext } = definition;
@@ -123,10 +126,10 @@ export const advanceFromStep = (
   }
 };
 
-export const addCustomFormCasesToBuilder = (
-  builder: ActionReducerMapBuilder<SiteCreationState>,
+export const addCustomFormCasesToBuilder = <S extends SiteCreationState>(
+  builder: ActionReducerMapBuilder<S>,
   actions: CustomFormPureActions,
-  definition: CustomWizardFormDefinition,
+  definition: CustomWizardFormDefinition<S>,
 ) => {
   const { config, selectForm, buildContext } = definition;
 

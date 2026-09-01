@@ -38,11 +38,13 @@ const ProjectCreationOnboardingPage = lazy(
   () =>
     import("@/features/create-project/views/onboarding-from-compatibility-evaluation/ProjectCreationFromCompatibilityEvaluationOnboarding"),
 );
+const UpdateSitePage = lazy(() => import("@/features/update-site/views"));
 
 const formsLayoutGroup = createGroup([
   routes.createSite,
   routes.createProject,
   routes.updateProject,
+  routes.updateSite,
 ]);
 
 function FeaturesApp() {
@@ -71,6 +73,8 @@ function FeaturesApp() {
                   return <CreateProjectPage route={route} />;
                 case routes.updateProject.name:
                   return <UpdateProjectPage route={route} />;
+                case routes.updateSite.name:
+                  return <UpdateSitePage route={route} />;
               }
             })()}
           </RequireAuthenticatedUser>

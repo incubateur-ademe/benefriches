@@ -6,11 +6,17 @@ import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCus
 import SiteSpacesDistributionForm, { FormValues } from "./SiteSpacesDistributionForm";
 
 export default function SiteSpacesDistributionContainer() {
-  const { onBack, onRequestStepCompletion, selectSiteSoilsDistributionViewData } =
-    useCustomSiteForm();
+  const {
+    onBack,
+    onRequestStepCompletion,
+    selectSiteSoilsDistributionViewData,
+    selectSurfaceAreaInputMode,
+    onSurfaceAreaInputModeChange,
+  } = useCustomSiteForm();
   const { siteSoils, siteSurfaceArea, initialValues } = useAppSelector(
     selectSiteSoilsDistributionViewData,
   );
+  const inputMode = useAppSelector(selectSurfaceAreaInputMode);
 
   const onSubmit = (formData: FormValues) => {
     onRequestStepCompletion({
@@ -24,6 +30,8 @@ export default function SiteSpacesDistributionContainer() {
       initialValues={initialValues.value}
       siteSoils={siteSoils}
       totalSurfaceArea={siteSurfaceArea}
+      inputMode={inputMode}
+      onInputModeChange={onSurfaceAreaInputModeChange}
       onBack={onBack}
       onSubmit={onSubmit}
     />

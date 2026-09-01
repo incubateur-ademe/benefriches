@@ -21,6 +21,15 @@ export type MutableWizardFormSubState<StepId, TAnswers> = MutableWizardFormState
 export type ApplyStepChangesConfig<StepId> = {
   nextMode: "step_order" | "next_empty";
   finalSummaryFallbackStep: StepId;
+  /**
+   * Optional, `"next_empty"`-only: when the just-completed step's own next step (per its
+   * handler's `getNextStepId`) belongs to the same group as the completed step, follow it
+   * (like `"step_order"`) instead of collapsing straight to the next empty step / summary.
+   * Lets a fully-hydrated multi-step group (every step marked completed) still be walked
+   * step-by-step once entered, while still snapping back to the summary as soon as
+   * completion crosses into a different group.
+   */
+  groupOf?: (stepId: StepId) => unknown;
 };
 
 function isAnswerStep<StepId extends string, TContext, TAnswers>(
@@ -81,8 +90,17 @@ export function applyStepChanges<StepId extends string, TContext, TAnswers>(
     registry,
   );
 
+  const sameGroupNavigationTarget =
+    config.groupOf &&
+    changes.navigationTarget &&
+    config.groupOf(payload.stepId as unknown as StepId) === config.groupOf(changes.navigationTarget)
+      ? changes.navigationTarget
+      : undefined;
+
   if (config.nextMode === "step_order" && changes.navigationTarget) {
     navigateToAndLoadStep(form, context, changes.navigationTarget, registry);
+  } else if (sameGroupNavigationTarget) {
+    navigateToAndLoadStep(form, context, sameGroupNavigationTarget, registry);
   } else {
     const nextEmptyStep = form.stepsSequence.find(
       (stepId) =>

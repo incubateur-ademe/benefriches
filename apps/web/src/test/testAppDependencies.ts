@@ -21,6 +21,7 @@ import { InMemoryReconversionCompatibilityEvaluationService } from "@/features/r
 import { InMemorySiteService } from "@/features/sites/infra/site-service/InMemorySiteService";
 import { InMemorySupportChatService } from "@/features/support/infrastructure/support-chat-service/InMemorySupportChatService";
 import { InMemoryUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/InMemoryUpdateReconversionProjectService";
+import { InMemoryUpdateSiteService } from "@/features/update-site/infrastructure/update-site-service/InMemoryUpdateSiteService";
 import { InMemoryCreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/InMemoryCreateFeatureAlertService";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { InMemoryRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/InMemoryRealEstateValuationService";
@@ -74,6 +75,7 @@ export const getTestAppDependencies = (
     reconversionCompatibilityEvaluationService:
       new InMemoryReconversionCompatibilityEvaluationService(),
     updateProjectService: new InMemoryUpdateReconversionProjectService(),
+    updateSiteService: new InMemoryUpdateSiteService(),
     realEstateValuationService: new InMemoryRealEstateValuationService(),
     supportChatService: new InMemorySupportChatService(),
     analyticsService: new InMemoryAnalytics(),

@@ -4,10 +4,8 @@ import type {
   SoilsCarbonStorageResult,
 } from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 
-import {
-  selectDerivedSiteData,
-  selectSiteSoilsDistribution,
-} from "../selectors/createSite.selectors";
+import type { createSiteFormRootSelectors } from "../selectors/createSite.selectors";
+import { siteCreationRootSelectors } from "../selectors/createSite.selectors";
 import { SiteCarbonStorageResult } from "../siteSoilsCarbonStorage.reducer";
 
 export type { SoilsCarbonStorageGateway } from "@/shared/core/gateways/SoilsCarbonStorageGateway";
@@ -16,12 +14,14 @@ export type GetSiteSoilsCarbonStoragePayload = GetSoilsCarbonStoragePayload;
 
 export type SiteSoilsCarbonStorageResult = SoilsCarbonStorageResult;
 
-export const fetchSiteSoilsCarbonStorage = createAppAsyncThunk<SiteCarbonStorageResult>(
-  "site/fetchSiteSoilsCarbonStorage",
-  async (_, { extra, getState }) => {
+export const createFetchSiteSoilsCarbonStorage = (
+  actionType: string,
+  rootSelectors: ReturnType<typeof createSiteFormRootSelectors>,
+) =>
+  createAppAsyncThunk<SiteCarbonStorageResult>(actionType, async (_, { extra, getState }) => {
     const rootState = getState();
-    const soilsDistribution = selectSiteSoilsDistribution(rootState);
-    const siteAddress = selectDerivedSiteData(rootState).address;
+    const soilsDistribution = rootSelectors.selectSiteSoilsDistribution(rootState);
+    const siteAddress = rootSelectors.selectDerivedSiteData(rootState).address;
 
     if (!siteAddress) throw new Error("No address in store");
 
@@ -37,5 +37,11 @@ export const fetchSiteSoilsCarbonStorage = createAppAsyncThunk<SiteCarbonStorage
         soils: result.soilsStorage,
       },
     };
-  },
+  });
+
+// Kept as the byte-identical action type ("site/fetchSiteSoilsCarbonStorage") so existing specs
+// pass unmodified.
+export const fetchSiteSoilsCarbonStorage = createFetchSiteSoilsCarbonStorage(
+  "site/fetchSiteSoilsCarbonStorage",
+  siteCreationRootSelectors,
 );

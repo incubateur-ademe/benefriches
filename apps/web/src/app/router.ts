@@ -102,6 +102,14 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
       },
       (params) => `/mes-projets/${params.projectId}/modifier`,
     ),
+    updateSite: defineRoute(
+      {
+        etape: param.query.optional.string,
+        from: param.query.optional.ofType<"evaluations" | "site">(),
+        siteId: param.path.string,
+      },
+      (params) => `/sites/${params.siteId}/modifier`,
+    ),
     // PROJECT IMPACTS
     projectImpactsSummary: projectImpacts.extend(`/apercu`),
     projectImpactsDevelopmentScore: projectImpacts.extend(`/amenagescore`),

@@ -31,6 +31,7 @@ const baseSiteFeaturesSchema = z.object({
       z.object({
         amount: z.number(),
         purpose: z.string(),
+        bearer: z.enum(["owner", "tenant"]),
       }),
     )
     .default([]),
@@ -59,6 +60,10 @@ const agriculturalOperationSiteFeaturesResponseDtoSchema = baseSiteFeaturesSchem
   nature: siteNatureSchema.extract(["AGRICULTURAL_OPERATION"]),
   // optional: the column is nullable and sites created before it existed have no activity
   agriculturalOperationActivity: z.string().optional(),
+  // optional: the column is nullable (legacy rows, or sites operated by their owner with no
+  // recorded tenant); the update-site wizard falls back to deriving it from tenant/income
+  // presence when absent (see convertSiteToCustomSteps.ts).
+  isSiteOperated: z.boolean().optional(),
 });
 
 const naturalAreaSiteFeaturesResponseDtoSchema = baseSiteFeaturesSchema.extend({

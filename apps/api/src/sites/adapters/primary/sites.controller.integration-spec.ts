@@ -831,7 +831,7 @@ describe("Sites controller", () => {
         },
         description: "Description of site",
         fricheActivity: "INDUSTRY",
-        yearlyExpenses: [{ amount: 3300, purpose: "security" }],
+        yearlyExpenses: [{ amount: 3300, purpose: "security", bearer: "owner" }],
         yearlyIncomes: [],
         accidentsDeaths: 1,
         accidentsMinorInjuries: 2,
@@ -928,9 +928,62 @@ describe("Sites controller", () => {
           PRAIRIE_GRASS: 12800,
         },
         description: "Description of site",
-        yearlyExpenses: [{ amount: 3300, purpose: "operationCosts" }],
+        yearlyExpenses: [{ amount: 3300, purpose: "operationCosts", bearer: "owner" }],
         yearlyIncomes: [{ amount: 5000, source: "subsidies" }],
       });
+    });
+
+    it("gets a 200 response and returns isSiteOperated for an agricultural site", async () => {
+      const siteId = uuid();
+
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: user.id,
+        name: "Exploitation opérée",
+        nature: "AGRICULTURAL_OPERATION",
+        agricultural_operation_activity: "CATTLE_FARMING",
+        surface_area: 14000,
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        is_operated: true,
+        created_at: new Date(),
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        value: "8 Boulevard du Port 80000 Amiens",
+        city_code: "80021",
+        post_code: "80000",
+        city: "Amiens",
+        long: 49.897443,
+        lat: 2.290084,
+      });
+
+      const featuresResponse = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}/features`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(featuresResponse.status, 200);
+      assert.strictEqual(
+        (featuresResponse.body as { isSiteOperated?: boolean }).isSiteOperated,
+        true,
+      );
+
+      const viewResponse = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(viewResponse.status, 200);
+      assert.strictEqual(
+        (viewResponse.body as { features: { isSiteOperated?: boolean } }).features.isSiteOperated,
+        true,
+      );
     });
 
     it("gets a 200 response and returns natural area site with type", async () => {

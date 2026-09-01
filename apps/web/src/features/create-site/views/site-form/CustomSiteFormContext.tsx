@@ -14,6 +14,7 @@ export type CustomSiteFormContextValue = typeof creationCustomFormSelectors & {
   onSave: () => void;
   onFetchSiteMunicipalityData: () => Promise<unknown>;
   onFetchSiteSoilsCarbonStorage: () => Promise<unknown>;
+  onSurfaceAreaInputModeChange: (mode: "percentage" | "squareMeters") => void;
 };
 
 export const CustomSiteFormContext = createContext<CustomSiteFormContextValue | null>(null);

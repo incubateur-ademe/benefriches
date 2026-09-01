@@ -34,6 +34,8 @@ export type WizardFormDefinition<
     stepChangesNextMode: "step_order" | "next_empty";
     finalSummaryFallbackStep: StepId;
     onPreviousStepFallback?: (state: RootDraftState) => void;
+    /** See `ApplyStepChangesConfig.groupOf` (helpers/applyStepChanges.ts). */
+    groupOf?: (stepId: StepId) => unknown;
   };
   selectForm: (state: RootDraftState) => WizardFormSubState<StepId, TAnswers, TPendingChanges>;
   buildContext: (state: RootDraftState) => TContext;

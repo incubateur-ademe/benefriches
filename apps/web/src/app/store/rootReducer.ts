@@ -14,12 +14,14 @@ import { reconversionCompatibilityEvaluationReducer } from "@/features/reconvers
 import siteFeatures from "@/features/sites/core/siteFeatures.reducer";
 import { siteViewReducer } from "@/features/sites/core/siteView.reducer";
 import projectUpdate from "@/features/update-project/core/updateProject.reducer";
+import siteUpdate from "@/features/update-site/core/updateSite.reducer";
 import userFeatureAlert from "@/features/user-feature-alerts/core/userFeatureAlert.reducer";
 
 export const rootReducer = combineReducers({
   appSettings,
   auth,
   siteCreation,
+  siteUpdate,
   siteFeatures,
   siteView: siteViewReducer,
   projectCreation,

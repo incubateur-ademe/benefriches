@@ -45,7 +45,7 @@ describe("GetSiteById Use Case", () => {
         MINERAL_SOIL: 5000,
         IMPERMEABLE_SOILS: 1300,
       },
-      yearlyExpenses: [{ amount: 10999, purpose: "rent" }],
+      yearlyExpenses: [{ amount: 10999, purpose: "rent", bearer: "tenant" }],
       yearlyIncomes: [{ amount: 13000, source: "subsidies" }],
       address: {
         city: "Paris",
@@ -86,7 +86,7 @@ describe("GetSiteById Use Case", () => {
         accidentsDeaths: 0,
         accidentsMinorInjuries: 2,
         accidentsSevereInjuries: 1,
-        yearlyExpenses: [{ amount: 10999, purpose: "rent" }],
+        yearlyExpenses: [{ amount: 10999, purpose: "rent", bearer: "tenant" }],
         yearlyIncomes: [{ amount: 13000, source: "subsidies" }],
         fricheActivity: site.fricheActivity,
       },

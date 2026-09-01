@@ -1,9 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import {
-  selectSiteSoilsContamination,
-  selectSiteSurfaceArea,
-} from "../../selectors/createSite.selectors";
+import type { createSiteFormRootSelectors } from "../../selectors/createSite.selectors";
+import { siteCreationRootSelectors } from "../../selectors/createSite.selectors";
 
 // Soil Contamination Form ViewData
 type SoilContaminationFormViewData = {
@@ -14,10 +12,19 @@ type SoilContaminationFormViewData = {
   };
 };
 
-export const selectSoilContaminationFormViewData = createSelector(
-  [selectSiteSurfaceArea, selectSiteSoilsContamination],
-  (siteSurfaceArea, siteContamination): SoilContaminationFormViewData => ({
-    siteSurfaceArea,
-    siteContamination,
-  }),
-);
+export const createContaminationAndAccidentsSelectors = (
+  rootSelectors: ReturnType<typeof createSiteFormRootSelectors>,
+) => {
+  const selectSoilContaminationFormViewData = createSelector(
+    [rootSelectors.selectSiteSurfaceArea, rootSelectors.selectSiteSoilsContamination],
+    (siteSurfaceArea, siteContamination): SoilContaminationFormViewData => ({
+      siteSurfaceArea,
+      siteContamination,
+    }),
+  );
+
+  return { selectSoilContaminationFormViewData };
+};
+
+export const { selectSoilContaminationFormViewData } =
+  createContaminationAndAccidentsSelectors(siteCreationRootSelectors);
