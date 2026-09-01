@@ -41,6 +41,7 @@ describe("AuthenticateWithToken Use Case", () => {
     createdAt: fakeNow,
     expiresAt: addMinutes(fakeNow, 15),
     completedAt: null,
+    revokedAt: null,
     ...overrides,
   });
 
@@ -117,6 +118,38 @@ describe("AuthenticateWithToken Use Case", () => {
       });
 
       tokenAuthAttemptRepository.tokens = [usedAttempt];
+
+      const usecase = new AuthenticateWithTokenUseCase(
+        tokenAuthAttemptRepository,
+        userRepository,
+        dateProvider,
+        tokenGenerator,
+        eventPublisher,
+        uuidGenerator,
+      );
+
+      const result = await usecase.execute({ token: fakeToken });
+
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual((result as FailureResult).getError(), "TokenAlreadyUsed");
+
+      assert.strictEqual(eventPublisher.events.length, 1);
+      assert.deepStrictEqual(eventPublisher.events[0], {
+        id: "event-id-1",
+        name: LOGIN_WITH_TOKEN_FAILED,
+        payload: { errorType: "TokenAlreadyUsed" },
+      } satisfies LoginWithTokenFailedEvent);
+    });
+
+    it("Cannot authenticate with revoked token", async () => {
+      uuidGenerator.nextUuids("event-id-1");
+      const revokedAttempt = buildTokenAuthAttempt({
+        completedAt: null,
+        revokedAt: new Date("2025-01-01T13:55:00Z"),
+        expiresAt: addMinutes(fakeNow, 15),
+      });
+
+      tokenAuthAttemptRepository.tokens = [revokedAttempt];
 
       const usecase = new AuthenticateWithTokenUseCase(
         tokenAuthAttemptRepository,

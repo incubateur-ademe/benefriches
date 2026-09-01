@@ -399,6 +399,7 @@ describe("Auth integration tests", () => {
         createdAt: new Date(),
         expiresAt: new Date(Date.now() + 1000 * 60 * 10), // 10 minutes
         completedAt: null,
+        revokedAt: null,
       };
       await sqlConnection("token_authentication_attempts").insert({
         token: tokenAuthenticationAttempt.token,
@@ -438,6 +439,7 @@ describe("Auth integration tests", () => {
         createdAt: new Date(),
         expiresAt: new Date(Date.now() + 1000 * 60 * 10), // 10 minutes
         completedAt: null,
+        revokedAt: null,
       };
       await sqlConnection("token_authentication_attempts").insert({
         token: tokenAuthenticationAttempt.token,
@@ -493,6 +495,7 @@ describe("Auth integration tests", () => {
         createdAt: new Date(Date.now() - 1000 * 60 * 20), // 20 minutes ago
         expiresAt: new Date(Date.now() - 1000 * 60 * 10), // expired 10 minutes ago
         completedAt: null,
+        revokedAt: null,
       };
       await sqlConnection("token_authentication_attempts").insert({
         token: tokenAuthenticationAttempt.token,
@@ -533,6 +536,7 @@ describe("Auth integration tests", () => {
         createdAt: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
         expiresAt: new Date(Date.now() + 1000 * 60 * 5), // expires in 5 minutes
         completedAt: new Date(Date.now() - 1000 * 60 * 1), // completed 1 minute ago
+        revokedAt: null,
       };
       await sqlConnection("token_authentication_attempts").insert({
         token: tokenAuthenticationAttempt.token,
