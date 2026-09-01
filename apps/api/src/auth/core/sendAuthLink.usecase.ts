@@ -94,6 +94,7 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
       email: user.email,
       createdAt: this.dateProvider.now(),
       completedAt: null,
+      revokedAt: null,
       expiresAt: expirationDate,
     });
 

@@ -8,6 +8,7 @@ import { createLoginWithTokenFailedEvent } from "./events/loginWithTokenFailed.e
 import { TokenAuthenticationAttemptRepository } from "./gateways/TokenAuthenticationAttemptRepository";
 import { UserRepository } from "./gateways/UsersRepository";
 import { TokenGenerator } from "./sendAuthLink.usecase";
+import { isTokenAuthenticationAttemptUsable } from "./tokenAuthenticationAttempt";
 
 type Request = {
   token: string;
@@ -58,7 +59,8 @@ export class AuthenticateWithTokenUseCase implements UseCase<Request, Authentica
     const existingToken = await this.tokenAuthenticationAttemptRepository.findByToken(hashedToken);
 
     if (!existingToken) return this.failWithEvent("TokenNotFound");
-    if (existingToken.completedAt) return this.failWithEvent("TokenAlreadyUsed");
+    if (!isTokenAuthenticationAttemptUsable(existingToken))
+      return this.failWithEvent("TokenAlreadyUsed");
     if (existingToken.expiresAt < this.dateProvider.now())
       return this.failWithEvent("AuthenticationAttemptExpired");
 

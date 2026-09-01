@@ -229,6 +229,7 @@ describe("SendAuthLink Use Case", () => {
         createdAt: new Date(new Date("2025-01-01T14:00:00Z")),
         expiresAt: new Date(new Date("2025-01-01T14:01:00Z")),
         completedAt: null,
+        revokedAt: null,
       },
     ] satisfies TokenAuthenticationAttempt[]);
     // auth link email was sent

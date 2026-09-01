@@ -290,6 +290,7 @@ declare module "knex/types/tables" {
       created_at: Date;
       expires_at: Date;
       used_at: Date | null;
+      revoked_at: Date | null;
     };
 
     // reconversion compatibility evaluations

@@ -22,6 +22,7 @@ import {
   AUTH_USER_REPOSITORY_INJECTION_TOKEN,
   UserRepository,
 } from "../core/gateways/UsersRepository";
+import { RevokePendingAuthTokensUseCase } from "../core/revokePendingAuthTokens.usecase";
 import { SendAuthLinkUseCase, TokenGenerator, AuthLinkMailer } from "../core/sendAuthLink.usecase";
 import { ACCESS_TOKEN_SERVICE_INJECTION_TOKEN } from "./access-token/AccessTokenService";
 import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
@@ -164,6 +165,19 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
         RandomUuidGenerator,
       ],
     },
+    {
+      provide: RevokePendingAuthTokensUseCase,
+      useFactory: (
+        tokenAuthAttemptRepository: TokenAuthenticationAttemptRepository,
+        dateProvider: DateProvider,
+      ) =>
+        new RevokePendingAuthTokensUseCase(
+          tokenAuthAttemptRepository,
+          dateProvider,
+          new NestJsAppLogger("RevokePendingAuthTokens"),
+        ),
+      inject: [SqlTokenAuthenticationAttemptRepository, RealDateProvider],
+    },
     SqlUserRepository,
     SqlUserRepository,
     SqlTokenAuthenticationAttemptRepository,
@@ -180,6 +194,6 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
   ],
   // Guards are not providers and cannot be exported as is, they need all their dependencies to be exported to be used in other modules
   // see https://github.com/nestjs/nest/issues/3856
-  exports: [ACCESS_TOKEN_SERVICE_INJECTION_TOKEN],
+  exports: [ACCESS_TOKEN_SERVICE_INJECTION_TOKEN, RevokePendingAuthTokensUseCase],
 })
 export class AuthModule {}

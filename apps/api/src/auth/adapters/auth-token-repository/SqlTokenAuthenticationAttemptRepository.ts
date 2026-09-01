@@ -49,6 +49,7 @@ export class SqlTokenAuthenticationAttemptRepository implements TokenAuthenticat
           email: result.email,
           createdAt: result.created_at,
           expiresAt: result.expires_at,
+          revokedAt: result.revoked_at,
         }
       : null;
   }
@@ -59,5 +60,13 @@ export class SqlTokenAuthenticationAttemptRepository implements TokenAuthenticat
         used_at: completedAt,
       })
       .where("token", token);
+  }
+
+  async revokePendingAttempts(now: Date): Promise<number> {
+    return await this.sqlConnection("token_authentication_attempts")
+      .update({ revoked_at: now })
+      .where("used_at", null)
+      .where("revoked_at", null)
+      .where("expires_at", ">", now);
   }
 }
