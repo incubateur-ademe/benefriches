@@ -62,11 +62,10 @@ export class SqlTokenAuthenticationAttemptRepository implements TokenAuthenticat
       .where("token", token);
   }
 
-  async revokePendingAttempts(now: Date): Promise<number> {
+  async revokeUnusedAttempts(revokedAt: Date): Promise<number> {
     return await this.sqlConnection("token_authentication_attempts")
-      .update({ revoked_at: now })
+      .update({ revoked_at: revokedAt })
       .where("used_at", null)
-      .where("revoked_at", null)
-      .where("expires_at", ">", now);
+      .where("revoked_at", null);
   }
 }

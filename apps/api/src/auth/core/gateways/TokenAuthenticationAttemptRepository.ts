@@ -5,5 +5,5 @@ export interface TokenAuthenticationAttemptRepository {
   save(authByTokenRequest: TokenAuthenticationAttempt): Promise<void>;
   hasRecentUnusedTokenForUser(userId: string, createdAfter: Date): Promise<boolean>;
   findByToken(tokenHash: string): Promise<TokenAuthenticationAttempt | null>;
-  revokePendingAttempts(now: Date): Promise<number>;
+  revokeUnusedAttempts(revokedAt: Date): Promise<number>;
 }

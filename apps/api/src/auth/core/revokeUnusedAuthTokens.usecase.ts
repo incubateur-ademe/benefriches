@@ -6,7 +6,7 @@ import { UseCase } from "src/shared-kernel/usecase";
 
 type Result = TResult<{ revokedCount: number }, never>;
 
-export class RevokePendingAuthTokensUseCase implements UseCase<void, Result> {
+export class RevokeUnusedAuthTokensUseCase implements UseCase<void, Result> {
   private readonly tokenAuthenticationAttemptRepository: TokenAuthenticationAttemptRepository;
   private readonly dateProvider: DateProvider;
   private readonly logger: AppLogger;
@@ -22,11 +22,11 @@ export class RevokePendingAuthTokensUseCase implements UseCase<void, Result> {
   }
 
   async execute(): Promise<Result> {
-    const revokedCount = await this.tokenAuthenticationAttemptRepository.revokePendingAttempts(
+    const revokedCount = await this.tokenAuthenticationAttemptRepository.revokeUnusedAttempts(
       this.dateProvider.now(),
     );
 
-    this.logger.info(`Pending auth tokens revoked: revokedCount=${revokedCount}`);
+    this.logger.info(`Unused auth tokens revoked: revokedCount=${revokedCount}`);
 
     return success({ revokedCount });
   }

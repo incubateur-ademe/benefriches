@@ -1,12 +1,12 @@
 import { NestFactory } from "@nestjs/core";
 
 import { AppModule } from "src/app.module";
-import { RevokePendingAuthTokensUseCase } from "src/auth/core/revokePendingAuthTokens.usecase";
+import { RevokeUnusedAuthTokensUseCase } from "src/auth/core/revokeUnusedAuthTokens.usecase";
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
   try {
-    const useCase = app.get(RevokePendingAuthTokensUseCase);
+    const useCase = app.get(RevokeUnusedAuthTokensUseCase);
     await useCase.execute();
   } finally {
     await app.close();
@@ -14,6 +14,6 @@ async function bootstrap() {
 }
 bootstrap().catch((error: unknown) => {
   // eslint-disable-next-line no-console
-  console.error("revokePendingAuthTokens failed:", error);
+  console.error("revokeUnusedAuthTokens failed:", error);
   process.exit(1);
 });
