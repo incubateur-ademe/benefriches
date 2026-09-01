@@ -25,6 +25,8 @@ const createMockSiteView = (overrides: Partial<SiteView> = {}): SiteView => ({
   actions: [],
   reconversionProjects: [],
   compatibilityEvaluation: null,
+  isEditable: true,
+  notEditableReason: null,
   ...overrides,
 });
 

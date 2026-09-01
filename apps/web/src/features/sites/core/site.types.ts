@@ -6,6 +6,7 @@ import type {
   NaturalAreaType,
   SiteActionStatus,
   SiteActionType,
+  SiteNotEditableReason,
   SiteYearlyExpensePurpose,
   SiteYearlyIncome,
   SoilsDistribution,
@@ -80,4 +81,6 @@ export type SiteView = {
     results: { usage: MutabilityUsage; score: number }[];
     reliabilityScore: number;
   } | null;
+  isEditable: boolean;
+  notEditableReason: SiteNotEditableReason | null;
 };

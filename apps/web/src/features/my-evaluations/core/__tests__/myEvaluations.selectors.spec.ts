@@ -10,6 +10,8 @@ describe("selectMyEvaluationsViewData", () => {
       siteName: "My Site",
       siteNature: "FRICHE" as const,
       isExpressSite: false,
+      isEditable: true,
+      notEditableReason: null,
       reconversionProjects: { total: 1, lastProjects: [] },
       compatibilityEvaluation: { top3Usages: [] },
     };

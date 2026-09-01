@@ -120,6 +120,8 @@ export class HttpSiteService implements SiteGateway {
       actions: siteViewParsingResult.data.actions,
       reconversionProjects: siteViewParsingResult.data.reconversionProjects,
       compatibilityEvaluation: siteViewParsingResult.data.compatibilityEvaluation,
+      isEditable: siteViewParsingResult.data.isEditable,
+      notEditableReason: siteViewParsingResult.data.notEditableReason,
     };
   }
 }

@@ -1,5 +1,5 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { Menu, MenuButton, MenuItems } from "@headlessui/react";
+import { Menu, MenuButton, MenuItems, MenuSeparator } from "@headlessui/react";
 import * as Highcharts from "highcharts";
 import { Options } from "highcharts";
 import { HighchartsReact } from "highcharts-react-official";
@@ -9,6 +9,7 @@ import { MutabilityUsage } from "shared";
 import { routes } from "@/app/router";
 import ArchiveProjectDialogButton from "@/features/archive-project/views/ArchiveProjectDialogButton";
 import ArchiveSiteDialog from "@/features/archive-site/views/ArchiveSiteDialog";
+import UpdateSiteMenuItem from "@/features/update-site/views/UpdateSiteMenuItem";
 import { formatPercentage } from "@/shared/core/format-number/formatNumber";
 import { getMutabilityUsageDisplayName } from "@/shared/core/reconversionCompatibility";
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
@@ -56,8 +57,15 @@ const barChartOptions: Options = withDefaultBarChartOptions({
 });
 
 function MyEvaluationItem({ evaluation, onRemoveProjectFromList, onRemoveSiteFromList }: Props) {
-  const { siteName, siteId, reconversionProjects, compatibilityEvaluation, isExpressSite } =
-    evaluation;
+  const {
+    siteName,
+    siteId,
+    reconversionProjects,
+    compatibilityEvaluation,
+    isExpressSite,
+    isEditable,
+    notEditableReason,
+  } = evaluation;
 
   const projectLimit = compatibilityEvaluation ? 1 : 3;
 
@@ -96,6 +104,13 @@ function MyEvaluationItem({ evaluation, onRemoveProjectFromList, onRemoveSiteFro
               transition
               className={classNames("z-40", MENU_ITEMS_CLASSES)}
             >
+              <UpdateSiteMenuItem
+                siteId={siteId}
+                isEditable={isEditable}
+                notEditableReason={notEditableReason}
+                from="evaluations"
+              />
+              <MenuSeparator className="my-1 h-px bg-border-grey mx-3" />
               <MenuItemButton
                 iconId="fr-icon-delete-line"
                 className="text-error-ultradark"

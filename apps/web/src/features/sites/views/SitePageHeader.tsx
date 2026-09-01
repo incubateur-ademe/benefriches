@@ -1,11 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { Menu, MenuButton, MenuItems } from "@headlessui/react";
+import { Menu, MenuButton, MenuItems, MenuSeparator } from "@headlessui/react";
 import { Fragment } from "react/jsx-runtime";
-import { SiteNature } from "shared";
+import { SiteNature, SiteNotEditableReason } from "shared";
 
 import { routes, useRoute } from "@/app/router";
 import ArchiveSiteDialog from "@/features/archive-site/views/ArchiveSiteDialog";
+import UpdateSiteMenuItem from "@/features/update-site/views/UpdateSiteMenuItem";
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
 import MenuItemButton from "@/shared/views/components/Menu/MenuItemButton";
@@ -20,6 +21,8 @@ type Props = {
   siteName: string;
   siteNature: SiteNature;
   isExpressSite: boolean;
+  isEditable: boolean;
+  notEditableReason: SiteNotEditableReason | null;
   onSuccessArchiveSite: () => void;
 };
 
@@ -28,6 +31,8 @@ export default function SitePageHeader({
   siteName,
   siteNature,
   isExpressSite,
+  isEditable,
+  notEditableReason,
   onSuccessArchiveSite,
 }: Props) {
   const route = useRoute() as SiteRoute;
@@ -65,6 +70,13 @@ export default function SitePageHeader({
               transition
               className={classNames("z-40", "w-80", MENU_ITEMS_CLASSES)}
             >
+              <UpdateSiteMenuItem
+                siteId={siteId}
+                isEditable={isEditable}
+                notEditableReason={notEditableReason}
+                from="site"
+              />
+              <MenuSeparator className="my-1 h-px bg-border-grey mx-3" />
               <MenuItemButton
                 iconId="fr-icon-delete-line"
                 className="text-error-ultradark"

@@ -35,6 +35,8 @@ export class InMemorySiteService implements SiteGateway {
     actions: [],
     reconversionProjects: [],
     compatibilityEvaluation: null,
+    isEditable: true,
+    notEditableReason: null,
   };
 
   setSiteFeatures(siteFeatures: SiteFeatures): void {

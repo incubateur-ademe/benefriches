@@ -73,6 +73,8 @@ function SitePage({
             siteName={siteView.features.name}
             siteNature={siteView.features.nature}
             isExpressSite={siteView.features.isExpressSite}
+            isEditable={siteView.isEditable}
+            notEditableReason={siteView.notEditableReason}
             onSuccessArchiveSite={onSuccessArchiveSite}
           />
           <section className={classNames(fr.cx("fr-container"), "py-6 md:py-10")}>

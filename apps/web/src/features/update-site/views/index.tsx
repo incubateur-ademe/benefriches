@@ -1,6 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
-import type { SiteNotEditableReason } from "shared";
 import { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
@@ -13,16 +12,10 @@ import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import { siteUpdateInitiated } from "../core/updateSite.actions";
 import SiteUpdateView from "./SiteUpdateView";
+import { SITE_NOT_EDITABLE_REASON_LABEL } from "./siteNotEditableReasonLabels";
 
 type Props = {
   route: Route<typeof routes.updateSite>;
-};
-
-const NOT_EDITABLE_REASON_LABEL: Record<SiteNotEditableReason, string> = {
-  NOT_CREATOR: "Seul le créateur de ce site peut le modifier.",
-  NOT_CUSTOM: "Ce site n'a pas été créé manuellement et ne peut pas être modifié ici.",
-  ACTIVE_RECONVERSION_PROJECT:
-    "Ce site est utilisé par un projet de reconversion actif et ne peut pas être modifié.",
 };
 
 function UpdateSitePage({ route }: Props) {
@@ -79,7 +72,7 @@ function UpdateSitePage({ route }: Props) {
               severity="warning"
               title="Ce site ne peut pas être modifié"
               description={
-                notEditableReason ? NOT_EDITABLE_REASON_LABEL[notEditableReason] : undefined
+                notEditableReason ? SITE_NOT_EDITABLE_REASON_LABEL[notEditableReason] : undefined
               }
             />
           }
