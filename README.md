@@ -132,5 +132,5 @@ pnpm run -r build
 
 - [Architecture Decision Records](./docs/adr/) — décisions d'architecture importantes
 - [Spécifications](./docs/specs/) — spécifications de fonctionnalités
-- [Tâches planifiées](./docs/scheduled-tasks.md) — tâches programmées (cron) exécutées sur Scalingo
+- [Scripts](./docs/scripts.md) — scripts exécutés sur Scalingo, planifiés (cron) ou manuels
 - [Exemple de fonctionnalité de bout en bout](./docs/feature-example.md)
