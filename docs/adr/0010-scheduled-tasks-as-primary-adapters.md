@@ -27,7 +27,7 @@ Each script:
 3. Calls `useCase.execute(...)`
 4. Closes the app
 
-Scheduling lives in `apps/api/scalingo/cron.json`, sibling to the existing `Procfile`. The convention and current task inventory are documented in `docs/scheduled-tasks.md`.
+Scheduling lives in `apps/api/scalingo/cron.json`, sibling to the existing `Procfile`. The convention and current task inventory are documented in `docs/scripts.md`.
 
 The first instance is the newsletter sync: `apps/api/src/marketing/adapters/primary/syncNewsletterSubscriptions.script.ts`, scheduled daily at 04:00 UTC.
 
@@ -45,7 +45,7 @@ A dedicated folder for all scheduled scripts, regardless of domain.
 Each script lives next to the module's controllers and event handlers, with a `.script.ts` suffix.
 
 - **Pros**: Preserves module boundaries; treats the script as just another way to drive a use case from outside the process (HTTP, event, cron — all primary adapters); collocated with the use case it invokes.
-- **Cons**: Slightly less discoverable — to find all scheduled tasks you must consult `docs/scheduled-tasks.md` rather than `ls` a single folder. Mitigated by maintaining the table in that doc.
+- **Cons**: Slightly less discoverable — to find all scheduled tasks you must consult `docs/scripts.md` rather than `ls` a single folder. Mitigated by maintaining the table in that doc.
 
 ### Option 3: Long-running worker with `@nestjs/schedule`
 
@@ -66,11 +66,11 @@ Run a persistent process that schedules itself in-app via cron decorators.
 ### Negative
 
 - Scheduling logic is platform-specific (Scalingo `cron.json`); a future migration would require porting the schedule definitions.
-- Discovering all scheduled tasks requires reading `docs/scheduled-tasks.md` rather than browsing a single folder — the doc must be kept in sync.
+- Discovering all scheduled tasks requires reading `docs/scripts.md` rather than browsing a single folder — the doc must be kept in sync.
 - Each task pays the cost of bootstrapping an `AppModule` context on every run (acceptable for infrequent jobs, would not scale to high-frequency ones).
 
 ## Links
 
 - Related ADRs: [ADR-0001](0001-clean-hexagonal-architecture.md)
-- Convention doc: [`docs/scheduled-tasks.md`](../scheduled-tasks.md)
+- Convention doc: [`docs/scripts.md`](../scripts.md)
 - First instance: `apps/api/src/marketing/adapters/primary/syncNewsletterSubscriptions.script.ts`
