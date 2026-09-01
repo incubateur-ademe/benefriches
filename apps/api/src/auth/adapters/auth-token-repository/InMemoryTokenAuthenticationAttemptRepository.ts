@@ -40,16 +40,15 @@ export class InMemoryTokenAuthenticationAttemptRepository implements TokenAuthen
     return Promise.resolve();
   }
 
-  revokePendingAttempts(now: Date): Promise<number> {
+  revokeUnusedAttempts(revokedAt: Date): Promise<number> {
     let revokedCount = 0;
 
     this.tokens = this.tokens.map((attempt) => {
-      const isPending =
-        attempt.completedAt === null && attempt.revokedAt === null && attempt.expiresAt > now;
-      if (!isPending) return attempt;
+      const isUnused = attempt.completedAt === null && attempt.revokedAt === null;
+      if (!isUnused) return attempt;
 
       revokedCount++;
-      return { ...attempt, revokedAt: now };
+      return { ...attempt, revokedAt };
     });
 
     return Promise.resolve(revokedCount);
