@@ -2,7 +2,6 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Address, SiteNature, SoilType, SoilsDistribution } from "shared";
 import { SurfaceAreaDistribution, typedObjectEntries } from "shared";
 
-import { selectCurrentStep, type SiteCreationStep } from "../createSite.reducer";
 import { deriveSiteDataFromCustomSteps } from "../custom/customSteps";
 import type { SiteCreationData } from "../siteFoncier.types";
 import { siteCreationLens, type SiteFormLens } from "../siteForm.lens";
@@ -106,6 +105,15 @@ export const createSiteFormRootSelectors = (lens: SiteFormLens) => {
 
   const selectSiteOwner = createSelector(selectDerivedSiteData, (siteData) => siteData.owner);
 
+  /**
+   * The urban-zone sub-flow's per-step answers map — the single choke point every urban-zone
+   * leaf selector should read `state.urbanZone.steps` through (ticket 11), mirroring how
+   * `selectDerivedSiteData` is the choke point for the custom flow's answers.
+   */
+  const selectUrbanZoneSteps = createSelector(selectSelf, (state) => state.urbanZone.steps);
+
+  const selectUrbanZoneSaveState = createSelector(selectSelf, (state) => state.urbanZone.saveState);
+
   const selectCreateMode = createSelector(
     selectSelf,
     (state): "express" | "custom" | undefined => state.createMode,
@@ -125,25 +133,6 @@ export const createSiteFormRootSelectors = (lens: SiteFormLens) => {
     }),
   );
 
-  type SiteCreationWizardViewData = {
-    currentStep: SiteCreationStep;
-    isFriche: boolean | undefined;
-    createMode: "express" | "custom" | undefined;
-  };
-
-  // `selectCurrentStep` here is the creation-specific one from createSite.reducer.ts — kept only
-  // for this wizard-chrome view (SiteCreationWizard.tsx), which is inherently a creation-only
-  // component (the pre-engine steps it renders have no update-flow equivalent).
-  const selectSiteCreationWizardViewData = createSelector(
-    selectCurrentStep,
-    selectSelf,
-    (currentStep, siteCreation): SiteCreationWizardViewData => ({
-      currentStep,
-      isFriche: siteCreation.isFriche,
-      createMode: siteCreation.createMode,
-    }),
-  );
-
   return {
     selectDerivedSiteData,
     selectSiteAddress,
@@ -158,7 +147,8 @@ export const createSiteFormRootSelectors = (lens: SiteFormLens) => {
     selectSiteOwner,
     selectCreateMode,
     selectExpressAddressFormViewData,
-    selectSiteCreationWizardViewData,
+    selectUrbanZoneSteps,
+    selectUrbanZoneSaveState,
   };
 };
 
@@ -178,5 +168,3 @@ export const selectSiteOwner = siteCreationRootSelectors.selectSiteOwner;
 export const selectCreateMode = siteCreationRootSelectors.selectCreateMode;
 export const selectExpressAddressFormViewData =
   siteCreationRootSelectors.selectExpressAddressFormViewData;
-export const selectSiteCreationWizardViewData =
-  siteCreationRootSelectors.selectSiteCreationWizardViewData;

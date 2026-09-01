@@ -21,7 +21,7 @@ type Props = {
 function UpdateSitePage({ route }: Props) {
   const dispatch = useAppDispatch();
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
-  const { loadingState, isEditable, notEditableReason, nature } = useAppSelector(
+  const { loadingState, isEditable, notEditableReason } = useAppSelector(
     (state) => state.siteUpdate,
   );
 
@@ -74,27 +74,6 @@ function UpdateSitePage({ route }: Props) {
               description={
                 notEditableReason ? SITE_NOT_EDITABLE_REASON_LABEL[notEditableReason] : undefined
               }
-            />
-          }
-        />
-      </>
-    );
-  }
-
-  if (nature === "URBAN_ZONE") {
-    return (
-      <>
-        <HtmlTitle>Modification bientôt disponible</HtmlTitle>
-        <SidebarLayout
-          title="Modification du site"
-          currentUserEmail={currentUserEmail}
-          sidebarChildren={null}
-          mainChildren={
-            <Alert
-              className="md:max-w-xl"
-              severity="info"
-              title="Fonctionnalité bientôt disponible"
-              description="La modification des sites en zone urbaine n'est pas encore disponible."
             />
           }
         />

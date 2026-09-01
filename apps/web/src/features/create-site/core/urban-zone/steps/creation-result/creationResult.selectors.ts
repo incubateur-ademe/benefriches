@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { RootState } from "@/app/store/store";
-
-import { selectUrbanZoneNamingViewData } from "../naming/naming.selectors";
+import type { createSiteFormRootSelectors } from "../../../selectors/createSite.selectors";
+import { siteCreationRootSelectors } from "../../../selectors/createSite.selectors";
+import { createUrbanZoneNamingSelectors } from "../naming/naming.selectors";
 
 type UrbanZoneCreationResultViewData = {
   siteId: string;
@@ -10,11 +10,22 @@ type UrbanZoneCreationResultViewData = {
   saveState: "idle" | "dirty" | "loading" | "success" | "error";
 };
 
-export const selectUrbanZoneCreationResultViewData = createSelector(
-  [selectUrbanZoneNamingViewData, (state: RootState) => state.siteCreation.urbanZone.saveState],
-  (namingViewData, saveState): UrbanZoneCreationResultViewData => ({
-    siteId: namingViewData.siteId,
-    siteName: namingViewData.initialValues.name,
-    saveState,
-  }),
-);
+export const createCreationResultSelectors = (
+  rootSelectors: ReturnType<typeof createSiteFormRootSelectors>,
+) => {
+  const { selectUrbanZoneNamingViewData } = createUrbanZoneNamingSelectors(rootSelectors);
+
+  const selectUrbanZoneCreationResultViewData = createSelector(
+    [selectUrbanZoneNamingViewData, rootSelectors.selectUrbanZoneSaveState],
+    (namingViewData, saveState): UrbanZoneCreationResultViewData => ({
+      siteId: namingViewData.siteId,
+      siteName: namingViewData.initialValues.name,
+      saveState,
+    }),
+  );
+
+  return { selectUrbanZoneCreationResultViewData };
+};
+
+export const { selectUrbanZoneCreationResultViewData } =
+  createCreationResultSelectors(siteCreationRootSelectors);

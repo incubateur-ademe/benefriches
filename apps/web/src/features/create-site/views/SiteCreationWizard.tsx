@@ -14,7 +14,7 @@ import type {
   SiteCreationState,
   SiteCreationStep,
 } from "../core/createSite.reducer";
-import { selectSiteCreationWizardViewData } from "../core/selectors/createSite.selectors";
+import { selectSiteCreationWizardViewData } from "../core/selectors/siteCreationWizardViewData.selectors";
 import { siteCreationInitiated } from "../core/steps/introduction/introduction.actions";
 import { isUrbanZoneStepHandlerStep } from "../core/urban-zone/urbanZoneSteps";
 import CreateModeSelectionForm from "./create-mode-selection";

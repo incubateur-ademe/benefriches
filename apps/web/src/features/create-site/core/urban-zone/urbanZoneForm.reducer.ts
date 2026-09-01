@@ -21,16 +21,16 @@ import {
   UrbanZoneSiteCreationStep,
 } from "./urbanZoneSteps";
 
-// Urban zone has exactly one consumer today (create), so this is typed directly against the
-// concrete SiteCreationState rather than generic over a host-state param — same pattern as
-// demoForm.reducer.ts. The update flow (ticket 06) will call this same builder with a second
-// definition (different selectForm), mirroring renewableEnergyForm.reducer.ts.
-type UrbanZoneWizardFormDefinition = Pick<
+// Generic over `S` (a structural superset of `SiteCreationState`, mirroring
+// `CustomWizardFormDefinition` on the custom bundle — ticket 10/11) so both creation
+// (`SiteCreationState` itself) and the update flow (`SiteUpdateState`) can drive this
+// case-adder against their own concrete state.
+export type UrbanZoneWizardFormDefinition<S extends SiteCreationState = SiteCreationState> = Pick<
   WizardFormDefinition<
     UrbanZoneSiteCreationStep,
     UrbanZoneStepHandlerContext,
-    Draft<SiteCreationState>["urbanZone"]["steps"],
-    Draft<SiteCreationState>,
+    Draft<S>["urbanZone"]["steps"],
+    Draft<S>,
     StepUpdateResult<UrbanZoneSiteCreationStep, AnswersByStep, SchematizedAnswerStepId>
   >,
   "config" | "selectForm" | "buildContext"
@@ -47,10 +47,10 @@ type UrbanZoneWizardFormDefinition = Pick<
 // pending-confirmation dialog is wired in views/custom/CustomSiteCascadingUpdateDialog.tsx — see
 // ticket 12. A user can still reach ADDRESS from within urban-zone via `onPreviousStepFallback`;
 // any resulting cascade is computed and confirmed there, in the custom-flow's own state, not here.
-export const addUrbanZoneFormCasesToBuilder = (
-  builder: ActionReducerMapBuilder<SiteCreationState>,
+export const addUrbanZoneFormCasesToBuilder = <S extends SiteCreationState>(
+  builder: ActionReducerMapBuilder<S>,
   actions: UrbanZoneFormPureActions,
-  definition: UrbanZoneWizardFormDefinition,
+  definition: UrbanZoneWizardFormDefinition<S>,
 ) => {
   const { config, selectForm, buildContext } = definition;
 
@@ -78,6 +78,7 @@ export const addUrbanZoneFormCasesToBuilder = (
         {
           nextMode: config.stepChangesNextMode,
           finalSummaryFallbackStep: config.finalSummaryFallbackStep,
+          groupOf: config.groupOf,
         },
       );
     }
@@ -95,6 +96,7 @@ export const addUrbanZoneFormCasesToBuilder = (
         {
           nextMode: config.stepChangesNextMode,
           finalSummaryFallbackStep: config.finalSummaryFallbackStep,
+          groupOf: config.groupOf,
         },
       );
       selectForm(state).pendingStepCompletion = undefined;

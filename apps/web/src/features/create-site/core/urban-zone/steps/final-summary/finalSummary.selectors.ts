@@ -1,9 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { type SoilsDistribution, type UrbanZoneLandParcelType, type UrbanZoneType } from "shared";
 
-import type { RootState } from "@/app/store/store";
-
-import { selectDerivedSiteData } from "../../../selectors/createSite.selectors";
+import type { createSiteFormRootSelectors } from "../../../selectors/createSite.selectors";
+import { siteCreationRootSelectors } from "../../../selectors/createSite.selectors";
 import { ReadStateHelper } from "../../stateHelpers";
 import {
   getFullTimeJobs,
@@ -33,31 +32,40 @@ export type UrbanZoneFinalSummaryViewData = {
   siteDescription?: string;
 };
 
-export const selectUrbanZoneFinalSummaryViewData = createSelector(
-  [(state: RootState) => state.siteCreation.urbanZone.steps, selectDerivedSiteData],
-  (steps, siteData): UrbanZoneFinalSummaryViewData => {
-    const parcelSurfaceAreas =
-      ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION")
-        ?.surfaceAreas ?? {};
+export const createFinalSummarySelectors = (
+  rootSelectors: ReturnType<typeof createSiteFormRootSelectors>,
+) => {
+  const selectUrbanZoneFinalSummaryViewData = createSelector(
+    [rootSelectors.selectUrbanZoneSteps, rootSelectors.selectDerivedSiteData],
+    (steps, siteData): UrbanZoneFinalSummaryViewData => {
+      const parcelSurfaceAreas =
+        ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION")
+          ?.surfaceAreas ?? {};
 
-    const contamination = ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_SOILS_CONTAMINATION");
-    const naming = ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_NAMING");
+      const contamination = ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_SOILS_CONTAMINATION");
+      const naming = ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_NAMING");
 
-    return {
-      address: siteData.address?.value ?? "",
-      urbanZoneType: siteData.urbanZoneType,
-      totalSurfaceArea: siteData.surfaceArea ?? 0,
-      parcelSurfaceAreas,
-      soilsDistribution: aggregateSoilsDistribution(steps),
-      hasContaminatedSoils: contamination?.hasContaminatedSoils ?? false,
-      contaminatedSoilSurface: contamination?.contaminatedSoilSurface,
-      managerStructureType: getManagerStructureType(steps),
-      managerName: getManagerName(steps),
-      vacantPremisesFootprint: getVacantPremisesFootprintSurfaceArea(steps),
-      vacantPremisesFloorArea: getVacantPremisesFloorArea(steps),
-      fullTimeJobs: getFullTimeJobs(steps),
-      siteName: naming?.name ?? "",
-      siteDescription: naming?.description,
-    };
-  },
-);
+      return {
+        address: siteData.address?.value ?? "",
+        urbanZoneType: siteData.urbanZoneType,
+        totalSurfaceArea: siteData.surfaceArea ?? 0,
+        parcelSurfaceAreas,
+        soilsDistribution: aggregateSoilsDistribution(steps),
+        hasContaminatedSoils: contamination?.hasContaminatedSoils ?? false,
+        contaminatedSoilSurface: contamination?.contaminatedSoilSurface,
+        managerStructureType: getManagerStructureType(steps),
+        managerName: getManagerName(steps),
+        vacantPremisesFootprint: getVacantPremisesFootprintSurfaceArea(steps),
+        vacantPremisesFloorArea: getVacantPremisesFloorArea(steps),
+        fullTimeJobs: getFullTimeJobs(steps),
+        siteName: naming?.name ?? "",
+        siteDescription: naming?.description,
+      };
+    },
+  );
+
+  return { selectUrbanZoneFinalSummaryViewData };
+};
+
+export const { selectUrbanZoneFinalSummaryViewData } =
+  createFinalSummarySelectors(siteCreationRootSelectors);

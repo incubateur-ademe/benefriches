@@ -1,8 +1,12 @@
-import { createReducer } from "@reduxjs/toolkit";
+import { createReducer, createSelector } from "@reduxjs/toolkit";
 import type { SiteNotEditableReason } from "shared";
 import { v4 as uuid } from "uuid";
 
-import type { SiteCreationState } from "@/features/create-site/core/createSite.reducer";
+import type { RootState } from "@/app/store/store";
+import type {
+  SiteCreationCustomStep,
+  SiteCreationState,
+} from "@/features/create-site/core/createSite.reducer";
 import {
   addCustomFormCasesToBuilder,
   type CustomWizardFormDefinition,
@@ -11,14 +15,23 @@ import { CUSTOM_STEP_TO_GROUP } from "@/features/create-site/core/custom/customS
 import { deriveSiteDataFromCustomSteps } from "@/features/create-site/core/custom/customSteps";
 import { customStepHandlerRegistry } from "@/features/create-site/core/custom/stepHandlerRegistry";
 import { surfaceAreaInputModeUpdated } from "@/features/create-site/core/steps/spaces/spaces.actions";
+import { urbanZoneStepHandlerRegistry } from "@/features/create-site/core/urban-zone/stepHandlerRegistry";
+import {
+  addUrbanZoneFormCasesToBuilder,
+  type UrbanZoneWizardFormDefinition,
+} from "@/features/create-site/core/urban-zone/urbanZoneForm.reducer";
+import { URBAN_ZONE_STEP_TO_GROUP } from "@/features/create-site/core/urban-zone/urbanZoneStepperConfig";
+import type { UrbanZoneSiteCreationStep } from "@/features/create-site/core/urban-zone/urbanZoneSteps";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 
 import {
   convertSiteToCustomSteps,
   getFirstCustomStepForNature,
 } from "./helpers/convertSiteToCustomSteps";
+import { convertSiteToUrbanZoneSteps } from "./helpers/convertSiteToUrbanZoneSteps";
 import {
   updateCustomFormActions,
+  updateUrbanZoneFormActions,
   siteUpdateInitiated,
   siteUpdateSaved,
 } from "./updateSite.actions";
@@ -105,8 +118,36 @@ const updateSiteCustomFormDefinition: CustomWizardFormDefinition<SiteUpdateState
   }),
 };
 
+// Urban zone's own sub-flow (state.urbanZone): the custom engine above only ever owns
+// URBAN_ZONE_TYPE/ADDRESS/SURFACE_AREA for this nature (see convertSiteToCustomSteps.ts) — its
+// derived siteData is what this definition's `buildContext` reads (same cross-sub-state pattern
+// as creation's `completeCustomStep` hand-off, custom/customForm.reducer.ts).
+const updateSiteUrbanZoneFormDefinition: UrbanZoneWizardFormDefinition<SiteUpdateState> = {
+  config: {
+    stepChangesNextMode: "next_empty",
+    finalSummaryFallbackStep: "URBAN_ZONE_FINAL_SUMMARY",
+    groupOf: (stepId) => URBAN_ZONE_STEP_TO_GROUP[stepId].groupId,
+    // No `onPreviousStepFallback`: unlike creation, there is no custom-flow SURFACE_AREA step
+    // to hand control back to from within the update wizard — "Précédent" on the urban-zone
+    // sub-flow's own first step is a no-op here (there is nowhere earlier in this sub-flow to
+    // go); ADDRESS/SURFACE_AREA/URBAN_ZONE_TYPE stay reachable from the sidebar instead.
+  },
+  selectForm: (state) => state.urbanZone,
+  buildContext: (state) => ({
+    siteData: deriveSiteDataFromCustomSteps(
+      { ...state.initialSiteData, isFriche: state.isFriche, nature: state.nature },
+      state.custom.steps,
+    ),
+  }),
+};
+
 const updateSiteReducer = createReducer(getInitialState(), (builder) => {
   addCustomFormCasesToBuilder(builder, updateCustomFormActions, updateSiteCustomFormDefinition);
+  addUrbanZoneFormCasesToBuilder(
+    builder,
+    updateUrbanZoneFormActions,
+    updateSiteUrbanZoneFormDefinition,
+  );
 
   builder.addCase(surfaceAreaInputModeUpdated, (state, action) => {
     state.surfaceAreaInputMode = action.payload;
@@ -150,6 +191,29 @@ const updateSiteReducer = createReducer(getInitialState(), (builder) => {
         firstSequenceStep,
         customStepHandlerRegistry,
       );
+
+      // Two-engine flow (ticket 11): a custom urban-zone site's ADDRESS/SURFACE_AREA/
+      // URBAN_ZONE_TYPE live on the custom sub-state hydrated above; everything else — land
+      // parcels, per-parcel soils/floor area, contamination, manager, expenses, naming — lives
+      // on its own `state.urbanZone` sub-state, hydrated by `convertSiteToUrbanZoneSteps`
+      // (mirrors creation's own `customHandedOffToUrbanZone` hand-off, custom/customForm
+      // .reducer.ts). Both must be hydrated for the wizard's sidebar to be fully clickable.
+      if (features.nature === "URBAN_ZONE") {
+        state.customHandedOffToUrbanZone = true;
+
+        const urbanZoneSteps = convertSiteToUrbanZoneSteps(features);
+        const urbanZoneFirstSequenceStep = "URBAN_ZONE_LAND_PARCELS_SELECTION" as const;
+
+        state.urbanZone.steps = urbanZoneSteps;
+        state.urbanZone.firstSequenceStep = urbanZoneFirstSequenceStep;
+        state.urbanZone.currentStep = "URBAN_ZONE_FINAL_SUMMARY";
+        state.urbanZone.saveState = "idle";
+        state.urbanZone.stepsSequence = computeStepsSequence(
+          { context: { siteData: derivedSiteData }, answers: urbanZoneSteps },
+          urbanZoneFirstSequenceStep,
+          urbanZoneStepHandlerRegistry,
+        );
+      }
     })
     .addCase(siteUpdateInitiated.rejected, (state) => {
       state.loadingState = "error";
@@ -158,13 +222,29 @@ const updateSiteReducer = createReducer(getInitialState(), (builder) => {
   builder
     .addCase(siteUpdateSaved.pending, (state) => {
       state.custom.saveState = "loading";
+      state.urbanZone.saveState = "loading";
     })
     .addCase(siteUpdateSaved.fulfilled, (state) => {
       state.custom.saveState = "success";
+      state.urbanZone.saveState = "success";
     })
     .addCase(siteUpdateSaved.rejected, (state) => {
       state.custom.saveState = "error";
+      state.urbanZone.saveState = "error";
     });
 });
+
+/**
+ * The update wizard's combined current step, honouring the two-engine hand-off exactly like
+ * creation's own `selectCurrentStep` (createSite.reducer.ts) — except the update flow is always
+ * "started" (no pre-engine steps to gate on), so the only branch that matters is
+ * `customHandedOffToUrbanZone`. `SiteUpdateView` reads this to decide which provider/stepper/
+ * step-content to render (custom vs. urban-zone).
+ */
+export const selectSiteUpdateCurrentStep = createSelector(
+  (state: RootState) => state.siteUpdate,
+  (state): SiteCreationCustomStep | UrbanZoneSiteCreationStep =>
+    state.customHandedOffToUrbanZone ? state.urbanZone.currentStep : state.custom.currentStep,
+);
 
 export default updateSiteReducer;

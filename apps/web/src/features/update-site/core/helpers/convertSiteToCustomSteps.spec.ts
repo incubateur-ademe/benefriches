@@ -382,4 +382,43 @@ describe("convertSiteToCustomSteps", () => {
       expect(roundTripped.contaminatedSoilSurface).toBe(2000);
     });
   });
+
+  describe("URBAN_ZONE", () => {
+    const URBAN_ZONE_FEATURES: GetSiteFeaturesResponseDto = {
+      id: "site-4",
+      name: "Zone urbaine Ouest",
+      nature: "URBAN_ZONE",
+      isExpressSite: false,
+      owner: { structureType: "company", name: "Owner Corp" },
+      soilsDistribution: { BUILDINGS: 5000, IMPERMEABLE_SOILS: 5000 },
+      surfaceArea: 10000,
+      address: BASE_ADDRESS,
+      yearlyExpenses: [],
+      yearlyIncomes: [],
+      urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
+      landParcels: [
+        {
+          type: "COMMERCIAL_ACTIVITY_AREA",
+          surfaceArea: 10000,
+          soilsDistribution: { BUILDINGS: 5000, IMPERMEABLE_SOILS: 5000 },
+        },
+      ],
+      manager: { structureType: "activity_park_manager", name: "" },
+      vacantCommercialPremisesFootprint: 0,
+    };
+
+    it("hydrates only URBAN_ZONE_TYPE, ADDRESS and SURFACE_AREA — no SPACES_*/OWNER/NAMING steps", () => {
+      const steps = convertSiteToCustomSteps(URBAN_ZONE_FEATURES);
+
+      expect(steps).toEqual({
+        URBAN_ZONE_TYPE: { completed: true, payload: { urbanZoneType: "ECONOMIC_ACTIVITY_ZONE" } },
+        ADDRESS: { completed: true, payload: { address: BASE_ADDRESS } },
+        SURFACE_AREA: { completed: true, payload: { surfaceArea: 10000 } },
+      });
+    });
+
+    it("getFirstCustomStepForNature returns URBAN_ZONE_TYPE", () => {
+      expect(getFirstCustomStepForNature("URBAN_ZONE")).toBe("URBAN_ZONE_TYPE");
+    });
+  });
 });

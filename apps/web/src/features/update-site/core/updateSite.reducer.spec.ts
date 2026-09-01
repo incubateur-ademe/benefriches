@@ -8,6 +8,7 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 import { InMemoryUpdateSiteService } from "../infrastructure/update-site-service/InMemoryUpdateSiteService";
 import {
   updateCustomFormActions,
+  updateUrbanZoneFormActions,
   siteUpdateInitiated,
   siteUpdateSaved,
 } from "./updateSite.actions";
@@ -138,5 +139,188 @@ describe("updateSite reducer", () => {
     expect(saved.payload.nature).toBe("FRICHE");
     if (saved.payload.nature !== "FRICHE") throw new Error("expected a friche payload");
     expect(saved.payload.soilsDistribution).toEqual(FRICHE_FEATURES.soilsDistribution);
+  });
+
+  describe("URBAN_ZONE (two-engine flow)", () => {
+    const URBAN_ZONE_FEATURES: GetSiteFeaturesResponseDto = {
+      id: "site-uz-1",
+      name: "Zone Nord",
+      nature: "URBAN_ZONE",
+      isExpressSite: false,
+      owner: { structureType: "company", name: "Owner Corp" },
+      soilsDistribution: {},
+      surfaceArea: 10000,
+      address: FRICHE_FEATURES.address,
+      yearlyExpenses: [],
+      yearlyIncomes: [],
+      urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
+      landParcels: [
+        {
+          type: "COMMERCIAL_ACTIVITY_AREA",
+          surfaceArea: 10000,
+          soilsDistribution: { IMPERMEABLE_SOILS: 10000 },
+        },
+      ],
+      manager: { structureType: "activity_park_manager", name: "" },
+      vacantCommercialPremisesFootprint: 0,
+      fullTimeJobsEquivalent: 5,
+    };
+
+    it("sets customHandedOffToUrbanZone, hydrates urbanZone.steps and lands on URBAN_ZONE_FINAL_SUMMARY with a non-empty sequence", () => {
+      const state = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+
+      expect(state.customHandedOffToUrbanZone).toBe(true);
+      expect(state.urbanZone.currentStep).toBe("URBAN_ZONE_FINAL_SUMMARY");
+      expect(state.urbanZone.stepsSequence.length).toBeGreaterThan(0);
+      expect(state.urbanZone.steps.URBAN_ZONE_LAND_PARCELS_SELECTION).toEqual({
+        completed: true,
+        payload: { landParcelTypes: ["COMMERCIAL_ACTIVITY_AREA"] },
+      });
+      // The custom half is hydrated too, so ADDRESS/SURFACE_AREA/URBAN_ZONE_TYPE stay reachable.
+      expect(state.custom.steps.ADDRESS).toEqual({
+        completed: true,
+        payload: { address: URBAN_ZONE_FEATURES.address },
+      });
+    });
+
+    it("navigating to a per-parcel soils step then completing it updates only that answer and stays within its stepper group (groupOf)", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+
+      const navigated = updateSiteReducer(
+        hydrated,
+        updateUrbanZoneFormActions.stepNavigationRequested({
+          stepId: "URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION",
+        }),
+      );
+      expect(navigated.urbanZone.currentStep).toBe(
+        "URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION",
+      );
+
+      const completed = updateSiteReducer(
+        navigated,
+        updateUrbanZoneFormActions.stepCompletionRequested({
+          stepId: "URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION",
+          answers: { soilsDistribution: { MINERAL_SOIL: 10000 } },
+        }),
+      );
+
+      // The single parcel's own next step (URBAN_ZONE_SOILS_SUMMARY) sits in the same
+      // SOILS_AND_SPACES stepper group as the step just completed — `groupOf` follows it
+      // (step_order-like) rather than collapsing to `next_empty`'s "first incomplete answer
+      // step" search, which on a fully-hydrated form would otherwise snap straight back to the
+      // final summary (ticket 10's QA defect 3, guarded against here for urban zone).
+      expect(completed.urbanZone.currentStep).toBe("URBAN_ZONE_SOILS_SUMMARY");
+      expect(
+        completed.urbanZone.steps.URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION,
+      ).toEqual({
+        completed: true,
+        payload: { soilsDistribution: { MINERAL_SOIL: 10000 } },
+        // `defaultValues` isn't refreshed by completion (only `payload` is, see
+        // `MutateStateHelper.completeStep`) — it stays at whatever hydration pre-filled the form
+        // with when the step was first entered.
+        defaultValues: { soilsDistribution: { IMPERMEABLE_SOILS: 10000 } },
+      });
+      // Untouched answers survive.
+      expect(completed.urbanZone.steps.URBAN_ZONE_MANAGER).toEqual(
+        hydrated.urbanZone.steps.URBAN_ZONE_MANAGER,
+      );
+    });
+
+    it("completing the (already-completed) NAMING step on a fully-hydrated form returns to the summary (next_empty)", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+
+      const navigated = updateSiteReducer(
+        hydrated,
+        updateUrbanZoneFormActions.stepNavigationRequested({ stepId: "URBAN_ZONE_NAMING" }),
+      );
+
+      const completed = updateSiteReducer(
+        navigated,
+        updateUrbanZoneFormActions.stepCompletionRequested({
+          stepId: "URBAN_ZONE_NAMING",
+          answers: { name: "Nouveau nom de zone", description: undefined },
+        }),
+      );
+
+      // NAMING's own next step (URBAN_ZONE_FINAL_SUMMARY) is in a different group (SUMMARY) —
+      // groupOf does not apply, and every other answer step is already completed, so next_empty
+      // lands on the summary.
+      expect(completed.urbanZone.currentStep).toBe("URBAN_ZONE_FINAL_SUMMARY");
+      expect(completed.urbanZone.steps.URBAN_ZONE_NAMING).toEqual({
+        completed: true,
+        payload: { name: "Nouveau nom de zone", description: undefined },
+      });
+    });
+
+    it("does not mutate state.custom when dispatching an urban-zone update action", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+      const customBefore = hydrated.custom;
+
+      const state = updateSiteReducer(
+        hydrated,
+        updateUrbanZoneFormActions.stepNavigationRequested({
+          stepId: "URBAN_ZONE_MANAGER",
+        }),
+      );
+
+      expect(state.custom).toEqual(customBefore);
+    });
+
+    it("sets both custom and urbanZone saveState on siteUpdateSaved.pending/fulfilled/rejected", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+
+      const pending = updateSiteReducer(hydrated, siteUpdateSaved.pending("reqId", undefined));
+      expect(pending.urbanZone.saveState).toBe("loading");
+      expect(pending.custom.saveState).toBe("loading");
+
+      const fulfilled = updateSiteReducer(
+        pending,
+        siteUpdateSaved.fulfilled(undefined, "reqId", undefined),
+      );
+      expect(fulfilled.urbanZone.saveState).toBe("success");
+      expect(fulfilled.custom.saveState).toBe("success");
+
+      const rejected = updateSiteReducer(
+        pending,
+        siteUpdateSaved.rejected(new Error("failed"), "reqId", undefined),
+      );
+      expect(rejected.urbanZone.saveState).toBe("error");
+      expect(rejected.custom.saveState).toBe("error");
+    });
   });
 });

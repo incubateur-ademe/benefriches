@@ -1,5 +1,7 @@
 import z from "zod";
 
+import type { StepVariant } from "@/shared/core/stepVariant.types";
+
 import { soilsContaminationStepperConfig } from "./steps/contamination/soilsContamination.stepperConfig";
 import { soilsContaminationIntroductionStepperConfig } from "./steps/contamination/soilsContaminationIntroduction.stepperConfig";
 import { creationResultStepperConfig } from "./steps/creation-result/creationResult.stepperConfig";
@@ -24,7 +26,11 @@ import { parcelSoilsDistributionStepperConfig } from "./steps/per-parcel-soils/p
 import { soilsAndSpacesIntroductionStepperConfig } from "./steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.stepperConfig";
 import { soilsCarbonStorageStepperConfig } from "./steps/summary/soils-carbon-storage/soilsCarbonStorage.stepperConfig";
 import { soilsSummaryStepperConfig } from "./steps/summary/soils-summary/soilsSummary.stepperConfig";
-import type { UrbanZoneSiteCreationStep } from "./urbanZoneSteps";
+import {
+  ANSWER_STEP_IDS,
+  type UrbanZoneSiteCreationStep,
+  type UrbanZoneStepsState,
+} from "./urbanZoneSteps";
 
 const urbanZoneStepGroupIdSchema = z.enum([
   "LAND_PARCELS",
@@ -112,4 +118,67 @@ export const URBAN_ZONE_STEP_TO_GROUP: Record<
   // Summary
   URBAN_ZONE_FINAL_SUMMARY: finalSummaryStepperConfig,
   URBAN_ZONE_CREATION_RESULT: creationResultStepperConfig,
+};
+
+const NAVIGABLE_URBAN_ZONE_STEP_IDS: ReadonlySet<string> = new Set(ANSWER_STEP_IDS);
+
+/** Only answer steps (not intros/summaries) are direct-navigation targets. */
+export const isNavigableUrbanZoneStep = (stepId: UrbanZoneSiteCreationStep): boolean =>
+  NAVIGABLE_URBAN_ZONE_STEP_IDS.has(stepId);
+
+export type UrbanZoneStepperGroup = StepVariant & {
+  groupId: UrbanZoneStepGroupId;
+  title: string;
+  targetStepId: UrbanZoneSiteCreationStep;
+};
+
+const isUrbanZoneStepCompleted = (
+  stepId: UrbanZoneSiteCreationStep,
+  steps: UrbanZoneStepsState,
+): boolean =>
+  Boolean((steps as Record<string, { completed?: boolean } | undefined>)[stepId]?.completed);
+
+/**
+ * The update wizard's clickable-sidebar data for the urban-zone sub-flow, transcribed from
+ * `computeCustomStepperGroups` (ticket 10). One entry per group, each pointing at its first
+ * not-yet-completed navigable (answer) step in the walked sequence, falling back to the group's
+ * first walked step. The SUMMARY group has no navigable steps of its own and is left out.
+ */
+export const computeUrbanZoneStepperGroups = ({
+  currentStep,
+  steps,
+  stepsSequence,
+}: {
+  currentStep: UrbanZoneSiteCreationStep;
+  steps: UrbanZoneStepsState;
+  stepsSequence: UrbanZoneSiteCreationStep[];
+}): UrbanZoneStepperGroup[] => {
+  const { groupId: currentGroupId } = URBAN_ZONE_STEP_TO_GROUP[currentStep];
+
+  return URBAN_ZONE_STEP_GROUP_IDS.filter(
+    (groupId) =>
+      groupId !== "SUMMARY" &&
+      stepsSequence.some((stepId) => URBAN_ZONE_STEP_TO_GROUP[stepId].groupId === groupId),
+  ).map((groupId) => {
+    const stepsInGroup = stepsSequence.filter(
+      (stepId) => URBAN_ZONE_STEP_TO_GROUP[stepId].groupId === groupId,
+    );
+    const navigableStepsInGroup = stepsInGroup.filter(isNavigableUrbanZoneStep);
+    const isStepCompleted = (stepId: UrbanZoneSiteCreationStep) =>
+      isUrbanZoneStepCompleted(stepId, steps);
+
+    const firstIncompleteStep = navigableStepsInGroup.find((stepId) => !isStepCompleted(stepId));
+    const targetStepId = firstIncompleteStep ?? navigableStepsInGroup[0] ?? currentStep;
+
+    return {
+      groupId,
+      title: URBAN_ZONE_STEP_GROUP_LABELS[groupId],
+      targetStepId,
+      activity: groupId === currentGroupId ? "current" : "inactive",
+      validation:
+        navigableStepsInGroup.length > 0 && navigableStepsInGroup.every(isStepCompleted)
+          ? "completed"
+          : "empty",
+    };
+  });
 };

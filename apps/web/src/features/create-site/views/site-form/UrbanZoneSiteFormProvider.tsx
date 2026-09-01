@@ -10,6 +10,13 @@ import {
 import { creationUrbanZoneFormSelectors } from "@/features/create-site/core/urban-zone/urbanZoneForm.selectors";
 import { urbanZoneSiteSaved } from "@/features/create-site/core/urban-zone/urbanZoneSiteSaved.action";
 import type { UrbanZoneSiteCreationStep } from "@/features/create-site/core/urban-zone/urbanZoneSteps";
+import {
+  fetchSiteUpdateMunicipalityData,
+  fetchSiteUpdateSoilsCarbonStorage,
+  siteUpdateSaved,
+  updateUrbanZoneFormActions,
+  updateUrbanZoneFormSelectors,
+} from "@/features/update-site/core/updateSite.actions";
 
 import {
   UrbanZoneSiteFormContext,
@@ -18,59 +25,79 @@ import {
 
 type Props = {
   children: ReactNode;
-  mode: "create";
+  mode: "create" | "update";
 };
 
-export const UrbanZoneSiteFormProvider: React.FC<Props> = ({ children }) => {
+export const UrbanZoneSiteFormProvider: React.FC<Props> = ({ children, mode }) => {
   const dispatch = useAppDispatch();
 
-  const onNext = useCallback(() => dispatch(urbanZoneFormActions.nextStepRequested()), [dispatch]);
-
-  const onBack = useCallback(
-    () => dispatch(urbanZoneFormActions.previousStepRequested()),
-    [dispatch],
+  const actions = useMemo(
+    () => (mode === "create" ? urbanZoneFormActions : updateUrbanZoneFormActions),
+    [mode],
   );
 
+  const selectors = useMemo(
+    () => (mode === "create" ? creationUrbanZoneFormSelectors : updateUrbanZoneFormSelectors),
+    [mode],
+  );
+
+  const saveAction = useMemo(
+    () => (mode === "create" ? urbanZoneSiteSaved : siteUpdateSaved),
+    [mode],
+  );
+
+  const fetchMunicipalityDataAction = useMemo(
+    () => (mode === "create" ? fetchSiteMunicipalityData : fetchSiteUpdateMunicipalityData),
+    [mode],
+  );
+
+  const fetchSoilsCarbonStorageAction = useMemo(
+    () => (mode === "create" ? fetchSiteSoilsCarbonStorage : fetchSiteUpdateSoilsCarbonStorage),
+    [mode],
+  );
+
+  const onNext = useCallback(() => dispatch(actions.nextStepRequested()), [dispatch, actions]);
+
+  const onBack = useCallback(() => dispatch(actions.previousStepRequested()), [dispatch, actions]);
+
   const onRequestStepCompletion = useCallback(
-    (payload: StepCompletionPayload) =>
-      dispatch(urbanZoneFormActions.stepCompletionRequested(payload)),
-    [dispatch],
+    (payload: StepCompletionPayload) => dispatch(actions.stepCompletionRequested(payload)),
+    [dispatch, actions],
   );
 
   const onNavigateToStep = useCallback(
-    (stepId: UrbanZoneSiteCreationStep) =>
-      dispatch(urbanZoneFormActions.stepNavigationRequested({ stepId })),
-    [dispatch],
+    (stepId: UrbanZoneSiteCreationStep) => dispatch(actions.stepNavigationRequested({ stepId })),
+    [dispatch, actions],
   );
 
   const onConfirmStepCompletion = useCallback(
-    () => dispatch(urbanZoneFormActions.stepCompletionConfirmed()),
-    [dispatch],
+    () => dispatch(actions.stepCompletionConfirmed()),
+    [dispatch, actions],
   );
 
   const onCancelStepCompletion = useCallback(
-    () => dispatch(urbanZoneFormActions.stepCompletionCancelled()),
-    [dispatch],
+    () => dispatch(actions.stepCompletionCancelled()),
+    [dispatch, actions],
   );
 
   const onSave = useCallback(() => {
-    void dispatch(urbanZoneSiteSaved());
-  }, [dispatch]);
+    void dispatch(saveAction());
+  }, [dispatch, saveAction]);
 
   // Return the dispatched promise (not void) — some callers `await` it to gate a loading state.
   const onFetchSiteMunicipalityData = useCallback(
-    () => dispatch(fetchSiteMunicipalityData()),
-    [dispatch],
+    () => dispatch(fetchMunicipalityDataAction()),
+    [dispatch, fetchMunicipalityDataAction],
   );
 
   const onFetchSiteSoilsCarbonStorage = useCallback(
-    () => dispatch(fetchSiteSoilsCarbonStorage()),
-    [dispatch],
+    () => dispatch(fetchSoilsCarbonStorageAction()),
+    [dispatch, fetchSoilsCarbonStorageAction],
   );
 
   const value: UrbanZoneSiteFormContextValue = useMemo(
     () => ({
-      ...creationUrbanZoneFormSelectors,
+      ...selectors,
       onNext,
       onBack,
       onRequestStepCompletion,
@@ -82,6 +109,7 @@ export const UrbanZoneSiteFormProvider: React.FC<Props> = ({ children }) => {
       onFetchSiteSoilsCarbonStorage,
     }),
     [
+      selectors,
       onNext,
       onBack,
       onRequestStepCompletion,

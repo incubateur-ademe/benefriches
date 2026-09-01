@@ -1,3 +1,4 @@
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import { getLabelForUrbanZoneType } from "shared";
 import type { SoilType, UrbanZoneLandParcelType } from "shared";
 
@@ -16,9 +17,20 @@ const MANAGER_LABELS: Record<string, string> = {
   local_authority: "Collectivité",
 };
 
+type SaveState = "idle" | "dirty" | "loading" | "success" | "error";
+
+// Update-mode save-state labels (ticket 11), mirroring common-views/summary/SiteDataSummary.tsx
+// — creation's own save flow routes away to URBAN_ZONE_CREATION_RESULT instead of ever reaching
+// this label, so `saveState` is optional and unused there.
+const NEXT_LABEL_BY_SAVE_STATE: Partial<Record<SaveState, string>> = {
+  loading: "Sauvegarde en cours…",
+  success: "Modifications sauvegardées",
+};
+
 type Props = UrbanZoneFinalSummaryViewData & {
   onNext: () => void;
   onBack: () => void;
+  saveState?: SaveState;
 };
 
 function UrbanZoneFinalSummary({
@@ -38,9 +50,18 @@ function UrbanZoneFinalSummary({
   siteDescription,
   onNext,
   onBack,
+  saveState,
 }: Props) {
   return (
     <WizardFormLayout title="Récapitulatif du site">
+      {saveState === "error" && (
+        <Alert
+          className="mb-4"
+          severity="error"
+          title="La sauvegarde a échoué"
+          description="Une erreur s'est produite lors de l'enregistrement des modifications. Veuillez réessayer."
+        />
+      )}
       <Section title="📍 Localisation">
         <DataLine label={<strong>Adresse du site</strong>} value={address} />
         {urbanZoneType && (
@@ -128,7 +149,12 @@ function UrbanZoneFinalSummary({
       </Section>
 
       <div className="mt-8">
-        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          onNext={onNext}
+          disabled={saveState === "loading"}
+          nextLabel={saveState ? NEXT_LABEL_BY_SAVE_STATE[saveState] : undefined}
+        />
       </div>
     </WizardFormLayout>
   );

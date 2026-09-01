@@ -4,7 +4,7 @@ import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
 
 import { selectDemoCurrentStep } from "../core/demo/demo.selectors";
-import { selectSiteCreationWizardViewData } from "../core/selectors/createSite.selectors";
+import { selectSiteCreationWizardViewData } from "../core/selectors/siteCreationWizardViewData.selectors";
 import { getRouteFromCreationStep, getRouteFromDemoCreationStep } from "./routes";
 
 export const useSyncCreationStepWithRouteQuery = () => {

@@ -4,9 +4,9 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import {
   selectExpressAddressFormViewData,
-  selectSiteCreationWizardViewData,
   selectSiteSoilsDistribution,
 } from "../selectors/createSite.selectors";
+import { selectSiteCreationWizardViewData } from "../selectors/siteCreationWizardViewData.selectors";
 import { selectAddressFormViewData } from "../steps/address/address.selectors";
 import { selectSoilContaminationFormViewData } from "../steps/contamination-and-accidents/contaminationAndAccidents.selectors";
 import { selectExpressResultViewData } from "../steps/final/final.selectors";

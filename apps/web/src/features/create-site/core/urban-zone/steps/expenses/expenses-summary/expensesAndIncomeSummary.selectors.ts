@@ -2,6 +2,8 @@ import { typedObjectEntries, type SiteYearlyExpense, type SiteYearlyIncome } fro
 
 import type { RootState } from "@/app/store/store";
 
+import type { createSiteFormRootSelectors } from "../../../../selectors/createSite.selectors";
+import { siteCreationRootSelectors } from "../../../../selectors/createSite.selectors";
 import { ReadStateHelper } from "../../../stateHelpers";
 import type { UrbanZoneStepsState } from "../../../urbanZoneSteps";
 
@@ -115,8 +117,17 @@ export const getExpensesAndIncomeSummaryViewData = (
   return { expenses, incomes, ownerExpenses, ownerIncome };
 };
 
-export const selectExpensesAndIncomeSummaryViewData = (
-  state: RootState,
-): ExpensesAndIncomeSummaryViewData => {
-  return getExpensesAndIncomeSummaryViewData(state.siteCreation.urbanZone.steps);
+export const createExpensesAndIncomeSummarySelectors = (
+  rootSelectors: ReturnType<typeof createSiteFormRootSelectors>,
+) => {
+  const selectExpensesAndIncomeSummaryViewData = (
+    state: RootState,
+  ): ExpensesAndIncomeSummaryViewData => {
+    return getExpensesAndIncomeSummaryViewData(rootSelectors.selectUrbanZoneSteps(state));
+  };
+
+  return { selectExpensesAndIncomeSummaryViewData };
 };
+
+export const { selectExpensesAndIncomeSummaryViewData } =
+  createExpensesAndIncomeSummarySelectors(siteCreationRootSelectors);

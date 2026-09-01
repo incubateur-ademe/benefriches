@@ -55,6 +55,19 @@ const asTenantStructureType = (value: string): TenantStructureType => value as T
 export const convertSiteToCustomSteps = (
   features: GetSiteFeaturesResponseDto,
 ): CustomStepsState => {
+  // The urban-zone custom-engine slice only ever owns URBAN_ZONE_TYPE / ADDRESS /
+  // URBAN_ZONE_LAND_PARCELS_INTRODUCTION / SURFACE_AREA (see custom/customSteps.ts) — the
+  // SPACES_*/OWNER/NAMING steps below are never in its sequence for that nature (they belong
+  // to the urban-zone sub-flow instead, see convertSiteToUrbanZoneSteps.ts) and hydrating them
+  // here would leave orphan answers `computeStepsSequence` never visits.
+  if (features.nature === "URBAN_ZONE") {
+    return {
+      URBAN_ZONE_TYPE: { completed: true, payload: { urbanZoneType: features.urbanZoneType } },
+      ADDRESS: { completed: true, payload: { address: features.address } },
+      SURFACE_AREA: { completed: true, payload: { surfaceArea: features.surfaceArea } },
+    };
+  }
+
   const soils = typedObjectKeys(features.soilsDistribution);
   const isMultiSoil = soils.length > 1;
 
@@ -193,10 +206,6 @@ export const convertSiteToCustomSteps = (
       };
       break;
     }
-    case "URBAN_ZONE":
-      // Out of scope for this ticket (ticket 11); UpdateSitePage refuses to reach the wizard
-      // for urban-zone sites before this converter is ever called.
-      break;
   }
 
   return steps;
