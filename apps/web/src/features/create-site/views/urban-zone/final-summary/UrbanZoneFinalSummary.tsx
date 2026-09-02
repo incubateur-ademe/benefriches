@@ -1,4 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
+import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { getLabelForUrbanZoneType } from "shared";
 import type { SoilType, UrbanZoneLandParcelType } from "shared";
 
@@ -27,10 +28,21 @@ const NEXT_LABEL_BY_SAVE_STATE: Partial<Record<SaveState, string>> = {
   success: "Modifications sauvegardées",
 };
 
+export type UrbanZoneFinalSummarySectionId =
+  | "LOCATION"
+  | "LAND_PARCELS"
+  | "SOILS"
+  | "CONTAMINATION"
+  | "MANAGEMENT"
+  | "NAMING";
+
 type Props = UrbanZoneFinalSummaryViewData & {
   onNext: () => void;
   onBack: () => void;
   saveState?: SaveState;
+  sectionProps?: Partial<
+    Record<UrbanZoneFinalSummarySectionId, { warning?: string; buttonProps?: ButtonProps }>
+  >;
 };
 
 function UrbanZoneFinalSummary({
@@ -51,6 +63,7 @@ function UrbanZoneFinalSummary({
   onNext,
   onBack,
   saveState,
+  sectionProps,
 }: Props) {
   return (
     <WizardFormLayout title="Récapitulatif du site">
@@ -62,7 +75,7 @@ function UrbanZoneFinalSummary({
           description="Une erreur s'est produite lors de l'enregistrement des modifications. Veuillez réessayer."
         />
       )}
-      <Section title="📍 Localisation">
+      <Section title="📍 Localisation" {...sectionProps?.LOCATION}>
         <DataLine label={<strong>Adresse du site</strong>} value={address} />
         {urbanZoneType && (
           <DataLine
@@ -72,7 +85,7 @@ function UrbanZoneFinalSummary({
         )}
       </Section>
 
-      <Section title="🗺️ Surfaces foncières">
+      <Section title="🗺️ Surfaces foncières" {...sectionProps?.LAND_PARCELS}>
         <DataLine
           noBorder
           label={<strong>Superficie totale</strong>}
@@ -89,7 +102,7 @@ function UrbanZoneFinalSummary({
         )}
       </Section>
 
-      <Section title="🌾️ Sols">
+      <Section title="🌾️ Sols" {...sectionProps?.SOILS}>
         {(Object.entries(soilsDistribution) as [SoilType, number | undefined][]).map(
           ([soilType, area]) => (
             <DataLine
@@ -101,7 +114,7 @@ function UrbanZoneFinalSummary({
         )}
       </Section>
 
-      <Section title="☣️ Pollution">
+      <Section title="☣️ Pollution" {...sectionProps?.CONTAMINATION}>
         <DataLine
           label={<strong>Sols pollués</strong>}
           value={
@@ -114,7 +127,7 @@ function UrbanZoneFinalSummary({
         />
       </Section>
 
-      <Section title="💼 Gestion et activité">
+      <Section title="💼 Gestion et activité" {...sectionProps?.MANAGEMENT}>
         {managerStructureType && (
           <DataLine
             label={<strong>Gestionnaire</strong>}
@@ -141,7 +154,7 @@ function UrbanZoneFinalSummary({
         )}
       </Section>
 
-      <Section title="✍ Dénomination">
+      <Section title="✍ Dénomination" {...sectionProps?.NAMING}>
         <DataLine label={<strong>Nom du site</strong>} value={siteName} />
         {siteDescription && (
           <DataLine label={<strong>Description</strong>} value={siteDescription} />

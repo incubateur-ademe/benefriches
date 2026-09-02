@@ -1,5 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import {
+  buildStepGroupsFromSequence,
+  StepGroups,
+} from "@/shared/core/wizard-form/helpers/stepGroups";
+
 import { createSiteFormRootSelectors } from "../selectors/createSite.selectors";
 import type { SiteFormLens } from "../siteForm.lens";
 import { siteCreationLens } from "../siteForm.lens";
@@ -9,7 +14,13 @@ import { createFinalSelectors } from "../steps/final/final.selectors";
 import { createSiteManagementSelectors } from "../steps/site-management/siteManagement.selectors";
 import { createSpacesSelectors } from "../steps/spaces/spaces.selectors";
 import { createUrbanZoneTypeSelectors } from "../steps/urban-zone/urbanZoneType.selectors";
-import { computeCustomStepperGroups, type CustomStepperGroup } from "./customStepperConfig";
+import {
+  computeCustomStepperGroups,
+  CUSTOM_STEP_TO_SUMMARY_SECTION,
+  isNavigableCustomStep,
+  type CustomStepperGroup,
+  type CustomSummarySectionId,
+} from "./customStepperConfig";
 import type { SiteCreationCustomStep } from "./customSteps";
 
 /**
@@ -68,10 +79,28 @@ export const createCustomFormSelectors = (lens: SiteFormLens) => {
       }),
   );
 
+  // Feeds the summary's per-section "Modifier" button + incomplete-step warning (ticket 15).
+  const selectCustomSummarySections = createSelector(
+    lens.selectSiteForm,
+    (state): StepGroups<SiteCreationCustomStep, CustomSummarySectionId, never> =>
+      buildStepGroupsFromSequence(
+        state.custom.stepsSequence.map((stepId) => ({
+          stepId,
+          isCompleted: Boolean(
+            (state.custom.steps as Record<string, { completed?: boolean } | undefined>)[stepId]
+              ?.completed,
+          ),
+        })),
+        CUSTOM_STEP_TO_SUMMARY_SECTION,
+        isNavigableCustomStep,
+      ),
+  );
+
   return {
     selectCurrentStep,
     selectPendingStepCompletion,
     selectCustomStepperGroups,
+    selectCustomSummarySections,
     selectSaveState,
     selectDerivedSiteData: rootSelectors.selectDerivedSiteData,
     selectFricheActivity: rootSelectors.selectFricheActivity,

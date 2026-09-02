@@ -1,3 +1,4 @@
+import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import {
   AVERAGE_PROPERTY_TAXES_RATE,
   AVERAGE_RENTAL_VALUE_PER_SQUARE_METERS,
@@ -20,14 +21,16 @@ import Section from "@/shared/views/components/FeaturesList/FeaturesListSection"
 
 import { SiteFeatures } from "../../core/site.types";
 
-type Props = SiteFeatures;
+type Props = SiteFeatures & {
+  sectionProps?: { warning?: string; buttonProps?: ButtonProps };
+};
 
 type Expense = {
   amount: number;
   purpose: SiteYearlyExpensePurpose;
 };
 
-export default function SiteFeaturesManagementSection(siteFeatures: Props) {
+export default function SiteFeaturesManagementSection({ sectionProps, ...siteFeatures }: Props) {
   const siteManagementExpenses = [
     "maintenance",
     "rent",
@@ -49,6 +52,7 @@ export default function SiteFeaturesManagementSection(siteFeatures: Props) {
       <Section
         title="⚙️ Gestion et sécurisation de la friche"
         tooltip="Une friche, bien qu’elle soit sans activité, induit des dépenses importantes, de manière directe (ex : taxe foncière) ou de  indirecte (lorsque le site se détériore)."
+        {...sectionProps}
       >
         <>
           <DataLine label={<strong>Propriétaire actuel</strong>} value={siteFeatures.ownerName} />
@@ -162,6 +166,7 @@ export default function SiteFeaturesManagementSection(siteFeatures: Props) {
       <Section
         title="⚙️ Exploitation du site"
         tooltip="L’exploitation du site génère des recettes (vente de la production, subvention, etc.) mais occasionne des dépenses (loyers, impôts et taxes, etc.)."
+        {...sectionProps}
       >
         <>
           <DataLine label={<strong>Propriétaire actuel</strong>} value={siteFeatures.ownerName} />
@@ -276,7 +281,7 @@ export default function SiteFeaturesManagementSection(siteFeatures: Props) {
   }
 
   return (
-    <Section title="⚙️ Gestion du site">
+    <Section title="⚙️ Gestion du site" {...sectionProps}>
       <>
         <DataLine label={<strong>Propriétaire actuel</strong>} value={siteFeatures.ownerName} />
         {siteFeatures.tenantName && (

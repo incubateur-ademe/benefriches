@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import {
   ReconversionProjectSoilsDistribution,
   roundToInteger,
@@ -21,6 +20,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
+import { getSummarySectionProps } from "@/shared/views/components/FeaturesList/summarySectionProps";
 import WizardFormLayout, {
   WizardFormLayoutProps,
 } from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -37,8 +37,6 @@ type UrbanProjectFormSummaryProps = {
   stepsGroupedBySections: ProjectStepGroups;
   onNavigateToStep: (stepId: UrbanProjectCreationStep) => void;
 } & Partial<WizardFormLayoutProps>;
-
-const WARNING_TEXT = "Cette étape est incomplète. Veuillez la compléter.";
 
 function UrbanProjectFormSummary({
   projectSummary,
@@ -60,30 +58,12 @@ function UrbanProjectFormSummary({
   );
   const hasGreenSpaces = greenSpaces.length > 0;
 
-  const getSectionProps = useCallback(
-    (
-      steps: {
-        stepId: UrbanProjectCreationStep;
-        isStepCompleted: boolean;
-      }[],
-    ) => {
-      const firstUnfilledStep = steps.find(({ isStepCompleted }) => !isStepCompleted)?.stepId;
-      const targetStep = firstUnfilledStep ?? steps[0]?.stepId;
-      return {
-        warning: firstUnfilledStep !== undefined ? WARNING_TEXT : undefined,
-        buttonProps: targetStep
-          ? {
-              iconId: "fr-icon-pencil-line" as const,
-              children: "Modifier",
-              onClick: () => {
-                onNavigateToStep(targetStep);
-              },
-            }
-          : undefined,
-      };
-    },
-    [onNavigateToStep],
-  );
+  const getSectionProps = (
+    steps: {
+      stepId: UrbanProjectCreationStep;
+      isStepCompleted: boolean;
+    }[],
+  ) => getSummarySectionProps(steps, onNavigateToStep);
 
   const developerName = projectSummary.developer.value?.name;
   const reinstatementContractOwnerName = projectSummary.reinstatementContractOwner.value?.name;

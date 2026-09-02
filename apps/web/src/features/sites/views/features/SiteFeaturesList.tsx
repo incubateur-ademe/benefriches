@@ -1,3 +1,4 @@
+import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import {
   typedObjectEntries,
   sumObjectValues,
@@ -24,20 +25,44 @@ import { SiteFeatures } from "../../core/site.types";
 import ExpressSiteDisclaimer from "./ExpressSiteDisclaimer";
 import SiteFeaturesManagementSection from "./SiteFeaturesManagementSection";
 
-type Props = { siteFeatures: SiteFeatures; withExpressDisclaimer?: boolean };
+// One id per `<Section>` rendered below (plus SiteFeaturesManagementSection's, which always
+// renders exactly one). Read-only call sites (SitePage, the express-site result screen, the
+// avoided-costs intro modal) never pass `sectionProps`, so they render byte-for-byte as before —
+// only the create/update-site summaries pass it to get "Modifier" buttons + warnings.
+export type SiteFeaturesSectionId =
+  | "LOCATION"
+  | "SOILS"
+  | "URBAN_ZONE"
+  | "CONTAMINATION"
+  | "ACCIDENTS"
+  | "MANAGEMENT"
+  | "NAMING";
 
-export default function SiteFeaturesList({ withExpressDisclaimer = true, siteFeatures }: Props) {
+type Props = {
+  siteFeatures: SiteFeatures;
+  withExpressDisclaimer?: boolean;
+  sectionProps?: Partial<
+    Record<SiteFeaturesSectionId, { warning?: string; buttonProps?: ButtonProps }>
+  >;
+};
+
+export default function SiteFeaturesList({
+  withExpressDisclaimer = true,
+  siteFeatures,
+  sectionProps,
+}: Props) {
   return (
     <>
       {withExpressDisclaimer && siteFeatures.isExpressSite && (
         <ExpressSiteDisclaimer siteNature={siteFeatures.nature} />
       )}
-      <Section title="📍 Localisation">
+      <Section title="📍 Localisation" {...sectionProps?.LOCATION}>
         <DataLine label={<strong>Adresse du site</strong>} value={siteFeatures.address} />
       </Section>
       <Section
         title="🌾️ Sols"
         tooltip="L'occupation des sols conditionne la capacité d'infiltration des eaux, la capacité de stockage de carbone dans les sols, etc."
+        {...sectionProps?.SOILS}
       >
         <DataLine
           noBorder
@@ -110,7 +135,7 @@ export default function SiteFeaturesList({ withExpressDisclaimer = true, siteFea
         </div>
       </Section>
       {siteFeatures.nature === "URBAN_ZONE" && (
-        <Section title="🏙️ Zone urbaine">
+        <Section title="🏙️ Zone urbaine" {...sectionProps?.URBAN_ZONE}>
           {siteFeatures.urbanZoneType && (
             <DataLine
               label={<strong>Type de zone urbaine</strong>}
@@ -148,7 +173,7 @@ export default function SiteFeaturesList({ withExpressDisclaimer = true, siteFea
       )}
       {siteFeatures.nature === "FRICHE" && (
         <>
-          <Section title="☣️ Pollution">
+          <Section title="☣️ Pollution" {...sectionProps?.CONTAMINATION}>
             <DataLine
               label={<strong>Superficie polluée</strong>}
               labelTooltip="Les activités antérieures exercées sur un site en friche, qu'elles soient industrielles, de service, ferroviaire, etc. peuvent être à l'origine de pollution des sols.
@@ -165,7 +190,7 @@ La pollution à l'amiante des bâtiments n'est pas considérée ici."
               }
             />
           </Section>
-          <Section title="💥 Accidents">
+          <Section title="💥 Accidents" {...sectionProps?.ACCIDENTS}>
             <>
               <DataLine
                 label={<strong>Accidents survenus sur le site depuis 5 ans</strong>}
@@ -197,8 +222,8 @@ La pollution à l'amiante des bâtiments n'est pas considérée ici."
           </Section>
         </>
       )}
-      <SiteFeaturesManagementSection {...siteFeatures} />
-      <Section title="✍ Dénomination">
+      <SiteFeaturesManagementSection {...siteFeatures} sectionProps={sectionProps?.MANAGEMENT} />
+      <Section title="✍ Dénomination" {...sectionProps?.NAMING}>
         {(() => {
           switch (siteFeatures.nature) {
             case "FRICHE":

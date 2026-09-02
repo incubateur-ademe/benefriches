@@ -3,6 +3,8 @@ import React, { ReactNode, useCallback, useMemo } from "react";
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 import { fetchSiteSoilsCarbonStorage } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
+import { customFormActions } from "@/features/create-site/core/custom/custom.actions";
+import type { SiteCreationCustomStep } from "@/features/create-site/core/custom/customSteps";
 import {
   urbanZoneFormActions,
   type StepCompletionPayload,
@@ -14,6 +16,7 @@ import {
   fetchSiteUpdateMunicipalityData,
   fetchSiteUpdateSoilsCarbonStorage,
   siteUpdateSaved,
+  updateCustomFormActions,
   updateUrbanZoneFormActions,
   updateUrbanZoneFormSelectors,
 } from "@/features/update-site/core/updateSite.actions";
@@ -33,6 +36,13 @@ export const UrbanZoneSiteFormProvider: React.FC<Props> = ({ children, mode }) =
 
   const actions = useMemo(
     () => (mode === "create" ? urbanZoneFormActions : updateUrbanZoneFormActions),
+    [mode],
+  );
+
+  // Mode-aware custom-engine actions, needed only for `onNavigateToCustomStep` (📍 Localisation
+  // lives on the custom engine, not this sub-flow's own) — same pattern as `actions` above.
+  const customActions = useMemo(
+    () => (mode === "create" ? customFormActions : updateCustomFormActions),
     [mode],
   );
 
@@ -70,6 +80,11 @@ export const UrbanZoneSiteFormProvider: React.FC<Props> = ({ children, mode }) =
     [dispatch, actions],
   );
 
+  const onNavigateToCustomStep = useCallback(
+    (stepId: SiteCreationCustomStep) => dispatch(customActions.stepNavigationRequested({ stepId })),
+    [dispatch, customActions],
+  );
+
   const onConfirmStepCompletion = useCallback(
     () => dispatch(actions.stepCompletionConfirmed()),
     [dispatch, actions],
@@ -102,6 +117,7 @@ export const UrbanZoneSiteFormProvider: React.FC<Props> = ({ children, mode }) =
       onBack,
       onRequestStepCompletion,
       onNavigateToStep,
+      onNavigateToCustomStep,
       onConfirmStepCompletion,
       onCancelStepCompletion,
       onSave,
@@ -114,6 +130,7 @@ export const UrbanZoneSiteFormProvider: React.FC<Props> = ({ children, mode }) =
       onBack,
       onRequestStepCompletion,
       onNavigateToStep,
+      onNavigateToCustomStep,
       onConfirmStepCompletion,
       onCancelStepCompletion,
       onSave,

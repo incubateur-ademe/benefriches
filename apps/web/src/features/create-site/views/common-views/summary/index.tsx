@@ -1,15 +1,33 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
+import { SiteFeaturesSectionId } from "@/features/sites/views/features/SiteFeaturesList";
+import { getSummarySectionProps } from "@/shared/views/components/FeaturesList/summarySectionProps";
 
 import SiteDataSummary from "./SiteDataSummary";
 
 function SiteDataSummaryContainer() {
-  const { onBack, onSave, selectDerivedSiteData, selectSaveState } = useCustomSiteForm();
+  const {
+    onBack,
+    onSave,
+    onNavigateToStep,
+    selectDerivedSiteData,
+    selectSaveState,
+    selectCustomSummarySections,
+  } = useCustomSiteForm();
   const siteData = useAppSelector(selectDerivedSiteData);
   const saveState = useAppSelector(selectSaveState);
+  const summarySections = useAppSelector(selectCustomSummarySections);
+
+  const sectionProps = Object.fromEntries(
+    (Object.keys(summarySections) as SiteFeaturesSectionId[]).map((sectionId) => [
+      sectionId,
+      getSummarySectionProps(summarySections[sectionId] ?? [], onNavigateToStep),
+    ]),
+  );
 
   return (
     <SiteDataSummary
+      sectionProps={sectionProps}
       siteData={{
         id: siteData.id,
         nature: siteData.nature!,

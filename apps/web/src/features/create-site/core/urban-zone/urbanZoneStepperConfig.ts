@@ -120,6 +120,72 @@ export const URBAN_ZONE_STEP_TO_GROUP: Record<
   URBAN_ZONE_CREATION_RESULT: creationResultStepperConfig,
 };
 
+/**
+ * The urban-zone final summary's section mapping (ticket 15) — a finer split than
+ * `URBAN_ZONE_STEP_TO_GROUP` above, whose sidebar groups don't map 1:1 to `UrbanZoneFinalSummary`'s
+ * sections (there is no dedicated 📍 Localisation sidebar group — that data lives on the custom
+ * engine, see index.tsx's `onNavigateToCustomStep` — and EXPENSES has no summary section at all).
+ */
+export const urbanZoneSummarySectionIdSchema = z.enum([
+  "LOCATION",
+  "LAND_PARCELS",
+  "SOILS",
+  "CONTAMINATION",
+  "MANAGEMENT",
+  "EXPENSES",
+  "NAMING",
+]);
+export type UrbanZoneSummarySectionId = z.infer<typeof urbanZoneSummarySectionIdSchema>;
+
+// Total over every urban-zone step id. The expense/income steps have no home in the final
+// summary (it renders no "💸 Dépenses et recettes" section) — bucketed under their own EXPENSES
+// group (kept out of MANAGEMENT so they don't pollute its completion/warning/target) which
+// `UrbanZoneFinalSummaryContainer` simply never reads when building `sectionProps`.
+export const URBAN_ZONE_STEP_TO_SUMMARY_SECTION: Record<
+  UrbanZoneSiteCreationStep,
+  { groupId: UrbanZoneSummarySectionId }
+> = {
+  URBAN_ZONE_LAND_PARCELS_SELECTION: { groupId: "LAND_PARCELS" },
+  URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION: { groupId: "LAND_PARCELS" },
+
+  URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION: { groupId: "SOILS" },
+  URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION: { groupId: "SOILS" },
+  URBAN_ZONE_PUBLIC_SPACES_SOILS_DISTRIBUTION: { groupId: "SOILS" },
+  URBAN_ZONE_SERVICED_SURFACE_SOILS_DISTRIBUTION: { groupId: "SOILS" },
+  URBAN_ZONE_RESERVED_SURFACE_SOILS_DISTRIBUTION: { groupId: "SOILS" },
+  URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_BUILDINGS_FLOOR_AREA: { groupId: "SOILS" },
+  URBAN_ZONE_PUBLIC_SPACES_BUILDINGS_FLOOR_AREA: { groupId: "SOILS" },
+  URBAN_ZONE_SERVICED_SURFACE_BUILDINGS_FLOOR_AREA: { groupId: "SOILS" },
+  URBAN_ZONE_RESERVED_SURFACE_BUILDINGS_FLOOR_AREA: { groupId: "SOILS" },
+  URBAN_ZONE_SOILS_SUMMARY: { groupId: "SOILS" },
+  URBAN_ZONE_SOILS_CARBON_STORAGE: { groupId: "SOILS" },
+
+  URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION: { groupId: "CONTAMINATION" },
+  URBAN_ZONE_SOILS_CONTAMINATION: { groupId: "CONTAMINATION" },
+
+  URBAN_ZONE_MANAGEMENT_INTRODUCTION: { groupId: "MANAGEMENT" },
+  URBAN_ZONE_MANAGER: { groupId: "MANAGEMENT" },
+  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: { groupId: "MANAGEMENT" },
+  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: { groupId: "MANAGEMENT" },
+  URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: { groupId: "MANAGEMENT" },
+
+  // Not surfaced in the final summary (no dedicated section) — see comment above.
+  URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION: { groupId: "EXPENSES" },
+  URBAN_ZONE_VACANT_PREMISES_EXPENSES: { groupId: "EXPENSES" },
+  URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES: { groupId: "EXPENSES" },
+  URBAN_ZONE_ZONE_MANAGEMENT_INCOME: { groupId: "EXPENSES" },
+  URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY: { groupId: "EXPENSES" },
+  URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES: { groupId: "EXPENSES" },
+
+  URBAN_ZONE_NAMING_INTRODUCTION: { groupId: "NAMING" },
+  URBAN_ZONE_NAMING: { groupId: "NAMING" },
+
+  // Not surfaced as a distinct summary section — arbitrary but total mapping, filtered out by
+  // isNavigableUrbanZoneStep before any section is built.
+  URBAN_ZONE_FINAL_SUMMARY: { groupId: "NAMING" },
+  URBAN_ZONE_CREATION_RESULT: { groupId: "NAMING" },
+};
+
 const NAVIGABLE_URBAN_ZONE_STEP_IDS: ReadonlySet<string> = new Set(ANSWER_STEP_IDS);
 
 /** Only answer steps (not intros/summaries) are direct-navigation targets. */

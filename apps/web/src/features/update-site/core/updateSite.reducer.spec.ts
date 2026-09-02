@@ -190,6 +190,26 @@ describe("updateSite reducer", () => {
       });
     });
 
+    it("hands control back to the custom engine when navigating to one of its steps from the urban-zone summary (📍 Localisation Modifier)", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+      expect(hydrated.customHandedOffToUrbanZone).toBe(true);
+
+      const navigated = updateSiteReducer(
+        hydrated,
+        updateCustomFormActions.stepNavigationRequested({ stepId: "ADDRESS" }),
+      );
+
+      expect(navigated.customHandedOffToUrbanZone).toBe(false);
+      expect(navigated.custom.currentStep).toBe("ADDRESS");
+    });
+
     it("navigating to a per-parcel soils step then completing it updates only that answer and stays within its stepper group (groupOf)", () => {
       const hydrated = updateSiteReducer(
         undefined,

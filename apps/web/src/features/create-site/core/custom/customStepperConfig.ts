@@ -75,6 +75,75 @@ export const CUSTOM_STEP_TO_GROUP: StepToGroupMapping<
   CREATION_RESULT: { groupId: "SUMMARY" },
 };
 
+/**
+ * The custom flow's *summary-section* mapping (ticket 15) — finer-grained than
+ * `CUSTOM_STEP_TO_GROUP` above, which is coarse-grained for the sidebar (Pollution and Accidents
+ * share one sidebar group, but are two separate summary sections; the nature/activity steps sit
+ * in the sidebar's INTRODUCTION group but are displayed under the summary's Dénomination
+ * section). Drives the "Modifier" button + incomplete-step warning on each `SiteDataSummary`
+ * section (`SiteFeaturesList` / `SiteFeaturesManagementSection`).
+ */
+export const customSummarySectionIdSchema = z.enum([
+  "LOCATION",
+  "SOILS",
+  "URBAN_ZONE",
+  "CONTAMINATION",
+  "ACCIDENTS",
+  "MANAGEMENT",
+  "NAMING",
+]);
+export type CustomSummarySectionId = z.infer<typeof customSummarySectionIdSchema>;
+
+// Total over every step id (info/summary steps included, filtered out by `isNavigableCustomStep`
+// before bucketing) so a future step fails typecheck here until it is mapped.
+export const CUSTOM_STEP_TO_SUMMARY_SECTION: StepToGroupMapping<
+  SiteCreationCustomStep,
+  CustomSummarySectionId,
+  never
+> = {
+  ADDRESS: { groupId: "LOCATION" },
+
+  SURFACE_AREA: { groupId: "SOILS" },
+  SPACES_INTRODUCTION: { groupId: "SOILS" },
+  SPACES_KNOWLEDGE: { groupId: "SOILS" },
+  SPACES_SELECTION: { groupId: "SOILS" },
+  SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE: { groupId: "SOILS" },
+  SPACES_SURFACE_AREA_DISTRIBUTION: { groupId: "SOILS" },
+  SOILS_SUMMARY: { groupId: "SOILS" },
+  SOILS_CARBON_STORAGE: { groupId: "SOILS" },
+  URBAN_ZONE_LAND_PARCELS_INTRODUCTION: { groupId: "SOILS" },
+
+  URBAN_ZONE_TYPE: { groupId: "URBAN_ZONE" },
+
+  SOILS_CONTAMINATION_INTRODUCTION: { groupId: "CONTAMINATION" },
+  SOILS_CONTAMINATION: { groupId: "CONTAMINATION" },
+
+  FRICHE_ACCIDENTS_INTRODUCTION: { groupId: "ACCIDENTS" },
+  FRICHE_ACCIDENTS: { groupId: "ACCIDENTS" },
+
+  MANAGEMENT_INTRODUCTION: { groupId: "MANAGEMENT" },
+  OWNER: { groupId: "MANAGEMENT" },
+  IS_FRICHE_LEASED: { groupId: "MANAGEMENT" },
+  TENANT: { groupId: "MANAGEMENT" },
+  IS_SITE_OPERATED: { groupId: "MANAGEMENT" },
+  OPERATOR: { groupId: "MANAGEMENT" },
+  YEARLY_EXPENSES_AND_INCOME_INTRODUCTION: { groupId: "MANAGEMENT" },
+  YEARLY_EXPENSES: { groupId: "MANAGEMENT" },
+  YEARLY_INCOME: { groupId: "MANAGEMENT" },
+  YEARLY_EXPENSES_SUMMARY: { groupId: "MANAGEMENT" },
+
+  FRICHE_ACTIVITY: { groupId: "NAMING" },
+  AGRICULTURAL_OPERATION_ACTIVITY: { groupId: "NAMING" },
+  NATURAL_AREA_TYPE: { groupId: "NAMING" },
+  NAMING_INTRODUCTION: { groupId: "NAMING" },
+  NAMING: { groupId: "NAMING" },
+
+  // Not shown as a distinct summary section — arbitrary but total mapping, filtered out by
+  // isNavigableCustomStep before any section is built.
+  FINAL_SUMMARY: { groupId: "NAMING" },
+  CREATION_RESULT: { groupId: "NAMING" },
+};
+
 const NAVIGABLE_STEP_IDS: ReadonlySet<string> = new Set(CUSTOM_ANSWER_STEP_IDS);
 
 /** Only answer steps (not intros/summaries/notices) are direct-navigation targets. */

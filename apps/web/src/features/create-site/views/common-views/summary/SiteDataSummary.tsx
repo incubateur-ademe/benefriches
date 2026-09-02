@@ -1,4 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
+import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import type {
   AgriculturalOperationActivity,
   FricheActivity,
@@ -10,7 +11,9 @@ import type {
 } from "shared";
 
 import type { SiteFeatures } from "@/features/sites/core/site.types";
-import SiteFeaturesList from "@/features/sites/views/features/SiteFeaturesList";
+import SiteFeaturesList, {
+  SiteFeaturesSectionId,
+} from "@/features/sites/views/features/SiteFeaturesList";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -87,6 +90,9 @@ type Props = {
   onNext: () => void;
   onBack: () => void;
   saveState?: "idle" | "dirty" | "loading" | "success" | "error";
+  sectionProps?: Partial<
+    Record<SiteFeaturesSectionId, { warning?: string; buttonProps?: ButtonProps }>
+  >;
 };
 
 const NEXT_LABEL_BY_SAVE_STATE: Partial<Record<NonNullable<Props["saveState"]>, string>> = {
@@ -94,7 +100,7 @@ const NEXT_LABEL_BY_SAVE_STATE: Partial<Record<NonNullable<Props["saveState"]>, 
   success: "Modifications sauvegardées",
 };
 
-function SiteDataSummary({ siteData, onNext, onBack, saveState }: Props) {
+function SiteDataSummary({ siteData, onNext, onBack, saveState, sectionProps }: Props) {
   return (
     <WizardFormLayout title="Récapitulatif du site">
       {saveState === "error" && (
@@ -105,7 +111,7 @@ function SiteDataSummary({ siteData, onNext, onBack, saveState }: Props) {
           description="Une erreur s'est produite lors de l'enregistrement des modifications. Veuillez réessayer."
         />
       )}
-      <SiteFeaturesList siteFeatures={toSiteFeatures(siteData)} />
+      <SiteFeaturesList siteFeatures={toSiteFeatures(siteData)} sectionProps={sectionProps} />
       <div className="mt-8">
         <BackNextButtonsGroup
           onBack={onBack}

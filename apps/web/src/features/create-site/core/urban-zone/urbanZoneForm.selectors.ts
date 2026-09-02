@@ -1,5 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import {
+  buildStepGroupsFromSequence,
+  StepGroups,
+} from "@/shared/core/wizard-form/helpers/stepGroups";
+
 import { createSiteFormRootSelectors } from "../selectors/createSite.selectors";
 import type { SiteFormLens } from "../siteForm.lens";
 import { siteCreationLens } from "../siteForm.lens";
@@ -23,7 +28,10 @@ import { createParcelSoilsDistributionSelectorFactory } from "./steps/per-parcel
 import { createUrbanZoneSoilsSummarySelectors } from "./steps/summary/soils-summary/soilsSummary.selectors";
 import {
   computeUrbanZoneStepperGroups,
+  isNavigableUrbanZoneStep,
+  URBAN_ZONE_STEP_TO_SUMMARY_SECTION,
   type UrbanZoneStepperGroup,
+  type UrbanZoneSummarySectionId,
 } from "./urbanZoneStepperConfig";
 import type { UrbanZoneSiteCreationStep } from "./urbanZoneSteps";
 
@@ -88,10 +96,30 @@ export const createUrbanZoneFormSelectors = (lens: SiteFormLens) => {
       }),
   );
 
+  // Feeds the final summary's per-section "Modifier" button + incomplete-step warning (ticket
+  // 15). 📍 Localisation has no urban-zone-owned steps (its data lives on the custom engine) so
+  // it never appears in this map — the view wires it via `onNavigateToCustomStep` instead.
+  const selectUrbanZoneSummarySections = createSelector(
+    lens.selectSiteForm,
+    (state): StepGroups<UrbanZoneSiteCreationStep, UrbanZoneSummarySectionId, never> =>
+      buildStepGroupsFromSequence(
+        state.urbanZone.stepsSequence.map((stepId) => ({
+          stepId,
+          isCompleted: Boolean(
+            (state.urbanZone.steps as Record<string, { completed?: boolean } | undefined>)[stepId]
+              ?.completed,
+          ),
+        })),
+        URBAN_ZONE_STEP_TO_SUMMARY_SECTION,
+        isNavigableUrbanZoneStep,
+      ),
+  );
+
   return {
     selectCurrentStep,
     selectSaveState,
     selectUrbanZoneStepperGroups,
+    selectUrbanZoneSummarySections,
     selectUrbanZoneCreationResultViewData,
     selectExpensesAndIncomeSummaryViewData,
     selectLocalAuthorityExpensesViewData,

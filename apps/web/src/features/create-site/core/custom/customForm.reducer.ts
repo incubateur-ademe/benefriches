@@ -194,5 +194,12 @@ export const addCustomFormCasesToBuilder = <S extends SiteCreationState>(
       action.payload.stepId,
       customStepHandlerRegistry,
     );
+
+    // Cross-flow hand-back: navigating to a custom-owned step (e.g. from the urban-zone final
+    // summary's 📍 Localisation "Modifier" button) must actually switch the view back to the
+    // custom engine — mirrors the hand-off comment above and urbanZone.reducer.ts's
+    // onPreviousStepFallback, which clears the same flag on the same trigger (backing out of
+    // the urban-zone sub-flow's first step).
+    state.customHandedOffToUrbanZone = false;
   });
 };

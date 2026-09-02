@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { computeCustomStepperGroups, isNavigableCustomStep } from "./customStepperConfig";
+import { buildStepGroupsFromSequence } from "@/shared/core/wizard-form/helpers/stepGroups";
+
+import {
+  computeCustomStepperGroups,
+  CUSTOM_STEP_TO_SUMMARY_SECTION,
+  isNavigableCustomStep,
+} from "./customStepperConfig";
 import type { CustomStepsState, SiteCreationCustomStep } from "./customSteps";
 
 describe("isNavigableCustomStep", () => {
@@ -176,5 +182,64 @@ describe("computeCustomStepperGroups", () => {
     });
 
     expect(groups.some((g) => g.groupId === "CONTAMINATION_AND_ACCIDENTS")).toBe(false);
+  });
+});
+
+describe("CUSTOM_STEP_TO_SUMMARY_SECTION", () => {
+  const FRICHE_SEQUENCE: SiteCreationCustomStep[] = [
+    "FRICHE_ACTIVITY",
+    "ADDRESS",
+    "SPACES_INTRODUCTION",
+    "SURFACE_AREA",
+    "SPACES_KNOWLEDGE",
+    "SPACES_SELECTION",
+    "SOILS_SUMMARY",
+    "SOILS_CONTAMINATION_INTRODUCTION",
+    "SOILS_CONTAMINATION",
+    "FRICHE_ACCIDENTS_INTRODUCTION",
+    "FRICHE_ACCIDENTS",
+    "MANAGEMENT_INTRODUCTION",
+    "OWNER",
+    "IS_FRICHE_LEASED",
+    "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION",
+    "YEARLY_EXPENSES",
+    "YEARLY_EXPENSES_SUMMARY",
+    "NAMING_INTRODUCTION",
+    "NAMING",
+    "FINAL_SUMMARY",
+  ];
+
+  it("splits Pollution and Accidents into two summary sections, even though they share one sidebar group", () => {
+    const sections = buildStepGroupsFromSequence(
+      FRICHE_SEQUENCE.map((stepId) => ({ stepId, isCompleted: false })),
+      CUSTOM_STEP_TO_SUMMARY_SECTION,
+      isNavigableCustomStep,
+    );
+
+    expect(sections.CONTAMINATION?.map((s) => s.stepId)).toEqual(["SOILS_CONTAMINATION"]);
+    expect(sections.ACCIDENTS?.map((s) => s.stepId)).toEqual(["FRICHE_ACCIDENTS"]);
+  });
+
+  it("never puts info/summary steps into any section", () => {
+    const sections = buildStepGroupsFromSequence(
+      FRICHE_SEQUENCE.map((stepId) => ({ stepId, isCompleted: false })),
+      CUSTOM_STEP_TO_SUMMARY_SECTION,
+      isNavigableCustomStep,
+    );
+
+    const allStepIds = Object.values(sections).flatMap((steps) => steps.map((s) => s.stepId));
+    expect(allStepIds).not.toContain("SPACES_INTRODUCTION");
+    expect(allStepIds).not.toContain("FINAL_SUMMARY");
+    expect(allStepIds).not.toContain("SOILS_SUMMARY");
+  });
+
+  it("puts the nature/activity step under NAMING, even though it sits in the sidebar's INTRODUCTION group", () => {
+    const sections = buildStepGroupsFromSequence(
+      FRICHE_SEQUENCE.map((stepId) => ({ stepId, isCompleted: false })),
+      CUSTOM_STEP_TO_SUMMARY_SECTION,
+      isNavigableCustomStep,
+    );
+
+    expect(sections.NAMING?.map((s) => s.stepId)).toContain("FRICHE_ACTIVITY");
   });
 });
