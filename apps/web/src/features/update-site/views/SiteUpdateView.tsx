@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from "react";
+import Alert from "@codegouvfr/react-dsfr/Alert";
+import { useEffect } from "react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import { routes, useRoute } from "@/app/router";
 import { isUrbanZoneStepHandlerStep } from "@/features/create-site/core/urban-zone/urbanZoneSteps";
 import { customStepToComponent } from "@/features/create-site/views/custom/stepToComponent";
 import { getRouteFromCreationStep } from "@/features/create-site/views/routes";
@@ -10,14 +10,24 @@ import { renderStepView } from "@/features/create-site/views/site-form/stepView.
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 import { urbanZoneStepToComponent } from "@/features/create-site/views/urban-zone/stepToComponent";
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
-import { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import { updateUrbanZoneFormSelectors } from "../core/updateSite.actions";
-import { selectSiteUpdateCurrentStep } from "../core/updateSite.reducer";
+import {
+  selectSiteUpdateCurrentStep,
+  selectSiteUpdateIsFormValid,
+  selectSiteUpdateSaveState,
+} from "../core/updateSite.reducer";
 import SiteUpdateStepper from "./SiteUpdateStepper";
 import SiteUpdateUrbanZoneStepper from "./SiteUpdateUrbanZoneStepper";
+import { useSiteUpdateSidebarActions } from "./useSiteUpdateSidebarActions";
 import { useSyncSiteUpdateStepWithRouteQuery } from "./useSyncSiteUpdateStepWithRouteQuery";
+
+// The two final-summary steps (SiteDataSummary / UrbanZoneFinalSummary, both shared with
+// creation) already render their own "La sauvegarde a échoué" alert — this set is used to skip
+// the wizard-level alert below on those two steps only, so the error never shows twice.
+const STEPS_WITH_OWN_SAVE_ERROR_ALERT = new Set(["FINAL_SUMMARY", "URBAN_ZONE_FINAL_SUMMARY"]);
 
 const HTML_SITE_UPDATE_MAIN_TITLE = "Site foncier - Modification";
 
@@ -26,11 +36,15 @@ type Props = {
 };
 
 function SiteUpdateView({ siteId }: Props) {
-  const currentRoute = useRoute();
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
-  const { selectDerivedSiteData } = useCustomSiteForm();
+  const { selectDerivedSiteData, onSave } = useCustomSiteForm();
   const currentStep = useAppSelector(selectSiteUpdateCurrentStep);
   const siteData = useAppSelector(selectDerivedSiteData);
+  // Read from the store (not from `useCustomSiteForm()`, whose selectors only see the `custom`
+  // sub-state) so the combined save state/validity are correct for urban-zone-only edits too —
+  // see `selectSiteUpdateSaveState`'s doc comment in updateSite.reducer.ts.
+  const saveState = useAppSelector(selectSiteUpdateSaveState);
+  const isFormValid = useAppSelector(selectSiteUpdateIsFormValid);
   // For an urban-zone site the custom flow's own derived site data never carries a name (its
   // NAMING step lives on the urban-zone sub-flow instead, see convertSiteToCustomSteps.ts) — so
   // for that nature, read the name (falling back to an address-derived generated name) off the
@@ -47,39 +61,40 @@ function SiteUpdateView({ siteId }: Props) {
     window.scrollTo(0, 0);
   }, [currentStep]);
 
-  const goBackProps = useMemo(() => {
-    if (
-      currentRoute.name === routes.updateSite.name &&
-      currentRoute.params.from === "evaluations"
-    ) {
-      return { linkProps: routes.myEvaluations().link, text: "Retour à mes évaluations" };
-    }
-    return {
-      linkProps: routes.siteFeatures({ siteId }).link,
-      text: "Retour aux détails du site",
-    };
-  }, [currentRoute, siteId]);
-
-  const actions: SidebarLayoutProps["actions"] = [
-    {
-      ...goBackProps,
-      iconId: "ri-arrow-left-line",
-      priority: "secondary",
-    },
-  ];
+  const actions = useSiteUpdateSidebarActions({ siteId, onSave, saveState, isFormValid });
 
   // Two-engine flow (ticket 11): ADDRESS/SURFACE_AREA/URBAN_ZONE_TYPE stay on the custom
   // provider/stepper (already an ancestor, see views/index.tsx); every other urban-zone step
   // needs its own provider (a second, independent context) and its own clickable stepper.
   const isUrbanZoneStep = isUrbanZoneStepHandlerStep(currentStep);
 
-  const mainChildren = isUrbanZoneStep ? (
+  const showSaveErrorAlert =
+    saveState === "error" && !STEPS_WITH_OWN_SAVE_ERROR_ALERT.has(currentStep);
+
+  const stepContent = isUrbanZoneStep ? (
     <UrbanZoneSiteFormProvider mode="update">
       {renderStepView(urbanZoneStepToComponent, currentStep, HTML_SITE_UPDATE_MAIN_TITLE)}
     </UrbanZoneSiteFormProvider>
   ) : (
     renderStepView(customStepToComponent, currentStep, HTML_SITE_UPDATE_MAIN_TITLE)
   );
+
+  const mainChildren =
+    saveState === "loading" ? (
+      <LoadingSpinner />
+    ) : (
+      <>
+        {showSaveErrorAlert && (
+          <Alert
+            className="mb-4"
+            severity="error"
+            title="La sauvegarde a échoué"
+            description="Une erreur s'est produite lors de l'enregistrement des modifications. Veuillez réessayer."
+          />
+        )}
+        {stepContent}
+      </>
+    );
 
   const sidebarChildren = isUrbanZoneStep ? (
     <UrbanZoneSiteFormProvider mode="update">

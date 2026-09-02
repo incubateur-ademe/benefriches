@@ -1,6 +1,7 @@
 import type { GetSiteFeaturesResponseDto } from "shared";
 import { describe, expect, it } from "vitest";
 
+import type { RootState } from "@/app/store/store";
 import { createStore } from "@/app/store/store";
 import { customFormActions } from "@/features/create-site/core/custom/custom.actions";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
@@ -12,7 +13,10 @@ import {
   siteUpdateInitiated,
   siteUpdateSaved,
 } from "./updateSite.actions";
-import updateSiteReducer from "./updateSite.reducer";
+import updateSiteReducer, {
+  selectSiteUpdateIsFormValid,
+  selectSiteUpdateSaveState,
+} from "./updateSite.reducer";
 
 const FRICHE_FEATURES: GetSiteFeaturesResponseDto = {
   id: "site-1",
@@ -39,6 +43,154 @@ const FRICHE_FEATURES: GetSiteFeaturesResponseDto = {
   fricheActivity: "INDUSTRY",
   hasContaminatedSoils: false,
 };
+
+describe("updateSite reducer selectors", () => {
+  it("selectSiteUpdateSaveState returns 'idle' for a freshly hydrated friche site", () => {
+    const state = updateSiteReducer(
+      undefined,
+      siteUpdateInitiated.fulfilled(
+        { features: FRICHE_FEATURES, isEditable: true, notEditableReason: null },
+        "requestId",
+        "site-1",
+      ),
+    );
+
+    expect(selectSiteUpdateSaveState({ siteUpdate: state } as RootState)).toBe("idle");
+  });
+
+  it("selectSiteUpdateSaveState returns 'dirty' after an urban-zone-only step completion (custom.saveState alone would still say idle)", () => {
+    const hydrated = updateSiteReducer(
+      undefined,
+      siteUpdateInitiated.fulfilled(
+        { features: FRICHE_FEATURES, isEditable: true, notEditableReason: null },
+        "requestId",
+        "site-1",
+      ),
+    );
+
+    const state = updateSiteReducer(
+      hydrated,
+      updateUrbanZoneFormActions.stepCompletionRequested({
+        stepId: "URBAN_ZONE_MANAGER",
+        answers: { structureType: "activity_park_manager" },
+      }),
+    );
+
+    expect(state.custom.saveState).toBe("idle");
+    expect(state.urbanZone.saveState).toBe("dirty");
+    expect(selectSiteUpdateSaveState({ siteUpdate: state } as RootState)).toBe("dirty");
+  });
+
+  it("selectSiteUpdateSaveState reflects loading then success across siteUpdateSaved.pending/.fulfilled, and error on .rejected", () => {
+    const hydrated = updateSiteReducer(
+      undefined,
+      siteUpdateInitiated.fulfilled(
+        { features: FRICHE_FEATURES, isEditable: true, notEditableReason: null },
+        "requestId",
+        "site-1",
+      ),
+    );
+
+    const pending = updateSiteReducer(hydrated, siteUpdateSaved.pending("reqId", undefined));
+    expect(selectSiteUpdateSaveState({ siteUpdate: pending } as RootState)).toBe("loading");
+
+    const fulfilled = updateSiteReducer(
+      pending,
+      siteUpdateSaved.fulfilled(undefined, "reqId", undefined),
+    );
+    expect(selectSiteUpdateSaveState({ siteUpdate: fulfilled } as RootState)).toBe("success");
+
+    const rejected = updateSiteReducer(
+      pending,
+      siteUpdateSaved.rejected(new Error("failed"), "reqId", undefined),
+    );
+    expect(selectSiteUpdateSaveState({ siteUpdate: rejected } as RootState)).toBe("error");
+  });
+
+  it("selectSiteUpdateSaveState returns 'dirty' when a stale 'success' lingers in the untouched sub-state after a later edit", () => {
+    const hydrated = updateSiteReducer(
+      undefined,
+      siteUpdateInitiated.fulfilled(
+        { features: FRICHE_FEATURES, isEditable: true, notEditableReason: null },
+        "requestId",
+        "site-1",
+      ),
+    );
+
+    // A prior successful save leaves BOTH sub-states at "success" (siteUpdateSaved.fulfilled sets
+    // them in lockstep), including urbanZone.saveState even though this FRICHE site never touches
+    // the urban-zone sub-form.
+    const saved = updateSiteReducer(
+      updateSiteReducer(hydrated, siteUpdateSaved.pending("reqId", undefined)),
+      siteUpdateSaved.fulfilled(undefined, "reqId", undefined),
+    );
+    expect(selectSiteUpdateSaveState({ siteUpdate: saved } as RootState)).toBe("success");
+
+    // A later edit only flips custom.saveState to "dirty" (applyStepChanges only mutates the
+    // sub-state it's called against); urbanZone.saveState stays stale at "success".
+    const editedAfterSave = updateSiteReducer(
+      saved,
+      updateCustomFormActions.stepCompletionRequested({
+        stepId: "NAMING",
+        answers: { name: "Nouveau nom", description: "Une friche industrielle" },
+      }),
+    );
+
+    expect(editedAfterSave.custom.saveState).toBe("dirty");
+    expect(editedAfterSave.urbanZone.saveState).toBe("success");
+    expect(selectSiteUpdateSaveState({ siteUpdate: editedAfterSave } as RootState)).toBe("dirty");
+  });
+
+  it("selectSiteUpdateIsFormValid is true for a freshly hydrated FRICHE site", () => {
+    const state = updateSiteReducer(
+      undefined,
+      siteUpdateInitiated.fulfilled(
+        { features: FRICHE_FEATURES, isEditable: true, notEditableReason: null },
+        "requestId",
+        "site-1",
+      ),
+    );
+
+    expect(selectSiteUpdateIsFormValid({ siteUpdate: state } as RootState)).toBe(true);
+  });
+
+  it("selectSiteUpdateIsFormValid is true for a freshly hydrated URBAN_ZONE site (both sub-flows)", () => {
+    const URBAN_ZONE_FEATURES: GetSiteFeaturesResponseDto = {
+      id: "site-uz-1",
+      name: "Zone Nord",
+      nature: "URBAN_ZONE",
+      isExpressSite: false,
+      owner: { structureType: "company", name: "Owner Corp" },
+      soilsDistribution: {},
+      surfaceArea: 10000,
+      address: FRICHE_FEATURES.address,
+      yearlyExpenses: [],
+      yearlyIncomes: [],
+      urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
+      landParcels: [
+        {
+          type: "COMMERCIAL_ACTIVITY_AREA",
+          surfaceArea: 10000,
+          soilsDistribution: { IMPERMEABLE_SOILS: 10000 },
+        },
+      ],
+      manager: { structureType: "activity_park_manager", name: "" },
+      vacantCommercialPremisesFootprint: 0,
+      fullTimeJobsEquivalent: 5,
+    };
+
+    const state = updateSiteReducer(
+      undefined,
+      siteUpdateInitiated.fulfilled(
+        { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+        "requestId",
+        "site-uz-1",
+      ),
+    );
+
+    expect(selectSiteUpdateIsFormValid({ siteUpdate: state } as RootState)).toBe(true);
+  });
+});
 
 describe("updateSite reducer", () => {
   it("lands on FINAL_SUMMARY with a non-empty stepsSequence and an idle saveState after hydration", () => {

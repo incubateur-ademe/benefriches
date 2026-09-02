@@ -12,6 +12,7 @@ import {
   type CustomWizardFormDefinition,
 } from "@/features/create-site/core/custom/customForm.reducer";
 import { CUSTOM_STEP_TO_GROUP } from "@/features/create-site/core/custom/customStepperConfig";
+import { isNavigableCustomStep } from "@/features/create-site/core/custom/customStepperConfig";
 import { deriveSiteDataFromCustomSteps } from "@/features/create-site/core/custom/customSteps";
 import { customStepHandlerRegistry } from "@/features/create-site/core/custom/stepHandlerRegistry";
 import { surfaceAreaInputModeUpdated } from "@/features/create-site/core/steps/spaces/spaces.actions";
@@ -21,6 +22,7 @@ import {
   type UrbanZoneWizardFormDefinition,
 } from "@/features/create-site/core/urban-zone/urbanZoneForm.reducer";
 import { URBAN_ZONE_STEP_TO_GROUP } from "@/features/create-site/core/urban-zone/urbanZoneStepperConfig";
+import { isNavigableUrbanZoneStep } from "@/features/create-site/core/urban-zone/urbanZoneStepperConfig";
 import type { UrbanZoneSiteCreationStep } from "@/features/create-site/core/urban-zone/urbanZoneSteps";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 
@@ -245,6 +247,70 @@ export const selectSiteUpdateCurrentStep = createSelector(
   (state: RootState) => state.siteUpdate,
   (state): SiteCreationCustomStep | UrbanZoneSiteCreationStep =>
     state.customHandedOffToUrbanZone ? state.urbanZone.currentStep : state.custom.currentStep,
+);
+
+/**
+ * The combined save state driving the wizard's persistent sidebar save button (ticket 16).
+ * `siteUpdateSaved.pending/fulfilled/rejected` set BOTH `custom.saveState` and
+ * `urbanZone.saveState` in lockstep, but `applyStepChanges` (shared/core/wizard-form/helpers/
+ * applyStepChanges.ts) only marks the sub-form the edited step belongs to as "dirty" — a naive
+ * read of `state.siteUpdate.custom.saveState` alone would miss an urban-zone-only edit. If
+ * either sub-state is "loading", that takes priority (a save request always touches both, so they
+ * only ever disagree on that value for transient in-between renders). Otherwise "dirty" from
+ * either sub-state outranks "success"/"error" from the other: `applyStepChanges` only flips the
+ * sub-state it's called against to "dirty", so a stale "success"/"error" left in the untouched
+ * sub-state after a save must never mask a genuinely dirty edit made afterwards. Only when
+ * neither is dirty do we fall back to "success"/"error"; otherwise "idle".
+ */
+export const selectSiteUpdateSaveState = createSelector(
+  (state: RootState) => state.siteUpdate,
+  (state): "idle" | "dirty" | "loading" | "success" | "error" => {
+    const { saveState: customSaveState } = state.custom;
+    const { saveState: urbanZoneSaveState } = state.urbanZone;
+
+    if (customSaveState === "loading" || urbanZoneSaveState === "loading") {
+      return "loading";
+    }
+    if (customSaveState === "dirty" || urbanZoneSaveState === "dirty") {
+      return "dirty";
+    }
+    for (const priorityState of ["success", "error"] as const) {
+      if (customSaveState === priorityState || urbanZoneSaveState === priorityState) {
+        return priorityState;
+      }
+    }
+    return "idle";
+  },
+);
+
+/**
+ * Whether every navigable (answer) step of the wizard is completed, gating the save button's
+ * enabled state. Only `custom`'s navigable steps are considered unless the site has been handed
+ * off to the urban-zone sub-flow (ticket 11), in which case `urbanZone`'s navigable steps are
+ * considered too — mirroring `selectSiteUpdateCurrentStep`'s own hand-off branch.
+ */
+export const selectSiteUpdateIsFormValid = createSelector(
+  (state: RootState) => state.siteUpdate,
+  (state): boolean => {
+    const customSteps = state.custom.steps as Record<string, { completed?: boolean } | undefined>;
+    const customStepsValid = state.custom.stepsSequence
+      .filter(isNavigableCustomStep)
+      .every((stepId) => customSteps[stepId]?.completed);
+
+    if (!state.customHandedOffToUrbanZone) {
+      return customStepsValid;
+    }
+
+    const urbanZoneSteps = state.urbanZone.steps as Record<
+      string,
+      { completed?: boolean } | undefined
+    >;
+    const urbanZoneStepsValid = state.urbanZone.stepsSequence
+      .filter(isNavigableUrbanZoneStep)
+      .every((stepId) => urbanZoneSteps[stepId]?.completed);
+
+    return customStepsValid && urbanZoneStepsValid;
+  },
 );
 
 export default updateSiteReducer;
