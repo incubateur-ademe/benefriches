@@ -33,7 +33,7 @@ export const useSiteUpdateSidebarActions = ({
     }
     return {
       linkProps: routes.siteFeatures({ siteId }).link,
-      text: "Retour aux détails du site",
+      text: "Retour aux caractéristiques du site",
     };
   }, [currentRoute, siteId]);
 

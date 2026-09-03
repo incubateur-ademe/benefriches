@@ -19,6 +19,7 @@ import {
   selectSiteUpdateIsFormValid,
   selectSiteUpdateSaveState,
 } from "../core/updateSite.reducer";
+import SiteUpdateNavigationBlockerDialog from "./SiteUpdateNavigationBlockerDialog";
 import SiteUpdateStepper from "./SiteUpdateStepper";
 import SiteUpdateUrbanZoneStepper from "./SiteUpdateUrbanZoneStepper";
 import { useSiteUpdateSidebarActions } from "./useSiteUpdateSidebarActions";
@@ -105,14 +106,20 @@ function SiteUpdateView({ siteId }: Props) {
   );
 
   return (
-    <SidebarLayout
-      title={`Modification du site « ${siteName} »`}
-      header="sticky"
-      currentUserEmail={currentUserEmail}
-      actions={actions}
-      sidebarChildren={sidebarChildren}
-      mainChildren={mainChildren}
-    />
+    <>
+      {/* Mounted as a sibling of SidebarLayout, not inside mainChildren: mainChildren is swapped
+          for a LoadingSpinner while saveState === "loading", which would otherwise unmount and
+          remount the dialog (and its session.block subscription) on every save. */}
+      <SiteUpdateNavigationBlockerDialog shouldBlock={saveState === "dirty"} />
+      <SidebarLayout
+        title={`Modification du site « ${siteName} »`}
+        header="sticky"
+        currentUserEmail={currentUserEmail}
+        actions={actions}
+        sidebarChildren={sidebarChildren}
+        mainChildren={mainChildren}
+      />
+    </>
   );
 }
 
