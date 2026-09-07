@@ -1,4 +1,4 @@
-import Input, { InputProps } from "@codegouvfr/react-dsfr/Input";
+import { InputProps } from "@codegouvfr/react-dsfr/Input";
 import { ChangeEvent } from "react";
 import type { Address } from "shared";
 
@@ -58,10 +58,9 @@ const SearchAddressAutocompleteInput = ({
       value={autocompleteValue}
       options={options}
       onSelect={handleSelect}
-    >
-      <Input
-        {...searchInputProps}
-        nativeInputProps={{
+      inputProps={{
+        ...searchInputProps,
+        nativeInputProps: {
           ...searchInputProps.nativeInputProps,
           value: searchText,
           type: "search",
@@ -69,9 +68,9 @@ const SearchAddressAutocompleteInput = ({
             onSearchTextChange(e.target.value);
             onSelectedAddressChange(undefined);
           },
-        }}
-      />
-    </Autocomplete>
+        },
+      }}
+    />
   );
 };
 

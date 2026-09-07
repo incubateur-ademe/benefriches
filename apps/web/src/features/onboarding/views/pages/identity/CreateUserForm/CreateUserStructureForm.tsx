@@ -190,16 +190,13 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
               setValue("selectedStructureMunicipality", value, { shouldValidate: true });
               setValue("structureMunicipalityText", municipalities[value]?.label);
             }}
-          >
-            <Input
-              label={<RequiredLabel label="Commune ou code postal" />}
-              state={formState.errors.selectedStructureMunicipality ? "error" : "default"}
-              stateRelatedMessage={
-                formState.errors.selectedStructureMunicipality
-                  ? formState.errors.selectedStructureMunicipality.message
-                  : undefined
-              }
-              nativeInputProps={{
+            inputProps={{
+              label: <RequiredLabel label="Commune ou code postal" />,
+              state: formState.errors.selectedStructureMunicipality ? "error" : "default",
+              stateRelatedMessage: formState.errors.selectedStructureMunicipality
+                ? formState.errors.selectedStructureMunicipality.message
+                : undefined,
+              nativeInputProps: {
                 placeholder: "38000, Angers...",
                 value: structureMunicipalityText ?? "",
                 onChange: (e: ChangeEvent<HTMLInputElement>) => {
@@ -207,9 +204,9 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
                   setValue("selectedStructureMunicipality", undefined);
                   void onSearch(e.target.value);
                 },
-              }}
-            />
-          </Autocomplete>
+              },
+            }}
+          />
           {selectedStructureMunicipality && (
             <Select
               options={

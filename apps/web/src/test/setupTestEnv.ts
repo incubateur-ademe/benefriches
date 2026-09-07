@@ -11,3 +11,14 @@ vi.stubGlobal("CSS", {
     return true;
   }),
 });
+
+// jsdom doesn't implement ResizeObserver; HeadlessUI's Combobox uses it (via floating-ui) to
+// track its anchored options panel's size.
+vi.stubGlobal(
+  "ResizeObserver",
+  class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  },
+);

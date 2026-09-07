@@ -1,42 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import type { AddressWithBanId } from "@/shared/core/gateways/AddressSearchGateway";
 
 import SearchAddressAutocompleteInput from "./SearchAddressAutocompleteInput";
-
-// Mock Autocomplete to avoid HeadlessUI Combobox jsdom incompatibilities
-// (ComboboxInput event handlers are disconnected from native input through DSFR Input wrapper).
-// This tests SearchAddressAutocompleteInput's logic without HeadlessUI internals.
-vi.mock("../../Autocomplete/Autocomplete", () => ({
-  default: ({
-    options,
-    onSelect,
-    children,
-  }: {
-    options: { label: string; value: string }[];
-    onSelect: (value: string) => void;
-    children: ReactNode;
-  }) => (
-    <div>
-      {children}
-      <ul role="listbox">
-        {options.map((opt) => (
-          <li
-            key={opt.value}
-            role="option"
-            onClick={() => {
-              onSelect(opt.value);
-            }}
-          >
-            {opt.label}
-          </li>
-        ))}
-      </ul>
-    </div>
-  ),
-}));
 
 const SEARCH_INPUT_LABEL = "Adresse";
 
@@ -63,6 +30,13 @@ const defaultProps = () => ({
 });
 
 const getSearchInput = () => screen.getByLabelText(SEARCH_INPUT_LABEL);
+
+// The options list only renders once the combobox is open; querying by role="option" beforehand
+// finds nothing even when suggestions were passed in. Arrow-down is a realistic way a user (or a
+// screen reader) opens it without typing.
+const openDropdown = () => {
+  fireEvent.keyDown(getSearchInput(), { key: "ArrowDown" });
+};
 
 describe("SearchAddressAutocompleteInput", () => {
   it("renders input with search text passed as prop", () => {
@@ -102,8 +76,11 @@ describe("SearchAddressAutocompleteInput", () => {
       />,
     );
 
+    openDropdown();
     const option = screen.getByRole("option", { name: /1 rue de la Paix/ });
-    fireEvent.click(option);
+    // HeadlessUI selects an option on mousedown (so the selection commits before the input's
+    // blur closes the dropdown), not on click.
+    fireEvent.mouseDown(option, { button: 0 });
 
     expect(onSearchTextChange).toHaveBeenCalledWith(address.value);
     expect(onSelectedAddressChange).toHaveBeenCalledWith(address);
@@ -124,6 +101,7 @@ describe("SearchAddressAutocompleteInput", () => {
       />,
     );
 
+    openDropdown();
     const option = screen.getByRole("option", { name: "Montrouge (92120)" });
     expect(option).toBeInTheDocument();
   });
@@ -136,6 +114,7 @@ describe("SearchAddressAutocompleteInput", () => {
 
     render(<SearchAddressAutocompleteInput {...defaultProps()} suggestions={addresses} />);
 
+    openDropdown();
     expect(screen.getByRole("option", { name: "1 rue de la Paix, Paris" })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: "2 avenue des Champs, Paris" })).toBeInTheDocument();
   });
