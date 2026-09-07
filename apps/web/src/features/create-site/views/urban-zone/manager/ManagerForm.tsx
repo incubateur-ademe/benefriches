@@ -19,6 +19,7 @@ type Props = {
   initialValues: {
     structureType: ManagerStructureType | undefined;
     localAuthority: LocalAuthority | undefined;
+    localAuthorityName: string | undefined;
   };
   localAuthoritiesList: { type: LocalAuthority; name: string }[];
   onSubmit: (
@@ -51,8 +52,14 @@ function ManagerForm({ initialValues, localAuthoritiesList, onSubmit, onBack }: 
         onSubmit={handleSubmit(({ structureType, localAuthority }) => {
           if (!structureType) return;
           if (structureType === "local_authority" && localAuthority) {
+            // Preserve the specific stored manager name when the answer is unchanged, instead of
+            // recomputing a generic type→label from localAuthoritiesList — that list only carries
+            // one name per structure type, so it would silently overwrite a specific name (e.g.
+            // "Mairie de Meylan") with the generic one (e.g. "Mairie") on an untouched resubmit.
             const localAuthorityName =
-              localAuthoritiesList.find((la) => la.type === localAuthority)?.name ?? "";
+              localAuthority === initialValues.localAuthority && initialValues.localAuthorityName
+                ? initialValues.localAuthorityName
+                : (localAuthoritiesList.find((la) => la.type === localAuthority)?.name ?? "");
             onSubmit({ structureType, localAuthority, localAuthorityName });
           } else {
             onSubmit({ structureType: "activity_park_manager" });

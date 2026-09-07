@@ -14,6 +14,7 @@ type ManagerViewData = {
   initialValues: {
     structureType: "activity_park_manager" | "local_authority" | undefined;
     localAuthority: LocalAuthority | undefined;
+    localAuthorityName: string | undefined;
   };
   localAuthoritiesList: AvailableLocalAuthority[];
 };
@@ -37,6 +38,8 @@ export const createManagerSelectors = (
           structureType: answers?.structureType,
           localAuthority:
             answers?.structureType === "local_authority" ? answers.localAuthority : undefined,
+          localAuthorityName:
+            answers?.structureType === "local_authority" ? answers.localAuthorityName : undefined,
         },
         localAuthoritiesList,
       };

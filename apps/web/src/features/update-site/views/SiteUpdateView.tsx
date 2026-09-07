@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { isUrbanZoneStepHandlerStep } from "@/features/create-site/core/urban-zone/urbanZoneSteps";
+import CustomSiteCascadingUpdateDialog from "@/features/create-site/views/custom/CustomSiteCascadingUpdateDialog";
 import { customStepToComponent } from "@/features/create-site/views/custom/stepToComponent";
 import { getRouteFromCreationStep } from "@/features/create-site/views/routes";
 import { UrbanZoneSiteFormProvider } from "@/features/create-site/views/site-form/UrbanZoneSiteFormProvider";
@@ -111,6 +112,14 @@ function SiteUpdateView({ siteId }: Props) {
           for a LoadingSpinner while saveState === "loading", which would otherwise unmount and
           remount the dialog (and its session.block subscription) on every save. */}
       <SiteUpdateNavigationBlockerDialog shouldBlock={saveState === "dirty"} />
+      {/* Mirrors SiteCreationWizard.tsx: without this, an address change that invalidates a
+          local-authority owner parks a pending step completion with no dialog to confirm it,
+          silently freezing the update wizard on the address step. SiteUpdateView already renders
+          inside CustomSiteFormProvider mode="update" (see views/index.tsx), so this dialog's
+          useCustomSiteForm() resolves to the update lens/actions with no extra wiring. No
+          urban-zone equivalent is needed: no urban-zone handler declares getDependencyRules, so
+          that sub-flow never parks a pending completion (see urbanZoneForm.reducer.ts). */}
+      <CustomSiteCascadingUpdateDialog />
       <SidebarLayout
         title={`Modification du site « ${siteName} »`}
         header="sticky"

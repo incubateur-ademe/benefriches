@@ -47,10 +47,12 @@ describe("urban-zone selector bundle — lens isolation", () => {
     expect(creationUrbanZoneFormSelectors.selectManagerViewData(state).initialValues).toEqual({
       structureType: "activity_park_manager",
       localAuthority: undefined,
+      localAuthorityName: undefined,
     });
     expect(updateUrbanZoneFormSelectors.selectManagerViewData(state).initialValues).toEqual({
       structureType: "local_authority",
       localAuthority: "municipality",
+      localAuthorityName: "Ville de Lyon",
     });
   });
 

@@ -118,14 +118,30 @@ export class SiteCreationPage {
     const searchInput = this.page.getByRole("combobox", {
       name: /Commune ou code postal|Adresse/i,
     });
+    // Clear any text already in the field so pressSequentially replaces it instead of appending onto it
+    await searchInput.clear();
     // Use pressSequentially instead of fill() to match how a real user types (fill() sets the
     // value in one go, bypassing the per-keystroke debounced search).
     await searchInput.pressSequentially(municipality, { delay: 50 });
 
-    // Wait for autocomplete suggestions to appear and select the first option
-    const firstOption = this.page.getByRole("option").first();
-    await firstOption.waitFor({ state: "visible", timeout: 10000 });
-    await firstOption.click();
+    // Wait for autocomplete suggestions matching what was just typed, and select the first one.
+    // Filtering by name (not just `.first()`) matters when this is the second `fillAddress` call
+    // on the same field (see the update wizard's address-cascade spec): the previous search's
+    // suggestions can still be visible in the DOM for a moment after the new text is typed, and
+    // an unfiltered `.first()` would pick that stale option — silently re-selecting the old
+    // municipality — before the debounced search for the new text has even resolved.
+    // Match each word of the query rather than the whole string as one contiguous block: the BAN
+    // API interleaves the postcode between street and commune (e.g. searching "Sendere Blajan"
+    // returns an option labelled "Sendere 31350 Blajan"), so a single-block match would never fire.
+    const words = municipality
+      .trim()
+      .split(/\s+/)
+      .map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    const matchingOption = this.page
+      .getByRole("option", { name: new RegExp(words.join(".*"), "i") })
+      .first();
+    await matchingOption.waitFor({ state: "visible", timeout: 10000 });
+    await matchingOption.click();
 
     await this.submit();
   }

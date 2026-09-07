@@ -11,6 +11,7 @@ export type TestSite = {
 
 export type FricheCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "FRICHE" }>;
 export type FricheExpressSiteDto = Extract<CreateExpressSiteDto, { nature: "FRICHE" }>;
+export type UrbanZoneCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "URBAN_ZONE" }>;
 
 export const createExpressSiteViaApi =
   (apiClient: ApiClient) =>

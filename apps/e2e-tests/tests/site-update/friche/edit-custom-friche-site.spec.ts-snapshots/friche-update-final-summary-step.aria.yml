@@ -1,0 +1,69 @@
+- main:
+  - heading "Récapitulatif du site" [level=2]
+  - heading "📍 Localisation" [level=3]
+  - button "Modifier"
+  - button "Fermer la section"
+  - definition:
+    - strong: Adresse du site
+  - term: Meylan
+  - heading "🌾️ Sols" [level=3]
+  - button "Modifier"
+  - button "Fermer la section"
+  - definition:
+    - strong: Superficie totale du site
+  - term:
+    - strong: /\d+ \d+ ㎡/
+  - button "Menu"
+  - region "Chart. Highcharts interactive chart.":
+    - heading "Chart" [level=3]
+    - text: Pie chart with 3 slices.
+    - button "View as data table, Chart"
+    - img "Interactive chart":
+      - img /Bâtiments, \d+,\d+\. Superficie\./
+      - img /Sols imperméabilisés, \d+,\d+\. Superficie\./
+      - img /Sols perméables minéraux, \d+,\d+\. Superficie\./
+    - text: End of interactive chart.
+  - definition: Bâtiments
+  - term: /3 \d+ ㎡/
+  - definition: Sols imperméabilisés
+  - term: /2 \d+ ㎡/
+  - definition: Sols perméables minéraux
+  - term: /5 \d+ ㎡/
+  - heading "☣️ Pollution" [level=3]
+  - button "Modifier"
+  - button "Fermer la section"
+  - definition:
+    - strong: Superficie polluée
+  - term: /4 \d+ ㎡/
+  - heading "💥 Accidents" [level=3]
+  - button "Modifier"
+  - button "Fermer la section"
+  - definition:
+    - strong: Accidents survenus sur le site depuis 5 ans
+  - term:
+    - strong: Aucun
+  - heading "⚙️ Gestion et sécurisation de la friche" [level=3]
+  - button "Modifier"
+  - button "Fermer la section"
+  - definition:
+    - strong: Propriétaire actuel
+  - term: Mairie de Meylan
+  - definition:
+    - strong: Dépenses annuelles de la friche
+  - term: /3 \d+ €/
+  - definition: Entretien du site
+  - term: /3 \d+ €/
+  - heading "✍ Dénomination" [level=3]
+  - button "Modifier"
+  - button "Fermer la section"
+  - definition:
+    - strong: Type de friche
+  - term: Friche
+  - definition:
+    - strong: Nom du site
+  - term: Friche industrielle de Meylan
+  - list:
+    - listitem:
+      - button "Précédent"
+    - listitem:
+      - button "Suivant"
