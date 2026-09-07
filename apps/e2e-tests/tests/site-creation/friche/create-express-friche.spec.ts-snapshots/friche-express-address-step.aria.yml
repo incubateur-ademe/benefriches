@@ -1,8 +1,7 @@
 - main:
   - heading "Où est située la friche ?" [level=2]
-  - combobox:
-    - text: Commune ou code postal *
-    - searchbox "Commune ou code postal *"
+  - text: Commune ou code postal *
+  - combobox "Commune ou code postal *"
   - list:
     - listitem:
       - button "Précédent"

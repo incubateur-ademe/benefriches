@@ -113,12 +113,13 @@ export class SiteCreationPage {
   }
 
   async fillAddress(municipality: string): Promise<void> {
-    const searchInput = this.page.getByRole("searchbox", {
+    // Accessible role is "combobox" (HeadlessUI's Combobox pattern), not "searchbox" — even
+    // though the underlying native input is type="search".
+    const searchInput = this.page.getByRole("combobox", {
       name: /Commune ou code postal|Adresse/i,
     });
-    // Use pressSequentially instead of fill() because HeadlessUI's ComboboxInput
-    // tries to call setSelectionRange() on the DSFR Input wrapper instead of
-    // the native input element, causing "setSelectionRange is not a function" error
+    // Use pressSequentially instead of fill() to match how a real user types (fill() sets the
+    // value in one go, bypassing the per-keystroke debounced search).
     await searchInput.pressSequentially(municipality, { delay: 50 });
 
     // Wait for autocomplete suggestions to appear and select the first option
