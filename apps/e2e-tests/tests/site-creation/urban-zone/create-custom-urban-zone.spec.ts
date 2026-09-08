@@ -275,6 +275,7 @@ test.describe("site creation - urban zone - custom mode", () => {
     myEvaluationsPage,
     siteCreationPage,
     siteFeaturesPage,
+    urbanProjectCreationPage,
     urbanZoneSiteCreationPage,
   }) => {
     // Navigate to site creation page
@@ -359,6 +360,11 @@ test.describe("site creation - urban zone - custom mode", () => {
     );
     await urbanZoneSiteCreationPage.createSite();
     await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Collectivite");
+
+    // The link must actually take the user to project creation: the wizard's navigation blocker
+    // used to swallow this first click and leave the user on the result screen.
+    await siteCreationPage.clickCreateProjectLink();
+    await urbanProjectCreationPage.expectStepTitle("A quelle phase du projet êtes-vous");
 
     await myEvaluationsPage.goto();
     await myEvaluationsPage.expectCurrentPage();

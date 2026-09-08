@@ -194,6 +194,16 @@ export class SiteCreationPage {
     ).toBeVisible();
   }
 
+  /**
+   * Follows the "Évaluer un projet sur ce site" link from the creation result screen.
+   * This is client-side (SPA) navigation on purpose: the wizard's navigation blocker only
+   * intercepts in-app navigation, so a `page.goto` here would not exercise the same path.
+   */
+  async clickCreateProjectLink(): Promise<void> {
+    await this.page.getByRole("link", { name: "Évaluer un projet sur ce site" }).click();
+    await expect(this.page).toHaveURL(/\/creer-projet\?siteId=/);
+  }
+
   async expectCreateDemoProjectLink() {
     await expect(
       this.page.getByRole("link", { name: "Évaluer un projet démo sur ce site" }),

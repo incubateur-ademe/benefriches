@@ -6,6 +6,7 @@ test.describe("site creation - friche - custom mode", () => {
     myEvaluationsPage,
     siteCreationPage,
     siteFeaturesPage,
+    urbanProjectCreationPage,
   }) => {
     await siteCreationPage.goto();
 
@@ -151,6 +152,11 @@ test.describe("site creation - friche - custom mode", () => {
 
     await siteCreationPage.expectCreationSuccess("Friche industrielle de Blajan");
     await siteCreationPage.expectCreateProjectLink();
+
+    // The link must actually take the user to project creation: the wizard's navigation blocker
+    // used to swallow this first click and leave the user on the result screen.
+    await siteCreationPage.clickCreateProjectLink();
+    await urbanProjectCreationPage.expectStepTitle("A quelle phase du projet êtes-vous");
 
     await myEvaluationsPage.goto();
     await myEvaluationsPage.expectCurrentPage();

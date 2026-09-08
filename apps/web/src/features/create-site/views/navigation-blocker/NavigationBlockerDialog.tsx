@@ -1,5 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { Route } from "type-route";
 
 import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
@@ -13,11 +14,17 @@ const DIALOG_DSFR_CSS = [
   "bg-[var(--grey-50-1000)]/[0.64] dark:bg-[var(--grey-1000-100)]/[0.64]",
 ];
 
+// Hoisted to module scope: `allowRoute` sits in `useNavigationBlocker`'s effect dependency array,
+// so an inline arrow here would tear down and re-register the `session.block` subscription on
+// every render of this component.
+const allowSiteCreationRoute = (route: Route<typeof routes>) =>
+  route.name === routes.createSite.name;
+
 type Props = { saveState: "idle" | "dirty" | "loading" | "success" | "error" };
 export default function NavigationBlockerDialog({ saveState }: Props) {
   const { isModalOpened, onConfirmNavigation, onCancelNavigation } = useNavigationBlocker({
     shouldBlockNavigation: saveState !== "success",
-    allowRoute: (route) => route.name === routes.createSite.name,
+    allowRoute: allowSiteCreationRoute,
   });
 
   return (

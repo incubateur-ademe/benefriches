@@ -2,12 +2,14 @@ import { test as authTest } from "../../fixtures/auth.fixtures";
 import { MyEvaluationsPage } from "../../pages/MyEvaluationsPage";
 import { SiteCreationPage } from "../../pages/SiteCreationPage";
 import { SiteFeaturesPage } from "../../pages/SiteFeaturesPage";
+import { UrbanProjectCreationPage } from "../../pages/UrbanProjectCreationPage";
 import { UrbanZoneSiteCreationPage } from "../../pages/UrbanZoneSiteCreationPage";
 
 type SiteCreationFixtures = {
   myEvaluationsPage: MyEvaluationsPage;
   siteCreationPage: SiteCreationPage;
   siteFeaturesPage: SiteFeaturesPage;
+  urbanProjectCreationPage: UrbanProjectCreationPage;
   urbanZoneSiteCreationPage: UrbanZoneSiteCreationPage;
 };
 
@@ -20,6 +22,9 @@ export const test = authTest.extend<SiteCreationFixtures>({
   },
   siteFeaturesPage: async ({ authenticatedPage }, use) => {
     await use(new SiteFeaturesPage(authenticatedPage));
+  },
+  urbanProjectCreationPage: async ({ authenticatedPage }, use) => {
+    await use(new UrbanProjectCreationPage(authenticatedPage));
   },
   urbanZoneSiteCreationPage: async ({ authenticatedPage }, use) => {
     await use(new UrbanZoneSiteCreationPage(authenticatedPage));

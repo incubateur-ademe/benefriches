@@ -35,6 +35,15 @@ export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Prop
     },
     [],
   );
+  // Handle of the deferred resubscribe below, so it can be cancelled as soon as blocking is no
+  // longer wanted.
+  const pendingResubscribeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelPendingResubscribe = useCallback(() => {
+    if (pendingResubscribeRef.current !== null) {
+      clearTimeout(pendingResubscribeRef.current);
+      pendingResubscribeRef.current = null;
+    }
+  }, []);
 
   const subscribe = useCallback(() => {
     const unblock = session.block((blocker) => {
@@ -66,9 +75,18 @@ export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Prop
       // (confirmed empirically: a 0ms defer still re-subscribes before that popstate lands,
       // re-blocking retry's own in-flight pop and recursing indefinitely). A short delay gives
       // the browser's popstate round-trip time to land first.
+      //
+      // The re-check inside the callback matters as much as the one here: between scheduling and
+      // firing, blocking can stop being wanted — e.g. the site-creation wizard's last step syncs
+      // its URL (an allowed navigation, auto-confirmed here) and the save then succeeds within
+      // those 100ms. Re-subscribing then would arm a blocker nothing ever tears down (the effect
+      // below has already run for `shouldBlockNavigation: false`), silently swallowing the user's
+      // next navigation — the "'Évaluer un projet' does nothing" regression.
       if (shouldBlockNavigationRef.current) {
-        setTimeout(() => {
-          if (isMountedRef.current) subscribe();
+        cancelPendingResubscribe();
+        pendingResubscribeRef.current = setTimeout(() => {
+          pendingResubscribeRef.current = null;
+          if (isMountedRef.current && shouldBlockNavigationRef.current) subscribe();
         }, 100);
       }
     }
@@ -77,7 +95,7 @@ export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Prop
     // would redefine this callback (and re-run the effect below) on every dirty/idle toggle,
     // which isn't needed since the ref above always has the current value.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockedNavigation, subscribe]);
+  }, [blockedNavigation, subscribe, cancelPendingResubscribe]);
 
   useEffect(() => {
     if (!blockedNavigation?.needConfirm) {
@@ -87,6 +105,7 @@ export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Prop
 
   useEffect(() => {
     if (!shouldBlockNavigation) {
+      cancelPendingResubscribe();
       if (unblockRef.current) {
         unblockRef.current();
         unblockRef.current = null;
@@ -98,12 +117,13 @@ export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Prop
     subscribe();
 
     return () => {
+      cancelPendingResubscribe();
       if (unblockRef.current) {
         unblockRef.current();
         unblockRef.current = null;
       }
     };
-  }, [shouldBlockNavigation, subscribe]);
+  }, [shouldBlockNavigation, subscribe, cancelPendingResubscribe]);
 
   return {
     isModalOpened: blockedNavigation?.needConfirm === true,
