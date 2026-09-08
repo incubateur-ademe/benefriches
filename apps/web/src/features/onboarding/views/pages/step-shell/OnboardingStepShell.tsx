@@ -7,9 +7,11 @@ import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/Onb
 import OnboardingSpeechBubble from "./OnboardingSpeechBubble";
 import OnboardingStepProgress from "./OnboardingStepProgress";
 import { getOnboardingStepInfo, type OnboardingStepKey } from "./onboardingSteps";
+import type { OnboardingVariant } from "./onboardingVariant";
 
 type Props = {
   step: OnboardingStepKey;
+  variant?: OnboardingVariant;
   htmlTitle: string;
   children: ReactNode;
   belowBubbleContent?: ReactNode;
@@ -17,26 +19,27 @@ type Props = {
 
 export default function OnboardingStepShell({
   step,
+  variant,
   htmlTitle,
   children,
   belowBubbleContent,
 }: Props) {
-  const { stepNumber, totalSteps, previousRoute, forwardLabel, forwardRoute } =
-    getOnboardingStepInfo(step);
+  const { stepNumber, totalSteps, previousLinkProps, forwardLabel, forwardLinkProps } =
+    getOnboardingStepInfo(step, variant);
 
   const forwardButton: ButtonProps = {
     className: "mb-0",
     children: forwardLabel,
     priority: "primary",
-    linkProps: forwardRoute().link,
+    linkProps: forwardLinkProps,
   };
-  const buttons: [ButtonProps, ...ButtonProps[]] = previousRoute
+  const buttons: [ButtonProps, ...ButtonProps[]] = previousLinkProps
     ? [
         {
           className: "mb-0",
           children: "Retour",
           priority: "secondary",
-          linkProps: previousRoute().link,
+          linkProps: previousLinkProps,
         },
         forwardButton,
       ]
@@ -48,7 +51,7 @@ export default function OnboardingStepShell({
       bottomBarContent={
         <ButtonsGroup
           inlineLayoutWhen="always"
-          alignment={previousRoute ? "between" : "right"}
+          alignment={previousLinkProps ? "between" : "right"}
           buttons={buttons}
         />
       }

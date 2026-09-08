@@ -1,13 +1,19 @@
 import TestimoniesCarousel from "@/shared/views/components/Testimonies/TestimoniesCarousel";
 
 import OnboardingStepShell from "../step-shell/OnboardingStepShell";
+import type { OnboardingVariant } from "../step-shell/onboardingVariant";
 
 const HEADING = "Ils ont testé et approuvé Bénéfriches";
 
-export default function OnboardingTestimonialsPage() {
+type Props = {
+  variant?: OnboardingVariant;
+};
+
+export default function OnboardingTestimonialsPage({ variant }: Props) {
   return (
     <OnboardingStepShell
       step="testimonials"
+      variant={variant}
       htmlTitle={`${HEADING} - Premiers pas`}
       belowBubbleContent={<TestimoniesCarousel />}
     >

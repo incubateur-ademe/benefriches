@@ -1,19 +1,21 @@
+import type { Link } from "type-route";
 import { z } from "zod";
 
 import { routes } from "@/app/router";
 
+import type { OnboardingVariant } from "./onboardingVariant";
+
 export const onboardingStepKeySchema = z.enum(["welcome", "methodology", "testimonials"]);
 export type OnboardingStepKey = z.infer<typeof onboardingStepKeySchema>;
 
-type OnboardingRoute =
+type OnboardingStepRoute =
   | typeof routes.onBoardingWelcome
   | typeof routes.onBoardingMethodology
-  | typeof routes.onBoardingTestimonials
-  | typeof routes.myEvaluations;
+  | typeof routes.onBoardingTestimonials;
 
 type OnboardingStepDefinition = {
   key: OnboardingStepKey;
-  route: OnboardingRoute;
+  route: OnboardingStepRoute;
   forwardLabel: "Suivant" | "Commencer";
 };
 
@@ -26,12 +28,25 @@ const onboardingSteps: OnboardingStepDefinition[] = [
 export type OnboardingStepInfo = {
   stepNumber: number;
   totalSteps: number;
-  previousRoute: OnboardingRoute | undefined;
+  previousLinkProps: Link | undefined;
   forwardLabel: "Suivant" | "Commencer";
-  forwardRoute: OnboardingRoute;
+  forwardLinkProps: Link;
 };
 
-export function getOnboardingStepInfo(stepKey: OnboardingStepKey): OnboardingStepInfo {
+function getFlowExitLink(variant?: OnboardingVariant): Link {
+  if (variant === "evaluation-impacts") {
+    return routes.createSite({ evaluationMode: "impacts" }).link;
+  }
+  if (variant === "evaluation-mutabilite") {
+    return routes.evaluateReconversionCompatibility().link;
+  }
+  return routes.myEvaluations().link;
+}
+
+export function getOnboardingStepInfo(
+  stepKey: OnboardingStepKey,
+  variant?: OnboardingVariant,
+): OnboardingStepInfo {
   const stepIndex = onboardingSteps.findIndex((step) => step.key === stepKey);
   const step = onboardingSteps[stepIndex];
 
@@ -45,8 +60,12 @@ export function getOnboardingStepInfo(stepKey: OnboardingStepKey): OnboardingSte
   return {
     stepNumber: stepIndex + 1,
     totalSteps: onboardingSteps.length,
-    previousRoute: previousStep?.route,
+    previousLinkProps: previousStep
+      ? previousStep.route({ fonctionnalite: variant }).link
+      : undefined,
     forwardLabel: step.forwardLabel,
-    forwardRoute: nextStep ? nextStep.route : routes.myEvaluations,
+    forwardLinkProps: nextStep
+      ? nextStep.route({ fonctionnalite: variant }).link
+      : getFlowExitLink(variant),
   };
 }

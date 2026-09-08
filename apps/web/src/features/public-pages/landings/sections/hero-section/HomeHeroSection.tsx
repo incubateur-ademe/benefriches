@@ -15,7 +15,7 @@ export default function HeroHomeSection() {
       <>
         <p className="text-sm mb-8">+ de 400 projets évalués</p>
         <Button
-          linkProps={routes.onBoardingWhenToUse().link}
+          linkProps={routes.onBoardingWelcome().link}
           size="large"
           className={HERO_CTA_BUTTON_CLASSNAMES}
         >

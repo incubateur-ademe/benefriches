@@ -5,6 +5,7 @@ import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { onboardingWelcomeHelpRequested } from "@/features/support/core/onboardingWelcomeHelpRequested.action";
 
 import OnboardingStepShell from "../step-shell/OnboardingStepShell";
+import type { OnboardingVariant } from "../step-shell/onboardingVariant";
 
 // Best-effort copy: the real Figma copy (file tgMAVc4oAfXQ3a8NRURmcF, node 28571:5857) was not
 // reachable from this environment. These strings need design confirmation before shipping.
@@ -14,11 +15,15 @@ const INTRO_PARAGRAPH =
 const CONTACT_PARAGRAPH = "Une question ? Contactez-moi directement via la messagerie.";
 const CONTACT_BUTTON_LABEL = "Contacter Mintsa";
 
-export default function OnboardingWelcomePage() {
+type Props = {
+  variant?: OnboardingVariant;
+};
+
+export default function OnboardingWelcomePage({ variant }: Props) {
   const dispatch = useAppDispatch();
 
   return (
-    <OnboardingStepShell step="welcome" htmlTitle="Bienvenue - Premiers pas">
+    <OnboardingStepShell step="welcome" variant={variant} htmlTitle="Bienvenue - Premiers pas">
       <h2 className="mb-4">{HEADING}</h2>
       <p className="mb-4">{INTRO_PARAGRAPH}</p>
       {BENEFRICHES_ENV.crispEnabled && (

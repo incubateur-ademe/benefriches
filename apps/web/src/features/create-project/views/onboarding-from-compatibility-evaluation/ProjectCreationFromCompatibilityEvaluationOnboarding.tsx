@@ -2,9 +2,10 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import type { Route } from "type-route";
 
 import { routes } from "@/app/router";
-import UseCaseList from "@/features/onboarding/views/pages/when-to-use/UseCaseList";
-import UseItem from "@/features/onboarding/views/pages/when-to-use/UseItem";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
+
+import UseCaseList from "./UseCaseList";
+import UseItem from "./UseItem";
 
 type Props = {
   route: Route<typeof routes.projectCreationOnboarding>;

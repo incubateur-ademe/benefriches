@@ -1,4 +1,5 @@
 import OnboardingStepShell from "../step-shell/OnboardingStepShell";
+import type { OnboardingVariant } from "../step-shell/onboardingVariant";
 
 // Best-effort copy: the real Figma copy (file tgMAVc4oAfXQ3a8NRURmcF, node 28571:5857) was not
 // reachable from this environment. These strings need design confirmation before shipping.
@@ -7,9 +8,17 @@ const ADEME_PARAGRAPH = "Bénéfriches est un outil développé par l'ADEME depu
 const TESTED_PARAGRAPH =
   "Il a été testé avec plus de 150 personnes (collectivités, DDT, EPF, développeurs photovoltaïques, etc.).";
 
-export default function OnboardingMethodologyPage() {
+type Props = {
+  variant?: OnboardingVariant;
+};
+
+export default function OnboardingMethodologyPage({ variant }: Props) {
   return (
-    <OnboardingStepShell step="methodology" htmlTitle={`${HEADING} - Premiers pas`}>
+    <OnboardingStepShell
+      step="methodology"
+      variant={variant}
+      htmlTitle={`${HEADING} - Premiers pas`}
+    >
       <h2 className="mb-4">{HEADING}</h2>
       <p className="mb-4">{ADEME_PARAGRAPH}</p>
       <p className="mb-4">{TESTED_PARAGRAPH}</p>

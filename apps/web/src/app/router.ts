@@ -1,7 +1,7 @@
 import { createRouter, defineRoute, noMatch, param, ValueSerializer } from "type-route";
 
 import { ProjectSuggestion } from "@/features/create-project/core/project.types";
-import { OnboardingVariant } from "@/features/onboarding/views/pages/when-to-use/OnboardingWhenToUsePage";
+import { onboardingVariantSchema } from "@/features/onboarding/views/pages/step-shell/onboardingVariant";
 
 const onBoarding = defineRoute("/premiers-pas");
 const projectImpacts = defineRoute(
@@ -25,10 +25,7 @@ const getEnumValueSerializer = <T extends string>(values: T[]): ValueSerializer<
   },
 });
 
-const onBoardingFeatureSerializer = getEnumValueSerializer([
-  "evaluation-mutabilite",
-  "evaluation-impacts",
-] as OnboardingVariant[]);
+const onBoardingFeatureSerializer = getEnumValueSerializer([...onboardingVariantSchema.options]);
 
 const { RouteProvider, useRoute, routes, session } = createRouter(
   { scrollToTop: false },
@@ -46,22 +43,19 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
       },
       () => "/identite",
     ),
-    onBoardingWhenToUse: onBoarding.extend(
+    // ONBOARDING STEPS
+    onBoardingWelcome: onBoarding.extend(
       { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
-      () => "/quand-utiliser-benefriches",
+      () => "/bienvenue",
     ),
-    onBoardingWhenNotToUse: onBoarding.extend(
+    onBoardingMethodology: onBoarding.extend(
       { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
-      () => "/quand-ne-pas-utiliser-benefriches",
+      () => "/methodologie",
     ),
-    onBoardingIntroductionHow: onBoarding.extend(
+    onBoardingTestimonials: onBoarding.extend(
       { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
-      () => "/comment-ca-marche",
+      () => "/temoignages",
     ),
-    // ONBOARDING STEP SHELL (new flow, not yet linked from signup — see ticket 01)
-    onBoardingWelcome: onBoarding.extend(`/bienvenue`),
-    onBoardingMethodology: onBoarding.extend(`/methodologie`),
-    onBoardingTestimonials: onBoarding.extend(`/temoignages`),
     accessBenefriches: defineRoute(
       { redirectTo: param.query.optional.string },
       () => "/acceder-a-benefriches",

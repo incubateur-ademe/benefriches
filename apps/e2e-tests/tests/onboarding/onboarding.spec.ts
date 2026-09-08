@@ -1,5 +1,9 @@
 import { test, expect } from "./onboarding.fixtures";
 
+const WELCOME_HEADING = "Bonjour, je suis Mintsa !";
+const METHODOLOGY_HEADING = "Une méthodologie éprouvée";
+const TESTIMONIALS_HEADING = "Ils ont testé et approuvé Bénéfriches";
+
 test.describe("onboarding", () => {
   test("main call to action: allows new user to create account and complete onboarding", async ({
     page,
@@ -7,6 +11,7 @@ test.describe("onboarding", () => {
     accessBenefrichesPage,
     signupPage,
     testUser,
+    onboardingStepPage,
   }) => {
     // Navigate to homepage and click "Commencer"
     await homePage.goto();
@@ -21,21 +26,17 @@ test.describe("onboarding", () => {
     await signupPage.completeSignup(testUser);
 
     // Complete onboarding steps
-    await expect(page).toHaveURL(
-      (url) => url.pathname === "/premiers-pas/quand-utiliser-benefriches",
-    );
+    await onboardingStepPage.expectCurrentStep("bienvenue");
+    await onboardingStepPage.expectHeadingVisible(WELCOME_HEADING);
+    await onboardingStepPage.clickForward("Suivant");
 
-    await page.getByRole("link", { name: "Suivant" }).click();
+    await onboardingStepPage.expectCurrentStep("methodologie");
+    await onboardingStepPage.expectHeadingVisible(METHODOLOGY_HEADING);
+    await onboardingStepPage.clickForward("Suivant");
 
-    await expect(page).toHaveURL(
-      (url) => url.pathname === "/premiers-pas/quand-ne-pas-utiliser-benefriches",
-    );
-
-    await page.getByRole("link", { name: "Suivant" }).click();
-
-    await expect(page).toHaveURL((url) => url.pathname === "/premiers-pas/comment-ca-marche");
-
-    await page.getByRole("link", { name: "C'est parti" }).click();
+    await onboardingStepPage.expectCurrentStep("temoignages");
+    await onboardingStepPage.expectHeadingVisible(TESTIMONIALS_HEADING);
+    await onboardingStepPage.clickForward("Commencer");
 
     // Verify landing on site creation page
     await expect(page).toHaveURL((url) => url.pathname === "/mes-evaluations");
@@ -48,6 +49,7 @@ test.describe("onboarding", () => {
     homePage,
     accessBenefrichesPage,
     signupPage,
+    onboardingStepPage,
   }) => {
     // Navigate to homepage and start compatibility flow
     await homePage.goto();
@@ -65,21 +67,17 @@ test.describe("onboarding", () => {
     await signupPage.completeSignup(testUser);
 
     // Complete onboarding steps
-    await expect(
-      page.getByRole("heading", {
-        name: "Bienvenue sur Bénéfriches ! Vous êtes au bon endroit si :",
-      }),
-    ).toBeVisible();
+    await onboardingStepPage.expectCurrentStep("bienvenue");
+    await onboardingStepPage.expectHeadingVisible(WELCOME_HEADING);
+    await onboardingStepPage.clickForward("Suivant");
 
-    await page.getByRole("link", { name: "Suivant" }).click();
+    await onboardingStepPage.expectCurrentStep("methodologie");
+    await onboardingStepPage.expectHeadingVisible(METHODOLOGY_HEADING);
+    await onboardingStepPage.clickForward("Suivant");
 
-    await expect(page.getByRole("heading", { name: "En revanche, Bénéfriches n'" })).toBeVisible();
-
-    await page.getByRole("link", { name: "Suivant" }).click();
-
-    await expect(page.getByRole("heading", { name: "Bénéfriches, comment ça" })).toBeVisible();
-
-    await page.getByRole("link", { name: "C'est parti" }).click();
+    await onboardingStepPage.expectCurrentStep("temoignages");
+    await onboardingStepPage.expectHeadingVisible(TESTIMONIALS_HEADING);
+    await onboardingStepPage.clickForward("Commencer");
 
     // Verify landing on compatibility analysis page
     await expect(page.getByRole("heading", { name: "Analyse de la compatibilité" })).toBeVisible();
@@ -91,6 +89,7 @@ test.describe("onboarding", () => {
     homePage,
     accessBenefrichesPage,
     signupPage,
+    onboardingStepPage,
   }) => {
     // Navigate to homepage and start compatibility flow
     await homePage.goto();
@@ -110,21 +109,17 @@ test.describe("onboarding", () => {
     await signupPage.completeSignup(testUser);
 
     // Complete onboarding steps
-    await expect(
-      page.getByRole("heading", {
-        name: "Bienvenue sur Bénéfriches ! Vous êtes au bon endroit si :",
-      }),
-    ).toBeVisible();
+    await onboardingStepPage.expectCurrentStep("bienvenue");
+    await onboardingStepPage.expectHeadingVisible(WELCOME_HEADING);
+    await onboardingStepPage.clickForward("Suivant");
 
-    await page.getByRole("link", { name: "Suivant" }).click();
+    await onboardingStepPage.expectCurrentStep("methodologie");
+    await onboardingStepPage.expectHeadingVisible(METHODOLOGY_HEADING);
+    await onboardingStepPage.clickForward("Suivant");
 
-    await expect(page.getByRole("heading", { name: "En revanche, Bénéfriches n'" })).toBeVisible();
-
-    await page.getByRole("link", { name: "Suivant" }).click();
-
-    await expect(page.getByRole("heading", { name: "Bénéfriches, comment ça" })).toBeVisible();
-
-    await page.getByRole("link", { name: "C'est parti" }).click();
+    await onboardingStepPage.expectCurrentStep("temoignages");
+    await onboardingStepPage.expectHeadingVisible(TESTIMONIALS_HEADING);
+    await onboardingStepPage.clickForward("Commencer");
 
     // Verify landing on form page
     await expect(page).toHaveURL((url) => url.pathname === "/creer-site-foncier");
