@@ -33,6 +33,14 @@ export class OnboardingStepPage {
     await expect(this.backButton).toBeVisible();
   }
 
+  async expectHeadingVisible(name: string): Promise<void> {
+    await expect(this.page.getByRole("heading", { name })).toBeVisible();
+  }
+
+  async expectTextVisible(text: string): Promise<void> {
+    await expect(this.page.getByText(text)).toBeVisible();
+  }
+
   forwardButton(label: "Suivant" | "Commencer"): Locator {
     return this.page.getByRole("link", { name: label });
   }

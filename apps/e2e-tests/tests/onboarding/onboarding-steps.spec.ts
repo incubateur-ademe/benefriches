@@ -1,5 +1,7 @@
 import { test, expect } from "./onboarding-steps.fixtures";
 
+const METHODOLOGY_HEADING = "Une méthodologie éprouvée";
+
 test.describe("onboarding step shell", () => {
   test("allows an authenticated user to navigate directly to each new step URL, and to move back and forth between steps", async ({
     onboardingStepPage,
@@ -16,6 +18,8 @@ test.describe("onboarding step shell", () => {
     await onboardingStepPage.expectCurrentStep("methodologie");
     await onboardingStepPage.expectBackButtonVisible();
     await expect(onboardingStepPage.forwardButton("Suivant")).toBeVisible();
+    await onboardingStepPage.expectHeadingVisible(METHODOLOGY_HEADING);
+    await onboardingStepPage.expectTextVisible("cette notice");
 
     // Retour moves back to step 1 (bienvenue), which again has no Retour button
     await onboardingStepPage.clickBack();
