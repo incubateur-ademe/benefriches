@@ -58,6 +58,10 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
       { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
       () => "/comment-ca-marche",
     ),
+    // ONBOARDING STEP SHELL (new flow, not yet linked from signup — see ticket 01)
+    onBoardingWelcome: onBoarding.extend(`/bienvenue`),
+    onBoardingMethodology: onBoarding.extend(`/methodologie`),
+    onBoardingTestimonials: onBoarding.extend(`/temoignages`),
     accessBenefriches: defineRoute(
       { redirectTo: param.query.optional.string },
       () => "/acceder-a-benefriches",
