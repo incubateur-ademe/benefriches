@@ -5,6 +5,7 @@ import { Route } from "type-route";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
 import { CustomSiteFormProvider } from "@/features/create-site/views/site-form/CustomSiteFormProvider";
+import { UrbanZoneSiteFormProvider } from "@/features/create-site/views/site-form/UrbanZoneSiteFormProvider";
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -83,7 +84,9 @@ function UpdateSitePage({ route }: Props) {
 
   return (
     <CustomSiteFormProvider mode="update">
-      <SiteUpdateView siteId={route.params.siteId} />
+      <UrbanZoneSiteFormProvider mode="update">
+        <SiteUpdateView siteId={route.params.siteId} />
+      </UrbanZoneSiteFormProvider>
     </CustomSiteFormProvider>
   );
 }

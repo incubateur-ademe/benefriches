@@ -6,7 +6,6 @@ import { isUrbanZoneStepHandlerStep } from "@/features/create-site/core/urban-zo
 import CustomSiteCascadingUpdateDialog from "@/features/create-site/views/custom/CustomSiteCascadingUpdateDialog";
 import { customStepToComponent } from "@/features/create-site/views/custom/stepToComponent";
 import { getRouteFromCreationStep } from "@/features/create-site/views/routes";
-import { UrbanZoneSiteFormProvider } from "@/features/create-site/views/site-form/UrbanZoneSiteFormProvider";
 import { renderStepView } from "@/features/create-site/views/site-form/stepView.types";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 import { urbanZoneStepToComponent } from "@/features/create-site/views/urban-zone/stepToComponent";
@@ -22,7 +21,6 @@ import {
 } from "../core/updateSite.reducer";
 import SiteUpdateNavigationBlockerDialog from "./SiteUpdateNavigationBlockerDialog";
 import SiteUpdateStepper from "./SiteUpdateStepper";
-import SiteUpdateUrbanZoneStepper from "./SiteUpdateUrbanZoneStepper";
 import { useSiteUpdateSidebarActions } from "./useSiteUpdateSidebarActions";
 import { useSyncSiteUpdateStepWithRouteQuery } from "./useSyncSiteUpdateStepWithRouteQuery";
 
@@ -66,21 +64,19 @@ function SiteUpdateView({ siteId }: Props) {
 
   const actions = useSiteUpdateSidebarActions({ siteId, onSave, saveState, isFormValid });
 
-  // Two-engine flow (ticket 11): ADDRESS/SURFACE_AREA/URBAN_ZONE_TYPE stay on the custom
-  // provider/stepper (already an ancestor, see views/index.tsx); every other urban-zone step
-  // needs its own provider (a second, independent context) and its own clickable stepper.
+  // Two-engine flow (ticket 11): ADDRESS/SURFACE_AREA/URBAN_ZONE_TYPE stay on the custom engine;
+  // every other urban-zone step is rendered by the urban-zone engine instead. Both engines'
+  // providers are ancestors of this view (see views/index.tsx), and the sidebar renders a single
+  // continuous stepper spanning both sequences (ticket 18, SiteUpdateStepper) — this flag now only
+  // selects which engine's own step *view* to render here.
   const isUrbanZoneStep = isUrbanZoneStepHandlerStep(currentStep);
 
   const showSaveErrorAlert =
     saveState === "error" && !STEPS_WITH_OWN_SAVE_ERROR_ALERT.has(currentStep);
 
-  const stepContent = isUrbanZoneStep ? (
-    <UrbanZoneSiteFormProvider mode="update">
-      {renderStepView(urbanZoneStepToComponent, currentStep, HTML_SITE_UPDATE_MAIN_TITLE)}
-    </UrbanZoneSiteFormProvider>
-  ) : (
-    renderStepView(customStepToComponent, currentStep, HTML_SITE_UPDATE_MAIN_TITLE)
-  );
+  const stepContent = isUrbanZoneStep
+    ? renderStepView(urbanZoneStepToComponent, currentStep, HTML_SITE_UPDATE_MAIN_TITLE)
+    : renderStepView(customStepToComponent, currentStep, HTML_SITE_UPDATE_MAIN_TITLE);
 
   const mainChildren =
     saveState === "loading" ? (
@@ -99,13 +95,7 @@ function SiteUpdateView({ siteId }: Props) {
       </>
     );
 
-  const sidebarChildren = isUrbanZoneStep ? (
-    <UrbanZoneSiteFormProvider mode="update">
-      <SiteUpdateUrbanZoneStepper />
-    </UrbanZoneSiteFormProvider>
-  ) : (
-    <SiteUpdateStepper />
-  );
+  const sidebarChildren = <SiteUpdateStepper />;
 
   return (
     <>

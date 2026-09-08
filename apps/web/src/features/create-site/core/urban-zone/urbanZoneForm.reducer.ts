@@ -153,5 +153,10 @@ export const addUrbanZoneFormCasesToBuilder = <S extends SiteCreationState>(
       action.payload.stepId,
       urbanZoneStepHandlerRegistry,
     );
+
+    // Cross-flow hand-off: navigating to an urban-zone-owned step (e.g. from the update wizard's
+    // single sidebar stepper, ticket 18) must actually switch the view to this engine — the exact
+    // mirror of customForm.reducer.ts's hand-back, which clears the same flag on the same trigger.
+    state.customHandedOffToUrbanZone = true;
   });
 };

@@ -16,6 +16,7 @@ import {
 import updateSiteReducer, {
   selectSiteUpdateIsFormValid,
   selectSiteUpdateSaveState,
+  selectSiteUpdateStepperGroups,
 } from "./updateSite.reducer";
 
 const FRICHE_FEATURES: GetSiteFeaturesResponseDto = {
@@ -362,6 +363,30 @@ describe("updateSite reducer", () => {
       expect(navigated.custom.currentStep).toBe("ADDRESS");
     });
 
+    it("hands control to the urban-zone engine when navigating to one of its steps from the sidebar", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+      const handedBack = updateSiteReducer(
+        hydrated,
+        updateCustomFormActions.stepNavigationRequested({ stepId: "ADDRESS" }),
+      );
+      expect(handedBack.customHandedOffToUrbanZone).toBe(false);
+
+      const navigated = updateSiteReducer(
+        handedBack,
+        updateUrbanZoneFormActions.stepNavigationRequested({ stepId: "URBAN_ZONE_MANAGER" }),
+      );
+
+      expect(navigated.customHandedOffToUrbanZone).toBe(true);
+      expect(navigated.urbanZone.currentStep).toBe("URBAN_ZONE_MANAGER");
+    });
+
     it("navigating to a per-parcel soils step then completing it updates only that answer and stays within its stepper group (groupOf)", () => {
       const hydrated = updateSiteReducer(
         undefined,
@@ -494,5 +519,188 @@ describe("updateSite reducer", () => {
       expect(rejected.urbanZone.saveState).toBe("error");
       expect(rejected.custom.saveState).toBe("error");
     });
+
+    it("selectSiteUpdateStepperGroups lists the custom groups then the urban-zone groups for an urban-zone site", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+
+      const groups = selectSiteUpdateStepperGroups({ siteUpdate: hydrated } as RootState);
+
+      // Hydration lands both engines on their own FINAL_SUMMARY step, whose SUMMARY group is
+      // filtered out of the stepper entirely (computeCustomStepperGroups/computeUrbanZoneStepperGroups)
+      // — so no entry is "current" here; the "current" gating itself is covered by the next test.
+      expect(groups).toEqual([
+        {
+          engine: "custom",
+          key: "custom:INTRODUCTION",
+          title: "Introduction",
+          targetStepId: "URBAN_ZONE_TYPE",
+          activity: "inactive",
+          validation: "completed",
+        },
+        {
+          engine: "custom",
+          key: "custom:ADDRESS",
+          title: "Adresse",
+          targetStepId: "ADDRESS",
+          activity: "inactive",
+          validation: "completed",
+        },
+        {
+          engine: "custom",
+          key: "custom:SPACES",
+          title: "Espaces",
+          targetStepId: "SURFACE_AREA",
+          activity: "inactive",
+          validation: "completed",
+        },
+        {
+          engine: "urbanZone",
+          key: "urbanZone:LAND_PARCELS",
+          title: "Surfaces foncières",
+          targetStepId: "URBAN_ZONE_LAND_PARCELS_SELECTION",
+          activity: "inactive",
+          validation: "completed",
+        },
+        {
+          engine: "urbanZone",
+          key: "urbanZone:SOILS_AND_SPACES",
+          title: "Sols et espaces",
+          targetStepId: "URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION",
+          activity: "inactive",
+          validation: "completed",
+        },
+        {
+          engine: "urbanZone",
+          key: "urbanZone:CONTAMINATION",
+          title: "Pollution",
+          targetStepId: "URBAN_ZONE_SOILS_CONTAMINATION",
+          activity: "inactive",
+          validation: "completed",
+        },
+        {
+          engine: "urbanZone",
+          key: "urbanZone:MANAGEMENT",
+          title: "Gestion et activité",
+          targetStepId: "URBAN_ZONE_MANAGER",
+          activity: "inactive",
+          validation: "completed",
+        },
+        {
+          engine: "urbanZone",
+          key: "urbanZone:EXPENSES",
+          title: "Dépenses et recettes",
+          targetStepId: "URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES",
+          activity: "inactive",
+          validation: "completed",
+        },
+        {
+          engine: "urbanZone",
+          key: "urbanZone:NAMING",
+          title: "Dénomination",
+          targetStepId: "URBAN_ZONE_NAMING",
+          activity: "inactive",
+          validation: "completed",
+        },
+      ]);
+      expect(new Set(groups.map((group) => group.key)).size).toBe(groups.length);
+      const lastCustomIndex = groups.findLastIndex((group) => group.engine === "custom");
+      const firstUrbanZoneIndex = groups.findIndex((group) => group.engine === "urbanZone");
+      expect(lastCustomIndex).toBeLessThan(firstUrbanZoneIndex);
+    });
+
+    it("marks the custom group as current once the user navigates back to a custom step from urban-zone", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+
+      const navigated = updateSiteReducer(
+        hydrated,
+        updateCustomFormActions.stepNavigationRequested({ stepId: "ADDRESS" }),
+      );
+
+      const groups = selectSiteUpdateStepperGroups({ siteUpdate: navigated } as RootState);
+
+      const addressGroup = groups.find((group) => group.key === "custom:ADDRESS");
+      expect(addressGroup?.activity).toBe("current");
+      expect(
+        groups.some((group) => group.engine === "urbanZone" && group.activity === "current"),
+      ).toBe(false);
+    });
+  });
+
+  it("selectSiteUpdateStepperGroups returns only the custom groups for a non-urban-zone site", () => {
+    const hydrated = updateSiteReducer(
+      undefined,
+      siteUpdateInitiated.fulfilled(
+        { features: FRICHE_FEATURES, isEditable: true, notEditableReason: null },
+        "requestId",
+        "site-1",
+      ),
+    );
+
+    const groups = selectSiteUpdateStepperGroups({ siteUpdate: hydrated } as RootState);
+
+    expect(groups).toEqual([
+      {
+        engine: "custom",
+        key: "custom:INTRODUCTION",
+        title: "Introduction",
+        targetStepId: "FRICHE_ACTIVITY",
+        activity: "inactive",
+        validation: "completed",
+      },
+      {
+        engine: "custom",
+        key: "custom:ADDRESS",
+        title: "Adresse",
+        targetStepId: "ADDRESS",
+        activity: "inactive",
+        validation: "completed",
+      },
+      {
+        engine: "custom",
+        key: "custom:SPACES",
+        title: "Espaces",
+        targetStepId: "SURFACE_AREA",
+        activity: "inactive",
+        validation: "completed",
+      },
+      {
+        engine: "custom",
+        key: "custom:CONTAMINATION_AND_ACCIDENTS",
+        title: "Pollution et accidents",
+        targetStepId: "SOILS_CONTAMINATION",
+        activity: "inactive",
+        validation: "completed",
+      },
+      {
+        engine: "custom",
+        key: "custom:MANAGEMENT",
+        title: "Gestion du site",
+        targetStepId: "OWNER",
+        activity: "inactive",
+        validation: "completed",
+      },
+      {
+        engine: "custom",
+        key: "custom:NAMING",
+        title: "Dénomination",
+        targetStepId: "NAMING",
+        activity: "inactive",
+        validation: "completed",
+      },
+    ]);
   });
 });

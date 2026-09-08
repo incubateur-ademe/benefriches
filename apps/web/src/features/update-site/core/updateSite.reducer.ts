@@ -11,8 +11,11 @@ import {
   addCustomFormCasesToBuilder,
   type CustomWizardFormDefinition,
 } from "@/features/create-site/core/custom/customForm.reducer";
-import { CUSTOM_STEP_TO_GROUP } from "@/features/create-site/core/custom/customStepperConfig";
-import { isNavigableCustomStep } from "@/features/create-site/core/custom/customStepperConfig";
+import {
+  computeCustomStepperGroups,
+  CUSTOM_STEP_TO_GROUP,
+  isNavigableCustomStep,
+} from "@/features/create-site/core/custom/customStepperConfig";
 import { deriveSiteDataFromCustomSteps } from "@/features/create-site/core/custom/customSteps";
 import { customStepHandlerRegistry } from "@/features/create-site/core/custom/stepHandlerRegistry";
 import { surfaceAreaInputModeUpdated } from "@/features/create-site/core/steps/spaces/spaces.actions";
@@ -21,9 +24,13 @@ import {
   addUrbanZoneFormCasesToBuilder,
   type UrbanZoneWizardFormDefinition,
 } from "@/features/create-site/core/urban-zone/urbanZoneForm.reducer";
-import { URBAN_ZONE_STEP_TO_GROUP } from "@/features/create-site/core/urban-zone/urbanZoneStepperConfig";
-import { isNavigableUrbanZoneStep } from "@/features/create-site/core/urban-zone/urbanZoneStepperConfig";
+import {
+  computeUrbanZoneStepperGroups,
+  isNavigableUrbanZoneStep,
+  URBAN_ZONE_STEP_TO_GROUP,
+} from "@/features/create-site/core/urban-zone/urbanZoneStepperConfig";
 import type { UrbanZoneSiteCreationStep } from "@/features/create-site/core/urban-zone/urbanZoneSteps";
+import type { StepVariant } from "@/shared/core/stepVariant.types";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 
 import {
@@ -310,6 +317,60 @@ export const selectSiteUpdateIsFormValid = createSelector(
       .every((stepId) => urbanZoneSteps[stepId]?.completed);
 
     return customStepsValid && urbanZoneStepsValid;
+  },
+);
+
+/**
+ * The update wizard's single sidebar stepper (ticket 18): the custom engine's groups followed by the
+ * urban-zone sub-flow's, presented as one continuous list even though the two engines stay separate
+ * (ADR-0015). Only the *presentation* merges — each entry carries the engine that owns it so the view
+ * can route its click to that engine's own `stepNavigationRequested`.
+ *
+ * Each `compute*StepperGroups` marks its own current group as "current" regardless of which engine the
+ * wizard is actually showing, so the inactive engine's entries are forced back to "inactive" here.
+ * For a non-urban-zone site `state.urbanZone.stepsSequence` is empty and the urban-zone half yields [],
+ * leaving the list identical to what shipped before.
+ */
+export type SiteUpdateStepperEntry = StepVariant & {
+  key: string;
+  title: string;
+} & (
+    | { engine: "custom"; targetStepId: SiteCreationCustomStep }
+    | { engine: "urbanZone"; targetStepId: UrbanZoneSiteCreationStep }
+  );
+
+export const selectSiteUpdateStepperGroups = createSelector(
+  (state: RootState) => state.siteUpdate,
+  (state): SiteUpdateStepperEntry[] => {
+    const isUrbanZoneActive = state.customHandedOffToUrbanZone;
+
+    const customEntries = computeCustomStepperGroups({
+      currentStep: state.custom.currentStep,
+      steps: state.custom.steps,
+      stepsSequence: state.custom.stepsSequence,
+    }).map(({ groupId, title, targetStepId, activity, validation }) => ({
+      engine: "custom" as const,
+      key: `custom:${groupId}`,
+      title,
+      targetStepId,
+      activity: isUrbanZoneActive ? ("inactive" as const) : activity,
+      validation,
+    }));
+
+    const urbanZoneEntries = computeUrbanZoneStepperGroups({
+      currentStep: state.urbanZone.currentStep,
+      steps: state.urbanZone.steps,
+      stepsSequence: state.urbanZone.stepsSequence,
+    }).map(({ groupId, title, targetStepId, activity, validation }) => ({
+      engine: "urbanZone" as const,
+      key: `urbanZone:${groupId}`,
+      title,
+      targetStepId,
+      activity: isUrbanZoneActive ? activity : ("inactive" as const),
+      validation,
+    }));
+
+    return [...customEntries, ...urbanZoneEntries];
   },
 );
 

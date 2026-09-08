@@ -28,7 +28,7 @@ export const buildSiteUpdateSidebarActions = ({
 }: Props): SidebarLayoutProps["actions"] => {
   const goBackAction: NonNullable<SidebarLayoutProps["actions"]>[number] = {
     ...goBackProps,
-    iconId: "ri-arrow-left-line",
+    iconId: "ri-bar-chart-box-line",
     priority: "secondary",
   };
 

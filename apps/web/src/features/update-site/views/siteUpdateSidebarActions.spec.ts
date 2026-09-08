@@ -112,6 +112,7 @@ describe("buildSiteUpdateSidebarActions", () => {
       const backAction = actions?.find((action) => action.priority === "secondary");
       expect(backAction?.text).toBe(goBackProps.text);
       expect(backAction?.linkProps).toBe(goBackProps.linkProps);
+      expect(backAction?.iconId).toBe("ri-bar-chart-box-line");
     },
   );
 });
