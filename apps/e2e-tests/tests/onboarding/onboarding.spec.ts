@@ -65,7 +65,7 @@ test.describe("onboarding", () => {
     await signupPage.completeSignup(testUser);
 
     // Complete onboarding steps
-    await expect(page.getByRole("heading", { name: "Bienvenue sur Bénéfriches !" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Bonjour, je suis Mintsa !" })).toBeVisible();
 
     await page.getByRole("link", { name: "Suivant" }).click();
 
@@ -106,7 +106,7 @@ test.describe("onboarding", () => {
     await signupPage.completeSignup(testUser);
 
     // Complete onboarding steps
-    await expect(page.getByRole("heading", { name: "Bienvenue sur Bénéfriches !" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Bonjour, je suis Mintsa !" })).toBeVisible();
 
     await page.getByRole("link", { name: "Suivant" }).click();
 

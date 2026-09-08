@@ -4,9 +4,9 @@ type Props = {
   children: ReactNode;
 };
 
-// Placeholder avatar for the onboarding step shell. Real illustration/copy lands in later
-// tickets — this component only establishes the layout (avatar stacked above the bubble on
-// small screens, side-by-side from `md` up).
+// Placeholder avatar for the onboarding step shell: no Mintsa illustration asset was available
+// yet when the real copy landed (ticket 02). This component only establishes the layout (avatar
+// stacked above the bubble on small screens, side-by-side from `md` up).
 export default function OnboardingSpeechBubble({ children }: Props) {
   return (
     <div className="flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-8">
