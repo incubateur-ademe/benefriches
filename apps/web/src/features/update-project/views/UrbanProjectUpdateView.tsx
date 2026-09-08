@@ -40,27 +40,32 @@ function UrbanProjectUpdateView() {
   }, [currentStep]);
 
   return (
-    <SidebarLayout
-      title={`Modification du projet « ${projectName} »`}
-      header="sticky"
-      currentUserEmail={currentUserEmail}
-      actions={sidebarActions}
-      sidebarChildren={<UrbanProjectUpdateStepper step={currentStep} />}
-      mainChildren={
-        saveState === "loading" ? (
-          <LoadingSpinner />
-        ) : (
-          <Suspense fallback={<LoadingSpinner />}>
-            {getUrbanProjectStepView(currentStep, {
-              mainTitle: HTML_URBAN_PROJECT_FORM_MAIN_TITLE,
-              mode: "update",
-            })}
-            <AnswerCascadingUpdateDialog />
-            <NavigationBlockerDialog />
-          </Suspense>
-        )
-      }
-    />
+    <>
+      {/* Mounted as a sibling of SidebarLayout, not inside mainChildren: mainChildren is swapped
+          for a LoadingSpinner while saveState === "loading", which would otherwise unmount and
+          remount the dialog (and its session.block subscription) on every save. */}
+      <NavigationBlockerDialog />
+      <SidebarLayout
+        title={`Modification du projet « ${projectName} »`}
+        header="sticky"
+        currentUserEmail={currentUserEmail}
+        actions={sidebarActions}
+        sidebarChildren={<UrbanProjectUpdateStepper step={currentStep} />}
+        mainChildren={
+          saveState === "loading" ? (
+            <LoadingSpinner />
+          ) : (
+            <Suspense fallback={<LoadingSpinner />}>
+              {getUrbanProjectStepView(currentStep, {
+                mainTitle: HTML_URBAN_PROJECT_FORM_MAIN_TITLE,
+                mode: "update",
+              })}
+              <AnswerCascadingUpdateDialog />
+            </Suspense>
+          )
+        }
+      />
+    </>
   );
 }
 

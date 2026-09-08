@@ -1,7 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
-import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 import { useNavigationBlocker } from "@/shared/views/hooks/useNavigationBlocker";
 
@@ -18,10 +17,8 @@ export default function PhotovoltaicPowerStationUpdateNavigationBlockerDialog({
 }: {
   shouldBlock: boolean;
 }) {
-  const { isModalOpened, onConfirmNavigation, onCancelNavigation } = useNavigationBlocker({
-    shouldBlockNavigation: shouldBlock,
-    allowRoute: (route) => route.name === routes.updateProject.name,
-  });
+  const { isModalOpened, onConfirmNavigation, onCancelNavigation } =
+    useNavigationBlocker(shouldBlock);
 
   return (
     <Dialog open={isModalOpened} onClose={onCancelNavigation}>

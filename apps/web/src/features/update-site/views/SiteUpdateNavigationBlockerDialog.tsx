@@ -1,10 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { Route } from "type-route";
 
-import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
-import { useBeforeUnloadWarning } from "@/shared/views/hooks/useBeforeUnloadWarning";
 import { useNavigationBlocker } from "@/shared/views/hooks/useNavigationBlocker";
 
 const DIALOG_DSFR_CSS = [
@@ -15,23 +12,13 @@ const DIALOG_DSFR_CSS = [
   "bg-[var(--grey-50-1000)]/[0.64] dark:bg-[var(--grey-1000-100)]/[0.64]",
 ];
 
-// Hoisted to module scope: `allowRoute` sits in `useNavigationBlocker`'s effect dependency array,
-// so an inline arrow here would tear down and re-register the `session.block` subscription on
-// every render. This is what lets step-to-step navigation inside the wizard (and the summary
-// "Modifier" links, which route back into the wizard) pass through unblocked.
-const isUpdateSiteRoute = (route: Route<typeof routes>) => route.name === routes.updateSite.name;
-
 export default function SiteUpdateNavigationBlockerDialog({
   shouldBlock,
 }: {
   shouldBlock: boolean;
 }) {
-  const { isModalOpened, onConfirmNavigation, onCancelNavigation } = useNavigationBlocker({
-    shouldBlockNavigation: shouldBlock,
-    allowRoute: isUpdateSiteRoute,
-  });
-
-  useBeforeUnloadWarning(shouldBlock);
+  const { isModalOpened, onConfirmNavigation, onCancelNavigation } =
+    useNavigationBlocker(shouldBlock);
 
   return (
     <Dialog open={isModalOpened} onClose={onCancelNavigation}>

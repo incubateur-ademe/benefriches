@@ -1,116 +1,138 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Route } from "type-route";
 
-import { routes, session } from "@/app/router";
+import { routes, session, useRoute } from "@/app/router";
 
-type BlockedNavigationState =
-  | {
-      retry: () => void;
-      targetRoute: Route<typeof routes>;
-      needConfirm: boolean;
-    }
-  | undefined;
+type NavigationAction = Route<typeof routes>["action"];
 
-type Props = {
-  shouldBlockNavigation: boolean;
-  allowRoute?: (route: Route<typeof routes>) => boolean;
-};
+/** An intercepted navigation, held until the user answers the confirmation dialog. */
+type ConfirmationRequest = { retry: () => void };
 
-export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Props) => {
-  const [blockedNavigation, setBlockedNavigation] = useState<BlockedNavigationState>(undefined);
+/**
+ * A `pop` retry (see below) is expected to land as a navigation event. This only exists so a
+ * `pop` that somehow never lands can't leave the form permanently unguarded.
+ */
+const POP_RETRY_SAFETY_NET_MS = 500;
 
-  const unblockRef = useRef<(() => void) | null>(null);
-  // Mirrors `shouldBlockNavigation` for use inside `onConfirmNavigation` without adding it to
-  // that callback's own dependency array (see the comment there for why).
+/**
+ * Guards a form flow against leaving with unsaved changes.
+ *
+ * Navigation that stays on the current route passes through silently — that is how a wizard
+ * moves between its own steps, since each step syncs the URL. Anything leaving the route is
+ * held back and reported through `isModalOpened`, for the consumer to render its own
+ * confirmation dialog and answer with `onConfirmNavigation` / `onCancelNavigation`.
+ *
+ * Note that a blocked navigation is *dropped*, not merely deferred: type-route has no veto
+ * mechanism, and the click that triggered it was already `preventDefault`-ed. So a blocker left
+ * armed with no owner is invisible — the app simply stops navigating. Everything below is
+ * arranged so that can't happen.
+ */
+export const useNavigationBlocker = (shouldBlockNavigation: boolean) => {
+  const [confirmationRequest, setConfirmationRequest] = useState<ConfirmationRequest>();
+
+  const currentRouteName = useRoute().name;
+
+  // Read from inside `session.block` callbacks, which outlive the render that registered them.
+  const currentRouteNameRef = useRef(currentRouteName);
+  currentRouteNameRef.current = currentRouteName;
   const shouldBlockNavigationRef = useRef(shouldBlockNavigation);
   shouldBlockNavigationRef.current = shouldBlockNavigation;
-  // The deferred resubscribe below (setTimeout) can still be pending when the component
-  // unmounts — e.g. right after a confirmed exit, which is itself an allowed-navigation retry.
-  // Without this guard it would fire anyway, attaching an orphaned `session.block` listener with
-  // no owner left to clean it up, silently blocking unrelated future navigation app-wide.
+
+  const unblockRef = useRef<(() => void) | null>(null);
   const isMountedRef = useRef(true);
-  useEffect(
-    () => () => {
-      isMountedRef.current = false;
-    },
-    [],
-  );
-  // Handle of the deferred resubscribe below, so it can be cancelled as soon as blocking is no
-  // longer wanted.
-  const pendingResubscribeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const cancelPendingResubscribe = useCallback(() => {
-    if (pendingResubscribeRef.current !== null) {
-      clearTimeout(pendingResubscribeRef.current);
-      pendingResubscribeRef.current = null;
-    }
-  }, []);
-
-  const subscribe = useCallback(() => {
-    const unblock = session.block((blocker) => {
-      setBlockedNavigation(() => ({
-        retry: blocker.retry,
-        targetRoute: blocker.route,
-        needConfirm: allowRoute?.(blocker.route) === false,
-      }));
-    });
-    unblockRef.current = unblock;
-  }, [allowRoute]);
-
-  const onConfirmNavigation = useCallback(() => {
-    if (blockedNavigation?.retry) {
-      if (unblockRef.current) {
-        unblockRef.current();
-        unblockRef.current = null;
-      }
-      blockedNavigation.retry();
-      // An "allowed" navigation (e.g. step-to-step movement inside the wizard, auto-confirmed
-      // below) must not permanently tear down blocking: `shouldBlockNavigation` stays true
-      // (still dirty) after it, so re-subscribe once it settles, or every navigation after this
-      // one would go through unblocked — see ticket 17's QA report for the regression this fixes.
-      //
-      // Deferred, and by more than a tick: for a browser back/forward (POP), the underlying
-      // `history` package's retry (see its `handlePop`/`blockedPopTx`) resolves through its own
-      // `history.go()` call, itself dispatched as a fresh, separately-scheduled `popstate` — not
-      // synchronously, and not reliably within the same macrotask as a `setTimeout(fn, 0)`
-      // (confirmed empirically: a 0ms defer still re-subscribes before that popstate lands,
-      // re-blocking retry's own in-flight pop and recursing indefinitely). A short delay gives
-      // the browser's popstate round-trip time to land first.
-      //
-      // The re-check inside the callback matters as much as the one here: between scheduling and
-      // firing, blocking can stop being wanted — e.g. the site-creation wizard's last step syncs
-      // its URL (an allowed navigation, auto-confirmed here) and the save then succeeds within
-      // those 100ms. Re-subscribing then would arm a blocker nothing ever tears down (the effect
-      // below has already run for `shouldBlockNavigation: false`), silently swallowing the user's
-      // next navigation — the "'Évaluer un projet' does nothing" regression.
-      if (shouldBlockNavigationRef.current) {
-        cancelPendingResubscribe();
-        pendingResubscribeRef.current = setTimeout(() => {
-          pendingResubscribeRef.current = null;
-          if (isMountedRef.current && shouldBlockNavigationRef.current) subscribe();
-        }, 100);
-      }
-    }
-    setBlockedNavigation(undefined);
-    // `blockedNavigation` and `subscribe` only, deliberately: adding `shouldBlockNavigation`
-    // would redefine this callback (and re-run the effect below) on every dirty/idle toggle,
-    // which isn't needed since the ref above always has the current value.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockedNavigation, subscribe, cancelPendingResubscribe]);
+  // Cancels the pending `pop` resubscribe, when there is one.
+  const cancelPendingResubscribeRef = useRef<(() => void) | null>(null);
+  // Lets the deferred resubscribe below reach `subscribe`, which is defined after it.
+  const subscribeRef = useRef<() => void>(() => {});
 
   useEffect(() => {
-    if (!blockedNavigation?.needConfirm) {
-      onConfirmNavigation();
-    }
-  }, [blockedNavigation, onConfirmNavigation]);
+    // Assigned here rather than only in the cleanup, so React StrictMode's
+    // create -> destroy -> create cycle doesn't leave this stuck at `false`.
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  const unblock = useCallback(() => {
+    unblockRef.current?.();
+    unblockRef.current = null;
+  }, []);
+
+  const cancelPendingResubscribe = useCallback(() => {
+    cancelPendingResubscribeRef.current?.();
+  }, []);
+
+  const resubscribeOnceNavigationLanded = useCallback(
+    (action: NavigationAction) => {
+      if (action !== "pop") {
+        // `push` and `replace` are retried synchronously: type-route's `navigate()` re-enters with
+        // no blocker registered and completes the navigation before `retry()` returns. So by now
+        // it is already done and we can re-arm in the same tick, leaving no window at all.
+        subscribeRef.current();
+        return;
+      }
+
+      // A `pop` (browser back/forward) is different: `history` resolves the retry through its own
+      // `history.go()`, dispatched as a separately scheduled `popstate`. Re-arming before it lands
+      // would block the retry's own pop and recurse, so wait for the navigation event itself.
+      cancelPendingResubscribe();
+      let settled = false;
+      const stopWaiting = () => {
+        settled = true;
+        unlisten();
+        clearTimeout(timer);
+        cancelPendingResubscribeRef.current = null;
+      };
+      const resubscribe = () => {
+        if (settled) return;
+        stopWaiting();
+        if (isMountedRef.current && shouldBlockNavigationRef.current) subscribeRef.current();
+      };
+      const unlisten = session.listen(resubscribe);
+      const timer = setTimeout(resubscribe, POP_RETRY_SAFETY_NET_MS);
+      cancelPendingResubscribeRef.current = stopWaiting;
+    },
+    [cancelPendingResubscribe],
+  );
+
+  const subscribe = useCallback(() => {
+    // Defensive: a second subscription must never orphan the first one's handle, since nothing
+    // would be left able to remove it.
+    unblock();
+    unblockRef.current = session.block(({ route, retry }) => {
+      if (route.name !== currentRouteNameRef.current) {
+        setConfirmationRequest({ retry });
+        return;
+      }
+      // Staying on the same route — the flow navigating within itself. Let it through, then
+      // re-arm: the form is still dirty, so blocking must survive its own step changes.
+      unblock();
+      retry();
+      resubscribeOnceNavigationLanded(route.action);
+    });
+  }, [unblock, resubscribeOnceNavigationLanded]);
+  subscribeRef.current = subscribe;
+
+  const onConfirmNavigation = useCallback(() => {
+    if (!confirmationRequest) return;
+    // No re-arming here, unlike the same-route case above: the user has chosen to leave the
+    // guarded flow, so this component is on its way out.
+    unblock();
+    confirmationRequest.retry();
+    setConfirmationRequest(undefined);
+  }, [confirmationRequest, unblock]);
+
+  const onCancelNavigation = useCallback(() => {
+    // The navigation was already dropped and the blocker is still armed; nothing else to undo.
+    setConfirmationRequest(undefined);
+  }, []);
 
   useEffect(() => {
     if (!shouldBlockNavigation) {
       cancelPendingResubscribe();
-      if (unblockRef.current) {
-        unblockRef.current();
-        unblockRef.current = null;
-      }
-      setBlockedNavigation(undefined);
+      unblock();
+      setConfirmationRequest(undefined);
       return;
     }
 
@@ -118,18 +140,13 @@ export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Prop
 
     return () => {
       cancelPendingResubscribe();
-      if (unblockRef.current) {
-        unblockRef.current();
-        unblockRef.current = null;
-      }
+      unblock();
     };
-  }, [shouldBlockNavigation, subscribe, cancelPendingResubscribe]);
+  }, [shouldBlockNavigation, subscribe, unblock, cancelPendingResubscribe]);
 
   return {
-    isModalOpened: blockedNavigation?.needConfirm === true,
+    isModalOpened: confirmationRequest !== undefined,
     onConfirmNavigation,
-    onCancelNavigation: () => {
-      setBlockedNavigation(undefined);
-    },
+    onCancelNavigation,
   };
 };

@@ -280,6 +280,12 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.expectFinalSummary();
       await urbanProjectCreationPage.submitFinalSummary();
       await urbanProjectCreationPage.expectCreationSuccess("Projet de parc public");
+
+      // The link out of the result screen must actually work: this is client-side (SPA)
+      // navigation, the only kind the wizard's navigation blocker intercepts, and a blocker left
+      // armed past the save would swallow the click silently (see useNavigationBlocker).
+      await urbanProjectCreationPage.clickViewImportantInfo();
+      await urbanProjectCreationPage.expectOnboardingStep1();
     });
   });
 

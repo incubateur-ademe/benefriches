@@ -45,26 +45,29 @@ function PhotovoltaicPowerStationUpdateView() {
   }, [currentStep]);
 
   return (
-    <SidebarLayout
-      title={`Modification du projet « ${projectName} »`}
-      header="sticky"
-      currentUserEmail={currentUserEmail}
-      actions={sidebarActions}
-      sidebarChildren={<PhotovoltaicPowerStationUpdateStepper />}
-      mainChildren={
-        saveState === "loading" ? (
-          <LoadingSpinner />
-        ) : (
-          <>
-            <PhotovoltaicPowerStationUpdateWizard currentStep={currentStep} />
-            <RenewableEnergyCascadingUpdateDialog mode="update" />
-            <PhotovoltaicPowerStationUpdateNavigationBlockerDialog
-              shouldBlock={saveState === "dirty"}
-            />
-          </>
-        )
-      }
-    />
+    <>
+      {/* Mounted as a sibling of SidebarLayout, not inside mainChildren: mainChildren is swapped
+          for a LoadingSpinner while saveState === "loading", which would otherwise unmount and
+          remount the dialog (and its session.block subscription) on every save. */}
+      <PhotovoltaicPowerStationUpdateNavigationBlockerDialog shouldBlock={saveState === "dirty"} />
+      <SidebarLayout
+        title={`Modification du projet « ${projectName} »`}
+        header="sticky"
+        currentUserEmail={currentUserEmail}
+        actions={sidebarActions}
+        sidebarChildren={<PhotovoltaicPowerStationUpdateStepper />}
+        mainChildren={
+          saveState === "loading" ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <PhotovoltaicPowerStationUpdateWizard currentStep={currentStep} />
+              <RenewableEnergyCascadingUpdateDialog mode="update" />
+            </>
+          )
+        }
+      />
+    </>
   );
 }
 

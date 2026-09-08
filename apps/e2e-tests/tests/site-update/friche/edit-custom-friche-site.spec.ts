@@ -144,14 +144,6 @@ test.describe("site update - friche", () => {
     await siteUpdatePage.expectSummaryLineValue("Nom du site", "Nom en cours d'édition");
 
     // --- Attempt to leave: the unsaved-changes dialog appears ---
-    // A short, unavoidable wait: `useNavigationBlocker`'s own route-sync push (for the step
-    // change just completed) is itself intercepted by the block it just armed, auto-confirmed as
-    // an allowed same-wizard navigation, and the resulting re-subscribe is deliberately deferred
-    // (~100ms, see its own doc comment) — clicking "go back" inside that window would race past
-    // the block being armed. Not specific to this test: any navigation attempt immediately after
-    // a step transition is subject to the same window.
-    // eslint-disable-next-line playwright/no-wait-for-timeout
-    await authenticatedPage.waitForTimeout(150);
     await siteUpdatePage.clickGoBack();
     await siteUpdatePage.expectUnsavedChangesDialog();
 

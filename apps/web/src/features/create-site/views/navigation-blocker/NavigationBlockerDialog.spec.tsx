@@ -24,14 +24,6 @@ const flush = async () => {
   });
 };
 
-// The wizard's deferred resubscribe (see useNavigationBlocker) fires 100ms after an allowed
-// navigation; wait past it.
-const waitForDeferredResubscribe = async () => {
-  await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 150));
-  });
-};
-
 describe("Site creation NavigationBlockerDialog", () => {
   it("asks for confirmation before leaving the wizard while the site is not saved yet", async () => {
     routes.createSite({ creationMode: "custom" }).push();
@@ -61,20 +53,41 @@ describe("Site creation NavigationBlockerDialog", () => {
     expect(window.location.search).toBe("?etape=adresse");
   });
 
+  it("keeps guarding the form after a step change", async () => {
+    routes.createSite({ creationMode: "custom" }).push();
+    renderWithProviders(<NavigationBlockerDialog saveState="idle" />);
+
+    // Moving between steps is allowed and lets the blocker go, so it has to re-arm itself:
+    // the form is still unsaved once the step change is through.
+    act(() => {
+      routes.createSite({ creationMode: "custom", etape: "adresse" }).push();
+    });
+    await flush();
+
+    act(() => {
+      routes.myEvaluations().push();
+    });
+    await flush();
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(window.location.pathname).toBe("/creer-site-foncier/custom");
+  });
+
   it("lets the user leave for project creation once the site is saved, even when the save lands right after a step change", async () => {
     routes.createSite({ creationMode: "custom" }).push();
     const { rerender } = renderWithProviders(<NavigationBlockerDialog saveState="loading" />);
 
     // Submitting the last step moves the wizard to its result step, which syncs the URL: an
-    // allowed navigation that schedules a deferred resubscribe of the blocker.
+    // allowed navigation, after which the blocker re-arms.
     act(() => {
       routes.createSite({ creationMode: "custom", etape: "resultat" }).push();
     });
     await flush();
 
-    // The save then succeeds before that deferred resubscribe fires.
+    // The save then succeeds, which must tear that blocker back down — a leftover one would
+    // swallow the "Évaluer un projet" link click below with no dialog and no navigation.
     rerender(<NavigationBlockerDialog saveState="success" />);
-    await waitForDeferredResubscribe();
+    await flush();
 
     act(() => {
       routes.createProject({ siteId: "site-1" }).push();

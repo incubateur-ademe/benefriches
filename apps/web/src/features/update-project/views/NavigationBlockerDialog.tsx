@@ -3,7 +3,6 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import { routes } from "@/app/router";
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 import classNames from "@/shared/views/clsx";
 import { useNavigationBlocker } from "@/shared/views/hooks/useNavigationBlocker";
@@ -21,10 +20,9 @@ export default function NavigationBlockerDialog() {
 
   const { saveState, isFormValid } = useAppSelector(selectNavigationBlockerDialogViewData);
 
-  const { isModalOpened, onConfirmNavigation, onCancelNavigation } = useNavigationBlocker({
-    shouldBlockNavigation: saveState === "dirty",
-    allowRoute: (route) => route.name === routes.updateProject.name,
-  });
+  const { isModalOpened, onConfirmNavigation, onCancelNavigation } = useNavigationBlocker(
+    saveState === "dirty",
+  );
 
   return (
     <Dialog open={isModalOpened} onClose={onCancelNavigation}>
