@@ -12,9 +12,15 @@ type Props = {
   step: OnboardingStepKey;
   htmlTitle: string;
   children: ReactNode;
+  belowBubbleContent?: ReactNode;
 };
 
-export default function OnboardingStepShell({ step, htmlTitle, children }: Props) {
+export default function OnboardingStepShell({
+  step,
+  htmlTitle,
+  children,
+  belowBubbleContent,
+}: Props) {
   const { stepNumber, totalSteps, previousRoute, forwardLabel, forwardRoute } =
     getOnboardingStepInfo(step);
 
@@ -49,6 +55,7 @@ export default function OnboardingStepShell({ step, htmlTitle, children }: Props
     >
       <OnboardingStepProgress currentStep={stepNumber} totalSteps={totalSteps} />
       <OnboardingSpeechBubble>{children}</OnboardingSpeechBubble>
+      {belowBubbleContent && <div className="mt-10">{belowBubbleContent}</div>}
     </OnboardingPageLayout>
   );
 }

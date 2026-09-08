@@ -1,12 +1,21 @@
+import TestimoniesCarousel from "@/shared/views/components/Testimonies/TestimoniesCarousel";
+
 import OnboardingStepShell from "../step-shell/OnboardingStepShell";
+
+const HEADING = "Ils ont testé et approuvé Bénéfriches";
 
 export default function OnboardingTestimonialsPage() {
   return (
-    <OnboardingStepShell step="testimonials" htmlTitle="Ils nous font confiance - Premiers pas">
-      <h2 className="mb-4">Ils nous font confiance</h2>
+    <OnboardingStepShell
+      step="testimonials"
+      htmlTitle={`${HEADING} - Premiers pas`}
+      belowBubbleContent={<TestimoniesCarousel />}
+    >
+      <h2 className="mb-4">{HEADING}</h2>
+      {/* Copy transcribed from Figma screenshot, best-effort — needs design confirmation. */}
       <p className="mb-0">
-        Contenu à venir : ce texte est un espace réservé et sera remplacé par le contenu définitif
-        dans un prochain ticket.
+        Voici quelques témoignages de techniciens qui se sont appuyés sur Bénéfriches pour faire
+        avancer leur projet d'aménagement.
       </p>
     </OnboardingStepShell>
   );

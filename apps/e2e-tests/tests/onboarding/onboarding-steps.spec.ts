@@ -1,6 +1,7 @@
 import { test, expect } from "./onboarding-steps.fixtures";
 
 const METHODOLOGY_HEADING = "Une méthodologie éprouvée";
+const TESTIMONIALS_HEADING = "Ils ont testé et approuvé Bénéfriches";
 
 test.describe("onboarding step shell", () => {
   test("allows an authenticated user to navigate directly to each new step URL, and to move back and forth between steps", async ({
@@ -33,6 +34,8 @@ test.describe("onboarding step shell", () => {
     await onboardingStepPage.expectCurrentStep("temoignages");
     await onboardingStepPage.expectBackButtonVisible();
     await expect(onboardingStepPage.forwardButton("Commencer")).toBeVisible();
+    await onboardingStepPage.expectHeadingVisible(TESTIMONIALS_HEADING);
+    await onboardingStepPage.expectTextVisible("Cyril Lagarde, Directeur général");
 
     // Retour from step 3 moves back to step 2 (methodologie)
     await onboardingStepPage.clickBack();
