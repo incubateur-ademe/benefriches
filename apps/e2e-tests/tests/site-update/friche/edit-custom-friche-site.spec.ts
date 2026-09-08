@@ -43,7 +43,11 @@ test.describe("site update - friche", () => {
     // cascade) to prove the round-trip back to the summary works. ---
     await siteUpdatePage.clickEditSection(/Localisation/);
     await siteUpdatePage.expectStepTitle(/Où est située/);
-    await expect(authenticatedPage.getByRole("searchbox")).toHaveValue(/Meylan/);
+    // Accessible role is "combobox" (HeadlessUI's Combobox pattern), not "searchbox" — even
+    // though the underlying native input is type="search" (see SiteCreationPage.fillAddress).
+    await expect(
+      authenticatedPage.getByRole("combobox", { name: /Commune ou code postal|Adresse/i }),
+    ).toHaveValue(/Meylan/);
     await authenticatedPage.getByRole("button", { name: "Valider" }).click();
 
     await siteUpdatePage.expectFinalSummary();
