@@ -1,7 +1,6 @@
 import { test, expect } from "./onboarding.fixtures";
 
-const WELCOME_HEADING = "Bonjour, je suis Mintsa !";
-const METHODOLOGY_HEADING = "Une méthodologie éprouvée";
+const METHODOLOGY_HEADING = "Avant de commencer, petit point méthodo.";
 const TESTIMONIALS_HEADING = "Ils ont testé et approuvé Bénéfriches";
 
 test.describe("onboarding", () => {
@@ -27,7 +26,9 @@ test.describe("onboarding", () => {
 
     // Complete onboarding steps
     await onboardingStepPage.expectCurrentStep("bienvenue");
-    await onboardingStepPage.expectHeadingVisible(WELCOME_HEADING);
+    await onboardingStepPage.expectHeadingVisible(
+      `Bonjour, ${testUser.firstName} ${testUser.lastName} !`,
+    );
     await onboardingStepPage.clickForward("Suivant");
 
     await onboardingStepPage.expectCurrentStep("methodologie");
@@ -68,7 +69,9 @@ test.describe("onboarding", () => {
 
     // Complete onboarding steps
     await onboardingStepPage.expectCurrentStep("bienvenue");
-    await onboardingStepPage.expectHeadingVisible(WELCOME_HEADING);
+    await onboardingStepPage.expectHeadingVisible(
+      `Bonjour, ${testUser.firstName} ${testUser.lastName} !`,
+    );
     await onboardingStepPage.clickForward("Suivant");
 
     await onboardingStepPage.expectCurrentStep("methodologie");
@@ -110,7 +113,9 @@ test.describe("onboarding", () => {
 
     // Complete onboarding steps
     await onboardingStepPage.expectCurrentStep("bienvenue");
-    await onboardingStepPage.expectHeadingVisible(WELCOME_HEADING);
+    await onboardingStepPage.expectHeadingVisible(
+      `Bonjour, ${testUser.firstName} ${testUser.lastName} !`,
+    );
     await onboardingStepPage.clickForward("Suivant");
 
     await onboardingStepPage.expectCurrentStep("methodologie");

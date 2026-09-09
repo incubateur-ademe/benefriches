@@ -18,7 +18,7 @@ export default function OnboardingStepProgress({ currentStep, totalSteps }: Prop
       {stepNumbers.map((stepNumber) => (
         <span
           key={stepNumber}
-          className={`h-1 flex-1 rounded-full ${
+          className={`h-2 flex-1 rounded-[4px] ${
             stepNumber <= currentStep ? "bg-blue-france" : "bg-background-light"
           }`}
         />

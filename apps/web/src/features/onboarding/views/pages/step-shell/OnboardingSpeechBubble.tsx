@@ -4,19 +4,23 @@ type Props = {
   children: ReactNode;
 };
 
-// Placeholder avatar for the onboarding step shell: no Mintsa illustration asset was available
-// yet when the real copy landed (ticket 02). This component only establishes the layout (avatar
-// stacked above the bubble on small screens, side-by-side from `md` up).
 export default function OnboardingSpeechBubble({ children }: Props) {
   return (
-    <div className="flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-8">
-      <div
+    <div className="flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-6">
+      {/* Figma avatar asset (file tgMAVc4oAfXQ3a8NRURmcF, node 28571:16043) could not be fetched
+          from this environment — no Figma MCP server was reachable. Placeholder initials keep the
+          60px circle sizing/position correct; swap for the real Mintsa illustration once available. */}
+      <span
         aria-hidden="true"
-        className="flex size-20 shrink-0 items-center justify-center rounded-full bg-blue-ultralight text-4xl dark:bg-blue-ultradark"
+        className="flex size-[60px] shrink-0 items-center justify-center rounded-full bg-blue-ultralight font-bold dark:bg-blue-ultradark"
       >
-        🙂
-      </div>
-      <div className="relative w-full rounded-2xl bg-background-ultralight p-6 md:p-8">
+        MP
+      </span>
+      <div className="relative w-full rounded-[8px] border border-solid border-border-grey bg-white p-4 dark:bg-dsfr-grey">
+        <span
+          aria-hidden="true"
+          className="absolute -left-[7px] top-6 hidden size-3 rotate-45 border-b border-l border-solid border-border-grey bg-white dark:bg-dsfr-grey md:block"
+        />
         {children}
       </div>
     </div>

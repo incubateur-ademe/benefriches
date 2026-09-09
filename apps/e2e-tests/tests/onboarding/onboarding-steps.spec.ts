@@ -1,6 +1,6 @@
 import { test, expect } from "./onboarding-steps.fixtures";
 
-const METHODOLOGY_HEADING = "Une méthodologie éprouvée";
+const METHODOLOGY_HEADING = "Avant de commencer, petit point méthodo.";
 const TESTIMONIALS_HEADING = "Ils ont testé et approuvé Bénéfriches";
 
 test.describe("onboarding step shell", () => {

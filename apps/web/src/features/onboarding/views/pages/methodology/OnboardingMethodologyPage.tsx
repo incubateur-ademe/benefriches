@@ -1,12 +1,11 @@
+import { fr } from "@codegouvfr/react-dsfr";
+
+import classNames from "@/shared/views/clsx";
+
 import OnboardingStepShell from "../step-shell/OnboardingStepShell";
 import type { OnboardingVariant } from "../step-shell/onboardingVariant";
 
-// Best-effort copy: the real Figma copy (file tgMAVc4oAfXQ3a8NRURmcF, node 28571:5857) was not
-// reachable from this environment. These strings need design confirmation before shipping.
-const HEADING = "Une méthodologie éprouvée";
-const ADEME_PARAGRAPH = "Bénéfriches est un outil développé par l'ADEME depuis 2023.";
-const TESTED_PARAGRAPH =
-  "Il a été testé avec plus de 150 personnes (collectivités, DDT, EPF, développeurs photovoltaïques, etc.).";
+const HEADING = "Avant de commencer, petit point méthodo.";
 
 type Props = {
   variant?: OnboardingVariant;
@@ -19,13 +18,16 @@ export default function OnboardingMethodologyPage({ variant }: Props) {
       variant={variant}
       htmlTitle={`${HEADING} - Premiers pas`}
     >
-      <h2 className="mb-4">{HEADING}</h2>
-      <p className="mb-4">{ADEME_PARAGRAPH}</p>
-      <p className="mb-4">{TESTED_PARAGRAPH}</p>
+      <h2 className={classNames(fr.cx("fr-text--lg", "fr-text--bold"), "mb-4")}>{HEADING}</h2>
       <p className="mb-0">
-        Il prend en compte un large éventail de données (finances de la collectivité, emploi,
-        qualité de vie des riverains, environnement, etc.), et se base sur des sources documentées
-        dans{" "}
+        Il est important de rappeler que Bénéfriches est le seul outil qui permette de calculer les
+        impacts socio-économiques et environnementaux d'un projet d'aménagement. L'outil est
+        développé par l'ADEME depuis 2023, il a été testé auprès de plus de 150 personnes
+        (collectivités, DDT, EPF, développeurs photovoltaïques...) pour s'assurer de sa pertinence.
+        Bénéfriches prend en compte un grand nombre de données pour vous offrir une vision complète
+        des impacts de votre projet : sur les finances de la collectivité, l'emploi, la qualité de
+        vie des riverains, l'environnement, etc. Vous souhaitez en savoir plus sur le mode de calcul
+        ? On vous dit tout dans{" "}
         {/* TODO: link to the real methodology page/anchor once it exists (tracked separately) */}
         <a className="fr-link">cette notice</a>.
       </p>

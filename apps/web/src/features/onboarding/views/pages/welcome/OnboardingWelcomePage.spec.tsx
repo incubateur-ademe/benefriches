@@ -17,8 +17,9 @@ vi.mock("@/app/envVars", () => ({
 function renderWithProviders(
   ui: React.ReactElement,
   supportChatService: InMemorySupportChatService,
+  preloadedState?: Parameters<typeof createStore>[1],
 ) {
-  const store = createStore(getTestAppDependencies({ supportChatService }));
+  const store = createStore(getTestAppDependencies({ supportChatService }), preloadedState);
   const Wrapper = ({ children }: PropsWithChildren) => (
     <Provider store={store}>
       <RouteProvider>{children}</RouteProvider>
@@ -37,5 +38,25 @@ describe("OnboardingWelcomePage", () => {
     expect(supportChatService._messages).toEqual([
       "Bonjour Mintsa, j'ai une question sur mes premiers pas sur Bénéfriches.",
     ]);
+  });
+
+  it("shows a heading personalized with the current user's name", () => {
+    const supportChatService = new InMemorySupportChatService();
+    renderWithProviders(<OnboardingWelcomePage />, supportChatService, {
+      currentUser: {
+        currentUser: {
+          id: "301d0f47-3775-4320-8e06-381047bebbed",
+          email: "john.doe@mail.com",
+          firstName: "John",
+          lastName: "Doe",
+          structureType: "company",
+          structureActivity: "photovoltaic_plants_developer",
+        },
+        currentUserState: "authenticated",
+        createUserState: "idle",
+      },
+    });
+
+    expect(screen.getByRole("heading", { name: "Bonjour, John Doe !" })).toBeVisible();
   });
 });
