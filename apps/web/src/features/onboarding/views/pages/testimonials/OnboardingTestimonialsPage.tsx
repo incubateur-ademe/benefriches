@@ -15,7 +15,7 @@ export default function OnboardingTestimonialsPage({ variant }: Props) {
       step="testimonials"
       variant={variant}
       htmlTitle={`${HEADING} - Premiers pas`}
-      belowBubbleContent={<TestimoniesCarousel />}
+      belowBubbleContent={<TestimoniesCarousel arrowsPosition="bottom" />}
     >
       <h2 className="mb-4">{HEADING}</h2>
       {/* Copy transcribed from Figma screenshot, best-effort — needs design confirmation. */}

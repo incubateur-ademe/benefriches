@@ -23,7 +23,7 @@ export default function OnboardingSpeechBubble({ children }: Props) {
       <div className="relative w-full rounded-[8px] border border-solid border-border-grey bg-white p-4 dark:bg-dsfr-grey">
         <span
           aria-hidden="true"
-          className="absolute -left-[7px] top-6 hidden size-3 rotate-45 border-b border-l border-solid border-border-grey bg-white dark:bg-dsfr-grey md:block"
+          className="absolute -left-[7px] top-6 hidden size-3 rotate-45 border-b border-l border-t-0 border-r-0 border-solid border-border-grey bg-white dark:bg-dsfr-grey md:block"
         />
         {children}
       </div>

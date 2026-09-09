@@ -14,9 +14,17 @@ type Props = {
    * false → for use inside an existing fr-container (onboarding step 3).
    */
   fullBleed?: boolean;
+  /**
+   * "top"    → prev/next controls sit in their own header row above the cards (default,
+   *            used when a `title` is also rendered there, e.g. the landing page section).
+   * "bottom" → prev/next controls sit next to the dot indicators below the cards instead,
+   *            so no separate header row is rendered (saves vertical space when there's no
+   *            title, e.g. onboarding step 3).
+   */
+  arrowsPosition?: "top" | "bottom";
 };
 
-export default function TestimoniesCarousel({ title, fullBleed }: Props) {
+export default function TestimoniesCarousel({ title, fullBleed, arrowsPosition = "top" }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -43,31 +51,37 @@ export default function TestimoniesCarousel({ title, fullBleed }: Props) {
     scrollToIndex(newIndex);
   };
 
+  const arrowButtons = (
+    <div>
+      <Button
+        aria-label="Témoignage précédent"
+        priority="secondary"
+        className="mr-4 px-2"
+        onClick={goToPrevious}
+      >
+        <span className={fr.cx("fr-icon-arrow-left-s-line")} aria-hidden="true"></span>
+      </Button>
+      <Button
+        priority="secondary"
+        aria-label="Témoignage suivant"
+        className="p-2"
+        onClick={goToNext}
+      >
+        <span className={fr.cx("fr-icon-arrow-right-s-line")} aria-hidden="true"></span>
+      </Button>
+    </div>
+  );
+
   return (
     <>
-      <div
-        className={`${fullBleed ? "fr-container " : ""}flex items-center ${title ? "justify-between" : "justify-end"} mb-15`}
-      >
-        {title}
-        <div>
-          <Button
-            aria-label="Témoignage précédent"
-            priority="secondary"
-            className="mr-4 px-2"
-            onClick={goToPrevious}
-          >
-            <span className={fr.cx("fr-icon-arrow-left-s-line")} aria-hidden="true"></span>
-          </Button>
-          <Button
-            priority="secondary"
-            aria-label="Témoignage suivant"
-            className="p-2"
-            onClick={goToNext}
-          >
-            <span className={fr.cx("fr-icon-arrow-right-s-line")} aria-hidden="true"></span>
-          </Button>
+      {(title || arrowsPosition === "top") && (
+        <div
+          className={`${fullBleed ? "fr-container " : ""}flex items-center ${title ? "justify-between" : "justify-end"} mb-15`}
+        >
+          {title}
+          {arrowsPosition === "top" && arrowButtons}
         </div>
-      </div>
+      )}
 
       <div
         ref={scrollContainerRef}
@@ -95,19 +109,26 @@ export default function TestimoniesCarousel({ title, fullBleed }: Props) {
         ))}
       </div>
 
-      <div className={`flex mt-15 gap-2${fullBleed ? " fr-container" : ""}`}>
-        {testimonies.map(({ imgSrc }, index) => (
-          <button
-            key={imgSrc}
-            onClick={() => {
-              scrollToIndex(index);
-            }}
-            className={`w-3 h-3 rounded-full transition-colors ${
-              index === currentIndex ? "bg-black" : "bg-[#00000040] hover:bg-gray-400"
-            }`}
-            aria-label={`Aller au témoignage ${index + 1}`}
-          />
-        ))}
+      <div
+        className={`flex items-center mt-15${fullBleed ? " fr-container" : ""} ${
+          arrowsPosition === "bottom" ? "justify-between" : "gap-2"
+        }`}
+      >
+        <div className="flex gap-2">
+          {testimonies.map(({ imgSrc }, index) => (
+            <button
+              key={imgSrc}
+              onClick={() => {
+                scrollToIndex(index);
+              }}
+              className={`w-3 h-3 rounded-full transition-colors ${
+                index === currentIndex ? "bg-black" : "bg-[#00000040] hover:bg-gray-400"
+              }`}
+              aria-label={`Aller au témoignage ${index + 1}`}
+            />
+          ))}
+        </div>
+        {arrowsPosition === "bottom" && arrowButtons}
       </div>
     </>
   );
