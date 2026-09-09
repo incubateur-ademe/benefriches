@@ -30,20 +30,22 @@ export default function OnboardingWelcomePage({ variant }: Props) {
     <OnboardingStepShell step="welcome" variant={variant} htmlTitle="Bienvenue - Premiers pas">
       <h2 className={classNames(fr.cx("fr-text--lg", "fr-text--bold"), "mb-4")}>{heading}</h2>
       <p className="mb-4">{INTRO_PARAGRAPH}</p>
-      <p className="mb-4">{TOGETHER_PARAGRAPH}</p>
-      <p className="mb-0">{CONTACT_PARAGRAPH}</p>
+      <p className="mb-0">{TOGETHER_PARAGRAPH}</p>
       {BENEFRICHES_ENV.crispEnabled && (
-        <Button
-          type="button"
-          priority="secondary"
-          iconId="ri-chat-3-line"
-          className="mt-4"
-          onClick={() => {
-            void dispatch(onboardingWelcomeHelpRequested());
-          }}
-        >
-          Contacter Mintsa
-        </Button>
+        <>
+          <p className="mb-0 mt-4">{CONTACT_PARAGRAPH}</p>
+          <Button
+            type="button"
+            priority="secondary"
+            iconId="ri-chat-3-line"
+            className="mt-4"
+            onClick={() => {
+              void dispatch(onboardingWelcomeHelpRequested());
+            }}
+          >
+            Contacter Mintsa
+          </Button>
+        </>
       )}
     </OnboardingStepShell>
   );
