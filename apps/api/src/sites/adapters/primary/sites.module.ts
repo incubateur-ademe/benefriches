@@ -29,9 +29,8 @@ import { GetSiteRealEstateValuationUseCase } from "src/sites/core/usecases/getSi
 import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
 import { UpdateCustomSiteUseCase } from "src/sites/core/usecases/updateCustomSite.usecase";
 import { TerritoryModule } from "src/territory/adapters/primary/territory.module";
-import { SqlCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/SqlCityRuralityQuery";
-import { SqlCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/SqlCityStatsQuery";
-import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { SqlCityImpactsQuery } from "src/territory/adapters/secondary/city-impacts-query/SqlCityImpactsQuery";
+import { CityImpactsDataProvider } from "src/territory/core/gateways/CityImpactsDataProvider";
 
 import { SqlSitesQuery } from "../secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "../secondary/site-repository/SqlSiteRepository";
@@ -64,16 +63,14 @@ import { SitesController } from "./sites.controller";
       useFactory: (
         siteRepository: SitesRepository,
         dateProvider: DateProvider,
-        cityStatsQuery: CityStatsProvider,
-        cityRuralityQuery: SqlCityRuralityQuery,
+        cityDataQuery: CityImpactsDataProvider,
         uuidGenerator: UidGenerator,
         eventPublisher: DomainEventPublisher,
       ) =>
         new CreateNewExpressSiteUseCase(
           siteRepository,
           dateProvider,
-          cityStatsQuery,
-          cityRuralityQuery,
+          cityDataQuery,
           uuidGenerator,
           eventPublisher,
           new NestJsAppLogger(CreateNewExpressSiteUseCase.name),
@@ -81,8 +78,7 @@ import { SitesController } from "./sites.controller";
       inject: [
         SqlSiteRepository,
         RealDateProvider,
-        SqlCityStatsQuery,
-        SqlCityRuralityQuery,
+        SqlCityImpactsQuery,
         RandomUuidGenerator,
         RealEventPublisher,
       ],
@@ -102,9 +98,9 @@ import { SitesController } from "./sites.controller";
     },
     {
       provide: GetSiteRealEstateValuationUseCase,
-      useFactory: (sitesQuery: SitesQuery, cityStatsProvider: CityStatsProvider) =>
-        new GetSiteRealEstateValuationUseCase(sitesQuery, cityStatsProvider),
-      inject: [SqlSitesQuery, SqlCityStatsQuery],
+      useFactory: (sitesQuery: SitesQuery, cityDataQuery: CityImpactsDataProvider) =>
+        new GetSiteRealEstateValuationUseCase(sitesQuery, cityDataQuery),
+      inject: [SqlSitesQuery, SqlCityImpactsQuery],
     },
     {
       provide: UpdateCustomSiteUseCase,
@@ -122,9 +118,9 @@ import { SitesController } from "./sites.controller";
     },
     {
       provide: ComputeFricheInactionCostUseCase,
-      useFactory: (cityStatsProvider: CityStatsProvider, cityRuralityQuery: SqlCityRuralityQuery) =>
-        new ComputeFricheInactionCostUseCase(cityStatsProvider, cityRuralityQuery),
-      inject: [SqlCityStatsQuery, SqlCityRuralityQuery],
+      useFactory: (cityDataQuery: CityImpactsDataProvider) =>
+        new ComputeFricheInactionCostUseCase(cityDataQuery),
+      inject: [SqlCityImpactsQuery],
     },
     {
       provide: ComputeSiteImpactsUseCase,

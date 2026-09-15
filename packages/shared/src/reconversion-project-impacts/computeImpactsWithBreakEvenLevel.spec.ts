@@ -128,10 +128,14 @@ const baseSite: Omit<SiteImpactsDataView, "address"> = {
 
 const siteCityData = {
   name: "",
-  propertyValueMedianPricePerSquareMeters: 2_500,
-  population: 50_000,
-  surfaceAreaSquareMeters: 5_000_000,
-  accuracy: "city",
+  mteZonageAbc: "B",
+  isRural: false,
+  stats: {
+    propertyValueMedianPricePerSquareMeters: 2_500,
+    population: 50_000,
+    surfaceAreaSquareMeters: 5_000_000,
+    accuracy: "city",
+  },
 } as const;
 
 describe("computeProjectImpactsWithBreakEvenLevel", () => {
@@ -147,7 +151,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           yearlyIncomes: [{ amount: 10_000, source: "operations" }],
           yearlyExpenses: [{ amount: 4_000, purpose: "operationsTaxes", bearer: "tenant" }],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
 
         evaluationPeriodInYears: 50,
       });
@@ -167,7 +171,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           nature: "AGRICULTURAL_OPERATION" as const,
           isSiteOperated: false,
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 50,
       });
 
@@ -188,7 +192,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           agriculturalOperationActivity: "CATTLE_FARMING",
           isSiteOperated: true,
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 50,
       });
 
@@ -210,7 +214,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
 
           isSiteOperated: false,
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 50,
       });
 
@@ -237,7 +241,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           yearlyIncomes: [{ amount: 10_000, source: "operations" }],
           yearlyExpenses: [{ amount: 500, purpose: "maintenance", bearer: "owner" }],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 50,
       });
 
@@ -281,7 +285,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           yearlyIncomes: [{ amount: 10_000, source: "operations" }],
           yearlyExpenses: [{ amount: 500, purpose: "maintenance", bearer: "owner" }],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 3,
       });
 
@@ -332,7 +336,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
             },
           ],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 3,
       });
 
@@ -376,7 +380,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           yearlyIncomes: [{ amount: 10_000, source: "operations" }],
           yearlyExpenses: [{ amount: 1_500, purpose: "rent", bearer: "tenant" }],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 3,
       });
 
@@ -418,7 +422,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           yearlyIncomes: [{ amount: 10_000, source: "operations" }],
           yearlyExpenses: [],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 10,
       });
 
@@ -459,7 +463,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
             { amount: 200, purpose: "maintenance", bearer: "owner" },
           ],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 10,
       });
 
@@ -491,7 +495,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           ...baseSite,
           yearlyExpenses: [{ amount: 500, purpose: "illegalDumpingCost", bearer: "tenant" }],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 10,
       });
 
@@ -525,7 +529,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           yearlyIncomes: [],
           yearlyExpenses: [],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 10,
       });
 
@@ -556,7 +560,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           ],
           yearlyExpenses: [{ amount: 3_000, purpose: "operationsTaxes", bearer: "tenant" }],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 3,
       });
 
@@ -584,7 +588,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           yearlyIncomes: [{ amount: 1_000, source: "operations" }],
           yearlyExpenses: [{ amount: 4_000, purpose: "maintenance", bearer: "tenant" }],
         },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 3,
       });
 
@@ -616,7 +620,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
               { amount: 2_000, purpose: "maintenance", bearer: "tenant" },
             ],
           },
-          cityStats: siteCityData,
+          city: siteCityData,
           evaluationPeriodInYears: 3,
         });
 
@@ -636,7 +640,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
             ...baseSite,
             nature: "AGRICULTURAL_OPERATION",
           },
-          cityStats: siteCityData,
+          city: siteCityData,
           evaluationPeriodInYears: 3,
         });
 
@@ -655,7 +659,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         const result = computeProjectImpactsWithBreakEvenLevel({
           reconversionProject: baseProject,
           relatedSite: baseSite,
-          cityStats: siteCityData,
+          city: siteCityData,
           evaluationPeriodInYears: 3,
         });
 
@@ -689,7 +693,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
             ...baseSite,
             nature: "AGRICULTURAL_OPERATION",
           },
-          cityStats: siteCityData,
+          city: siteCityData,
           evaluationPeriodInYears: 3,
         });
 
@@ -707,7 +711,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
       const result = computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance({
         reconversionProject: baseProject,
         relatedSite: { ...baseSite, nature: "AGRICULTURAL_OPERATION" },
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 10,
       });
 
@@ -734,7 +738,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
       const result = computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance({
         reconversionProject: baseProject,
         relatedSite: baseSite,
-        cityStats: siteCityData,
+        city: siteCityData,
         evaluationPeriodInYears: 10,
       });
 

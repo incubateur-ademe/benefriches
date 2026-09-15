@@ -71,6 +71,8 @@ type UrbanProjectImpactsProps = {
     citySquareMetersSurfaceArea: number;
     cityPopulation: number;
     cityPropertyValuePerSquareMeter: number;
+    cityMteZonageAbc: "A" | "B" | "C" | "B1" | "B2" | "Abis" | undefined;
+    cityIsRural: boolean;
   };
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 };
@@ -147,6 +149,7 @@ export const getUrbanProjectImpacts = ({
         sumOnEvolutionPeriodService,
       }),
     );
+
     economicImpacts.push(
       ...getLocalPropertyIncreaseWithFricheRemovalImpacts({
         siteSurfaceArea: relatedSite.surfaceArea,

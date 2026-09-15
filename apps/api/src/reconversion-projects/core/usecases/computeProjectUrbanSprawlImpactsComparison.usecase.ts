@@ -23,8 +23,7 @@ import { UseCase } from "src/shared-kernel/usecase";
 import { AgriculturalOperationGenerator } from "src/sites/core/models/agriculturalOperationGenerator";
 import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
 import { NaturalAreaGenerator } from "src/sites/core/models/naturalAreaGenerator";
-import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
-import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { CityImpactsDataProvider } from "src/territory/core/gateways/CityImpactsDataProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { Schedule } from "../model/reconversionProject";
@@ -67,22 +66,19 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
 > {
   private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery;
   private readonly siteRepository: SiteImpactsQuery;
-  private readonly cityStatsQuery: CityStatsProvider;
-  private readonly cityRuralityQuery: CityRuralityQuery;
+  private readonly cityDataQuery: CityImpactsDataProvider;
   private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
   private readonly dateProvider: DateProvider;
   constructor(
     reconversionProjectQuery: ReconversionProjectImpactsQuery,
     siteRepository: SiteImpactsQuery,
-    cityStatsQuery: CityStatsProvider,
-    cityRuralityQuery: CityRuralityQuery,
+    cityDataQuery: CityImpactsDataProvider,
     getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
     dateProvider: DateProvider,
   ) {
     this.reconversionProjectQuery = reconversionProjectQuery;
     this.siteRepository = siteRepository;
-    this.cityStatsQuery = cityStatsQuery;
-    this.cityRuralityQuery = cityRuralityQuery;
+    this.cityDataQuery = cityDataQuery;
     this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
     this.dateProvider = dateProvider;
   }
@@ -107,10 +103,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
 
     if (!relatedSite) return fail("SiteNotFound");
 
-    const [cityStats, isCityInRuralZone] = await Promise.all([
-      this.cityStatsQuery.getCityStats(relatedSite.address.cityCode),
-      this.cityRuralityQuery.isCityRural(relatedSite.address.cityCode),
-    ]);
+    const cityData = await this.cityDataQuery.getCityDataAndStats(relatedSite.address.cityCode);
 
     const comparisonSite = (() => {
       switch (comparisonSiteNature) {
@@ -119,8 +112,8 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
             surfaceArea: relatedSite.surfaceArea,
             id: uuid(),
             address: relatedSite.address,
-            cityPopulation: cityStats.population,
-            isCityInRuralZone,
+            cityPopulation: cityData?.stats.population,
+            isCityInRuralZone: cityData?.isRural,
             fricheActivity: "INDUSTRY",
           });
         case "AGRICULTURAL_OPERATION":
@@ -128,8 +121,8 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
             surfaceArea: relatedSite.surfaceArea,
             id: uuid(),
             address: relatedSite.address,
-            cityPopulation: cityStats.population,
-            isCityInRuralZone,
+            cityPopulation: cityData?.stats.population,
+            isCityInRuralZone: cityData?.isRural,
             operationActivity: "POLYCULTURE_AND_LIVESTOCK",
           });
         case "NATURAL_AREA":
@@ -137,8 +130,8 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
             surfaceArea: relatedSite.surfaceArea,
             id: uuid(),
             address: relatedSite.address,
-            cityPopulation: cityStats.population,
-            isCityInRuralZone,
+            cityPopulation: cityData?.stats.population,
+            isCityInRuralZone: cityData?.isRural,
             naturalAreaType: "PRAIRIE",
           });
         case "URBAN_ZONE":
@@ -241,7 +234,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
         ...comparisonSiteData,
         siteSoilsCarbonStorage: comparisonSiteSoilsCarbonStorage,
       },
-      cityStats,
+      city: cityData,
       evaluationPeriodInYears,
     });
 

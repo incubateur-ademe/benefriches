@@ -38,6 +38,8 @@ const baseSite: InputSiteData = {
 };
 
 const siteCityData = {
+  cityIsRural: false,
+  cityMteZonageAbc: "B" as const,
   citySquareMetersSurfaceArea: 5_000_000,
   cityPopulation: 50_000,
   cityPropertyValuePerSquareMeter: 2_500,

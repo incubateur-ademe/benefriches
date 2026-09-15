@@ -11,7 +11,7 @@ import {
 import { DateProvider } from "src/shared-kernel/dateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
-import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { CityImpactsDataProvider } from "src/territory/core/gateways/CityImpactsDataProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { Schedule } from "../model/reconversionProject";
@@ -71,19 +71,19 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
   private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery;
   private readonly siteRepository: SiteImpactsQuery;
   private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
-  private readonly cityStatsQuery: CityStatsProvider;
+  private readonly cityDataQuery: CityImpactsDataProvider;
   private readonly dateProvider: DateProvider;
   constructor(
     reconversionProjectQuery: ReconversionProjectImpactsQuery,
     siteRepository: SiteImpactsQuery,
     getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
-    cityStatsQuery: CityStatsProvider,
+    cityDataQuery: CityImpactsDataProvider,
     dateProvider: DateProvider,
   ) {
     this.reconversionProjectQuery = reconversionProjectQuery;
     this.siteRepository = siteRepository;
     this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
-    this.cityStatsQuery = cityStatsQuery;
+    this.cityDataQuery = cityDataQuery;
     this.dateProvider = dateProvider;
   }
 
@@ -120,7 +120,7 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
         soilsDistribution: soilsDistributionByType,
       });
 
-    const cityStats = await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
+    const cityData = await this.cityDataQuery.getCityDataAndStats(relatedSite.address.cityCode);
 
     return success({
       contextData: {
@@ -150,7 +150,7 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
         } as ReconversionProjectImpactsWithBreakEvenLevelInput,
         relatedSite: { ...relatedSite, siteSoilsCarbonStorage },
         evaluationPeriodInYears,
-        cityStats,
+        city: cityData,
       }),
     });
   }

@@ -6,8 +6,7 @@ import type { AppLogger } from "src/shared-kernel/logger";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UidGenerator } from "src/shared-kernel/uidGenerator";
 import { UseCase } from "src/shared-kernel/usecase";
-import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
-import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { CityImpactsDataProvider } from "src/territory/core/gateways/CityImpactsDataProvider";
 
 import { createSiteCreatedEvent } from "../events/siteCreated.event";
 import { SitesRepository } from "../gateways/SitesRepository";
@@ -61,16 +60,14 @@ function createSite(
 export class CreateNewExpressSiteUseCase implements UseCase<Request, CreateNewExpressSiteResult> {
   private readonly sitesRepository: SitesRepository;
   private readonly dateProvider: DateProvider;
-  private readonly cityStatsQuery: CityStatsProvider;
-  private readonly cityRuralityQuery: CityRuralityQuery;
+  private readonly cityStatsQuery: CityImpactsDataProvider;
   private readonly uuidGenerator: UidGenerator;
   private readonly eventPublisher: DomainEventPublisher;
   private readonly logger: AppLogger;
   constructor(
     sitesRepository: SitesRepository,
     dateProvider: DateProvider,
-    cityStatsQuery: CityStatsProvider,
-    cityRuralityQuery: CityRuralityQuery,
+    cityStatsQuery: CityImpactsDataProvider,
     uuidGenerator: UidGenerator,
     eventPublisher: DomainEventPublisher,
     logger: AppLogger,
@@ -78,7 +75,6 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, CreateNewEx
     this.sitesRepository = sitesRepository;
     this.dateProvider = dateProvider;
     this.cityStatsQuery = cityStatsQuery;
-    this.cityRuralityQuery = cityRuralityQuery;
     this.uuidGenerator = uuidGenerator;
     this.eventPublisher = eventPublisher;
     this.logger = logger;
@@ -88,11 +84,10 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, CreateNewEx
     let siteCityPopulation = 0;
     let isCityInRuralZone = false;
     try {
-      const [{ population }, isRural] = await Promise.all([
-        this.cityStatsQuery.getCityStats(siteProps.address.cityCode),
-        this.cityRuralityQuery.isCityRural(siteProps.address.cityCode),
-      ]);
-      siteCityPopulation = population;
+      const { stats, isRural } = await this.cityStatsQuery.getCityDataAndStats(
+        siteProps.address.cityCode,
+      );
+      siteCityPopulation = stats.population;
       isCityInRuralZone = isRural;
     } catch (error) {
       this.logger.error("Failed to get city population", error);

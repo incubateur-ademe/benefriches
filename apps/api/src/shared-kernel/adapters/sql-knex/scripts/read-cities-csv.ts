@@ -87,12 +87,12 @@ export const readCitiesCsvData = async (): Promise<Omit<SqlCity, "id">[]> => {
       department,
       region,
       epci,
-      aldo_zpc: aldoZpc ?? "",
+      aldo_zpc: aldoZpc ?? undefined,
       aldo_code_greco: splitList(aldoCodeGreco),
       aldo_code_groupeser: splitList(aldoCodeGroupeser),
       aldo_code_ser: splitList(aldoCodeSer),
       aldo_code_bassin_populicole: aldoCodeBassinPopulicole || undefined,
-      mte_zonage_abc: mteZonageAbc ?? "",
+      mte_zonage_abc: mteZonageAbc ?? undefined,
     });
   }
 

@@ -61,6 +61,8 @@ type Props = {
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
   relatedSite: InputSiteData;
   siteCityData: {
+    cityMteZonageAbc: "A" | "B" | "C" | "B1" | "B2" | "Abis" | undefined;
+    cityIsRural: boolean;
     citySquareMetersSurfaceArea: number;
     cityPopulation: number;
     cityPropertyValuePerSquareMeter: number;

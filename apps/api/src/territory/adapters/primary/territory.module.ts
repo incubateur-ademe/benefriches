@@ -7,8 +7,8 @@ import {
 } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { GetCityRuralityUseCase } from "src/territory/core/usecases/getCityRurality.usecase";
 
+import { SqlCityImpactsQuery } from "../secondary/city-impacts-query/SqlCityImpactsQuery";
 import { SqlCityRuralityQuery } from "../secondary/city-rurality-query/SqlCityRuralityQuery";
-import { SqlCityStatsQuery } from "../secondary/city-stats-query/SqlCityStatsQuery";
 import { TerritoryController } from "./territory.controller";
 
 @Module({
@@ -23,11 +23,11 @@ import { TerritoryController } from "./territory.controller";
     },
     SqlCityRuralityQuery,
     {
-      provide: SqlCityStatsQuery,
-      useFactory: (sqlConnection: Knex) => new SqlCityStatsQuery(sqlConnection),
+      provide: SqlCityImpactsQuery,
+      useFactory: (sqlConnection: Knex) => new SqlCityImpactsQuery(sqlConnection),
       inject: [SqlConnection],
     },
   ],
-  exports: [GetCityRuralityUseCase, SqlCityStatsQuery, SqlCityRuralityQuery],
+  exports: [GetCityRuralityUseCase, SqlCityImpactsQuery, SqlCityRuralityQuery],
 })
 export class TerritoryModule {}

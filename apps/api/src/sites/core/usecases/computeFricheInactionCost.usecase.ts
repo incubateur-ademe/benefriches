@@ -2,8 +2,7 @@ import { computeFricheDefaultYearlyExpenses } from "shared";
 
 import { fail, success, TResult } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
-import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
-import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { CityImpactsDataProvider } from "src/territory/core/gateways/CityImpactsDataProvider";
 
 type Request = {
   siteCityCode: string;
@@ -28,11 +27,9 @@ export class ComputeFricheInactionCostUseCase implements UseCase<
   Request,
   ComputeFricheInactionCostResult
 > {
-  private readonly cityStatsQuery: CityStatsProvider;
-  private readonly cityRuralityQuery: CityRuralityQuery;
-  constructor(cityStatsQuery: CityStatsProvider, cityRuralityQuery: CityRuralityQuery) {
-    this.cityStatsQuery = cityStatsQuery;
-    this.cityRuralityQuery = cityRuralityQuery;
+  private readonly cityDataAndStatsQuery: CityImpactsDataProvider;
+  constructor(cityDataAndStatsQuery: CityImpactsDataProvider) {
+    this.cityDataAndStatsQuery = cityDataAndStatsQuery;
   }
 
   async execute({
@@ -40,28 +37,20 @@ export class ComputeFricheInactionCostUseCase implements UseCase<
     siteSurfaceArea,
   }: Request): Promise<ComputeFricheInactionCostResult> {
     try {
-      const [{ surfaceAreaSquareMeters, population, name, accuracy }, isCityInRuralZone] =
-        await Promise.all([
-          this.cityStatsQuery.getCityStats(siteCityCode),
-          this.cityRuralityQuery.isCityRural(siteCityCode),
-        ]);
+      const { name, stats, isRural } =
+        await this.cityDataAndStatsQuery.getCityDataAndStats(siteCityCode);
 
       const expenses = computeFricheDefaultYearlyExpenses({
         surfaceArea: siteSurfaceArea,
-        cityPopulation: population,
-        isCityInRuralZone,
+        cityPopulation: stats.population,
+        isCityInRuralZone: isRural,
       });
       const amountByPurpose = new Map(expenses.map(({ purpose, amount }) => [purpose, amount]));
 
       return success({
         illegalDumpingCost: amountByPurpose.get("illegalDumpingCost") ?? 0,
         security: amountByPurpose.get("security"),
-        siteCityData: {
-          accuracy,
-          surfaceAreaSquareMeters,
-          population,
-          name,
-        },
+        siteCityData: { name, ...stats },
       });
     } catch {
       return fail("CITY_STATS_UNAVAILABLE");

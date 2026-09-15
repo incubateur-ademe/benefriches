@@ -44,8 +44,7 @@ import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
 import { TerritoryModule } from "src/territory/adapters/primary/territory.module";
-import { SqlCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/SqlCityRuralityQuery";
-import { SqlCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/SqlCityStatsQuery";
+import { SqlCityImpactsQuery } from "src/territory/adapters/secondary/city-impacts-query/SqlCityImpactsQuery";
 import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
 import { UserQuery } from "src/users/core/gateways/UserQuery";
 
@@ -155,14 +154,14 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       useFactory(
         reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
         siteRepo: SqlSiteImpactsQuery,
-        cityStatsRepo: SqlCityStatsQuery,
+        cityDataRepo: SqlCityImpactsQuery,
         getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         dateProvider: DateProvider,
       ) {
         return new ComputeReconversionProjectImpactsUseCase(
           reconversionProjectRepo,
           siteRepo,
-          cityStatsRepo,
+          cityDataRepo,
           getCarbonStorageFromSoilDistribution,
           dateProvider,
         );
@@ -170,7 +169,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       inject: [
         SqlReconversionProjectImpactsQuery,
         SqlSiteImpactsQuery,
-        SqlCityStatsQuery,
+        SqlCityImpactsQuery,
         GetCarbonStorageFromSoilDistributionService,
         RealDateProvider,
       ],
@@ -181,14 +180,14 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
         siteRepo: SqlSiteImpactsQuery,
         getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
-        cityStatsRepo: SqlCityStatsQuery,
+        cityDataRepo: SqlCityImpactsQuery,
         dateProvider: DateProvider,
       ) {
         return new ComputeReconversionProjectBreakEvenLevelUseCase(
           reconversionProjectRepo,
           siteRepo,
           getCarbonStorageFromSoilDistribution,
-          cityStatsRepo,
+          cityDataRepo,
           dateProvider,
         );
       },
@@ -196,25 +195,25 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         SqlReconversionProjectImpactsQuery,
         SqlSiteImpactsQuery,
         GetCarbonStorageFromSoilDistributionService,
-        SqlCityStatsQuery,
+        SqlCityImpactsQuery,
         RealDateProvider,
       ],
     },
     {
       provide: QuickComputeUrbanProjectImpactsOnFricheUseCase,
       useFactory(
-        cityStatsRepo: SqlCityStatsQuery,
+        cityDataRepo: SqlCityImpactsQuery,
         getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         dateProvider: DateProvider,
       ) {
         return new QuickComputeUrbanProjectImpactsOnFricheUseCase(
-          cityStatsRepo,
+          cityDataRepo,
           new FricheGenerator(),
           dateProvider,
           getCarbonStorageFromSoilDistribution,
         );
       },
-      inject: [SqlCityStatsQuery, GetCarbonStorageFromSoilDistributionService, RealDateProvider],
+      inject: [SqlCityImpactsQuery, GetCarbonStorageFromSoilDistributionService, RealDateProvider],
     },
     {
       provide: GetReconversionProjectFeaturesUseCase,
@@ -228,16 +227,14 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       useFactory(
         reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
         siteRepo: SqlSiteImpactsQuery,
-        cityStatsRepo: SqlCityStatsQuery,
-        cityRuralityQuery: SqlCityRuralityQuery,
+        cityDataRepo: SqlCityImpactsQuery,
         getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         dateProvider: DateProvider,
       ) {
         return new ComputeProjectUrbanSprawlImpactsComparisonUseCase(
           reconversionProjectRepo,
           siteRepo,
-          cityStatsRepo,
-          cityRuralityQuery,
+          cityDataRepo,
           getCarbonStorageFromSoilDistribution,
           dateProvider,
         );
@@ -245,8 +242,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       inject: [
         SqlReconversionProjectImpactsQuery,
         SqlSiteImpactsQuery,
-        SqlCityStatsQuery,
-        SqlCityRuralityQuery,
+        SqlCityImpactsQuery,
         GetCarbonStorageFromSoilDistributionService,
         RealDateProvider,
       ],

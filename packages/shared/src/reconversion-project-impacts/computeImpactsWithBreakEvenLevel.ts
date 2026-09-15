@@ -211,15 +211,19 @@ const handleRoadsAndUtilitiesExpenses = ({
 export const computeProjectImpactsBreakdownAndEconomicBalance = ({
   reconversionProject,
   relatedSite,
-  cityStats,
+  city,
   evaluationPeriodInYears,
 }: {
   reconversionProject: ReconversionProjectImpactsWithBreakEvenLevelInput;
   relatedSite: SiteInputData;
-  cityStats: {
-    propertyValueMedianPricePerSquareMeters: number;
-    population: number;
-    surfaceAreaSquareMeters: number;
+  city: {
+    mteZonageAbc?: "A" | "B" | "C" | "B1" | "B2" | "Abis";
+    isRural: boolean;
+    stats: {
+      propertyValueMedianPricePerSquareMeters: number;
+      population: number;
+      surfaceAreaSquareMeters: number;
+    };
   };
   evaluationPeriodInYears: number;
 }): {
@@ -291,9 +295,11 @@ export const computeProjectImpactsBreakdownAndEconomicBalance = ({
     relatedSite: { ...relatedSite, soilsCarbonStorage: relatedSite.siteSoilsCarbonStorage },
     sumOnEvolutionPeriodService,
     siteCityData: {
-      cityPropertyValuePerSquareMeter: cityStats.propertyValueMedianPricePerSquareMeters,
-      citySquareMetersSurfaceArea: cityStats.surfaceAreaSquareMeters,
-      cityPopulation: cityStats.population,
+      cityMteZonageAbc: city.mteZonageAbc,
+      cityIsRural: city.isRural,
+      cityPropertyValuePerSquareMeter: city.stats.propertyValueMedianPricePerSquareMeters,
+      citySquareMetersSurfaceArea: city.stats.surfaceAreaSquareMeters,
+      cityPopulation: city.stats.population,
     },
   });
 
@@ -344,15 +350,20 @@ export const computeProjectImpactsBreakdownAndEconomicBalance = ({
 export const computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance = ({
   reconversionProject,
   relatedSite,
-  cityStats,
+  city,
   evaluationPeriodInYears,
 }: {
   reconversionProject: ReconversionProjectImpactsWithBreakEvenLevelInput;
   relatedSite: SiteInputData;
-  cityStats: {
-    propertyValueMedianPricePerSquareMeters: number;
-    population: number;
-    surfaceAreaSquareMeters: number;
+  city: {
+    isRural: boolean;
+
+    mteZonageAbc?: "A" | "B" | "C" | "B1" | "B2" | "Abis" | undefined;
+    stats: {
+      propertyValueMedianPricePerSquareMeters: number;
+      population: number;
+      surfaceAreaSquareMeters: number;
+    };
   };
   evaluationPeriodInYears: number;
 }): {
@@ -372,7 +383,7 @@ export const computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalan
   } = computeProjectImpactsBreakdownAndEconomicBalance({
     reconversionProject,
     relatedSite,
-    cityStats,
+    city,
     evaluationPeriodInYears,
   });
 
@@ -542,15 +553,19 @@ export const computeAggregatedReconversionImpacts = <
 export const computeProjectImpactsWithBreakEvenLevel = ({
   reconversionProject,
   relatedSite,
-  cityStats,
+  city,
   evaluationPeriodInYears,
 }: {
   reconversionProject: ReconversionProjectImpactsWithBreakEvenLevelInput;
   relatedSite: SiteInputData;
-  cityStats: {
-    propertyValueMedianPricePerSquareMeters: number;
-    population: number;
-    surfaceAreaSquareMeters: number;
+  city: {
+    mteZonageAbc?: "A" | "B" | "C" | "B1" | "B2" | "Abis";
+    isRural: boolean;
+    stats: {
+      propertyValueMedianPricePerSquareMeters: number;
+      population: number;
+      surfaceAreaSquareMeters: number;
+    };
   };
   evaluationPeriodInYears: number;
 }): GetReconversionProjectImpactsResultDto["impacts"] => {
@@ -567,7 +582,7 @@ export const computeProjectImpactsWithBreakEvenLevel = ({
   } = computeProjectImpactsBreakdownAndEconomicBalance({
     reconversionProject,
     relatedSite,
-    cityStats,
+    city,
     evaluationPeriodInYears,
   });
 

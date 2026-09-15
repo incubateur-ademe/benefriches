@@ -40,17 +40,37 @@ const FRICHE_REMOVAL_AND_RENATURATION_PRICE_RISES = [
 const SOCIAL_HOUSING_SHARE = 0.2;
 const AVERAGE_HOUSE_HOLDING_PERIOD = 33;
 
-export const computePropertyValueImpact = (
-  siteSurfaceArea: number,
-  citySurfaceArea: number,
-  cityPopulation: number,
-  localHousePriceEuroPerSquareMeters: number,
-  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService,
+type Props = {
+  siteSurfaceArea: number;
+  citySurfaceArea: number;
+  cityPopulation: number;
+  localHousePriceEuroPerSquareMeters: number;
+  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
+  isRenaturation?: boolean;
+  cityIsRural: boolean;
+  cityMteZonageAbc?: "A" | "B" | "C" | "B1" | "B2" | "Abis";
+};
+
+export const computePropertyValueImpact = ({
+  siteSurfaceArea,
+  citySurfaceArea,
+  cityPopulation,
+  localHousePriceEuroPerSquareMeters,
+  sumOnEvolutionPeriodService,
   isRenaturation = false,
-) => {
-  const influenceZonesHousePriceRises = (
-    isRenaturation ? FRICHE_REMOVAL_AND_RENATURATION_PRICE_RISES : FRICHE_REMOVAL_PRICE_RISES
-  ).map(({ radius, ratio }) => {
+  cityIsRural,
+  cityMteZonageAbc,
+}: Props) => {
+  if (cityIsRural || cityMteZonageAbc === "C") {
+    return undefined;
+  }
+  const source = isRenaturation
+    ? FRICHE_REMOVAL_AND_RENATURATION_PRICE_RISES
+    : FRICHE_REMOVAL_PRICE_RISES;
+
+  const zones = cityMteZonageAbc === "B2" ? source.slice(0, 1) : source;
+
+  const influenceZonesHousePriceRises = zones.map(({ radius, ratio }) => {
     const influenceAreaService = new InfluenceAreaService({
       siteSquareMetersSurfaceArea: siteSurfaceArea,
       citySquareMetersSurfaceArea: citySurfaceArea,

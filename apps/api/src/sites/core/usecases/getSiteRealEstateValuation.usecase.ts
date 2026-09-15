@@ -3,7 +3,7 @@ import type { GetSiteRealEstateValuationResponseDto } from "shared";
 
 import { fail, success, type TResult } from "src/shared-kernel/result";
 import type { UseCase } from "src/shared-kernel/usecase";
-import type { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import type { CityImpactsDataProvider } from "src/territory/core/gateways/CityImpactsDataProvider";
 
 import type { SitesQuery } from "../gateways/SitesQuery";
 
@@ -21,8 +21,8 @@ export class GetSiteRealEstateValuationUseCase implements UseCase<
   GetSiteRealEstateValuationResult
 > {
   private readonly sitesQuery: SitesQuery;
-  private readonly cityStatsProvider: CityStatsProvider;
-  constructor(sitesQuery: SitesQuery, cityStatsProvider: CityStatsProvider) {
+  private readonly cityStatsProvider: CityImpactsDataProvider;
+  constructor(sitesQuery: SitesQuery, cityStatsProvider: CityImpactsDataProvider) {
     this.sitesQuery = sitesQuery;
     this.cityStatsProvider = cityStatsProvider;
   }
@@ -34,9 +34,10 @@ export class GetSiteRealEstateValuationUseCase implements UseCase<
       return fail("SiteNotFound");
     }
 
-    const cityStats = await this.cityStatsProvider.getCityStats(siteData.cityCode);
+    const cityStats = await this.cityStatsProvider.getCityDataAndStats(siteData.cityCode);
 
-    const sellingPrice = siteData.surfaceArea * cityStats.propertyValueMedianPricePerSquareMeters;
+    const sellingPrice =
+      siteData.surfaceArea * cityStats.stats.propertyValueMedianPricePerSquareMeters;
     const propertyTransferDuties = computePropertyTransferDutiesFromSellingPrice(sellingPrice);
 
     return success({

@@ -3,14 +3,14 @@ import { describe, it } from "node:test";
 
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
-import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
+import { InMemoryCityImpactsQuery } from "src/territory/adapters/secondary/city-impacts-query/InMemoryCityImpactsQuery";
 
 import { GetSiteRealEstateValuationUseCase } from "./getSiteRealEstateValuation.usecase";
 
 describe("GetSiteRealEstateValuationUseCase", () => {
   it("should return correct valuation when site exists", async () => {
     const sitesQuery = new InMemorySitesQuery();
-    const cityStatsQuery = new InMemoryCityStatsQuery();
+    const cityStatsQuery = new InMemoryCityImpactsQuery();
 
     const siteId = "site-123";
     sitesQuery._setSiteSurfaceAreaAndCityCode(siteId, {
@@ -30,7 +30,7 @@ describe("GetSiteRealEstateValuationUseCase", () => {
 
   it("should return SiteNotFound when site does not exist", async () => {
     const sitesQuery = new InMemorySitesQuery();
-    const cityStatsQuery = new InMemoryCityStatsQuery();
+    const cityStatsQuery = new InMemoryCityImpactsQuery();
 
     const useCase = new GetSiteRealEstateValuationUseCase(sitesQuery, cityStatsQuery);
     const result = await useCase.execute({ siteId: "nonexistent" });

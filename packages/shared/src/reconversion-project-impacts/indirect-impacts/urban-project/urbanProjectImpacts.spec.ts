@@ -12,6 +12,8 @@ import { InputReconversionProjectData, InputSiteData } from "../projectIndirectI
 import { getUrbanProjectImpacts, getNewUsagesTaxesIncomeImpact } from "./urbanProjectImpacts";
 
 const baseSiteCityData = {
+  cityIsRural: false,
+  cityMteZonageAbc: "B" as const,
   citySquareMetersSurfaceArea: 10_000_000,
   cityPopulation: 100_000,
   cityPropertyValuePerSquareMeter: 3_000,
@@ -160,6 +162,8 @@ describe("getUrbanProjectImpacts", () => {
         }),
         relatedSite: { ...baseRelatedSite, surfaceArea: 15_000 },
         siteCityData: {
+          cityIsRural: false,
+          cityMteZonageAbc: "B" as const,
           cityPropertyValuePerSquareMeter: 2000,
           citySquareMetersSurfaceArea: 15000000,
           cityPopulation: 18000,
@@ -217,6 +221,8 @@ describe("getUrbanProjectImpacts", () => {
         }),
         relatedSite: { ...baseRelatedSite, surfaceArea: 100_000 },
         siteCityData: {
+          cityIsRural: false,
+          cityMteZonageAbc: "B" as const,
           citySquareMetersSurfaceArea: 6000000000,
           cityPopulation: 300000,
           cityPropertyValuePerSquareMeter: 2000,

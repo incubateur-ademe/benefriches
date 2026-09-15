@@ -8,7 +8,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/dateProvider";
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
-import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
+import { InMemoryCityImpactsQuery } from "src/territory/adapters/secondary/city-impacts-query/InMemoryCityImpactsQuery";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import {
@@ -30,7 +30,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         new InMemoryReconversionProjectImpactsQuery(),
         new InMemorySiteImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
-        new InMemoryCityStatsQuery(),
+        new InMemoryCityImpactsQuery(),
         dateProvider,
       );
 
@@ -68,7 +68,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         projectQuery,
         new InMemorySiteImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
-        new InMemoryCityStatsQuery(),
+        new InMemoryCityImpactsQuery(),
         dateProvider,
       );
 
@@ -112,7 +112,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         projectQuery,
         new InMemorySiteImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
-        new InMemoryCityStatsQuery(),
+        new InMemoryCityImpactsQuery(),
         dateProvider,
       );
 
@@ -243,7 +243,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       projectQuery,
       siteQuery,
       new FakeGetSoilsCarbonStorageService(),
-      new InMemoryCityStatsQuery(),
+      new InMemoryCityImpactsQuery(),
       dateProvider,
     );
   };

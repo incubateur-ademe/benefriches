@@ -95,10 +95,14 @@ export type EvaluatedProjectsImpactsStatsResult = {
     currentSoilsDistribution: Record<string, number>;
     currentYearlyExpenses: SiteYearlyExpense[];
     currentYearlyIncomes: SiteYearlyIncome[];
-    cityStats?: {
-      surfaceAreaSquareMeters?: number;
-      population: number;
-      propertyValueMedianPricePerSquareMeters?: number;
+    cityData?: {
+      isRural: boolean;
+      mteZonageAbc?: "A" | "B" | "C" | "B1" | "B2" | "Abis";
+      stats?: {
+        surfaceAreaSquareMeters?: number;
+        population: number;
+        propertyValueMedianPricePerSquareMeters?: number;
+      };
     };
   };
 };
@@ -192,6 +196,13 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
       index,
       { projectDevelopment, relatedSite, isExpressProject, stakeholders },
     ] of eligibleProjects.entries()) {
+      if (
+        !relatedSite.cityData?.stats?.propertyValueMedianPricePerSquareMeters ||
+        !relatedSite.cityData?.stats?.surfaceAreaSquareMeters
+      ) {
+        continue;
+      }
+
       const [siteSoilsCarbonStorage, projectSoilsCarbonStorage] = carbonStorages[index] ?? [];
 
       const operationsFirstYear =
@@ -253,11 +264,14 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
             soilsDistribution: relatedSite.currentSoilsDistribution,
           },
           evaluationPeriodInYears: DEFAULT_EVALUATION_PERIOD_IN_YEARS,
-          cityStats: {
-            population: relatedSite.cityStats?.population ?? 0,
-            surfaceAreaSquareMeters: relatedSite.cityStats?.surfaceAreaSquareMeters ?? 0,
-            propertyValueMedianPricePerSquareMeters:
-              relatedSite.cityStats?.propertyValueMedianPricePerSquareMeters ?? 0,
+          city: {
+            ...relatedSite.cityData,
+            stats: {
+              propertyValueMedianPricePerSquareMeters:
+                relatedSite.cityData.stats.propertyValueMedianPricePerSquareMeters,
+              population: relatedSite.cityData.stats.population,
+              surfaceAreaSquareMeters: relatedSite.cityData.stats.surfaceAreaSquareMeters,
+            },
           },
         });
 

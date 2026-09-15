@@ -12,8 +12,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/dateProvider";
 import { SuccessResult, FailureResult } from "src/shared-kernel/result";
 import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
-import { InMemoryCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/InMemoryCityRuralityQuery";
-import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
+import { InMemoryCityImpactsQuery } from "src/territory/adapters/secondary/city-impacts-query/InMemoryCityImpactsQuery";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import { Schedule } from "../model/reconversionProject";
@@ -159,8 +158,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       const usecase = new ComputeProjectUrbanSprawlImpactsComparisonUseCase(
         projectQuery,
         siteQuery,
-        new InMemoryCityStatsQuery(),
-        new InMemoryCityRuralityQuery(),
+        new InMemoryCityImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
       );
@@ -199,8 +197,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       const usecase = new ComputeProjectUrbanSprawlImpactsComparisonUseCase(
         projectQuery,
         siteQuery,
-        new InMemoryCityStatsQuery(),
-        new InMemoryCityRuralityQuery(),
+        new InMemoryCityImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
       );
@@ -246,8 +243,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       const usecase = new ComputeProjectUrbanSprawlImpactsComparisonUseCase(
         projectQuery,
         siteQuery,
-        new InMemoryCityStatsQuery(),
-        new InMemoryCityRuralityQuery(),
+        new InMemoryCityImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
       );
@@ -274,8 +270,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     const usecase = new ComputeProjectUrbanSprawlImpactsComparisonUseCase(
       projectQuery,
       siteQuery,
-      new InMemoryCityStatsQuery(),
-      new InMemoryCityRuralityQuery(),
+      new InMemoryCityImpactsQuery(),
       new FakeGetSoilsCarbonStorageService(),
       dateProvider,
     );
@@ -406,8 +401,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     const usecase = new ComputeProjectUrbanSprawlImpactsComparisonUseCase(
       projectQuery,
       siteQuery,
-      new InMemoryCityStatsQuery(),
-      new InMemoryCityRuralityQuery(),
+      new InMemoryCityImpactsQuery(),
       soilsCarbonStorageService,
       dateProvider,
     );
@@ -532,8 +526,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     const usecase = new ComputeProjectUrbanSprawlImpactsComparisonUseCase(
       projectQuery,
       siteQuery,
-      new InMemoryCityStatsQuery(),
-      new InMemoryCityRuralityQuery(),
+      new InMemoryCityImpactsQuery(),
       new FakeGetSoilsCarbonStorageService(),
       dateProvider,
     );

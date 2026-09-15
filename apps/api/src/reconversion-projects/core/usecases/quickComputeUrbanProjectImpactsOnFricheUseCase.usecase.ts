@@ -10,7 +10,7 @@ import { DateProvider } from "src/shared-kernel/dateProvider";
 import { TResult, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 import type { Friche, Site } from "src/sites/core/models/site";
-import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { CityImpactsDataProvider } from "src/territory/core/gateways/CityImpactsDataProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { getDefaultImpactsEvaluationPeriod } from "../model/impactsEvaluationPeriod";
@@ -40,17 +40,17 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
   Request,
   QuickComputeUrbanProjectImpactsOnFricheResult
 > {
-  private readonly cityStatsQuery: CityStatsProvider;
+  private readonly cityDataQuery: CityImpactsDataProvider;
   private readonly siteGenerationService: SiteGenerationService;
   private readonly dateProvider: DateProvider;
   private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
   constructor(
-    cityStatsQuery: CityStatsProvider,
+    cityDataQuery: CityImpactsDataProvider,
     siteGenerationService: SiteGenerationService,
     dateProvider: DateProvider,
     getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
   ) {
-    this.cityStatsQuery = cityStatsQuery;
+    this.cityDataQuery = cityDataQuery;
     this.siteGenerationService = siteGenerationService;
     this.dateProvider = dateProvider;
     this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
@@ -60,16 +60,13 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
     siteCityCode,
     siteSurfaceArea,
   }: Request): Promise<QuickComputeUrbanProjectImpactsOnFricheResult> {
-    const { name, surfaceAreaSquareMeters, population, propertyValueMedianPricePerSquareMeters } =
-      await this.cityStatsQuery.getCityStats(siteCityCode);
-
+    const cityData = await this.cityDataQuery.getCityDataAndStats(siteCityCode);
     const city = {
-      name: name,
-      surfaceArea: surfaceAreaSquareMeters,
+      name: cityData.name,
+      surfaceArea: cityData.stats.surfaceAreaSquareMeters,
       cityCode: siteCityCode,
-      population: population,
+      population: cityData.stats.population,
     };
-
     const site = this.siteGenerationService.fromSurfaceAreaAndCity(siteSurfaceArea, city) as Friche;
 
     const siteSoilsCarbonStorage = await this.getCarbonStorageFromSoilDistributionService.execute({
@@ -162,11 +159,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
         siteSoilsCarbonStorage,
       },
       evaluationPeriodInYears,
-      cityStats: {
-        surfaceAreaSquareMeters,
-        population,
-        propertyValueMedianPricePerSquareMeters,
-      },
+      city: cityData,
     });
 
     return success({

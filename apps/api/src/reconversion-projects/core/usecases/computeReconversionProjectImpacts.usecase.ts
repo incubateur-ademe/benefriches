@@ -15,7 +15,7 @@ import {
 import { DateProvider } from "src/shared-kernel/dateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
-import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { CityImpactsDataProvider } from "src/territory/core/gateways/CityImpactsDataProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { getDefaultImpactsEvaluationPeriod } from "../model/impactsEvaluationPeriod";
@@ -73,19 +73,19 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<
 > {
   private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery;
   private readonly siteRepository: SiteImpactsQuery;
-  private readonly cityStatsQuery: CityStatsProvider;
+  private readonly cityDataQuery: CityImpactsDataProvider;
   private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
   private readonly dateProvider: DateProvider;
   constructor(
     reconversionProjectQuery: ReconversionProjectImpactsQuery,
     siteRepository: SiteImpactsQuery,
-    cityStatsQuery: CityStatsProvider,
+    cityDataQuery: CityImpactsDataProvider,
     getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
     dateProvider: DateProvider,
   ) {
     this.reconversionProjectQuery = reconversionProjectQuery;
     this.siteRepository = siteRepository;
-    this.cityStatsQuery = cityStatsQuery;
+    this.cityDataQuery = cityDataQuery;
     this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
     this.dateProvider = dateProvider;
   }
@@ -131,7 +131,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<
         soilsDistribution: soilsDistributionByType,
       });
 
-    const cityStats = await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
+    const cityData = await this.cityDataQuery.getCityDataAndStats(relatedSite.address.cityCode);
+
     const impacts = computeProjectImpactsWithBreakEvenLevel({
       reconversionProject: {
         ...reconversionProject,
@@ -140,7 +141,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<
       } as ReconversionProjectImpactsWithBreakEvenLevelInput,
       relatedSite: { ...relatedSite, siteSoilsCarbonStorage },
       evaluationPeriodInYears,
-      cityStats,
+      city: cityData,
     });
 
     const contaminatedSurface =

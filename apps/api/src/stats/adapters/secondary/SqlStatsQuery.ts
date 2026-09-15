@@ -87,22 +87,34 @@ const groupBy = <T>(arr: T[], key: (item: T) => string): Map<string, T[]> =>
     return map.set(k, [...(map.get(k) ?? []), item]);
   }, new Map<string, T[]>());
 
-const toCityStats = (
-  row:
-    | { da_name: string; da_population: number; da_surface_ha?: number; dvf_pxm2_median?: number }
-    | undefined,
-): EvaluatedProjectsImpactsStatsResult["relatedSite"]["cityStats"] | undefined => {
-  if (!row) {
-    return undefined;
-  }
-  const population = row.da_population;
+const toCityData = (row: {
+  stats?: {
+    da_name: string;
+    da_population: number;
+    da_surface_ha?: number;
+    dvf_pxm2_median?: number;
+  };
+  data?: {
+    mte_zonage_abc: string | undefined;
+  };
+  isRural: boolean;
+}): EvaluatedProjectsImpactsStatsResult["relatedSite"]["cityData"] => {
+  const population = row.stats?.da_population;
   return {
-    surfaceAreaSquareMeters: row.da_surface_ha
-      ? convertHectaresToSquareMeters(row.da_surface_ha)
+    isRural: row.isRural,
+    mteZonageAbc: row.data?.mte_zonage_abc as "A" | "B" | "C" | "B1" | "B2" | "Abis",
+    stats: population
+      ? {
+          surfaceAreaSquareMeters: row.stats?.da_surface_ha
+            ? convertHectaresToSquareMeters(row.stats?.da_surface_ha)
+            : undefined,
+          population,
+          propertyValueMedianPricePerSquareMeters:
+            row.stats?.dvf_pxm2_median && row.stats?.dvf_pxm2_median !== 0
+              ? row.stats?.dvf_pxm2_median
+              : undefined,
+        }
       : undefined,
-    population,
-    propertyValueMedianPricePerSquareMeters:
-      row.dvf_pxm2_median && row.dvf_pxm2_median !== 0 ? row.dvf_pxm2_median : undefined,
   };
 };
 
@@ -184,6 +196,8 @@ export class SqlReconversionProjectAndSiteImpactsQuery {
       siteExpenses,
       siteIncomes,
       cityStatsRows,
+      cityDataRows,
+      franceRuralitesRows,
     ] = await Promise.all([
       this.sqlConnection("reconversion_project_soils_distributions")
         .select("reconversion_project_id", "soil_type", "surface_area", "space_category")
@@ -269,6 +283,14 @@ export class SqlReconversionProjectAndSiteImpactsQuery {
       this.sqlConnection("city_stats")
         .select("city_code", "da_name", "da_population", "da_surface_ha", "dvf_pxm2_median")
         .whereIn("city_code", uniqueCityCodes),
+
+      this.sqlConnection("cities")
+        .select("city_code", "mte_zonage_abc", "name")
+        .whereIn("city_code", uniqueCityCodes),
+
+      this.sqlConnection("france_ruralites")
+        .select("city_code")
+        .whereIn("city_code", uniqueCityCodes),
     ]);
 
     const dpByProjectId = groupBy(developmentPlanRows, (r) => r.reconversion_project_id);
@@ -288,6 +310,8 @@ export class SqlReconversionProjectAndSiteImpactsQuery {
     const siteIncomesBySiteId = groupBy(siteIncomes, (r) => r.site_id);
 
     const cityStatsByCityCode = groupBy(cityStatsRows, (r) => r.city_code);
+    const cityDataByCityCode = groupBy(cityDataRows, (r) => r.city_code);
+    const ruralCities = new Set(franceRuralitesRows.map((code) => code.city_code));
 
     return cores.map((core) => {
       const rpId = core.rp_id;
@@ -424,8 +448,12 @@ export class SqlReconversionProjectAndSiteImpactsQuery {
           >((acc, { soil_type, surface_area }) => ({ ...acc, [soil_type]: surface_area }), {}),
           currentYearlyExpenses: (siteExpensesBySiteId.get(siteId) ?? []) as SiteYearlyExpense[],
           currentYearlyIncomes: (siteIncomesBySiteId.get(siteId) ?? []) as SiteYearlyIncome[],
-          cityStats: core.site_city_code
-            ? toCityStats(cityStatsByCityCode.get(core.site_city_code)?.[0])
+          cityData: core.site_city_code
+            ? toCityData({
+                isRural: ruralCities.has(core.site_city_code),
+                stats: cityStatsByCityCode.get(core.site_city_code)?.[0],
+                data: cityDataByCityCode.get(core.site_city_code)?.[0],
+              })
             : undefined,
         },
       } satisfies EvaluatedProjectsImpactsStatsResult;

@@ -52,22 +52,32 @@ export const getLocalPropertyIncreaseWithFricheRemovalImpacts = ({
     citySquareMetersSurfaceArea: number;
     cityPopulation: number;
     cityPropertyValuePerSquareMeter: number;
+    cityIsRural: boolean;
+    cityMteZonageAbc?: "A" | "B" | "C" | "B1" | "B2" | "Abis";
   };
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 }): ProjectIndirectImpactItemView<ProjectIndirectEconomicImpactName>[] => {
+  const impact = computePropertyValueImpact({
+    siteSurfaceArea,
+    citySurfaceArea: siteCityData.citySquareMetersSurfaceArea,
+    cityPopulation: siteCityData.cityPopulation,
+    localHousePriceEuroPerSquareMeters: siteCityData.cityPropertyValuePerSquareMeter,
+    sumOnEvolutionPeriodService,
+    isRenaturation: false, // TODO: quartier V2 créer une méthode de calcul pour ce paramètre,
+    cityIsRural: siteCityData.cityIsRural,
+    cityMteZonageAbc: siteCityData.cityMteZonageAbc,
+  });
+
+  if (!impact) {
+    return [];
+  }
+
   const {
     propertyValueIncrease,
     propertyTransferDutiesIncrease,
     propertyTransferDutiesIncreaseDetailsByYear,
     propertyValueIncreaseDetailsByYear,
-  } = computePropertyValueImpact(
-    siteSurfaceArea,
-    siteCityData.citySquareMetersSurfaceArea,
-    siteCityData.cityPopulation,
-    siteCityData.cityPropertyValuePerSquareMeter,
-    sumOnEvolutionPeriodService,
-    false, // TODO: quartier V2 créer une méthode de calcul pour ce paramètre
-  );
+  } = impact;
   return [
     {
       total: propertyValueIncrease,

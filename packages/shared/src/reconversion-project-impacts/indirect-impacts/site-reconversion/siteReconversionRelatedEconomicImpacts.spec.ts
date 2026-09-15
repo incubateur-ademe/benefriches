@@ -69,6 +69,8 @@ describe("getLocalPropertyIncreaseWithFricheRemovalImpacts", () => {
     citySquareMetersSurfaceArea: 5_000_000,
     cityPopulation: 50_000,
     cityPropertyValuePerSquareMeter: 2_500,
+    cityIsRural: false,
+    cityMteZonageAbc: "B" as const,
   };
   let getWeightedYearlyValuesSpy: ReturnType<typeof mock.fn>;
   let mockService: SumOnEvolutionPeriodService;

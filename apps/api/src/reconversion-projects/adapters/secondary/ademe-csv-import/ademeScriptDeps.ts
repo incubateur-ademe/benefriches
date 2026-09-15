@@ -9,7 +9,7 @@ import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 import { SqlSiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/SqlSiteImpactsQuery";
 import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQuery";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
-import { SqlCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/SqlCityStatsQuery";
+import { SqlCityImpactsQuery } from "src/territory/adapters/secondary/city-impacts-query/SqlCityImpactsQuery";
 
 import { SqlReconversionProjectQuery } from "../queries/reconversion-project-features/SqlReconversionProjectQuery";
 import { SqlReconversionProjectImpactsQuery } from "../queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
@@ -20,7 +20,7 @@ export function buildAdemeScriptComputeImpactsUseCase(
   const reconversionProjectImpactsQuery = new SqlReconversionProjectImpactsQuery(db);
   const siteImpactsQuery = new SqlSiteImpactsQuery(db);
   const dateProvider = new RealDateProvider();
-  const cityStatsRepository = new SqlCityStatsQuery(db);
+  const cityDataRepository = new SqlCityImpactsQuery(db);
   const sqlCarbonStorageQuery = new SqlCarbonStorageQuery(db);
   const getCarbonStorageFromSoilDistribution = new GetCarbonStorageFromSoilDistributionService(
     sqlCarbonStorageQuery,
@@ -30,7 +30,7 @@ export function buildAdemeScriptComputeImpactsUseCase(
   return new ComputeReconversionProjectImpactsUseCase(
     reconversionProjectImpactsQuery,
     siteImpactsQuery,
-    cityStatsRepository,
+    cityDataRepository,
     getCarbonStorageFromSoilDistribution,
     dateProvider,
   );
