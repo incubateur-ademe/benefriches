@@ -4,10 +4,9 @@ import type { Knex } from "knex";
 import { CarbonStorageQuery } from "src/carbon-storage/core/gateways/CarbonStorageQuery";
 import {
   CarbonStorage,
-  CarbonStorageProps,
   RepositorySoilCategoryType,
 } from "src/carbon-storage/core/models/carbonStorage";
-import { City, CityProps } from "src/carbon-storage/core/models/city";
+import { City } from "src/carbon-storage/core/models/city";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 const FOREST_CATEGORIES = [
@@ -61,6 +60,8 @@ const getForestLitterCarbonStorage = (soilCategories: RepositorySoilCategoryType
   );
 };
 
+const DOM_TOM_REGIONS = new Set(["00", "01", "02", "03", "04", "05", "06"]);
+
 export class SqlCarbonStorageQuery implements CarbonStorageQuery {
   private readonly sqlConnection: Knex;
   constructor(@Inject(SqlConnection) sqlConnection: Knex) {
@@ -72,13 +73,17 @@ export class SqlCarbonStorageQuery implements CarbonStorageQuery {
     soilCategories: RepositorySoilCategoryType[],
   ): Promise<CarbonStorage[]> {
     // Get zpc, region, code_groupeser...
-    const sqlCity = await this.sqlConnection<CityProps>("cities")
+    const sqlCity = await this.sqlConnection("cities")
       .select()
       .where({ city_code: cityCode })
       .first();
 
-    if (!sqlCity) {
+    if (!sqlCity?.aldo_zpc) {
       throw new Error(`City with code ${cityCode} not found in database`);
+    }
+
+    if (DOM_TOM_REGIONS.has(sqlCity.region)) {
+      throw new Error(`No reliable data for DOM TOM cities`);
     }
 
     const city = City.create(sqlCity);
@@ -88,7 +93,7 @@ export class SqlCarbonStorageQuery implements CarbonStorageQuery {
       FOREST_CATEGORIES.includes(category as ForestCategory),
     );
 
-    const query = this.sqlConnection<CarbonStorageProps>("carbon_storage").select();
+    const query = this.sqlConnection("carbon_storage").select();
 
     if (hasSoilsCategory) {
       void query.whereIn("soil_category", soilCategories);

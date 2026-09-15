@@ -1,80 +1,11 @@
 import type { Knex } from "knex";
-import fs from "node:fs";
-import path from "node:path";
-import readline from "node:readline";
 
-import { City, CityProps } from "./../../../../carbon-storage/core/models/city";
-
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-const dataPath = path.resolve(import.meta.dirname, "./../../../../../data/aldo/cities.csv");
-
-const HEADER =
-  "city_code;name;department;region;epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole";
-
-const readCsvData = () => {
-  return new Promise((resolve, reject) => {
-    const readStream = fs.createReadStream(dataPath, "utf-8");
-    const rl = readline.createInterface({ input: readStream });
-    const data: CityProps[] = [];
-
-    rl.on("line", (line) => {
-      if (line === HEADER) {
-        return;
-      }
-      const [
-        cityCode,
-        name,
-        department,
-        region,
-        epci,
-        zpc,
-        codeGreco,
-        codeSerGroup,
-        codeSer,
-        codePoplarPool,
-      ] = line.split(";") as [
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-        string,
-      ];
-      const city = City.create({
-        city_code: cityCode,
-        name,
-        department,
-        region,
-        zpc,
-        epci,
-        code_greco: codeGreco.split(","),
-        code_ser: codeSer.split(","),
-        code_groupeser: codeSerGroup.split(","),
-        code_bassin_populicole: codePoplarPool,
-      });
-      data.push(city.toDatabaseFormat());
-    });
-    rl.on("error", (error: Error) => {
-      reject(error);
-    });
-    rl.on("close", () => {
-      console.log(`Data parsing completed: ${data.length} cities found`);
-      resolve(data);
-    });
-  });
-};
+import { readCitiesCsvData } from "../scripts/read-cities-csv";
 
 export async function seed(knex: Knex): Promise<void> {
   await knex("cities").del();
   try {
-    const data = (await readCsvData()) as CityProps[];
+    const data = await readCitiesCsvData();
 
     await knex
       .batchInsert("cities", data, 1000)

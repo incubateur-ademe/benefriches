@@ -35,3 +35,21 @@ scalingo --region osc-secnum-fr1 --app benefriches-api-production run "node apps
 ```
 
 Les données sont issues du fichier [/data/dvf/cityStats.csv](./../../../../../data/dvf/cityStats.csv), généré grâce au script [/data/dvf/build-city-stats.ts](./../../../../../data/dvf/build-city-stats.ts)
+
+## initialize-or-update-cities
+
+Initialisation ou mise à jour des données de la table `cities`.
+
+### Dev
+
+```sh
+npx tsx src/shared-kernel/adapters/sql-knex/scripts/initialize-or-update-cities.ts
+```
+
+### Prod
+
+```sh
+scalingo --region osc-secnum-fr1 --app benefriches-api-production run "node apps/api/dist/src/shared-kernel/adapters/sql-knex/scripts/initialize-or-update-cities.js"
+```
+
+Les données sont issues du fichier [/data/sqlCities.csv](./../../../../../data/sqlCities.csv), généré grâce au script [/data/build-cities-csv.ts](./../../../../../data/build-cities-csv.ts)

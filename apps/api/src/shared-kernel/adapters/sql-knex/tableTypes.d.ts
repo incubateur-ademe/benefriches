@@ -236,6 +236,33 @@ type SqlDomainEvent = {
   created_at: Date;
 };
 
+export type SqlCity = {
+  id: string;
+  name: string;
+  city_code: string;
+  department: string;
+  region: string;
+  epci: string;
+
+  aldo_zpc: string | undefined;
+  aldo_code_greco: string[];
+  aldo_code_groupeser: string[];
+  aldo_code_ser: string[];
+  aldo_code_bassin_populicole: string | undefined;
+
+  mte_zonage_abc: string | undefined;
+  updated_at?: Date;
+};
+
+type CarbonStorage = {
+  id: string;
+  reservoir: ReservoirType;
+  soil_category: RepositorySoilCategoryType;
+  stock_tC_by_ha: string;
+  localisation_category: LocalisationCategoryType;
+  localisation_code: string;
+};
+
 // Communes classified as rural in the official "France Ruralités Revitalisation"
 // list. A city_code present in this table means the commune is rural.
 export type SqlFranceRuralite = {
@@ -268,6 +295,8 @@ declare module "knex/types/tables" {
     users: SqlUser;
     users_feature_alerts: SqlUserFeatureAlert;
 
+    cities: SqlCity;
+    carbon_storage: CarbonStorage;
     city_stats: CityStats;
     france_ruralites: SqlFranceRuralite;
     // auth
