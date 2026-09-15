@@ -4,7 +4,11 @@ import readline from "node:readline";
 
 import { SqlCity } from "../tableTypes";
 
-const CITIES_CSV_PATH = path.resolve(import.meta.dirname, "./../../../../../data/sqlCities.csv");
+const currentFileDir = import.meta.dirname;
+const apiRootDir =
+  currentFileDir.split(`${path.sep}apps${path.sep}api${path.sep}`)[0] +
+  `${path.sep}apps${path.sep}api`;
+const CITIES_CSV_PATH = path.resolve(apiRootDir, "data/sqlCities.csv");
 
 const HEADER = [
   "city_code",
