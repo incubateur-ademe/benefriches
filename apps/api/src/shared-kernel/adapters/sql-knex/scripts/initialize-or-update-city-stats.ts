@@ -13,28 +13,56 @@ if (fs.existsSync(dotEnvPath)) {
   configDotenv({ path: dotEnvPath });
 }
 
+const TABLE_NAME = "city_stats";
 const CHUNK_SIZE = 1000;
 
-const askForConfirmation = (): Promise<boolean> => {
+type StatsRow = CityStats;
+
+const DA_COLUMNS = [
+  "da_name",
+  "da_population",
+  "da_surface_ha",
+] as const satisfies readonly (keyof StatsRow)[];
+
+const DVF_COLUMNS = [
+  "dvf_nbtrans",
+  "dvf_pxm2_median",
+  "dvf_surface_median",
+  "dvf_nbtrans_cod111",
+  "dvf_pxm2_median_cod111",
+  "dvf_nbtrans_cod121",
+  "dvf_pxm2_median_cod121",
+  "dvf_surface_median_cod111",
+  "dvf_surface_median_cod121",
+  "dvf_nbtrans_terrain",
+  "dvf_pxm2_median_terrain",
+  "dvf_surface_median_terrain",
+] as const satisfies readonly (keyof StatsRow)[];
+
+const COMPARABLE_COLUMNS = [
+  ...DA_COLUMNS,
+  ...DVF_COLUMNS,
+] as const satisfies readonly (keyof StatsRow)[];
+
+const MERGE_COLUMNS = [...COMPARABLE_COLUMNS, "updated_at"] as const;
+
+const askForConfirmation = (message: string): Promise<boolean> => {
   return new Promise((resolve) => {
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
     });
 
-    rl.question(
-      "\n❓ Voulez-vous continuer avec l'initialisation des données ? (y/N): ",
-      (answer) => {
-        rl.close();
-        const confirmation = answer.toLowerCase().trim();
-        resolve(
-          confirmation === "y" ||
-            confirmation === "yes" ||
-            confirmation === "o" ||
-            confirmation === "oui",
-        );
-      },
-    );
+    rl.question(message, (answer) => {
+      rl.close();
+      const confirmation = answer.toLowerCase().trim();
+      resolve(
+        confirmation === "y" ||
+          confirmation === "yes" ||
+          confirmation === "o" ||
+          confirmation === "oui",
+      );
+    });
   });
 };
 
@@ -46,125 +74,205 @@ const chunkArray = <T>(array: T[], chunkSize: number): T[][] => {
   return chunks;
 };
 
-const processChunk = async (
-  sqlConnection: Knex,
-  chunk: CityStats[],
-  chunkIndex: number,
-): Promise<void> => {
-  try {
-    console.log(`\nTraitement du chunk ${chunkIndex + 1} (${chunk.length} enregistrements)...`);
+const isColumnEqual = (a: number | string | undefined, b: number | string | undefined): boolean => {
+  if (a === null || a === undefined || a === "") return b === null || b === undefined || b === "";
+  if (b === null || b === undefined || b === "") return false;
 
-    await sqlConnection
-      .insert(chunk)
-      .into("city_stats")
-      .onConflict("city_code")
-      .merge([
-        "da_name",
-        "da_population",
-        "da_surface_ha",
-        "dvf_nbtrans",
-        "dvf_pxm2_median",
-        "dvf_surface_median",
-        "dvf_nbtrans_cod111",
-        "dvf_pxm2_median_cod111",
-        "dvf_nbtrans_cod121",
-        "dvf_pxm2_median_cod121",
-        "dvf_surface_median_cod111",
-        "dvf_surface_median_cod121",
-        "updated_at",
-      ]);
+  const numA = Number(a);
+  const numB = Number(b);
+  if (!Number.isNaN(numA) && !Number.isNaN(numB)) return numA === numB;
 
-    console.log(`✅ Chunk ${chunkIndex + 1} traité avec succès`);
-  } catch (error) {
-    console.error(`❌ Erreur lors du traitement du chunk ${chunkIndex + 1}:`, error);
-    throw error;
-  }
+  return String(a) === String(b);
 };
 
-async function initializeCityStatsData() {
+const getChangedColumns = (existing: StatsRow, incoming: StatsRow): (keyof StatsRow)[] =>
+  COMPARABLE_COLUMNS.filter((col) => !isColumnEqual(existing[col], incoming[col]));
+
+const includesAny = (
+  changedColumns: (keyof StatsRow)[],
+  group: readonly (keyof StatsRow)[],
+): boolean => changedColumns.some((col) => group.includes(col));
+
+const logCityCodes = (label: string, codes: string[], max = 30): void => {
+  if (codes.length === 0) return;
+  console.log(
+    `   ${label} (${codes.length}) : ${codes.slice(0, max).join(", ")}${
+      codes.length > max ? `, ... (+${codes.length - max})` : ""
+    }`,
+  );
+};
+
+const processUpsertChunk = async (
+  sqlConnection: Knex,
+  chunk: StatsRow[],
+  chunkIndex: number,
+  totalChunks: number,
+): Promise<void> => {
+  console.log(
+    `\nTraitement du chunk ${chunkIndex + 1}/${totalChunks} (${chunk.length} enregistrements)...`,
+  );
+
+  const chunkWithTimestamp = chunk.map((row) => ({
+    ...row,
+    updated_at: sqlConnection.fn.now(),
+  }));
+
+  await sqlConnection
+    .insert(chunkWithTimestamp)
+    .into(TABLE_NAME)
+    .onConflict("city_code")
+    .merge([...MERGE_COLUMNS]);
+
+  console.log(`✅ Chunk ${chunkIndex + 1}/${totalChunks} traité avec succès`);
+};
+
+const processDeleteChunk = async (
+  sqlConnection: Knex,
+  cityCodes: string[],
+  chunkIndex: number,
+  totalChunks: number,
+): Promise<void> => {
+  console.log(
+    `\nSuppression du chunk ${chunkIndex + 1}/${totalChunks} (${cityCodes.length} lignes)...`,
+  );
+
+  await sqlConnection(TABLE_NAME).whereIn("city_code", cityCodes).delete();
+
+  console.log(`✅ Chunk ${chunkIndex + 1}/${totalChunks} supprimé avec succès`);
+};
+
+async function initializeOrUpdateCityStats() {
   const sqlConnection: Knex = knex(knexConfig);
-  let totalProcessed = 0;
-  let totalInserted = 0;
-  let totalUpdated = 0;
 
   try {
-    console.log("🚀 Initialisation des données `city_stats`...");
+    console.log(`🚀 Initialisation/mise à jour de la table \`${TABLE_NAME}\`...`);
     console.log(`📍 Environment: ${process.env.NODE_ENV ?? "development"}`);
     console.log(`💽 Database: ${process.env.DATABASE_URL ? "Connected" : "Local"}`);
 
-    const shouldContinue = await askForConfirmation();
+    const csvData = await readCityStatsCsvData();
+    if (csvData.length === 0) {
+      console.log("⚠️ Pas de données à traiter - CSV vide");
+      return;
+    }
+
+    const csvByCityCode = new Map(csvData.map((row) => [row.city_code, row]));
+
+    const existingRows: StatsRow[] = await sqlConnection(TABLE_NAME).select(
+      "city_code",
+      ...COMPARABLE_COLUMNS,
+    );
+    const existingByCityCode = new Map(existingRows.map((row) => [row.city_code, row]));
+
+    const toInsert: StatsRow[] = [];
+    const toUpdate: StatsRow[] = [];
+    const unchanged: StatsRow[] = [];
+
+    const updatesDa: StatsRow[] = [];
+    const updatesDvf: StatsRow[] = [];
+
+    for (const row of csvData) {
+      const existing = existingByCityCode.get(row.city_code);
+      if (!existing) {
+        toInsert.push(row);
+        continue;
+      }
+
+      const changedColumns = getChangedColumns(existing, row);
+      if (changedColumns.length === 0) {
+        unchanged.push(row);
+        continue;
+      }
+
+      toUpdate.push(row);
+
+      if (includesAny(changedColumns, DA_COLUMNS)) updatesDa.push(row);
+      if (includesAny(changedColumns, DVF_COLUMNS)) updatesDvf.push(row);
+    }
+
+    const toDeleteCityCodes = existingRows
+      .map((row) => row.city_code)
+      .filter((cityCode) => !csvByCityCode.has(cityCode));
+
+    console.log("\n📈 Diff calculé :");
+    console.log(`   - Inchangées : ${unchanged.length}`);
+    console.log(`   - À insérer  : ${toInsert.length}`);
+    console.log(`   - À modifier : ${toUpdate.length}`);
+    console.log(`       dont données da  : ${updatesDa.length}`);
+    console.log(`       dont données dvf : ${updatesDvf.length}`);
+    console.log(`   - À supprimer: ${toDeleteCityCodes.length}`);
+
+    logCityCodes(
+      "Nouvelles communes",
+      toInsert.map((r) => r.city_code),
+    );
+    logCityCodes(
+      "Communes modifiées",
+      toUpdate.map((r) => r.city_code),
+    );
+    logCityCodes("Communes à supprimer", toDeleteCityCodes);
+
+    if (toInsert.length === 0 && toUpdate.length === 0 && toDeleteCityCodes.length === 0) {
+      console.log("\n✅ Rien à faire, la table est déjà à jour.");
+      return;
+    }
+
+    const shouldContinue = await askForConfirmation(
+      "\n❓ Voulez-vous appliquer ces changements en base ? (y/N): ",
+    );
 
     if (!shouldContinue) {
       console.log("❌ Opération annulée par l'utilisateur.");
       return;
     }
 
-    console.log("✅ Confirmation received, proceeding with data initialization...\n");
+    console.log("✅ Confirmation reçue, application des changements...\n");
 
-    const data = await readCityStatsCsvData();
+    const toUpsert = [...toInsert, ...toUpdate];
+    const upsertChunks = chunkArray(toUpsert, CHUNK_SIZE);
 
-    if (data.length === 0) {
-      console.log("⚠️ Pas de données à traiter - CSV vide");
-      return;
+    for (let i = 0; i < upsertChunks.length; i++) {
+      const chunk = upsertChunks[i];
+      if (!chunk) continue;
+
+      try {
+        await processUpsertChunk(sqlConnection, chunk, i, upsertChunks.length);
+      } catch (chunkError) {
+        console.error(
+          `❌ Erreur de traitement du chunk ${i + 1}, traitement du prochain chunk...`,
+          chunkError,
+        );
+      }
     }
 
-    const chunks = chunkArray(data, CHUNK_SIZE);
-    console.log(
-      `\n📦 Données divisées en ${chunks.length} chunks de ${CHUNK_SIZE} enregistrements chacun`,
-    );
+    const deleteChunks = chunkArray(toDeleteCityCodes, CHUNK_SIZE);
 
-    for (let i = 0; i < chunks.length; i++) {
-      const chunk = chunks[i];
+    for (let i = 0; i < deleteChunks.length; i++) {
+      const chunk = deleteChunks[i];
+      if (!chunk) continue;
 
-      if (chunk) {
-        try {
-          const existingRecords = await sqlConnection("city_stats")
-            .whereIn(
-              "city_code",
-              chunk.map((record) => record.city_code),
-            )
-            .select("city_code");
-
-          const existingCityCodes = new Set(existingRecords.map((r) => r.city_code));
-          const insertCount = chunk.filter(
-            (record) => !existingCityCodes.has(record.city_code),
-          ).length;
-          const updateCount = chunk.length - insertCount;
-
-          await processChunk(sqlConnection, chunk, i);
-
-          totalProcessed += chunk.length;
-          totalInserted += insertCount;
-          totalUpdated += updateCount;
-
-          console.log(
-            `\n⏳ Progression: ${totalProcessed}/${data.length} enregistrements traités (${Math.round((totalProcessed / data.length) * 100)}%)`,
-          );
-
-          // Pause pour éviter de surcharger la DB
-          if (i < chunks.length - 1) {
-            await new Promise((resolve) => setTimeout(resolve, 10));
-          }
-        } catch (chunkError) {
-          console.error(
-            `❌ Erreur de traitement du chunk ${i + 1}, traitement du prochain chunk...`,
-            chunkError,
-          );
-          // On essaye de traiter la suite plutôt que de tout stopper
-        }
+      try {
+        await processDeleteChunk(sqlConnection, chunk, i, deleteChunks.length);
+      } catch (chunkError) {
+        console.error(
+          `❌ Erreur de suppression du chunk ${i + 1}, traitement du prochain chunk...`,
+          chunkError,
+        );
       }
     }
 
     console.log("\n✅ Traitement terminé !\n");
     console.log(`📈 Récapitulatif:`);
-    console.log(`   - Total: ${totalProcessed} enregistrements traités`);
-    console.log(`   - Nouveau: ${totalInserted} enregistrements`);
-    console.log(`   - Mis à jour: ${totalUpdated} enregistrements`);
+    console.log(`   - Insérées  : ${toInsert.length}`);
+    console.log(`   - Modifiées : ${toUpdate.length}`);
+    console.log(`   - Supprimées: ${toDeleteCityCodes.length}`);
+    console.log(`   - Inchangées: ${unchanged.length}`);
 
-    const totalInDatabase = await sqlConnection("city_stats").count({ count: "*" });
-    console.log(`\n🗄️ Nombre de lignes dans la table \`city_stats\`: ${totalInDatabase[0]?.count}`);
+    const totalInDatabase = await sqlConnection(TABLE_NAME).count({ count: "*" });
+    console.log(
+      `\n🗄️ Nombre de lignes dans la table \`${TABLE_NAME}\`: ${totalInDatabase[0]?.count}`,
+    );
   } catch (err: unknown) {
-    console.error(`\n❌ Fatal error: ${err as Error}`);
+    console.error(`\n❌ Fatal error:`, err);
     throw err;
   } finally {
     await sqlConnection.destroy();
@@ -172,4 +280,4 @@ async function initializeCityStatsData() {
   }
 }
 
-void initializeCityStatsData();
+void initializeOrUpdateCityStats();

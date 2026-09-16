@@ -34,7 +34,7 @@ npx ts-node src/shared-kernel/adapters/sql-knex/scripts/initialize-or-update-cit
 scalingo --region osc-secnum-fr1 --app benefriches-api-production run "node apps/api/dist/src/shared-kernel/adapters/sql-knex/scripts/initialize-or-update-city-stats.js"
 ```
 
-Les données sont issues du fichier [/data/dvf/cityStats.csv](./../../../../../data/dvf/cityStats.csv), généré grâce au script [/data/dvf/build-city-stats.ts](./../../../../../data/dvf/build-city-stats.ts)
+Les données sont issues du fichier [/data/city-stats/cityStats.csv](./../../../../../data/city-stats/cityStats.csv), généré grâce au script [/data/city-stats/build-city-stats-csv.ts](./../../../../../data/city-stats/build-city-stats-csv.ts)
 
 ## initialize-or-update-cities
 

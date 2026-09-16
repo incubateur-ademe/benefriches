@@ -226,6 +226,9 @@ type CityStats = {
   dvf_nbtrans_cod121?: number;
   dvf_pxm2_median_cod121?: number;
   dvf_surface_median_cod121?: number;
+  dvf_nbtrans_terrain?: number;
+  dvf_pxm2_median_terrain?: number;
+  dvf_surface_median_terrain?: number;
   updated_at: Date;
 };
 

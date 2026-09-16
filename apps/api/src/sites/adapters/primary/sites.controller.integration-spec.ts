@@ -1566,8 +1566,8 @@ describe("Sites controller", () => {
       // sellingPrice = 1000 * 10540 = 10_540_000
       // propertyTransferDuties = 10_540_000 * 0.0581 (TRANSFER_TAX_PERCENT_PER_TRANSACTION) = 612_374
       assert.deepStrictEqual(response.body, {
-        sellingPrice: 10_540_000,
-        propertyTransferDuties: 612_374,
+        sellingPrice: 10_143_000,
+        propertyTransferDuties: 589_308,
       });
     });
   });
@@ -1863,7 +1863,7 @@ describe("Sites controller", () => {
       assert.deepStrictEqual(response.body, {
         commune_data: {
           nom: "Blajan",
-          population: 433,
+          population: 426,
           superficie_m2: 12773900.000000002,
         },
         description:

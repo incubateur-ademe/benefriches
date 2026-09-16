@@ -32,7 +32,7 @@ describe("SqlCityImpactsQuery", () => {
     it("it should return the right value for propertyValueMedianPricePerSquareMeters", async () => {
       const result = await repository.getCityDataAndStats("54321");
 
-      assert.strictEqual(result.stats.propertyValueMedianPricePerSquareMeters, 2339);
+      assert.strictEqual(result.stats.propertyValueMedianPricePerSquareMeters, 2397);
     });
 
     it("it should return default value for city of less than 150 inhabitants for city in department 57", async () => {
@@ -59,7 +59,7 @@ describe("SqlCityImpactsQuery", () => {
       const result = await repository.getCityDataAndStats("54321");
 
       assert.strictEqual(result.stats.surfaceAreaSquareMeters, 3152100);
-      assert.strictEqual(result.stats.population, 2373);
+      assert.strictEqual(result.stats.population, 2377);
     });
   });
 

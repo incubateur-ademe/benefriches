@@ -5,9 +5,12 @@ import readline from "node:readline";
 import { CityStats } from "../tableTypes";
 
 export const readCityStatsCsvData = () => {
-  const dataPath = path.resolve(import.meta.dirname, "./../../../../../data/dvf/cityStats.csv");
+  const dataPath = path.resolve(
+    import.meta.dirname,
+    "./../../../../../data/city-stats/cityStats.csv",
+  );
   const HEADER =
-    "city_code;da_name;da_population;da_surface_ha;dvf_nbtrans;dvf_pxm2_median;dvf_surface_median;dvf_nbtrans_cod111;dvf_pxm2_median_cod111;dvf_nbtrans_cod121;dvf_pxm2_median_cod121;dvf_surface_median_cod111;dvf_surface_median_cod121";
+    "city_code;da_name;da_population;da_surface_ha;dvf_nbtrans;dvf_pxm2_median;dvf_surface_median;dvf_nbtrans_cod111;dvf_pxm2_median_cod111;dvf_nbtrans_cod121;dvf_pxm2_median_cod121;dvf_surface_median_cod111;dvf_surface_median_cod121;dvf_nbtrans_terrain;dvf_pxm2_median_terrain;dvf_surface_median_terrain";
 
   return new Promise<CityStats[]>((resolve, reject) => {
     const readStream = fs.createReadStream(dataPath, "utf-8");
@@ -32,7 +35,13 @@ export const readCityStatsCsvData = () => {
         dvf_nbtrans_cod121,
         dvf_pxm2_median_cod121,
         dvf_surface_median_cod121,
+        dvf_nbtrans_terrain,
+        dvf_pxm2_median_terrain,
+        dvf_surface_median_terrain,
       ] = line.split(";") as [
+        string,
+        string,
+        string,
         string,
         string,
         string,
@@ -64,6 +73,13 @@ export const readCityStatsCsvData = () => {
           : undefined,
         dvf_surface_median_cod121: dvf_surface_median_cod121
           ? Number(dvf_surface_median_cod121)
+          : undefined,
+        dvf_nbtrans_terrain: Number(dvf_nbtrans_terrain),
+        dvf_pxm2_median_terrain: dvf_pxm2_median_terrain
+          ? Number(dvf_pxm2_median_terrain)
+          : undefined,
+        dvf_surface_median_terrain: dvf_surface_median_terrain
+          ? Number(dvf_surface_median_terrain)
           : undefined,
         updated_at: new Date(),
       });
