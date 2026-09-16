@@ -49,6 +49,7 @@ type Props = {
   isRenaturation?: boolean;
   cityIsRural: boolean;
   cityMteZonageAbc?: "A" | "B" | "C" | "B1" | "B2" | "Abis";
+  cityAnnualRateOfPopulationChange?: number;
 };
 
 export const computePropertyValueImpact = ({
@@ -60,8 +61,13 @@ export const computePropertyValueImpact = ({
   isRenaturation = false,
   cityIsRural,
   cityMteZonageAbc,
+  cityAnnualRateOfPopulationChange,
 }: Props) => {
-  if (cityIsRural || cityMteZonageAbc === "C") {
+  if (
+    cityIsRural ||
+    cityMteZonageAbc === "C" ||
+    (cityAnnualRateOfPopulationChange && cityAnnualRateOfPopulationChange <= -0.51)
+  ) {
     return undefined;
   }
   const source = isRenaturation

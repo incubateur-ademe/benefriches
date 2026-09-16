@@ -102,6 +102,8 @@ export type EvaluatedProjectsImpactsStatsResult = {
         surfaceAreaSquareMeters?: number;
         population: number;
         propertyValueMedianPricePerSquareMeters?: number;
+        shareOfWorkTripsByPublicTransport?: number;
+        annualRateOfPopulationChange?: number;
       };
     };
   };
@@ -267,10 +269,14 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
           city: {
             ...relatedSite.cityData,
             stats: {
+              accuracy: "city",
               propertyValueMedianPricePerSquareMeters:
                 relatedSite.cityData.stats.propertyValueMedianPricePerSquareMeters,
               population: relatedSite.cityData.stats.population,
               surfaceAreaSquareMeters: relatedSite.cityData.stats.surfaceAreaSquareMeters,
+              shareOfWorkTripsByPublicTransport:
+                relatedSite.cityData.stats.shareOfWorkTripsByPublicTransport,
+              annualRateOfPopulationChange: relatedSite.cityData.stats.annualRateOfPopulationChange,
             },
           },
         });

@@ -66,6 +66,8 @@ type Props = {
     citySquareMetersSurfaceArea: number;
     cityPopulation: number;
     cityPropertyValuePerSquareMeter: number;
+    cityShareOfWorkTripsByPublicTransport?: number;
+    cityAnnualRateOfPopulationChange?: number;
   };
 };
 

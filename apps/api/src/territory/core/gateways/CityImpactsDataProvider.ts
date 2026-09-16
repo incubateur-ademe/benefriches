@@ -3,6 +3,9 @@ export type CityImpactsData = {
   mteZonageAbc?: "A" | "B" | "C" | "B1" | "B2" | "Abis";
   isRural: boolean;
   stats: {
+    shareOfWorkTripsByPublicTransport: number | undefined;
+    annualRateOfPopulationChange: number | undefined;
+    landWithoutBuildingsMedianPricePerSquareMeters: number | undefined;
     propertyValueMedianPricePerSquareMeters: number;
     population: number;
     surfaceAreaSquareMeters: number;

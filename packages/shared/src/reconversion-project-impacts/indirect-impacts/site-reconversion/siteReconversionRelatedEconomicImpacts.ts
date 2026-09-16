@@ -54,6 +54,7 @@ export const getLocalPropertyIncreaseWithFricheRemovalImpacts = ({
     cityPropertyValuePerSquareMeter: number;
     cityIsRural: boolean;
     cityMteZonageAbc?: "A" | "B" | "C" | "B1" | "B2" | "Abis";
+    cityAnnualRateOfPopulationChange?: number;
   };
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 }): ProjectIndirectImpactItemView<ProjectIndirectEconomicImpactName>[] => {
@@ -66,6 +67,7 @@ export const getLocalPropertyIncreaseWithFricheRemovalImpacts = ({
     isRenaturation: false, // TODO: quartier V2 créer une méthode de calcul pour ce paramètre,
     cityIsRural: siteCityData.cityIsRural,
     cityMteZonageAbc: siteCityData.cityMteZonageAbc,
+    cityAnnualRateOfPopulationChange: siteCityData.cityAnnualRateOfPopulationChange,
   });
 
   if (!impact) {

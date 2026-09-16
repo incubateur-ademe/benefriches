@@ -283,6 +283,9 @@ describe("CreateNewExpressSite Use case", () => {
             population: 1800,
             surfaceAreaSquareMeters: 15 * 10000,
             propertyValueMedianPricePerSquareMeters: 2500,
+            shareOfWorkTripsByPublicTransport: 0.5,
+            annualRateOfPopulationChange: 0.5,
+            landWithoutBuildingsMedianPricePerSquareMeters: 10,
           },
         },
       ]);

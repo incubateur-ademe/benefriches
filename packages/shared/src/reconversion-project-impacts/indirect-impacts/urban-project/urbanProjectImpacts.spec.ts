@@ -226,6 +226,7 @@ describe("getUrbanProjectImpacts", () => {
           citySquareMetersSurfaceArea: 6000000000,
           cityPopulation: 300000,
           cityPropertyValuePerSquareMeter: 2000,
+          cityShareOfWorkTripsByPublicTransport: 4.8,
         },
         sumOnEvolutionPeriodService: mockService,
       });
@@ -261,6 +262,138 @@ describe("getUrbanProjectImpacts", () => {
       const resultNames = new Set(result.economicImpacts.map((r) => r.name));
       const found = travelEconomicImpactNames.filter((n) => resultNames.has(n));
       assert.ok(found.length >= 0);
+    });
+
+    it("doesn't return travel related impacts for urban project on friche site if cityShareOfWorkTripsByPublicTransport is not enough", () => {
+      const result = getUrbanProjectImpacts({
+        reconversionProject: buildUrbanProject({ RESIDENTIAL: 10_000 }),
+        relatedSite: baseRelatedSite,
+        siteCityData: {
+          ...baseSiteCityData,
+          cityShareOfWorkTripsByPublicTransport: 2,
+        },
+        sumOnEvolutionPeriodService: mockService,
+      });
+
+      const travelImpactNames = [
+        "avoidedPropertyDamageExpenses",
+        "avoidedCarRelatedExpenses",
+        "travelTimeSavedPerTravelerExpenses",
+        "avoidedTrafficCo2EqEmissions",
+        "avoidedAirPollutionHealthExpenses",
+        "avoidedAccidentsMinorInjuriesExpenses",
+        "avoidedAccidentsSevereInjuriesExpenses",
+        "avoidedAccidentsDeathsExpenses",
+      ] as const;
+
+      travelImpactNames.forEach((name) => {
+        assert.strictEqual(
+          result.economicImpacts.find((r) => r.name === name),
+          undefined,
+        );
+      });
+
+      [
+        "avoidedVehiculeKilometers",
+        "avoidedTrafficAccidentsMinorInjuries",
+        "avoidedTrafficAccidentsSevereInjuries",
+        "avoidedTrafficAccidentsDeaths",
+        "avoidedVehiculeKilometers",
+        "timeTravelSavedInHours",
+      ].forEach((name) => {
+        assert.strictEqual(
+          result.impactMetrics.find((r) => r.name === name),
+          undefined,
+        );
+      });
+    });
+
+    it("doesn't return travel related impacts for urban project on friche site if cityShareOfWorkTripsByPublicTransport is undefined", () => {
+      const result = getUrbanProjectImpacts({
+        reconversionProject: buildUrbanProject({ RESIDENTIAL: 10_000 }),
+        relatedSite: baseRelatedSite,
+        siteCityData: {
+          ...baseSiteCityData,
+          cityShareOfWorkTripsByPublicTransport: 2,
+        },
+        sumOnEvolutionPeriodService: mockService,
+      });
+
+      const travelImpactNames = [
+        "avoidedPropertyDamageExpenses",
+        "avoidedCarRelatedExpenses",
+        "travelTimeSavedPerTravelerExpenses",
+        "avoidedTrafficCo2EqEmissions",
+        "avoidedAirPollutionHealthExpenses",
+        "avoidedAccidentsMinorInjuriesExpenses",
+        "avoidedAccidentsSevereInjuriesExpenses",
+        "avoidedAccidentsDeathsExpenses",
+      ] as const;
+
+      travelImpactNames.forEach((name) => {
+        assert.strictEqual(
+          result.economicImpacts.find((r) => r.name === name),
+          undefined,
+        );
+      });
+
+      [
+        "avoidedVehiculeKilometers",
+        "avoidedTrafficAccidentsMinorInjuries",
+        "avoidedTrafficAccidentsSevereInjuries",
+        "avoidedTrafficAccidentsDeaths",
+        "avoidedVehiculeKilometers",
+        "timeTravelSavedInHours",
+      ].forEach((name) => {
+        assert.strictEqual(
+          result.impactMetrics.find((r) => r.name === name),
+          undefined,
+        );
+      });
+    });
+
+    it("doesn't return travel related impacts for urban project on friche site if city is rural", () => {
+      const result = getUrbanProjectImpacts({
+        reconversionProject: buildUrbanProject({ RESIDENTIAL: 10_000 }),
+        relatedSite: baseRelatedSite,
+        siteCityData: {
+          ...baseSiteCityData,
+          cityIsRural: true,
+        },
+        sumOnEvolutionPeriodService: mockService,
+      });
+
+      const travelImpactNames = [
+        "avoidedPropertyDamageExpenses",
+        "avoidedCarRelatedExpenses",
+        "travelTimeSavedPerTravelerExpenses",
+        "avoidedTrafficCo2EqEmissions",
+        "avoidedAirPollutionHealthExpenses",
+        "avoidedAccidentsMinorInjuriesExpenses",
+        "avoidedAccidentsSevereInjuriesExpenses",
+        "avoidedAccidentsDeathsExpenses",
+      ] as const;
+
+      travelImpactNames.forEach((name) => {
+        assert.strictEqual(
+          result.economicImpacts.find((r) => r.name === name),
+          undefined,
+        );
+      });
+
+      [
+        "avoidedVehiculeKilometers",
+        "avoidedTrafficAccidentsMinorInjuries",
+        "avoidedTrafficAccidentsSevereInjuries",
+        "avoidedTrafficAccidentsDeaths",
+        "avoidedVehiculeKilometers",
+        "timeTravelSavedInHours",
+      ].forEach((name) => {
+        assert.strictEqual(
+          result.impactMetrics.find((r) => r.name === name),
+          undefined,
+        );
+      });
     });
 
     it("doesn't return travel related impacts for urban project on non friche site", () => {

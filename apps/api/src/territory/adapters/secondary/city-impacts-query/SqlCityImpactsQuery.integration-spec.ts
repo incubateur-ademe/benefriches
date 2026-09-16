@@ -22,7 +22,7 @@ describe("SqlCityImpactsQuery", () => {
     repository = new SqlCityImpactsQuery(sqlConnection);
   });
 
-  describe("getCityDataAndStats propertyValueMedianPricePerSquareMeters", () => {
+  describe("getCityDataAndStats DVF values", () => {
     it("it should return default value if city is not found", async () => {
       const result = await repository.getCityDataAndStats("wrong");
 
@@ -33,6 +33,7 @@ describe("SqlCityImpactsQuery", () => {
       const result = await repository.getCityDataAndStats("54321");
 
       assert.strictEqual(result.stats.propertyValueMedianPricePerSquareMeters, 2397);
+      assert.strictEqual(result.stats.landWithoutBuildingsMedianPricePerSquareMeters, 10);
     });
 
     it("it should return default value for city of less than 150 inhabitants for city in department 57", async () => {
@@ -44,6 +45,12 @@ describe("SqlCityImpactsQuery", () => {
     it("it should return default value for city of less than 1500 inhabitants for city in department 57", async () => {
       const result = await repository.getCityDataAndStats("57680");
       assert.strictEqual(result.stats.propertyValueMedianPricePerSquareMeters, 1826);
+    });
+
+    it("should return undefined for landWithoutBuildingsMedianPricePerSquareMeters", async () => {
+      const result = await repository.getCityDataAndStats("97605");
+
+      assert.strictEqual(result.stats.landWithoutBuildingsMedianPricePerSquareMeters, undefined);
     });
   });
 
@@ -90,6 +97,21 @@ describe("SqlCityImpactsQuery", () => {
 
       assert.strictEqual(result.mteZonageAbc, "Abis");
       assert.strictEqual(result.isRural, false);
+    });
+  });
+
+  describe("getCityDataAndStats ANCT stats", () => {
+    it("should return undefined", async () => {
+      const result = await repository.getCityDataAndStats("97605");
+
+      assert.strictEqual(result.stats.shareOfWorkTripsByPublicTransport, undefined);
+      assert.strictEqual(result.stats.annualRateOfPopulationChange, undefined);
+    });
+
+    it("should return shareOfWorkTripsByPublicTransport and annualRateOfPopulationChange from ANCT columns", async () => {
+      const result = await repository.getCityDataAndStats("54321");
+      assert.strictEqual(result.stats.shareOfWorkTripsByPublicTransport, 13.7);
+      assert.strictEqual(result.stats.annualRateOfPopulationChange, -0.79);
     });
   });
 });

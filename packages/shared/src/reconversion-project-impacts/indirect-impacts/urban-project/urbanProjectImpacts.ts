@@ -73,6 +73,8 @@ type UrbanProjectImpactsProps = {
     cityPropertyValuePerSquareMeter: number;
     cityMteZonageAbc: "A" | "B" | "C" | "B1" | "B2" | "Abis" | undefined;
     cityIsRural: boolean;
+    cityShareOfWorkTripsByPublicTransport?: number;
+    cityAnnualRateOfPopulationChange?: number;
   };
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 };
@@ -192,93 +194,99 @@ export const getUrbanProjectImpacts = ({
     );
 
     // --- Impacts liés aux déplacements ---
-    const travelRelatedImpactsService = new YearlyTravelRelatedImpacts({
-      buildingsFloorAreaDistribution:
-        reconversionProject.developmentPlan.features.buildingsFloorAreaDistribution,
-      siteSquareMetersSurfaceArea: relatedSite.surfaceArea,
-      citySquareMetersSurfaceArea: siteCityData.citySquareMetersSurfaceArea,
-      cityPopulation: siteCityData.cityPopulation,
-    });
+    if (
+      !siteCityData.cityIsRural &&
+      siteCityData.cityShareOfWorkTripsByPublicTransport &&
+      siteCityData.cityShareOfWorkTripsByPublicTransport >= 4.2
+    ) {
+      const travelRelatedImpactsService = new YearlyTravelRelatedImpacts({
+        buildingsFloorAreaDistribution:
+          reconversionProject.developmentPlan.features.buildingsFloorAreaDistribution,
+        siteSquareMetersSurfaceArea: relatedSite.surfaceArea,
+        citySquareMetersSurfaceArea: siteCityData.citySquareMetersSurfaceArea,
+        cityPopulation: siteCityData.cityPopulation,
+      });
 
-    pushImpactMetrics(
-      "avoidedVehiculeKilometers",
-      travelRelatedImpactsService.getAvoidedKilometersPerVehiculePerYear(),
-      [],
-    );
+      pushImpactMetrics(
+        "avoidedVehiculeKilometers",
+        travelRelatedImpactsService.getAvoidedKilometersPerVehiculePerYear(),
+        [],
+      );
 
-    pushImpactMetrics(
-      "timeTravelSavedInHours",
-      travelRelatedImpactsService.getTravelTimeSavedPerTravelerPerYear(),
-      [],
-    );
+      pushImpactMetrics(
+        "timeTravelSavedInHours",
+        travelRelatedImpactsService.getTravelTimeSavedPerTravelerPerYear(),
+        [],
+      );
 
-    pushEconomicImpact(
-      "avoidedCarRelatedExpenses",
-      travelRelatedImpactsService.getAvoidedCarRelatedExpensesPerYear(),
-      ["discount", "gdp_evolution"],
-    );
-    pushEconomicImpact(
-      "travelTimeSavedPerTravelerExpenses",
-      travelRelatedImpactsService.getTravelTimeSavedPerTravelerExpensesPerYear(),
-      ["discount", "gdp_evolution"],
-    );
+      pushEconomicImpact(
+        "avoidedCarRelatedExpenses",
+        travelRelatedImpactsService.getAvoidedCarRelatedExpensesPerYear(),
+        ["discount", "gdp_evolution"],
+      );
+      pushEconomicImpact(
+        "travelTimeSavedPerTravelerExpenses",
+        travelRelatedImpactsService.getTravelTimeSavedPerTravelerExpensesPerYear(),
+        ["discount", "gdp_evolution"],
+      );
 
-    pushImpactMetrics(
-      "avoidedTrafficCo2EqEmissions",
-      travelRelatedImpactsService.getAvoidedKilometersPerVehiculePerYear(),
-      ["co2_emitted_per_vehicule"],
-    );
+      pushImpactMetrics(
+        "avoidedTrafficCo2EqEmissions",
+        travelRelatedImpactsService.getAvoidedKilometersPerVehiculePerYear(),
+        ["co2_emitted_per_vehicule"],
+      );
 
-    pushEconomicImpact(
-      "avoidedTrafficCo2EqEmissions",
-      travelRelatedImpactsService.getAvoidedKilometersPerVehiculePerYear(),
-      ["co2_emitted_per_vehicule", "co2_value", "discount"],
-    );
-    pushEconomicImpact(
-      "avoidedAirPollutionHealthExpenses",
-      travelRelatedImpactsService.getAvoidedAirPollutionHealthExpensesPerYear(),
-      ["discount", "gdp_evolution"],
-    );
+      pushEconomicImpact(
+        "avoidedTrafficCo2EqEmissions",
+        travelRelatedImpactsService.getAvoidedKilometersPerVehiculePerYear(),
+        ["co2_emitted_per_vehicule", "co2_value", "discount"],
+      );
+      pushEconomicImpact(
+        "avoidedAirPollutionHealthExpenses",
+        travelRelatedImpactsService.getAvoidedAirPollutionHealthExpensesPerYear(),
+        ["discount", "gdp_evolution"],
+      );
 
-    pushImpactMetrics(
-      "avoidedTrafficAccidentsSevereInjuries",
-      travelRelatedImpactsService.getTrafficAccidentsPerYear().severe,
-      [],
-    );
+      pushImpactMetrics(
+        "avoidedTrafficAccidentsSevereInjuries",
+        travelRelatedImpactsService.getTrafficAccidentsPerYear().severe,
+        [],
+      );
 
-    pushImpactMetrics(
-      "avoidedTrafficAccidentsMinorInjuries",
-      travelRelatedImpactsService.getTrafficAccidentsPerYear().minor,
-      [],
-    );
+      pushImpactMetrics(
+        "avoidedTrafficAccidentsMinorInjuries",
+        travelRelatedImpactsService.getTrafficAccidentsPerYear().minor,
+        [],
+      );
 
-    pushImpactMetrics(
-      "avoidedTrafficAccidentsDeaths",
-      travelRelatedImpactsService.getTrafficAccidentsPerYear().deaths,
-      [],
-    );
+      pushImpactMetrics(
+        "avoidedTrafficAccidentsDeaths",
+        travelRelatedImpactsService.getTrafficAccidentsPerYear().deaths,
+        [],
+      );
 
-    pushEconomicImpact(
-      "avoidedPropertyDamageExpenses",
-      travelRelatedImpactsService.getAvoidedPropertyDamageExpensesPerYear(),
-      ["discount", "gdp_evolution"],
-    );
+      pushEconomicImpact(
+        "avoidedPropertyDamageExpenses",
+        travelRelatedImpactsService.getAvoidedPropertyDamageExpensesPerYear(),
+        ["discount", "gdp_evolution"],
+      );
 
-    pushEconomicImpact(
-      "avoidedAccidentsMinorInjuriesExpenses",
-      travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpensesPerYear(),
-      ["discount", "gdp_evolution"],
-    );
-    pushEconomicImpact(
-      "avoidedAccidentsSevereInjuriesExpenses",
-      travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpensesPerYear(),
-      ["discount", "gdp_evolution"],
-    );
-    pushEconomicImpact(
-      "avoidedAccidentsDeathsExpenses",
-      travelRelatedImpactsService.getAvoidedAccidentsDeathsExpensesPerYear(),
-      ["discount", "gdp_evolution"],
-    );
+      pushEconomicImpact(
+        "avoidedAccidentsMinorInjuriesExpenses",
+        travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpensesPerYear(),
+        ["discount", "gdp_evolution"],
+      );
+      pushEconomicImpact(
+        "avoidedAccidentsSevereInjuriesExpenses",
+        travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpensesPerYear(),
+        ["discount", "gdp_evolution"],
+      );
+      pushEconomicImpact(
+        "avoidedAccidentsDeathsExpenses",
+        travelRelatedImpactsService.getAvoidedAccidentsDeathsExpensesPerYear(),
+        ["discount", "gdp_evolution"],
+      );
+    }
   }
 
   return {

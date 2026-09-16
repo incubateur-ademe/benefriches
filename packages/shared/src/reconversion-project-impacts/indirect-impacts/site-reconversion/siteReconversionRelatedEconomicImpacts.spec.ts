@@ -95,6 +95,43 @@ describe("getLocalPropertyIncreaseWithFricheRemovalImpacts", () => {
     assert.ok(names.has("localTransferDutiesIncrease"));
   });
 
+  it("returns localPropertyValueIncrease and localTransferDutiesIncrease impacts with cityAnnualRateOfPopulationChange of 0.8", () => {
+    const result = getLocalPropertyIncreaseWithFricheRemovalImpacts({
+      siteSurfaceArea: 10_000,
+      siteCityData: {
+        citySquareMetersSurfaceArea: 5_000_000,
+        cityPopulation: 50_000,
+        cityPropertyValuePerSquareMeter: 2_500,
+        cityIsRural: false,
+        cityMteZonageAbc: "B" as const,
+        cityAnnualRateOfPopulationChange: 0.8,
+      },
+      sumOnEvolutionPeriodService: mockService,
+    });
+
+    assert.strictEqual(result.length, 2);
+    const names = new Set(result.map((r) => r.name));
+    assert.ok(names.has("localPropertyValueIncrease"));
+    assert.ok(names.has("localTransferDutiesIncrease"));
+  });
+
+  it("does not return localPropertyValueIncrease and localTransferDutiesIncrease impacts", () => {
+    const result = getLocalPropertyIncreaseWithFricheRemovalImpacts({
+      siteSurfaceArea: 10_000,
+      siteCityData: {
+        citySquareMetersSurfaceArea: 5_000_000,
+        cityPopulation: 50_000,
+        cityPropertyValuePerSquareMeter: 2_500,
+        cityIsRural: false,
+        cityMteZonageAbc: "B" as const,
+        cityAnnualRateOfPopulationChange: -0.8,
+      },
+      sumOnEvolutionPeriodService: mockService,
+    });
+
+    assert.strictEqual(result.length, 0);
+  });
+
   it("has detailsByYear et cumulativeByYear in result", () => {
     const result = getLocalPropertyIncreaseWithFricheRemovalImpacts({
       siteSurfaceArea: 10_000,

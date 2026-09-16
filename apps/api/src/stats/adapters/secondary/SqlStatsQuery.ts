@@ -93,6 +93,8 @@ const toCityData = (row: {
     da_population: number;
     da_surface_ha?: number;
     dvf_pxm2_median?: number;
+    anct_part_actifs_transports_en_commun_2022?: number;
+    anct_taux_annuel_evol_population_2016_2022?: number;
   };
   data?: {
     mte_zonage_abc: string | undefined;
@@ -113,6 +115,8 @@ const toCityData = (row: {
             row.stats?.dvf_pxm2_median && row.stats?.dvf_pxm2_median !== 0
               ? row.stats?.dvf_pxm2_median
               : undefined,
+          shareOfWorkTripsByPublicTransport: row.stats?.anct_part_actifs_transports_en_commun_2022,
+          annualRateOfPopulationChange: row.stats?.anct_taux_annuel_evol_population_2016_2022,
         }
       : undefined,
   };

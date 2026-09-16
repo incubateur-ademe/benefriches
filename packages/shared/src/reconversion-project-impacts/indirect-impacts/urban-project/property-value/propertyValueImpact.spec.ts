@@ -22,9 +22,40 @@ describe("Localresult.propertyValueIncrease impact", () => {
       isRenaturation: false,
       cityIsRural: false,
       cityMteZonageAbc: "B",
+      cityAnnualRateOfPopulationChange: 1.2,
     });
     assert.deepStrictEqual(result?.propertyValueIncrease, 455339);
     assert.deepStrictEqual(result?.propertyTransferDutiesIncrease, 6637);
+  });
+
+  it("compute property value increase if cityAnnualRateOfPopulationChange is undefined", () => {
+    const result = computePropertyValueImpact({
+      siteSurfaceArea: 36000,
+      citySurfaceArea: 20000000,
+      cityPopulation: 36946,
+      localHousePriceEuroPerSquareMeters: 974,
+      sumOnEvolutionPeriodService,
+      isRenaturation: false,
+      cityIsRural: false,
+      cityMteZonageAbc: "B",
+    });
+    assert.deepStrictEqual(result?.propertyValueIncrease, 455339);
+    assert.deepStrictEqual(result?.propertyTransferDutiesIncrease, 6637);
+  });
+
+  it("returns undefined if cityAnnualRateOfPopulationChange is not enough", () => {
+    const result = computePropertyValueImpact({
+      siteSurfaceArea: 36000,
+      citySurfaceArea: 20000000,
+      cityPopulation: 36946,
+      localHousePriceEuroPerSquareMeters: 974,
+      sumOnEvolutionPeriodService,
+      isRenaturation: false,
+      cityIsRural: false,
+      cityMteZonageAbc: "B",
+      cityAnnualRateOfPopulationChange: -1,
+    });
+    assert.deepStrictEqual(result, undefined);
   });
 
   it("compute property value increase with friche removal + renaturation", () => {

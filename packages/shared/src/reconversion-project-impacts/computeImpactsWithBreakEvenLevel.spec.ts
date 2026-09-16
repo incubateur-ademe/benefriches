@@ -127,14 +127,15 @@ const baseSite: Omit<SiteImpactsDataView, "address"> = {
 };
 
 const siteCityData = {
-  name: "",
   mteZonageAbc: "B",
   isRural: false,
   stats: {
+    accuracy: "city",
     propertyValueMedianPricePerSquareMeters: 2_500,
     population: 50_000,
     surfaceAreaSquareMeters: 5_000_000,
-    accuracy: "city",
+    shareOfWorkTripsByPublicTransport: 4.8,
+    annualRateOfPopulationChange: 0.5,
   },
 } as const;
 

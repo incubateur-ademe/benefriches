@@ -45,6 +45,13 @@ type CityStatsQueryResult = {
   da_population: CityStats["da_population"] | null;
   da_surface_ha: CityStats["da_surface_ha"] | null;
   dvf_pxm2_median: CityStats["dvf_pxm2_median"] | null;
+  dvf_pxm2_median_terrain: CityStats["dvf_pxm2_median_terrain"] | null;
+  anct_part_actifs_transports_en_commun_2022:
+    | CityStats["anct_part_actifs_transports_en_commun_2022"]
+    | null;
+  anct_taux_annuel_evol_population_2016_2022:
+    | CityStats["anct_taux_annuel_evol_population_2016_2022"]
+    | null;
   is_rural: SqlFranceRuralite["city_code"] | null;
 };
 
@@ -66,6 +73,9 @@ export class SqlCityImpactsQuery implements CityImpactsDataProvider {
           "city_stats.da_population",
           "city_stats.da_surface_ha",
           "city_stats.dvf_pxm2_median",
+          "city_stats.dvf_pxm2_median_terrain",
+          "city_stats.anct_part_actifs_transports_en_commun_2022",
+          "city_stats.anct_taux_annuel_evol_population_2016_2022",
           "france_ruralites.city_code as is_rural",
         )
         .leftJoin("city_stats", "city_stats.city_code", "cities.city_code")
@@ -81,6 +91,10 @@ export class SqlCityImpactsQuery implements CityImpactsDataProvider {
         ? convertHectaresToSquareMeters(result.da_surface_ha)
         : FRANCE_AVERAGE_CITY_SQUARE_METERS_AREA;
 
+      const population = result?.da_population ?? FRANCE_AVERAGE_CITY_POPULATION;
+
+      const statsAccuracy = !result?.dvf_pxm2_median || !result?.da_population ? "france" : "city";
+
       return {
         name: result?.name ?? result?.da_name ?? "",
         mteZonageAbc:
@@ -88,24 +102,21 @@ export class SqlCityImpactsQuery implements CityImpactsDataProvider {
             ? undefined
             : (result?.mte_zonage_abc as "A" | "B" | "C" | "B1" | "B2" | "Abis"),
         isRural: Boolean(result.is_rural),
-        stats: result?.da_population
-          ? {
-              accuracy: "city",
-              surfaceAreaSquareMeters,
-              population: result?.da_population,
-              propertyValueMedianPricePerSquareMeters:
-                result.dvf_pxm2_median && result.dvf_pxm2_median !== 0
-                  ? result.dvf_pxm2_median
-                  : getDefaultMedianPriceFromPopulation(result?.da_population),
-            }
-          : {
-              accuracy: "france",
-              surfaceAreaSquareMeters: FRANCE_AVERAGE_CITY_SQUARE_METERS_AREA,
-              population: FRANCE_AVERAGE_CITY_POPULATION,
-              propertyValueMedianPricePerSquareMeters: getDefaultMedianPriceFromPopulation(
-                FRANCE_AVERAGE_CITY_POPULATION,
-              ),
-            },
+        stats: {
+          accuracy: statsAccuracy,
+          surfaceAreaSquareMeters,
+          population,
+          propertyValueMedianPricePerSquareMeters:
+            result.dvf_pxm2_median && result.dvf_pxm2_median !== 0
+              ? result.dvf_pxm2_median
+              : getDefaultMedianPriceFromPopulation(population),
+          landWithoutBuildingsMedianPricePerSquareMeters:
+            result["dvf_pxm2_median_terrain"] ?? undefined,
+          shareOfWorkTripsByPublicTransport:
+            result["anct_part_actifs_transports_en_commun_2022"] ?? undefined,
+          annualRateOfPopulationChange:
+            result["anct_taux_annuel_evol_population_2016_2022"] ?? undefined,
+        },
       };
     } catch (err) {
       this.logger.warn(String(err));
@@ -119,6 +130,9 @@ export class SqlCityImpactsQuery implements CityImpactsDataProvider {
           propertyValueMedianPricePerSquareMeters: getDefaultMedianPriceFromPopulation(
             FRANCE_AVERAGE_CITY_POPULATION,
           ),
+          shareOfWorkTripsByPublicTransport: undefined,
+          annualRateOfPopulationChange: undefined,
+          landWithoutBuildingsMedianPricePerSquareMeters: undefined,
         },
       };
     }

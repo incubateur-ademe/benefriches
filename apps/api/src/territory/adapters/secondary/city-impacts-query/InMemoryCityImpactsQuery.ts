@@ -14,6 +14,9 @@ const SAMPLES = [
       surfaceAreaSquareMeters: 118.3 * 10000,
       population: 471941,
       propertyValueMedianPricePerSquareMeters: 2500,
+      shareOfWorkTripsByPublicTransport: 13.7,
+      annualRateOfPopulationChange: -0.79,
+      landWithoutBuildingsMedianPricePerSquareMeters: 10,
     },
   },
   {
@@ -27,6 +30,9 @@ const SAMPLES = [
       population: 1800,
       surfaceAreaSquareMeters: 15 * 10000,
       propertyValueMedianPricePerSquareMeters: 2500,
+      shareOfWorkTripsByPublicTransport: undefined,
+      annualRateOfPopulationChange: undefined,
+      landWithoutBuildingsMedianPricePerSquareMeters: undefined,
     },
   },
   {
@@ -41,6 +47,9 @@ const SAMPLES = [
       population: 106,
       surfaceAreaSquareMeters: 123.5 * 10000,
       propertyValueMedianPricePerSquareMeters: 3064,
+      shareOfWorkTripsByPublicTransport: 2.1,
+      annualRateOfPopulationChange: -0.99,
+      landWithoutBuildingsMedianPricePerSquareMeters: 10,
     },
   },
   {
@@ -54,6 +63,9 @@ const SAMPLES = [
       population: 2145906,
       surfaceAreaSquareMeters: 10540 * 10000,
       propertyValueMedianPricePerSquareMeters: 8000,
+      shareOfWorkTripsByPublicTransport: 61.7,
+      annualRateOfPopulationChange: -0.59,
+      landWithoutBuildingsMedianPricePerSquareMeters: 10,
     },
   },
 ] as const satisfies Sample[];
@@ -86,6 +98,9 @@ export class InMemoryCityImpactsQuery implements CityImpactsDataProvider {
           surfaceAreaSquareMeters: 14900000,
           population: 1800,
           propertyValueMedianPricePerSquareMeters: 3064,
+          shareOfWorkTripsByPublicTransport: undefined,
+          annualRateOfPopulationChange: undefined,
+          landWithoutBuildingsMedianPricePerSquareMeters: undefined,
         },
       });
     }
