@@ -12,7 +12,7 @@ const CSV_PATH = path.resolve(apiRootDir, "data/city-stats/cityStats.csv");
 
 export const readCityStatsCsvData = () => {
   const HEADER =
-    "city_code;da_name;da_population;da_surface_ha;dvf_nbtrans;dvf_pxm2_median;dvf_surface_median;dvf_nbtrans_cod111;dvf_pxm2_median_cod111;dvf_nbtrans_cod121;dvf_pxm2_median_cod121;dvf_surface_median_cod111;dvf_surface_median_cod121;dvf_nbtrans_terrain;dvf_pxm2_median_terrain;dvf_surface_median_terrain";
+    "city_code;da_name;da_population;da_surface_ha;dvf_nbtrans;dvf_pxm2_median;dvf_surface_median;dvf_nbtrans_cod111;dvf_pxm2_median_cod111;dvf_nbtrans_cod121;dvf_pxm2_median_cod121;dvf_surface_median_cod111;dvf_surface_median_cod121;dvf_nbtrans_terrain;dvf_pxm2_median_terrain;dvf_surface_median_terrain;anct_part_actifs_transports_en_commun_2022;anct_taux_annuel_evol_population_2016_2022";
 
   return new Promise<CityStats[]>((resolve, reject) => {
     const readStream = fs.createReadStream(CSV_PATH, "utf-8");
