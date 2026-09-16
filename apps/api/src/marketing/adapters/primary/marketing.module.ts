@@ -1,7 +1,8 @@
 import { HttpModule, HttpService } from "@nestjs/axios";
-import { Module } from "@nestjs/common";
+import { Module, OnModuleInit } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import type { Knex } from "knex";
+import { z } from "zod";
 
 import { CRMGateway } from "src/marketing/core/CRMGateway";
 import { MarketingUsersQuery } from "src/marketing/core/gateways/MarketingUsersQuery";
@@ -18,6 +19,29 @@ import { SqlMarketingUsersQuery } from "../secondary/users-query/SqlMarketingUse
 import { SqlMarketingUsersRepository } from "../secondary/users-repository/SqlMarketingUsersRepository";
 import { LoginSucceededHandler } from "./loginSucceeded.handler";
 import { UserAccountCreatedHandler } from "./userAccountCreated.handler";
+
+// Only CONNECT_CRM_BASE_URL is validated at startup for now, so a misconfigured
+// value fails fast at boot rather than as a silent runtime error.
+const connectCrmBaseUrlSchema = z
+  .string()
+  .url(
+    "CONNECT_CRM_BASE_URL must be a valid URL including the full API base path (e.g. https://api-interne.ademe.fr/api/v1)",
+  );
+
+// Runs during app.init(), i.e. after the whole DI container (including test overrides
+// in test/testApp.ts) is built and wired — unlike ConfigModule.forRoot({ validate }),
+// which runs synchronously at AppModule import time, before any test override applies.
+class ConnectCrmConfigValidator implements OnModuleInit {
+  private readonly config: ConfigService;
+
+  constructor(config: ConfigService) {
+    this.config = config;
+  }
+
+  onModuleInit(): void {
+    connectCrmBaseUrlSchema.parse(this.config.get("CONNECT_CRM_BASE_URL"));
+  }
+}
 
 @Module({
   imports: [HttpModule, ConfigModule],
@@ -66,6 +90,11 @@ import { UserAccountCreatedHandler } from "./userAccountCreated.handler";
           ? new FakeCrm()
           : new ConnectCrm(httpService, configService),
       inject: [HttpService, ConfigService],
+    },
+    {
+      provide: ConnectCrmConfigValidator,
+      useFactory: (configService: ConfigService) => new ConnectCrmConfigValidator(configService),
+      inject: [ConfigService],
     },
   ],
   exports: [SyncNewsletterSubscriptionsUseCase],

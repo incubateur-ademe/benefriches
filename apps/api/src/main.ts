@@ -4,36 +4,14 @@ import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import type { Knex } from "knex";
-import { z } from "zod";
 
 import { AppModule } from "./app.module";
 import { configureServer } from "./httpServer";
 import { SqlConnection } from "./shared-kernel/adapters/sql-knex/sqlConnection.module";
 
-// Only CONNECT_CRM_BASE_URL is validated at startup for now, so a misconfigured
-// value fails fast at boot rather than as a silent runtime error.
-const connectCrmBaseUrlSchema = z
-  .string()
-  .url(
-    "CONNECT_CRM_BASE_URL must be a valid URL including the full API base path (e.g. https://api-interne.ademe.fr/api/v1)",
-  );
-
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   configureServer(app);
-
-  // fail fast if CONNECT_CRM_BASE_URL is missing or malformed
-  const configService = app.get(ConfigService);
-  const connectCrmBaseUrlResult = connectCrmBaseUrlSchema.safeParse(
-    configService.get("CONNECT_CRM_BASE_URL"),
-  );
-  if (!connectCrmBaseUrlResult.success) {
-    console.error(
-      "Error: invalid environment configuration -",
-      connectCrmBaseUrlResult.error.issues[0]?.message,
-    );
-    process.exit(1);
-  }
 
   // test SQL connection so we fail fast if DB is not accesible
   const sqlConnection: Knex = app.get(SqlConnection);
@@ -71,6 +49,7 @@ async function bootstrap() {
   SwaggerModule.setup("api/docs", app, publicDocument);
 
   // run http server
+  const configService = app.get(ConfigService);
   await app.listen(configService.getOrThrow("PORT"));
 }
 
