@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
 
-const ALDO_CITIES_PATH = path.resolve(import.meta.dirname, "./aldo/cities.csv");
+const ALDO_CITIES_PATH = path.resolve(import.meta.dirname, "../aldo/cities.csv");
 
 const ADEME_COMMUNES__DIRECT_URL = `https://data-interne.ademe.fr/data-fair/api/v1/datasets/geo-communes/data-files/GEO06_COMMUNES.csv`;
 
@@ -222,12 +222,12 @@ const indexAldoRows = (rawRows: AldoRawRow[]): Map<string, AldoRawRow> => {
 // Lecture du référentiel "Ref - Liste des communes" de https://data-interne.ademe.fr/datasets/geo-communes
 const COMMUNES_FALLBACK_COLUMN_INDEXES = {
   dcoe_c_code: 0,
-  dcoe_l_lib: 6,
-  dreg_c_code: 1,
-  ddep_c_code: 2,
-  epci_code: 3,
-  dcoe_c_actual: 8, // 1 - Commune actuelle 3 - Commune périmée 5 - Arrondissement municipal 6 - Commune déléguée
-  dceo_c_code_pole: 10,
+  dcoe_l_lib: 5,
+  dreg_c_code: 2,
+  ddep_c_code: 1,
+  epci_code: 4,
+  dcoe_c_actual: 7, // 1 - Commune actuelle 3 - Commune périmée 5 - Arrondissement municipal 6 - Commune déléguée
+  dcoe_c_code_pole: 9,
 };
 
 const readCommunesVilles = async (): Promise<{
@@ -257,7 +257,7 @@ const readCommunesVilles = async (): Promise<{
     dep_code: columnIndex("ddep_c_code"),
     epci_code: columnIndex("epci_code"),
     dcoe_c_actual: columnIndex("dcoe_c_actual"),
-    dceo_c_code_pole: columnIndex("dceo_c_code_pole"),
+    dcoe_c_code_pole: columnIndex("dcoe_c_code_pole"),
   };
 
   const communesOuArrondissementActifsMap = new Map<string, CommuneRecord>();
@@ -271,7 +271,7 @@ const readCommunesVilles = async (): Promise<{
     const actualCode = fields[col.dcoe_c_actual];
 
     if (actualCode === "6" || actualCode === "3") {
-      const cityCodeRef = fields[col.dceo_c_code_pole]?.trim();
+      const cityCodeRef = fields[col.dcoe_c_code_pole]?.trim();
 
       if (cityCodeRef) {
         const existing = communesDeleguesOrInactivesRefMap.get(cityCodeRef) ?? [];

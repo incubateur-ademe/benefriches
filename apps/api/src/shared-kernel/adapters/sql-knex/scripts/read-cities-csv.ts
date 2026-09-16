@@ -8,7 +8,7 @@ const currentFileDir = import.meta.dirname;
 const apiRootDir =
   currentFileDir.split(`${path.sep}apps${path.sep}api${path.sep}`)[0] +
   `${path.sep}apps${path.sep}api`;
-const CITIES_CSV_PATH = path.resolve(apiRootDir, "data/sqlCities.csv");
+const CITIES_CSV_PATH = path.resolve(apiRootDir, "data/cities/sqlCities.csv");
 
 const HEADER = [
   "city_code",
