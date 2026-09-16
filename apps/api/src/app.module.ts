@@ -4,6 +4,7 @@ import { APP_GUARD, APP_PIPE } from "@nestjs/core";
 import { EventEmitterModule, OnEvent } from "@nestjs/event-emitter";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { ZodValidationPipe } from "nestjs-zod";
+import { z } from "zod";
 
 import { AuthModule } from "./auth/adapters/auth.module";
 import { CarbonStorageModule } from "./carbon-storage/adapters/primary/carbonStorage.module";
@@ -23,6 +24,22 @@ import { StatistiquesModule } from "./stats/adapters/primary/stats.module";
 import { TerritoryModule } from "./territory/adapters/primary/territory.module";
 import { UsersModule } from "./users/adapters/primary/users.module";
 
+// Only CONNECT_CRM_BASE_URL is validated at startup for now, so a misconfigured
+// value fails fast at boot rather than as a silent runtime error.
+const envSchema = z
+  .object({
+    CONNECT_CRM_BASE_URL: z
+      .string()
+      .url(
+        "CONNECT_CRM_BASE_URL must be a valid URL including the full API base path (e.g. https://api-interne.ademe.fr/api/v1)",
+      ),
+  })
+  .passthrough();
+
+function validateEnv(config: Record<string, unknown>) {
+  return envSchema.parse(config);
+}
+
 class DomainEventsHandler {
   private readonly domainEventRepository: DomainEventsRepository;
   constructor(domainEventRepository: DomainEventsRepository) {
@@ -37,7 +54,7 @@ class DomainEventsHandler {
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ validate: validateEnv }),
     EventEmitterModule.forRoot({
       wildcard: true,
       global: true,

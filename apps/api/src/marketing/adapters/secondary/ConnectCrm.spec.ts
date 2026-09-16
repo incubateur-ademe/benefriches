@@ -49,7 +49,7 @@ describe("ConnectCrm", () => {
   beforeEach(() => {
     httpService = { get: mock.fn(), post: mock.fn(), put: mock.fn() };
     const configService = new ConfigService({
-      CONNECT_CRM_HOST: "https://crm.example.com",
+      CONNECT_CRM_BASE_URL: "https://crm.example.com/api/v1",
       CONNECT_CRM_CLIENT_ID: "client-id",
       CONNECT_CRM_CLIENT_SECRET: "client-secret",
     });
@@ -228,7 +228,10 @@ describe("ConnectCrm", () => {
 
       const args = httpService.put.mock.calls[0]?.arguments;
       assert.ok(args !== undefined);
-      assert.strictEqual(args[0], "https://crm.example.com/api/v1/personnes/mail/user@example.com");
+      assert.strictEqual(
+        args[0],
+        "https://crm.example.com/api/v1/personnes/mail/user%40example.com",
+      );
       const body = args[1] as { dateConnexion: string; source: string; email: string };
       // Test the regex-matched field separately
       assert.ok(/^2026-05-04T\d{2}:23:45$/.test(body.dateConnexion));

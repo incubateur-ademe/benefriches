@@ -49,7 +49,7 @@ export class ConnectCrm implements CRMGateway {
       : baseBody;
 
     await lastValueFrom(
-      this.httpClient.post(`${this.config.get("CONNECT_CRM_HOST")}/api/v1/personnes`, body, {
+      this.httpClient.post(`${this.getBaseUrl()}/personnes`, body, {
         headers: this.getAuthHeaders(),
       }),
     );
@@ -59,7 +59,7 @@ export class ConnectCrm implements CRMGateway {
     try {
       const response = await lastValueFrom(
         this.httpClient.get<unknown>(
-          `${this.config.get("CONNECT_CRM_HOST")}/api/v1/personnes/mail/${encodeURIComponent(email)}`,
+          `${this.getBaseUrl()}/personnes/mail/${encodeURIComponent(email)}`,
           { headers: this.getAuthHeaders() },
         ),
       );
@@ -95,7 +95,7 @@ export class ConnectCrm implements CRMGateway {
 
     await lastValueFrom(
       this.httpClient.put(
-        `${this.config.get("CONNECT_CRM_HOST")}/api/v1/personnes/mail/${email}`,
+        `${this.getBaseUrl()}/personnes/mail/${encodeURIComponent(email)}`,
         body,
         { headers: this.getAuthHeaders() },
       ),
@@ -107,5 +107,9 @@ export class ConnectCrm implements CRMGateway {
       client_id: this.config.getOrThrow<string>("CONNECT_CRM_CLIENT_ID"),
       client_secret: this.config.getOrThrow<string>("CONNECT_CRM_CLIENT_SECRET"),
     };
+  }
+
+  private getBaseUrl(): string {
+    return this.config.getOrThrow<string>("CONNECT_CRM_BASE_URL");
   }
 }
