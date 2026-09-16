@@ -13,6 +13,11 @@ export class FakeCrm implements CRMGateway {
 
   createContact(props: NewContactProps): Promise<void> {
     this._newContacts.push(props);
+    // Mirror the real CRM: once created, a later lookup finds the contact. Without this the
+    // fake cannot model read-after-write and idempotency of repeated runs stays untestable.
+    this._contacts.set(props.email, {
+      subscribedToNewsletter: props.subscribedToNewsletter,
+    });
     return Promise.resolve();
   }
 

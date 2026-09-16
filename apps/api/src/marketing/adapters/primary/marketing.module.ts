@@ -7,6 +7,8 @@ import { z } from "zod";
 import { CRMGateway } from "src/marketing/core/CRMGateway";
 import { MarketingUsersQuery } from "src/marketing/core/gateways/MarketingUsersQuery";
 import { MarketingUsersRepository } from "src/marketing/core/gateways/MarketingUsersRepository";
+import { UserSignupIntentQuery } from "src/marketing/core/gateways/UserSignupIntentQuery";
+import { BackfillCrmContactsUseCase } from "src/marketing/core/usecases/backfillCrmContacts.usecase";
 import { SyncNewsletterSubscriptionsUseCase } from "src/marketing/core/usecases/syncNewsletterSubscriptions.usecase";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
@@ -15,6 +17,7 @@ import { DateProvider } from "src/shared-kernel/dateProvider";
 
 import { ConnectCrm } from "../secondary/ConnectCrm";
 import { FakeCrm } from "../secondary/FakeCrm";
+import { SqlUserSignupIntentQuery } from "../secondary/signup-intent-query/SqlUserSignupIntentQuery";
 import { SqlMarketingUsersQuery } from "../secondary/users-query/SqlMarketingUsersQuery";
 import { SqlMarketingUsersRepository } from "../secondary/users-repository/SqlMarketingUsersRepository";
 import { LoginSucceededHandler } from "./loginSucceeded.handler";
@@ -68,6 +71,26 @@ class ConnectCrmConfigValidator implements OnModuleInit {
       inject: [SqlConnection],
     },
     {
+      provide: SqlUserSignupIntentQuery,
+      useFactory: (sqlConnection: Knex) => new SqlUserSignupIntentQuery(sqlConnection),
+      inject: [SqlConnection],
+    },
+    {
+      provide: BackfillCrmContactsUseCase,
+      useFactory: (
+        usersQuery: MarketingUsersQuery,
+        signupIntentQuery: UserSignupIntentQuery,
+        crm: CRMGateway,
+      ) =>
+        new BackfillCrmContactsUseCase(
+          usersQuery,
+          signupIntentQuery,
+          crm,
+          new NestJsAppLogger("BackfillCrmContacts"),
+        ),
+      inject: [SqlMarketingUsersQuery, SqlUserSignupIntentQuery, ConnectCrm],
+    },
+    {
       provide: SyncNewsletterSubscriptionsUseCase,
       useFactory: (
         usersQuery: MarketingUsersQuery,
@@ -97,6 +120,6 @@ class ConnectCrmConfigValidator implements OnModuleInit {
       inject: [ConfigService],
     },
   ],
-  exports: [SyncNewsletterSubscriptionsUseCase],
+  exports: [SyncNewsletterSubscriptionsUseCase, BackfillCrmContactsUseCase],
 })
 export class MarketingModule {}

@@ -19,10 +19,24 @@ export class SqlMarketingUsersQuery implements MarketingUsersQuery {
     const rows = await this.sqlConnection("users")
       .select("id", "email", "subscribed_to_newsletter")
       .orderBy("created_at");
-    return rows.map((row) => ({
-      id: row.id,
-      email: row.email,
-      subscribedToNewsletter: row.subscribed_to_newsletter,
-    }));
+    return rows.map(toMarketingUser);
+  }
+
+  async listCreatedSince(date: Date): Promise<MarketingUser[]> {
+    const rows = await this.sqlConnection("users")
+      .where("created_at", ">=", date)
+      .select("id", "email", "subscribed_to_newsletter")
+      .orderBy("created_at");
+    return rows.map(toMarketingUser);
   }
 }
+
+const toMarketingUser = (row: {
+  id: string;
+  email: string;
+  subscribed_to_newsletter: boolean;
+}): MarketingUser => ({
+  id: row.id,
+  email: row.email,
+  subscribedToNewsletter: row.subscribed_to_newsletter,
+});

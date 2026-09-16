@@ -213,6 +213,51 @@ describe("ConnectCrm", () => {
         mock.timers.reset();
       }
     });
+
+    it("resolves when the CRM envelope reports success", async () => {
+      httpService.post.mock.mockImplementation(() => of(buildAxiosResponse({ success: true })));
+
+      await crm.createContact({
+        email: "user@example.com",
+        firstName: "Jane",
+        lastName: "Doe",
+        subscribedToNewsletter: false,
+      });
+
+      assert.strictEqual(httpService.post.mock.calls.length, 1);
+    });
+
+    it("throws when the CRM answers 200 but the envelope reports success=false", async () => {
+      httpService.post.mock.mockImplementation(() => of(buildAxiosResponse({ success: false })));
+
+      await assert.rejects(
+        () =>
+          crm.createContact({
+            email: "user@example.com",
+            firstName: "Jane",
+            lastName: "Doe",
+            subscribedToNewsletter: false,
+          }),
+        /CRM rejected createContact for user@example\.com/,
+      );
+    });
+
+    it("throws when the CRM response body does not match the expected schema", async () => {
+      httpService.post.mock.mockImplementation(() =>
+        of(buildAxiosResponse({ unexpected: "shape" })),
+      );
+
+      await assert.rejects(
+        () =>
+          crm.createContact({
+            email: "user@example.com",
+            firstName: "Jane",
+            lastName: "Doe",
+            subscribedToNewsletter: false,
+          }),
+        /CRM createContact response schema mismatch for user@example\.com/,
+      );
+    });
   });
 
   describe("updateContactLastLoginDate", () => {

@@ -49,4 +49,45 @@ describe("SqlMarketingUsersQuery integration", () => {
       { id: unsubscribed.id, email: unsubscribed.email, subscribedToNewsletter: false },
     ]);
   });
+  describe("listCreatedSince", () => {
+    it("returns an empty array when no user was created since the given date", async () => {
+      const user = {
+        ...new UserBuilder().withEmail("old@example.com").build(),
+        createdAt: new Date("2026-05-01T00:00:00.000Z"),
+      };
+      await userRepository.save(user);
+
+      const result = await query.listCreatedSince(new Date("2026-06-05T00:00:00.000Z"));
+
+      assert.deepStrictEqual(result, []);
+    });
+
+    it("returns only users created at or after the given date, oldest first", async () => {
+      const before = {
+        ...new UserBuilder().withEmail("before@example.com").build(),
+        createdAt: new Date("2026-06-04T23:59:59.000Z"),
+      };
+      const exactlyOn = {
+        ...new UserBuilder()
+          .withEmail("exactly-on@example.com")
+          .withNewsletterSubscription()
+          .build(),
+        createdAt: new Date("2026-06-05T00:00:00.000Z"),
+      };
+      const after = {
+        ...new UserBuilder().withEmail("after@example.com").build(),
+        createdAt: new Date("2026-07-01T00:00:00.000Z"),
+      };
+      await userRepository.save(before);
+      await userRepository.save(after);
+      await userRepository.save(exactlyOn);
+
+      const result = await query.listCreatedSince(new Date("2026-06-05T00:00:00.000Z"));
+
+      assert.deepStrictEqual(result, [
+        { id: exactlyOn.id, email: exactlyOn.email, subscribedToNewsletter: true },
+        { id: after.id, email: after.email, subscribedToNewsletter: false },
+      ]);
+    });
+  });
 });

@@ -13,6 +13,14 @@ const CONNECT_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 const CONNECT_SOURCE = "Bénéfriches";
 const BENEFRICHES_NEWSLETTER_NAME = "Bénéfriches";
 
+/**
+ * Connect CRM answers HTTP 200 even when it rejects the write, flagging it with
+ * `success: false`. Without parsing the body a rejected create would look like a success.
+ */
+const createCrmContactResponseSchema = z.object({
+  success: z.boolean(),
+});
+
 const getCrmContactResponseSchema = z.object({
   success: z.boolean(),
   contact: z
@@ -48,11 +56,24 @@ export class ConnectCrm implements CRMGateway {
         }
       : baseBody;
 
-    await lastValueFrom(
-      this.httpClient.post(`${this.getBaseUrl()}/personnes`, body, {
+    const response = await lastValueFrom(
+      this.httpClient.post<unknown>(`${this.getBaseUrl()}/personnes`, body, {
         headers: this.getAuthHeaders(),
       }),
     );
+
+    const parsed = createCrmContactResponseSchema.safeParse(response.data);
+
+    if (!parsed.success) {
+      throw new Error(
+        `CRM createContact response schema mismatch for ${props.email}: ${JSON.stringify(parsed.error.issues)}`,
+        { cause: parsed.error },
+      );
+    }
+
+    if (!parsed.data.success) {
+      throw new Error(`CRM rejected createContact for ${props.email} (success=false)`);
+    }
   }
 
   async findContactByEmail(email: string): Promise<CrmContact | null> {
