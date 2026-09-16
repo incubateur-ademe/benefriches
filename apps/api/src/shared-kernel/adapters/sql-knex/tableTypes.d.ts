@@ -229,6 +229,8 @@ type CityStats = {
   dvf_nbtrans_terrain?: number;
   dvf_pxm2_median_terrain?: number;
   dvf_surface_median_terrain?: number;
+  anct_part_actifs_transports_en_commun_2022?: number;
+  anct_taux_annuel_evol_population_2016_2022?: number;
   updated_at: Date;
 };
 

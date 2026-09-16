@@ -4,16 +4,18 @@ import readline from "node:readline";
 
 import { CityStats } from "../tableTypes";
 
+const currentFileDir = import.meta.dirname;
+const apiRootDir =
+  currentFileDir.split(`${path.sep}apps${path.sep}api${path.sep}`)[0] +
+  `${path.sep}apps${path.sep}api`;
+const CSV_PATH = path.resolve(apiRootDir, "data/city-stats/cityStats.csv");
+
 export const readCityStatsCsvData = () => {
-  const dataPath = path.resolve(
-    import.meta.dirname,
-    "./../../../../../data/city-stats/cityStats.csv",
-  );
   const HEADER =
     "city_code;da_name;da_population;da_surface_ha;dvf_nbtrans;dvf_pxm2_median;dvf_surface_median;dvf_nbtrans_cod111;dvf_pxm2_median_cod111;dvf_nbtrans_cod121;dvf_pxm2_median_cod121;dvf_surface_median_cod111;dvf_surface_median_cod121;dvf_nbtrans_terrain;dvf_pxm2_median_terrain;dvf_surface_median_terrain";
 
   return new Promise<CityStats[]>((resolve, reject) => {
-    const readStream = fs.createReadStream(dataPath, "utf-8");
+    const readStream = fs.createReadStream(CSV_PATH, "utf-8");
     const rl = readline.createInterface({ input: readStream });
     const data: CityStats[] = [];
 
@@ -38,7 +40,11 @@ export const readCityStatsCsvData = () => {
         dvf_nbtrans_terrain,
         dvf_pxm2_median_terrain,
         dvf_surface_median_terrain,
+        anct_part_actifs_transports_en_commun_2022,
+        anct_taux_annuel_evol_population_2016_2022,
       ] = line.split(";") as [
+        string,
+        string,
         string,
         string,
         string,
@@ -80,6 +86,12 @@ export const readCityStatsCsvData = () => {
           : undefined,
         dvf_surface_median_terrain: dvf_surface_median_terrain
           ? Number(dvf_surface_median_terrain)
+          : undefined,
+        anct_part_actifs_transports_en_commun_2022: anct_part_actifs_transports_en_commun_2022
+          ? Number(anct_part_actifs_transports_en_commun_2022)
+          : undefined,
+        anct_taux_annuel_evol_population_2016_2022: anct_taux_annuel_evol_population_2016_2022
+          ? Number(anct_taux_annuel_evol_population_2016_2022)
           : undefined,
         updated_at: new Date(),
       });

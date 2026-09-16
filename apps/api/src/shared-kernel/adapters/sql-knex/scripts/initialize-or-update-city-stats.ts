@@ -39,9 +39,15 @@ const DVF_COLUMNS = [
   "dvf_surface_median_terrain",
 ] as const satisfies readonly (keyof StatsRow)[];
 
+const ANCT_COLUMNS = [
+  "anct_part_actifs_transports_en_commun_2022",
+  "anct_taux_annuel_evol_population_2016_2022",
+] as const satisfies readonly (keyof StatsRow)[];
+
 const COMPARABLE_COLUMNS = [
   ...DA_COLUMNS,
   ...DVF_COLUMNS,
+  ...ANCT_COLUMNS,
 ] as const satisfies readonly (keyof StatsRow)[];
 
 const MERGE_COLUMNS = [...COMPARABLE_COLUMNS, "updated_at"] as const;
@@ -169,6 +175,7 @@ async function initializeOrUpdateCityStats() {
 
     const updatesDa: StatsRow[] = [];
     const updatesDvf: StatsRow[] = [];
+    const updatesAnct: StatsRow[] = [];
 
     for (const row of csvData) {
       const existing = existingByCityCode.get(row.city_code);
@@ -186,6 +193,7 @@ async function initializeOrUpdateCityStats() {
       toUpdate.push(row);
 
       if (includesAny(changedColumns, DA_COLUMNS)) updatesDa.push(row);
+      if (includesAny(changedColumns, ANCT_COLUMNS)) updatesAnct.push(row);
       if (includesAny(changedColumns, DVF_COLUMNS)) updatesDvf.push(row);
     }
 
@@ -197,8 +205,9 @@ async function initializeOrUpdateCityStats() {
     console.log(`   - Inchangées : ${unchanged.length}`);
     console.log(`   - À insérer  : ${toInsert.length}`);
     console.log(`   - À modifier : ${toUpdate.length}`);
-    console.log(`       dont données da  : ${updatesDa.length}`);
-    console.log(`       dont données dvf : ${updatesDvf.length}`);
+    console.log(`       dont données Données administratives  : ${updatesDa.length}`);
+    console.log(`       dont données DVF : ${updatesDvf.length}`);
+    console.log(`       dont données ANCT : ${updatesAnct.length}`);
     console.log(`   - À supprimer: ${toDeleteCityCodes.length}`);
 
     logCityCodes(

@@ -8,6 +8,7 @@ import * as path from "node:path";
 import { pipeline } from "node:stream";
 import { promisify } from "node:util";
 
+import { readLines } from "../cities/build-cities-csv";
 import { DVFCommuneAnalyzer } from "./dvf-analyser";
 
 promisify(pipeline);
@@ -32,6 +33,8 @@ export type CommuneStats = {
   dvf_surface_median_terrain: number | null;
   dvf_pxm2_median_terrain: number | null;
   dvf_nbtrans_terrain: number;
+  anct_part_actifs_transports_en_commun_2022?: number;
+  anct_taux_annuel_evol_population_2016_2022?: number;
 };
 
 export type Commune = {
@@ -111,6 +114,8 @@ const exportResults = (stats: CommuneStats[], filename = "cityStats.csv"): strin
     "dvf_nbtrans_terrain",
     "dvf_pxm2_median_terrain",
     "dvf_surface_median_terrain",
+    "anct_part_actifs_transports_en_commun_2022",
+    "anct_taux_annuel_evol_population_2016_2022",
   ] as const;
 
   const csvContent = [
@@ -220,7 +225,11 @@ const fetchCommunes = (): Promise<Commune[]> => {
   });
 };
 
-const generateAboutFile = (stats: CommuneStats[], dvfContent: string): string => {
+const generateAboutFile = (
+  stats: CommuneStats[],
+  dvfContent: string,
+  anctContent: string,
+): string => {
   const readmePath = path.join(import.meta.dirname, "README.md");
 
   // Compter les arrondissements
@@ -251,6 +260,10 @@ Le script combine les données de **Demandes de Valeurs Foncières (DVF)** avec 
    - Surface et prix de vente
    - Mutations de terrain sans bâti (parcelles, surface_terrain)
 
+3. **[ANCT - Observatoire des territoires](https://www.observatoire-des-territoires.gouv.fr/outils/cartographie-interactive/#view=map76&c=indicator)**
+   - DÉMOGRAPHIE > Population et évolutions > Taux d'évolution annuel de la population (%)2016-2022▼
+   - MOBILITÉS > Mobilités quotidiennes > Part d'actifs selon le mode de transport principalement utilisé pour aller travailler (%) 2022 > Transport en commun
+
 ### Couverture géographique
 
 - **Communes françaises** : ${(stats.length - arrondissements.length).toLocaleString()}
@@ -258,6 +271,8 @@ Le script combine les données de **Demandes de Valeurs Foncières (DVF)** avec 
 - **Total** : ${stats.length.toLocaleString()} entités géographiques
 
 ${dvfContent}
+
+${anctContent}
 
 ### Structure du fichier sqlCityStats.csv
 
@@ -279,7 +294,8 @@ ${dvfContent}
 | \`dvf_nbtrans_terrain\`       | Nombre de mutations de terrain sans bâti utilisées |
 | \`dvf_pxm2_median_terrain\`   | Prix médian au m² du terrain seul (€/m²)   |
 | \`dvf_surface_median_terrain\`| Surface médiane des terrains vendus seuls (m²) |
-
+| \`anct_part_actifs_transports_en_commun_2022\`| Part d'actifs utilisant principalement les transports en commun pour aller travailler 2022 |
+| \`anct_taux_annuel_evol_population_2016_2022\`| Taux d'évolution annuel de la population 2016-2022 |
 ---
 
 - _Fichiers générés le ${new Date().toLocaleDateString("fr-FR")}_
@@ -297,6 +313,45 @@ const displaySummary = (): void => {
   console.log(" - README.md");
 };
 
+type AnctRawRow = {
+  anct_part_actifs_transports_en_commun_2022?: number;
+  anct_taux_annuel_evol_population_2016_2022?: number;
+};
+
+const stringToNumber = (value: string) => {
+  const output = parseFloat(value);
+  return isNaN(output) ? undefined : output;
+};
+
+const readAnctRawRows = async (): Promise<Map<string, AnctRawRow>> => {
+  console.log(`--- ANCT stats : read CSV file`);
+  const lines = await readLines(
+    path.resolve(import.meta.dirname, "./anct/observatoire-territoire.csv"),
+  );
+  const map = new Map<string, AnctRawRow>();
+
+  for (const line of lines) {
+    const [
+      cityCode,
+      _,
+      anct_part_actifs_transports_en_commun_2022,
+      anct_taux_annuel_evol_population_2016_2022,
+    ] = line.split(";") as [string, string, string, string];
+
+    map.set(cityCode, {
+      anct_part_actifs_transports_en_commun_2022: stringToNumber(
+        anct_part_actifs_transports_en_commun_2022,
+      ),
+      anct_taux_annuel_evol_population_2016_2022: stringToNumber(
+        anct_taux_annuel_evol_population_2016_2022,
+      ),
+    });
+  }
+
+  console.log(`--- ANCT stats : ${map.size} communes trouvées`);
+  return map;
+};
+
 const main = async () => {
   console.log("=== GÉNÉRATION DES STATISTIQUES COMMUNALES FRANÇAISES ===\n");
 
@@ -306,13 +361,39 @@ const main = async () => {
 
     const dvfAnalyzer = new DVFCommuneAnalyzer();
 
-    const stats = await dvfAnalyzer.analyzeAll(communes);
+    const dvfStats = await dvfAnalyzer.analyzeAll(communes);
 
+    const anctStats = await readAnctRawRows();
+
+    const stats = dvfStats.map((item) => Object.assign(item, anctStats.get(item.city_code)));
+
+    const missingAnctPopulation = stats.filter(
+      (item) => item.anct_taux_annuel_evol_population_2016_2022 === undefined,
+    ).length;
+    const missingAnctTransports = stats.filter(
+      (item) => item.anct_part_actifs_transports_en_commun_2022 === undefined,
+    ).length;
+    console.log(
+      `--- ANCT -> évolution population manquante pour : ${missingAnctPopulation} communes`,
+    );
+    console.log(
+      `--- ANCT -> part actif transport en commun manquante pour : ${missingAnctTransports} communes`,
+    );
     console.log("\n✅ Extraction terminée avec succès !");
 
     exportResults(stats);
 
-    generateAboutFile(stats, dvfAnalyzer.generateAboutFileContent(stats));
+    generateAboutFile(
+      stats,
+      dvfAnalyzer.generateAboutFileContent(stats),
+      `
+### ANCT: Observatoire des territoires
+
+#### Analyse des données manquantes
+  -> évolution population manquante pour : ${missingAnctPopulation} communes
+  -> part actif transport en commun manquante pour : ${missingAnctTransports} communes
+      `,
+    );
 
     displaySummary();
   } catch (error) {

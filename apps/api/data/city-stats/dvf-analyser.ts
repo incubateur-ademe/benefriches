@@ -22,7 +22,7 @@ promisify(pipeline);
 // Strips ASCII control characters from external values before logging to prevent log injection
 const stripControlChars = (s: string) => s.replace(/[\x00-\x1F\x7F]/g, " ");
 
-interface DVFTransaction {
+type DVFTransaction = {
   annee: number | null;
   id_mutation: string;
   code_commune: string;
@@ -30,9 +30,9 @@ interface DVFTransaction {
   valeur_fonciere: number;
   surface_reelle_bati: number;
   prix_m2: number;
-}
+};
 
-interface RawDVFRow {
+type RawDVFRow = {
   nature_mutation: string;
   valeur_fonciere: string;
   surface_reelle_bati: string;
@@ -42,18 +42,18 @@ interface RawDVFRow {
   id_mutation: string;
   id_parcelle?: string;
   surface_terrain?: string;
-}
+};
 
-interface DVFTerrainTransaction {
+type DVFTerrainTransaction = {
   annee: number | null;
   id_mutation: string;
   code_commune: string;
   valeur_fonciere: number;
   surface_terrain: number;
   prix_m2: number;
-}
+};
 
-interface TerrainMutationAcc {
+type TerrainMutationAcc = {
   id_mutation: string;
   code_commune: string;
   annee: number | null;
@@ -63,36 +63,41 @@ interface TerrainMutationAcc {
   // (une par nature de culture) avec la même surface_terrain répétée : on ne
   // veut la compter qu'une seule fois par parcelle distincte.
   parcelles: Map<string, number>;
-}
+};
 
-interface TypeStats {
+type TypeStats = {
   nb_transactions: number;
   prix_median_m2: number | null;
   surface_mediane: number | null;
-}
+};
 
-interface YearRange {
+type YearRange = {
   min: number;
   max: number;
   years: number[];
-}
+};
 
-interface DVFGroupedData {
+type DVFGroupedData = {
   maisons: DVFTransaction[];
   appartements: DVFTransaction[];
-}
+};
 
-interface WeightedAverageResult {
+type WeightedAverageResult = {
   transactions: number;
   price: number | null;
   surface: number | null;
-}
+};
+
+type DvfCommuneStats = Omit<
+  CommuneStats,
+  "anct_taux_annuel_evol_population_2016_2022" | "anct_part_actifs_transports_en_commun_2022"
+>;
 
 export class DVFCommuneAnalyzer {
   private readonly dataPath: string;
   private dvfData: DVFTransaction[] | null = null;
   private dvfTerrainData: DVFTerrainTransaction[] | null = null;
-  private stats: CommuneStats[] | null = null;
+  private stats: DvfCommuneStats[] | null = null;
   private yearRange: YearRange | null = null;
 
   private readonly TERRAIN_SURFACE_MIN = 10; // m²
@@ -105,7 +110,7 @@ export class DVFCommuneAnalyzer {
     this.ensureDataDirectory();
   }
 
-  async analyzeAll(communes: Commune[]): Promise<CommuneStats[]> {
+  async analyzeAll(communes: Commune[]): Promise<DvfCommuneStats[]> {
     console.log("=== Analyse des mutations DVF communales françaises ===\n");
 
     // Télécharger les données DVF
@@ -521,7 +526,7 @@ export class DVFCommuneAnalyzer {
     communes: Commune[],
     dvfData: DVFTransaction[],
     dvfTerrainData: DVFTerrainTransaction[],
-  ): CommuneStats[] {
+  ): DvfCommuneStats[] {
     console.log(" 📉 Calcul des statistiques par commune...");
 
     // Grouper les données DVF par commune et type
@@ -546,7 +551,7 @@ export class DVFCommuneAnalyzer {
       (dvfTerrainGrouped[row.code_commune] ??= []).push(row);
     });
 
-    const stats: CommuneStats[] = [];
+    const stats: DvfCommuneStats[] = [];
 
     communes.forEach((commune) => {
       const dvfCommune = dvfGrouped[commune.code] ?? { maisons: [], appartements: [] };
@@ -646,7 +651,7 @@ export class DVFCommuneAnalyzer {
     };
   }
 
-  private addAggregatedCityWithArrondissementsStats(stats: CommuneStats[]): void {
+  private addAggregatedCityWithArrondissementsStats(stats: DvfCommuneStats[]): void {
     Object.entries(CITY_ARRONDISSEMENTS).forEach(([cityCode, arrondissements]) => {
       // Trouver les stats des arrondissements
       const arrondissementStats = stats.filter((stat) => arrondissements.includes(stat.city_code));
@@ -666,7 +671,9 @@ export class DVFCommuneAnalyzer {
     });
   }
 
-  private calculateWeightedAverages(arrondissementStats: CommuneStats[]): Partial<CommuneStats> {
+  private calculateWeightedAverages(
+    arrondissementStats: DvfCommuneStats[],
+  ): Partial<DvfCommuneStats> {
     // Filtrer les arrondissements avec des données valides
     const validMaisons = arrondissementStats.filter(
       (stat) => stat.dvf_nbtrans_cod111 > 0 && stat.dvf_pxm2_median_cod111 !== null,
@@ -680,10 +687,10 @@ export class DVFCommuneAnalyzer {
 
     // Calculer les moyennes pondérées par le nombre de transactions
     const calculateWeightedAverage = (
-      validStats: CommuneStats[],
-      transField: keyof CommuneStats,
-      priceField: keyof CommuneStats,
-      surfaceField: keyof CommuneStats,
+      validStats: DvfCommuneStats[],
+      transField: keyof DvfCommuneStats,
+      priceField: keyof DvfCommuneStats,
+      surfaceField: keyof DvfCommuneStats,
     ): WeightedAverageResult => {
       if (validStats.length === 0) {
         return {
@@ -790,7 +797,7 @@ export class DVFCommuneAnalyzer {
     return sorted[sorted.length - 1]?.value ?? values[0]?.value ?? 0;
   }
 
-  private identifyMissingDVFCommunes(data?: CommuneStats[]): CommuneStats[] {
+  private identifyMissingDVFCommunes(data?: DvfCommuneStats[]): DvfCommuneStats[] {
     if (!data || data.length === 0) {
       return [];
     }
@@ -815,8 +822,8 @@ export class DVFCommuneAnalyzer {
   }
 
   private analyzeMissingCommunes(
-    missingCommunes: CommuneStats[],
-    allCommunes: CommuneStats[],
+    missingCommunes: DvfCommuneStats[],
+    allCommunes: DvfCommuneStats[],
   ): void {
     const totalCommunes = allCommunes.length;
     const missingCount = missingCommunes.length;
@@ -846,7 +853,7 @@ export class DVFCommuneAnalyzer {
       console.log(`      • Département Moselle 57: ${deptCounts["57"] ?? 0} commune(s)`);
       console.log(`      • Départements Outre-mer: ${deptCounts["97"] ?? 0} commune(s)`);
 
-      const otherNotKnowMissingCommunes = missingCommunes.reduce<CommuneStats[]>(
+      const otherNotKnowMissingCommunes = missingCommunes.reduce<DvfCommuneStats[]>(
         (result, commune) => {
           // Extraire le département du city_code (2 premiers chiffres)
           const cityCode = commune.city_code;
@@ -876,7 +883,7 @@ export class DVFCommuneAnalyzer {
             verySmallCity: result.verySmallCity,
           };
         },
-        { verySmallCity: [] as CommuneStats[], others: [] as CommuneStats[] },
+        { verySmallCity: [] as DvfCommuneStats[], others: [] as DvfCommuneStats[] },
       );
 
       console.log(
@@ -917,7 +924,7 @@ export class DVFCommuneAnalyzer {
     }
   }
 
-  private getMissingCommunesAnalysis(missingCommunes: CommuneStats[]): string {
+  private getMissingCommunesAnalysis(missingCommunes: DvfCommuneStats[]): string {
     const totalCommunes = this.stats?.length ?? 0;
     const missingCount = missingCommunes.length;
 
@@ -961,7 +968,7 @@ export class DVFCommuneAnalyzer {
             verySmallCity: result.verySmallCity,
           };
         },
-        { verySmallCity: [] as CommuneStats[], others: [] as CommuneStats[] },
+        { verySmallCity: [] as DvfCommuneStats[], others: [] as DvfCommuneStats[] },
       );
 
       analysis += `#### Communes restantes sans données DVF: ${otherMissingCommunes.length.toLocaleString("fr-FR")}\n\n`;
@@ -990,7 +997,7 @@ export class DVFCommuneAnalyzer {
     return analysis;
   }
 
-  private getNationalStats(stats: CommuneStats[]) {
+  private getNationalStats(stats: DvfCommuneStats[]) {
     const statsForNationalComputation = stats.filter(
       ({ city_code }) => !ARRONDISSEMENTS_CITY_CODES.has(city_code),
     );
@@ -1151,7 +1158,7 @@ export class DVFCommuneAnalyzer {
     };
   }
 
-  public generateAboutFileContent(stats: CommuneStats[]): string {
+  public generateAboutFileContent(stats: DvfCommuneStats[]): string {
     const communesSansDVF = this.identifyMissingDVFCommunes(stats);
     const missingAnalysis = this.getMissingCommunesAnalysis(communesSansDVF);
 

@@ -76,7 +76,7 @@ type MergedRecord = {
   mte_zonage_abc: string;
 };
 
-const readLines = (filePath: string): Promise<string[]> => {
+export const readLines = (filePath: string): Promise<string[]> => {
   return new Promise((resolve, reject) => {
     const lines: string[] = [];
     const rl = readline.createInterface({ input: fs.createReadStream(filePath, "utf-8") });

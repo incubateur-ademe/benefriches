@@ -23,6 +23,10 @@ Le script combine les données de **Demandes de Valeurs Foncières (DVF)** avec 
    - Surface et prix de vente
    - Mutations de terrain sans bâti (parcelles, surface_terrain)
 
+3. **[ANCT - Observatoire des territoires](https://www.observatoire-des-territoires.gouv.fr/outils/cartographie-interactive/#view=map76&c=indicator)**
+   - DÉMOGRAPHIE > Population et évolutions > Taux d'évolution annuel de la population (%)2016-2022▼
+   - MOBILITÉS > Mobilités quotidiennes > Part d'actifs selon le mode de transport principalement utilisé pour aller travailler (%) 2022 > Transport en commun
+
 ### Couverture géographique
 
 - **Communes françaises** : 34 879
@@ -124,26 +128,35 @@ reste largement majoritaire dans le foncier résidentiel.
 - **Île-de-Sein** (29083) - 263 habitants
 - **Celles** (15031) - 217 habitants
 
+### ANCT: Observatoire des territoires
+
+#### Analyse des données manquantes
+
+-> évolution population manquante pour : 72 communes
+-> part actif transport en commun manquante pour : 80 communes
+
 ### Structure du fichier sqlCityStats.csv
 
-| Colonne                      | Description                                        |
-| ---------------------------- | -------------------------------------------------- |
-| `city_code`                  | Code INSEE de la commune ou arrondissement         |
-| `da_name`                    | Nom de la commune ou arrondissement                |
-| `da_population`              | Population de la commune                           |
-| `da_surface_ha`              | Surface de la commune en hectares                  |
-| `dvf_nbtrans`                | Nombre de transactions total                       |
-| `dvf_pxm2_median`            | Prix médian au m² (€/m²)                           |
-| `dvf_surface_median`         | Surface médiane (m²)                               |
-| `dvf_nbtrans_cod111`         | Nombre de transactions de maisons                  |
-| `dvf_pxm2_median_cod111`     | Prix médian au m² des maisons (€/m²)               |
-| `dvf_nbtrans_cod121`         | Nombre de transactions d'appartements              |
-| `dvf_pxm2_median_cod121`     | Prix médian au m² des appartements (€/m²)          |
-| `dvf_surface_median_cod111`  | Surface médiane des maisons (m²)                   |
-| `dvf_surface_median_cod121`  | Surface médiane des appartements (m²)              |
-| `dvf_nbtrans_terrain`        | Nombre de mutations de terrain sans bâti utilisées |
-| `dvf_pxm2_median_terrain`    | Prix médian au m² du terrain seul (€/m²)           |
-| `dvf_surface_median_terrain` | Surface médiane des terrains vendus seuls (m²)     |
+| Colonne                                      | Description                                                                                |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `city_code`                                  | Code INSEE de la commune ou arrondissement                                                 |
+| `da_name`                                    | Nom de la commune ou arrondissement                                                        |
+| `da_population`                              | Population de la commune                                                                   |
+| `da_surface_ha`                              | Surface de la commune en hectares                                                          |
+| `dvf_nbtrans`                                | Nombre de transactions total                                                               |
+| `dvf_pxm2_median`                            | Prix médian au m² (€/m²)                                                                   |
+| `dvf_surface_median`                         | Surface médiane (m²)                                                                       |
+| `dvf_nbtrans_cod111`                         | Nombre de transactions de maisons                                                          |
+| `dvf_pxm2_median_cod111`                     | Prix médian au m² des maisons (€/m²)                                                       |
+| `dvf_nbtrans_cod121`                         | Nombre de transactions d'appartements                                                      |
+| `dvf_pxm2_median_cod121`                     | Prix médian au m² des appartements (€/m²)                                                  |
+| `dvf_surface_median_cod111`                  | Surface médiane des maisons (m²)                                                           |
+| `dvf_surface_median_cod121`                  | Surface médiane des appartements (m²)                                                      |
+| `dvf_nbtrans_terrain`                        | Nombre de mutations de terrain sans bâti utilisées                                         |
+| `dvf_pxm2_median_terrain`                    | Prix médian au m² du terrain seul (€/m²)                                                   |
+| `dvf_surface_median_terrain`                 | Surface médiane des terrains vendus seuls (m²)                                             |
+| `anct_part_actifs_transports_en_commun_2022` | Part d'actifs utilisant principalement les transports en commun pour aller travailler 2022 |
+| `anct_taux_annuel_evol_population_2016_2022` | Taux d'évolution annuel de la population 2016-2022                                         |
 
 ---
 
