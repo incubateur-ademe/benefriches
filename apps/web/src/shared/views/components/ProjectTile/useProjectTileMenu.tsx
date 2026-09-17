@@ -1,19 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function useProjectTileMenu() {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  const closeMenu = () => {
+  const closeMenu = useCallback(() => {
     setIsMenuOpened(false);
     menuButtonRef.current?.focus();
-  };
+  }, []);
 
-  const openMenu = () => {
+  const openMenu = useCallback(() => {
     setIsMenuOpened(true);
     menuButtonRef.current?.focus();
-  };
+  }, []);
 
   useEffect(() => {
     const handleOutsideInteraction = (e: MouseEvent | FocusEvent) => {
@@ -48,7 +48,7 @@ export function useProjectTileMenu() {
       document.removeEventListener("focusin", handleOutsideInteraction);
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [isMenuOpened]);
+  }, [closeMenu, isMenuOpened]);
 
   return {
     isMenuOpened,

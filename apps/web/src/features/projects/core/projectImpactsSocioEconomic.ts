@@ -42,8 +42,7 @@ export type SocioEconomicImpactDetailsImpactKeyName = Extract<
 >["details"][number]["keyName"];
 
 export type SocioEconomicImpactImpactKeyName =
-  | SocioEconomicImpactMainImpactKeyName
-  | SocioEconomicImpactDetailsImpactKeyName;
+  SocioEconomicImpactMainImpactKeyName | SocioEconomicImpactDetailsImpactKeyName;
 
 export type SocioEconomicImpactsDetailsByBearerListView =
   SocioEconomicImpactByListViewCategory[number];

@@ -521,8 +521,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         sqlResult.development_plan.developer_will_be_buildings_constructor ?? undefined,
       buildingsConstructionAndRehabilitationExpenses:
         (sqlResult.development_plan.buildings_construction_costs as
-          | BuildingsConstructionExpense[]
-          | null) ?? undefined,
+          BuildingsConstructionExpense[] | null) ?? undefined,
       relatedSiteId: sqlResult.related_site_id,
       projectPhase: sqlResult.project_phase,
       createdBy: sqlResult.created_by,

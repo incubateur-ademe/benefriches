@@ -47,11 +47,9 @@ type CityStatsQueryResult = {
   dvf_pxm2_median: CityStats["dvf_pxm2_median"] | null;
   dvf_pxm2_median_terrain: CityStats["dvf_pxm2_median_terrain"] | null;
   anct_part_actifs_transports_en_commun_2022:
-    | CityStats["anct_part_actifs_transports_en_commun_2022"]
-    | null;
+    CityStats["anct_part_actifs_transports_en_commun_2022"] | null;
   anct_taux_annuel_evol_population_2016_2022:
-    | CityStats["anct_taux_annuel_evol_population_2016_2022"]
-    | null;
+    CityStats["anct_taux_annuel_evol_population_2016_2022"] | null;
   is_rural: SqlFranceRuralite["city_code"] | null;
 };
 

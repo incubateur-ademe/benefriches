@@ -28,6 +28,7 @@ function DemoProjectCreationWizard() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep]);
 
   useSyncCreationStepWithRouteQuery(DEMO_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);

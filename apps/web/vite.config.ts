@@ -58,8 +58,8 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       input: {
-        embed: resolve(__dirname, "embed.html"),
-        main: resolve(__dirname, "index.html"),
+        embed: resolve(import.meta.dirname, "embed.html"),
+        main: resolve(import.meta.dirname, "index.html"),
       },
     },
   },

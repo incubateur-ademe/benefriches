@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import SoilsCarbonStorageComparison from "@/features/create-project/views/project-form/common/soils-carbon-storage-comparison/SoilsCarbonStorageComparison";
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -8,8 +8,6 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export default function UrbanProjectSoilsCarbonStorageContainer() {
-  const dispatch = useAppDispatch();
-
   const {
     onBack,
     onNext,
@@ -21,7 +19,7 @@ export default function UrbanProjectSoilsCarbonStorageContainer() {
 
   useEffect(() => {
     onFetchSoilsCarbonStorageDifference();
-  }, [dispatch, onFetchSoilsCarbonStorageDifference]);
+  }, [onFetchSoilsCarbonStorageDifference]);
 
   if (loadingState === "error") {
     return (

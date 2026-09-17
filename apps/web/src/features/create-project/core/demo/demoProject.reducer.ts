@@ -19,9 +19,7 @@ import {
 } from "./stepHandlerRegistry";
 
 type DemoProjectStep =
-  | "DEMO_PROJECT_TEMPLATE_SELECTION"
-  | "DEMO_PROJECT_SUMMARY"
-  | "DEMO_PROJECT_CREATION_RESULT";
+  "DEMO_PROJECT_TEMPLATE_SELECTION" | "DEMO_PROJECT_SUMMARY" | "DEMO_PROJECT_CREATION_RESULT";
 
 export type DemoProjectCreationState = {
   currentStep: DemoProjectStep;

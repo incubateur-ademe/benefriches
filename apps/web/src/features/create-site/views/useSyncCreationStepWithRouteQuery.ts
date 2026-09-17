@@ -15,7 +15,9 @@ export const useSyncCreationStepWithRouteQuery = () => {
 
   // Ref pour avoir toujours les params à jour sans déclencher l'effet
   const currentRouteParamsRef = useRef(currentRoute.params);
-  currentRouteParamsRef.current = currentRoute.params;
+  useEffect(() => {
+    currentRouteParamsRef.current = currentRoute.params;
+  });
 
   useEffect(() => {
     if (currentRoute.name !== routes.createSite.name) return;

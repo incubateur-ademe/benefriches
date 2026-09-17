@@ -36,15 +36,10 @@ export type SocioEconomicSectionName =
   | "socioEconomic.localAuthority";
 
 export type SocialSectionName =
-  | "social"
-  | "social.jobs"
-  | "social.humanity"
-  | "social.localPeopleOrCompany";
+  "social" | "social.jobs" | "social.humanity" | "social.localPeopleOrCompany";
 
 export type EnvironmentalSectionName =
-  | "environmental"
-  | "environmental.co2eq"
-  | "environmental.soils";
+  "environmental" | "environmental.co2eq" | "environmental.soils";
 
 type IsOpenedState =
   | {

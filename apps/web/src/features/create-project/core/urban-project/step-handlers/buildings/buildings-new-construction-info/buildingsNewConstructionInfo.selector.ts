@@ -13,9 +13,6 @@ type BuildingsNewConstructionInfoViewData = {
 export const createSelectBuildingsNewConstructionInfoViewData = (
   selectStepState: Selector<RootState, UrbanProjectStepsState>,
 ) =>
-  createSelector(
-    [selectStepState],
-    (stepsState): BuildingsNewConstructionInfoViewData => ({
-      buildingsFootprintToConstruct: getBuildingsFootprintToConstruct(stepsState),
-    }),
-  );
+  createSelector([selectStepState], (stepsState): BuildingsNewConstructionInfoViewData => ({
+    buildingsFootprintToConstruct: getBuildingsFootprintToConstruct(stepsState),
+  }));

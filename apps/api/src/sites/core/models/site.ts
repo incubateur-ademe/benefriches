@@ -151,8 +151,7 @@ type CreateAgriculturalOrNaturalSiteCommonProps = {
 };
 
 export type CreateAgriculturalOrNaturalSiteProps =
-  | CreateNaturalAreaSiteProps
-  | CreateAgriculturalOperationSiteProps;
+  CreateNaturalAreaSiteProps | CreateAgriculturalOperationSiteProps;
 
 export function createAgriculturalOrNaturalSite(
   props: CreateAgriculturalOrNaturalSiteProps,

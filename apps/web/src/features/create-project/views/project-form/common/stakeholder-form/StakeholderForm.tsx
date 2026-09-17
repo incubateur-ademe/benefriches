@@ -37,11 +37,7 @@ export type FormValues =
     }
   | {
       stakeholder:
-        | "user_structure"
-        | "site_tenant"
-        | "site_owner"
-        | "project_stakeholder"
-        | "unknown";
+        "user_structure" | "site_tenant" | "site_owner" | "project_stakeholder" | "unknown";
       localAuthority: undefined;
       otherStructureName: undefined;
     }

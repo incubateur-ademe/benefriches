@@ -14,16 +14,14 @@ type SoilsSectionImpacts = EnvironmentalImpactMetricsByListViewCategory["soils"]
 type Co2EqSectionImpacts = EnvironmentalImpactMetricsByListViewCategory["co2eq"][number];
 
 export type EnvironmentalImpactMetricMainKeyName =
-  | SoilsSectionImpacts["keyName"]
-  | Co2EqSectionImpacts["keyName"];
+  SoilsSectionImpacts["keyName"] | Co2EqSectionImpacts["keyName"];
 
 export type EnvironmentalImpactMetricDetailsKeyName =
   | ExtractDetailsKeyName<SoilsSectionImpacts, "newPermeableSurface">
   | ExtractDetailsKeyName<Co2EqSectionImpacts, "avoidedCo2eqEmissions">;
 
 export type EnvironmentalImpactMetricKeyName =
-  | EnvironmentalImpactMetricMainKeyName
-  | EnvironmentalImpactMetricDetailsKeyName;
+  EnvironmentalImpactMetricMainKeyName | EnvironmentalImpactMetricDetailsKeyName;
 
 export const groupEnvironmentalMetricsByListViewCategory = (
   impactsData?: GetReconversionProjectImpactsResultDto["impacts"],

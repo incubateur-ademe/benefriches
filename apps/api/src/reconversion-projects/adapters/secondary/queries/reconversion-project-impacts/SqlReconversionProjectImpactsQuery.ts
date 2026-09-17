@@ -101,8 +101,7 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       )
       .groupBy("dp.id");
     const sqlDevelopmentPlan = sqlDevelopmentPlanResult[0] as
-      | (typeof sqlDevelopmentPlanResult)[number]
-      | undefined;
+      (typeof sqlDevelopmentPlanResult)[number] | undefined;
 
     const sqlDevelopmentPlanFeatures =
       !sqlDevelopmentPlan || Object.keys(sqlDevelopmentPlan.features ?? {}).length === 0

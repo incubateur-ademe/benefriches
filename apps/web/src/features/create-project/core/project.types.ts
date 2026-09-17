@@ -72,9 +72,7 @@ export type ReconversionProjectCreationData = {
 };
 
 export type ProjectStakeholderStructure =
-  | SiteStakeholderStructureType
-  | UserStructureType
-  | "unknown";
+  SiteStakeholderStructureType | UserStructureType | "unknown";
 
 export type ProjectStakeholder = { name: string; structureType: ProjectStakeholderStructure };
 

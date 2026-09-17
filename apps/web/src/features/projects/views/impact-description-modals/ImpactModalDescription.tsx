@@ -107,6 +107,7 @@ function ImpactModalDescriptionProvider<TRoute extends SupportedRoute>({
     if (domModalBody) {
       domModalBody.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contentState]);
   return (
     <ImpactModalDescriptionContext.Provider value={impactModalDescriptionContextValue}>

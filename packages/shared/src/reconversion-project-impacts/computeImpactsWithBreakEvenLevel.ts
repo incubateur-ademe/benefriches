@@ -160,8 +160,7 @@ const handleRoadsAndUtilitiesExpenses = ({
   isFriche: boolean;
   siteSurfaceArea: number;
 }): (
-  | UrbanSprawlComparisonIndirectEconomicImpactItemView
-  | ProjectOperatingEconomicBalanceItem
+  UrbanSprawlComparisonIndirectEconomicImpactItemView | ProjectOperatingEconomicBalanceItem
 )[] => {
   const projectOnSimulationSiteImpactsDataDetails = projectOnSiteIndirectEconomicImpactsData.filter(
     (item) => item.name !== "fricheRoadsAndUtilitiesExpenses",

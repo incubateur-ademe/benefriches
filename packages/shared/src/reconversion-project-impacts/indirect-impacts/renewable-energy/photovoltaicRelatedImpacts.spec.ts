@@ -35,7 +35,7 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
   let mockService: SumOnEvolutionPeriodService;
 
   beforeEach(() => {
-    getWeightedYearlyValuesSpy = mock.fn((value: number, _?: string[]) => [value, value, value]);
+    getWeightedYearlyValuesSpy = mock.fn((value: number) => [value, value, value]);
     mockService = {
       getWeightedYearlyValues: getWeightedYearlyValuesSpy,
     } as unknown as SumOnEvolutionPeriodService;

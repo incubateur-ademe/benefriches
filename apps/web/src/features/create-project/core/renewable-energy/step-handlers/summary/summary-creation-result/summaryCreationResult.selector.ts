@@ -15,10 +15,7 @@ export const createSelectCreationResultViewData = (
   selectSteps: Selector<RootState, RenewableEnergyStepsState>,
   selectSaveState: Selector<RootState, CreationResultViewData["saveState"]>,
 ) =>
-  createSelector(
-    [selectSteps, selectSaveState],
-    (steps, saveState): CreationResultViewData => ({
-      projectName: ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_NAMING")?.name ?? "",
-      saveState,
-    }),
-  );
+  createSelector([selectSteps, selectSaveState], (steps, saveState): CreationResultViewData => ({
+    projectName: ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_NAMING")?.name ?? "",
+    saveState,
+  }));

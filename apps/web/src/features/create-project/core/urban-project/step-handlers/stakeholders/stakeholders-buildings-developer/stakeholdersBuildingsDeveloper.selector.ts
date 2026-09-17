@@ -12,12 +12,9 @@ type BuildingsDeveloperViewData = {
 export const createSelectBuildingsDeveloperViewData = (
   selectStepState: Selector<RootState, UrbanProjectStepsState>,
 ) =>
-  createSelector(
-    [selectStepState],
-    (steps): BuildingsDeveloperViewData => ({
-      developerWillBeBuildingsConstructor: ReadStateHelper.getStepAnswers(
-        steps,
-        "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
-      )?.developerWillBeBuildingsConstructor,
-    }),
-  );
+  createSelector([selectStepState], (steps): BuildingsDeveloperViewData => ({
+    developerWillBeBuildingsConstructor: ReadStateHelper.getStepAnswers(
+      steps,
+      "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
+    )?.developerWillBeBuildingsConstructor,
+  }));

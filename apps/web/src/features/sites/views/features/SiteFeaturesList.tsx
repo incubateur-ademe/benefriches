@@ -30,13 +30,7 @@ import SiteFeaturesManagementSection from "./SiteFeaturesManagementSection";
 // avoided-costs intro modal) never pass `sectionProps`, so they render byte-for-byte as before —
 // only the create/update-site summaries pass it to get "Modifier" buttons + warnings.
 export type SiteFeaturesSectionId =
-  | "LOCATION"
-  | "SOILS"
-  | "URBAN_ZONE"
-  | "CONTAMINATION"
-  | "ACCIDENTS"
-  | "MANAGEMENT"
-  | "NAMING";
+  "LOCATION" | "SOILS" | "URBAN_ZONE" | "CONTAMINATION" | "ACCIDENTS" | "MANAGEMENT" | "NAMING";
 
 type Props = {
   siteFeatures: SiteFeatures;

@@ -97,10 +97,7 @@ export const getBreadcrumbProps = (
     ContentState,
     {
       sectionName:
-        | "economicBalance"
-        | SocioEconomicSectionName
-        | EnvironmentalSectionName
-        | SocialSectionName;
+        "economicBalance" | SocioEconomicSectionName | EnvironmentalSectionName | SocialSectionName;
     }
   >,
 ) => {

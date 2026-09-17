@@ -66,9 +66,7 @@ export type UrbanZoneSummaryStep = (typeof SUMMARY_STEPS)[number];
 export type UrbanZoneAnswerStepId = (typeof ANSWER_STEP_IDS)[number];
 
 export type UrbanZoneSiteCreationStep =
-  | UrbanZoneIntroductionStep
-  | UrbanZoneSummaryStep
-  | UrbanZoneAnswerStepId;
+  UrbanZoneIntroductionStep | UrbanZoneSummaryStep | UrbanZoneAnswerStepId;
 
 // Schemas registered here as each step is implemented (Phase 3+)
 // Keys must be a subset of UrbanZoneAnswerStepId

@@ -24,13 +24,11 @@ export const createSiteFormRootSelectors = (lens: SiteFormLens) => {
    * choke point every other selector below reads `siteData`-shaped fields through — no selector
    * or view should read `state.siteCreation.custom.steps` or `initialSiteData` directly.
    */
-  const selectDerivedSiteData = createSelector(
-    selectSelf,
-    (state): SiteCreationData =>
-      deriveSiteDataFromCustomSteps(
-        { ...state.initialSiteData, isFriche: state.isFriche, nature: state.nature },
-        state.custom.steps,
-      ),
+  const selectDerivedSiteData = createSelector(selectSelf, (state): SiteCreationData =>
+    deriveSiteDataFromCustomSteps(
+      { ...state.initialSiteData, isFriche: state.isFriche, nature: state.nature },
+      state.custom.steps,
+    ),
   );
 
   const selectSiteAddress = createSelector(

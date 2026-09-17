@@ -17,19 +17,10 @@ export type RepositorySoilCategoryType =
   | "water";
 
 export type ReservoirType =
-  | "soil"
-  | "non_forest_biomass"
-  | "dead_forest_biomass"
-  | "live_forest_biomass"
-  | "litter";
+  "soil" | "non_forest_biomass" | "dead_forest_biomass" | "live_forest_biomass" | "litter";
 
 export type LocalisationCategoryType =
-  | "zpc"
-  | "region"
-  | "groupeser"
-  | "greco"
-  | "bassin_populicole"
-  | "pays";
+  "zpc" | "region" | "groupeser" | "greco" | "bassin_populicole" | "pays";
 
 export type CarbonStorageProps = {
   reservoir: ReservoirType;

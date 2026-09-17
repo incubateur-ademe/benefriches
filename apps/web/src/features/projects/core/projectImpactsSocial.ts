@@ -28,8 +28,7 @@ export type SocialImpactMetricDetailsKeyName =
   | ExtractDetailsKeyName<HumanitySectionImpacts, "avoidedFricheAccidents">;
 
 export type SocialImpactMetricKeyName =
-  | SocialImpactMetricMainKeyName
-  | SocialImpactMetricDetailsKeyName;
+  SocialImpactMetricMainKeyName | SocialImpactMetricDetailsKeyName;
 
 function groupETPImpacts(
   items: readonly AggregatedProjectImpactMetric[],

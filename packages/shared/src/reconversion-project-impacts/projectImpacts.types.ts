@@ -128,8 +128,7 @@ export type AggregatedReconversionProjectOnSiteImpactItemView =
 
 // Situation --> comparaison coût de l'inaction, impacts seuls du projet
 type ReconversionProjectOnSiteImpactName =
-  | SoilsRelatedIndirectEconomicImpactName
-  | ProjectIndirectEconomicImpactName;
+  SoilsRelatedIndirectEconomicImpactName | ProjectIndirectEconomicImpactName;
 
 export type ReconversionProjectOnSiteIndirectEconomicImpactItemView =
   | ProjectIndirectImpactItemView<ReconversionProjectOnSiteImpactName>
@@ -165,11 +164,7 @@ export type ProjectIndirectImpactItemView<
       cumulativeByYear: number[];
       name: T;
       details:
-        | "security"
-        | "illegalDumpingCost"
-        | "accidentsCost"
-        | "otherSecuringCosts"
-        | "maintenance";
+        "security" | "illegalDumpingCost" | "accidentsCost" | "otherSecuringCosts" | "maintenance";
     }
   : {
       total: number;

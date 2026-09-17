@@ -29,12 +29,7 @@ const NEXT_LABEL_BY_SAVE_STATE: Partial<Record<SaveState, string>> = {
 };
 
 export type UrbanZoneFinalSummarySectionId =
-  | "LOCATION"
-  | "LAND_PARCELS"
-  | "SOILS"
-  | "CONTAMINATION"
-  | "MANAGEMENT"
-  | "NAMING";
+  "LOCATION" | "LAND_PARCELS" | "SOILS" | "CONTAMINATION" | "MANAGEMENT" | "NAMING";
 
 type Props = UrbanZoneFinalSummaryViewData & {
   onNext: () => void;

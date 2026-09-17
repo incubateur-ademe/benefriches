@@ -38,10 +38,7 @@ import {
 } from "./usecase-selection/useCaseSelection.reducer";
 
 export type CurrentProjectFlow =
-  | "USE_CASE_SELECTION"
-  | "DEMO"
-  | "PHOTOVOLTAIC_POWER_PLANT"
-  | "URBAN_PROJECT";
+  "USE_CASE_SELECTION" | "DEMO" | "PHOTOVOLTAIC_POWER_PLANT" | "URBAN_PROJECT";
 
 export type ProjectCreationState = {
   siteData?: ProjectSiteView;

@@ -20,9 +20,7 @@ type AuthenticatedUserInfo = {
 };
 
 type AuthenticateWithTokenErrorType =
-  | "TokenNotFound"
-  | "AuthenticationAttemptExpired"
-  | "TokenAlreadyUsed";
+  "TokenNotFound" | "AuthenticationAttemptExpired" | "TokenAlreadyUsed";
 
 type AuthenticateWithTokenResult = TResult<
   { user: AuthenticatedUserInfo },

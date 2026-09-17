@@ -22,11 +22,7 @@ type MutafrichesEvaluationResultResponse = {
   };
   donneesComplementaires: {
     presencePollution:
-      | "non"
-      | "deja-geree"
-      | "oui-composes-volatils"
-      | "oui-autres-composes"
-      | "ne-sait-pas";
+      "non" | "deja-geree" | "oui-composes-volatils" | "oui-autres-composes" | "ne-sait-pas";
   };
   mutabilite: {
     fiabilite: { note: number };

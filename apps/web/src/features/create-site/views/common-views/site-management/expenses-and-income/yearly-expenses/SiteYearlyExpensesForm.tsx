@@ -17,8 +17,7 @@ import SiteYearlyExpensesFormInstructions from "./SiteYearlyExpensesFormInstruct
 
 type YearlyExpenseBearer = "owner" | "tenant";
 type FormExpense =
-  | { amount?: undefined; bearer?: undefined }
-  | { amount: number; bearer?: YearlyExpenseBearer };
+  { amount?: undefined; bearer?: undefined } | { amount: number; bearer?: YearlyExpenseBearer };
 export type FormValues = Partial<Record<SiteYearlyExpensePurpose, FormExpense>>;
 
 type Props = {

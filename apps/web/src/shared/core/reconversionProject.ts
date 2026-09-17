@@ -7,10 +7,7 @@ import {
 } from "shared";
 
 export type RenewableEnergyDevelopmentPlanType =
-  | "PHOTOVOLTAIC_POWER_PLANT"
-  | "AGRIVOLTAIC"
-  | "GEOTHERMAL"
-  | "BIOMASS";
+  "PHOTOVOLTAIC_POWER_PLANT" | "AGRIVOLTAIC" | "GEOTHERMAL" | "BIOMASS";
 
 export const getLabelForRecurringExpense = (
   expensePurpose: RecurringExpense["purpose"],

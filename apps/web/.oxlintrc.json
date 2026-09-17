@@ -76,7 +76,7 @@
     "typescript/no-unnecessary-type-parameters": "error",
     "typescript/parameter-properties": "error",
     "unicorn/no-array-sort": "off",
-    "react/react-compiler": "off",
+    "react/incompatible-library": "off",
     "react/no-object-type-as-default-prop": "off",
     "react/no-array-index-key": "off",
     "react/jsx-no-constructed-context-values": "error",

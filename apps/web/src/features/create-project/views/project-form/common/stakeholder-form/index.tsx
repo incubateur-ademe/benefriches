@@ -1,7 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { LocalAuthority } from "shared";
 
-import { useAppDispatch } from "@/app/hooks/store.hooks";
 import {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
@@ -132,8 +131,6 @@ function StakeholderFormContainer({
   availableStakeholdersList,
   availableLocalAuthoritiesStakeholders,
 }: Props) {
-  const dispatch = useAppDispatch();
-
   const _onSubmit = (data: FormValues) => {
     onSubmit(
       convertFormValuesForStore(
@@ -146,7 +143,7 @@ function StakeholderFormContainer({
 
   useEffect(() => {
     onFetchSiteLocalAuthorities();
-  }, [dispatch, onFetchSiteLocalAuthorities]);
+  }, [onFetchSiteLocalAuthorities]);
 
   return (
     <StakeholderForm

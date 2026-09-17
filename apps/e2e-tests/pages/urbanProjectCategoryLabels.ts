@@ -1,9 +1,6 @@
 // Express urban project templates (subset of all UrbanProjectTemplate values)
 export type ExpressUrbanProjectTemplate =
-  | "NEW_URBAN_CENTER"
-  | "PUBLIC_FACILITIES"
-  | "RESIDENTIAL_NORMAL_AREA"
-  | "RESIDENTIAL_TENSE_AREA";
+  "NEW_URBAN_CENTER" | "PUBLIC_FACILITIES" | "RESIDENTIAL_NORMAL_AREA" | "RESIDENTIAL_TENSE_AREA";
 
 export const getLabelForUrbanProjectCategory = (category: ExpressUrbanProjectTemplate): string => {
   switch (category) {

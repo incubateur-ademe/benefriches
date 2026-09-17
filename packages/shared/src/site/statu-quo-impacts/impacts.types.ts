@@ -90,8 +90,7 @@ export type FricheCostsIndirectEconomicImpacts = z.infer<
   typeof fricheCostsIndirectEconomicImpactsSchema
 >;
 export type SiteStatuQuoEconomicImpact =
-  | z.infer<typeof siteIndirectEconomicImpactSchema>
-  | OperatingEconomicBalanceItem;
+  z.infer<typeof siteIndirectEconomicImpactSchema> | OperatingEconomicBalanceItem;
 export type SiteStatuQuoImpacts = z.infer<typeof siteStatuQuoImpactsSchema>;
 
 export type SiteStatuQuoImpactMetric = z.infer<typeof siteStatuQuoImpactMetricSchema>;

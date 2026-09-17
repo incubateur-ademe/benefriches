@@ -14,7 +14,7 @@ export class InMemoryUpdateReconversionProjectService implements UpdateProjectSe
     this.shouldFail = shouldFail;
   }
 
-  async getById(_: string) {
+  async getById() {
     return await Promise.resolve(this._reconversionProjectView);
   }
 

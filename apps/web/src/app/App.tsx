@@ -35,6 +35,7 @@ function App() {
   useEffect(() => {
     const pathWithQueryParams = window.location.pathname + window.location.search;
     void dispatch(pageViewed({ url: pathWithQueryParams }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route, dispatch]);
 
   useEffect(() => {

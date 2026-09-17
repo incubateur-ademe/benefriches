@@ -60,10 +60,7 @@ type Props = {
     ContentState,
     {
       sectionName:
-        | SocioEconomicSectionName
-        | "economicBalance"
-        | EnvironmentalSectionName
-        | SocialSectionName;
+        SocioEconomicSectionName | "economicBalance" | EnvironmentalSectionName | SocialSectionName;
     }
   >;
   impactsData: ModalDataProps["impactsData"];

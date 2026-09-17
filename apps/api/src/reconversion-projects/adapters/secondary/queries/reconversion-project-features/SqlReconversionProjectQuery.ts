@@ -230,8 +230,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
             sqlResult.development_plan.developer_will_be_buildings_constructor ?? undefined,
           buildingsConstructionAndRehabilitationExpenses:
             (sqlResult.development_plan.buildings_construction_costs as
-              | BuildingsConstructionExpense[]
-              | null) ?? undefined,
+              BuildingsConstructionExpense[] | null) ?? undefined,
         };
       }
       throw new Error("Unknown development plan type");

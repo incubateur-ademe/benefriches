@@ -128,8 +128,7 @@ export function createFormFactory<
     payload: Payload<K>,
   ): StepUpdateResult<K> {
     const handler = cfg.answerStepHandlers[payload.stepId] as
-      | AnswerStepHandler<Schemas, CreationStep, TStepContext, K>
-      | undefined;
+      AnswerStepHandler<Schemas, CreationStep, TStepContext, K> | undefined;
 
     if (!handler) {
       throw new Error(`No handler registered for step ${String(payload.stepId)}`);

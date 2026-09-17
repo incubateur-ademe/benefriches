@@ -19,8 +19,7 @@ export type EconomicBalanceDetailsImpactKeyName =
   EconomicBalanceByListViewCategory[number]["details"][number]["keyName"];
 
 export type EconomicBalanceImpactKeyName =
-  | EconomicBalanceMainImpactKeyName
-  | EconomicBalanceDetailsImpactKeyName;
+  EconomicBalanceMainImpactKeyName | EconomicBalanceDetailsImpactKeyName;
 
 export const groupEconomicBalanceByListViewCategory = (
   projectType: ProjectDevelopmentPlanType,

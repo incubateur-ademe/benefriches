@@ -161,16 +161,13 @@ export class SqlSitesQuery implements SitesQuery {
           manager_structure_type: SqlSiteUrbanZoneFeatures["manager_structure_type"] | null;
           manager_name: SqlSiteUrbanZoneFeatures["manager_name"] | null;
           vacant_commercial_premises_footprint:
-            | SqlSiteUrbanZoneFeatures["vacant_commercial_premises_footprint"]
-            | null;
+            SqlSiteUrbanZoneFeatures["vacant_commercial_premises_footprint"] | null;
           vacant_commercial_premises_floor_area:
-            | SqlSiteUrbanZoneFeatures["vacant_commercial_premises_floor_area"]
-            | null;
+            SqlSiteUrbanZoneFeatures["vacant_commercial_premises_floor_area"] | null;
           full_time_jobs_equivalent: SqlSiteUrbanZoneFeatures["full_time_jobs_equivalent"] | null;
           soils_distribution: Pick<SqlSiteSoilsDistribution, "soil_type" | "surface_area">[] | null;
           yearly_expenses:
-            | (Pick<SqlSiteExpense, "amount" | "purpose"> & { bearer: "owner" | "tenant" })[]
-            | null;
+            (Pick<SqlSiteExpense, "amount" | "purpose"> & { bearer: "owner" | "tenant" })[] | null;
           yearly_incomes: Pick<SqlSiteIncome, "amount" | "source">[] | null;
         }[];
 

@@ -27,8 +27,7 @@ const siteSecurityYearlyExpensePurpose = z.enum([
 
 export type SiteSecurityYearlyExpensePurpose = z.infer<typeof siteSecurityYearlyExpensePurpose>;
 export type SiteYearlyExpensePurpose =
-  | SiteManagementYearlyExpensePurpose
-  | SiteSecurityYearlyExpensePurpose;
+  SiteManagementYearlyExpensePurpose | SiteSecurityYearlyExpensePurpose;
 
 export const siteYearlyExpenseSchema = z.object({
   purpose: z.union([siteManagementYearlyExpensePurpose, siteSecurityYearlyExpensePurpose]),

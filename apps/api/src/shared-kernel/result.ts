@@ -34,8 +34,7 @@ export interface FailureResult<
  * Success results never have issues (always `never`), while failure results can have typed issues.
  */
 export type TResult<TData = void, TError extends string = string, TIssues = undefined> =
-  | SuccessResult<TData, never>
-  | FailureResult<TError, TIssues>;
+  SuccessResult<TData, never> | FailureResult<TError, TIssues>;
 
 // Overload 1: When called with data, infer the type from data
 export function success<T>(data: T): SuccessResult<T>;
