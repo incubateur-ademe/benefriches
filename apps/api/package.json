@@ -40,17 +40,17 @@
     "@types/express": "~5.0.6",
     "@types/express-session": "^1.19.0",
     "@types/geojson": "~7946.0.16",
-    "@types/node": "~25.9.5",
+    "@types/node": "~25.9.6",
     "@types/nodemailer": "^8.0.1",
-    "@types/pg": "~8.20.4",
+    "@types/pg": "~8.23.1",
     "@types/supertest": "~7.2.1",
     "cookie": "^1.1.1",
     "dotenv": "~17.2.3",
-    "globals": "~17.6.0",
+    "globals": "~17.12.0",
     "supertest": "~7.2.2",
-    "testcontainers": "~12.0.4",
+    "testcontainers": "~12.1.0",
     "ts-node": "~10.9.2",
-    "tsx": "~4.22.5"
+    "tsx": "~4.23.13"
   },
   "dependencies": {
     "@nestjs/axios": "~4.0.1",
@@ -62,7 +62,7 @@
     "@nestjs/platform-express": "~11.1.29",
     "@nestjs/swagger": "~11.4.7",
     "@nestjs/throttler": "~6.5.0",
-    "axios": "~1.18.1",
+    "axios": "~1.20.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "csv-parse": "^6.2.1",
@@ -70,15 +70,15 @@
     "dotenv": "~17.4.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
-    "knex": "~3.2.10",
+    "knex": "~3.3.0",
     "nestjs-zod": "^5.5.0",
     "nodemailer": "^8.0.11",
     "openid-client": "^6.8.8",
-    "pg": "~8.21.0",
+    "pg": "~8.23.0",
     "reflect-metadata": "~0.2.2",
     "rxjs": "~7.8.2",
     "shared": "workspace:^",
     "uuid": "~14.0.2",
-    "zod": "~4.4.3"
+    "zod": "~4.6.1"
   }
 }

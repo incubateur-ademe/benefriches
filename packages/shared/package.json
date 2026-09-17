@@ -26,12 +26,12 @@
   "dependencies": {
     "date-fns": "~4.4.0",
     "uuid": "~14.0.2",
-    "zod": "~4.4.3"
+    "zod": "~4.6.1"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "~6.0.2",
     "@types/node": "^24.13.3",
     "tsdown": "^0.22.14",
-    "tsx": "~4.22.5"
+    "tsx": "~4.23.13"
   }
 }

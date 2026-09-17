@@ -12,12 +12,12 @@
     "format": "prettier --write --cache \"./**/*.{js,ts,json}\" ."
   },
   "dependencies": {
-    "@axe-core/playwright": "~4.11.3",
+    "@axe-core/playwright": "~4.13.0",
     "shared": "workspace:*"
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.0",
+    "@playwright/test": "^1.63.0",
     "@types/node": "~25.3.5",
-    "eslint-plugin-playwright": "~2.9.0"
+    "eslint-plugin-playwright": "~2.11.0"
   }
 }
