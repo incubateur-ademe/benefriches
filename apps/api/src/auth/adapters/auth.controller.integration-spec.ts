@@ -38,7 +38,7 @@ function extractCookieFromResponseHeaders<TCookieName extends string>(
 
   if (Array.isArray(cookies)) {
     for (const cookieString of cookies) {
-      const parsedCookie = cookie.parse(cookieString);
+      const parsedCookie = cookie.parseCookie(cookieString);
       if (parsedCookie[cookieName]) return parsedCookie as Record<TCookieName, string>;
     }
   }
