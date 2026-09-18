@@ -72,7 +72,9 @@ export class ConnectCrm implements CRMGateway {
     }
 
     if (!parsed.data.success) {
-      throw new Error(`CRM rejected createContact for ${props.email} (success=false)`);
+      throw new Error(
+        `CRM rejected createContact for ${props.email} (success=false): ${JSON.stringify(response.data)}`,
+      );
     }
   }
 

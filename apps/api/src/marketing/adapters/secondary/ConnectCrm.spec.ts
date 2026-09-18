@@ -227,8 +227,16 @@ describe("ConnectCrm", () => {
       assert.strictEqual(httpService.post.mock.calls.length, 1);
     });
 
-    it("throws when the CRM answers 200 but the envelope reports success=false", async () => {
-      httpService.post.mock.mockImplementation(() => of(buildAxiosResponse({ success: false })));
+    it("throws with the full response body when the CRM answers 200 but the envelope reports success=false", async () => {
+      httpService.post.mock.mockImplementation(() =>
+        of(
+          buildAxiosResponse({
+            success: false,
+            message: "Adresse email invalide",
+            errors: ["email"],
+          }),
+        ),
+      );
 
       await assert.rejects(
         () =>
@@ -238,7 +246,17 @@ describe("ConnectCrm", () => {
             lastName: "Doe",
             subscribedToNewsletter: false,
           }),
-        /CRM rejected createContact for user@example\.com/,
+        (error: Error) => {
+          assert.strictEqual(
+            error.message,
+            `CRM rejected createContact for user@example.com (success=false): ${JSON.stringify({
+              success: false,
+              message: "Adresse email invalide",
+              errors: ["email"],
+            })}`,
+          );
+          return true;
+        },
       );
     });
 
