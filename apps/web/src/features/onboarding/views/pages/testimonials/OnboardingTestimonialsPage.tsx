@@ -1,3 +1,6 @@
+import { fr } from "@codegouvfr/react-dsfr";
+
+import classNames from "@/shared/views/clsx";
 import TestimoniesCarousel from "@/shared/views/components/Testimonies/TestimoniesCarousel";
 
 import OnboardingStepShell from "../step-shell/OnboardingStepShell";
@@ -17,7 +20,7 @@ export default function OnboardingTestimonialsPage({ variant }: Props) {
       htmlTitle={`${HEADING} - Premiers pas`}
       belowBubbleContent={<TestimoniesCarousel arrowsPosition="bottom" />}
     >
-      <h2 className="mb-4">{HEADING}</h2>
+      <h2 className={classNames(fr.cx("fr-text--lg", "fr-text--bold"), "mb-4")}>{HEADING}</h2>
       {/* Copy transcribed from Figma screenshot, best-effort — needs design confirmation. */}
       <p className="mb-0">
         Voici quelques témoignages de techniciens qui se sont appuyés sur Bénéfriches pour faire
