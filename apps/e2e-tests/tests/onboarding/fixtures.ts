@@ -1,6 +1,6 @@
 /**
  * Onboarding test fixtures.
- * Note: testUser here is NOT pre-registered - it's used for new account creation.
+ * `test` creates a fresh, unregistered user for flows that go through signup.
  */
 
 import { test as base } from "@playwright/test";

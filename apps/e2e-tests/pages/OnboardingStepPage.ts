@@ -1,6 +1,10 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 
 export type OnboardingStepSlug = "bienvenue" | "methodologie" | "temoignages";
+export type OnboardingVariant = "evaluation-mutabilite" | "evaluation-impacts";
+
+const METHODOLOGY_HEADING = "Avant de commencer, petit point méthodo.";
+const TESTIMONIALS_HEADING = "Ils ont testé et approuvé Bénéfriches";
 
 export class OnboardingStepPage {
   readonly page: Page;
@@ -13,16 +17,21 @@ export class OnboardingStepPage {
     this.backButton = this.page.getByRole("link", { name: "Retour" });
   }
 
-  async goto(step: OnboardingStepSlug): Promise<void> {
-    await this.page.goto(`/premiers-pas/${step}`);
+  async reload(): Promise<void> {
+    await this.page.reload();
   }
 
   async expectCurrentStep(step: OnboardingStepSlug): Promise<void> {
     await expect(this.page).toHaveURL((url) => url.pathname === `/premiers-pas/${step}`);
   }
 
-  async expectShellVisible(): Promise<void> {
-    await expect(this.progressIndicator).toBeVisible();
+  async expectCurrentStepVariant(variant: OnboardingVariant): Promise<void> {
+    await expect(this.page).toHaveURL((url) => url.searchParams.get("fonctionnalite") === variant);
+  }
+
+  async expectStepProgress(current: number, total: number): Promise<void> {
+    await expect(this.progressIndicator).toHaveAttribute("aria-valuenow", String(current));
+    await expect(this.progressIndicator).toHaveAttribute("aria-valuemax", String(total));
   }
 
   async expectNoBackButton(): Promise<void> {
@@ -41,6 +50,29 @@ export class OnboardingStepPage {
     await expect(this.page.getByText(text)).toBeVisible();
   }
 
+  /** Asserts both the route and the heading for the "methodologie" step. */
+  async expectMethodologyStep(): Promise<void> {
+    await this.expectCurrentStep("methodologie");
+    await this.expectHeadingVisible(METHODOLOGY_HEADING);
+  }
+
+  /** Asserts both the route and the heading for the "temoignages" step. */
+  async expectTestimonialsStep(): Promise<void> {
+    await this.expectCurrentStep("temoignages");
+    await this.expectHeadingVisible(TESTIMONIALS_HEADING);
+  }
+
+  async expectForwardLabel(label: "Suivant" | "Commencer"): Promise<void> {
+    await expect(this.forwardButton(label)).toBeVisible();
+  }
+
+  async expectExitedToImpactsForm(): Promise<void> {
+    await expect(this.page).toHaveURL((url) => url.pathname === "/creer-site-foncier");
+    await expect(this.page).toHaveURL(
+      (url) => url.searchParams.get("evaluationMode") === "impacts",
+    );
+  }
+
   forwardButton(label: "Suivant" | "Commencer"): Locator {
     return this.page.getByRole("link", { name: label });
   }
@@ -51,5 +83,31 @@ export class OnboardingStepPage {
 
   async clickForward(label: "Suivant" | "Commencer"): Promise<void> {
     await this.forwardButton(label).click();
+  }
+
+  /**
+   * Walks forward through all three onboarding steps (bienvenue -> methodologie ->
+   * temoignages), asserting the route, heading, and progress indicator of each step
+   * along the way, then clicks "Commencer" to exit the flow.
+   */
+  async completeAllSteps(welcomeHeading: string): Promise<void> {
+    await this.expectCurrentStep("bienvenue");
+    await this.expectHeadingVisible(welcomeHeading);
+    await this.expectStepProgress(1, 3);
+    await this.expectNoBackButton();
+    await this.expectForwardLabel("Suivant");
+    await this.clickForward("Suivant");
+
+    await this.expectMethodologyStep();
+    await this.expectStepProgress(2, 3);
+    await this.expectBackButtonVisible();
+    await this.expectForwardLabel("Suivant");
+    await this.clickForward("Suivant");
+
+    await this.expectTestimonialsStep();
+    await this.expectStepProgress(3, 3);
+    await this.expectBackButtonVisible();
+    await this.expectForwardLabel("Commencer");
+    await this.clickForward("Commencer");
   }
 }
