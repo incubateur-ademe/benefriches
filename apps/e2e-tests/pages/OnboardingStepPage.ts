@@ -85,25 +85,27 @@ export class OnboardingStepPage {
     await this.forwardButton(label).click();
   }
 
-  /**
-   * Walks forward through all three onboarding steps (bienvenue -> methodologie ->
-   * temoignages), asserting the route, heading, and progress indicator of each step
-   * along the way, then clicks "Commencer" to exit the flow.
-   */
-  async completeAllSteps(welcomeHeading: string): Promise<void> {
+  /** Asserts the "bienvenue" step, then advances to "methodologie". */
+  async completeWelcomeStep(welcomeHeading: string): Promise<void> {
     await this.expectCurrentStep("bienvenue");
     await this.expectHeadingVisible(welcomeHeading);
     await this.expectStepProgress(1, 3);
     await this.expectNoBackButton();
     await this.expectForwardLabel("Suivant");
     await this.clickForward("Suivant");
+  }
 
+  /** Asserts the "methodologie" step, then advances to "temoignages". */
+  async completeMethodologyStep(): Promise<void> {
     await this.expectMethodologyStep();
     await this.expectStepProgress(2, 3);
     await this.expectBackButtonVisible();
     await this.expectForwardLabel("Suivant");
     await this.clickForward("Suivant");
+  }
 
+  /** Asserts the "temoignages" step, then clicks "Commencer" to exit the flow. */
+  async completeTestimonialsStep(): Promise<void> {
     await this.expectTestimonialsStep();
     await this.expectStepProgress(3, 3);
     await this.expectBackButtonVisible();

@@ -23,9 +23,10 @@ test.describe("onboarding", () => {
       await signupPage.completeSignup(testUser);
 
       // Complete onboarding steps
-      await onboardingStepPage.completeAllSteps(
-        `Bonjour, ${testUser.firstName} ${testUser.lastName} !`,
-      );
+      const welcomeHeading = `Bonjour, ${testUser.firstName} ${testUser.lastName} !`;
+      await onboardingStepPage.completeWelcomeStep(welcomeHeading);
+      await onboardingStepPage.completeMethodologyStep();
+      await onboardingStepPage.completeTestimonialsStep();
 
       // Verify landing on evaluations page
       await expect(page).toHaveURL((url) => url.pathname === "/mes-evaluations");
@@ -69,7 +70,9 @@ test.describe("onboarding", () => {
       await onboardingStepPage.expectNoBackButton();
 
       // Complete onboarding steps normally
-      await onboardingStepPage.completeAllSteps(welcomeHeading);
+      await onboardingStepPage.completeWelcomeStep(welcomeHeading);
+      await onboardingStepPage.completeMethodologyStep();
+      await onboardingStepPage.completeTestimonialsStep();
 
       // Verify landing on evaluations page
       await expect(page).toHaveURL((url) => url.pathname === "/mes-evaluations");
@@ -105,10 +108,7 @@ test.describe("onboarding", () => {
 
       // Walk into onboarding, reloading mid-flow to verify the step and variant survive
       const welcomeHeading = `Bonjour, ${testUser.firstName} ${testUser.lastName} !`;
-      await onboardingStepPage.expectCurrentStep("bienvenue");
-      await onboardingStepPage.expectHeadingVisible(welcomeHeading);
-      await onboardingStepPage.expectStepProgress(1, 3);
-      await onboardingStepPage.clickForward("Suivant");
+      await onboardingStepPage.completeWelcomeStep(welcomeHeading);
 
       await onboardingStepPage.expectMethodologyStep();
       await onboardingStepPage.expectCurrentStepVariant("evaluation-impacts");
@@ -124,10 +124,7 @@ test.describe("onboarding", () => {
       await onboardingStepPage.expectForwardLabel("Suivant");
       await onboardingStepPage.clickForward("Suivant");
 
-      await onboardingStepPage.expectTestimonialsStep();
-      await onboardingStepPage.expectStepProgress(3, 3);
-      await onboardingStepPage.expectForwardLabel("Commencer");
-      await onboardingStepPage.clickForward("Commencer");
+      await onboardingStepPage.completeTestimonialsStep();
 
       // Verify landing on form page, with the variant applied
       await onboardingStepPage.expectExitedToImpactsForm();
