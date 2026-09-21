@@ -6,6 +6,7 @@ import OnboardingStepShell from "../step-shell/OnboardingStepShell";
 import type { OnboardingVariant } from "../step-shell/onboardingVariant";
 
 const HEADING = "Avant de commencer, petit point méthodo.";
+const FAQ_DIALOG_ID = "fr-dialog-about-impacts-header";
 
 type Props = {
   variant?: OnboardingVariant;
@@ -35,8 +36,15 @@ export default function OnboardingMethodologyPage({ variant }: Props) {
       </p>
       <p className="mb-0">
         Vous souhaitez en savoir plus sur le mode de calcul ? On vous dit tout dans{" "}
-        {/* TODO: link to the real methodology page/anchor once it exists (tracked separately) */}
-        <a className="fr-link">cette notice</a>.
+        <button
+          type="button"
+          className="fr-link"
+          aria-controls={FAQ_DIALOG_ID}
+          data-fr-opened={false}
+        >
+          cette notice
+        </button>
+        .
       </p>
     </OnboardingStepShell>
   );
