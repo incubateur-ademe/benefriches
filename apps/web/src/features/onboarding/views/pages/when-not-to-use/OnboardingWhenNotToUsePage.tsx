@@ -2,12 +2,12 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { useMemo } from "react";
 
 import { routes } from "@/app/router";
+import UseCaseList from "@/features/create-project/views/onboarding-from-compatibility-evaluation/UseCaseList";
+import UseItem from "@/features/create-project/views/onboarding-from-compatibility-evaluation/UseItem";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 
-import { OnboardingVariant } from "../when-to-use/OnboardingWhenToUsePage";
-import UseCaseList from "../when-to-use/UseCaseList";
-import UseItem from "../when-to-use/UseItem";
+import { OnboardingVariant } from "../step-shell/onboardingVariant";
 
 type Props = {
   variant?: OnboardingVariant;

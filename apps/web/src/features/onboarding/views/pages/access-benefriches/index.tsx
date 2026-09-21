@@ -11,11 +11,15 @@ import { requestAuthLinkModal } from "./createRequestAuthLinkModal";
 export default function AccessBenefrichesPage() {
   const currentRoute = useRoute();
 
-  const postLoginRedirectTo =
-    currentRoute.name === "accessBenefriches" && currentRoute.params.redirectTo
-      ? currentRoute.params.redirectTo
-      : routes.myEvaluations().href;
+  const explicitRedirectTo =
+    currentRoute.name === "accessBenefriches" ? currentRoute.params.redirectTo : undefined;
+
+  // Login should default to the user's evaluations, since they already have an account.
+  const postLoginRedirectTo = explicitRedirectTo ?? routes.myEvaluations().href;
   const loginUrl = `/api/auth/login/pro-connect?redirectTo=${postLoginRedirectTo}`;
+
+  // Signup should default to onboarding, since a new user hasn't been through it yet.
+  const postSignupRedirectTo = explicitRedirectTo ?? routes.onBoardingWelcome().href;
 
   return (
     <section className="relative h-full">
@@ -48,7 +52,7 @@ export default function AccessBenefrichesPage() {
             <p className="text-sm font-medium m-0">Nouveau sur Bénéfriches ?</p>
             <a
               className="text-sm font-medium"
-              {...routes.onBoardingIdentity({ redirectTo: postLoginRedirectTo }).link}
+              {...routes.onBoardingIdentity({ redirectTo: postSignupRedirectTo }).link}
             >
               Créer un compte
             </a>

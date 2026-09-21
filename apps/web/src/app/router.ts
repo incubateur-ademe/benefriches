@@ -1,7 +1,7 @@
 import { createRouter, defineRoute, noMatch, param, ValueSerializer } from "type-route";
 
 import { ProjectSuggestion } from "@/features/create-project/core/project.types";
-import { OnboardingVariant } from "@/features/onboarding/views/pages/when-to-use/OnboardingWhenToUsePage";
+import { onboardingVariantSchema } from "@/features/onboarding/views/pages/step-shell/onboardingVariant";
 
 const onBoarding = defineRoute("/premiers-pas");
 const projectImpacts = defineRoute(
@@ -25,10 +25,7 @@ const getEnumValueSerializer = <T extends string>(values: T[]): ValueSerializer<
   },
 });
 
-const onBoardingFeatureSerializer = getEnumValueSerializer([
-  "evaluation-mutabilite",
-  "evaluation-impacts",
-] as OnboardingVariant[]);
+const onBoardingFeatureSerializer = getEnumValueSerializer([...onboardingVariantSchema.options]);
 
 const { RouteProvider, useRoute, routes, session } = createRouter(
   { scrollToTop: false },
@@ -46,6 +43,7 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
       },
       () => "/identite",
     ),
+    // ONBOARDING (OLD FLOW - used for evaluation-mutabilite entry point)
     onBoardingWhenToUse: onBoarding.extend(
       { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
       () => "/quand-utiliser-benefriches",
@@ -57,6 +55,19 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
     onBoardingIntroductionHow: onBoarding.extend(
       { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
       () => "/comment-ca-marche",
+    ),
+    // ONBOARDING STEPS
+    onBoardingWelcome: onBoarding.extend(
+      { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
+      () => "/bienvenue",
+    ),
+    onBoardingMethodology: onBoarding.extend(
+      { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
+      () => "/methodologie",
+    ),
+    onBoardingTestimonials: onBoarding.extend(
+      { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
+      () => "/temoignages",
     ),
     accessBenefriches: defineRoute(
       { redirectTo: param.query.optional.string },

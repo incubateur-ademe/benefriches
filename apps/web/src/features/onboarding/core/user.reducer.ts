@@ -74,3 +74,11 @@ export const selectCurrentUserEmail = createSelector(
     return state.currentUser?.email;
   },
 );
+
+export const selectCurrentUserFullName = createSelector(
+  [(state: RootState) => state.currentUser],
+  (state): string | undefined => {
+    const user = state.currentUser;
+    return user ? `${user.firstName} ${user.lastName}` : undefined;
+  },
+);

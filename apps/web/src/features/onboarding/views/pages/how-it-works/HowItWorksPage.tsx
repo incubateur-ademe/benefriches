@@ -4,7 +4,7 @@ import React, { ReactNode, useMemo } from "react";
 import { routes } from "@/app/router";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 
-import { OnboardingVariant } from "../when-to-use/OnboardingWhenToUsePage";
+import { OnboardingVariant } from "../step-shell/onboardingVariant";
 import Step from "./HowItWorksStep";
 
 type Props = {

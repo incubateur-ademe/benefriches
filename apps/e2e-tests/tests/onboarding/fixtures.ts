@@ -1,6 +1,6 @@
 /**
  * Onboarding test fixtures.
- * Note: testUser here is NOT pre-registered - it's used for new account creation.
+ * `test` creates a fresh, unregistered user for flows that go through signup.
  */
 
 import { test as base } from "@playwright/test";
@@ -8,12 +8,16 @@ import { createTestUserData, TestUser } from "../../fixtures/auth.fixtures";
 import { SignupPage } from "../../pages/SignupPage";
 import { HomePage } from "../../pages/HomePage";
 import { AccessBenefrichesPage } from "../../pages/AccessBenefrichesPage";
+import { OnboardingStepPage } from "../../pages/OnboardingStepPage";
+import { OnboardingLegacyFlowPage } from "../../pages/OnboardingLegacyFlowPage";
 
 type OnboardingFixtures = {
   testUser: TestUser;
   homePage: HomePage;
   accessBenefrichesPage: AccessBenefrichesPage;
   signupPage: SignupPage;
+  onboardingStepPage: OnboardingStepPage;
+  onboardingLegacyFlowPage: OnboardingLegacyFlowPage;
 };
 
 export const test = base.extend<OnboardingFixtures>({
@@ -28,6 +32,12 @@ export const test = base.extend<OnboardingFixtures>({
   signupPage: async ({ page }, use) => {
     const signupPage = new SignupPage(page);
     await use(signupPage);
+  },
+  onboardingStepPage: async ({ page }, use) => {
+    await use(new OnboardingStepPage(page));
+  },
+  onboardingLegacyFlowPage: async ({ page }, use) => {
+    await use(new OnboardingLegacyFlowPage(page));
   },
 
   // @ts-expect-error Playwright requires destructuring even if 'page' is unused
