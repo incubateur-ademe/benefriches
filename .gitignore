@@ -29,3 +29,4 @@ coverage/
 .claude/settings.local.json
 .claude/worktrees/
 .agents/tasks
+.agents/runs

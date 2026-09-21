@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/stephane/dev/incubateur-ademe/benefriches/.codex/hooks/block-env-read.sh'",
+            "statusMessage": "Checking command for .env access..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/stephane/dev/incubateur-ademe/benefriches/.codex/hooks/format-check.sh'",
+            "statusMessage": "Formatting code with Prettier..."
+          }
+        ]
+      }
+    ]
+  }
+}
