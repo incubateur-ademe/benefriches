@@ -34,9 +34,11 @@ export const useNavigationBlocker = (shouldBlockNavigation: boolean) => {
 
   // Read from inside `session.block` callbacks, which outlive the render that registered them.
   const currentRouteNameRef = useRef(currentRouteName);
-  currentRouteNameRef.current = currentRouteName;
   const shouldBlockNavigationRef = useRef(shouldBlockNavigation);
-  shouldBlockNavigationRef.current = shouldBlockNavigation;
+  useEffect(() => {
+    currentRouteNameRef.current = currentRouteName;
+    shouldBlockNavigationRef.current = shouldBlockNavigation;
+  });
 
   const unblockRef = useRef<(() => void) | null>(null);
   const isMountedRef = useRef(true);
@@ -112,7 +114,9 @@ export const useNavigationBlocker = (shouldBlockNavigation: boolean) => {
       resubscribeOnceNavigationLanded(route.action);
     });
   }, [unblock, resubscribeOnceNavigationLanded]);
-  subscribeRef.current = subscribe;
+  useEffect(() => {
+    subscribeRef.current = subscribe;
+  }, [subscribe]);
 
   const onConfirmNavigation = useCallback(() => {
     if (!confirmationRequest) return;
@@ -128,11 +132,20 @@ export const useNavigationBlocker = (shouldBlockNavigation: boolean) => {
     setConfirmationRequest(undefined);
   }, []);
 
+  // Drop any pending confirmation the instant blocking turns off, rather than in the effect below:
+  // setting state directly from an effect body forces an extra render/commit cycle.
+  const [wasBlocking, setWasBlocking] = useState(shouldBlockNavigation);
+  if (shouldBlockNavigation !== wasBlocking) {
+    setWasBlocking(shouldBlockNavigation);
+    if (!shouldBlockNavigation) {
+      setConfirmationRequest(undefined);
+    }
+  }
+
   useEffect(() => {
     if (!shouldBlockNavigation) {
       cancelPendingResubscribe();
       unblock();
-      setConfirmationRequest(undefined);
       return;
     }
 
