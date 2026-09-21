@@ -185,6 +185,22 @@ describe("ConnectCrm", () => {
       ]);
     });
 
+    it("strips '+' from firstName/lastName before sending, since Connect CRM silently drops writes containing it", async () => {
+      await crm.createContact({
+        email: "user@example.com",
+        firstName: "Jean+Paul",
+        lastName: "VU+THE",
+        subscribedToNewsletter: false,
+      });
+
+      const body = httpService.post.mock.calls[0]?.arguments[1] as {
+        prenom: string;
+        nom: string;
+      };
+      assert.strictEqual(body.prenom, "JeanPaul");
+      assert.strictEqual(body.nom, "VUTHE");
+    });
+
     it("POSTs with abonnementNewsletter=true and today's dateNewsletter when subscribedToNewsletter is true", async () => {
       mock.timers.enable({ apis: ["Date"], now: new Date("2026-05-04T10:30:00Z") });
 

@@ -23,7 +23,9 @@ const setup = () => {
   const signupIntentQuery = new InMemoryUserSignupIntentQuery();
   const crm = new FakeCrm();
   const logger = new SpyLogger();
-  const usecase = new BackfillCrmContactsUseCase(usersQuery, signupIntentQuery, crm, logger);
+  // No-op sleep: tests exercise the retry logic without waiting real time.
+  const sleep = () => Promise.resolve();
+  const usecase = new BackfillCrmContactsUseCase(usersQuery, signupIntentQuery, crm, logger, sleep);
   return { usecase, usersQuery, signupIntentQuery, crm, logger };
 };
 
@@ -430,6 +432,65 @@ describe("BackfillCrmContacts Use case", () => {
     assert.ok(summaryLine.includes("errored=0"));
     assert.match(summaryLine, /durationMs=\d+/);
     assert.ok(!summaryLine.includes("[DRY RUN]"));
+  });
+
+  it("counts as errored when createContact reports success but the contact never becomes retrievable", async () => {
+    const { usecase, usersQuery, signupIntentQuery, crm, logger } = setup();
+    usersQuery._setUsers([
+      { id: "u1", email: "a@b.fr", subscribedToNewsletter: false, createdAt: DURING_OUTAGE },
+    ]);
+    signupIntentQuery._setIntent("u1", {
+      firstName: "Alice",
+      lastName: "Martin",
+      subscribedToNewsletter: true,
+    });
+    crm._setContactWontPersist("a@b.fr");
+
+    const result = await usecase.execute({ dryRun: false });
+
+    assert.deepStrictEqual(getSuccessData(result), {
+      totalCandidates: 1,
+      alreadyInCrm: 0,
+      backfilled: 0,
+      missingSignupEvent: 0,
+      errored: 1,
+      dryRun: false,
+    });
+    assert.strictEqual(logger._error.length, 1);
+    assert.ok(logger._error[0]?.message.includes("a@b.fr"));
+  });
+
+  it("counts as backfilled when the contact becomes retrievable only after a few verification retries", async () => {
+    const { usecase, usersQuery, signupIntentQuery, crm } = setup();
+    usersQuery._setUsers([
+      { id: "u1", email: "a@b.fr", subscribedToNewsletter: false, createdAt: DURING_OUTAGE },
+    ]);
+    signupIntentQuery._setIntent("u1", {
+      firstName: "Alice",
+      lastName: "Martin",
+      subscribedToNewsletter: true,
+    });
+    crm._setContactWontPersist("a@b.fr");
+    const originalFindContactByEmail = crm.findContactByEmail.bind(crm);
+    let callCount = 0;
+    crm.findContactByEmail = (email: string) => {
+      callCount++;
+      if (email === "a@b.fr" && callCount >= 3) {
+        crm._setContact("a@b.fr", true);
+      }
+      return originalFindContactByEmail(email);
+    };
+
+    const result = await usecase.execute({ dryRun: false });
+
+    assert.deepStrictEqual(getSuccessData(result), {
+      totalCandidates: 1,
+      alreadyInCrm: 0,
+      backfilled: 1,
+      missingSignupEvent: 0,
+      errored: 0,
+      dryRun: false,
+    });
   });
 
   it("emits an info log line naming the candidate window start date when the backfill starts", async () => {

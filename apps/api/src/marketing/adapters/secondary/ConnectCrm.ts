@@ -21,6 +21,18 @@ const createCrmContactResponseSchema = z.object({
   success: z.boolean(),
 });
 
+/**
+ * Connect CRM silently drops a create/update whose `nom`/`prenom` contains a `+`: the request
+ * still comes back `success: true` (queued), but the contact is never actually persisted with
+ * that data. The interface contract doesn't document any character restriction, so this is a
+ * denylist of what's been observed to break, not a documented allowlist. Extend/replace once
+ * Connect confirms their actual accepted charset.
+ */
+const CONNECT_CRM_UNSUPPORTED_NAME_CHARACTERS = /\+/g;
+
+const sanitizeNameForConnectCrm = (value: string): string =>
+  value.replace(CONNECT_CRM_UNSUPPORTED_NAME_CHARACTERS, "");
+
 const getCrmContactResponseSchema = z.object({
   success: z.boolean(),
   contact: z
@@ -42,8 +54,8 @@ export class ConnectCrm implements CRMGateway {
   async createContact(props: NewContactProps): Promise<void> {
     const baseBody = {
       email: props.email,
-      prenom: props.firstName,
-      nom: props.lastName,
+      prenom: sanitizeNameForConnectCrm(props.firstName),
+      nom: sanitizeNameForConnectCrm(props.lastName),
       source: CONNECT_SOURCE,
       acceptationRGPD: true,
     };

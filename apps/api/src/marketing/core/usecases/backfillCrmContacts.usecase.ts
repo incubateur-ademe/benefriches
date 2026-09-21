@@ -36,6 +36,14 @@ export type BackfillCrmContactsSummary = {
 
 type Result = TResult<BackfillCrmContactsSummary, never>;
 
+// Connect CRM's createContact only queues the write (its response body literally says
+// "Contact envoyé à Anypoint MQ dans la queue salesforce-q") — {success: true} means "accepted
+// into the queue", not "persisted". A contact has been observed to take ~5s to become
+// retrievable after a successful create call. Poll a few times with this spacing before
+// concluding the write never landed.
+const VERIFICATION_RETRY_ATTEMPTS = 4;
+const VERIFICATION_RETRY_DELAY_MS = 5000;
+
 /**
  * One-off repair job: re-creates in Connect CRM the contacts of users who signed up during
  * the CRM URL outage and were therefore never created there.
@@ -49,17 +57,21 @@ export class BackfillCrmContactsUseCase implements UseCase<Request, Result> {
   private readonly signupIntentQuery: UserSignupIntentQuery;
   private readonly crm: CRMGateway;
   private readonly logger: AppLogger;
+  private readonly sleep: (ms: number) => Promise<void>;
 
   constructor(
     usersQuery: MarketingUsersQuery,
     signupIntentQuery: UserSignupIntentQuery,
     crm: CRMGateway,
     logger: AppLogger,
+    sleep: (ms: number) => Promise<void> = (ms) =>
+      new Promise((resolve) => setTimeout(resolve, ms)),
   ) {
     this.usersQuery = usersQuery;
     this.signupIntentQuery = signupIntentQuery;
     this.crm = crm;
     this.logger = logger;
+    this.sleep = sleep;
   }
 
   // Same convention as SyncNewsletterSubscriptionsUseCase: a call with no request is a real run.
@@ -115,6 +127,7 @@ export class BackfillCrmContactsUseCase implements UseCase<Request, Result> {
             lastName: signupIntent.lastName,
             subscribedToNewsletter: signupIntent.subscribedToNewsletter,
           });
+          await this.verifyContactWasCreated(user.email);
         }
         summary.backfilled++;
       } catch (error) {
@@ -129,5 +142,19 @@ export class BackfillCrmContactsUseCase implements UseCase<Request, Result> {
     );
 
     return success(summary);
+  }
+
+  // Connect CRM's success=true only confirms the write was queued, not persisted (see the
+  // VERIFICATION_RETRY_* comment above `createContact`). Poll before trusting it.
+  private async verifyContactWasCreated(email: string): Promise<void> {
+    for (let attempt = 1; attempt <= VERIFICATION_RETRY_ATTEMPTS; attempt++) {
+      await this.sleep(VERIFICATION_RETRY_DELAY_MS);
+      if ((await this.crm.findContactByEmail(email)) !== null) {
+        return;
+      }
+    }
+    throw new Error(
+      `CRM createContact for ${email} returned success but contact is still not retrievable after ${VERIFICATION_RETRY_ATTEMPTS} verification attempts`,
+    );
   }
 }

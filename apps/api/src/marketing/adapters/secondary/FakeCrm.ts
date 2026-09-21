@@ -10,9 +10,15 @@ export class FakeCrm implements CRMGateway {
   readonly _loginUpdates: LoginUpdate[] = [];
   readonly _contacts = new Map<string, CrmContact>();
   readonly _emailsToError = new Map<string, Error>();
+  readonly _emailsThatWontPersist = new Set<string>();
 
   createContact(props: NewContactProps): Promise<void> {
     this._newContacts.push(props);
+    if (this._emailsThatWontPersist.has(props.email)) {
+      // Mirrors the real CRM bug: success=true acknowledges the queued write, but the contact
+      // never actually becomes retrievable (downstream queue/CRM failure).
+      return Promise.resolve();
+    }
     // Mirror the real CRM: once created, a later lookup finds the contact. Without this the
     // fake cannot model read-after-write and idempotency of repeated runs stays untestable.
     this._contacts.set(props.email, {
@@ -40,5 +46,9 @@ export class FakeCrm implements CRMGateway {
 
   _setEmailError(email: string, error?: Error): void {
     this._emailsToError.set(email, error ?? new Error(`CRM error for ${email}`));
+  }
+
+  _setContactWontPersist(email: string): void {
+    this._emailsThatWontPersist.add(email);
   }
 }
