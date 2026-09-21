@@ -9,6 +9,7 @@ import { SignupPage } from "../../pages/SignupPage";
 import { HomePage } from "../../pages/HomePage";
 import { AccessBenefrichesPage } from "../../pages/AccessBenefrichesPage";
 import { OnboardingStepPage } from "../../pages/OnboardingStepPage";
+import { OnboardingLegacyFlowPage } from "../../pages/OnboardingLegacyFlowPage";
 
 type OnboardingFixtures = {
   testUser: TestUser;
@@ -16,6 +17,7 @@ type OnboardingFixtures = {
   accessBenefrichesPage: AccessBenefrichesPage;
   signupPage: SignupPage;
   onboardingStepPage: OnboardingStepPage;
+  onboardingLegacyFlowPage: OnboardingLegacyFlowPage;
 };
 
 export const test = base.extend<OnboardingFixtures>({
@@ -33,6 +35,9 @@ export const test = base.extend<OnboardingFixtures>({
   },
   onboardingStepPage: async ({ page }, use) => {
     await use(new OnboardingStepPage(page));
+  },
+  onboardingLegacyFlowPage: async ({ page }, use) => {
+    await use(new OnboardingLegacyFlowPage(page));
   },
 
   // @ts-expect-error Playwright requires destructuring even if 'page' is unused

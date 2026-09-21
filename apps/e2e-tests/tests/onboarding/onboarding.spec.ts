@@ -77,42 +77,6 @@ test.describe("onboarding", () => {
     });
   });
 
-  test.describe("from the compatibility evaluation CTA", () => {
-    test("allows new user to create account, complete onboarding, and land on compatibility analysis", async ({
-      page,
-      testUser,
-      homePage,
-      accessBenefrichesPage,
-      signupPage,
-      onboardingStepPage,
-    }) => {
-      // Navigate to homepage and start compatibility flow
-      await homePage.goto();
-      await expect(
-        page.getByRole("heading", { name: "Je souhaite évaluer... la compatibilité de ma friche" }),
-      ).toBeVisible();
-
-      await homePage.clickAnalyzeCompatibility();
-
-      // Create account
-      await accessBenefrichesPage.expectCurrentPage();
-      await accessBenefrichesPage.clickCreateAccount();
-
-      await signupPage.expectCurrentPage();
-      await signupPage.completeSignup(testUser);
-
-      // Complete onboarding steps
-      await onboardingStepPage.completeAllSteps(
-        `Bonjour, ${testUser.firstName} ${testUser.lastName} !`,
-      );
-
-      // Verify landing on compatibility analysis page
-      await expect(
-        page.getByRole("heading", { name: "Analyse de la compatibilité" }),
-      ).toBeVisible();
-    });
-  });
-
   test.describe("from the impacts evaluation CTA", () => {
     test("allows new user to create account, complete onboarding, and land on the impacts form", async ({
       page,
