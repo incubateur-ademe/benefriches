@@ -43,6 +43,19 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
       },
       () => "/identite",
     ),
+    // ONBOARDING (OLD FLOW - used for evaluation-mutabilite entry point)
+    onBoardingWhenToUse: onBoarding.extend(
+      { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
+      () => "/quand-utiliser-benefriches",
+    ),
+    onBoardingWhenNotToUse: onBoarding.extend(
+      { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
+      () => "/quand-ne-pas-utiliser-benefriches",
+    ),
+    onBoardingIntroductionHow: onBoarding.extend(
+      { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
+      () => "/comment-ca-marche",
+    ),
     // ONBOARDING STEPS
     onBoardingWelcome: onBoarding.extend(
       { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },

@@ -11,9 +11,12 @@ import AppLayout from "@/shared/views/layout/AppLayout/AppLayout";
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
+import OnBoardingIntroductionHow from "./onboarding/views/pages/how-it-works/HowItWorksPage";
 import OnboardingMethodologyPage from "./onboarding/views/pages/methodology/OnboardingMethodologyPage";
 import OnboardingTestimonialsPage from "./onboarding/views/pages/testimonials/OnboardingTestimonialsPage";
 import OnboardingWelcomePage from "./onboarding/views/pages/welcome/OnboardingWelcomePage";
+import OnboardingWhenNotToUsePage from "./onboarding/views/pages/when-not-to-use/OnboardingWhenNotToUsePage";
+import OnboardingWhenToUsePage from "./onboarding/views/pages/when-to-use/OnboardingWhenToUsePage";
 import UpdateProjectPage from "./update-project/views";
 
 /* Lazy-loaded pages */
@@ -110,6 +113,12 @@ function FeaturesApp() {
           {(() => {
             switch (route.name) {
               // protected pages
+              case routes.onBoardingWhenToUse.name:
+                return <OnboardingWhenToUsePage variant={route.params.fonctionnalite} />;
+              case routes.onBoardingWhenNotToUse.name:
+                return <OnboardingWhenNotToUsePage variant={route.params.fonctionnalite} />;
+              case routes.onBoardingIntroductionHow.name:
+                return <OnBoardingIntroductionHow variant={route.params.fonctionnalite} />;
               case routes.onBoardingWelcome.name:
                 return <OnboardingWelcomePage variant={route.params.fonctionnalite} />;
               case routes.onBoardingMethodology.name:
