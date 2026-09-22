@@ -26,7 +26,27 @@ export const customStepGroupIdSchema = z.enum([
 ]);
 export type CustomStepGroupId = z.infer<typeof customStepGroupIdSchema>;
 
-export const CUSTOM_STEP_GROUP_LABELS: Record<CustomStepGroupId, string> = {
+/**
+ * Sub-group ids (ticket 19) — a finer split than `CustomStepGroupId`, used only to nest the
+ * update sidebar's sub-steps under their active group (`SiteUpdateStepper.tsx`). A group whose
+ * navigable steps reduce to a single sub-group (INTRODUCTION, ADDRESS, NAMING) has none: those
+ * keep rendering as leaves, exactly as before this ticket.
+ */
+export const customStepSubGroupIdSchema = z.enum([
+  "SPACES_TOTAL_SURFACE_AREA",
+  "SPACES_TYPES",
+  "SPACES_SURFACE_AREAS",
+  "SOILS_CONTAMINATION",
+  "FRICHE_ACCIDENTS",
+  "MANAGEMENT_OWNER",
+  "MANAGEMENT_TENANT",
+  "MANAGEMENT_OPERATION",
+  "MANAGEMENT_YEARLY_EXPENSES",
+  "MANAGEMENT_YEARLY_INCOME",
+]);
+export type CustomStepSubGroupId = z.infer<typeof customStepSubGroupIdSchema>;
+
+export const CUSTOM_STEP_GROUP_LABELS: Record<CustomStepGroupId | CustomStepSubGroupId, string> = {
   INTRODUCTION: "Introduction",
   ADDRESS: "Adresse",
   SPACES: "Espaces",
@@ -34,12 +54,22 @@ export const CUSTOM_STEP_GROUP_LABELS: Record<CustomStepGroupId, string> = {
   MANAGEMENT: "Gestion du site",
   NAMING: "Dénomination",
   SUMMARY: "Récapitulatif",
+  SPACES_TOTAL_SURFACE_AREA: "Superficie totale",
+  SPACES_TYPES: "Types d'espaces",
+  SPACES_SURFACE_AREAS: "Surfaces des espaces",
+  SOILS_CONTAMINATION: "Pollution des sols",
+  FRICHE_ACCIDENTS: "Accidents",
+  MANAGEMENT_OWNER: "Propriétaire",
+  MANAGEMENT_TENANT: "Locataire",
+  MANAGEMENT_OPERATION: "Exploitation",
+  MANAGEMENT_YEARLY_EXPENSES: "Dépenses annuelles",
+  MANAGEMENT_YEARLY_INCOME: "Recettes annuelles",
 };
 
 export const CUSTOM_STEP_TO_GROUP: StepToGroupMapping<
   SiteCreationCustomStep,
   CustomStepGroupId,
-  never
+  CustomStepSubGroupId
 > = {
   FRICHE_ACTIVITY: { groupId: "INTRODUCTION" },
   AGRICULTURAL_OPERATION_ACTIVITY: { groupId: "INTRODUCTION" },
@@ -47,27 +77,33 @@ export const CUSTOM_STEP_TO_GROUP: StepToGroupMapping<
   URBAN_ZONE_TYPE: { groupId: "INTRODUCTION" },
   ADDRESS: { groupId: "ADDRESS" },
   SPACES_INTRODUCTION: { groupId: "SPACES" },
-  SURFACE_AREA: { groupId: "SPACES" },
-  SPACES_KNOWLEDGE: { groupId: "SPACES" },
-  SPACES_SELECTION: { groupId: "SPACES" },
-  SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE: { groupId: "SPACES" },
-  SPACES_SURFACE_AREA_DISTRIBUTION: { groupId: "SPACES" },
+  SURFACE_AREA: { groupId: "SPACES", subGroupId: "SPACES_TOTAL_SURFACE_AREA" },
+  SPACES_KNOWLEDGE: { groupId: "SPACES", subGroupId: "SPACES_TYPES" },
+  SPACES_SELECTION: { groupId: "SPACES", subGroupId: "SPACES_TYPES" },
+  SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE: {
+    groupId: "SPACES",
+    subGroupId: "SPACES_SURFACE_AREAS",
+  },
+  SPACES_SURFACE_AREA_DISTRIBUTION: { groupId: "SPACES", subGroupId: "SPACES_SURFACE_AREAS" },
   SOILS_SUMMARY: { groupId: "SPACES" },
   SOILS_CARBON_STORAGE: { groupId: "SPACES" },
   URBAN_ZONE_LAND_PARCELS_INTRODUCTION: { groupId: "SPACES" },
   SOILS_CONTAMINATION_INTRODUCTION: { groupId: "CONTAMINATION_AND_ACCIDENTS" },
-  SOILS_CONTAMINATION: { groupId: "CONTAMINATION_AND_ACCIDENTS" },
+  SOILS_CONTAMINATION: {
+    groupId: "CONTAMINATION_AND_ACCIDENTS",
+    subGroupId: "SOILS_CONTAMINATION",
+  },
   FRICHE_ACCIDENTS_INTRODUCTION: { groupId: "CONTAMINATION_AND_ACCIDENTS" },
-  FRICHE_ACCIDENTS: { groupId: "CONTAMINATION_AND_ACCIDENTS" },
+  FRICHE_ACCIDENTS: { groupId: "CONTAMINATION_AND_ACCIDENTS", subGroupId: "FRICHE_ACCIDENTS" },
   MANAGEMENT_INTRODUCTION: { groupId: "MANAGEMENT" },
-  OWNER: { groupId: "MANAGEMENT" },
-  IS_FRICHE_LEASED: { groupId: "MANAGEMENT" },
-  IS_SITE_OPERATED: { groupId: "MANAGEMENT" },
-  OPERATOR: { groupId: "MANAGEMENT" },
-  TENANT: { groupId: "MANAGEMENT" },
+  OWNER: { groupId: "MANAGEMENT", subGroupId: "MANAGEMENT_OWNER" },
+  IS_FRICHE_LEASED: { groupId: "MANAGEMENT", subGroupId: "MANAGEMENT_TENANT" },
+  IS_SITE_OPERATED: { groupId: "MANAGEMENT", subGroupId: "MANAGEMENT_OPERATION" },
+  OPERATOR: { groupId: "MANAGEMENT", subGroupId: "MANAGEMENT_OPERATION" },
+  TENANT: { groupId: "MANAGEMENT", subGroupId: "MANAGEMENT_TENANT" },
   YEARLY_EXPENSES_AND_INCOME_INTRODUCTION: { groupId: "MANAGEMENT" },
-  YEARLY_EXPENSES: { groupId: "MANAGEMENT" },
-  YEARLY_INCOME: { groupId: "MANAGEMENT" },
+  YEARLY_EXPENSES: { groupId: "MANAGEMENT", subGroupId: "MANAGEMENT_YEARLY_EXPENSES" },
+  YEARLY_INCOME: { groupId: "MANAGEMENT", subGroupId: "MANAGEMENT_YEARLY_INCOME" },
   YEARLY_EXPENSES_SUMMARY: { groupId: "MANAGEMENT" },
   NAMING_INTRODUCTION: { groupId: "NAMING" },
   NAMING: { groupId: "NAMING" },
@@ -152,10 +188,17 @@ export const isNavigableCustomStep = (stepId: SiteCreationCustomStep): boolean =
 
 const CUSTOM_STEP_GROUP_IDS = customStepGroupIdSchema.options;
 
+export type CustomStepperSubGroup = StepVariant & {
+  subGroupId: CustomStepSubGroupId;
+  title: string;
+  targetStepId: SiteCreationCustomStep;
+};
+
 export type CustomStepperGroup = StepVariant & {
   groupId: CustomStepGroupId;
   title: string;
   targetStepId: SiteCreationCustomStep;
+  subGroups: CustomStepperSubGroup[];
 };
 
 const isCustomStepCompleted = (stepId: SiteCreationCustomStep, steps: CustomStepsState): boolean =>
@@ -167,6 +210,11 @@ const isCustomStepCompleted = (stepId: SiteCreationCustomStep, steps: CustomStep
  * first walked step. Mirrors `computeRenewableEnergyStepperGroups` on the project side — the
  * SUMMARY group (FINAL_SUMMARY/CREATION_RESULT) has no navigable steps of its own and is left
  * out (nothing to click there beyond "Enregistrer").
+ *
+ * Each group's navigable steps are further bucketed into `subGroups` (ticket 19), in order of
+ * first appearance in `stepsSequence`, mirroring `useBuildStepperNavigationItems`'s semantics:
+ * a group with a current sub-group becomes "groupActive" (rather than "current") so the update
+ * sidebar renders it expanded, with exactly that sub-group marked "current".
  */
 export const computeCustomStepperGroups = ({
   currentStep,
@@ -177,7 +225,9 @@ export const computeCustomStepperGroups = ({
   steps: CustomStepsState;
   stepsSequence: SiteCreationCustomStep[];
 }): CustomStepperGroup[] => {
-  const { groupId: currentGroupId } = CUSTOM_STEP_TO_GROUP[currentStep];
+  const { groupId: currentGroupId, subGroupId: currentSubGroupId } =
+    CUSTOM_STEP_TO_GROUP[currentStep];
+  const isStepCompleted = (stepId: SiteCreationCustomStep) => isCustomStepCompleted(stepId, steps);
 
   return CUSTOM_STEP_GROUP_IDS.filter(
     (groupId) =>
@@ -188,21 +238,51 @@ export const computeCustomStepperGroups = ({
       (stepId) => CUSTOM_STEP_TO_GROUP[stepId].groupId === groupId,
     );
     const navigableStepsInGroup = stepsInGroup.filter(isNavigableCustomStep);
-    const isStepCompleted = (stepId: SiteCreationCustomStep) =>
-      isCustomStepCompleted(stepId, steps);
 
     const firstIncompleteStep = navigableStepsInGroup.find((stepId) => !isStepCompleted(stepId));
     const targetStepId = firstIncompleteStep ?? navigableStepsInGroup[0] ?? currentStep;
+
+    const isCurrentGroup = groupId === currentGroupId;
+
+    const subGroupIds: CustomStepSubGroupId[] = [];
+    for (const stepId of navigableStepsInGroup) {
+      const { subGroupId } = CUSTOM_STEP_TO_GROUP[stepId];
+      if (subGroupId !== undefined && !subGroupIds.includes(subGroupId)) {
+        subGroupIds.push(subGroupId);
+      }
+    }
+
+    const subGroups: CustomStepperSubGroup[] = subGroupIds.map((subGroupId) => {
+      const stepsInSubGroup = navigableStepsInGroup.filter(
+        (stepId) => CUSTOM_STEP_TO_GROUP[stepId].subGroupId === subGroupId,
+      );
+      const firstIncompleteSubGroupStep = stepsInSubGroup.find(
+        (stepId) => !isStepCompleted(stepId),
+      );
+
+      return {
+        subGroupId,
+        title: CUSTOM_STEP_GROUP_LABELS[subGroupId],
+        targetStepId: firstIncompleteSubGroupStep ?? stepsInSubGroup[0] ?? currentStep,
+        activity: isCurrentGroup && currentSubGroupId === subGroupId ? "current" : "inactive",
+        validation: stepsInSubGroup.every(isStepCompleted) ? "completed" : "empty",
+      };
+    });
 
     return {
       groupId,
       title: CUSTOM_STEP_GROUP_LABELS[groupId],
       targetStepId,
-      activity: groupId === currentGroupId ? "current" : "inactive",
+      activity: isCurrentGroup
+        ? currentSubGroupId !== undefined
+          ? "groupActive"
+          : "current"
+        : "inactive",
       validation:
         navigableStepsInGroup.length > 0 && navigableStepsInGroup.every(isStepCompleted)
           ? "completed"
           : "empty",
+      subGroups,
     };
   });
 };

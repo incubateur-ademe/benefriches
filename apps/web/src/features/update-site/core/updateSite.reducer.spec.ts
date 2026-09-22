@@ -543,6 +543,7 @@ describe("updateSite reducer", () => {
           targetStepId: "URBAN_ZONE_TYPE",
           activity: "inactive",
           validation: "completed",
+          subGroups: [],
         },
         {
           engine: "custom",
@@ -551,6 +552,7 @@ describe("updateSite reducer", () => {
           targetStepId: "ADDRESS",
           activity: "inactive",
           validation: "completed",
+          subGroups: [],
         },
         {
           engine: "custom",
@@ -559,6 +561,15 @@ describe("updateSite reducer", () => {
           targetStepId: "SURFACE_AREA",
           activity: "inactive",
           validation: "completed",
+          subGroups: [
+            {
+              subGroupId: "SPACES_TOTAL_SURFACE_AREA",
+              title: "Superficie totale",
+              targetStepId: "SURFACE_AREA",
+              activity: "inactive",
+              validation: "completed",
+            },
+          ],
         },
         {
           engine: "urbanZone",
@@ -567,6 +578,22 @@ describe("updateSite reducer", () => {
           targetStepId: "URBAN_ZONE_LAND_PARCELS_SELECTION",
           activity: "inactive",
           validation: "completed",
+          subGroups: [
+            {
+              subGroupId: "LAND_PARCELS_SELECTION",
+              title: "Sélection des surfaces foncières",
+              targetStepId: "URBAN_ZONE_LAND_PARCELS_SELECTION",
+              activity: "inactive",
+              validation: "completed",
+            },
+            {
+              subGroupId: "LAND_PARCELS_SURFACE_DISTRIBUTION",
+              title: "Superficie des surfaces foncières",
+              targetStepId: "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION",
+              activity: "inactive",
+              validation: "completed",
+            },
+          ],
         },
         {
           engine: "urbanZone",
@@ -575,6 +602,15 @@ describe("updateSite reducer", () => {
           targetStepId: "URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION",
           activity: "inactive",
           validation: "completed",
+          subGroups: [
+            {
+              subGroupId: "PARCEL_SOILS_DISTRIBUTION",
+              title: "Superficie des sols",
+              targetStepId: "URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION",
+              activity: "inactive",
+              validation: "completed",
+            },
+          ],
         },
         {
           engine: "urbanZone",
@@ -583,6 +619,7 @@ describe("updateSite reducer", () => {
           targetStepId: "URBAN_ZONE_SOILS_CONTAMINATION",
           activity: "inactive",
           validation: "completed",
+          subGroups: [],
         },
         {
           engine: "urbanZone",
@@ -591,6 +628,29 @@ describe("updateSite reducer", () => {
           targetStepId: "URBAN_ZONE_MANAGER",
           activity: "inactive",
           validation: "completed",
+          subGroups: [
+            {
+              subGroupId: "MANAGER",
+              title: "Gestionnaire",
+              targetStepId: "URBAN_ZONE_MANAGER",
+              activity: "inactive",
+              validation: "completed",
+            },
+            {
+              subGroupId: "VACANT_COMMERCIAL_PREMISES_FOOTPRINT",
+              title: "Emprise foncière des locaux vacants",
+              targetStepId: "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT",
+              activity: "inactive",
+              validation: "completed",
+            },
+            {
+              subGroupId: "FULL_TIME_JOBS_EQUIVALENT",
+              title: "Emplois en équivalent temps plein",
+              targetStepId: "URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT",
+              activity: "inactive",
+              validation: "completed",
+            },
+          ],
         },
         {
           engine: "urbanZone",
@@ -599,6 +659,22 @@ describe("updateSite reducer", () => {
           targetStepId: "URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES",
           activity: "inactive",
           validation: "completed",
+          subGroups: [
+            {
+              subGroupId: "ZONE_MANAGEMENT_EXPENSES",
+              title: "Dépenses gestion zone",
+              targetStepId: "URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES",
+              activity: "inactive",
+              validation: "completed",
+            },
+            {
+              subGroupId: "ZONE_MANAGEMENT_INCOME",
+              title: "Recettes gestion zone",
+              targetStepId: "URBAN_ZONE_ZONE_MANAGEMENT_INCOME",
+              activity: "inactive",
+              validation: "completed",
+            },
+          ],
         },
         {
           engine: "urbanZone",
@@ -607,6 +683,7 @@ describe("updateSite reducer", () => {
           targetStepId: "URBAN_ZONE_NAMING",
           activity: "inactive",
           validation: "completed",
+          subGroups: [],
         },
       ]);
       expect(new Set(groups.map((group) => group.key)).size).toBe(groups.length);
@@ -638,6 +715,67 @@ describe("updateSite reducer", () => {
         groups.some((group) => group.engine === "urbanZone" && group.activity === "current"),
       ).toBe(false);
     });
+
+    it("forces every urban-zone sub-group to 'inactive' once control hands back to the custom engine, even one that would otherwise be 'current'", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+      const onManagerStep = updateSiteReducer(
+        hydrated,
+        updateUrbanZoneFormActions.stepNavigationRequested({ stepId: "URBAN_ZONE_MANAGER" }),
+      );
+
+      const handedBackToCustom = updateSiteReducer(
+        onManagerStep,
+        updateCustomFormActions.stepNavigationRequested({ stepId: "ADDRESS" }),
+      );
+
+      const groups = selectSiteUpdateStepperGroups({ siteUpdate: handedBackToCustom } as RootState);
+
+      const managementGroup = groups.find((group) => group.key === "urbanZone:MANAGEMENT");
+      expect(managementGroup?.activity).toBe("inactive");
+      expect(managementGroup?.subGroups.every((subGroup) => subGroup.activity === "inactive")).toBe(
+        true,
+      );
+    });
+
+    it("forces every custom sub-group to 'inactive' once control hands off to the urban-zone engine, even one that would otherwise be 'current'", () => {
+      // For an URBAN_ZONE-nature site, custom.stepsSequence only ever walks
+      // URBAN_ZONE_TYPE/ADDRESS/SURFACE_AREA (ticket 11's two-engine split) — SURFACE_AREA is the
+      // only custom step with a sub-group id here (SPACES_TOTAL_SURFACE_AREA).
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+      const onSurfaceAreaStep = updateSiteReducer(
+        hydrated,
+        updateCustomFormActions.stepNavigationRequested({ stepId: "SURFACE_AREA" }),
+      );
+
+      const handedOffToUrbanZone = updateSiteReducer(
+        onSurfaceAreaStep,
+        updateUrbanZoneFormActions.stepNavigationRequested({ stepId: "URBAN_ZONE_MANAGER" }),
+      );
+
+      const groups = selectSiteUpdateStepperGroups({
+        siteUpdate: handedOffToUrbanZone,
+      } as RootState);
+
+      const spacesGroup = groups.find((group) => group.key === "custom:SPACES");
+      expect(spacesGroup?.activity).toBe("inactive");
+      expect(spacesGroup?.subGroups.every((subGroup) => subGroup.activity === "inactive")).toBe(
+        true,
+      );
+    });
   });
 
   it("selectSiteUpdateStepperGroups returns only the custom groups for a non-urban-zone site", () => {
@@ -660,6 +798,7 @@ describe("updateSite reducer", () => {
         targetStepId: "FRICHE_ACTIVITY",
         activity: "inactive",
         validation: "completed",
+        subGroups: [],
       },
       {
         engine: "custom",
@@ -668,6 +807,7 @@ describe("updateSite reducer", () => {
         targetStepId: "ADDRESS",
         activity: "inactive",
         validation: "completed",
+        subGroups: [],
       },
       {
         engine: "custom",
@@ -676,6 +816,29 @@ describe("updateSite reducer", () => {
         targetStepId: "SURFACE_AREA",
         activity: "inactive",
         validation: "completed",
+        subGroups: [
+          {
+            subGroupId: "SPACES_TOTAL_SURFACE_AREA",
+            title: "Superficie totale",
+            targetStepId: "SURFACE_AREA",
+            activity: "inactive",
+            validation: "completed",
+          },
+          {
+            subGroupId: "SPACES_TYPES",
+            title: "Types d'espaces",
+            targetStepId: "SPACES_KNOWLEDGE",
+            activity: "inactive",
+            validation: "completed",
+          },
+          {
+            subGroupId: "SPACES_SURFACE_AREAS",
+            title: "Surfaces des espaces",
+            targetStepId: "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE",
+            activity: "inactive",
+            validation: "completed",
+          },
+        ],
       },
       {
         engine: "custom",
@@ -684,6 +847,22 @@ describe("updateSite reducer", () => {
         targetStepId: "SOILS_CONTAMINATION",
         activity: "inactive",
         validation: "completed",
+        subGroups: [
+          {
+            subGroupId: "SOILS_CONTAMINATION",
+            title: "Pollution des sols",
+            targetStepId: "SOILS_CONTAMINATION",
+            activity: "inactive",
+            validation: "completed",
+          },
+          {
+            subGroupId: "FRICHE_ACCIDENTS",
+            title: "Accidents",
+            targetStepId: "FRICHE_ACCIDENTS",
+            activity: "inactive",
+            validation: "completed",
+          },
+        ],
       },
       {
         engine: "custom",
@@ -692,6 +871,29 @@ describe("updateSite reducer", () => {
         targetStepId: "OWNER",
         activity: "inactive",
         validation: "completed",
+        subGroups: [
+          {
+            subGroupId: "MANAGEMENT_OWNER",
+            title: "Propriétaire",
+            targetStepId: "OWNER",
+            activity: "inactive",
+            validation: "completed",
+          },
+          {
+            subGroupId: "MANAGEMENT_TENANT",
+            title: "Locataire",
+            targetStepId: "IS_FRICHE_LEASED",
+            activity: "inactive",
+            validation: "completed",
+          },
+          {
+            subGroupId: "MANAGEMENT_YEARLY_EXPENSES",
+            title: "Dépenses annuelles",
+            targetStepId: "YEARLY_EXPENSES",
+            activity: "inactive",
+            validation: "completed",
+          },
+        ],
       },
       {
         engine: "custom",
@@ -700,6 +902,7 @@ describe("updateSite reducer", () => {
         targetStepId: "NAMING",
         activity: "inactive",
         validation: "completed",
+        subGroups: [],
       },
     ]);
   });

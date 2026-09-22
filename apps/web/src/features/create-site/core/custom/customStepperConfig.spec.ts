@@ -4,6 +4,7 @@ import { buildStepGroupsFromSequence } from "@/shared/core/wizard-form/helpers/s
 
 import {
   computeCustomStepperGroups,
+  CUSTOM_STEP_TO_GROUP,
   CUSTOM_STEP_TO_SUMMARY_SECTION,
   isNavigableCustomStep,
 } from "./customStepperConfig";
@@ -182,6 +183,119 @@ describe("computeCustomStepperGroups", () => {
     });
 
     expect(groups.some((g) => g.groupId === "CONTAMINATION_AND_ACCIDENTS")).toBe(false);
+  });
+
+  describe("sub-groups", () => {
+    it("buckets a group's navigable steps into sub-groups in walked order, each targeting its first incomplete step", () => {
+      const groups = computeCustomStepperGroups({
+        currentStep: "NAMING",
+        steps: {},
+        stepsSequence: FRICHE_SEQUENCE,
+      });
+
+      const spacesGroup = groups.find((g) => g.groupId === "SPACES")!;
+      expect(spacesGroup.subGroups).toEqual([
+        {
+          subGroupId: "SPACES_TOTAL_SURFACE_AREA",
+          title: "Superficie totale",
+          targetStepId: "SURFACE_AREA",
+          activity: "inactive",
+          validation: "empty",
+        },
+        {
+          subGroupId: "SPACES_TYPES",
+          title: "Types d'espaces",
+          targetStepId: "SPACES_KNOWLEDGE",
+          activity: "inactive",
+          validation: "empty",
+        },
+      ]);
+    });
+
+    it("does not mark a sub-group completed when only some of its steps are completed", () => {
+      const groups = computeCustomStepperGroups({
+        currentStep: "NAMING",
+        steps: {
+          SPACES_KNOWLEDGE: { completed: true, payload: { knowsSpaces: true } },
+        },
+        stepsSequence: FRICHE_SEQUENCE,
+      });
+
+      const spacesGroup = groups.find((g) => g.groupId === "SPACES")!;
+      const typesSubGroup = spacesGroup.subGroups.find((sg) => sg.subGroupId === "SPACES_TYPES")!;
+      expect(typesSubGroup.validation).toBe("empty");
+    });
+
+    it("marks a sub-group completed once every one of its steps is completed", () => {
+      const groups = computeCustomStepperGroups({
+        currentStep: "NAMING",
+        steps: COMPLETED_STEPS,
+        stepsSequence: FRICHE_SEQUENCE,
+      });
+
+      const spacesGroup = groups.find((g) => g.groupId === "SPACES")!;
+      const typesSubGroup = spacesGroup.subGroups.find((sg) => sg.subGroupId === "SPACES_TYPES")!;
+      expect(typesSubGroup.validation).toBe("completed");
+    });
+
+    it("marks the group 'groupActive' and exactly its current step's sub-group 'current' when the current step carries a sub-group id", () => {
+      const groups = computeCustomStepperGroups({
+        currentStep: "SPACES_KNOWLEDGE",
+        steps: {},
+        stepsSequence: FRICHE_SEQUENCE,
+      });
+
+      const spacesGroup = groups.find((g) => g.groupId === "SPACES")!;
+      expect(spacesGroup.activity).toBe("groupActive");
+
+      const typesSubGroup = spacesGroup.subGroups.find((sg) => sg.subGroupId === "SPACES_TYPES")!;
+      const surfaceAreaSubGroup = spacesGroup.subGroups.find(
+        (sg) => sg.subGroupId === "SPACES_TOTAL_SURFACE_AREA",
+      )!;
+      expect(typesSubGroup.activity).toBe("current");
+      expect(surfaceAreaSubGroup.activity).toBe("inactive");
+    });
+
+    it("keeps the group 'current' (not 'groupActive') and no sub-group 'current' when the current step has no sub-group id", () => {
+      const groups = computeCustomStepperGroups({
+        currentStep: "SPACES_INTRODUCTION",
+        steps: {},
+        stepsSequence: FRICHE_SEQUENCE,
+      });
+
+      const spacesGroup = groups.find((g) => g.groupId === "SPACES")!;
+      expect(spacesGroup.activity).toBe("current");
+      expect(spacesGroup.subGroups.every((sg) => sg.activity === "inactive")).toBe(true);
+    });
+
+    it("returns an empty sub-groups list for groups whose navigable steps carry no sub-group id", () => {
+      const groups = computeCustomStepperGroups({
+        currentStep: "NAMING",
+        steps: {},
+        stepsSequence: FRICHE_SEQUENCE,
+      });
+
+      expect(groups.find((g) => g.groupId === "INTRODUCTION")!.subGroups).toEqual([]);
+      expect(groups.find((g) => g.groupId === "ADDRESS")!.subGroups).toEqual([]);
+      expect(groups.find((g) => g.groupId === "NAMING")!.subGroups).toEqual([]);
+    });
+
+    it("assigns every sub-group id to exactly one parent group across CUSTOM_STEP_TO_GROUP", () => {
+      const groupIdsBySubGroupId = new Map<string, Set<string>>();
+
+      for (const { groupId, subGroupId } of Object.values(CUSTOM_STEP_TO_GROUP)) {
+        if (subGroupId === undefined) continue;
+
+        const groupIds = groupIdsBySubGroupId.get(subGroupId) ?? new Set<string>();
+        groupIds.add(groupId);
+        groupIdsBySubGroupId.set(subGroupId, groupIds);
+      }
+
+      const subGroupIdsWithMultipleParentGroups = Array.from(groupIdsBySubGroupId.entries()).filter(
+        ([, groupIds]) => groupIds.size > 1,
+      );
+      expect(subGroupIdsWithMultipleParentGroups).toEqual([]);
+    });
   });
 });
 

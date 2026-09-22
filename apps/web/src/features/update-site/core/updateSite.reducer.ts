@@ -15,6 +15,7 @@ import {
   computeCustomStepperGroups,
   CUSTOM_STEP_TO_GROUP,
   isNavigableCustomStep,
+  type CustomStepSubGroupId,
 } from "@/features/create-site/core/custom/customStepperConfig";
 import { deriveSiteDataFromCustomSteps } from "@/features/create-site/core/custom/customSteps";
 import { customStepHandlerRegistry } from "@/features/create-site/core/custom/stepHandlerRegistry";
@@ -28,6 +29,7 @@ import {
   computeUrbanZoneStepperGroups,
   isNavigableUrbanZoneStep,
   URBAN_ZONE_STEP_TO_GROUP,
+  type UrbanZoneStepSubGroupId,
 } from "@/features/create-site/core/urban-zone/urbanZoneStepperConfig";
 import type { UrbanZoneSiteCreationStep } from "@/features/create-site/core/urban-zone/urbanZoneSteps";
 import type { StepVariant } from "@/shared/core/stepVariant.types";
@@ -335,8 +337,24 @@ export type SiteUpdateStepperEntry = StepVariant & {
   key: string;
   title: string;
 } & (
-    | { engine: "custom"; targetStepId: SiteCreationCustomStep }
-    | { engine: "urbanZone"; targetStepId: UrbanZoneSiteCreationStep }
+    | {
+        engine: "custom";
+        targetStepId: SiteCreationCustomStep;
+        subGroups: (StepVariant & {
+          subGroupId: CustomStepSubGroupId;
+          title: string;
+          targetStepId: SiteCreationCustomStep;
+        })[];
+      }
+    | {
+        engine: "urbanZone";
+        targetStepId: UrbanZoneSiteCreationStep;
+        subGroups: (StepVariant & {
+          subGroupId: UrbanZoneStepSubGroupId;
+          title: string;
+          targetStepId: UrbanZoneSiteCreationStep;
+        })[];
+      }
   );
 
 export const selectSiteUpdateStepperGroups = createSelector(
@@ -348,26 +366,34 @@ export const selectSiteUpdateStepperGroups = createSelector(
       currentStep: state.custom.currentStep,
       steps: state.custom.steps,
       stepsSequence: state.custom.stepsSequence,
-    }).map(({ groupId, title, targetStepId, activity, validation }) => ({
+    }).map(({ groupId, title, targetStepId, activity, validation, subGroups }) => ({
       engine: "custom" as const,
       key: `custom:${groupId}`,
       title,
       targetStepId,
       activity: isUrbanZoneActive ? ("inactive" as const) : activity,
       validation,
+      subGroups: subGroups.map((subGroup) => ({
+        ...subGroup,
+        activity: isUrbanZoneActive ? ("inactive" as const) : subGroup.activity,
+      })),
     }));
 
     const urbanZoneEntries = computeUrbanZoneStepperGroups({
       currentStep: state.urbanZone.currentStep,
       steps: state.urbanZone.steps,
       stepsSequence: state.urbanZone.stepsSequence,
-    }).map(({ groupId, title, targetStepId, activity, validation }) => ({
+    }).map(({ groupId, title, targetStepId, activity, validation, subGroups }) => ({
       engine: "urbanZone" as const,
       key: `urbanZone:${groupId}`,
       title,
       targetStepId,
       activity: isUrbanZoneActive ? activity : ("inactive" as const),
       validation,
+      subGroups: subGroups.map((subGroup) => ({
+        ...subGroup,
+        activity: isUrbanZoneActive ? subGroup.activity : ("inactive" as const),
+      })),
     }));
 
     return [...customEntries, ...urbanZoneEntries];
