@@ -152,7 +152,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
           created_by: userId,
           name: "Centrale pv",
           related_site_id: siteInDb2.id,
-          created_at: new Date(),
+          created_at: new Date("2025-08-10"),
           creation_mode: "custom",
         },
         {
@@ -160,7 +160,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
           created_by: userId,
           name: "Centrale pv",
           related_site_id: siteInDb2.id,
-          created_at: new Date(),
+          created_at: new Date("2025-08-05"),
           creation_mode: "custom",
         },
         {
@@ -184,7 +184,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
           created_by: userId,
           name: "Projet urbain mixte",
           related_site_id: siteInDb3.id,
-          created_at: new Date("2025-10-01"),
+          created_at: new Date("2025-09-25"),
           creation_mode: "custom",
         },
         {
@@ -192,7 +192,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
           created_by: userId,
           name: "Projet urbain mixte",
           related_site_id: siteInDb3.id,
-          created_at: new Date("2025-10-01"),
+          created_at: new Date("2025-09-20"),
           creation_mode: "custom",
         },
         {
