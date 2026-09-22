@@ -183,6 +183,54 @@ When adding a new env var in general, remember the monorepo rule: update
 `apps/api/.env.example`, `.env.e2e`, and the relevant service block in
 `docker-compose.e2e.yml` together (see root `CLAUDE.md`).
 
+## Preview script
+
+The team declined a non-production recipient allowlist, so there is no way to safely
+enable `LIFECYCLE_EMAILS_ENABLED` on staging or production just to see how an email
+renders in a real mail client. `sendLifecycleEmailPreview.script.ts`
+(`notifications/adapters/primary/`) is the mitigation: a standalone script that sends one
+named lifecycle email type, rendered with sample data, to one or more explicitly given
+addresses, on any environment, regardless of the kill switch:
+
+```bash
+cd apps/api && node ./dist/src/notifications/adapters/primary/sendLifecycleEmailPreview.script.js --type=welcome --to=prenom.nom@ademe.fr
+```
+
+It makes four deliberate bypasses, all load-bearing:
+
+- **Ignores `LIFECYCLE_EMAILS_ENABLED`** — previews must work while the feature is
+  disabled everywhere; that is the whole point of the script.
+- **Bypasses the unsubscribe check** (`users.lifecycle_emails_unsubscribed_at`) — a
+  preview targets whatever address the operator typed, not a recipient the sender has
+  opted into or out of.
+- **Bypasses the delivery-ledger dedup check** — a preview run must never be blocked by,
+  or itself block, a prior send.
+- **Writes no `lifecycle_email_deliveries` row** — so a preview can neither poison the
+  funnel correlation built on that table, nor make a later genuine send look like a
+  duplicate the dedup check would skip, nor be mistaken for real send activity when the
+  ledger is inspected.
+
+These bypasses are **structural, not conditional**: `SendLifecycleEmailPreviewUseCase`
+(`core/usecases/sendLifecycleEmailPreview.usecase.ts`) depends only on the `Mailer`
+gateway — it holds no `LifecycleEmailDeliveryRepository`, no
+`LifecycleEmailRecipientQuery`, and no `isEnabled` flag, so there is nothing to check and
+nothing to write even if the code tried. It deliberately does **not** go through
+`LifecycleEmailSender`. Do not route it through that sender, and do not add a "preview
+mode" / `skipLedger` flag to `LifecycleEmailSender` to make it dual-purpose — a flag that
+turns the compliance checks off there is exactly the failure mode the sender
+(ADR-0016) exists to prevent.
+
+Sample data for each email type lives in
+`core/previews/lifecycleEmailPreviewSamples.ts`, keyed by an exhaustive `switch` over
+`LifecycleEmailType` with no `default` case — so a later ticket adding a new email type
+(a reminder, the impacts summary) fails typecheck there until it adds its sample. Today
+only `"welcome"` exists.
+
+The script has no default recipient and accepts no cohort/filter/"all users" mode —
+`--to=` is the only way to name a recipient, and it is required. Every send and its
+recipient is logged, so a preview run is auditable from the logs even though it leaves no
+database trace.
+
 ## Unsubscribe flag
 
 `users.lifecycle_emails_unsubscribed_at` (migration

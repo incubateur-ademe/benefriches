@@ -11,9 +11,11 @@ import type { LifecycleEmailDeliveryRepository } from "src/notifications/core/ga
 import type { LifecycleEmailRecipientQuery } from "src/notifications/core/gateways/LifecycleEmailRecipientQuery";
 import type { Mailer } from "src/notifications/core/gateways/Mailer";
 import { LifecycleEmailSender } from "src/notifications/core/services/lifecycleEmailSender";
+import { SendLifecycleEmailPreviewUseCase } from "src/notifications/core/usecases/sendLifecycleEmailPreview.usecase";
 import { SendWelcomeEmailUseCase } from "src/notifications/core/usecases/sendWelcomeEmail.usecase";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
 import {
   SqlConnection,
   SqlConnectionModule,
@@ -37,6 +39,16 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
       useFactory: (sender: LifecycleEmailSender, configService: ConfigService) =>
         new SendWelcomeEmailUseCase(sender, configService.getOrThrow<string>("WEBAPP_URL")),
       inject: [LifecycleEmailSender, ConfigService],
+    },
+    {
+      provide: SendLifecycleEmailPreviewUseCase,
+      useFactory: (mailer: Mailer, configService: ConfigService) =>
+        new SendLifecycleEmailPreviewUseCase(
+          mailer,
+          new NestJsAppLogger("SendLifecycleEmailPreview"),
+          configService.getOrThrow<string>("WEBAPP_URL"),
+        ),
+      inject: [SmtpMailer, ConfigService],
     },
     {
       provide: LifecycleEmailSender,
@@ -87,5 +99,6 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
     RealDateProvider,
     RandomUuidGenerator,
   ],
+  exports: [SendLifecycleEmailPreviewUseCase],
 })
 export class NotificationsModule {}
