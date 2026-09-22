@@ -19,6 +19,7 @@ export const tablesToCleanUp = [
   "site_actions",
   "sites",
   "users_feature_alerts",
+  "lifecycle_email_deliveries",
   "users",
   "token_authentication_attempts",
   "auth_external_user_identities",

@@ -61,7 +61,9 @@ test.describe("login with email", () => {
     await loginModal.expectSuccessMessage();
 
     // Wait for the login email to arrive in MailCatcher
-    const loginEmail = await waitForEmail(testUser.email);
+    // (registration also sends a welcome email to the same recipient, so the subject
+    // is required to pick the right message)
+    const loginEmail = await waitForEmail(testUser.email, "Connexion à Bénéfriches");
 
     // Fetch email plain text to extract login link
     const loginEmailPlainText = await getMessagePlainText(loginEmail.id);

@@ -13,6 +13,7 @@ export type SqlUser = {
   personal_data_analytics_use_consented_at: Date | null;
   personal_data_communication_use_consented_at: Date | null;
   subscribed_to_newsletter: boolean;
+  lifecycle_emails_unsubscribed_at: Date | null;
 };
 
 type SqlUserFeatureAlert = {
@@ -274,6 +275,21 @@ export type SqlFranceRuralite = {
   city_code: string;
 };
 
+// The email_type/status columns are backed by lifecycleEmailTypeSchema /
+// lifecycleEmailDeliveryStatusSchema (src/notifications/core/models/lifecycleEmail.ts),
+// kept as plain string here since a .d.ts can't cleanly re-export those Zod-derived
+// literal unions without an import cycle risk against src/.
+export type SqlLifecycleEmailDelivery = {
+  id: string;
+  user_id: string;
+  email_type: string;
+  related_entity_id: string | null;
+  status: string;
+  created_at: Date;
+  sent_at: Date | null;
+  error_message: string | null;
+};
+
 declare module "knex/types/tables" {
   interface Tables {
     // reconversion projects
@@ -344,5 +360,8 @@ declare module "knex/types/tables" {
 
     // domain events
     domain_events: SqlDomainEvent;
+
+    // notifications
+    lifecycle_email_deliveries: SqlLifecycleEmailDelivery;
   }
 }

@@ -38,6 +38,8 @@ export const mapUserToSqlRow = (user: User): SqlUser => ({
   personal_data_communication_use_consented_at:
     user.personalDataCommunicationUseConsentedAt ?? null,
   subscribed_to_newsletter: user.subscribedToNewsletter,
+  // The link and endpoint that set this are a later ticket; every user starts subscribed.
+  lifecycle_emails_unsubscribed_at: null,
 });
 
 @Injectable()

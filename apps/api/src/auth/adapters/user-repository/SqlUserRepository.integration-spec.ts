@@ -45,6 +45,7 @@ describe("SqlUserRepository integration", () => {
         personal_data_analytics_use_consented_at: null,
         personal_data_communication_use_consented_at: null,
         subscribed_to_newsletter: user.subscribedToNewsletter,
+        lifecycle_emails_unsubscribed_at: null,
       },
       { created_at: isDate },
     );
@@ -80,6 +81,7 @@ describe("SqlUserRepository integration", () => {
         personal_data_communication_use_consented_at:
           user.personalDataCommunicationUseConsentedAt ?? null,
         subscribed_to_newsletter: true,
+        lifecycle_emails_unsubscribed_at: null,
       },
       { created_at: isDate },
     );

@@ -9,6 +9,7 @@ import { AuthModule } from "./auth/adapters/auth.module";
 import { CarbonStorageModule } from "./carbon-storage/adapters/primary/carbonStorage.module";
 import { HealthCheckModule } from "./healthcheck/healthcheck.module";
 import { MarketingModule } from "./marketing/adapters/primary/marketing.module";
+import { NotificationsModule } from "./notifications/adapters/primary/notifications.module";
 import { PhotovoltaicPerformanceModule } from "./photovoltaic-performance/adapters/primary/photovoltaicPerformance.module";
 import { ReconversionCompatibilityModule } from "./reconversion-compatibility/adapters/primary/reconversionCompatibility.module";
 import { ReconversionProjectsModule } from "./reconversion-projects/adapters/primary/reconversionProjects.module";
@@ -51,6 +52,7 @@ class DomainEventsHandler {
     ReconversionProjectsModule,
     UsersModule,
     MarketingModule,
+    NotificationsModule,
     ReconversionCompatibilityModule,
     SiteEvaluationsModule,
     SiteActionsModule,

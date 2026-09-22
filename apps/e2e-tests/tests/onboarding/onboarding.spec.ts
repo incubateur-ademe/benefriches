@@ -1,4 +1,5 @@
 import { test, expect } from "./fixtures";
+import { waitForEmail, getMessagePlainText } from "../../fixtures/helpers/mail-catcher";
 
 test.describe("onboarding", () => {
   test.describe("from the homepage hero CTA", () => {
@@ -21,6 +22,13 @@ test.describe("onboarding", () => {
       // Create account
       await signupPage.expectCurrentPage();
       await signupPage.completeSignup(testUser);
+
+      // A welcome email is sent on account creation
+      const welcomeEmail = await waitForEmail(testUser.email, "Bienvenue chez Bénéfriches");
+      const welcomeEmailPlainText = await getMessagePlainText(welcomeEmail.id);
+      expect(welcomeEmailPlainText).toContain(
+        `Votre identifiant de connexion est ${testUser.email}`,
+      );
 
       // Complete onboarding steps
       const welcomeHeading = `Bonjour, ${testUser.firstName} ${testUser.lastName} !`;
