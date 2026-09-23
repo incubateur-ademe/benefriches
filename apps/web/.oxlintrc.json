@@ -23,6 +23,16 @@
           {
             "name": "crisp-sdk-web",
             "message": "Crisp is a third-party SDK: call it only from an infrastructure/ adapter behind a gateway (see features/support/infrastructure/support-chat-service)."
+          },
+          {
+            "name": "@reduxjs/toolkit",
+            "importNames": ["createSlice", "buildCreateSlice"],
+            "message": "Event-based Redux: build reducers with createReducer, reacting to passive-named events (createAction / createAppAsyncThunk: stepCompleted, dataFetched). createSlice couples state to imperative, reducer-named actions. See docs/adr/0002-redux-event-based-state-management.md."
+          },
+          {
+            "name": "@reduxjs/toolkit/react",
+            "importNames": ["createSlice", "buildCreateSlice"],
+            "message": "Event-based Redux: build reducers with createReducer, reacting to passive-named events (createAction / createAppAsyncThunk: stepCompleted, dataFetched). createSlice couples state to imperative, reducer-named actions. See docs/adr/0002-redux-event-based-state-management.md."
           }
         ],
         "patterns": [
@@ -167,12 +177,24 @@
       "plugins": ["vitest"]
     },
     {
-      // Infrastructure adapters may use third-party SDKs (crisp-sdk-web); the cross-workspace ban still applies.
+      // Infrastructure adapters may use third-party SDKs (crisp-sdk-web); the createSlice and cross-workspace bans still apply.
       "files": ["src/**/{infra,infrastructure}/**"],
       "rules": {
         "no-restricted-imports": [
           "error",
           {
+            "paths": [
+              {
+                "name": "@reduxjs/toolkit",
+                "importNames": ["createSlice", "buildCreateSlice"],
+                "message": "Event-based Redux: build reducers with createReducer, reacting to passive-named events (createAction / createAppAsyncThunk: stepCompleted, dataFetched). createSlice couples state to imperative, reducer-named actions. See docs/adr/0002-redux-event-based-state-management.md."
+              },
+              {
+                "name": "@reduxjs/toolkit/react",
+                "importNames": ["createSlice", "buildCreateSlice"],
+                "message": "Event-based Redux: build reducers with createReducer, reacting to passive-named events (createAction / createAppAsyncThunk: stepCompleted, dataFetched). createSlice couples state to imperative, reducer-named actions. See docs/adr/0002-redux-event-based-state-management.md."
+              }
+            ],
             "patterns": [
               {
                 "regex": "^(\\.\\./)+(apps/|packages/|(api|web|e2e-tests)/(src|test|tests|fixtures|pages)/)",
