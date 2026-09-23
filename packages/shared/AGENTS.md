@@ -197,7 +197,7 @@ pnpm --filter shared lint         # Lint code
 
 ## Testing (node:test)
 
-Tests use `node:test` + `node:assert/strict` (not Vitest). Runner: `node --import=tsx --test 'src/**/*.spec.ts'` (run from `packages/shared`).
+Tests use `node:test` + `node:assert/strict`. Runner: `node --import=tsx --test 'src/**/*.spec.ts'` (run from `packages/shared`).
 
 **Gotchas:**
 

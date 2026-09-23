@@ -26,7 +26,6 @@ Skills live in `.agents/skills/` (canonical); `.claude/skills/<name>` are symlin
 ## Conventions
 
 - Run scripts with pnpm, not npm: `pnpm --filter <api|web|shared|e2e-tests> <script>`.
-- Import shared code from `"shared"`; never import across apps or packages with relative paths.
 - Keep `packages/shared` free of framework dependencies: it runs in both Node and the browser.
 - Before writing a Zod schema, look for one to reuse in `packages/shared` (e.g. `surfaceAreaSchema`, `soilsDistributionSchema`).
 - Enum-like types: `z.enum([...])` + `z.infer`; read the values with `.options`.

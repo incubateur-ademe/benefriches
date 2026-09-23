@@ -32,7 +32,6 @@ Read this file for **every** review — these lenses apply regardless of which a
 **Type safety**:
 - ❌ `any` (use `unknown` when truly unknown)
 - ❌ Missing explicit return types on public functions/methods
-- ❌ Not using `import type { }` for type-only imports
 - ✅ `strict: true` compliance
 
 ## Test design antipatterns (HIGH — all apps)

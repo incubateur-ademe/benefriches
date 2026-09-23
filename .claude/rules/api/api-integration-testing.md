@@ -598,7 +598,6 @@ pnpm --filter api test:integration:file src/path/to/file.integration-spec.ts
 - ❌ Don't manually cleanup tables in `afterEach()` (the preloaded hook handles it)
 - ❌ Don't call `mock.restoreAll()` in spec files (the preloaded hook handles it)
 - ❌ Don't use `assert.partialDeepStrictEqual` for shape checks (silently allows extra keys)
-- ❌ Don't import from `"vitest"` — use `"node:test"` and `"node:assert/strict"`
 
 ## Common HTTP Status Codes
 
