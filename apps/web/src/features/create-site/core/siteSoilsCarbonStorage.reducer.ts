@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createReducer, createSelector } from "@reduxjs/toolkit";
 import type { SoilType } from "shared";
 
 import type { RootState } from "@/app/store/store";
@@ -46,28 +46,23 @@ const isFetchSiteSoilsCarbonStorageAction = (suffix: "pending" | "fulfilled" | "
     action.type.endsWith(`/fetchSiteSoilsCarbonStorage/${suffix}`);
 };
 
-const siteCarbonStorage = createSlice({
-  name: "carbonStorage",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addMatcher(isFetchSiteSoilsCarbonStorageAction("pending"), (state) => {
-      state.loadingState = "loading";
-      state.cityCode = undefined;
-    });
-    builder.addMatcher(
-      isFetchSiteSoilsCarbonStorageAction("fulfilled"),
-      (state, action: ReturnType<typeof fetchSiteSoilsCarbonStorage.fulfilled>) => {
-        state.loadingState = "success";
-        state.carbonStorage = action.payload.carbonStorage;
-        state.cityCode = action.payload.cityCode;
-      },
-    );
-    builder.addMatcher(isFetchSiteSoilsCarbonStorageAction("rejected"), (state) => {
-      state.loadingState = "error";
-      state.cityCode = undefined;
-    });
-  },
+const siteCarbonStorageReducer = createReducer(initialState, (builder) => {
+  builder.addMatcher(isFetchSiteSoilsCarbonStorageAction("pending"), (state) => {
+    state.loadingState = "loading";
+    state.cityCode = undefined;
+  });
+  builder.addMatcher(
+    isFetchSiteSoilsCarbonStorageAction("fulfilled"),
+    (state, action: ReturnType<typeof fetchSiteSoilsCarbonStorage.fulfilled>) => {
+      state.loadingState = "success";
+      state.carbonStorage = action.payload.carbonStorage;
+      state.cityCode = action.payload.cityCode;
+    },
+  );
+  builder.addMatcher(isFetchSiteSoilsCarbonStorageAction("rejected"), (state) => {
+    state.loadingState = "error";
+    state.cityCode = undefined;
+  });
 });
 
 export type SiteSoilsCarbonStorageViewData = {
@@ -91,4 +86,4 @@ export const selectSiteSoilsCarbonStorageViewData = createSelector(
   }),
 );
 
-export default siteCarbonStorage.reducer;
+export default siteCarbonStorageReducer;

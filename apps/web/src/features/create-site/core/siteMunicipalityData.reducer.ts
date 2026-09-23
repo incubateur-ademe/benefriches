@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createReducer, createSelector } from "@reduxjs/toolkit";
 import type { LocalAuthority } from "shared";
 import { formatLocalAuthorityName } from "shared";
 
@@ -129,27 +129,22 @@ const isFetchSiteMunicipalityDataAction = (suffix: "pending" | "fulfilled" | "re
     action.type.endsWith(`/fetchSiteMunicipalityData/${suffix}`);
 };
 
-const siteMunicipalityData = createSlice({
-  name: "siteMunicipalityData",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addMatcher(isFetchSiteMunicipalityDataAction("pending"), (state) => {
-      state.loadingState = "loading";
-    });
-    builder.addMatcher(
-      isFetchSiteMunicipalityDataAction("fulfilled"),
-      (state, action: ReturnType<typeof fetchSiteMunicipalityData.fulfilled>) => {
-        state.loadingState = "success";
-        state.localAuthorities = action.payload.localAuthorities;
-        state.population = action.payload.population;
-        state.isRural = action.payload.isRural;
-      },
-    );
-    builder.addMatcher(isFetchSiteMunicipalityDataAction("rejected"), (state) => {
-      state.loadingState = "error";
-    });
-  },
+const siteMunicipalityDataReducer = createReducer(initialState, (builder) => {
+  builder.addMatcher(isFetchSiteMunicipalityDataAction("pending"), (state) => {
+    state.loadingState = "loading";
+  });
+  builder.addMatcher(
+    isFetchSiteMunicipalityDataAction("fulfilled"),
+    (state, action: ReturnType<typeof fetchSiteMunicipalityData.fulfilled>) => {
+      state.loadingState = "success";
+      state.localAuthorities = action.payload.localAuthorities;
+      state.population = action.payload.population;
+      state.isRural = action.payload.isRural;
+    },
+  );
+  builder.addMatcher(isFetchSiteMunicipalityDataAction("rejected"), (state) => {
+    state.loadingState = "error";
+  });
 });
 
-export default siteMunicipalityData.reducer;
+export default siteMunicipalityDataReducer;

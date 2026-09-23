@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 
 import type { UserSiteEvaluation } from "../core/types";
 import {
@@ -19,38 +19,31 @@ const initialState: State = {
   siteEvaluations: [],
 };
 
-const userSiteEvaluationsList = createSlice({
-  name: "userSiteEvaluationsList",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchUserSiteEvaluations.pending, (state) => {
-      state.loadingState = "loading";
-    });
-    builder.addCase(fetchUserSiteEvaluations.fulfilled, (state, action) => {
-      state.loadingState = "success";
-      state.siteEvaluations = action.payload;
-    });
-    builder.addCase(fetchUserSiteEvaluations.rejected, (state) => {
-      state.loadingState = "error";
-    });
-    builder.addCase(siteRemovedFromEvaluationList, (state, action) => {
-      state.siteEvaluations = state.siteEvaluations.filter(
-        ({ siteId }) => siteId !== action.payload,
-      );
-    });
-    builder.addCase(projectRemovedFromEvaluationList, (state, action) => {
-      const index = state.siteEvaluations.findIndex(
-        (siteEval) => siteEval.siteId === action.payload.siteId,
-      );
-      if (state.siteEvaluations[index]) {
-        state.siteEvaluations[index].reconversionProjects.lastProjects = state.siteEvaluations[
-          index
-        ].reconversionProjects.lastProjects.filter(({ id }) => id !== action.payload.projectId);
-        state.siteEvaluations[index].reconversionProjects.total -= 1;
-      }
-    });
-  },
+const evaluationsListReducer = createReducer(initialState, (builder) => {
+  builder.addCase(fetchUserSiteEvaluations.pending, (state) => {
+    state.loadingState = "loading";
+  });
+  builder.addCase(fetchUserSiteEvaluations.fulfilled, (state, action) => {
+    state.loadingState = "success";
+    state.siteEvaluations = action.payload;
+  });
+  builder.addCase(fetchUserSiteEvaluations.rejected, (state) => {
+    state.loadingState = "error";
+  });
+  builder.addCase(siteRemovedFromEvaluationList, (state, action) => {
+    state.siteEvaluations = state.siteEvaluations.filter(({ siteId }) => siteId !== action.payload);
+  });
+  builder.addCase(projectRemovedFromEvaluationList, (state, action) => {
+    const index = state.siteEvaluations.findIndex(
+      (siteEval) => siteEval.siteId === action.payload.siteId,
+    );
+    if (state.siteEvaluations[index]) {
+      state.siteEvaluations[index].reconversionProjects.lastProjects = state.siteEvaluations[
+        index
+      ].reconversionProjects.lastProjects.filter(({ id }) => id !== action.payload.projectId);
+      state.siteEvaluations[index].reconversionProjects.total -= 1;
+    }
+  });
 });
 
-export default userSiteEvaluationsList.reducer;
+export default evaluationsListReducer;

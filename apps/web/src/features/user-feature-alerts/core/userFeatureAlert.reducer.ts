@@ -1,5 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 
 import { featureAlertSubscribed } from "./createFeatureAlert.action";
 import { loadFeatureAlerts } from "./loadFeatureAlerts.action";
@@ -52,105 +52,100 @@ const initialState: State = {
   },
 };
 
-const userFeatureAlertSlice = createSlice({
-  name: "userFeatureAlerts",
-  initialState,
-  reducers: {},
-  extraReducers(builder) {
-    builder.addCase(featureAlertSubscribed.pending, (state, action) => {
-      const type = action.meta.arg.feature.type;
-      switch (type) {
+const userFeatureAlertReducer = createReducer(initialState, (builder) => {
+  builder.addCase(featureAlertSubscribed.pending, (state, action) => {
+    const type = action.meta.arg.feature.type;
+    switch (type) {
+      case "compare_impacts":
+        state.createUserFeatureAlertState.compareImpacts = "loading";
+        break;
+      case "duplicate_project":
+        state.createUserFeatureAlertState.duplicateProject = "loading";
+        break;
+      case "export_impacts":
+        state.createUserFeatureAlertState.exportImpacts = "loading";
+        break;
+      case "mutafriches_availability":
+        state.createUserFeatureAlertState.mutafrichesAvailability = "loading";
+        break;
+      case "update_project":
+        state.createUserFeatureAlertState.updateProject = "loading";
+        break;
+      case "update_site":
+        state.createUserFeatureAlertState.updateSite = "loading";
+        break;
+    }
+  });
+  builder.addCase(
+    featureAlertSubscribed.fulfilled,
+    (state, action: PayloadAction<UserFeatureAlert>) => {
+      const { feature } = action.payload;
+      switch (feature.type) {
         case "compare_impacts":
-          state.createUserFeatureAlertState.compareImpacts = "loading";
+          state.compareImpactsAlert = {
+            hasAlert: true,
+            options: feature.options,
+          };
+          state.createUserFeatureAlertState.compareImpacts = "success";
           break;
         case "duplicate_project":
-          state.createUserFeatureAlertState.duplicateProject = "loading";
+          state.duplicateProjectAlert = { hasAlert: true };
+          state.createUserFeatureAlertState.duplicateProject = "success";
           break;
         case "export_impacts":
-          state.createUserFeatureAlertState.exportImpacts = "loading";
+          state.exportImpactsAlert = { hasAlert: true, options: feature.options };
+          state.createUserFeatureAlertState.exportImpacts = "success";
           break;
         case "mutafriches_availability":
-          state.createUserFeatureAlertState.mutafrichesAvailability = "loading";
+          state.mutafrichesAvailabilityAlert = { hasAlert: true };
+          state.createUserFeatureAlertState.mutafrichesAvailability = "success";
           break;
         case "update_project":
-          state.createUserFeatureAlertState.updateProject = "loading";
+          state.updateProjectAlert = { hasAlert: true };
+          state.createUserFeatureAlertState.updateProject = "success";
           break;
         case "update_site":
-          state.createUserFeatureAlertState.updateSite = "loading";
+          state.updateSiteAlert = { hasAlert: true };
+          state.createUserFeatureAlertState.updateSite = "success";
           break;
       }
-    });
-    builder.addCase(
-      featureAlertSubscribed.fulfilled,
-      (state, action: PayloadAction<UserFeatureAlert>) => {
-        const { feature } = action.payload;
-        switch (feature.type) {
-          case "compare_impacts":
-            state.compareImpactsAlert = {
-              hasAlert: true,
-              options: feature.options,
-            };
-            state.createUserFeatureAlertState.compareImpacts = "success";
-            break;
-          case "duplicate_project":
-            state.duplicateProjectAlert = { hasAlert: true };
-            state.createUserFeatureAlertState.duplicateProject = "success";
-            break;
-          case "export_impacts":
-            state.exportImpactsAlert = { hasAlert: true, options: feature.options };
-            state.createUserFeatureAlertState.exportImpacts = "success";
-            break;
-          case "mutafriches_availability":
-            state.mutafrichesAvailabilityAlert = { hasAlert: true };
-            state.createUserFeatureAlertState.mutafrichesAvailability = "success";
-            break;
-          case "update_project":
-            state.updateProjectAlert = { hasAlert: true };
-            state.createUserFeatureAlertState.updateProject = "success";
-            break;
-          case "update_site":
-            state.updateSiteAlert = { hasAlert: true };
-            state.createUserFeatureAlertState.updateSite = "success";
-            break;
-        }
-      },
-    );
-    builder.addCase(featureAlertSubscribed.rejected, (state, action) => {
-      const type = action.meta.arg.feature.type;
-      switch (type) {
-        case "compare_impacts":
-          state.createUserFeatureAlertState.compareImpacts = "error";
-          break;
-        case "duplicate_project":
-          state.createUserFeatureAlertState.duplicateProject = "error";
-          break;
-        case "export_impacts":
-          state.createUserFeatureAlertState.exportImpacts = "error";
-          break;
-        case "mutafriches_availability":
-          state.createUserFeatureAlertState.mutafrichesAvailability = "error";
-          break;
-        case "update_project":
-          state.createUserFeatureAlertState.updateProject = "error";
-          break;
-        case "update_site":
-          state.createUserFeatureAlertState.updateSite = "error";
-          break;
-      }
-    });
+    },
+  );
+  builder.addCase(featureAlertSubscribed.rejected, (state, action) => {
+    const type = action.meta.arg.feature.type;
+    switch (type) {
+      case "compare_impacts":
+        state.createUserFeatureAlertState.compareImpacts = "error";
+        break;
+      case "duplicate_project":
+        state.createUserFeatureAlertState.duplicateProject = "error";
+        break;
+      case "export_impacts":
+        state.createUserFeatureAlertState.exportImpacts = "error";
+        break;
+      case "mutafriches_availability":
+        state.createUserFeatureAlertState.mutafrichesAvailability = "error";
+        break;
+      case "update_project":
+        state.createUserFeatureAlertState.updateProject = "error";
+        break;
+      case "update_site":
+        state.createUserFeatureAlertState.updateSite = "error";
+        break;
+    }
+  });
 
-    builder.addCase(
-      loadFeatureAlerts.fulfilled,
-      (state, action: PayloadAction<Omit<State, "createUserFeatureAlertState">>) => {
-        state.exportImpactsAlert = action.payload.exportImpactsAlert;
-        state.duplicateProjectAlert = action.payload.duplicateProjectAlert;
-        state.compareImpactsAlert = action.payload.compareImpactsAlert;
-        state.mutafrichesAvailabilityAlert = action.payload.mutafrichesAvailabilityAlert;
-        state.updateProjectAlert = action.payload.updateProjectAlert;
-        state.updateSiteAlert = action.payload.updateSiteAlert;
-      },
-    );
-  },
+  builder.addCase(
+    loadFeatureAlerts.fulfilled,
+    (state, action: PayloadAction<Omit<State, "createUserFeatureAlertState">>) => {
+      state.exportImpactsAlert = action.payload.exportImpactsAlert;
+      state.duplicateProjectAlert = action.payload.duplicateProjectAlert;
+      state.compareImpactsAlert = action.payload.compareImpactsAlert;
+      state.mutafrichesAvailabilityAlert = action.payload.mutafrichesAvailabilityAlert;
+      state.updateProjectAlert = action.payload.updateProjectAlert;
+      state.updateSiteAlert = action.payload.updateSiteAlert;
+    },
+  );
 });
 
-export default userFeatureAlertSlice.reducer;
+export default userFeatureAlertReducer;
