@@ -11,6 +11,31 @@
   },
   "ignorePatterns": ["node_modules/", "dist/", "tsdown.config.ts"],
   "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "vitest",
+            "message": "api and shared tests run on node:test: import from \"node:test\" and \"node:assert/strict\"."
+          },
+          {
+            "name": "@jest/globals",
+            "message": "api and shared tests run on node:test: import from \"node:test\" and \"node:assert/strict\"."
+          }
+        ],
+        "patterns": [
+          {
+            "regex": "^(vitest|@jest/globals)/",
+            "message": "api and shared tests run on node:test: import from \"node:test\" and \"node:assert/strict\"."
+          },
+          {
+            "regex": "^(\\.\\./)+(apps/|packages/|(api|web|e2e-tests)/(src|test|tests|fixtures|pages)/)",
+            "message": "Don't reach into another workspace with a relative path: import shared code from \"shared\"; apps never import each other."
+          }
+        ]
+      }
+    ],
     "import/no-named-as-default": "off",
     "typescript/no-confusing-void-expression": "error",
     "typescript/no-dynamic-delete": "error",

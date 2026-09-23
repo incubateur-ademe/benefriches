@@ -16,6 +16,23 @@
   },
   "ignorePatterns": ["node_modules/", "dist/", "public/", "vite.config.ts", ".prettierrc.cjs"],
   "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "crisp-sdk-web",
+            "message": "Crisp is a third-party SDK: call it only from an infrastructure/ adapter behind a gateway (see features/support/infrastructure/support-chat-service)."
+          }
+        ],
+        "patterns": [
+          {
+            "regex": "^(\\.\\./)+(apps/|packages/|(api|web|e2e-tests)/(src|test|tests|fixtures|pages)/)",
+            "message": "Don't reach into another workspace with a relative path: import shared code from \"shared\"; apps never import each other."
+          }
+        ]
+      }
+    ],
     "architecture-boundaries/no-cross-layer-import": [
       "error",
       {
@@ -147,6 +164,23 @@
         "afterEach": "writeable"
       },
       "plugins": ["vitest"]
+    },
+    {
+      // Infrastructure adapters may use third-party SDKs (crisp-sdk-web); the cross-workspace ban still applies.
+      "files": ["src/**/{infra,infrastructure}/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "regex": "^(\\.\\./)+(apps/|packages/|(api|web|e2e-tests)/(src|test|tests|fixtures|pages)/)",
+                "message": "Don't reach into another workspace with a relative path: import shared code from \"shared\"; apps never import each other."
+              }
+            ]
+          }
+        ]
+      }
     }
   ]
 }

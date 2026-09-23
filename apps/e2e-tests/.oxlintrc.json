@@ -16,6 +16,17 @@
   },
   "ignorePatterns": ["node_modules/", "playwright-report/", "test-results/", "scripts/"],
   "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "regex": "^(\\.\\./)+(apps/|packages/|(api|web|e2e-tests)/(src|test|tests|fixtures|pages)/)",
+            "message": "Don't reach into another workspace with a relative path: import shared code from \"shared\"; apps never import each other."
+          }
+        ]
+      }
+    ],
     "typescript/ban-types": "error",
     "no-await-in-loop": "off",
     "no-accumulating-spread": "off",
