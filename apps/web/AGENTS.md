@@ -62,7 +62,6 @@ pnpm --filter web test path/to/file.spec.ts
 
 - **Actions**: Passive tense (events): `stepCompleted`, `dataFetched` (NOT `completeStep`, `fetchData`)
 - **Selectors**: `select{Feature}ViewData` - one per container returning composed object
-- **Reducers**: Use `createReducer` for new code (`createSlice` is legacy - maintenance only)
 
 ---
 
@@ -225,7 +224,6 @@ Third-party services (Crisp, analytics SDKs, etc.) belong in the **infrastructur
 
 ## Critical DON'Ts
 
-- **Don't use `createSlice`** for new code (legacy - maintenance only)
 - **Don't import infrastructure in core** (violates Clean Architecture)
 - **Don't put selectors in `views/`** — selectors are core logic; always place in `core/` (Clean Architecture dependency rule)
 - **Don't call multiple selectors** in containers (compose into single ViewData selector)
