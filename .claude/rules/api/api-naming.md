@@ -148,7 +148,7 @@ sites/
 
 ## TypeScript Type Patterns
 
-See [Root AGENTS.md → Node.js Compatibility](../../../AGENTS.md#nodejs-compatibility-critical) for erasable type rules (no enums, no namespaces, no class parameter properties).
+Erasable syntax only (no enums, no namespaces, no class parameter properties) is enforced by tsconfig `erasableSyntaxOnly` and oxlint `typescript/parameter-properties`.
 
 ## Summary
 

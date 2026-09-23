@@ -67,5 +67,5 @@ module/
 
 ## Related Documentation
 
-- [Root AGENTS.md](../../../AGENTS.md) - Monorepo setup, pnpm commands
+- [Root AGENTS.md](../../../AGENTS.md) - Monorepo conventions, test commands
 - [API AGENTS.md](../../../apps/api/AGENTS.md) - API quick reference

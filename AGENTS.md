@@ -1,202 +1,73 @@
-# Benefriches - Monorepo Guide
+# Benefriches
 
-> **Purpose**: Context for AI assistants and developers. For app-specific patterns, see individual AGENTS.md files.
+Bénéfriches (ADEME incubator, beta.gouv) helps land-development project managers ("chargés d'opération d'aménagement") assess the economic, social and environmental impacts of reconverting a site, so that more brownfields get reconverted. The UI and all user-facing copy are in French.
 
-## Quick Lookup
+Core flow: describe a **site** → describe a **reconversion project** on it → view the project's **impacts** over an evaluation period, compared with leaving the site as is.
 
-| I need to...                 | Go to...                                               |
-| ---------------------------- | ------------------------------------------------------ |
-| Add API feature              | [apps/api/AGENTS.md](apps/api/AGENTS.md)               |
-| Add Web feature              | [apps/web/AGENTS.md](apps/web/AGENTS.md)               |
-| Add E2E test                 | [apps/e2e-tests/AGENTS.md](apps/e2e-tests/AGENTS.md)   |
-| Add shared type/DTO          | [packages/shared/AGENTS.md](packages/shared/AGENTS.md) |
-| See complete feature example | [docs/feature-example.md](docs/feature-example.md)     |
-| Run quality checks           | [Standard Commands](#standard-commands)                |
+- Site natures (`siteNatureSchema`): `FRICHE` (brownfield), `AGRICULTURAL_OPERATION`, `NATURAL_AREA`, `URBAN_ZONE`
+- Project types (`developmentPlanTypeSchema`): `URBAN_PROJECT`, `PHOTOVOLTAIC_POWER_PLANT`
+- Creation modes: `express` (generated from defaults) or `custom` (step-by-step wizard); sites can also come from `csv-import`, projects can be `duplicated`
+- `soilsDistribution`: surface area per soil type, the input to most impact calculations
+- Economic impact formulas (in French): [documentation-calculs-impacts.md](packages/shared/src/reconversion-project-impacts/documentation-calculs-impacts.md)
+
+## Workspaces
+
+pnpm monorepo; each workspace has its own AGENTS.md:
+
+- `apps/api`: NestJS REST API, PostgreSQL/Knex, Clean Architecture — [apps/api/AGENTS.md](apps/api/AGENTS.md)
+- `apps/web`: React SPA, Vite + Redux, Clean Architecture — [apps/web/AGENTS.md](apps/web/AGENTS.md)
+- `apps/e2e-tests`: Playwright end-to-end tests — [apps/e2e-tests/AGENTS.md](apps/e2e-tests/AGENTS.md)
+- `packages/shared`: framework-free TypeScript used by api and web — [packages/shared/AGENTS.md](packages/shared/AGENTS.md)
+
+Full-stack feature walkthrough: [docs/feature-example.md](docs/feature-example.md).
 
 Skills live in `.agents/skills/` (canonical); `.claude/skills/<name>` are symlinks maintained by `pnpm agent-skills:sync` — edit under `.agents/skills/` and run it after adding a skill.
 
-## Critical DON'Ts
+## Conventions
 
-1. **Don't use `npm`** - Always use `pnpm`
-2. **Don't skip reinstalling `shared`** - Always reinstall in dependent apps after changes (see [Shared Package Workflow](#shared-package-workflow))
-3. **Don't add framework deps to `shared`** - Keep it pure TypeScript only
-4. **Don't skip cross-app testing** - Changes to `shared` can break both `api` and `web`
-5. **Don't commit without quality checks** - Husky pre-commit hooks enforce lint + format (tests must be run manually)
-6. **Don't use relative imports across apps** - Use workspace protocol: `import from "shared"`
-7. **Don't modify database without migration** - Create a Knex migration for all schema changes
-8. **Don't add an env var without updating env files** - Add to the relevant app's `.env.example` (empty/off), `.env.e2e` at the repo root (with the value needed for e2e tests), AND `docker-compose.e2e.yml` under the relevant service's `environment:` block
-9. **Don't duplicate Zod schemas** - Before writing a new Zod schema, check `packages/shared` for reusable ones (e.g., `surfaceAreaSchema`, `soilsDistributionSchema`)
-10. **Don't bypass the Talisman pre-commit hook** — Talisman scans commits for secrets (API keys, tokens, private keys). Never use `--no-verify` to skip it.
+- Run scripts with pnpm, not npm: `pnpm --filter <api|web|shared|e2e-tests> <script>`.
+- Import shared code from `"shared"`; never import across apps or packages with relative paths.
+- Keep `packages/shared` free of framework dependencies: it runs in both Node and the browser.
+- Before writing a Zod schema, look for one to reuse in `packages/shared` (e.g. `surfaceAreaSchema`, `soilsDistributionSchema`).
+- Enum-like types: `z.enum([...])` + `z.infer`; read the values with `.options`.
+- Dates: use `date-fns`.
+- New env var: add it to the app's `.env.example` (empty/off), to the root `.env.e2e` (the value the e2e stack needs) and to the service's `environment:` block in `docker-compose.e2e.yml`.
+- Database schema changes: use the `/create-database-migration` skill.
+- To silence a lint rule on one line, use `// eslint-disable-next-line <rule>` (oxlint honours it).
 
-## Monorepo Structure
+## Changing `packages/shared`
 
-```
-benefriches/
-├── apps/api/         # NestJS REST API (PostgreSQL + Clean Architecture)
-├── apps/web/         # React SPA (Vite + Redux + Clean Architecture)
-├── apps/e2e-tests/   # Playwright end-to-end tests
-├── packages/shared/  # Shared TypeScript types and utilities (framework-agnostic)
-└── README.md         # Full setup instructions (French)
-```
-
-**Getting Started**: See [README.md](README.md) for installation and setup.
-
-**Required**: Node 24 (`"engines": { "node": "24" }` in package.json).
-
-## Essential pnpm Commands
+The apps only pick up a change once shared is rebuilt and reinstalled:
 
 ```bash
-# Run in ALL workspaces
-pnpm -r build && pnpm -r typecheck && pnpm -r test
-
-# Run in specific app
-pnpm --filter api <command>
-pnpm --filter web <command>
-pnpm --filter shared <command>
-
-# Common commands
-pnpm --filter api dev     # Start API dev server
-pnpm --filter web dev           # Start web dev server
-pnpm --filter shared build      # Build shared package (required after changes!)
+pnpm --filter shared build
+pnpm --filter api install && pnpm --filter web install
 ```
 
-## Shared Package Workflow
+While iterating, `pnpm --filter shared dev` rebuilds on every change.
 
-**CRITICAL**: Changes to `shared` types can break both `api` and `web`. Always reinstall and verify both apps after modifying shared.
+## Testing
 
-```bash
-# After modifying shared:
-pnpm --filter shared build                              # Rebuild shared package
-pnpm --filter api install && pnpm --filter web install  # Reinstall in dependent apps
-pnpm -r typecheck && pnpm -r test
+How we design tests (what to test, structure, placement): [.claude/rules/testing.md](.claude/rules/testing.md). Read it when planning or brainstorming tests, not only when editing spec files.
 
-# When actively developing shared (rebuilds on every change):
-pnpm --filter shared dev
-```
+- Unit (`*.spec.ts`): no real I/O, next to the code under test. HTTP adapter tests with a mocked transport (e.g. `mock.fn()` on `HttpService`) are unit tests.
+- Integration (`*.integration-spec.ts`, in `adapters/`): real database via testcontainers, or real network calls.
+- E2E (`apps/e2e-tests/tests/`): full user flows against the running stack; run them with the `/run-e2e-tests` skill.
 
-Note: We don't use monorepo dependency solutions (nx, turborepo). You must manually run `pnpm --filter shared build` after modifying the shared package, or use `pnpm --filter shared dev` for watch mode.
+The pre-commit hook runs Talisman (secret scan), lint and format checks, not tests. Run these yourself:
 
-## Database Migrations
+| Change            | Run                                                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared` | `pnpm --filter shared test`, `pnpm --filter api test`, `pnpm --filter web test`, `pnpm --filter e2e-tests typecheck` (page objects import shared types) |
+| `apps/api`        | `pnpm --filter api test` (unit + integration)                                                                                                           |
+| `apps/web`        | `pnpm --filter web test`                                                                                                                                |
 
-- Always use the `/create-database-migration` skill when creating database migrations. Never create migration files manually.
-- Use the project's `pnpm` commands for migration generation, not raw SQL files.
+Single file (paths are relative to the app directory):
 
-## Testing Strategy
+- api unit, from `apps/api`: `node --import ./test/swc-esm-loader.mjs --test src/path/to/file.spec.ts` (`test:unit` appends the path to its glob, so it would run the whole suite)
+- api integration: `pnpm --filter api test:integration:file src/path/to/file.integration-spec.ts`
+- web: `pnpm --filter web test src/path/to/file.spec.ts`
 
-> **How we design tests** (what to test, structure, where it lives): [.claude/rules/testing.md](.claude/rules/testing.md) — AAA planning, one behavior per test, self-contained setup, testing the real path, colocation, e2e scope. Read it when **writing or brainstorming** tests, not only when editing `*.spec.ts` files.
+## Git
 
-### Test Types
-
-- **Unit tests** (`.spec.ts`): No real I/O. Lives next to the code under test, in `core/` or `adapters/`. HTTP adapter tests with mocked transport (e.g., `mock.fn()` from `node:test` on `HttpService`) belong here — they verify request/response mapping without booting testcontainers.
-- **Integration tests** (`.integration-spec.ts` in `adapters/`): Real database or real network calls. Boots testcontainers.
-- **E2E tests** (`.spec.ts` in `e2e-tests/tests/`): Full user flows with Playwright against running stack
-
-### Required Tests by Change Type
-
-| Change                        | Required Tests                                                                                                                                             |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Modified `shared` package** | `pnpm --filter shared test` + `pnpm --filter api test` + `pnpm --filter web test` + `pnpm --filter e2e-tests typecheck` (page objects import shared types) |
-| **Modified `api` code`**      | `pnpm --filter api test` (unit + integration)                                                                                                              |
-| **Modified `web` code`**      | `pnpm --filter web test`                                                                                                                                   |
-
-### Running Tests
-
-```bash
-# Test specific file
-# API unit: node:test doesn't accept extra args via pnpm script — run directly from apps/api/
-node --import ./test/swc-esm-loader.mjs --test src/path/to/file.spec.ts  # from apps/api/
-pnpm --filter api test:integration path/to/file.integration-spec.ts # for integration tests
-pnpm --filter web test path/to/file.spec.ts
-
-# E2E tests (requires docker-compose.e2e.yml running)
-make e2e-up-build # Start full stack on port 3001
-pnpm --filter e2e-tests test:headless                 # Run all E2E tests in headless mode
-pnpm --filter e2e-tests test:headed              # Run with browser visible
-```
-
-## Code Quality Standards
-
-### TypeScript Rules
-
-- **Strict mode**: `strict: true` in all tsconfig files
-- **No `any` types**: Use `unknown` when type is truly unknown
-- **Explicit return types**: Required for public functions/methods
-- **Type imports**: Use `import type { }` for type-only imports
-- **Use type alias**: Prefer `type` over `interface` unless extending
-- **Use Zod for enums**
-
-### Library Preferences
-
-- **Date manipulation**: Always use `date-fns` for date operations
-- **Validation/parsing**: Use `zod` for schema validation and parsing
-
-### Node.js Compatibility (CRITICAL)
-
-All code must be erasable (valid when type annotations are stripped). Node 24 runs `.ts` files directly with no flag needed.
-
-**Forbidden patterns**:
-
-- TypeScript enums: `enum Color { Red = "red" }`
-- Namespaces: `namespace User { }`
-- Class parameter properties: `constructor(private readonly x: T) {}` (enforced by oxlint `typescript/parameter-properties`)
-
-**Use instead**:
-
-```typescript
-// WRONG - Not erasable
-enum SiteNature {
-  FRICHE = "FRICHE",
-  AGRICULTURAL = "AGRICULTURAL",
-}
-
-// RIGHT - Erasable
-const siteNatureSchema = z.enum(["FRICHE", "AGRICULTURAL"]);
-export type SiteNature = z.infer<typeof siteNatureSchema>;
-// for values: use siteNatureSchema.options
-```
-
-```typescript
-// WRONG - Class parameter properties (not erasable; banned by lint)
-export class User {
-  constructor(
-    readonly id: string,
-    readonly name: string,
-  ) {}
-}
-
-// RIGHT - Explicit properties
-export class User {
-  readonly id: string;
-  readonly name: string;
-
-  constructor(id: string, name: string) {
-    this.id = id;
-    this.name = name;
-  }
-}
-```
-
-### Standard Commands
-
-```bash
-pnpm typecheck     # TypeScript type checking (required before commit)
-pnpm lint          # Linting with oxlint (required before commit) — suppress with `// eslint-disable-next-line <rule>`
-pnpm format        # Auto-format code with Prettier
-pnpm test          # Run all tests (required before commit)
-pnpm build         # Build for production
-```
-
-## Git Workflow
-
-### Branch Naming
-
-```bash
-git checkout -b feat/add-new-feature     # New feature
-git checkout -b fix/resolve-bug          # Bug fix
-git checkout -b refactor/improve-code    # Code refactoring
-git checkout -b chore/update-deps        # Chores, config updates
-```
-
-### CI/CD
-
-Trunk-based development: every push to `main` triggers CI checks and auto-deploys to staging. Production deploy is manual.
+Trunk-based: every push to `main` runs CI and deploys to staging; production deploy is manual. Don't bypass the pre-commit hook with `--no-verify`.

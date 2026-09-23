@@ -168,8 +168,8 @@ Full TDD detail (including event-publishing testing patterns): [api-unit-testing
 
 ## 📎 Cross-cutting references
 
-- **TypeScript strict mode, no-`any`, erasable types** (no enums, no namespaces, no class parameter properties): [root AGENTS.md → Code Quality Standards](../../AGENTS.md#code-quality-standards)
-- **pnpm commands across monorepo**: [root AGENTS.md](../../AGENTS.md)
+- **TypeScript strict mode, no-`any`, erasable types** (no enums, no namespaces, no class parameter properties): enforced by the shared tsconfig (`strict`, `erasableSyntaxOnly`) and oxlint (`no-explicit-any`, `parameter-properties`)
+- **Monorepo conventions and test commands**: [root AGENTS.md](../../AGENTS.md)
 - **After modifying `shared`**: rebuild + reinstall here or types won't update → `pnpm --filter shared build && pnpm --filter api install`
 - **Web app patterns**: [apps/web/AGENTS.md](../web/AGENTS.md)
 - **Shared package** (DTOs, types): [packages/shared/AGENTS.md](../../packages/shared/AGENTS.md)

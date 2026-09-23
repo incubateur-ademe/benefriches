@@ -570,7 +570,7 @@ const response = await supertest(app.getHttpServer())
 pnpm --filter api test:integration
 
 # Run specific test file
-pnpm --filter api test:integration path/to/file.integration-spec.ts
+pnpm --filter api test:integration:file src/path/to/file.integration-spec.ts
 ```
 
 ## Best Practices
