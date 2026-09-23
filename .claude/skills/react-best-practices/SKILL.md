@@ -353,8 +353,8 @@ React Compiler will auto-memoize, making manual `useMemo`, `useCallback`, and `R
 ## See Also
 
 - **Code examples**: [examples.md](examples.md) in this skill directory
-- **Web app guide**: `apps/web/CLAUDE.md`
-- **Monorepo guide**: Root `CLAUDE.md`
+- **Web app guide**: `apps/web/AGENTS.md`
+- **Monorepo guide**: Root `AGENTS.md`
 
 ---
 

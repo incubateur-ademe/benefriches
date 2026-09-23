@@ -22,8 +22,8 @@ The detailed checklists live in `reference/` and are organized by domain so you 
 | **Every review** | [`reference/cross-cutting.md`](reference/cross-cutting.md) — security, TypeScript/erasability, test-design antipatterns, code quality, performance |
 | `apps/api/**` | [`reference/api.md`](reference/api.md) — Clean Architecture, Result pattern, controllers, CQS, database, DI, naming, testing |
 | `apps/web/**` | [`reference/web.md`](reference/web.md) — Clean Architecture, Redux, Container/Presentational, hooks, gateways, naming, testing |
-| `packages/shared/**` | **Both** [`reference/api.md`](reference/api.md) **and** [`reference/web.md`](reference/web.md) — shared changes break both apps — plus verify type/DTO/Zod-schema placement per [`packages/shared/CLAUDE.md`](../../../packages/shared/CLAUDE.md) |
-| `apps/e2e-tests/**` | [`apps/e2e-tests/CLAUDE.md`](../../../apps/e2e-tests/CLAUDE.md) — Page Object pattern, fixtures, spec structure |
+| `packages/shared/**` | **Both** [`reference/api.md`](reference/api.md) **and** [`reference/web.md`](reference/web.md) — shared changes break both apps — plus verify type/DTO/Zod-schema placement per [`packages/shared/AGENTS.md`](../../../packages/shared/AGENTS.md) |
+| `apps/e2e-tests/**` | [`apps/e2e-tests/AGENTS.md`](../../../apps/e2e-tests/AGENTS.md) — Page Object pattern, fixtures, spec structure |
 
 If a change touches paths not listed above, still apply `cross-cutting.md` and use judgment. Each lens links to the canonical rule (`.claude/rules/…`) for full detail; those rules also auto-load when you Read the changed files. The reference files are the review checklist (what to flag); the rules are the spec (how to write it). Don't re-derive a rule's content — cite it.
 

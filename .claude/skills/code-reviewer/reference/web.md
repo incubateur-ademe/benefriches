@@ -1,6 +1,6 @@
 # Web Review Lenses
 
-Applies to changes under `apps/web/**`. Full patterns live in [`apps/web/CLAUDE.md`](../../../../apps/web/CLAUDE.md) (auto-loads when you Read the changed file). This file is the review checklist.
+Applies to changes under `apps/web/**`. Full patterns live in [`apps/web/AGENTS.md`](../../../../apps/web/AGENTS.md) (auto-loads when you Read the changed file). This file is the review checklist.
 
 ## Contents
 - Clean Architecture (CRITICAL)

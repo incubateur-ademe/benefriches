@@ -67,5 +67,5 @@ module/
 
 ## Related Documentation
 
-- [Root CLAUDE.md](../../../CLAUDE.md) - Monorepo setup, pnpm commands
-- [API CLAUDE.md](../../../apps/api/CLAUDE.md) - API quick reference
+- [Root AGENTS.md](../../../AGENTS.md) - Monorepo setup, pnpm commands
+- [API AGENTS.md](../../../apps/api/AGENTS.md) - API quick reference

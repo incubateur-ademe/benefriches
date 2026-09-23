@@ -9,7 +9,7 @@ paths:
 
 ## Code Elements
 
-See [API CLAUDE.md → Naming & File Conventions](../../../apps/api/CLAUDE.md#-naming--file-conventions) for the quick reference table (Classes, Variables, Constants, Error Types).
+See [API AGENTS.md → Naming & File Conventions](../../../apps/api/AGENTS.md#-naming--file-conventions) for the quick reference table (Classes, Variables, Constants, Error Types).
 
 ### Error Naming Pattern
 
@@ -93,7 +93,7 @@ const row: SqlSite = {
 
 ## Import Aliases
 
-See [API CLAUDE.md → Path Aliases](../../../apps/api/CLAUDE.md#-path-aliases) for complete rules and examples.
+See [API AGENTS.md → Path Aliases](../../../apps/api/AGENTS.md#-path-aliases) for complete rules and examples.
 
 ## Route Naming
 
@@ -148,7 +148,7 @@ sites/
 
 ## TypeScript Type Patterns
 
-See [Root CLAUDE.md → Node.js Compatibility](../../../CLAUDE.md#nodejs-compatibility-critical) for erasable type rules (no enums, no namespaces, no class parameter properties).
+See [Root AGENTS.md → Node.js Compatibility](../../../AGENTS.md#nodejs-compatibility-critical) for erasable type rules (no enums, no namespaces, no class parameter properties).
 
 ## Summary
 
@@ -157,13 +157,13 @@ See [Root CLAUDE.md → Node.js Compatibility](../../../CLAUDE.md#nodejs-compati
 - **Classes**: `PascalCase`
 - **Files**: Descriptive with type suffix (`.usecase.ts`, `.repository.ts`)
 - **Database**: `snake_case` → map to `camelCase` in app
-- **Imports**: See [API CLAUDE.md → Path Aliases](../../../apps/api/CLAUDE.md#-path-aliases)
+- **Imports**: See [API AGENTS.md → Path Aliases](../../../apps/api/AGENTS.md#-path-aliases)
 - **Routes**: Intent-driven, not strictly REST
 - **Errors**: Describe state, not action
 
 ### Related Documentation
 
-- **Root CLAUDE.md**: [Monorepo patterns](../../../CLAUDE.md)
+- **Root AGENTS.md**: [Monorepo patterns](../../../AGENTS.md)
 - **UseCase Pattern**: [api-usecase.md](api-usecase.md)
 - **Controller Pattern**: [api-controller.md](api-controller.md)
 - **Repository Pattern**: [api-repository.md](api-repository.md)
