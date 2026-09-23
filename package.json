@@ -14,7 +14,10 @@
     "test": "pnpm run -r test",
     "format:check": "pnpm run -r format:check",
     "typecheck": "pnpm run -r typecheck",
-    "build": "pnpm run -r build"
+    "build": "pnpm run -r build",
+    "agent-skills:sync": "node scripts/sync-agent-skills.mjs",
+    "agent-skills:check": "node scripts/sync-agent-skills.mjs --check",
+    "test:scripts": "node --test \"scripts/**/*.spec.mjs\""
   },
   "devDependencies": {
     "@upstash/context7-mcp": "4.0.7",

@@ -13,6 +13,8 @@
 | See complete feature example | [docs/feature-example.md](docs/feature-example.md)     |
 | Run quality checks           | [Standard Commands](#standard-commands)                |
 
+Skills live in `.agents/skills/` (canonical); `.claude/skills/<name>` are symlinks maintained by `pnpm agent-skills:sync` — edit under `.agents/skills/` and run it after adding a skill.
+
 ## Critical DON'Ts
 
 1. **Don't use `npm`** - Always use `pnpm`
@@ -91,11 +93,11 @@ Note: We don't use monorepo dependency solutions (nx, turborepo). You must manua
 
 ### Required Tests by Change Type
 
-| Change                        | Required Tests                                                                    |
-| ----------------------------- | --------------------------------------------------------------------------------- |
+| Change                        | Required Tests                                                                                                                                             |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Modified `shared` package** | `pnpm --filter shared test` + `pnpm --filter api test` + `pnpm --filter web test` + `pnpm --filter e2e-tests typecheck` (page objects import shared types) |
-| **Modified `api` code`**      | `pnpm --filter api test` (unit + integration)                                     |
-| **Modified `web` code`**      | `pnpm --filter web test`                                                          |
+| **Modified `api` code`**      | `pnpm --filter api test` (unit + integration)                                                                                                              |
+| **Modified `web` code`**      | `pnpm --filter web test`                                                                                                                                   |
 
 ### Running Tests
 
@@ -133,6 +135,7 @@ pnpm --filter e2e-tests test:headed              # Run with browser visible
 All code must be erasable (valid when type annotations are stripped). Node 24 runs `.ts` files directly with no flag needed.
 
 **Forbidden patterns**:
+
 - TypeScript enums: `enum Color { Red = "red" }`
 - Namespaces: `namespace User { }`
 - Class parameter properties: `constructor(private readonly x: T) {}` (enforced by oxlint `typescript/parameter-properties`)
@@ -155,7 +158,10 @@ export type SiteNature = z.infer<typeof siteNatureSchema>;
 ```typescript
 // WRONG - Class parameter properties (not erasable; banned by lint)
 export class User {
-  constructor(readonly id: string, readonly name: string) {}
+  constructor(
+    readonly id: string,
+    readonly name: string,
+  ) {}
 }
 
 // RIGHT - Explicit properties

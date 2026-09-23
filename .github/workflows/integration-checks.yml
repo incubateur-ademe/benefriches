@@ -20,6 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-pnpm
+      - run: pnpm agent-skills:check
       - run: pnpm --filter shared build
       - run: pnpm typecheck
       - run: pnpm lint
@@ -30,6 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-pnpm
+      - run: pnpm test:scripts
       - run: pnpm --filter shared build
       - run: pnpm test
 

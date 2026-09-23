@@ -72,7 +72,7 @@ What will change, using the project's domain vocabulary and architecture layers 
 
 ## Testing Decisions
 
-- What makes a good test here (test external behavior at the seams identified above, not implementation details — see `.Codex/rules/testing.md`).
+- What makes a good test here (test external behavior at the seams identified above, not implementation details — see `.claude/rules/testing.md`).
 - Which seams/modules get unit vs. integration vs. e2e coverage, and why.
 - Prior art: similar tests already in the codebase to model these on.
 

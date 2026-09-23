@@ -18,7 +18,7 @@ Otherwise, review recent changes with `git diff` (or `git diff HEAD~1` if no unc
 
 ### 2. Load Security Rules
 
-Read `.Codex/context/security/security-rules.md` for the complete security checklist.
+Read `.claude/context/security/security-rules.md` for the complete security checklist.
 
 ### 3. Run Automated Scans
 

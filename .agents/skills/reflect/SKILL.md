@@ -1,6 +1,6 @@
 ---
 name: reflect
-description: Reflect on the current session to find mistakes, user corrections, ambiguous instructions, and failures — then propose durable root-cause fixes to the project's instruction docs (AGENTS.md, .Codex/rules, .Codex/skills) so they don't recur. Use when the user asks to reflect on the session, run a retro/postmortem, capture lessons, or after a session with notable corrections or repeated mistakes.
+description: Reflect on the current session to find mistakes, user corrections, ambiguous instructions, and failures — then propose durable root-cause fixes to the project's instruction docs (AGENTS.md, .claude/rules, .agents/skills) so they don't recur. Use when the user asks to reflect on the session, run a retro/postmortem, capture lessons, or after a session with notable corrections or repeated mistakes.
 effort: medium
 allowed-tools: Read, Edit, Grep, Glob, Task
 user-invocable: true
@@ -9,14 +9,14 @@ user-invocable: true
 # Reflect - Session Self-Improvement
 
 Reflect on the **current session** and propose durable, root-cause fixes to the project's
-instruction surface (`AGENTS.md`, `.Codex/rules/*`, `.Codex/skills/*`) so the mistakes,
+instruction surface (`AGENTS.md`, `.claude/rules/*`, `.agents/skills/*`) so the mistakes,
 misunderstandings, or ambiguous instructions that occurred don't recur.
 
 Bias toward the opposite of a point fix: when something went wrong, the interesting output
 is not "fix this file" but **"which instruction doc was ambiguous / missing / mis-scoped
 such that a careful agent got it wrong — and how should that doc be reworded?"**
 
-This is deliberately different from `revise-Codex-md`:
+This is deliberately different from `revise-claude-md`:
 - **Signal philosophy**: anchored on **externally-observable failure signals** (corrections,
   doc-misreads, failing commands, loops) — never open-ended "what could I have done better"
   introspection. Unaided self-critique of otherwise-correct work degrades quality; don't do it.
@@ -60,7 +60,7 @@ EVIDENCE (the receipt — what was observed):
 
 Your job:
 1. ROOT CAUSE — dig through the repo's instruction docs (AGENTS.md at root + apps/*,
-   .Codex/rules/*.md, .Codex/skills/*) AND the codebase, by actually reading/grepping them —
+   .claude/rules/*.md, .agents/skills/*) AND the codebase, by actually reading/grepping them —
    never assert what a file contains from memory. Determine WHY this happened. Was an
    instruction ambiguous, wrong, missing, or mis-placed? Quote the exact line(s).
    When verifying a claim about "how this codebase does X" via grep, don't stop at the first
@@ -123,7 +123,7 @@ Dropped as noise (N): <one-line list of NO_DOC_CHANGE signals, so nothing is sil
 - Detection (Step 1) is done by this same agent from in-context conversation — it can miss
   its own blind spots and loses anything before a context compaction.
 - No cap on subagent fan-out — a session with many signals spawns many subagents.
-- Repo-committed docs only — does not touch global `~/.Codex` or Auto Memory, even when a
+- Repo-committed docs only — does not touch global `~/.claude` / `~/.codex` or Auto Memory, even when a
   lesson is really about agent behavior rather than this codebase.
 - No cross-session reinforcement/decay — each run is independent; it won't notice a rule
   that keeps getting hit across multiple sessions.

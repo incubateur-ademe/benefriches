@@ -138,5 +138,5 @@ You never open `shared/core/wizard-form/`.
 
 ## Reference
 
-- Visual architecture diagram: https://Codex.ai/code/artifact/cd38a538-d6d3-48b2-bfaa-888f804eef09
+- Visual architecture diagram: https://claude.ai/code/artifact/cd38a538-d6d3-48b2-bfaa-888f804eef09
 - ADR-0015 (decision + rationale): `docs/adr/0015-extract-wizard-form-engine-via-injected-lens.md`

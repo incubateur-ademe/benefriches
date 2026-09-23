@@ -4,4 +4,8 @@ if ! command -v talisman > /dev/null 2>&1; then
 fi
 talisman --githook pre-commit
 
+if git diff --cached --name-only | grep -qE '^\.(agents|claude)/skills(/|$)'; then
+  pnpm agent-skills:check
+fi
+
 pnpm lint-staged

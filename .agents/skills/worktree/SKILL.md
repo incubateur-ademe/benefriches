@@ -19,7 +19,7 @@ Create a new git worktree for isolated feature development.
 
 ## Execution
 
-The script always creates a new branch from current HEAD, places the worktree under `.Codex/worktrees/<name>` (gitignored, so it never pollutes `git status`/diff/search), and primes it (pnpm install, shared build, env files):
+The script always creates a new branch from current HEAD, places the worktree under `.claude/worktrees/<name>` (gitignored, so it never pollutes `git status`/diff/search), and primes it (pnpm install, shared build, env files):
 
 ```bash
 scripts/create-worktree.sh <branch-name>
@@ -47,7 +47,7 @@ If the user provides just a feature name without a prefix, add the appropriate p
 Tell the user:
 1. The worktree location
 2. How to navigate to it: `cd <worktree-path>`
-3. Remind them to start a new Codex session in that directory for isolated work
+3. Remind them to start a new agent session (Claude Code or Codex) in that directory for isolated work
 
 ## Arguments
 
