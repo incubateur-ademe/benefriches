@@ -27,7 +27,7 @@ Read this file for **every** review — these lenses apply regardless of which a
 - ❌ TypeScript `enum` (use Zod `z.enum()` or a const object)
 - ❌ `namespace` declarations
 - ❌ Class parameter properties: `constructor(private x: T) {}` (lint-enforced by `typescript/parameter-properties`; hoist to explicit fields)
-- ✅ `type` over `interface` unless extending; Zod schemas for enum-like types
+- ✅ Zod schemas for enum-like types
 
 **Type safety**:
 - ❌ `any` (use `unknown` when truly unknown)
