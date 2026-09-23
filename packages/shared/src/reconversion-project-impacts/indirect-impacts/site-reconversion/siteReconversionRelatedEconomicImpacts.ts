@@ -1,18 +1,16 @@
-import {
-  computeReinstatementFullTimeJobs,
-  ReinstatementExpense,
-} from "../../../reconversion-projects";
+import type { ReinstatementExpense } from "../../../reconversion-projects";
+import { computeReinstatementFullTimeJobs } from "../../../reconversion-projects";
 import { roundTo2Digits, sumList } from "../../../services";
-import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../../sum-on-evolution-period/computeCumulativeByYear";
-import {
+import type {
   ProjectIndirectEconomicImpactName,
   ProjectIndirectImpactItemView,
   ProjectOnSiteImpactMetric,
 } from "../../projectImpacts.types";
+import type { Schedule } from "../fullTimeJobs.helper";
 import {
   getDurationFromScheduleInYears,
-  Schedule,
   spreadTemporaryFullTimeJobsOver,
 } from "../fullTimeJobs.helper";
 import { computePropertyValueImpact } from "../urban-project/property-value/propertyValueImpact";

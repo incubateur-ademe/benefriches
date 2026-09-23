@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { urbanSprawlImpactsComparisonRequested } from "@/features/projects/application/project-impacts/actions/urbanSprawlImpactsComparisonRequested.action";
 import { selectAvoidedUrbanSprawlCostsAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
-import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
+import type { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 
 import ProjectAvoidedUrbanSprawlCosts from "./ProjectAvoidedUrbanSprawlCosts";
 

@@ -1,8 +1,8 @@
-import {
+import type {
   ExpressReconversionProjectResult,
   CreateExpressReconversionProjectGateway,
 } from "../../core/demo/demoProject.actions";
-import { SaveExpressReconversionProjectPayload } from "./HttpCreateExpressReconversionProjectService";
+import type { SaveExpressReconversionProjectPayload } from "./HttpCreateExpressReconversionProjectService";
 
 export class InMemoryCreateExpressReconversionProjectService implements CreateExpressReconversionProjectGateway {
   private _shouldFail = false;

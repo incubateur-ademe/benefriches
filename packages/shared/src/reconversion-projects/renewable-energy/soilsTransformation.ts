@@ -3,13 +3,8 @@ import { z } from "zod";
 
 import { typedObjectEntries } from "../../object-entries";
 import { typedObjectKeys } from "../../object-keys";
-import {
-  isForest,
-  isWetLand,
-  SoilsDistribution,
-  SoilType,
-  sumSoilsSurfaceAreasWhere,
-} from "../../soils";
+import type { SoilsDistribution, SoilType } from "../../soils";
+import { isForest, isWetLand, sumSoilsSurfaceAreasWhere } from "../../soils";
 
 export const REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS: SoilType[] = [
   "IMPERMEABLE_SOILS",

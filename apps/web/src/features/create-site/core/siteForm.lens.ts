@@ -1,6 +1,6 @@
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
-import { SiteCreationState } from "./createSite.reducer";
+import type { SiteCreationState } from "./createSite.reducer";
 
 /**
  * Function lens (not the project side's `entityName` string key). `SiteFormLens` is typed

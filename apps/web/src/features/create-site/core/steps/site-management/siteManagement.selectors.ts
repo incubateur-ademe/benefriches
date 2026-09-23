@@ -1,15 +1,14 @@
 /* eslint-disable no-case-declarations */
 import { createSelector } from "@reduxjs/toolkit";
-import type { SiteNature, SiteYearlyIncome } from "shared";
+import type { SiteNature, SiteYearlyIncome, SiteYearlyExpensePurpose } from "shared";
 import {
-  SiteYearlyExpensePurpose,
   computeAgriculturalOperationYearlyExpenses,
   computeAgriculturalOperationYearlyIncomes,
   computeEstimatedPropertyTaxesAmount,
   computeFricheDefaultYearlyExpenses,
 } from "shared";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 import type { UserStructure } from "@/features/onboarding/core/user";
 import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
 
@@ -22,12 +21,14 @@ import {
   selectAvailableLocalAuthoritiesWithoutCurrentUser,
   type AvailableLocalAuthority,
 } from "../../siteMunicipalityData.reducer";
+import type {
+  SiteManagementYearlyExpensesConfig,
+  FricheSecurityYearlyExpensesConfig,
+} from "./expenses.functions";
 import {
   getAgriculturalOperationExpensesConfig,
   getFricheManagementExpensesConfig,
   getFricheSecurityExpensesConfig,
-  SiteManagementYearlyExpensesConfig,
-  FricheSecurityYearlyExpensesConfig,
 } from "./expenses.functions";
 
 // ============================================================================

@@ -1,9 +1,9 @@
 import { lazy } from "react";
 
-import { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
+import type { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
-import { BodyComponentType, ContentComponentType, ModalImpactConfig } from "./config.type";
+import type { BodyComponentType, ContentComponentType, ModalImpactConfig } from "./config.type";
 
 const ECONOMIC_BALANCE_MODALS = {
   economicBalance: {

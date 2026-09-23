@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 import { createWizardFormSelectors } from "@/features/create-project/core/project-form/projectForm.selectors";
 import { buildUrbanProjectStepGroupsFromSequence } from "@/features/create-project/core/urban-project/stepperConfig";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
@@ -37,13 +37,8 @@ import {
 } from "./step-handlers/stakeholders/stakeholders.selector";
 import { createSelectUrbanProjectSummaryViewData } from "./step-handlers/summary/final-summary/finalSummary.selector";
 import { createSelectPublicGreenSpacesSurfaceAreaViewData } from "./step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.selector";
-import {
-  answersByStepSchemas,
-  AnswerStepId,
-  isAnswersStep,
-  isSummaryStep,
-  UrbanProjectCreationStep,
-} from "./urbanProjectSteps";
+import type { AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
+import { answersByStepSchemas, isAnswersStep, isSummaryStep } from "./urbanProjectSteps";
 
 export const createUrbanProjectFormSelectors = (
   entityName: "projectCreation" | "projectUpdate",

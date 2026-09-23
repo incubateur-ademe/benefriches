@@ -1,4 +1,5 @@
-import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import Button from "@codegouvfr/react-dsfr/Button";
 import { useId } from "react";
 
 import DsfrA11yDialog from "@/shared/views/components/Dialog/DsfrA11yDialog";

@@ -1,5 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { ReconversionProjectSoilsDistribution, SoilType, ORDERED_SOIL_TYPES } from "shared";
+import type { ReconversionProjectSoilsDistribution, SoilType } from "shared";
+import { ORDERED_SOIL_TYPES } from "shared";
 
 const soilColors = {
   buildings: "#EB13BE",

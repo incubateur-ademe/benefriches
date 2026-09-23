@@ -7,7 +7,7 @@ import {
 
 import { getLabelForExpensePurpose } from "@/features/create-site/core/steps/site-management/expenses.functions";
 import { getLabelForIncomeSource } from "@/features/create-site/core/steps/site-management/incomes.functions";
-import { SiteFeatures } from "@/features/sites/core/site.types";
+import type { SiteFeatures } from "@/features/sites/core/site.types";
 
 import DataLine from "../components/DataLine";
 import FeaturesSection from "../components/FeaturesSection";

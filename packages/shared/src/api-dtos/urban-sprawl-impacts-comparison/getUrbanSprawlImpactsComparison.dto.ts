@@ -1,12 +1,13 @@
 import { z } from "zod";
 
-import {
+import type {
   UrbanSprawlComparisonProjectImpactsDataView,
   SiteImpactsDataView,
   ProjectEconomicBalance,
   ReconversionStakeholders,
 } from "../../reconversion-project-impacts";
-import { siteNatureSchema, siteStatuQuoImpactsSchema } from "../../site";
+import type { siteStatuQuoImpactsSchema } from "../../site";
+import { siteNatureSchema } from "../../site";
 
 export type UrbanSprawlImpactsComparisonResultDto = {
   simulationSiteData: SiteImpactsDataView;

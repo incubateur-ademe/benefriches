@@ -1,4 +1,4 @@
-import { WizardFormStepsState, WizardStepState } from "../stepHandler.type";
+import type { WizardFormStepsState, WizardStepState } from "../stepHandler.type";
 
 export const ReadStateHelper = {
   getStep<TAnswers, K extends keyof TAnswers>(

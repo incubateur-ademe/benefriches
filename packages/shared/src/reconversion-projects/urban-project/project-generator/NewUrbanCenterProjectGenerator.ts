@@ -1,6 +1,6 @@
 import { typedObjectEntries } from "../../../object-entries";
 import { roundTo2Digits } from "../../../services";
-import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
+import type { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
 import { DEFAULT_RESALE_RATIO_PER_SQUARE_METERS } from "../expectedPostDevelopmentResale";
 import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 

@@ -1,4 +1,4 @@
-import { SoilType } from ".";
+import type { SoilType } from ".";
 
 export type SoilsCarbonStorage = {
   total: number;

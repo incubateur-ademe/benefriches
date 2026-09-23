@@ -1,4 +1,5 @@
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 
 type ComparisonCellProps = {
   children?: React.ReactNode;

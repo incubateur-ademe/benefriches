@@ -1,17 +1,14 @@
 import { createAction } from "@reduxjs/toolkit";
-import { RenewableEnergyTemplate, UrbanProjectTemplate } from "shared";
-import {
-  BaseReconversionProjectFeaturesView,
-  ReconversionProjectTemplate,
-  reconversionProjectTemplateSchema,
-} from "shared";
+import type { RenewableEnergyTemplate, UrbanProjectTemplate } from "shared";
+import type { BaseReconversionProjectFeaturesView, ReconversionProjectTemplate } from "shared";
+import { reconversionProjectTemplateSchema } from "shared";
 import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 import { makeProjectCreationActionType } from "../actions/actionsUtils";
 import { stepCompletionRequested } from "./demoProject.reducer";
-import { DemoProjectCreationStep } from "./demoSteps";
+import type { DemoProjectCreationStep } from "./demoSteps";
 
 const makeDemoProjectCreationActionType = (actionName: string) => {
   return makeProjectCreationActionType(`demo/${actionName}`);

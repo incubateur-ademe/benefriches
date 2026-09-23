@@ -1,6 +1,6 @@
-import { GetReconversionProjectFeaturesResponseDto } from "shared";
+import type { GetReconversionProjectFeaturesResponseDto } from "shared";
 
-import { ProjectFeaturesGateway } from "../../application/project-features/projectFeatures.actions";
+import type { ProjectFeaturesGateway } from "../../application/project-features/projectFeatures.actions";
 
 export class HttpProjectFeaturesService implements ProjectFeaturesGateway {
   async getById(projectId: string): Promise<GetReconversionProjectFeaturesResponseDto> {

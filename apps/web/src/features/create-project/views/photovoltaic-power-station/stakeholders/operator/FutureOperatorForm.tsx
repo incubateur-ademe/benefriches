@@ -1,7 +1,7 @@
 import Input from "@codegouvfr/react-dsfr/Input";
 import { useForm } from "react-hook-form";
 
-import { UserStructureType } from "@/features/onboarding/core/user";
+import type { UserStructureType } from "@/features/onboarding/core/user";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";

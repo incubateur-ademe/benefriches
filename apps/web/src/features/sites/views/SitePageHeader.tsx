@@ -2,7 +2,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Menu, MenuButton, MenuItems, MenuSeparator } from "@headlessui/react";
 import { Fragment } from "react/jsx-runtime";
-import { SiteNature, SiteNotEditableReason } from "shared";
+import type { SiteNature, SiteNotEditableReason } from "shared";
 
 import { routes, useRoute } from "@/app/router";
 import ArchiveSiteDialog from "@/features/archive-site/views/ArchiveSiteDialog";
@@ -14,7 +14,7 @@ import { MENU_ITEMS_CLASSES } from "@/shared/views/components/Menu/classes";
 import TabItem from "@/shared/views/components/TabItem/TabItem";
 import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";
 
-import { SiteRoute } from ".";
+import type { SiteRoute } from ".";
 
 type Props = {
   siteId: string;

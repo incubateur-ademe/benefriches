@@ -1,6 +1,7 @@
-import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
-import { ReactNode } from "react";
-import { Route } from "type-route";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import Button from "@codegouvfr/react-dsfr/Button";
+import type { ReactNode } from "react";
+import type { Route } from "type-route";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";

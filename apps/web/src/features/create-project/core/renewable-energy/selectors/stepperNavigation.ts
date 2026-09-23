@@ -1,16 +1,17 @@
 import type { StepVariant } from "@/shared/core/stepVariant.types";
-import {
-  buildStepGroupsFromSequence,
-  StepGroups,
-} from "@/shared/core/wizard-form/helpers/stepGroups";
+import type { StepGroups } from "@/shared/core/wizard-form/helpers/stepGroups";
+import { buildStepGroupsFromSequence } from "@/shared/core/wizard-form/helpers/stepGroups";
 
-import { isAnswersStep, RenewableEnergyCreationStep } from "../renewableEnergySteps";
+import type { RenewableEnergyCreationStep } from "../renewableEnergySteps";
+import { isAnswersStep } from "../renewableEnergySteps";
+import type {
+  RenewableEnergyStepGroupId,
+  RenewableEnergyStepSubGroupId,
+} from "../step-handlers/renewableEnergyStepperConfig";
 import {
   RENEWABLE_ENERGY_STEP_GROUP_IDS,
   RENEWABLE_ENERGY_STEP_GROUP_LABELS,
   RENEWABLE_ENERGY_STEP_TO_GROUP,
-  RenewableEnergyStepGroupId,
-  RenewableEnergyStepSubGroupId,
 } from "../step-handlers/renewableEnergyStepperConfig";
 import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
 

@@ -1,6 +1,6 @@
-import { EvaluationCompletedPayload } from "../../core/actions/compatibilityEvaluationCompleted.actions";
-import { ReconversionCompatibilityEvaluationResults } from "../../core/actions/compatibilityEvaluationResultsRequested.actions";
-import { ReconversionCompatibilityEvaluationGateway } from "../../core/actions/reconversionCompatibilityEvaluationGateway";
+import type { EvaluationCompletedPayload } from "../../core/actions/compatibilityEvaluationCompleted.actions";
+import type { ReconversionCompatibilityEvaluationResults } from "../../core/actions/compatibilityEvaluationResultsRequested.actions";
+import type { ReconversionCompatibilityEvaluationGateway } from "../../core/actions/reconversionCompatibilityEvaluationGateway";
 
 export class InMemoryReconversionCompatibilityEvaluationService implements ReconversionCompatibilityEvaluationGateway {
   _startedEvaluations: { evaluationId: string }[] = [];

@@ -1,10 +1,7 @@
 import classNames from "@/shared/views/clsx";
 
-import BaseStepperStep, {
-  BaseStepperStepProps,
-  SHARED_STYLES,
-  VariantStyleConfig,
-} from "./FormBaseStepperStep";
+import type { BaseStepperStepProps, VariantStyleConfig } from "./FormBaseStepperStep";
+import BaseStepperStep, { SHARED_STYLES } from "./FormBaseStepperStep";
 
 const CHECK_ICON = "fr-icon-check-line text-success-dark";
 

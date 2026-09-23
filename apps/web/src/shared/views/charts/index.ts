@@ -1,4 +1,4 @@
-import { Options } from "highcharts/highcharts";
+import type { Options } from "highcharts/highcharts";
 
 // oxlint-disable-next-line import/no-unassigned-import
 import "@/libs/highcharts";

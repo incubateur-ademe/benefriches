@@ -1,4 +1,4 @@
-import { AppStartListening } from "@/app/store/listenerMiddleware";
+import type { AppStartListening } from "@/app/store/listenerMiddleware";
 
 import { currentProjectFlowUpdated } from "../actions/currentProjectFlowUpdated.action";
 import { fetchEstimatedSiteResalePrice } from "../urban-project/fetchEstimatedSiteResalePrice.action";

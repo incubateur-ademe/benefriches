@@ -1,5 +1,6 @@
-import { createReducer, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
-import {
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createReducer, isAnyOf } from "@reduxjs/toolkit";
+import type {
   GetReconversionProjectImpactsResultDto,
   UrbanSprawlImpactsComparisonResultDto,
 } from "shared";

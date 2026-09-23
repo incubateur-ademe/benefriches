@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
 
-import {
-  KeyImpactIndicatorData,
-  PRIORITY_ORDER,
-} from "@/features/projects/core/projectKeyImpactIndicators";
+import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
+import { PRIORITY_ORDER } from "@/features/projects/core/projectKeyImpactIndicators";
 
 import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import { getSummaryIndicatorTitle } from "../../shared/impacts/summary";

@@ -1,9 +1,9 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
-import { Route } from "type-route";
+import type { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { routes } from "@/app/router";
+import type { routes } from "@/app/router";
 import { RenewableEnergyFormProvider } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/RenewableEnergyFormProvider";
 import { ProjectFormProvider } from "@/features/create-project/views/project-form/ProjectFormProvider";
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";

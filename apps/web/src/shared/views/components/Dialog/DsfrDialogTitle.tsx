@@ -1,5 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { ReactNode, useContext } from "react";
+import type { ReactNode } from "react";
+import { useContext } from "react";
 
 import { DsfrDialogContext } from "./DsfrDialogContext";
 

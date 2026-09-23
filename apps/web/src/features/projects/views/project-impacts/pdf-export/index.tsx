@@ -1,11 +1,11 @@
 import { Document } from "@react-pdf/renderer";
 
-import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
-import { EnvironmentalImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsEnvironmental";
-import { SocialImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
-import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
-import { ProjectFeatures } from "@/features/projects/core/projects.types";
-import { SiteFeatures } from "@/features/sites/core/site.types";
+import type { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
+import type { EnvironmentalImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsEnvironmental";
+import type { SocialImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
+import type { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { ProjectFeatures } from "@/features/projects/core/projects.types";
+import type { SiteFeatures } from "@/features/sites/core/site.types";
 
 import type { PdfExportSectionSelection } from "../export-impacts/pdf-export/pdfExportSections";
 import AboutBenefrichesPdfPage from "./about-benefriches/AboutBenefrichesPdfPage";

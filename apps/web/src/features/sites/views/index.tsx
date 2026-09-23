@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Route } from "type-route";
+import type { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
@@ -7,7 +7,8 @@ import { routes, useRoute } from "@/app/router";
 import { fetchSiteView } from "../core/fetchSiteView.action";
 import { projectRemovedFromList } from "../core/removeProjectFromList.action";
 import { selectSitePageViewModel } from "../core/siteView.reducer";
-import SitePage, { SiteTab } from "./SitePage";
+import type { SiteTab } from "./SitePage";
+import SitePage from "./SitePage";
 
 export type SiteRoute =
   | Route<typeof routes.siteFeatures>

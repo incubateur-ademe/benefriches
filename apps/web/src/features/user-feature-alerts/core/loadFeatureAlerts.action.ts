@@ -1,6 +1,6 @@
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
-import { UserFeatureAlertsResult } from "./CreateFeatureAlertGateway";
+import type { UserFeatureAlertsResult } from "./CreateFeatureAlertGateway";
 
 export const loadFeatureAlerts = createAppAsyncThunk<UserFeatureAlertsResult>(
   "user/loadFeatureAlerts",

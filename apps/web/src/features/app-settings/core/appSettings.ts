@@ -1,6 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
 export type AppSettings = {
   displayExpressSiteDisclaimer: boolean;

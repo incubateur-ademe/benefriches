@@ -1,21 +1,16 @@
-import { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
+import type { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
 
 import { applyStepChanges } from "@/shared/core/wizard-form/helpers/applyStepChanges";
-import {
-  computeStepChanges,
-  StepUpdateResult,
-} from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import type { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import { computeStepChanges } from "@/shared/core/wizard-form/helpers/computeStepChanges";
 import { navigateToAndLoadStep } from "@/shared/core/wizard-form/helpers/navigateToStep";
-import { WizardFormDefinition } from "@/shared/core/wizard-form/wizardForm.reducer";
+import type { WizardFormDefinition } from "@/shared/core/wizard-form/wizardForm.reducer";
 
-import { SiteCreationState } from "../createSite.reducer";
-import {
-  answerStepHandlers,
-  UrbanZoneStepHandlerContext,
-  urbanZoneStepHandlerRegistry,
-} from "./stepHandlerRegistry";
-import { UrbanZoneFormPureActions } from "./urban-zone.actions";
-import {
+import type { SiteCreationState } from "../createSite.reducer";
+import type { UrbanZoneStepHandlerContext } from "./stepHandlerRegistry";
+import { answerStepHandlers, urbanZoneStepHandlerRegistry } from "./stepHandlerRegistry";
+import type { UrbanZoneFormPureActions } from "./urban-zone.actions";
+import type {
   AnswersByStep,
   SchematizedAnswerStepId,
   UrbanZoneSiteCreationStep,

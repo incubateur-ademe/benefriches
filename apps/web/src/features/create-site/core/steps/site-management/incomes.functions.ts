@@ -1,4 +1,4 @@
-import { SiteYearlyIncome } from "shared";
+import type { SiteYearlyIncome } from "shared";
 
 export const getLabelForIncomeSource = (source: SiteYearlyIncome["source"]): string => {
   switch (source) {

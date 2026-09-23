@@ -1,11 +1,11 @@
-import { GetReconversionProjectImpactsResultDto } from "../../api-dtos";
+import type { GetReconversionProjectImpactsResultDto } from "../../api-dtos";
 import { roundToInteger, sumListWithKey } from "../../services";
-import {
+import type {
   AvoidedFricheCostsIndirectEconomicImpactItemView,
   ProjectDevelopmentEconomicBalanceItem,
   ProjectOperatingEconomicBalanceItem,
 } from "../projectImpacts.types";
-import {
+import type {
   AvoidedCO2EqEmissions,
   AvoidedFricheCostsImpact,
   AvoidedTrafficAccidentsImpact,
@@ -13,7 +13,7 @@ import {
   SocioEconomicImpact,
   TaxesIncomeImpact,
 } from "./socioEconomic.types";
-import { EconomicBalanceImpactResult, ReconversionProjectImpacts } from "./types";
+import type { EconomicBalanceImpactResult, ReconversionProjectImpacts } from "./types";
 
 export const formatEconomicBalanceImpact = (
   projectEconomicBalance: GetReconversionProjectImpactsResultDto["impacts"]["projectEconomicBalance"],

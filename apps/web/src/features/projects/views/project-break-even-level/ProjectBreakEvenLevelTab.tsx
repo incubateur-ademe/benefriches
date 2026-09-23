@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 
-import { BreakEvenLevelTabDataView } from "../../application/project-impacts/selectors/projectBreakEvenLevel.selectors";
+import type { BreakEvenLevelTabDataView } from "../../application/project-impacts/selectors/projectBreakEvenLevel.selectors";
 import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
 import { ImpactModalDescriptionContext } from "../impact-description-modals/ImpactModalDescriptionContext";
 import ProjectPageHeader from "../project-page/header/";

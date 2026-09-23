@@ -1,16 +1,12 @@
-import {
-  createListenerMiddleware,
-  Dispatch,
-  ListenerMiddlewareInstance,
-  TypedStartListening,
-} from "@reduxjs/toolkit";
+import type { Dispatch, ListenerMiddlewareInstance, TypedStartListening } from "@reduxjs/toolkit";
+import { createListenerMiddleware } from "@reduxjs/toolkit";
 
 import { setupAppSettingsListeners } from "@/features/app-settings/core/appSettingsListeners";
 import { setupProjectCreationListeners } from "@/features/create-project/core/listeners/projectCreationListeners";
 import { setupSupportChatListeners } from "@/features/support/core/supportChatListeners";
 
-import { rootReducer } from "./rootReducer";
-import { AppDependencies, AppDispatch, RootState } from "./store";
+import type { rootReducer } from "./rootReducer";
+import type { AppDependencies, AppDispatch, RootState } from "./store";
 
 type AppListenerMiddlewareInstance = ListenerMiddlewareInstance<
   ReturnType<typeof rootReducer>,

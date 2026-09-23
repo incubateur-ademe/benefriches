@@ -1,7 +1,7 @@
-import { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
-import { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
-import { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
-import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
+import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
+import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
+import type { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { getLabelForBuildingsConstructionExpense } from "@/shared/core/urbanProject";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalImpactMetricKeyName) => {

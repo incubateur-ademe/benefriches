@@ -1,4 +1,5 @@
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 
 export type Grade = "A" | "B" | "C" | "D" | "E";
 

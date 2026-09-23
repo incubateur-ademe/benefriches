@@ -1,6 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ReactNode, RefObject } from "react";
-import { DevelopmentPlanType } from "shared";
+import type { ReactNode, RefObject } from "react";
+import type { DevelopmentPlanType } from "shared";
 
 import { routes } from "@/app/router";
 import useDuplicateProject from "@/shared/views/project/useDuplicateProject";

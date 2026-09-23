@@ -1,7 +1,8 @@
-import { GetSiteImpactsDto } from "../../api-dtos";
+import type { GetSiteImpactsDto } from "../../api-dtos";
 import { convertCarbonToCO2eq } from "../../co2eq";
 import { typedObjectEntries } from "../../object-entries";
 import { roundToInteger, sumList, sumListWithKey } from "../../services";
+import type { SoilsCarbonStorage, SoilsDistribution } from "../../soils";
 import {
   isForest,
   isGreenSoil,
@@ -11,8 +12,6 @@ import {
   isSurfaceWithEcosystemBenefits,
   isSurfaceWithPermanentVegetation,
   isWetLand,
-  SoilsCarbonStorage,
-  SoilsDistribution,
   sumSoilsSurfaceAreasWhere,
 } from "../../soils";
 import {
@@ -25,16 +24,14 @@ import {
   computeWaterCycleMonetaryValue,
   computeWaterRegulationMonetaryValue,
 } from "../../soils/impacts/natureConservationYearlyMonetaryValue";
-import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
-import {
-  AgriculturalOperationActivity,
-  computeAgriculturalOperationEtpFromSurface,
-} from "../agricultural-operation";
-import { SiteNature } from "../site";
-import { SiteYearlyExpense } from "../yearlyExpenses";
-import { SiteYearlyIncome } from "../yearlyIncome";
-import {
+import type { AgriculturalOperationActivity } from "../agricultural-operation";
+import { computeAgriculturalOperationEtpFromSurface } from "../agricultural-operation";
+import type { SiteNature } from "../site";
+import type { SiteYearlyExpense } from "../yearlyExpenses";
+import type { SiteYearlyIncome } from "../yearlyIncome";
+import type {
   FricheCostsIndirectEconomicImpacts,
   SiteStatuQuoEconomicImpact,
   SiteStatuQuoImpactMetric,

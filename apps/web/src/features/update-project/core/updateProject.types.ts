@@ -1,7 +1,7 @@
+import type { ReconversionProjectUpdatePropsDto } from "shared";
 import {
   addressSchema,
   createReconversionProjectSchema,
-  ReconversionProjectUpdatePropsDto,
   siteNatureSchema,
   soilTypeSchema,
   surfaceAreaSchema,

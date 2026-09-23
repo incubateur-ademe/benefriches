@@ -1,12 +1,13 @@
 import { createContext } from "react";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
-import { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
-import { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
-import { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
-import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
-import { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
+import type { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
+import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
+import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
+import type { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 
+import type { SectionCode, DetailsCode } from "./impactModalUrlCodes";
 import {
   SECTION_CODES,
   SECTION_CODES_REVERSE,
@@ -15,8 +16,6 @@ import {
   SOCIO_ECO_DETAILS_CODES,
   SOCIAL_DETAILS_CODES,
   ENVIRONMENTAL_DETAILS_CODES,
-  SectionCode,
-  DetailsCode,
   SOCIO_ECO_DETAILS_CODES_REVERSE,
   SOCIAL_DETAILS_CODES_REVERSE,
   ENVIRONMENTAL_DETAILS_CODES_REVERSE,

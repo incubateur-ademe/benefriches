@@ -1,4 +1,4 @@
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { expressSiteDisclaimerHidden } from "@/features/analytics/core/analyticsEvents";

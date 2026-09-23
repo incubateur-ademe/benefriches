@@ -1,8 +1,8 @@
-import { FinancialAssistanceRevenue, typedObjectEntries } from "shared";
+import type { FinancialAssistanceRevenue } from "shared";
+import { typedObjectEntries } from "shared";
 
-import ProjectFinancialAssistanceRevenueForm, {
-  FormValues,
-} from "./ProjectFinancialAssistanceRevenueForm";
+import type { FormValues } from "./ProjectFinancialAssistanceRevenueForm";
+import ProjectFinancialAssistanceRevenueForm from "./ProjectFinancialAssistanceRevenueForm";
 
 const mapFormValuesToFinancialAssistanceRevenues = (
   formData: FormValues,

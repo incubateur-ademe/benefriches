@@ -1,4 +1,4 @@
-import { TExpense } from "../../financial";
+import type { TExpense } from "../../financial";
 
 export type RecurringExpensePurpose = "rent" | "maintenance" | "taxes" | "other";
 

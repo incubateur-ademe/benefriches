@@ -1,6 +1,5 @@
+import type { BuildingsUseDistribution, DevelopmentPlanType } from "shared";
 import {
-  BuildingsUseDistribution,
-  DevelopmentPlanType,
   EURO_PER_SQUARE_METERS_FOR_ASBESTOS_REMOVAL,
   EURO_PER_SQUARE_METERS_FOR_DEIMPERMEABILIZATION,
   EURO_PER_SQUARE_METERS_FOR_DEMOLITION,
@@ -11,7 +10,10 @@ import {
   sumObjectValues,
 } from "shared";
 
-import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/core/projects.types";
+import type {
+  ProjectFeatures,
+  UrbanProjectFeatures,
+} from "@/features/projects/core/projects.types";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForFinancialAssistanceRevenueSource,

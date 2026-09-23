@@ -1,4 +1,4 @@
-import { Address } from "shared";
+import type { Address } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";

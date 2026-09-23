@@ -1,4 +1,4 @@
-import { MutabilityUsage } from "shared";
+import type { MutabilityUsage } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 

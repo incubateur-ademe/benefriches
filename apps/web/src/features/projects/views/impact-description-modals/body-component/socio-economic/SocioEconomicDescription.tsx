@@ -1,12 +1,9 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useContext, useMemo } from "react";
-import {
-  AggregatedReconversionProjectOnSiteImpactItemView,
-  sumListWithKey,
-  typedObjectEntries,
-} from "shared";
+import type { AggregatedReconversionProjectOnSiteImpactItemView } from "shared";
+import { sumListWithKey, typedObjectEntries } from "shared";
 
-import { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { groupIndirectEconomicImpactsByBearerAndCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import {

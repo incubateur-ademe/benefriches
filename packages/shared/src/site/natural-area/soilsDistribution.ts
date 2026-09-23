@@ -1,5 +1,5 @@
-import { SoilsDistribution } from "../../soils";
-import { NaturalAreaType } from "./naturalAreaType";
+import type { SoilsDistribution } from "../../soils";
+import type { NaturalAreaType } from "./naturalAreaType";
 
 export function getSoilsDistributionForNaturalAreaType(
   surfaceArea: number,

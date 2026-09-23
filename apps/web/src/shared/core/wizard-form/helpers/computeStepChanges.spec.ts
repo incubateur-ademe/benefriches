@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { AnswerStepHandlerRegistry, StepInvalidationRule } from "../stepHandler.type";
+import type { AnswerStepHandlerRegistry, StepInvalidationRule } from "../stepHandler.type";
 import { computeStepChanges } from "./computeStepChanges";
 
 type TestStepId = "STEP_A" | "STEP_B" | "STEP_C" | "STEP_D" | "STEP_NEXT";

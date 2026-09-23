@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { SurfaceAreaDistribution, SurfaceAreaDistributionJson, typedObjectEntries } from "shared";
+import type { SurfaceAreaDistributionJson } from "shared";
+import { SurfaceAreaDistribution, typedObjectEntries } from "shared";
 
 import {
   formatPercentage,

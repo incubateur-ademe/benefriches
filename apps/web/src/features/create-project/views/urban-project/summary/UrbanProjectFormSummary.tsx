@@ -1,16 +1,11 @@
-import {
-  ReconversionProjectSoilsDistribution,
-  roundToInteger,
-  sumListWithKey,
-  sumObjectValues,
-  typedObjectEntries,
-} from "shared";
+import type { ReconversionProjectSoilsDistribution } from "shared";
+import { roundToInteger, sumListWithKey, sumObjectValues, typedObjectEntries } from "shared";
 
-import { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
-import { ProjectStepGroups } from "@/features/create-project/core/urban-project/stepperConfig";
+import type { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
+import type { ProjectStepGroups } from "@/features/create-project/core/urban-project/stepperConfig";
 import { getLabelForUrbanProjectUse } from "@/features/create-project/core/urban-project/urbanProject";
 import { getLabelForSpace } from "@/features/create-project/core/urban-project/urbanProject";
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { getLabelForDevelopmentPlanCategory } from "@/features/create-project/views/projectTypeLabelMapping";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
@@ -21,9 +16,8 @@ import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLin
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 import { getSummarySectionProps } from "@/shared/views/components/FeaturesList/summarySectionProps";
-import WizardFormLayout, {
-  WizardFormLayoutProps,
-} from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import type { WizardFormLayoutProps } from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import UrbanProjectExpensesSection from "./UrbanProjectExpensesSection";
 import UrbanProjectRevenuesSection from "./UrbanProjectRevenuesSection";

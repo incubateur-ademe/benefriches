@@ -1,11 +1,10 @@
-import {
+import type {
   FricheActivity,
   GetReconversionProjectImpactsResultDto,
-  isLocalAuthority,
   ReconversionStakeholders,
   SiteNature,
-  sumListWithKey,
 } from "shared";
+import { isLocalAuthority, sumListWithKey } from "shared";
 
 import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 import { getPercentageDifference } from "@/shared/core/percentage/percentage";

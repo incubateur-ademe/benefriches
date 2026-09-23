@@ -1,12 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
-import {
-  getDefaultScheduleForProject,
-  ProjectSchedule,
-  ProjectScheduleBuilder,
-  SoilsDistribution,
-} from "shared";
+import type { ProjectSchedule, SoilsDistribution } from "shared";
+import { getDefaultScheduleForProject, ProjectScheduleBuilder } from "shared";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
 import { createWizardFormSelectors } from "../project-form/projectForm.selectors";
 import { ReadStateHelper } from "./helpers/readState";

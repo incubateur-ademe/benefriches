@@ -1,5 +1,5 @@
 import DsfrRadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
-import { ChangeEventHandler, ReactNode } from "react";
+import type { ChangeEventHandler, ReactNode } from "react";
 
 type Props = {
   options: { value: string; label: string; hintText?: ReactNode }[];

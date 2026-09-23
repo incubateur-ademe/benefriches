@@ -1,9 +1,9 @@
-import { GetSiteImpactsDto } from "../../api-dtos";
-import { SiteImpactsDataView } from "../../reconversion-project-impacts";
+import type { GetSiteImpactsDto } from "../../api-dtos";
+import type { SiteImpactsDataView } from "../../reconversion-project-impacts";
 import { roundToInteger } from "../../services";
-import { SoilsCarbonStorage } from "../../soils";
+import type { SoilsCarbonStorage } from "../../soils";
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { SiteStatuQuoImpacts } from "./impacts.types";
+import type { SiteStatuQuoImpacts } from "./impacts.types";
 import { getSiteStatuQuoIndirectsImpacts } from "./siteIndirectImpacts";
 import { getSiteStatuQuoOperatingEconomicBalance } from "./siteOperatingEconomicBalance";
 

@@ -1,12 +1,8 @@
 import * as Highcharts from "highcharts";
 import { HighchartsReact } from "highcharts-react-official";
 import { useRef } from "react";
-import {
-  SiteYearlyExpense,
-  SiteYearlyExpensePurpose,
-  SiteYearlyIncome,
-  sumListWithKey,
-} from "shared";
+import type { SiteYearlyExpense, SiteYearlyExpensePurpose, SiteYearlyIncome } from "shared";
+import { sumListWithKey } from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/core/steps/site-management/expenses.functions";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";

@@ -1,4 +1,5 @@
-import { AppDependencies, createStore, RootState } from "@/app/store/store";
+import type { AppDependencies, RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState } from "../projectImpacts.reducer";

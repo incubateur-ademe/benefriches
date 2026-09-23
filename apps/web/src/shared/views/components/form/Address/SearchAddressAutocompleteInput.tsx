@@ -1,5 +1,5 @@
-import { InputProps } from "@codegouvfr/react-dsfr/Input";
-import { ChangeEvent } from "react";
+import type { InputProps } from "@codegouvfr/react-dsfr/Input";
+import type { ChangeEvent } from "react";
 import type { Address } from "shared";
 
 import type { AddressType, AddressWithBanId } from "@/shared/core/gateways/AddressSearchGateway";

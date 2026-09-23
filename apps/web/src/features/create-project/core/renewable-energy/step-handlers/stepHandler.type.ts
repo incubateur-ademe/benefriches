@@ -1,5 +1,5 @@
 import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
-import {
+import type {
   AnswerStepHandler as GenericAnswerStepHandler,
   InfoStepHandler as GenericInfoStepHandler,
   StepHandlerParams as GenericStepHandlerParams,

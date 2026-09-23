@@ -1,6 +1,6 @@
 import type { z } from "zod";
 
-import { AnswerStepHandlerMap, NavigationHandlerRegistry } from "./handlerRegistry.types";
+import type { AnswerStepHandlerMap, NavigationHandlerRegistry } from "./handlerRegistry.types";
 
 export type StepData<T> = {
   completed: boolean;

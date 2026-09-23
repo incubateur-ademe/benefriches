@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { TRevenue } from "../../financial";
+import type { TRevenue } from "../../financial";
 
 export const financialAssistanceRevenueSourceSchema = z.enum([
   "local_or_regional_authority_participation",

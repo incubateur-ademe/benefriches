@@ -1,8 +1,9 @@
-import { AggregatedProjectImpactMetric, DevelopmentPlanType, sumListWithKey } from "shared";
+import type { AggregatedProjectImpactMetric, DevelopmentPlanType } from "shared";
+import { sumListWithKey } from "shared";
 
 import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 
-import { ExtractDetailsKeyName } from "./group-impacts/extractDetailsKeyName.type";
+import type { ExtractDetailsKeyName } from "./group-impacts/extractDetailsKeyName.type";
 import { filterNonEmptyImpacts } from "./group-impacts/filterNonEmpty";
 import { findTotalByName } from "./group-impacts/findTotalByName";
 import { groupImpactsByName } from "./group-impacts/groupImpactsByName";

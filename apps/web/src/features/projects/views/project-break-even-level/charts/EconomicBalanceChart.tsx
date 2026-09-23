@@ -1,8 +1,8 @@
-import { Options } from "highcharts";
+import type { Options } from "highcharts";
 import { useId, useMemo } from "react";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
-import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
+import type { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";

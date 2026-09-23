@@ -1,7 +1,7 @@
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import Display from "@codegouvfr/react-dsfr/Display/Display";
 import { Footer } from "@codegouvfr/react-dsfr/Footer";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
 import { routes } from "@/app/router";
 

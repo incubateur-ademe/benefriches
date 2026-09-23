@@ -1,9 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import {
-  buildStepGroupsFromSequence,
-  StepGroups,
-} from "@/shared/core/wizard-form/helpers/stepGroups";
+import type { StepGroups } from "@/shared/core/wizard-form/helpers/stepGroups";
+import { buildStepGroupsFromSequence } from "@/shared/core/wizard-form/helpers/stepGroups";
 
 import { createSiteFormRootSelectors } from "../selectors/createSite.selectors";
 import type { SiteFormLens } from "../siteForm.lens";

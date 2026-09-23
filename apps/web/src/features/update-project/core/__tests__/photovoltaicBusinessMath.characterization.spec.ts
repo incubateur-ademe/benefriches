@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import { rootReducer } from "@/app/store/rootReducer";
 import type { RootState } from "@/app/store/store";
 import { createStore } from "@/app/store/store";
-import { SoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
-import { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
+import type { SoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
+import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
@@ -20,7 +20,7 @@ import {
   selectPhotovoltaicSurfaceViewData,
   selectPVYearlyProjectedRevenueViewData,
 } from "../updateProject.selectors";
-import { UpdateProjectView } from "../updateProject.types";
+import type { UpdateProjectView } from "../updateProject.types";
 
 /**
  * Characterization tests pinning today's exact PV business-math outputs on the UPDATE side

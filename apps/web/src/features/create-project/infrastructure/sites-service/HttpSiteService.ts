@@ -5,8 +5,8 @@ import {
   type TenantStructureType,
 } from "shared";
 
-import { GetSitesByIdGateway } from "../../core/actions/reconversionProjectCreationInitiated.action";
-import { ProjectSite } from "../../core/project.types";
+import type { GetSitesByIdGateway } from "../../core/actions/reconversionProjectCreationInitiated.action";
+import type { ProjectSite } from "../../core/project.types";
 
 const mapDtoToProjectSite = (dto: GetSiteFeaturesResponseDto): ProjectSite => ({
   ...dto,

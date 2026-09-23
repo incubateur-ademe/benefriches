@@ -4,7 +4,7 @@ import { routes, useRoute } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 import TabItem from "@/shared/views/components/TabItem/TabItem";
 
-import { ProjectRoute } from "../ProjectPage";
+import type { ProjectRoute } from "../ProjectPage";
 
 const ProjectPageTabs = ({ useBetaAmenageScoreView }: { useBetaAmenageScoreView: boolean }) => {
   const route = useRoute() as ProjectRoute;

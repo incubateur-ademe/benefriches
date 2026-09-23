@@ -1,6 +1,7 @@
-import { lazy, ReactNode } from "react";
+import type { ReactNode } from "react";
+import { lazy } from "react";
 
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 
 const BuildingsIntroduction = lazy(

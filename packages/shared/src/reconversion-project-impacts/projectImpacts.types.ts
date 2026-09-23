@@ -1,14 +1,14 @@
 import { LOCAL_AUTHORITIES } from "../local-authority";
-import {
+import type {
   FinancialAssistanceRevenue,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
 } from "../reconversion-projects";
-import { BuildingsConstructionExpense } from "../reconversion-projects/urban-project/buildingsConstructionExpenses";
-import { SiteStakeholderStructureType } from "../site";
-import { SoilType } from "../soils";
-import { DevelopmentPlanInstallationExpenses } from "./format-impacts/types";
+import type { BuildingsConstructionExpense } from "../reconversion-projects/urban-project/buildingsConstructionExpenses";
+import type { SiteStakeholderStructureType } from "../site";
+import type { SoilType } from "../soils";
+import type { DevelopmentPlanInstallationExpenses } from "./format-impacts/types";
 
 // ECONOMIC BALANCES
 export type ProjectOperatingEconomicBalanceItem =

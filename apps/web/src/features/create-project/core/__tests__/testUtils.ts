@@ -1,11 +1,12 @@
-import { AppDependencies, createStore, RootState } from "@/app/store/store";
+import type { AppDependencies, RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
-import { User } from "@/features/onboarding/core/user";
+import type { User } from "@/features/onboarding/core/user";
 import { initialState } from "@/features/onboarding/core/user.reducer";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState } from "../createProject.reducer";
-import { ProjectSite } from "../project.types";
+import type { ProjectSite } from "../project.types";
 
 export class StoreBuilder {
   preloadedRootState: Pick<RootState, "projectCreation" | "currentUser" | "appSettings"> = {

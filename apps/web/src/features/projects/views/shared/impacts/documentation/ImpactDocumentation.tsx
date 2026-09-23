@@ -1,6 +1,8 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 import Accordion from "@/shared/views/components/Accordion/Accordion";
 import Badge from "@/shared/views/components/Badge/Badge";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";

@@ -1,12 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { AnswerStepHandlerRegistry } from "../stepHandler.type";
-import {
-  ApplyStepChangesConfig,
-  applyStepChanges,
-  MutableWizardFormSubState,
-} from "./applyStepChanges";
-import { StepRegistry } from "./navigateToStep";
+import type { AnswerStepHandlerRegistry } from "../stepHandler.type";
+import type { ApplyStepChangesConfig, MutableWizardFormSubState } from "./applyStepChanges";
+import { applyStepChanges } from "./applyStepChanges";
+import type { StepRegistry } from "./navigateToStep";
 
 // Group GROUP_A: STEP_A1 -> STEP_A2. Group GROUP_B: STEP_B1.
 type TestStepId = "STEP_A1" | "STEP_A2" | "STEP_B1";

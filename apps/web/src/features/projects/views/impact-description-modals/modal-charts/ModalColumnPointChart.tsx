@@ -1,5 +1,6 @@
-import { HighchartsReact } from "highcharts-react-official";
-import { HTMLAttributes, useId, useRef } from "react";
+import type { HighchartsReact } from "highcharts-react-official";
+import type { HTMLAttributes } from "react";
+import { useId, useRef } from "react";
 
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 import classNames from "@/shared/views/clsx";
@@ -7,7 +8,8 @@ import ExportableChart from "@/shared/views/components/Charts/ExportableChart";
 
 import ModalColumnChartTooltip from "./ModalColumnChartTooltip";
 import { getBarChartOptions } from "./modalBarChartOptions";
-import { formatModalBarChartValue, ValueFormat } from "./modalBarChartValueFormat";
+import type { ValueFormat } from "./modalBarChartValueFormat";
+import { formatModalBarChartValue } from "./modalBarChartValueFormat";
 import { useBarChartCustomTooltip } from "./useBarChartCustomTooltip";
 
 type Props = {

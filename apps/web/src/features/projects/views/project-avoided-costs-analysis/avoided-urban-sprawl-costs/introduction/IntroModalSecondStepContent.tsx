@@ -1,6 +1,6 @@
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
-import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
+import type { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 import DsfrDialogTitle from "@/shared/views/components/Dialog/DsfrDialogTitle";
 import { getScenarioPictoUrl } from "@/shared/views/components/ProjectTile/scenarioType";
 import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";

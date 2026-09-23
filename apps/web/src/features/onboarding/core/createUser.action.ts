@@ -3,7 +3,8 @@ import { v4 as uuid } from "uuid";
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 import { initCurrentUser } from "./initCurrentUser.action";
-import { User, userSchema } from "./user";
+import type { User } from "./user";
+import { userSchema } from "./user";
 
 type CreateUserProps = Omit<User, "id">;
 

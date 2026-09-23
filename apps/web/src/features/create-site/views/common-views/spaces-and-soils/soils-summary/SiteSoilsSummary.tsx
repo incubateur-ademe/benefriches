@@ -1,12 +1,14 @@
 import { useMemo } from "react";
-import {
-  convertSquareMetersToHectares,
+import type {
   SoilsDistribution,
   SiteNature,
   FricheActivity,
   NaturalAreaType,
   UrbanZoneType,
   AgriculturalOperationActivity,
+} from "shared";
+import {
+  convertSquareMetersToHectares,
   getFricheActivityShortLabel,
   getShortLabelForAgriculturalOperationActivity,
   getLabelForNaturalAreaType,

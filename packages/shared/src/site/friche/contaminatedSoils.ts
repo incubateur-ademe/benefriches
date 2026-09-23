@@ -1,4 +1,4 @@
-import { FricheActivity } from "./fricheActivity";
+import type { FricheActivity } from "./fricheActivity";
 
 export const computeDefaultDecontaminatedSurfaceArea = (contaminatedSoilSurface: number): number =>
   contaminatedSoilSurface * 0.25;

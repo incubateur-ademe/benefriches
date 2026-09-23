@@ -26,7 +26,7 @@ import { MunicipalityDataService } from "@/shared/infrastructure/administrative-
 import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
 
-import { AppDependencies } from "./store";
+import type { AppDependencies } from "./store";
 
 export const appDependencies: AppDependencies = {
   appSettingsService: new LocalStorageAppSettings(),

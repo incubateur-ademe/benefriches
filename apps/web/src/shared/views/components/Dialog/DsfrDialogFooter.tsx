@@ -1,5 +1,6 @@
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
-import ButtonsGroup, { ButtonsGroupProps } from "@codegouvfr/react-dsfr/ButtonsGroup";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonsGroupProps } from "@codegouvfr/react-dsfr/ButtonsGroup";
+import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { useContext } from "react";
 
 import classNames from "../../clsx";

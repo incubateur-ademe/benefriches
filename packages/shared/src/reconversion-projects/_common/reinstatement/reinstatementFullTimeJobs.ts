@@ -1,4 +1,4 @@
-import { ReinstatementExpense } from "..";
+import type { ReinstatementExpense } from "..";
 
 export const REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR: Partial<
   Record<ReinstatementExpense["purpose"], number>

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
+import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
 import { UrbanProjectReinstatementExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
-import { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 describe("UrbanProjectReinstatementExpensesHandler", () => {
   describe("getNextStepId", () => {

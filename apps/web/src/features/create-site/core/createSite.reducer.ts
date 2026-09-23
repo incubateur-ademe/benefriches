@@ -3,10 +3,10 @@ import reduceReducers from "reduce-reducers";
 import type { SiteNature } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { RootState } from "@/app/store/store";
-import { SiteCreationData } from "@/features/create-site/core/siteFoncier.types";
-import { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
-import { WizardFormSubState } from "@/shared/core/wizard-form/wizardForm.reducer";
+import type { RootState } from "@/app/store/store";
+import type { SiteCreationData } from "@/features/create-site/core/siteFoncier.types";
+import type { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import type { WizardFormSubState } from "@/shared/core/wizard-form/wizardForm.reducer";
 
 import { stepReverted } from "./actions/revert.action";
 import { customSiteCreationReducer } from "./custom/custom.reducer";
@@ -17,8 +17,8 @@ import type {
   SiteCreationCustomStep,
 } from "./custom/customSteps";
 import { demoSiteCreationReducer } from "./demo/demoFactory";
-import { AnswersByStep, DemoAnswerStepId, DemoSiteCreationStep } from "./demo/demoSteps";
-import { DemoStepsState } from "./demo/stepHandlerRegistry";
+import type { AnswersByStep, DemoAnswerStepId, DemoSiteCreationStep } from "./demo/demoSteps";
+import type { DemoStepsState } from "./demo/stepHandlerRegistry";
 import { registerFinalHandlers } from "./steps/final/final.handlers";
 import { registerIntroductionHandlers } from "./steps/introduction/introduction.handlers";
 import { surfaceAreaInputModeUpdated } from "./steps/spaces/spaces.actions";

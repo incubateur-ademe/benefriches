@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Route } from "type-route";
+import type { Route } from "type-route";
 
-import { routes, session, useRoute } from "@/app/router";
+import type { routes } from "@/app/router";
+import { session, useRoute } from "@/app/router";
 
 type NavigationAction = Route<typeof routes>["action"];
 

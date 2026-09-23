@@ -1,4 +1,4 @@
-import { SoilsDistribution } from "shared";
+import type { SoilsDistribution } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";

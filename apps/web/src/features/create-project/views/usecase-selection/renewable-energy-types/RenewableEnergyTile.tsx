@@ -1,5 +1,5 @@
 import { getLabelForRenewableEnergyProductionType } from "@/features/create-project/core/project-form/renewableEnergyLabelMapping";
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
+import type { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 

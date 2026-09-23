@@ -1,6 +1,6 @@
-import { SoilsDistribution, SoilType } from "../../soils";
+import type { SoilsDistribution, SoilType } from "../../soils";
 import { SurfaceAreaDistribution } from "../../surface-area";
-import { FricheActivity } from "./fricheActivity";
+import type { FricheActivity } from "./fricheActivity";
 
 const FRICHE_ACTIVITY_SOILS_DISTRIBUTION_CONFIGS: Record<FricheActivity, SoilsDistribution> = {
   AGRICULTURE: {

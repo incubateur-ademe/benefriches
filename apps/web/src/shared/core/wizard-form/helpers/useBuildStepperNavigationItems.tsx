@@ -3,7 +3,7 @@ import { typedObjectEntries } from "shared";
 
 import type { StepVariant } from "@/shared/core/stepVariant.types";
 
-import { StepGroups, StepToGroupMapping } from "./stepGroups";
+import type { StepGroups, StepToGroupMapping } from "./stepGroups";
 
 type UseBuildStepperNavigationItemsProps<
   TStepId extends string,

@@ -1,4 +1,4 @@
-import {
+import type {
   BuildingsUseDistribution,
   FinancialAssistanceRevenue,
   ReconversionProjectSoilsDistribution,
@@ -6,8 +6,8 @@ import {
   RecurringRevenue,
   ReinstatementExpense,
 } from "../reconversion-projects";
-import { BuildingsConstructionExpense } from "../reconversion-projects/urban-project/buildingsConstructionExpenses";
-import { DevelopmentPlanInstallationExpenses } from "./format-impacts/types";
+import type { BuildingsConstructionExpense } from "../reconversion-projects/urban-project/buildingsConstructionExpenses";
+import type { DevelopmentPlanInstallationExpenses } from "./format-impacts/types";
 
 export type DevelopmentPlanFeatures =
   | {

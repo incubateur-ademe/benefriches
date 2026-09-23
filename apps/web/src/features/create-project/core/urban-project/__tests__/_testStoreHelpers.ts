@@ -1,8 +1,10 @@
-import { AppDependencies, createStore, RootState } from "@/app/store/store";
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { AppDependencies, RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
+import type { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { getInitialState, ProjectCreationState } from "../../createProject.reducer";
+import type { ProjectCreationState } from "../../createProject.reducer";
+import { getInitialState } from "../../createProject.reducer";
 import { mockSiteData } from "./_siteData.mock";
 
 export const getCurrentStep = (store: { getState: () => RootState }): UrbanProjectCreationStep =>

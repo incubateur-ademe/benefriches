@@ -1,12 +1,13 @@
 import { useEffect, useMemo } from "react";
-import { LocalAuthority } from "shared";
+import type { LocalAuthority } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
 import { createUser } from "@/features/onboarding/core/createUser.action";
 import { MunicipalityDataService } from "@/shared/infrastructure/administrative-division-service/municipalityDataService";
 
-import CreateUserForm, { FormValues } from "./CreateUserForm";
+import type { FormValues } from "./CreateUserForm";
+import CreateUserForm from "./CreateUserForm";
 
 export type AdministrativeDivision = {
   code: string;

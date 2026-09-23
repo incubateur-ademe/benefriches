@@ -1,9 +1,11 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
-import BaseStepperStep, {
+import type {
   BaseStepperStepProps,
-  SHARED_STYLES,
   VariantStyleConfig,
+} from "@/shared/views/layout/WizardFormLayout/FormBaseStepperStep";
+import BaseStepperStep, {
+  SHARED_STYLES,
 } from "@/shared/views/layout/WizardFormLayout/FormBaseStepperStep";
 
 type UpdateStepperStepProps = Omit<BaseStepperStepProps, "variantStyles" | "as">;

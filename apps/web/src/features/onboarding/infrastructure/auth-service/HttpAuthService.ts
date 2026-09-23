@@ -1,4 +1,4 @@
-import { AuthenticationGateway } from "../../core/AuthenticationGateway";
+import type { AuthenticationGateway } from "../../core/AuthenticationGateway";
 
 export class HttpAuthService implements AuthenticationGateway {
   async requestLink(email: string, postLoginRedirectTo: string | undefined): Promise<void> {

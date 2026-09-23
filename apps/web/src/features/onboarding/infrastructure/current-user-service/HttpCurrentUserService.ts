@@ -1,7 +1,7 @@
 import { getCurrentUserResponseDtoSchema } from "shared";
 
-import { CurrentUserGateway } from "../../core/initCurrentUser.action";
-import { AuthenticatedUser } from "../../core/user";
+import type { CurrentUserGateway } from "../../core/initCurrentUser.action";
+import type { AuthenticatedUser } from "../../core/user";
 
 export class HttpCurrentUserService implements CurrentUserGateway {
   async get(): Promise<AuthenticatedUser | undefined> {

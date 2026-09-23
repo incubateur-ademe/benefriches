@@ -1,4 +1,4 @@
-import { AppSettings } from "./appSettings";
+import type { AppSettings } from "./appSettings";
 
 export interface AppSettingsGateway {
   getAll(): AppSettings;

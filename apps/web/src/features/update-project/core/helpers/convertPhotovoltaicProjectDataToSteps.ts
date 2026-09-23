@@ -1,4 +1,4 @@
-import {
+import type {
   FinancialAssistanceRevenue,
   PhotovoltaicInstallationExpense,
   RecurringExpense,
@@ -6,14 +6,16 @@ import {
   ReinstatementExpense,
   SoilsDistribution,
   SoilType,
+} from "shared";
+import {
   canSiteAccomodatePhotovoltaicPanels,
   computeDefaultDecontaminatedSurfaceArea,
 } from "shared";
 
-import { ProjectStakeholder } from "@/features/create-project/core/project.types";
-import { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
+import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
+import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 
-import { UpdateProjectView } from "../updateProject.types";
+import type { UpdateProjectView } from "../updateProject.types";
 
 const soilsDistributionArrayToObject = (
   soilsDistribution: UpdateProjectView["projectData"]["soilsDistribution"],

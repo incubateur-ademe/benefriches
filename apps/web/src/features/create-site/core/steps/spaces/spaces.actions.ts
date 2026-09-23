@@ -1,4 +1,4 @@
-import { SoilsDistribution, SoilType } from "shared";
+import type { SoilsDistribution, SoilType } from "shared";
 
 import { createSiteCreationAction, createStepCompletedAction } from "../../actions/actionsUtils";
 

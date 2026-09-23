@@ -1,5 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import type {
   AgriculturalOperationActivity,
   FricheActivity,
@@ -11,9 +11,8 @@ import type {
 } from "shared";
 
 import type { SiteFeatures } from "@/features/sites/core/site.types";
-import SiteFeaturesList, {
-  SiteFeaturesSectionId,
-} from "@/features/sites/views/features/SiteFeaturesList";
+import type { SiteFeaturesSectionId } from "@/features/sites/views/features/SiteFeaturesList";
+import SiteFeaturesList from "@/features/sites/views/features/SiteFeaturesList";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 

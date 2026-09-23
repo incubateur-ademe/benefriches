@@ -1,7 +1,7 @@
-import { MDXComponents } from "mdx/types";
-import { LazyExoticComponent } from "react";
+import type { MDXComponents } from "mdx/types";
+import type { LazyExoticComponent } from "react";
 
-import { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 
 export type ContentComponentType = React.ComponentType<{
   components?: MDXComponents;

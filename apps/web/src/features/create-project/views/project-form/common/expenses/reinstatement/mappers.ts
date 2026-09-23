@@ -1,11 +1,11 @@
-import {
+import type {
   ReinstatementExpense,
   ReinstatementExpensePurpose,
   ComputedReinstatementExpenses,
-  typedObjectKeys,
 } from "shared";
+import { typedObjectKeys } from "shared";
 
-import { FormValues } from "./ReinstatementExpensesForm";
+import type { FormValues } from "./ReinstatementExpensesForm";
 
 const formValuesExpensesMap = {
   asbestosRemovalAmount: "asbestos_removal",

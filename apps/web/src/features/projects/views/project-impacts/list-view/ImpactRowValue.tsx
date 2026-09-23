@@ -2,11 +2,12 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
-import { HtmlHTMLAttributes, MouseEvent } from "react";
+import type { HtmlHTMLAttributes, MouseEvent } from "react";
 
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 import classNames from "@/shared/views/clsx";
 
+import type { ImpactFormatType } from "../../shared/formatImpactValue";
 import {
   formatCO2Impact,
   formatDefaultImpact,
@@ -14,7 +15,6 @@ import {
   formatMonetaryImpact,
   formatSurfaceAreaImpact,
   formatTimeImpact,
-  ImpactFormatType,
 } from "../../shared/formatImpactValue";
 
 export type ImpactRowValueProps = {

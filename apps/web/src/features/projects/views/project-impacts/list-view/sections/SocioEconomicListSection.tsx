@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/impact-description-modals/ImpactModalDescriptionContext";
 
 import { getSocioEconomicImpactLabel } from "../../../shared/getImpactLabel";

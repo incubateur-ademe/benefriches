@@ -1,6 +1,7 @@
-import { SegmentedControl, SegmentedControlProps } from "@codegouvfr/react-dsfr/SegmentedControl";
+import type { SegmentedControlProps } from "@codegouvfr/react-dsfr/SegmentedControl";
+import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
 import { useState } from "react";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
 import useExportConfig from "@/shared/views/charts/useExportConfig";
 

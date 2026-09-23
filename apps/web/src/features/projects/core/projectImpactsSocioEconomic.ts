@@ -1,4 +1,4 @@
-import {
+import type {
   GetReconversionProjectImpactsResultDto,
   ReconversionStakeholders,
   AggregatedReconversionIndirectEconomicImpactsDataView,

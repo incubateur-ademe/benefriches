@@ -1,6 +1,6 @@
 import { Text, View } from "@react-pdf/renderer";
 
-import { ImpactFormatType } from "../../../shared/formatImpactValue";
+import type { ImpactFormatType } from "../../../shared/formatImpactValue";
 import {
   formatCO2ImpactPdf,
   formatDefaultImpactPdf,

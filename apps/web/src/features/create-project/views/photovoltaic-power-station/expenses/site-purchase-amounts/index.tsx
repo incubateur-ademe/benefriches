@@ -1,8 +1,7 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
-import SitePurchaseAmountsForm, {
-  FormValues,
-} from "@/features/create-project/views/project-form/common/expenses/site-purchase-amounts/SitePurchaseAmountsForm";
+import type { FormValues } from "@/features/create-project/views/project-form/common/expenses/site-purchase-amounts/SitePurchaseAmountsForm";
+import SitePurchaseAmountsForm from "@/features/create-project/views/project-form/common/expenses/site-purchase-amounts/SitePurchaseAmountsForm";
 
 function SitePurchaseAmountsContainer() {
   const { onBack, onRequestStepCompletion, selectSitePurchaseAmounts } = useRenewableEnergyForm();

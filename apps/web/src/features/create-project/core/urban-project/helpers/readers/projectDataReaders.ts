@@ -1,4 +1,5 @@
-import { BuildingsConstructionExpense, typedObjectEntries } from "shared";
+import type { BuildingsConstructionExpense } from "shared";
+import { typedObjectEntries } from "shared";
 
 import {
   DEFAULT_FUTURE_SITE_OWNER,

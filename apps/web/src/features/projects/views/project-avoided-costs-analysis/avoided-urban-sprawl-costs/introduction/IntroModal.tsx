@@ -1,8 +1,8 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useState } from "react";
-import { SiteImpactsDataView } from "shared";
+import type { SiteImpactsDataView } from "shared";
 
-import { ProjectImpactsState } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
+import type { ProjectImpactsState } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 import DsfrDialogContent from "@/shared/views/components/Dialog/DsfrDialogContent";
 import DsfrDialogFooter from "@/shared/views/components/Dialog/DsfrDialogFooter";
 import DsfrDialogHeader from "@/shared/views/components/Dialog/DsfrDialogHeader";

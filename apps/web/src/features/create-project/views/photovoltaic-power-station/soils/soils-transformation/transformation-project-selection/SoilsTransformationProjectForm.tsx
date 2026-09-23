@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { SoilsTransformationProject } from "shared";
+import type { SoilsTransformationProject } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";

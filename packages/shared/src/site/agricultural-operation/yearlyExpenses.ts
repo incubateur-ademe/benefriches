@@ -1,7 +1,7 @@
 import { roundTo2Digits } from "../../services";
 import { convertSquareMetersToHectares } from "../../surface-area";
-import { SiteYearlyExpense } from "../yearlyExpenses";
-import { AgriculturalOperationActivity } from "./operationActivity";
+import type { SiteYearlyExpense } from "../yearlyExpenses";
+import type { AgriculturalOperationActivity } from "./operationActivity";
 
 export const EXPENSES_EURO_PER_HECTARE_PER_YEAR = {
   CATTLE_FARMING: {

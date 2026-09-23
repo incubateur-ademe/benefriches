@@ -1,4 +1,4 @@
-import { GetCityRuralityResponseDto, LocalAuthority } from "shared";
+import type { GetCityRuralityResponseDto, LocalAuthority } from "shared";
 
 import type { AdministrativeDivisionGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 

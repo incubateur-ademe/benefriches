@@ -1,9 +1,12 @@
 import { formatCityWithPlacePreposition } from "../local-authority";
 import { capitalize } from "../services";
-import { FricheActivity, getFricheActivityLabel } from "./friche/fricheActivity";
-import { getLabelForNaturalAreaType, NaturalAreaType } from "./natural-area";
-import { SiteNature } from "./site";
-import { getLabelForUrbanZoneType, UrbanZoneType } from "./urban-zone";
+import type { FricheActivity } from "./friche/fricheActivity";
+import { getFricheActivityLabel } from "./friche/fricheActivity";
+import type { NaturalAreaType } from "./natural-area";
+import { getLabelForNaturalAreaType } from "./natural-area";
+import type { SiteNature } from "./site";
+import type { UrbanZoneType } from "./urban-zone";
+import { getLabelForUrbanZoneType } from "./urban-zone";
 
 type SiteData = {
   fricheActivity?: FricheActivity;

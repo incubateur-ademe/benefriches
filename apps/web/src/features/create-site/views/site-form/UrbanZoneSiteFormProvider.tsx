@@ -1,4 +1,5 @@
-import React, { ReactNode, useCallback, useMemo } from "react";
+import type { ReactNode } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
@@ -21,10 +22,8 @@ import {
   updateUrbanZoneFormSelectors,
 } from "@/features/update-site/core/updateSite.actions";
 
-import {
-  UrbanZoneSiteFormContext,
-  UrbanZoneSiteFormContextValue,
-} from "./UrbanZoneSiteFormContext";
+import type { UrbanZoneSiteFormContextValue } from "./UrbanZoneSiteFormContext";
+import { UrbanZoneSiteFormContext } from "./UrbanZoneSiteFormContext";
 
 type Props = {
   children: ReactNode;

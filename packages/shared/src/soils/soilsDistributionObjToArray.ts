@@ -1,6 +1,6 @@
 import { typedObjectEntries } from "../object-entries";
-import { ReconversionProjectSoilsDistribution } from "../reconversion-projects";
-import { SoilsDistribution } from "./soilDistribution";
+import type { ReconversionProjectSoilsDistribution } from "../reconversion-projects";
+import type { SoilsDistribution } from "./soilDistribution";
 
 export const soilsDistributionObjToArray = (
   soilsDistribution: SoilsDistribution,

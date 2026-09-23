@@ -1,6 +1,6 @@
-import { SiteNature } from "../../../site";
-import { SoilsDistribution } from "../../../soils";
-import { ReconversionProjectSaveDto } from "../../reconversionProjectSchemas";
+import type { SiteNature } from "../../../site";
+import type { SoilsDistribution } from "../../../soils";
+import type { ReconversionProjectSaveDto } from "../../reconversionProjectSchemas";
 
 export type SiteData = {
   id: string;

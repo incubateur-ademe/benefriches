@@ -1,13 +1,11 @@
-import {
-  BUILDINGS_ECONOMIC_ACTIVITY_USE,
+import type {
   UrbanProjectUseWithBuilding,
   ReconversionProjectSoilsDistribution,
-  sumListWithKey,
-  typedObjectEntries,
   UrbanProjectCategory,
 } from "shared";
+import { BUILDINGS_ECONOMIC_ACTIVITY_USE, sumListWithKey, typedObjectEntries } from "shared";
 
-import { UrbanProjectFeatures } from "../../core/projects.types";
+import type { UrbanProjectFeatures } from "../../core/projects.types";
 
 const PUBLIC_FACILITIES = [
   "PUBLIC_FACILITIES",

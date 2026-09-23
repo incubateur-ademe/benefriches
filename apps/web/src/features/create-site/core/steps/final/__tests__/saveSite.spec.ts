@@ -1,4 +1,4 @@
-import { Address } from "shared";
+import type { Address } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { buildUser } from "@/features/onboarding/core/user.mock";
@@ -12,7 +12,7 @@ import {
   fricheWithMinimalData,
   siteWithMinimalData,
 } from "../../../siteData.mock";
-import { SiteCreationData, SiteExpressCreationData } from "../../../siteFoncier.types";
+import type { SiteCreationData, SiteExpressCreationData } from "../../../siteFoncier.types";
 import { customSiteSaved, expressSiteSaved } from "../final.actions";
 import { selectSiteCreationResultViewData } from "../final.selectors";
 

@@ -1,5 +1,5 @@
-import { FrIconClassName } from "@codegouvfr/react-dsfr";
-import { Link } from "type-route";
+import type { FrIconClassName } from "@codegouvfr/react-dsfr";
+import type { Link } from "type-route";
 
 import classNames from "../../clsx";
 import { useIsSmallScreen } from "../../hooks/useIsSmallScreen";

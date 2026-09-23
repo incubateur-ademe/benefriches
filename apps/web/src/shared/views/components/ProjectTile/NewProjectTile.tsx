@@ -1,7 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
 import { routes } from "@/app/router";
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 
 import ProjectTile from "./ProjectTile";
 

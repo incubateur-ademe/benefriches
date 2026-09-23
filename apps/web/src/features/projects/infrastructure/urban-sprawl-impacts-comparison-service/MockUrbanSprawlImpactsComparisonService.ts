@@ -1,4 +1,4 @@
-import {
+import type {
   UrbanSprawlImpactsComparisonGateway,
   UrbanSprawlImpactsComparisonObj,
 } from "../../application/project-impacts/actions/urbanSprawlImpactsComparisonRequested.action";

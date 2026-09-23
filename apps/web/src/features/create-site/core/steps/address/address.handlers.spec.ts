@@ -1,4 +1,4 @@
-import { Address } from "shared";
+import type { Address } from "shared";
 import { describe, expect, it } from "vitest";
 
 import type { CustomStepsState } from "../../custom/customSteps";

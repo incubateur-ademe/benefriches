@@ -1,6 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Controller, useForm } from "react-hook-form";
-import { PROJECT_PHASE_VALUES, ProjectPhase } from "shared";
+import type { ProjectPhase } from "shared";
+import { PROJECT_PHASE_VALUES } from "shared";
 
 import {
   getHintTextForProjectPhase,

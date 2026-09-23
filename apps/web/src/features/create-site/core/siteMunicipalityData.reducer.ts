@@ -1,9 +1,10 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { formatLocalAuthorityName, LocalAuthority } from "shared";
+import type { LocalAuthority } from "shared";
+import { formatLocalAuthorityName } from "shared";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
-import { fetchSiteMunicipalityData } from "./actions/siteMunicipalityData.actions";
+import type { fetchSiteMunicipalityData } from "./actions/siteMunicipalityData.actions";
 import { selectSiteAddress, selectSiteOwner } from "./selectors/createSite.selectors";
 
 type LoadingState = "idle" | "loading" | "success" | "error";

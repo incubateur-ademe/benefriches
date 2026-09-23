@@ -1,4 +1,4 @@
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 
 export const WARNING_TEXT = "Cette étape est incomplète. Veuillez la compléter.";
 

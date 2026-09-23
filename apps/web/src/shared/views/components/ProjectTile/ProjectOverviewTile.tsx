@@ -1,9 +1,10 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ReactNode } from "react";
-import { DevelopmentPlanType } from "shared";
+import type { ReactNode } from "react";
+import type { DevelopmentPlanType } from "shared";
 
 import { routes } from "@/app/router";
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
 
 import ProjectTile from "./ProjectTile";

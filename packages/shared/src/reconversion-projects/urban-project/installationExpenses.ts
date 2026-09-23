@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { TExpense } from "../../financial";
+import type { TExpense } from "../../financial";
 import { roundToInteger } from "../../services";
 
 export const urbanProjectDevelopmentExpensePurposeSchema = z.enum([

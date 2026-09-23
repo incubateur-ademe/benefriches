@@ -1,10 +1,10 @@
 import { createAction } from "@reduxjs/toolkit";
-import { DevelopmentPlanCategory, ProjectPhase } from "shared";
+import type { DevelopmentPlanCategory, ProjectPhase } from "shared";
 
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
+import type { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 
 import { makeProjectCreationActionType } from "../actions/actionsUtils";
-import { UseCaseSelectionStep } from "./useCaseSelection.reducer";
+import type { UseCaseSelectionStep } from "./useCaseSelection.reducer";
 
 const makeUseCaseSelectionProjectCreationActionType = (actionName: string) => {
   return makeProjectCreationActionType(`useCaseSelection/${actionName}`);

@@ -1,8 +1,9 @@
-import { ReactNode } from "react";
-import { GetReconversionProjectImpactsResultDto } from "shared";
+import type { ReactNode } from "react";
+import type { GetReconversionProjectImpactsResultDto } from "shared";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 
 import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
 

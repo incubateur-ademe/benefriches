@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { RenewableEnergyCreationStep } from "../../core/renewable-energy/renewableEnergySteps";
+import type { RenewableEnergyCreationStep } from "../../core/renewable-energy/renewableEnergySteps";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import { getPhotovoltaicPowerStationStepView } from "./stepToComponent";
 

@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
-import classNames, { ClassValue } from "../../clsx";
+import type { ClassValue } from "../../clsx";
+import classNames from "../../clsx";
 import { badgeStyleClasses, commonBadgeClasses, smallBadgeClasses } from "./classes";
 
 type Props = {

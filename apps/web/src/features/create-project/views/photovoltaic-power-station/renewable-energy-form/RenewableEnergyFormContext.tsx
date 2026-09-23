@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
-import { StepCompletionPayload } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { createRenewableEnergyFormSelectors } from "@/features/create-project/core/renewable-energy/renewableEnergyForm.selectors";
-import { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
+import type { StepCompletionPayload } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import type { createRenewableEnergyFormSelectors } from "@/features/create-project/core/renewable-energy/renewableEnergyForm.selectors";
+import type { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
 
 export type RenewableEnergyFormContextValue = ReturnType<
   typeof createRenewableEnergyFormSelectors

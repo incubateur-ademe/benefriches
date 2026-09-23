@@ -1,4 +1,4 @@
-import { RenewableEnergyCreationStep } from "../../core/renewable-energy/renewableEnergySteps";
+import type { RenewableEnergyCreationStep } from "../../core/renewable-energy/renewableEnergySteps";
 
 export const RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: "parametre-centrale-photovoltaique",

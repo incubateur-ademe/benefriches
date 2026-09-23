@@ -5,14 +5,16 @@
 // through public selectors — never `stepsHistory`, `siteData`, `urbanZone.steps`, or `demo.steps`
 // directly — so it survives the port unchanged while the ~145 pre-port unit tests (which do assert
 // on that internal shape) are expected to break and be rewritten.
-import { AppDependencies, createStore, RootState } from "@/app/store/store";
+import type { AppDependencies, RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
-import { User } from "@/features/onboarding/core/user";
+import type { User } from "@/features/onboarding/core/user";
 import { buildUser } from "@/features/onboarding/core/user.mock";
 import { initialState as currentUserInitialState } from "@/features/onboarding/core/user.reducer";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { getInitialState, selectCurrentStep, SiteCreationStep } from "../../createSite.reducer";
+import type { SiteCreationStep } from "../../createSite.reducer";
+import { getInitialState, selectCurrentStep } from "../../createSite.reducer";
 import {
   selectExpressResultViewData,
   selectSiteCreationResultViewData,

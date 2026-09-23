@@ -1,5 +1,5 @@
-import { EvaluationCompletedPayload } from "./compatibilityEvaluationCompleted.actions";
-import { ReconversionCompatibilityEvaluationResults } from "./compatibilityEvaluationResultsRequested.actions";
+import type { EvaluationCompletedPayload } from "./compatibilityEvaluationCompleted.actions";
+import type { ReconversionCompatibilityEvaluationResults } from "./compatibilityEvaluationResultsRequested.actions";
 
 export interface ReconversionCompatibilityEvaluationGateway {
   startEvaluation(input: { evaluationId: string }): Promise<void>;

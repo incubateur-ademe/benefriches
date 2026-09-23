@@ -7,7 +7,7 @@ import UseItem from "@/features/create-project/views/onboarding-from-compatibili
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 
-import { OnboardingVariant } from "../step-shell/onboardingVariant";
+import type { OnboardingVariant } from "../step-shell/onboardingVariant";
 
 type Props = {
   variant?: OnboardingVariant;

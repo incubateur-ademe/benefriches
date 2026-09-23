@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { SiteNature } from "shared";
+import type { ReactNode } from "react";
+import type { SiteNature } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import {

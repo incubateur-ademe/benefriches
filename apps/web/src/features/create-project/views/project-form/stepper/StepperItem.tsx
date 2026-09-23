@@ -1,9 +1,9 @@
-import { HtmlHTMLAttributes, useMemo } from "react";
+import type { HtmlHTMLAttributes } from "react";
+import { useMemo } from "react";
 
 import classNames from "@/shared/views/clsx";
-import FormStepperStep, {
-  FormStepperStepProps,
-} from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
+import type { FormStepperStepProps } from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
+import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
 
 type StepperLiItemProps = {
   title: FormStepperStepProps["title"];

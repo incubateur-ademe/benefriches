@@ -1,5 +1,5 @@
 import { View } from "@react-pdf/renderer";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { tw } from "../styles";
 

@@ -1,14 +1,14 @@
 // shared/impacts/modals/impactModalUrlCodes.ts
-import {
+import type {
   EconomicBalanceImpactKeyName,
   EconomicBalanceMainImpactKeyName,
 } from "@/features/projects/core/projectImpactsEconomicBalance";
-import { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
-import { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
-import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
-import { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
+import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
+import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
+import type { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 
-import {
+import type {
   EnvironmentalSectionName,
   SocialSectionName,
   SocioEconomicSectionName,

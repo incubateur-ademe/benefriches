@@ -1,4 +1,4 @@
-import { SoilType, SurfaceAreaDistributionJson } from "shared";
+import type { SoilType, SurfaceAreaDistributionJson } from "shared";
 
 import {
   formatSurfaceArea,

@@ -1,4 +1,5 @@
-import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import Button from "@codegouvfr/react-dsfr/Button";
 import { MenuItem } from "@headlessui/react";
 
 import classNames from "../../clsx";

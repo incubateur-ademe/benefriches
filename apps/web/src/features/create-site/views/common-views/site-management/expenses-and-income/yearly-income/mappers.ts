@@ -1,6 +1,7 @@
-import { SiteYearlyIncome, typedObjectEntries } from "shared";
+import type { SiteYearlyIncome } from "shared";
+import { typedObjectEntries } from "shared";
 
-import { FormValues } from "./SiteYearlyIncomeForm";
+import type { FormValues } from "./SiteYearlyIncomeForm";
 
 export const mapFormDataToIncomes = (formData: FormValues): SiteYearlyIncome[] => {
   return typedObjectEntries(formData).map(([source, amount]) => ({

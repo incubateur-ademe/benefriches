@@ -1,5 +1,6 @@
 import { Text, View } from "@react-pdf/renderer";
-import { SoilType, sumListWithKey } from "shared";
+import type { SoilType } from "shared";
+import { sumListWithKey } from "shared";
 
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForSoilType, sortAndAggregateProjectSoilDistribution } from "@/shared/core/soils";

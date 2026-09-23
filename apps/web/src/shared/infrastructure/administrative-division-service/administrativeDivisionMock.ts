@@ -1,4 +1,4 @@
-import {
+import type {
   AdministrativeDivisionGateway,
   GetMunicipalityDataResult,
 } from "@/shared/core/gateways/AdministrativeDivisionGateway";

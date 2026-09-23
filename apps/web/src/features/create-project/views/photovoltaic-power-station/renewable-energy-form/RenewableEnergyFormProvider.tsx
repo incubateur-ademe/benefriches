@@ -1,14 +1,13 @@
-import React, { ReactNode, useCallback, useMemo } from "react";
+import type { ReactNode } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { fetchSiteRelatedLocalAuthorities as fetchSiteRelatedLocalAuthoritiesOnCreate } from "@/features/create-project/core/actions/getSiteLocalAuthorities.action";
 import { saveReconversionProject } from "@/features/create-project/core/renewable-energy/actions/customProjectSaved.action";
-import {
-  creationRenewableEnergyFormActions,
-  StepCompletionPayload,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import type { StepCompletionPayload } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { creationRenewableEnergyFormActions } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { creationRenewableEnergyFormSelectors } from "@/features/create-project/core/renewable-energy/renewableEnergyProject.selectors";
-import { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
+import type { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
 import {
   reconversionProjectUpdateSaved,
   updateProjectFormActions,
@@ -16,10 +15,8 @@ import {
 } from "@/features/update-project/core/updateProject.actions";
 import { updateRenewableEnergyFormSelectors } from "@/features/update-project/core/updateProject.selectors";
 
-import {
-  RenewableEnergyFormContext,
-  RenewableEnergyFormContextValue,
-} from "./RenewableEnergyFormContext";
+import type { RenewableEnergyFormContextValue } from "./RenewableEnergyFormContext";
+import { RenewableEnergyFormContext } from "./RenewableEnergyFormContext";
 
 type RenewableEnergyFormProviderProps = {
   children: ReactNode;

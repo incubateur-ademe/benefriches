@@ -1,9 +1,10 @@
-import { ActionReducerMapBuilder, createReducer } from "@reduxjs/toolkit";
+import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 
-import { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import type { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
 
-import { ProjectCreationState } from "../createProject.reducer";
-import { SoilsCarbonStorageResult } from "../project-form/soilsCarbonStorage.types";
+import type { ProjectCreationState } from "../createProject.reducer";
+import type { SoilsCarbonStorageResult } from "../project-form/soilsCarbonStorage.types";
 import { saveReconversionProject } from "./actions/customProjectSaved.action";
 import {
   creationRenewableEnergyFormActions,

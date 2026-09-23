@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { UseCaseSelectionStep } from "./useCaseSelection.reducer";
+import type { UseCaseSelectionStep } from "./useCaseSelection.reducer";
 
 const useCaseSelectionStepGroupIdSchema = z.enum([
   "PROJECT_PHASE",

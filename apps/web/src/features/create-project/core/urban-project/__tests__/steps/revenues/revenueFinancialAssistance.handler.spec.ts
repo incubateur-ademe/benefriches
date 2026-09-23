@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { RevenueFinancialAssistanceHandler } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-financial-assistance/revenueFinancialAssistance.handler";
-import { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
 describe("RevenueFinancialAssistanceHandler", () => {
   describe("getNextStepId", () => {

@@ -1,8 +1,10 @@
-import { Controller, ControllerProps, FieldValues } from "react-hook-form";
+import type { ControllerProps, FieldValues } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
 import { stringToNumber } from "@/shared/core/number-conversion/numberConversion";
 
-import RowNumericInput, { RowNumericInputInputProps } from "./RowNumericInput";
+import type { RowNumericInputInputProps } from "./RowNumericInput";
+import RowNumericInput from "./RowNumericInput";
 import {
   optionalNumericFieldRegisterOptions,
   requiredNumericFieldRegisterOptions,

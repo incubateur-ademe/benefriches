@@ -2,7 +2,7 @@ import ArchiveProjectDialogButton from "@/features/archive-project/views/Archive
 import ProjectOverviewTile from "@/shared/views/components/ProjectTile/ProjectOverviewTile";
 
 import NewProjectTile from "../../../../shared/views/components/ProjectTile/NewProjectTile";
-import { SiteView } from "../../core/site.types";
+import type { SiteView } from "../../core/site.types";
 
 type Props = {
   siteId: string;

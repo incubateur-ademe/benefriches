@@ -1,18 +1,13 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Controller, useForm } from "react-hook-form";
-import {
-  RenewableEnergyTemplate,
-  urbanProjectTemplates,
-  renewableEnergyTemplates,
-  type UrbanProjectTemplate,
-  ReconversionProjectTemplate,
-} from "shared";
+import type { RenewableEnergyTemplate, ReconversionProjectTemplate } from "shared";
+import { urbanProjectTemplates, renewableEnergyTemplates, type UrbanProjectTemplate } from "shared";
 
-import { ProjectSuggestion } from "@/features/create-project/core/project.types";
+import type { ProjectSuggestion } from "@/features/create-project/core/project.types";
 import CompatibilityScoreBadge from "@/features/reconversion-compatibility/views/shared/CompatibilityScoreBadge";
-import { ClassValue } from "@/shared/views/clsx";
+import type { ClassValue } from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";

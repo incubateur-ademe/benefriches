@@ -1,5 +1,5 @@
-import { CreateUserGateway } from "../../core/createUser.action";
-import { User } from "../../core/user";
+import type { CreateUserGateway } from "../../core/createUser.action";
+import type { User } from "../../core/user";
 
 export class InMemoryCreateUserService implements CreateUserGateway {
   _users: User[] = [];

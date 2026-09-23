@@ -2,12 +2,8 @@ import type { UrbanZoneLandParcelType } from "shared";
 
 import { getSelectedParcelTypes, ReadStateHelper } from "../../stateHelpers";
 import type { UrbanZoneAnswerStepHandler } from "../../stepHandlerRegistry";
-import {
-  PARCEL_STEP_IDS,
-  getNextParcelType,
-  getParcelStepIds,
-  getPreviousParcelType,
-} from "./parcelStepMapping";
+import type { PARCEL_STEP_IDS } from "./parcelStepMapping";
+import { getNextParcelType, getParcelStepIds, getPreviousParcelType } from "./parcelStepMapping";
 
 type SoilsDistributionStepId<P extends UrbanZoneLandParcelType> =
   (typeof PARCEL_STEP_IDS)[P]["soilsDistribution"];

@@ -1,6 +1,6 @@
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
-import { AuthenticatedUser } from "./user";
+import type { AuthenticatedUser } from "./user";
 
 export interface CurrentUserGateway {
   get(): Promise<AuthenticatedUser | undefined>;

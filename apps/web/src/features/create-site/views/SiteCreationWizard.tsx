@@ -1,9 +1,10 @@
 // useSiteCreationWizardLayout.tsx
 import { useEffect, useMemo } from "react";
-import { Route } from "type-route";
+import type { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { routes, useRoute } from "@/app/router";
+import type { routes } from "@/app/router";
+import { useRoute } from "@/app/router";
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";

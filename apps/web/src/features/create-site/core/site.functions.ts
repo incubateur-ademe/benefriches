@@ -1,4 +1,4 @@
-import { SiteCreationData } from "./siteFoncier.types";
+import type { SiteCreationData } from "./siteFoncier.types";
 
 export const hasBuildings = (site: SiteCreationData) => {
   return site.soils.includes("BUILDINGS");

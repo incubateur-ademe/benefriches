@@ -1,4 +1,4 @@
-import {
+import type {
   SaveProjectPayload,
   SaveReconversionProjectGateway,
 } from "../../core/actions/saveReconversionProject.action";

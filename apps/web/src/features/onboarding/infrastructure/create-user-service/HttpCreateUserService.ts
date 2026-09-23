@@ -1,6 +1,6 @@
 import { registerUserRequestDtoSchema } from "shared";
 
-import { CreateUserGateway } from "../../core/createUser.action";
+import type { CreateUserGateway } from "../../core/createUser.action";
 import type { User } from "../../core/user";
 
 export class HttpCreateUserService implements CreateUserGateway {

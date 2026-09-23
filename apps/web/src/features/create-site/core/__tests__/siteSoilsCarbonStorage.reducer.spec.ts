@@ -1,11 +1,9 @@
-import { Address } from "shared";
+import type { Address } from "shared";
 
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 
-import {
-  fetchSiteSoilsCarbonStorage,
-  SiteSoilsCarbonStorageResult,
-} from "../actions/siteSoilsCarbonStorage.actions";
+import type { SiteSoilsCarbonStorageResult } from "../actions/siteSoilsCarbonStorage.actions";
+import { fetchSiteSoilsCarbonStorage } from "../actions/siteSoilsCarbonStorage.actions";
 import { selectSiteSoilsCarbonStorageViewData } from "../siteSoilsCarbonStorage.reducer";
 import { StoreBuilder } from "./creation-steps/testUtils";
 

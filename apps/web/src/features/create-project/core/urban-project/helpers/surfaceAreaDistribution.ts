@@ -1,9 +1,5 @@
-import {
-  roundTo1Digit,
-  SurfaceAreaDistribution,
-  SurfaceAreaDistributionJson,
-  typedObjectEntries,
-} from "shared";
+import type { SurfaceAreaDistributionJson } from "shared";
+import { roundTo1Digit, SurfaceAreaDistribution, typedObjectEntries } from "shared";
 
 type SurfaceAreaDistributionWithUnit<TSurface extends string> = {
   unit: "percentage" | "squareMeters";

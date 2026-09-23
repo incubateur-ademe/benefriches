@@ -1,14 +1,12 @@
-import { IDateProvider } from "../../../adapters/IDateProvider";
+import type { IDateProvider } from "../../../adapters/IDateProvider";
 import { typedObjectEntries } from "../../../object-entries";
-import { SoilsDistribution } from "../../../soils";
+import type { SoilsDistribution } from "../../../soils";
 import { DefaultProjectGenerator } from "../../_common/project-generator/DefaultProjectGenerator";
-import { ReconversionProject, SiteData } from "../../_common/project-generator/types";
+import type { ReconversionProject, SiteData } from "../../_common/project-generator/types";
 import { domainSaveReconversionProjectSchema } from "../../reconversionProjectSchemas";
 import { computePhotovoltaicPowerStationInstallationExpensesFromElectricalPower } from "../installationExpenses";
-import {
-  computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower,
-  RecurringExpense,
-} from "../recurringExpenses";
+import type { RecurringExpense } from "../recurringExpenses";
+import { computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower } from "../recurringExpenses";
 import { computeDefaultPhotovoltaicYearlyRecurringRevenueAmount } from "../recurringRevenue";
 import {
   getNonSuitableSoilsForPhotovoltaicPanels,

@@ -1,11 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { Provider } from "react-redux";
 
 import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { UserSiteEvaluation } from "../../core/types";
+import type { UserSiteEvaluation } from "../../core/types";
 import MyEvaluationItem from "./MyEvaluationItem";
 
 function renderWithProviders(ui: React.ReactElement) {

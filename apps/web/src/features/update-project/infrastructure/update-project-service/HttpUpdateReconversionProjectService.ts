@@ -1,8 +1,8 @@
-import {
-  reconversionProjectSchemaUpdateView,
+import type {
   UpdateProjectSavePayload,
   UpdateProjectServiceGateway,
 } from "../../core/updateProject.types";
+import { reconversionProjectSchemaUpdateView } from "../../core/updateProject.types";
 
 export class HttpUpdateReconversionProjectService implements UpdateProjectServiceGateway {
   async getById(projectId: string) {

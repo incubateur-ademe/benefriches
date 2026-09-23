@@ -1,10 +1,10 @@
-import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
+import type { PhotovoltaicInstallationExpense } from "shared";
+import { typedObjectEntries } from "shared";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
-import InstallationExpensesForm, {
-  FormValues,
-} from "@/features/create-project/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
+import type { FormValues } from "@/features/create-project/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
+import InstallationExpensesForm from "@/features/create-project/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 

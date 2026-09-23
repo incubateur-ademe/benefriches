@@ -1,8 +1,7 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
-import SoilsDecontaminationSelection, {
-  FormValues,
-} from "@/features/create-project/views/project-form/common/soils-decontamination/selection/SoilsDecontaminationSelection";
+import type { FormValues } from "@/features/create-project/views/project-form/common/soils-decontamination/selection/SoilsDecontaminationSelection";
+import SoilsDecontaminationSelection from "@/features/create-project/views/project-form/common/soils-decontamination/selection/SoilsDecontaminationSelection";
 
 function SoilsDecontaminationSelectionContainer() {
   const { onBack, onRequestStepCompletion, selectSoilsDecontaminationSelectionViewData } =

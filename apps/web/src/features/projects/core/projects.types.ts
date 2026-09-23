@@ -1,4 +1,4 @@
-import { GetReconversionProjectFeaturesResponseDto } from "shared";
+import type { GetReconversionProjectFeaturesResponseDto } from "shared";
 
 export type UrbanProjectFeatures = Extract<
   ProjectFeatures["developmentPlan"],

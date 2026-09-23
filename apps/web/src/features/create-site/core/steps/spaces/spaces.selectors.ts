@@ -1,16 +1,14 @@
 import { createSelector } from "@reduxjs/toolkit";
-import {
-  SoilsDistribution,
-  SoilType,
-  SurfaceAreaDistribution,
-  SurfaceAreaDistributionJson,
-} from "shared";
+import { SurfaceAreaDistribution } from "shared";
 import type {
   AgriculturalOperationActivity,
   FricheActivity,
   NaturalAreaType,
   SiteNature,
   UrbanZoneType,
+  SoilsDistribution,
+  SoilType,
+  SurfaceAreaDistributionJson,
 } from "shared";
 
 import type { createSiteFormRootSelectors } from "../../selectors/createSite.selectors";

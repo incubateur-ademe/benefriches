@@ -1,7 +1,8 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
-import IsFricheLeasedForm, { FormValues } from "./IsFricheLeasedForm";
+import type { FormValues } from "./IsFricheLeasedForm";
+import IsFricheLeasedForm from "./IsFricheLeasedForm";
 
 const mapInitialValues = (isFricheLeased: boolean | undefined): FormValues => {
   if (isFricheLeased === undefined) {

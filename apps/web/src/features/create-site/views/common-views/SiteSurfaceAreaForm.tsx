@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { convertSquareMetersToHectares, SiteNature } from "shared";
+import type { SiteNature } from "shared";
+import { convertSquareMetersToHectares } from "shared";
 
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";

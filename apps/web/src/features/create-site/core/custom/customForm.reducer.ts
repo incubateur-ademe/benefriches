@@ -1,21 +1,20 @@
-import { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
+import type { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
 
 import { applyStepChanges } from "@/shared/core/wizard-form/helpers/applyStepChanges";
-import {
-  computeStepChanges,
-  StepUpdateResult,
-} from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import type { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import { computeStepChanges } from "@/shared/core/wizard-form/helpers/computeStepChanges";
 import { navigateToAndLoadStep } from "@/shared/core/wizard-form/helpers/navigateToStep";
-import { WizardFormDefinition } from "@/shared/core/wizard-form/wizardForm.reducer";
+import type { WizardFormDefinition } from "@/shared/core/wizard-form/wizardForm.reducer";
 
-import { SiteCreationState } from "../createSite.reducer";
-import { CustomFormPureActions, StepCompletionPayload } from "./custom.actions";
-import { CustomAnswerStepId, CustomAnswersByStep, SiteCreationCustomStep } from "./customSteps";
-import {
-  CustomStepHandlerContext,
-  customAnswerStepHandlers,
-  customStepHandlerRegistry,
-} from "./stepHandlerRegistry";
+import type { SiteCreationState } from "../createSite.reducer";
+import type { CustomFormPureActions, StepCompletionPayload } from "./custom.actions";
+import type {
+  CustomAnswerStepId,
+  CustomAnswersByStep,
+  SiteCreationCustomStep,
+} from "./customSteps";
+import type { CustomStepHandlerContext } from "./stepHandlerRegistry";
+import { customAnswerStepHandlers, customStepHandlerRegistry } from "./stepHandlerRegistry";
 
 // Generic over `S` (a structural superset of `SiteCreationState`, mirroring the project side's
 // `S extends RenewableEnergyHostState`) so both creation (`SiteCreationState` itself) and the

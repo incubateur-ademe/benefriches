@@ -1,15 +1,14 @@
-import {
+import type {
   AggregatedProjectImpactMetric,
   AggregatedReconversionProjectOnSiteImpactItemView,
   GetReconversionProjectImpactsResultDto,
   ProjectOnSiteImpactMetric,
   ProjectOperatingEconomicBalanceItem,
   SiteStatuQuoEconomicImpact,
-  sumList,
-  sumListWithKey,
   UrbanSprawlComparisonIndirectEconomicImpactItemView,
   UrbanSprawlImpactsComparisonResultDto,
 } from "shared";
+import { sumList, sumListWithKey } from "shared";
 
 const cropAndSumEconomicImpact = <
   T extends

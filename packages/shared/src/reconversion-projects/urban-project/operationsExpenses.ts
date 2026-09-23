@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { TExpense } from "../../financial";
+import type { TExpense } from "../../financial";
 
 export const yearlyBuildingsOperationsExpensePurposeSchema = z.enum([
   "maintenance",

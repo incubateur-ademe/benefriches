@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { WizardFormStepsState } from "../stepHandler.type";
+import type { WizardFormStepsState } from "../stepHandler.type";
 import { ReadStateHelper } from "./readState";
 
 type TestAnswers = {

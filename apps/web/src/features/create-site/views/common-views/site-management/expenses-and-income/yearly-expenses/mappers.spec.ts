@@ -1,4 +1,4 @@
-import { FormValues } from "./SiteYearlyExpensesForm";
+import type { FormValues } from "./SiteYearlyExpensesForm";
 import { mapFormDataToExpenses } from "./mappers";
 
 describe("Site yearly expenses mappers", () => {

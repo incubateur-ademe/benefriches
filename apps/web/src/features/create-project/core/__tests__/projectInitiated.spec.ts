@@ -3,8 +3,8 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { InMemorySitesService } from "../../infrastructure/sites-service/InMemorySitesService";
 import { reconversionProjectCreationInitiated } from "../actions/reconversionProjectCreationInitiated.action";
-import { ProjectCreationState } from "../createProject.reducer";
-import { ProjectSuggestion } from "../project.types";
+import type { ProjectCreationState } from "../createProject.reducer";
+import type { ProjectSuggestion } from "../project.types";
 import { relatedSiteData } from "./siteData.mock";
 
 describe("Reconversion project creation initialization", () => {

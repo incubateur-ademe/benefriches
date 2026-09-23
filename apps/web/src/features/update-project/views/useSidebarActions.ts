@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 
 import { routes, useRoute } from "@/app/router";
-import { UrbanProjectFormState } from "@/features/create-project/core/urban-project/urbanProject.state";
-import { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import type { UrbanProjectFormState } from "@/features/create-project/core/urban-project/urbanProject.state";
+import type { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 type Props = {
   projectId?: string;

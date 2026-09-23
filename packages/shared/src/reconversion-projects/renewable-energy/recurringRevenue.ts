@@ -1,4 +1,4 @@
-import { TRevenue } from "../../financial";
+import type { TRevenue } from "../../financial";
 
 export type RecurringRevenue = TRevenue<"operations" | "other" | "rent">;
 

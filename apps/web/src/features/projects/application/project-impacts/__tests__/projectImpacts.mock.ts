@@ -1,9 +1,5 @@
-import {
-  GetReconversionProjectImpactsResultDto,
-  roundToInteger,
-  SiteStatuQuoImpactMetric,
-  sumListWithKey,
-} from "shared";
+import type { GetReconversionProjectImpactsResultDto, SiteStatuQuoImpactMetric } from "shared";
+import { roundToInteger, sumListWithKey } from "shared";
 
 const buildYearlySeries = (total: number, years: number) => {
   const perYear = roundToInteger(total / years);

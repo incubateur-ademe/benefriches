@@ -1,5 +1,6 @@
-import { AppSettingsGateway } from "../core/AppSettingsGateway";
-import { AppSettings, DEFAULT_APP_SETTINGS } from "../core/appSettings";
+import type { AppSettingsGateway } from "../core/AppSettingsGateway";
+import type { AppSettings } from "../core/appSettings";
+import { DEFAULT_APP_SETTINGS } from "../core/appSettings";
 
 const APP_SETTINGS_STORAGE_KEY = "benefriches/app-settings/v0";
 

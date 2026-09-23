@@ -1,4 +1,4 @@
-import { MutabilityUsage } from "shared";
+import type { MutabilityUsage } from "shared";
 
 type EvaluationResults = {
   evaluationId: string;

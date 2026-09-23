@@ -1,3 +1,4 @@
+import type { SoilType } from "shared";
 import {
   isForest,
   isImpermeableSoil,
@@ -6,7 +7,6 @@ import {
   isSurfaceWithEcosystemBenefits,
   isSurfaceWithPermanentVegetation,
   isWetLand,
-  SoilType,
   sumListWithKey,
 } from "shared";
 

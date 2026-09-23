@@ -1,6 +1,6 @@
 import { typedObjectEntries } from "../../object-entries";
 import { roundToInteger } from "../../services";
-import { UrbanProjectUseWithBuilding, BuildingsUseDistribution } from "./uses/urbanProjectUse";
+import type { UrbanProjectUseWithBuilding, BuildingsUseDistribution } from "./uses/urbanProjectUse";
 
 type BuildingsUseResaleRatioPerSquareMeters = Record<
   UrbanProjectUseWithBuilding,

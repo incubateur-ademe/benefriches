@@ -4,11 +4,8 @@ import { sumList } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
-import {
-  getProjectMetricsAndEconomicImpacts,
-  InputReconversionProjectData,
-  InputSiteData,
-} from "./projectIndirectImpacts";
+import type { InputReconversionProjectData, InputSiteData } from "./projectIndirectImpacts";
+import { getProjectMetricsAndEconomicImpacts } from "./projectIndirectImpacts";
 
 const baseProject: InputReconversionProjectData = {
   operationsFirstYear: 2025,

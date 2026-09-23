@@ -1,4 +1,4 @@
-import { SiteYearlyExpense, SiteYearlyIncome } from "shared";
+import type { SiteYearlyExpense, SiteYearlyIncome } from "shared";
 
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";

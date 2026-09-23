@@ -1,5 +1,5 @@
 import { useController, useForm } from "react-hook-form";
-import { Address, SiteNature } from "shared";
+import type { Address, SiteNature } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SearchAddressAutocomplete from "@/shared/views/components/form/Address/SearchAddressAutocompleteContainer";

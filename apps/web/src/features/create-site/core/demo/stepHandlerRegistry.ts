@@ -5,7 +5,7 @@ import type {
   WizardFormStepsState,
 } from "@/shared/core/wizard-form/stepHandler.type";
 
-import { SiteCreationData } from "../siteFoncier.types";
+import type { SiteCreationData } from "../siteFoncier.types";
 import type {
   AnswersByStep,
   DemoAnswerStepId,

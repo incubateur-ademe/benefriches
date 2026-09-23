@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 import { createUrbanProjectFormSelectors } from "@/features/create-project/core/urban-project/urbanProjectForm.selectors";
 
 export const creationProjectFormSelectors = createUrbanProjectFormSelectors("projectCreation");

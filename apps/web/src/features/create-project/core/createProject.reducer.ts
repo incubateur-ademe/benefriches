@@ -2,39 +2,36 @@ import { createReducer } from "@reduxjs/toolkit";
 import reduceReducers from "reduce-reducers";
 import { v4 as uuid } from "uuid";
 
-import {
+import type {
   ProjectSiteView,
   SiteRelatedLocalAuthorities,
 } from "@/features/create-project/core/project-form/projectSite.types";
-import {
-  getUrbanProjectInitialState,
-  UrbanProjectState,
-} from "@/features/create-project/core/urban-project/urbanProject.state";
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { UrbanProjectState } from "@/features/create-project/core/urban-project/urbanProject.state";
+import { getUrbanProjectInitialState } from "@/features/create-project/core/urban-project/urbanProject.state";
+import type { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 import { currentProjectFlowUpdated } from "./actions/currentProjectFlowUpdated.action";
 import { fetchSiteRelatedLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
 import { reconversionProjectCreationInitiated } from "./actions/reconversionProjectCreationInitiated.action";
 import { surfaceAreaInputModeUpdated } from "./actions/surfaceAreaInputModeUpdated.action";
-import {
-  DEMO_INITIAL_STATE,
-  demoProjectCreationReducer,
-  DemoProjectCreationState,
-} from "./demo/demoProject.reducer";
-import { DemoProjectCreationStep } from "./demo/demoSteps";
+import type { DemoProjectCreationState } from "./demo/demoProject.reducer";
+import { DEMO_INITIAL_STATE, demoProjectCreationReducer } from "./demo/demoProject.reducer";
+import type { DemoProjectCreationStep } from "./demo/demoSteps";
 import { addWizardFormCasesToBuilder } from "./project-form/siteRelatedLocalAuthorities.action";
+import type { RenewableEnergyProjectState } from "./renewable-energy/renewableEnergy.reducer";
 import {
-  RenewableEnergyProjectState,
   INITIAL_STATE as renenewableEnergyProjectInitialState,
   renewableEnergyProjectReducer,
 } from "./renewable-energy/renewableEnergy.reducer";
 import type { AllRenewableEnergyStep } from "./renewable-energy/renewableEnergySteps";
 import urbanProjectReducer from "./urban-project/urbanProject.reducer";
+import type {
+  UseCaseSelectionState,
+  UseCaseSelectionStep,
+} from "./usecase-selection/useCaseSelection.reducer";
 import {
   USE_CASE_SELECTION_INITIAL_STATE,
   useCaseSelectionProjectCreationReducer,
-  UseCaseSelectionState,
-  UseCaseSelectionStep,
 } from "./usecase-selection/useCaseSelection.reducer";
 
 export type CurrentProjectFlow =

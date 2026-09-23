@@ -1,11 +1,11 @@
-import {
+import type {
   FinancialAssistanceRevenue,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
 } from "../../reconversion-projects";
-import { BuildingsConstructionExpense } from "../../reconversion-projects/urban-project/buildingsConstructionExpenses";
-import { SocioEconomicImpact } from "./socioEconomic.types";
+import type { BuildingsConstructionExpense } from "../../reconversion-projects/urban-project/buildingsConstructionExpenses";
+import type { SocioEconomicImpact } from "./socioEconomic.types";
 
 export type DevelopmentPlanInstallationExpenses = {
   purpose: "technical_studies" | "installation_works" | "development_works" | "other";

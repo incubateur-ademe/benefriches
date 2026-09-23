@@ -1,11 +1,11 @@
 import { lazy } from "react";
 
-import { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
+import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
 import { formatETPImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
-import { SocialSectionName } from "../ImpactModalDescriptionContext";
-import { ContentComponentType, ModalImpactConfig } from "./config.type";
+import type { SocialSectionName } from "../ImpactModalDescriptionContext";
+import type { ContentComponentType, ModalImpactConfig } from "./config.type";
 
 const SOCIAL_METRICS_MODALS = {
   social: {

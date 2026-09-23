@@ -5,7 +5,7 @@ import classNames from "@/shared/views/clsx";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { SitePageViewModel } from "../core/siteView.reducer";
+import type { SitePageViewModel } from "../core/siteView.reducer";
 import CompatibilityEvaluation from "./CompatibilityEvaluation";
 import SiteCreationConfirmationModal from "./SiteCreationConfirmationModal";
 import SitePageError from "./SitePageError";

@@ -1,9 +1,10 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import { ProjectStakeholder } from "@/features/create-project/core/project.types";
+import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
-import { UserStructure } from "@/features/onboarding/core/user";
+import type { UserStructure } from "@/features/onboarding/core/user";
 
-import FutureOperatorForm, { FormValues } from "./FutureOperatorForm";
+import type { FormValues } from "./FutureOperatorForm";
+import FutureOperatorForm from "./FutureOperatorForm";
 
 const mapInitialValues = (
   futureOperator: ProjectStakeholder | undefined,

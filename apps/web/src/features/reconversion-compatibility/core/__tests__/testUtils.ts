@@ -1,12 +1,13 @@
-import { MutabilityUsage } from "shared";
+import type { MutabilityUsage } from "shared";
 
-import { AppDependencies, createStore, RootState } from "@/app/store/store";
+import type { AppDependencies, RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
-import { User } from "@/features/onboarding/core/user";
+import type { User } from "@/features/onboarding/core/user";
 import { initialState } from "@/features/onboarding/core/user.reducer";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { ReconversionCompatibilityEvaluationResults } from "../actions/compatibilityEvaluationResultsRequested.actions";
+import type { ReconversionCompatibilityEvaluationResults } from "../actions/compatibilityEvaluationResultsRequested.actions";
 import { getInitialState } from "../reconversionCompatibilityEvaluation.reducer";
 
 export class StoreBuilder {

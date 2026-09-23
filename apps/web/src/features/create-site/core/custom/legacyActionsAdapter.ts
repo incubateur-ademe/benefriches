@@ -43,11 +43,8 @@ import {
   urbanZoneLandParcelsIntroductionCompleted,
   urbanZoneTypeCompleted,
 } from "../steps/urban-zone/urbanZone.actions";
-import {
-  advanceFromStep,
-  completeCustomStep,
-  CustomWizardFormDefinition,
-} from "./customForm.reducer";
+import type { CustomWizardFormDefinition } from "./customForm.reducer";
+import { advanceFromStep, completeCustomStep } from "./customForm.reducer";
 
 /**
  * Aliases every legacy per-step action (`fricheActivityStepCompleted`, `addressStepCompleted`,

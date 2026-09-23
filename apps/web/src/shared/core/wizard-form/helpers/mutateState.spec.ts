@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
-import { MutableWizardFormState, MutateStateHelper } from "./mutateState";
+import type { MutableWizardFormState } from "./mutateState";
+import { MutateStateHelper } from "./mutateState";
 
 type TestStepId = "STEP_A" | "STEP_B" | "STEP_C";
 type TestAnswers = {

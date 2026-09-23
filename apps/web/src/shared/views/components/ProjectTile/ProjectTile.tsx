@@ -1,6 +1,7 @@
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
-import classNames, { ClassValue } from "../../clsx";
+import type { ClassValue } from "../../clsx";
+import classNames from "../../clsx";
 
 type TileCardProps = {
   children: React.ReactNode;

@@ -1,7 +1,8 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
-import AgriculturalOperationActivityForm, { FormValues } from "./AgriculturalOperationActivityForm";
+import type { FormValues } from "./AgriculturalOperationActivityForm";
+import AgriculturalOperationActivityForm from "./AgriculturalOperationActivityForm";
 
 export default function AgriculturalOperationActivityFormContainer() {
   const { onBack, onRequestStepCompletion, selectDerivedSiteData } = useCustomSiteForm();

@@ -1,4 +1,5 @@
-import React, { ReactNode, useCallback, useMemo } from "react";
+import type { ReactNode } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 import type { StepCompletionPayload } from "@/features/create-site/core/demo/demo.actions";
@@ -12,7 +13,8 @@ import { creationDemoFormSelectors } from "@/features/create-site/core/demo/demo
 import { demoSiteSaved } from "@/features/create-site/core/demo/demoSiteSaved.action";
 import type { DemoSiteCreationStep } from "@/features/create-site/core/demo/demoSteps";
 
-import { DemoSiteFormContext, DemoSiteFormContextValue } from "./DemoSiteFormContext";
+import type { DemoSiteFormContextValue } from "./DemoSiteFormContext";
+import { DemoSiteFormContext } from "./DemoSiteFormContext";
 
 type Props = {
   children: ReactNode;

@@ -1,10 +1,10 @@
 import { lazy } from "react";
 
-import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
-import { SocioEconomicSectionName } from "../ImpactModalDescriptionContext";
-import { BodyComponentType, ContentComponentType, ModalImpactConfig } from "./config.type";
+import type { SocioEconomicSectionName } from "../ImpactModalDescriptionContext";
+import type { BodyComponentType, ContentComponentType, ModalImpactConfig } from "./config.type";
 
 const SOCIO_ECONOMIC_MODALS = {
   socioEconomic: {

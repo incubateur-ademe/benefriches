@@ -1,4 +1,4 @@
-import { Route } from "type-route";
+import type { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";

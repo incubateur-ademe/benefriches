@@ -4,7 +4,8 @@ import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
 import ModalFeature from "./ModalFeature";
 import ModalFeatureLine from "./ModalFeatureLine";
-import ModalSoilsDistribution, { ModalSoilsDistributionProps } from "./ModalSoilsDistribution";
+import type { ModalSoilsDistributionProps } from "./ModalSoilsDistribution";
+import ModalSoilsDistribution from "./ModalSoilsDistribution";
 
 type Props = {
   label: string;

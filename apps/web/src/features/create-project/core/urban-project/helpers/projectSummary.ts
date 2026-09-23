@@ -1,18 +1,18 @@
-import {
+import type {
   ProjectPhase,
   ReconversionProjectSoilsDistribution,
   ReinstatementExpensePurpose,
-  sumObjectValues,
   UrbanProjectDevelopmentExpense,
 } from "shared";
+import { sumObjectValues } from "shared";
 
 import {
   DEFAULT_FUTURE_SITE_OWNER,
   getFutureOperator,
 } from "@/features/create-project/core/project-form/stakeholders";
 
-import { UrbanProjectStepsState } from "../urbanProject.state";
-import { UrbanProjectCreationStep } from "../urbanProjectSteps";
+import type { UrbanProjectStepsState } from "../urbanProject.state";
+import type { UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { isSiteResalePlannedAfterDevelopment } from "./readers/siteResaleReaders";
 
 export const getProjectSummary = (

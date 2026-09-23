@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { UrbanProjectStepsState } from "../../urbanProject.state";
+import type { UrbanProjectStepsState } from "../../urbanProject.state";
 import {
   isSiteResalePlannedAfterDevelopment,
   shouldSiteResalePriceBeEstimated,

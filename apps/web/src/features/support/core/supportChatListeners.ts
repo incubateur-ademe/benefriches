@@ -1,4 +1,4 @@
-import { AppStartListening } from "@/app/store/listenerMiddleware";
+import type { AppStartListening } from "@/app/store/listenerMiddleware";
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 
 export const setupSupportChatListeners = (startAppListening: AppStartListening) => {

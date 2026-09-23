@@ -1,21 +1,17 @@
-import { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
+import type { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
 
-import {
-  answerStepHandlers,
-  stepHandlerRegistry,
-} from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
+import type { answerStepHandlers } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
+import { stepHandlerRegistry } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
 import { applyStepChanges } from "@/shared/core/wizard-form/helpers/applyStepChanges";
-import {
-  computeStepChanges,
-  StepUpdateResult,
-} from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import type { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import { computeStepChanges } from "@/shared/core/wizard-form/helpers/computeStepChanges";
 import { navigateToAndLoadStep } from "@/shared/core/wizard-form/helpers/navigateToStep";
-import { WizardFormDefinition } from "@/shared/core/wizard-form/wizardForm.reducer";
+import type { WizardFormDefinition } from "@/shared/core/wizard-form/wizardForm.reducer";
 
-import { UrbanStepHandlerContext } from "./step-handlers/stepHandler.type";
-import { UrbanProjectFormState } from "./urbanProject.state";
-import { UrbanProjectFormReducerActions } from "./urbanProjectForm.actions";
-import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
+import type { UrbanStepHandlerContext } from "./step-handlers/stepHandler.type";
+import type { UrbanProjectFormState } from "./urbanProject.state";
+import type { UrbanProjectFormReducerActions } from "./urbanProjectForm.actions";
+import type { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
 // Structural constraint mirroring PV's `RenewableEnergyHostState` (ADR-0015): any consumer state
 // that nests a self-contained urban slice with its own `form` sub-state can drive this case-adder

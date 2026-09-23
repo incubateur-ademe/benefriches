@@ -1,4 +1,4 @@
-import { Address } from "shared";
+import type { Address } from "shared";
 import { describe, expect, it } from "vitest";
 
 import { StoreBuilder, expectCurrentStep } from "../../../__tests__/creation-steps/testUtils";

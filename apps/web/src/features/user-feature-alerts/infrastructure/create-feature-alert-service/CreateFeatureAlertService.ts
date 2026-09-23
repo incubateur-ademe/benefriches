@@ -1,8 +1,8 @@
-import {
+import type {
   CreateFeatureAlertGateway,
   UserFeatureAlertsResult,
 } from "../../core/CreateFeatureAlertGateway";
-import { UserFeatureAlert } from "../../core/userFeatureAlert";
+import type { UserFeatureAlert } from "../../core/userFeatureAlert";
 
 const LOCAL_STORAGE_KEY_VO = "benefriches/user-feature-alerts/v0";
 const LOCAL_STORAGE_KEY_V1 = "benefriches/user-feature-alerts/v1";

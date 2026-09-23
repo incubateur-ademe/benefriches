@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it, beforeEach, mock } from "node:test";
-import {
+import type {
   BuildingsUseDistribution,
   DevelopmentPlanFeatures,
   ProjectIndirectEconomicImpactName,
@@ -8,7 +8,7 @@ import {
 } from "shared";
 
 import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { InputReconversionProjectData, InputSiteData } from "../projectIndirectImpacts";
+import type { InputReconversionProjectData, InputSiteData } from "../projectIndirectImpacts";
 import { getUrbanProjectImpacts, getNewUsagesTaxesIncomeImpact } from "./urbanProjectImpacts";
 
 const baseSiteCityData = {

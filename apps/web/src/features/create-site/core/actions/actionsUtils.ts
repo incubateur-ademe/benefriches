@@ -1,6 +1,6 @@
 import { createAction } from "@reduxjs/toolkit";
 
-import { SiteCreationStep } from "../createSite.reducer";
+import type { SiteCreationStep } from "../createSite.reducer";
 
 const SITE_CREATION_PREFIX = "siteCreation";
 

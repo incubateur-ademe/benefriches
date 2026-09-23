@@ -2,11 +2,14 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import * as Highcharts from "highcharts";
 import { HighchartsReact } from "highcharts-react-official";
-import { Fragment, ReactNode, useRef } from "react";
-import { Link } from "type-route";
+import type { ReactNode } from "react";
+import { Fragment, useRef } from "react";
+import type { Link } from "type-route";
 
-import useExportConfig, { ExportingOptionsProps } from "@/shared/views/charts/useExportConfig";
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ExportingOptionsProps } from "@/shared/views/charts/useExportConfig";
+import useExportConfig from "@/shared/views/charts/useExportConfig";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 import ExportChartMenuItems from "@/shared/views/components/Charts/ExportChartMenuItems";
 import { MENU_ITEMS_CLASSES } from "@/shared/views/components/Menu/classes";
 

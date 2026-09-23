@@ -1,4 +1,5 @@
-import { createStore, RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { selectEconomicBalanceProjectImpacts } from "../selectors/projectImpacts.selectors";

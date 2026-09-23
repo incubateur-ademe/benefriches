@@ -1,4 +1,4 @@
-import {
+import type {
   Address,
   AgriculturalOperationActivity,
   FricheActivity,
@@ -9,9 +9,8 @@ import {
   SoilsDistribution,
   SoilType,
   UrbanZoneType,
-  type OwnerStructureType,
-  type TenantStructureType,
 } from "shared";
+import { type OwnerStructureType, type TenantStructureType } from "shared";
 
 export type SiteCreationData = {
   id: string;

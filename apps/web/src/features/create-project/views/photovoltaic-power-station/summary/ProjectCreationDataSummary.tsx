@@ -1,4 +1,4 @@
-import {
+import type {
   DevelopmentPlanCategory,
   FinancialAssistanceRevenue,
   PhotovoltaicInstallationExpense,
@@ -7,27 +7,27 @@ import {
   ReinstatementExpense,
   SoilsDistribution,
   SoilType,
-  sumListWithKey,
 } from "shared";
+import { sumListWithKey } from "shared";
 
 import { getLabelForRenewableEnergyProductionType } from "@/features/create-project/core/project-form/renewableEnergyLabelMapping";
-import { SoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
-import { Schedule } from "@/features/create-project/core/project.types";
-import { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
-import { RenewableEnergyStepperGroup } from "@/features/create-project/core/renewable-energy/selectors/stepperNavigation";
+import type { SoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
+import type { Schedule } from "@/features/create-project/core/project.types";
+import type { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
+import type { RenewableEnergyStepperGroup } from "@/features/create-project/core/renewable-energy/selectors/stepperNavigation";
 import { formatCarbonStorage } from "@/shared/core/format-number/formatCarbonStorage";
 import {
   formatMoney,
   formatNumberFr,
   formatSurfaceArea,
 } from "@/shared/core/format-number/formatNumber";
+import type { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 import {
   getLabelForFinancialAssistanceRevenueSource,
   getLabelForPhotovoltaicInstallationExpensePurpose,
   getLabelForRecurringExpense,
   getLabelForRecurringRevenueSource,
   getLabelForReinstatementExpensePurpose,
-  RenewableEnergyDevelopmentPlanType,
 } from "@/shared/core/reconversionProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";

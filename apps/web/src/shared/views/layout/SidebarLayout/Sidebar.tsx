@@ -1,5 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ReactNode, useMemo, useState } from "react";
+import type { ReactNode } from "react";
+import { useMemo, useState } from "react";
 
 import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";

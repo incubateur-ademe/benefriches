@@ -1,5 +1,6 @@
-import { ImpactFormatType } from "../../../shared/formatImpactValue";
-import ImpactItemDetails, { ImpactItemDetailsProps } from "./ImpactItemDetails";
+import type { ImpactFormatType } from "../../../shared/formatImpactValue";
+import type { ImpactItemDetailsProps } from "./ImpactItemDetails";
+import ImpactItemDetails from "./ImpactItemDetails";
 import ImpactItemGroup from "./ImpactItemGroup";
 
 type Props = {

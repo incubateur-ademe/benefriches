@@ -1,13 +1,12 @@
+import type { UrbanProjectDevelopmentExpense, PhotovoltaicInstallationExpense } from "shared";
 import {
-  UrbanProjectDevelopmentExpense,
-  PhotovoltaicInstallationExpense,
   sumListWithKey,
   URBAN_PROJECT_EURO_PER_SQUARE_METERS_FOR_TECHNICAL_STUDIES,
   URBAN_PROJECT_EURO_PER_SQUARE_METERS_FOR_DEVELOPMENT_WORKS,
   PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC,
 } from "shared";
 
-import {
+import type {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
 } from "@/features/projects/core/projects.types";

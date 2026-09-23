@@ -1,13 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { GetReconversionProjectImpactsResultDto } from "shared";
+import type { GetReconversionProjectImpactsResultDto } from "shared";
 
-import { RootState } from "@/app/store/store";
-import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
+import type { RootState } from "@/app/store/store";
+import type { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 
-import {
-  groupIndirectEconomicImpactsByBearerAndCategory,
-  IndirectEconomicImpactsByBearerAndGroupCategory,
-} from "../../../core/groupIndirectImpactsByBearer";
+import type { IndirectEconomicImpactsByBearerAndGroupCategory } from "../../../core/groupIndirectImpactsByBearer";
+import { groupIndirectEconomicImpactsByBearerAndCategory } from "../../../core/groupIndirectImpactsByBearer";
 import {
   selectEconomicBalanceProjectImpacts,
   selectImpactsCroppedByEvaluationPeriod,

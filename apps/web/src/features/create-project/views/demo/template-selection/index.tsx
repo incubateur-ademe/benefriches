@@ -3,7 +3,8 @@ import { demoProjectCreated } from "@/features/create-project/core/demo/demoProj
 import { selectDemoProjectTemplateViewData } from "@/features/create-project/core/demo/demoProject.selectors";
 
 import { useStepBack } from "../useStepBack";
-import DemoProjectTemplate, { FormValues } from "./DemoProjectTemplate";
+import type { FormValues } from "./DemoProjectTemplate";
+import DemoProjectTemplate from "./DemoProjectTemplate";
 
 function DemoProjectTemplateContainerSelection() {
   const dispatch = useAppDispatch();

@@ -1,6 +1,6 @@
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { useState } from "react";
-import { SiteActionStatus } from "shared";
+import type { SiteActionStatus } from "shared";
 
 import classNames from "@/shared/views/clsx";
 

@@ -1,4 +1,4 @@
-import { DevelopmentPlanCategory } from "shared";
+import type { DevelopmentPlanCategory } from "shared";
 
 import { BENEFRICHES_ENV } from "@/app/envVars";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";

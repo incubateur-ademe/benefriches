@@ -1,6 +1,6 @@
-import { GetReconversionProjectImpactsResultDto } from "shared";
+import type { GetReconversionProjectImpactsResultDto } from "shared";
 
-import { ReconversionProjectImpactsGateway } from "../../application/project-impacts/actions";
+import type { ReconversionProjectImpactsGateway } from "../../application/project-impacts/actions";
 
 export class HttpReconversionProjectImpactsApi implements ReconversionProjectImpactsGateway {
   async getReconversionProjectImpacts(

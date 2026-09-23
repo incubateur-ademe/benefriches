@@ -2,11 +2,12 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Menu, MenuButton, MenuItems, MenuSeparator } from "@headlessui/react";
 import { Fragment } from "react/jsx-runtime";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
 import ArchiveProjectDialog from "@/features/archive-project/views/ArchiveProjectDialog";
-import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 import MenuItemButton from "@/shared/views/components/Menu/MenuItemButton";
 import { MENU_ITEMS_CLASSES } from "@/shared/views/components/Menu/classes";
 import { getScenarioPictoUrl } from "@/shared/views/components/ProjectTile/scenarioType";

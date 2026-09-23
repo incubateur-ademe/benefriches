@@ -1,4 +1,4 @@
-import { WizardFormStepsState } from "../stepHandler.type";
+import type { WizardFormStepsState } from "../stepHandler.type";
 
 /**
  * Minimal sub-state MutateStateHelper operates on: just `currentStep` + `steps`. Deliberately

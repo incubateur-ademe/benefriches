@@ -1,13 +1,13 @@
+import type { LocalAuthority } from "shared";
 import {
   formatLocalAuthorityName,
-  LocalAuthority,
   type OwnerStructureType,
   type TenantStructureType,
 } from "shared";
 
-import { UserStructureActivity, UserStructureType } from "@/features/onboarding/core/user";
+import type { UserStructureActivity, UserStructureType } from "@/features/onboarding/core/user";
 
-import { ProjectStakeholder, ProjectStakeholderStructure } from "../project.types";
+import type { ProjectStakeholder, ProjectStakeholderStructure } from "../project.types";
 import type { SiteRelatedLocalAuthorities } from "./projectSite.types";
 
 export const DEFAULT_FUTURE_SITE_OWNER = {

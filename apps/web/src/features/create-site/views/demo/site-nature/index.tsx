@@ -1,7 +1,8 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useDemoSiteForm } from "@/features/create-site/views/site-form/useDemoSiteForm";
 
-import SiteNatureForm, { FormValues } from "./SiteNatureForm";
+import type { FormValues } from "./SiteNatureForm";
+import SiteNatureForm from "./SiteNatureForm";
 
 function SiteNatureFormContainer() {
   const { onBack, onRequestStepCompletion, selectSiteNatureViewData } = useDemoSiteForm();

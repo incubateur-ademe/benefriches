@@ -1,11 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
-import {
-  SoilType,
-  SoilsDistribution,
-  getNonSuitableSoilsForPhotovoltaicPanels,
-  typedObjectKeys,
-} from "shared";
+import type { SoilType, SoilsDistribution } from "shared";
+import { getNonSuitableSoilsForPhotovoltaicPanels, typedObjectKeys } from "shared";
 
 import type { RootState } from "@/app/store/store";
 import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";

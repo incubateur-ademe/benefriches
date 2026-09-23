@@ -2,7 +2,8 @@ import { useAppSelector } from "@/app/hooks/store.hooks";
 import type { creationCustomFormSelectors } from "@/features/create-site/core/custom/customForm.selectors";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
-import FricheAccidentsForm, { FormValues } from "./FricheAccidentsForm";
+import type { FormValues } from "./FricheAccidentsForm";
+import FricheAccidentsForm from "./FricheAccidentsForm";
 
 const mapInitialValues = (
   siteAccidentsData: ReturnType<typeof creationCustomFormSelectors.selectSiteAccidentsData>,

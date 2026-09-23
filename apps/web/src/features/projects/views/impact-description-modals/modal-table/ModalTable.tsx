@@ -1,7 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Table from "@codegouvfr/react-dsfr/Table";
-import { CSSProperties, ReactNode } from "react";
-import { Link } from "type-route";
+import type { CSSProperties, ReactNode } from "react";
+import type { Link } from "type-route";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";

@@ -1,5 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { type DetailedHTMLProps, type InputHTMLAttributes, ReactNode, useId } from "react";
+import type { ReactNode } from "react";
+import { type DetailedHTMLProps, type InputHTMLAttributes, useId } from "react";
 
 import classNames from "@/shared/views/clsx";
 

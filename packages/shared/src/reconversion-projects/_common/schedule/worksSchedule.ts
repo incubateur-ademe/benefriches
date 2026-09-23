@@ -1,6 +1,6 @@
 import { addDays, addMonths, addYears, isValid } from "date-fns";
 
-import { IDateProvider } from "../../../adapters/IDateProvider";
+import type { IDateProvider } from "../../../adapters/IDateProvider";
 
 export const computeDefaultReinstatementSchedule = (
   dateProvider: IDateProvider,

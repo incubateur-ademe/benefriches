@@ -1,4 +1,4 @@
-import { ClassValue } from "../../clsx";
+import type { ClassValue } from "../../clsx";
 
 export const commonBadgeClasses: ClassValue[] = [
   "fr-badge",

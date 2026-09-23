@@ -1,14 +1,15 @@
-import { IDateProvider } from "../../../adapters/IDateProvider";
+import type { IDateProvider } from "../../../adapters/IDateProvider";
 import { typedObjectEntries } from "../../../object-entries";
 import { getProjectSoilDistributionByType } from "../../../soils";
-import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
-import { computeProjectReinstatementExpenses, ReinstatementExpensePurpose } from "../reinstatement";
+import type { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
+import type { ReinstatementExpensePurpose } from "../reinstatement";
+import { computeProjectReinstatementExpenses } from "../reinstatement";
 import { computeDefaultOperationsFirstYear } from "../schedule/operationFirstYear";
 import {
   computeDefaultInstallationSchedule,
   computeDefaultReinstatementSchedule,
 } from "../schedule/worksSchedule";
-import { SiteData } from "./types";
+import type { SiteData } from "./types";
 
 export class DefaultProjectGenerator {
   readonly dateProvider: IDateProvider;

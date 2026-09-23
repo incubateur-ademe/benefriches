@@ -1,7 +1,7 @@
-import { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
-import { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
-import { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
-import { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
+import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
+import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
+import type { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 
 import {
   getEconomicBalanceImpactLabel,
@@ -9,14 +9,15 @@ import {
   getSocialImpactLabel,
   getSocioEconomicImpactLabel,
 } from "../shared/getImpactLabel";
-import {
+import type {
   ContentState,
   EnvironmentalSectionName,
   SocialSectionName,
   SocioEconomicSectionName,
 } from "./ImpactModalDescriptionContext";
-import { splitImpactKey, SplitKey } from "./getImpactData";
-import { BreadcrumbSegment } from "./modal-layout/ModalBreadcrumb";
+import type { SplitKey } from "./getImpactData";
+import { splitImpactKey } from "./getImpactData";
+import type { BreadcrumbSegment } from "./modal-layout/ModalBreadcrumb";
 
 function buildCascadingBreadcrumb(levels: (BreadcrumbSegment | undefined)[]): BreadcrumbSegment[] {
   return levels.filter((level): level is BreadcrumbSegment => level !== undefined);

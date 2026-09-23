@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
-import { ProjectCreationState } from "../../createProject.reducer";
+import type { ProjectCreationState } from "../../createProject.reducer";
 
 export const mockSiteData: Exclude<ProjectCreationState["siteData"], undefined> = {
   id: uuid(),

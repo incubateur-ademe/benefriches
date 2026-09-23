@@ -1,6 +1,6 @@
-import { Options } from "highcharts";
+import type { Options } from "highcharts";
 import { useId } from "react";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";

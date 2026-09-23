@@ -1,15 +1,13 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { DevelopmentPlanType, ProjectPhase } from "shared";
+import type { DevelopmentPlanType, ProjectPhase } from "shared";
 
-import {
+import type {
   ProjectSiteView,
   SiteRelatedLocalAuthorities,
 } from "@/features/create-project/core/project-form/projectSite.types";
 import { addWizardFormCasesToBuilder } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
-import {
-  INITIAL_STATE as renewableEnergyInitialState,
-  RenewableEnergyProjectState,
-} from "@/features/create-project/core/renewable-energy/renewableEnergy.reducer";
+import type { RenewableEnergyProjectState } from "@/features/create-project/core/renewable-energy/renewableEnergy.reducer";
+import { INITIAL_STATE as renewableEnergyInitialState } from "@/features/create-project/core/renewable-energy/renewableEnergy.reducer";
 import { addRenewableEnergyFormCasesToBuilder } from "@/features/create-project/core/renewable-energy/renewableEnergyForm.reducer";
 import {
   answerStepHandlers as renewableEnergyAnswerStepHandlers,
@@ -19,12 +17,10 @@ import {
   answerStepHandlers,
   stepHandlerRegistry,
 } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
-import {
-  getUrbanProjectInitialState,
-  UrbanProjectState,
-} from "@/features/create-project/core/urban-project/urbanProject.state";
+import type { UrbanProjectState } from "@/features/create-project/core/urban-project/urbanProject.state";
+import { getUrbanProjectInitialState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { addUrbanProjectFormCasesToBuilder } from "@/features/create-project/core/urban-project/urbanProjectForm.reducer";
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 
 import { convertPhotovoltaicProjectDataToSteps } from "./helpers/convertPhotovoltaicProjectDataToSteps";

@@ -1,14 +1,13 @@
 import z from "zod";
 
-import { DevelopmentPlanInstallationExpenses } from "../reconversion-project-impacts";
+import type { DevelopmentPlanInstallationExpenses } from "../reconversion-project-impacts";
 import { soilTypeSchema } from "../soils";
 import { surfaceAreaSchema } from "../surface-area";
-import { FinancialAssistanceRevenue, ReinstatementExpense } from "./_common";
-import { RecurringExpense, RecurringRevenue } from "./renewable-energy";
+import type { FinancialAssistanceRevenue, ReinstatementExpense } from "./_common";
+import type { RecurringExpense, RecurringRevenue } from "./renewable-energy";
+import type { BuildingsConstructionExpense, BuildingsUseDistribution } from "./urban-project";
 import {
-  BuildingsConstructionExpense,
   buildingsConstructionExpensePurposeSchema,
-  BuildingsUseDistribution,
   buildingsUseDistributionSchema,
 } from "./urban-project";
 

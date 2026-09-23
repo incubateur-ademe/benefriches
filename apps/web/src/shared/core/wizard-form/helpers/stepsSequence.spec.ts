@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
+import type {
   AnswerStepHandlerRegistry,
   InfoStepHandler,
   WizardFormStepsState,

@@ -1,6 +1,6 @@
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
-import {
+import type {
   UrbanSprawlImpactsComparisonGateway,
   UrbanSprawlImpactsComparisonObj,
 } from "../../application/project-impacts/actions/urbanSprawlImpactsComparisonRequested.action";

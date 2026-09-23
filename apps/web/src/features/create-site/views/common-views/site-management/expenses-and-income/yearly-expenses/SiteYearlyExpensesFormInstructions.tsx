@@ -1,4 +1,4 @@
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";

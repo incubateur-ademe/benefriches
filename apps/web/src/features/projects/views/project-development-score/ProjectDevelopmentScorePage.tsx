@@ -1,9 +1,10 @@
-import { ReactNode, useMemo } from "react";
+import type { ReactNode } from "react";
+import { useMemo } from "react";
 import { renderToString } from "react-dom/server";
 
 import classNames from "@/shared/views/clsx";
 
-import { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
+import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
 import BreakEvenLevelImpactsActionBar from "../project-break-even-level/ProjectBreakEvenLevelActionBar";
 import EconomicColumnChart from "../project-break-even-level/charts/EconomicColumnChart";
 import LocalAuthorityIndirectEconomicImpactsCharts from "../project-break-even-level/charts/LocalAuthorityIndirectEconomicImpactsCharts";
@@ -13,7 +14,8 @@ import ProjectDevelopmentFullTimeJobsScore from "./ProjectDevelopmentFullTimeJob
 import IconFail from "./ProjectDevelopmentIconFail";
 import IconSuccess from "./ProjectDevelopmentIconSuccess";
 import ProjectDevelopmentLocalPeopleAndCompanyScore from "./ProjectDevelopmentLocalPeopleAndCompanyScore";
-import GradeScale, { Grade, GRADE_CONFIGS, GradeConfig } from "./ProjectDevelopmentScoreGradeScale";
+import type { Grade, GradeConfig } from "./ProjectDevelopmentScoreGradeScale";
+import GradeScale, { GRADE_CONFIGS } from "./ProjectDevelopmentScoreGradeScale";
 
 type ScoreItem = {
   title: string;

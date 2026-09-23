@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { NaturalAreaType, getLabelForNaturalAreaType } from "shared";
+import type { NaturalAreaType } from "shared";
+import { getLabelForNaturalAreaType } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";

@@ -1,4 +1,4 @@
-import { InfoStepHandler } from "../../stepHandlerRegistry";
+import type { InfoStepHandler } from "../../stepHandlerRegistry";
 
 export const DemoSiteIntroductionHandler = {
   stepId: "DEMO_INTRODUCTION",

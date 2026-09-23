@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
-import { DefaultValues, Path, useForm } from "react-hook-form";
+import type { ReactNode } from "react";
+import type { DefaultValues, Path } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 

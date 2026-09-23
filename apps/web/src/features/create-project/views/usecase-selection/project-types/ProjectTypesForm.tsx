@@ -1,8 +1,9 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
-import { DevelopmentPlanCategory, developmentPlanCategorySchema } from "shared";
+import type { DevelopmentPlanCategory } from "shared";
+import { developmentPlanCategorySchema } from "shared";
 
-import { ProjectSuggestion } from "@/features/create-project/core/project.types";
+import type { ProjectSuggestion } from "@/features/create-project/core/project.types";
 import {
   getCompatibilityScoreBackgroundColor,
   getTextForCompatibilityScore,

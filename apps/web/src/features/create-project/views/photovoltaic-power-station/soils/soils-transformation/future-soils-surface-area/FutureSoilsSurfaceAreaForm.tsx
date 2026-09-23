@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
+import type { SoilsDistribution, SoilType } from "shared";
 import {
   createSoilSurfaceAreaDistribution,
-  SoilsDistribution,
-  SoilType,
   getSuitableSurfaceAreaForPhotovoltaicPanels,
 } from "shared";
 

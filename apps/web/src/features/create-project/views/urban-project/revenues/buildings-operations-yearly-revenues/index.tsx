@@ -1,7 +1,5 @@
-import {
-  getLabelForYearlyBuildingsOperationsRevenues,
-  YearlyBuildingsOperationsRevenues,
-} from "shared";
+import type { YearlyBuildingsOperationsRevenues } from "shared";
+import { getLabelForYearlyBuildingsOperationsRevenues } from "shared";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import ProjectYearlyRevenuesForm from "@/features/create-project/views/project-form/common/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";

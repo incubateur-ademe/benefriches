@@ -1,13 +1,11 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import type { AgriculturalOperationActivity, FricheActivity, NaturalAreaType } from "shared";
 import {
-  AgriculturalOperationActivity,
-  FricheActivity,
   getFricheActivityShortLabel,
   getLabelForNaturalAreaType,
   getShortLabelForAgriculturalOperationActivity,
-  NaturalAreaType,
 } from "shared";
 
 import { routes } from "@/app/router";

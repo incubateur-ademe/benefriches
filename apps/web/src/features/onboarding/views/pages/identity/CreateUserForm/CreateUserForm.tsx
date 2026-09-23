@@ -9,10 +9,11 @@ import PolitiqueConfidentialiteContent from "@/shared/views/components/Politique
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import { AdministrativeDivisionService } from ".";
+import type { AdministrativeDivisionService } from ".";
 import RequestAuthLinkModal from "../../access-benefriches/RequestAuthLinkModal";
 import CreateUserErrorMessage from "./CreateUserErrorMessage";
-import UserStructureForm, { StructureFormValues } from "./CreateUserStructureForm";
+import type { StructureFormValues } from "./CreateUserStructureForm";
+import UserStructureForm from "./CreateUserStructureForm";
 
 const modal = createModal({
   id: "terms-modal",

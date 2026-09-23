@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { AgriculturalOperationActivity, FricheActivity, NaturalAreaType } from "shared";
+import type { AgriculturalOperationActivity, FricheActivity, NaturalAreaType } from "shared";
 
 import type { RootState } from "@/app/store/store";
 import { selectSiteFeaturesViewData } from "@/features/sites/core/siteFeatures.selectors";

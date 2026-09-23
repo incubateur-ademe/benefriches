@@ -1,9 +1,9 @@
 import * as Highcharts from "highcharts";
-import { HighchartsReact } from "highcharts-react-official";
+import type { HighchartsReact } from "highcharts-react-official";
 // oxlint-disable-next-line no-unassigned-import
 import "highcharts/modules/variable-pie";
 import { useId, useRef } from "react";
-import { SoilType } from "shared";
+import type { SoilType } from "shared";
 
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForCarbonStorageSoilType } from "@/shared/core/soils";

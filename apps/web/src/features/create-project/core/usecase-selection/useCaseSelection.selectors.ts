@@ -1,16 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { DevelopmentPlanCategory, ProjectPhase } from "shared";
+import type { DevelopmentPlanCategory, ProjectPhase } from "shared";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 import type { StepVariant } from "@/shared/core/stepVariant.types";
 
-import { ProjectSuggestion } from "../project.types";
-import { UseCaseSelectionStep } from "./useCaseSelection.reducer";
+import type { ProjectSuggestion } from "../project.types";
+import type { UseCaseSelectionStep } from "./useCaseSelection.reducer";
+import type { UseCaseSelectionStepGroupId } from "./useCaseSelectionStepperConfig";
 import {
   USE_CASE_SELECTION_STEP_GROUP_IDS,
   USE_CASE_SELECTION_STEP_GROUP_LABELS,
   USE_CASE_SELECTION_STEP_TO_GROUP,
-  UseCaseSelectionStepGroupId,
 } from "./useCaseSelectionStepperConfig";
 
 type UseCaseSelectionWizardViewData = {

@@ -1,8 +1,8 @@
-import { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
+import type { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
 
-import { SiteYearlyExpensesConfig } from "@/features/create-site/core/steps/site-management/expenses.functions";
+import type { SiteYearlyExpensesConfig } from "@/features/create-site/core/steps/site-management/expenses.functions";
 
-import { FormValues } from "./SiteYearlyExpensesForm";
+import type { FormValues } from "./SiteYearlyExpensesForm";
 
 export const mapFormDataToExpenses = (
   formData: FormValues,

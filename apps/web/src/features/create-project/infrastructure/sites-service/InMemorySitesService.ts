@@ -1,5 +1,5 @@
-import { GetSitesByIdGateway } from "../../core/actions/reconversionProjectCreationInitiated.action";
-import { ProjectSite } from "../../core/project.types";
+import type { GetSitesByIdGateway } from "../../core/actions/reconversionProjectCreationInitiated.action";
+import type { ProjectSite } from "../../core/project.types";
 
 export class InMemorySitesService implements GetSitesByIdGateway {
   sites: Map<string, ProjectSite> = new Map();

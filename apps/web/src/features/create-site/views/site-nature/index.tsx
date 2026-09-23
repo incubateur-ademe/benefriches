@@ -2,7 +2,8 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
 import { stepReverted } from "../../core/actions/revert.action";
 import { siteNatureCompleted } from "../../core/steps/introduction/introduction.actions";
-import SiteNatureForm, { FormValues } from "./SiteNatureForm";
+import type { FormValues } from "./SiteNatureForm";
+import SiteNatureForm from "./SiteNatureForm";
 
 function SiteNatureFormContainer() {
   const dispatch = useAppDispatch();

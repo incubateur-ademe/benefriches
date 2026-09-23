@@ -1,7 +1,8 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
-import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";
+import type { FormValues } from "./SitePurchasedForm";
+import SitePurchasedForm from "./SitePurchasedForm";
 
 function SitePurchasedFormContainer() {
   const { onBack, onRequestStepCompletion, selectSitePurchasedViewData } = useRenewableEnergyForm();

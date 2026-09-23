@@ -1,10 +1,12 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import * as Highcharts from "highcharts";
-import { HighchartsReact, HighchartsReactProps } from "highcharts-react-official";
+import type { HighchartsReactProps } from "highcharts-react-official";
+import { HighchartsReact } from "highcharts-react-official";
 import { Fragment, useRef } from "react";
 
-import useExportConfig, { ExportingOptionsProps } from "../../charts/useExportConfig";
+import type { ExportingOptionsProps } from "../../charts/useExportConfig";
+import useExportConfig from "../../charts/useExportConfig";
 import classNames from "../../clsx";
 import { MENU_ITEMS_CLASSES } from "../Menu/classes";
 import ExportChartMenuItems from "./ExportChartMenuItems";

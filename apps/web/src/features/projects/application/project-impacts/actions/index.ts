@@ -1,9 +1,9 @@
 import { createAction } from "@reduxjs/toolkit";
-import { GetReconversionProjectImpactsResultDto } from "shared";
+import type { GetReconversionProjectImpactsResultDto } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
-import { ViewMode } from "../projectImpacts.reducer";
+import type { ViewMode } from "../projectImpacts.reducer";
 
 const PROJECT_IMPACTS_PREFIX = "projectImpacts";
 

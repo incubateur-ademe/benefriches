@@ -1,6 +1,6 @@
 import { getProjectSoilDistributionByType, roundToInteger, sumListWithKey } from "shared";
 
-import {
+import type {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
 } from "@/features/projects/core/projects.types";

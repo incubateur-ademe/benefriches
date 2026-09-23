@@ -1,22 +1,15 @@
 import { createFormFactory } from "@/shared/core/reducers/form-factory/createFormUseCaseFactory";
 
-import { ProjectCreationState } from "../createProject.reducer";
+import type { ProjectCreationState } from "../createProject.reducer";
 import {
   demoProjectCreated,
   demoProjectSaved,
   demoStepGroupNavigated,
 } from "./demoProject.actions";
-import {
-  answersByStepSchemas,
-  DemoAnswerStepId,
-  DemoProjectStepsState,
-  DemoSummaryStep,
-} from "./demoSteps";
-import {
-  answerStepHandlers,
-  DemoStepContext,
-  demoStepHandlerRegistry,
-} from "./stepHandlerRegistry";
+import type { DemoAnswerStepId, DemoProjectStepsState, DemoSummaryStep } from "./demoSteps";
+import { answersByStepSchemas } from "./demoSteps";
+import type { DemoStepContext } from "./stepHandlerRegistry";
+import { answerStepHandlers, demoStepHandlerRegistry } from "./stepHandlerRegistry";
 
 type DemoProjectStep =
   "DEMO_PROJECT_TEMPLATE_SELECTION" | "DEMO_PROJECT_SUMMARY" | "DEMO_PROJECT_CREATION_RESULT";

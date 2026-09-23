@@ -1,4 +1,4 @@
-import { AgriculturalOperationActivity, FricheActivity, NaturalAreaType } from "shared";
+import type { AgriculturalOperationActivity, FricheActivity, NaturalAreaType } from "shared";
 
 import { createStepCompletedAction } from "../../actions/actionsUtils";
 

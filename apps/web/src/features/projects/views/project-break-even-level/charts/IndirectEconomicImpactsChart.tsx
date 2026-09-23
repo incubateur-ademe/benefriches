@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { typedObjectEntries } from "shared";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
 import EconomicColumnChart from "./EconomicColumnChart";
 

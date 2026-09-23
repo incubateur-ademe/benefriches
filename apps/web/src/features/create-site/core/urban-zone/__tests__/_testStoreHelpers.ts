@@ -1,7 +1,9 @@
-import { AppDependencies, createStore, RootState } from "@/app/store/store";
+import type { AppDependencies, RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { getInitialState, SiteCreationState } from "../../createSite.reducer";
+import type { SiteCreationState } from "../../createSite.reducer";
+import { getInitialState } from "../../createSite.reducer";
 import type { UrbanZoneSiteCreationStep, UrbanZoneStepsState } from "../urbanZoneSteps";
 
 export const getCurrentStep = (store: { getState: () => RootState }): UrbanZoneSiteCreationStep =>

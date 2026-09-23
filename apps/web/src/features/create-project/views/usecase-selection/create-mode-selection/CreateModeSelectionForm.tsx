@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
-import { ReconversionProjectCreationMode } from "shared";
+import type { ReconversionProjectCreationMode } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import HorizontalCheckableTile from "@/shared/views/components/CheckableTile/HorizontalCheckableTile";

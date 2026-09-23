@@ -1,4 +1,5 @@
-import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import Button from "@codegouvfr/react-dsfr/Button";
 
 import { routes } from "@/app/router";
 

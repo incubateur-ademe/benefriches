@@ -1,10 +1,10 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
 import { fetchSiteView } from "./fetchSiteView.action";
 import { projectRemovedFromList } from "./removeProjectFromList.action";
-import { SiteView } from "./site.types";
+import type { SiteView } from "./site.types";
 
 type SiteViewState = {
   byId: Record<

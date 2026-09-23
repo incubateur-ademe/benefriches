@@ -1,5 +1,5 @@
-import { SiteEvaluationGateway } from "../../application/evaluationsList.actions";
-import { UserSiteEvaluation } from "../../core/types";
+import type { SiteEvaluationGateway } from "../../application/evaluationsList.actions";
+import type { UserSiteEvaluation } from "../../core/types";
 
 export class HttpSiteEvaluationApi implements SiteEvaluationGateway {
   async getUserList(): Promise<UserSiteEvaluation[]> {

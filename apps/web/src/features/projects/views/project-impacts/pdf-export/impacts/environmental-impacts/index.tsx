@@ -1,7 +1,7 @@
 import { Text, View } from "@react-pdf/renderer";
 import { typedObjectEntries } from "shared";
 
-import {
+import type {
   EnvironmentalImpactMetricMainKeyName,
   EnvironmentalImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsEnvironmental";

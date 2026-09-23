@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { typedObjectEntries } from "shared";
 
-import {
+import type {
   EnvironmentalImpactMetricMainKeyName,
   EnvironmentalImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsEnvironmental";

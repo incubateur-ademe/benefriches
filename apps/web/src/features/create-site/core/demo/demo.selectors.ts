@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
 export const selectDemoUseCaseContentWizardViewData = createSelector(
   (state: RootState) => state.siteCreation,

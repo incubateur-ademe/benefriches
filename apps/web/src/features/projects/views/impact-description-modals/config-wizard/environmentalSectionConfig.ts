@@ -1,14 +1,14 @@
 import { lazy } from "react";
 
-import { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
+import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
 import {
   formatCO2Impact,
   formatSurfaceAreaImpact,
 } from "@/features/projects/views/shared/formatImpactValue";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
-import { EnvironmentalSectionName } from "../ImpactModalDescriptionContext";
-import { ContentComponentType, ModalImpactConfig } from "./config.type";
+import type { EnvironmentalSectionName } from "../ImpactModalDescriptionContext";
+import type { ContentComponentType, ModalImpactConfig } from "./config.type";
 
 const ENVIRONMENTAL_METRICS_MODALS = {
   environmental: {

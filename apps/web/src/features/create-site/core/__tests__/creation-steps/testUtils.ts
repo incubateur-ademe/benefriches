@@ -1,19 +1,16 @@
 import { expect } from "vitest";
 
-import { AppDependencies, createStore, RootState } from "@/app/store/store";
+import type { AppDependencies, RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
-import { User } from "@/features/onboarding/core/user";
+import type { User } from "@/features/onboarding/core/user";
 import { initialState } from "@/features/onboarding/core/user.reducer";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import {
-  getInitialState,
-  selectCurrentStep,
-  SiteCreationState,
-  SiteCreationStep,
-} from "../../createSite.reducer";
+import type { SiteCreationState, SiteCreationStep } from "../../createSite.reducer";
+import { getInitialState, selectCurrentStep } from "../../createSite.reducer";
 import type { CustomStepsState, SiteCreationCustomStep } from "../../custom/customSteps";
-import { SiteCreationData } from "../../siteFoncier.types";
+import type { SiteCreationData } from "../../siteFoncier.types";
 import type {
   UrbanZoneSiteCreationStep,
   UrbanZoneStepsState,

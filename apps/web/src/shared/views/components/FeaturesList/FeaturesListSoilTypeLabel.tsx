@@ -1,5 +1,5 @@
-import { CSSProperties } from "react";
-import { SoilType } from "shared";
+import type { CSSProperties } from "react";
+import type { SoilType } from "shared";
 
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForSoilType } from "@/shared/core/soils";

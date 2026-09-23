@@ -1,24 +1,22 @@
-import { GetReconversionProjectImpactsResultDto } from "../api-dtos";
+import type { GetReconversionProjectImpactsResultDto } from "../api-dtos";
 import { roundToInteger, sumList, sumListWithKey } from "../services";
-import { SiteStatuQuoImpactMetric, SiteStatuQuoImpacts } from "../site";
+import type { SiteStatuQuoImpactMetric, SiteStatuQuoImpacts } from "../site";
 import { computeStatuQuoSiteImpacts } from "../site/statu-quo-impacts/computeStatuQuoSiteImpacts";
-import { SiteImpactsDataView } from "../site/statu-quo-impacts/siteImpactsDataView.types";
-import { SoilsCarbonStorage } from "../soils";
+import type { SiteImpactsDataView } from "../site/statu-quo-impacts/siteImpactsDataView.types";
+import type { SoilsCarbonStorage } from "../soils";
 import { SumOnEvolutionPeriodService } from "../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../sum-on-evolution-period/computeCumulativeByYear";
 import { getProjectDevelopmentEconomicBalance } from "./economic-balance/projectDevelopmentEconomicBalance";
 import { getProjectOperatingEconomicBalance } from "./economic-balance/projectOperatingEconomicBalance";
-import { Schedule } from "./indirect-impacts/fullTimeJobs.helper";
+import type { Schedule } from "./indirect-impacts/fullTimeJobs.helper";
 import { getProjectMetricsAndEconomicImpacts } from "./indirect-impacts/projectIndirectImpacts";
 import { computeAvoidedRoadsAndUtilitiesConstructionExpensesWithFriche } from "./indirect-impacts/urban-project/roads-and-utilities-expenses/roadsAndUtilitiesContruction";
 import { computeAvoidedWithFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } from "./indirect-impacts/urban-project/roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
-import {
+import type {
   AggregatedProjectImpactMetric,
   AggregatedReconversionIndirectEconomicImpactsDataView,
   AggregatedReconversionProjectOnSiteImpactItemView,
   IndirectEconomicImpactDataView,
-  isSameStakeholders,
-  isStakeholderLocalAuthority,
   ProjectEconomicBalance,
   ProjectOnSiteImpactMetric,
   ProjectOperatingEconomicBalanceItem,
@@ -26,7 +24,8 @@ import {
   UrbanSprawlComparisonIndirectEconomicImpactItemView,
   UrbanSprawlComparisonProjectImpactsDataView,
 } from "./projectImpacts.types";
-import { ReconversionProjectImpactsDataView } from "./projectImpactsDataView.types";
+import { isSameStakeholders, isStakeholderLocalAuthority } from "./projectImpacts.types";
+import type { ReconversionProjectImpactsDataView } from "./projectImpactsDataView.types";
 
 export type ApiReconversionProjectImpactsDataView = ReconversionProjectImpactsDataView<Schedule>;
 

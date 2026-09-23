@@ -1,4 +1,4 @@
-import { SiteYearlyIncome } from "shared";
+import type { SiteYearlyIncome } from "shared";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { hasTenant } from "@/features/create-site/core/site.functions";

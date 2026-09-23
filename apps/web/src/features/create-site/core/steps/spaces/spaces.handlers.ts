@@ -1,8 +1,8 @@
+import type { SoilsDistribution } from "shared";
 import {
   getSoilsDistributionForAgriculturalOperationActivity,
   getSoilsDistributionForFricheActivity,
   getSoilsDistributionForNaturalAreaType,
-  SoilsDistribution,
   SurfaceAreaDistribution,
   typedObjectKeys,
 } from "shared";

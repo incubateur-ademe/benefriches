@@ -1,4 +1,4 @@
-import { ProjectPhase } from "shared";
+import type { ProjectPhase } from "shared";
 
 export const getLabelForProjectPhase = (projectPhase: ProjectPhase): string => {
   switch (projectPhase) {

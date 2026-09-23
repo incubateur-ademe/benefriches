@@ -1,6 +1,6 @@
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 
-import { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import type { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 type GoBackProps = {
   linkProps: ButtonProps.AsAnchor["linkProps"];

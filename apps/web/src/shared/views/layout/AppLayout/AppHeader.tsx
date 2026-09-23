@@ -1,11 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import Button from "@codegouvfr/react-dsfr/Button";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";

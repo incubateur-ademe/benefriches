@@ -1,8 +1,8 @@
-import { RecurringExpense, RecurringRevenue } from "../../reconversion-projects";
+import type { RecurringExpense, RecurringRevenue } from "../../reconversion-projects";
 import { sumList } from "../../services";
-import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
-import { ProjectOperatingEconomicBalanceItem } from "../projectImpacts.types";
+import type { ProjectOperatingEconomicBalanceItem } from "../projectImpacts.types";
 
 type Props = {
   yearlyProjectedRevenues: RecurringRevenue[];

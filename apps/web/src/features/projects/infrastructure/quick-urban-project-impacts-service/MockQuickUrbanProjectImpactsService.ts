@@ -1,6 +1,6 @@
-import { GetReconversionProjectImpactsResultDto } from "shared";
+import type { GetReconversionProjectImpactsResultDto } from "shared";
 
-import { QuickUrbanProjectImpactsGateway } from "../../application/project-impacts/actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
+import type { QuickUrbanProjectImpactsGateway } from "../../application/project-impacts/actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
 
 export class MockQuickUrbanProjectImpactsService implements QuickUrbanProjectImpactsGateway {
   data: GetReconversionProjectImpactsResultDto | undefined = undefined;

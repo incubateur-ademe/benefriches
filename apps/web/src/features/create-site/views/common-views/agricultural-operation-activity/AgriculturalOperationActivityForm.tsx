@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { AgriculturalOperationActivity, getLabelForAgriculturalOperationActivity } from "shared";
+import type { AgriculturalOperationActivity } from "shared";
+import { getLabelForAgriculturalOperationActivity } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";

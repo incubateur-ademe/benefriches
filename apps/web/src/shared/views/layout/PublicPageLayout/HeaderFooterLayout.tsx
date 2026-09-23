@@ -1,7 +1,7 @@
-import { HeaderProps } from "@codegouvfr/react-dsfr/Header";
+import type { HeaderProps } from "@codegouvfr/react-dsfr/Header";
 import { SkipLinks } from "@codegouvfr/react-dsfr/SkipLinks";
-import { ReactNode } from "react";
-import { Link } from "type-route";
+import type { ReactNode } from "react";
+import type { Link } from "type-route";
 
 import BenefrichesFooter from "../BenefrichesFooter/BenefrichesFooter";
 import BenefrichesHeader from "./BenefrichesHeader";

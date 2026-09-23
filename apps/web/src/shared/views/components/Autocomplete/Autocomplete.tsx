@@ -1,9 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import Input, { InputProps } from "@codegouvfr/react-dsfr/Input";
+import type { InputProps } from "@codegouvfr/react-dsfr/Input";
+import Input from "@codegouvfr/react-dsfr/Input";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
-import { ComponentPropsWithRef, Fragment } from "react";
+import type { ComponentPropsWithRef } from "react";
+import { Fragment } from "react";
 
-import classNames, { ClassValue } from "../../clsx";
+import type { ClassValue } from "../../clsx";
+import classNames from "../../clsx";
 
 type Props = {
   options: { label: string; value: string }[];

@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
-import { SiteFeaturesSectionId } from "@/features/sites/views/features/SiteFeaturesList";
+import type { SiteFeaturesSectionId } from "@/features/sites/views/features/SiteFeaturesList";
 import { getSummarySectionProps } from "@/shared/views/components/FeaturesList/summarySectionProps";
 
 import SiteDataSummary from "./SiteDataSummary";

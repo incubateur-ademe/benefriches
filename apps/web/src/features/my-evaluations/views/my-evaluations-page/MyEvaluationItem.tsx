@@ -1,10 +1,10 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Menu, MenuButton, MenuItems, MenuSeparator } from "@headlessui/react";
 import * as Highcharts from "highcharts";
-import { Options } from "highcharts";
+import type { Options } from "highcharts";
 import { HighchartsReact } from "highcharts-react-official";
 import { Fragment } from "react/jsx-runtime";
-import { MutabilityUsage } from "shared";
+import type { MutabilityUsage } from "shared";
 
 import { routes } from "@/app/router";
 import ArchiveProjectDialogButton from "@/features/archive-project/views/ArchiveProjectDialogButton";
@@ -21,7 +21,7 @@ import NewProjectTile from "@/shared/views/components/ProjectTile/NewProjectTile
 import ProjectOverviewTile from "@/shared/views/components/ProjectTile/ProjectOverviewTile";
 import ProjectTile from "@/shared/views/components/ProjectTile/ProjectTile";
 
-import { UserSiteEvaluation } from "../../core/types";
+import type { UserSiteEvaluation } from "../../core/types";
 
 type Props = {
   evaluation: UserSiteEvaluation;

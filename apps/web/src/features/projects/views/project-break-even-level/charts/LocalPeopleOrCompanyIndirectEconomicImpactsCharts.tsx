@@ -1,8 +1,8 @@
 import { useId, useMemo } from "react";
 import { sumListWithKey, typedObjectEntries } from "shared";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
-import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
+import type { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 
 import { LOCAL_PEOPLE_OR_COMPANY_IMPACTS_CATEGORIES } from "../../shared/impacts/impactGroupCategory";

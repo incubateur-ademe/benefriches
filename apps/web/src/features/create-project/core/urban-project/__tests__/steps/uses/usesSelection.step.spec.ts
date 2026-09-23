@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 
 import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
-import { AnswersByStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { AnswersByStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";

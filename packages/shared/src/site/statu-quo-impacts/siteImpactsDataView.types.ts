@@ -1,4 +1,4 @@
-import {
+import type {
   Address,
   AgriculturalOperationActivity,
   FricheActivity,
@@ -7,7 +7,7 @@ import {
   SiteYearlyExpense,
   SiteYearlyIncome,
 } from "..";
-import { SoilsDistribution } from "../../soils";
+import type { SoilsDistribution } from "../../soils";
 
 export type SiteImpactsDataView = {
   id: string;

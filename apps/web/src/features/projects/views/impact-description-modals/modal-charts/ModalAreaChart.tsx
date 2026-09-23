@@ -1,8 +1,7 @@
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 
-import useImpactAreaChartProps, {
-  ImpactAreaChartProps,
-} from "@/features/projects/views/shared/charts/useImpactAreaChartProps";
+import type { ImpactAreaChartProps } from "@/features/projects/views/shared/charts/useImpactAreaChartProps";
+import useImpactAreaChartProps from "@/features/projects/views/shared/charts/useImpactAreaChartProps";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 import ExportableChart from "@/shared/views/components/Charts/ExportableChart";
 

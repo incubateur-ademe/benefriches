@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";

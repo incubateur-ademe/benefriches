@@ -1,4 +1,4 @@
-import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
+import type { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
 import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
 /**

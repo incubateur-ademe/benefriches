@@ -1,4 +1,4 @@
-import { SiteNature, SoilType } from "shared";
+import type { SiteNature, SoilType } from "shared";
 
 export const getLabelForSoilType = (value: SoilType): string => {
   switch (value) {

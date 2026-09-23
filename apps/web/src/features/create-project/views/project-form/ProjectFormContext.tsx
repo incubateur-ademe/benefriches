@@ -1,9 +1,9 @@
 import { createContext } from "react";
 
-import { StepGroupId } from "@/features/create-project/core/urban-project/stepperConfig";
-import { StepCompletionPayload } from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
-import { createUrbanProjectFormSelectors } from "@/features/create-project/core/urban-project/urbanProjectForm.selectors";
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { StepGroupId } from "@/features/create-project/core/urban-project/stepperConfig";
+import type { StepCompletionPayload } from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
+import type { createUrbanProjectFormSelectors } from "@/features/create-project/core/urban-project/urbanProjectForm.selectors";
+import type { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 export type ProjectFormContextValue = ReturnType<typeof createUrbanProjectFormSelectors> & {
   onNext: () => void;

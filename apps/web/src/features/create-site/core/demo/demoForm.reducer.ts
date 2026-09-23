@@ -1,21 +1,16 @@
-import { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
+import type { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
 
 import { applyStepChanges } from "@/shared/core/wizard-form/helpers/applyStepChanges";
-import {
-  computeStepChanges,
-  StepUpdateResult,
-} from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import type { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import { computeStepChanges } from "@/shared/core/wizard-form/helpers/computeStepChanges";
 import { navigateToAndLoadStep } from "@/shared/core/wizard-form/helpers/navigateToStep";
-import { WizardFormDefinition } from "@/shared/core/wizard-form/wizardForm.reducer";
+import type { WizardFormDefinition } from "@/shared/core/wizard-form/wizardForm.reducer";
 
-import { SiteCreationState } from "../createSite.reducer";
-import { DemoFormPureActions } from "./demo.actions";
-import { AnswersByStep, DemoAnswerStepId, DemoSiteCreationStep } from "./demoSteps";
-import {
-  answerStepHandlers,
-  demoStepHandlerRegistry,
-  DemoStepHandlerContext,
-} from "./stepHandlerRegistry";
+import type { SiteCreationState } from "../createSite.reducer";
+import type { DemoFormPureActions } from "./demo.actions";
+import type { AnswersByStep, DemoAnswerStepId, DemoSiteCreationStep } from "./demoSteps";
+import type { DemoStepHandlerContext } from "./stepHandlerRegistry";
+import { answerStepHandlers, demoStepHandlerRegistry } from "./stepHandlerRegistry";
 
 // Demo has exactly one consumer (create — express sites are never edited), so this is typed
 // directly against the concrete SiteCreationState rather than generic over a host-state param,

@@ -1,4 +1,4 @@
-import {
+import type {
   FinancialAssistanceRevenue,
   PhotovoltaicInstallationExpense,
   RecurringExpense,
@@ -12,10 +12,10 @@ import {
   SiteStakeholderStructureType,
 } from "shared";
 
-import { UserStructureType } from "@/features/onboarding/core/user";
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
+import type { UserStructureType } from "@/features/onboarding/core/user";
+import type { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 
-import { ProjectSiteView } from "./project-form/projectSite.types";
+import type { ProjectSiteView } from "./project-form/projectSite.types";
 
 export type PhotovoltaicKeyParameter = "POWER" | "SURFACE";
 

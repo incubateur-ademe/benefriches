@@ -1,6 +1,6 @@
-import { CreateExpressSiteDto } from "shared";
+import type { CreateExpressSiteDto } from "shared";
 
-import { CreateSiteGateway, CustomSitePayload } from "../../core/createSiteGateway";
+import type { CreateSiteGateway, CustomSitePayload } from "../../core/createSiteGateway";
 
 export class InMemoryCreateSiteService implements CreateSiteGateway {
   _customSites: CustomSitePayload[] = [];

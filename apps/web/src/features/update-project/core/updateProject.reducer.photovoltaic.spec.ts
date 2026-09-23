@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { updateProjectFormRenewableEnergyActions } from "./updateProject.actions";
 import { reconversionProjectUpdateInitiated } from "./updateProject.actions";
 import updateProjectReducer from "./updateProject.reducer";
-import { UpdateProjectView } from "./updateProject.types";
+import type { UpdateProjectView } from "./updateProject.types";
 
 const BASE_PROJECT_DATA: UpdateProjectView["projectData"] = {
   id: "project-1",

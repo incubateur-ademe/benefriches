@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";

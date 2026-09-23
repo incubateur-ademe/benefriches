@@ -1,6 +1,7 @@
-import { createRouter, defineRoute, noMatch, param, ValueSerializer } from "type-route";
+import type { ValueSerializer } from "type-route";
+import { createRouter, defineRoute, noMatch, param } from "type-route";
 
-import { ProjectSuggestion } from "@/features/create-project/core/project.types";
+import type { ProjectSuggestion } from "@/features/create-project/core/project.types";
 import { onboardingVariantSchema } from "@/features/onboarding/views/pages/step-shell/onboardingVariant";
 
 const onBoarding = defineRoute("/premiers-pas");

@@ -6,7 +6,7 @@ import type {
 
 import type { createSiteFormRootSelectors } from "../selectors/createSite.selectors";
 import { siteCreationRootSelectors } from "../selectors/createSite.selectors";
-import { SiteCarbonStorageResult } from "../siteSoilsCarbonStorage.reducer";
+import type { SiteCarbonStorageResult } from "../siteSoilsCarbonStorage.reducer";
 
 export type { SoilsCarbonStorageGateway } from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 

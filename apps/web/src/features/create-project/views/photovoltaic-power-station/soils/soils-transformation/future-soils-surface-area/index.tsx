@@ -1,7 +1,8 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
-import FutureSoilsSurfaceAreaForm, { FormValues } from "./FutureSoilsSurfaceAreaForm";
+import type { FormValues } from "./FutureSoilsSurfaceAreaForm";
+import FutureSoilsSurfaceAreaForm from "./FutureSoilsSurfaceAreaForm";
 
 function FutureSoilsSurfaceAreaFormContainer() {
   const { onBack, onRequestStepCompletion, selectFutureSoilsSurfaceAreasViewData } =

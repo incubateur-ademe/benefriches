@@ -1,13 +1,15 @@
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
-import React, { ReactNode } from "react";
+import type { ReactNode } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { SiteNature, SiteYearlyExpensePurpose, typedObjectEntries } from "shared";
+import type { SiteNature, SiteYearlyExpensePurpose } from "shared";
+import { typedObjectEntries } from "shared";
 
-import {
-  getLabelForExpensePurpose,
+import type {
   SiteManagementYearlyExpensesConfig,
   FricheSecurityYearlyExpensesConfig,
 } from "@/features/create-site/core/steps/site-management/expenses.functions";
+import { getLabelForExpensePurpose } from "@/features/create-site/core/steps/site-management/expenses.functions";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";

@@ -1,4 +1,4 @@
-import { User } from "./user";
+import type { User } from "./user";
 
 export const buildUser = (props?: Partial<User>): User => {
   return {

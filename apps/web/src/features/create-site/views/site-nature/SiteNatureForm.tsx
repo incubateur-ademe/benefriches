@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
 import { BENEFRICHES_ENV } from "@/app/envVars";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";

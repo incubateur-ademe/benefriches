@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { UrbanProjectStepsState } from "../urbanProject.state";
+import type { UrbanProjectStepsState } from "../urbanProject.state";
 import { getProjectSummary } from "./projectSummary";
 
 describe("getProjectSummary", () => {

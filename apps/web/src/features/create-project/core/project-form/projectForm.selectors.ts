@@ -1,12 +1,14 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { Address, SoilsDistribution } from "shared";
+import type { Address, SoilsDistribution } from "shared";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
-import { ProjectSiteView } from "./projectSite.types";
-import {
+import type { ProjectSiteView } from "./projectSite.types";
+import type {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
+} from "./stakeholders";
+import {
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
 } from "./stakeholders";

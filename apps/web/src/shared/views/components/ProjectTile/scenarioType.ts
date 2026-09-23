@@ -1,4 +1,4 @@
-import { DevelopmentPlanType } from "shared";
+import type { DevelopmentPlanType } from "shared";
 
 export const getScenarioPictoUrl = (type: DevelopmentPlanType): string => {
   switch (type) {

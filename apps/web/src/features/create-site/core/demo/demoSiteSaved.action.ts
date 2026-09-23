@@ -1,4 +1,5 @@
-import { createExpressSiteDtoSchema, CreateExpressSiteDto } from "shared";
+import type { CreateExpressSiteDto } from "shared";
+import { createExpressSiteDtoSchema } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 

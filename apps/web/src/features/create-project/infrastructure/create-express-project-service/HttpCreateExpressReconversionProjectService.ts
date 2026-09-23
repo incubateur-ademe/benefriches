@@ -1,9 +1,9 @@
-import { ReconversionProjectTemplate } from "shared";
+import type { ReconversionProjectTemplate } from "shared";
 
-import { ProjectFeatures } from "@/features/projects/core/projects.types";
+import type { ProjectFeatures } from "@/features/projects/core/projects.types";
 import { objectToQueryParams } from "@/shared/core/object-query-parameters/objectToQueryParameters";
 
-import { CreateExpressReconversionProjectGateway } from "../../core/demo/demoProject.actions";
+import type { CreateExpressReconversionProjectGateway } from "../../core/demo/demoProject.actions";
 
 type GetExpressReconversionProjectParams = {
   reconversionProjectId: string;

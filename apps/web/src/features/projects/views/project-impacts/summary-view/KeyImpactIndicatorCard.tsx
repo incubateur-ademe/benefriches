@@ -1,5 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
 import classNames from "@/shared/views/clsx";
 

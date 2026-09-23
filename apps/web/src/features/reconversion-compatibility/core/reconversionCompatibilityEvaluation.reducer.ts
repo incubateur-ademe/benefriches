@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 
 import { reconversionCompatibilityEvaluationCompleted } from "./actions/compatibilityEvaluationCompleted.actions";
 import { reconversionCompatibilityEvaluationReset } from "./actions/compatibilityEvaluationReset.actions";
-import { ReconversionCompatibilityEvaluationResults } from "./actions/compatibilityEvaluationResultsRequested.actions";
+import type { ReconversionCompatibilityEvaluationResults } from "./actions/compatibilityEvaluationResultsRequested.actions";
 import { reconversionCompatibilityEvaluationResultsRequested } from "./actions/compatibilityEvaluationResultsRequested.actions";
 import { reconversionCompatibilityEvaluationStarted } from "./actions/compatibilityEvaluationStarted.actions";
 import { fricheSavedFromCompatibilityEvaluation } from "./actions/fricheSavedFromCompatibilityEvaluation.actions";

@@ -1,26 +1,27 @@
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { ReactNode, Suspense, useCallback, useLayoutEffect, useMemo } from "react";
-import { Link, Route } from "type-route";
+import type { ReactNode } from "react";
+import { Suspense, useCallback, useLayoutEffect, useMemo } from "react";
+import type { Link, Route } from "type-route";
 
-import { routes } from "@/app/router";
-import { embedRoutes } from "@/embed";
+import type { routes } from "@/app/router";
+import type { embedRoutes } from "@/embed";
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { getKeyImpactIndicatorsList } from "@/features/projects/core/projectKeyImpactIndicators";
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { ImpactModalContentWizard, MODAL_CONFIG_GROUPS } from "./ImpactModalContentWizard";
+import type { UpdateModalContentArgs } from "./ImpactModalDescriptionContext";
 import {
   ImpactModalDescriptionContext,
   INITIAL_CONTENT_STATE,
   parseContentState,
   serializeContentState,
-  UpdateModalContentArgs,
 } from "./ImpactModalDescriptionContext";
 import CostBenefitAnalysisDescription from "./body-component/CostBenefitAnalysisDescription";
 import { SummaryModalWizard } from "./body-component/summary/SummaryModalWizard";
-import { DetailsCode, SectionCode } from "./impactModalUrlCodes";
+import type { DetailsCode, SectionCode } from "./impactModalUrlCodes";
 
 const DIALOG_ID = "impact-modal-description";
 const DIALOG_TITLE_ID = "impact-modal-description-title";

@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { TRevenue } from "../../financial";
+import type { TRevenue } from "../../financial";
 
 export const yearlyBuildingsOperationsRevenuePurposeSchema = z.enum(["rent", "other"]);
 export type YearlyBuildingsOperationsRevenues = TRevenue<

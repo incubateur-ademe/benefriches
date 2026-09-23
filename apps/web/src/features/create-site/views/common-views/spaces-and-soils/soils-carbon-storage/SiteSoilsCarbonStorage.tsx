@@ -1,7 +1,7 @@
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
 
-import { SiteCarbonStorage } from "@/features/create-site/core/siteSoilsCarbonStorage.reducer";
+import type { SiteCarbonStorage } from "@/features/create-site/core/siteSoilsCarbonStorage.reducer";
 import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/core/carbonEmissions";
 import { formatCarbonStorage } from "@/shared/core/format-number/formatCarbonStorage";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";

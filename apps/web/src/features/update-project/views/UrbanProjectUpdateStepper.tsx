@@ -5,7 +5,7 @@ import {
   STEP_GROUP_LABELS,
   STEP_TO_GROUP_MAPPING,
 } from "@/features/create-project/core/urban-project/stepperConfig";
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 import { useBuildStepperNavigationItems } from "@/shared/core/wizard-form/helpers/useBuildStepperNavigationItems";
 import classNames from "@/shared/views/clsx";

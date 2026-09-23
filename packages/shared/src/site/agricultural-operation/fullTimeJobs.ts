@@ -1,6 +1,6 @@
 import { roundTo1Digit } from "../../services";
 import { convertSquareMetersToHectares } from "../../surface-area";
-import { AgriculturalOperationActivity } from "./operationActivity";
+import type { AgriculturalOperationActivity } from "./operationActivity";
 
 export const ETP_PER_HECTARE = {
   CATTLE_FARMING: 1.09,

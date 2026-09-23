@@ -1,5 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { getLabelForUrbanZoneType } from "shared";
 import type { SoilType, UrbanZoneLandParcelType } from "shared";
 

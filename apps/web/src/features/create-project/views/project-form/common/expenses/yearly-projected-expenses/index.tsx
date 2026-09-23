@@ -1,7 +1,9 @@
-import { ReactNode } from "react";
-import { RecurringExpense, typedObjectKeys } from "shared";
+import type { ReactNode } from "react";
+import type { RecurringExpense } from "shared";
+import { typedObjectKeys } from "shared";
 
-import YearlyProjectedsExpensesForm, { FormValues } from "./YearlyProjectedExpensesForm";
+import type { FormValues } from "./YearlyProjectedExpensesForm";
+import YearlyProjectedsExpensesForm from "./YearlyProjectedExpensesForm";
 
 const expensesFormMap = {
   rentAmount: "rent",

@@ -1,6 +1,6 @@
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
-import { ProjectSite, ProjectSuggestion } from "../project.types";
+import type { ProjectSite, ProjectSuggestion } from "../project.types";
 import { makeProjectCreationActionType } from "./actionsUtils";
 
 export interface GetSitesByIdGateway {

@@ -1,13 +1,13 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { Route } from "type-route";
+import type { Route } from "type-route";
 
 import { routes, useRoute } from "@/app/router";
-import { ImpactsPageViewData } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
+import type { ImpactsPageViewData } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import {
+import type {
   ProjectImpactsState,
   ViewMode,
 } from "../../application/project-impacts/projectImpacts.reducer";

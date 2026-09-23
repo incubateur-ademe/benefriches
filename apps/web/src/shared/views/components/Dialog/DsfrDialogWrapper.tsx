@@ -1,6 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
-import { ReactNode, useMemo } from "react";
+import type { ReactNode } from "react";
+import { useMemo } from "react";
 import { createPortal } from "react-dom";
 
 import classNames from "../../clsx";

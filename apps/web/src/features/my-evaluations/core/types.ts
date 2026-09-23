@@ -1,6 +1,6 @@
-import { MutabilityUsage, SiteNature, SiteNotEditableReason } from "shared";
+import type { MutabilityUsage, SiteNature, SiteNotEditableReason } from "shared";
 
-import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
+import type { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 
 export type UserSiteEvaluation = {
   siteId: string;

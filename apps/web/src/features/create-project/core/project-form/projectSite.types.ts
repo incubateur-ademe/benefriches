@@ -1,6 +1,6 @@
-import { Address, SiteNature, SoilsDistribution } from "shared";
+import type { Address, SiteNature, SoilsDistribution } from "shared";
 
-import { Owner, Tenant } from "@/features/create-site/core/siteFoncier.types";
+import type { Owner, Tenant } from "@/features/create-site/core/siteFoncier.types";
 
 export type LocalAuthorities = {
   city?: {

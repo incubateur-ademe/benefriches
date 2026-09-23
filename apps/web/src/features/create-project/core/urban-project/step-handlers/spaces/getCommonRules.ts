@@ -1,7 +1,7 @@
 import { BUILDINGS_STEPS } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
-import { StepHandlerParams, StepInvalidationRule } from "../stepHandler.type";
+import type { StepHandlerParams, StepInvalidationRule } from "../stepHandler.type";
 
 export const getDeleteBuildingsRules = (params: StepHandlerParams) => {
   return BUILDINGS_STEPS.reduce<StepInvalidationRule[]>((rules, stepId) => {

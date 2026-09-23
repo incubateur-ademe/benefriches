@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { typedObjectEntries } from "shared";
 
-import {
+import type {
   SocialImpactMetricMainKeyName,
   SocialImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsSocial";

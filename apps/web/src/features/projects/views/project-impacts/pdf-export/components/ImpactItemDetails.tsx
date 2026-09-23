@@ -1,6 +1,6 @@
 import { View } from "@react-pdf/renderer";
 
-import { ImpactFormatType } from "../../../shared/formatImpactValue";
+import type { ImpactFormatType } from "../../../shared/formatImpactValue";
 import { tw } from "../styles";
 import ImpactRowValue from "./ImpactRowValue";
 

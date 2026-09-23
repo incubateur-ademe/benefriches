@@ -1,18 +1,14 @@
-import {
-  ActionCreatorWithPayload,
-  AsyncThunk,
-  AsyncThunkConfig,
-  createAction,
-} from "@reduxjs/toolkit";
-import { SoilsDistribution } from "shared";
+import type { ActionCreatorWithPayload, AsyncThunk, AsyncThunkConfig } from "@reduxjs/toolkit";
+import { createAction } from "@reduxjs/toolkit";
+import type { SoilsDistribution } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
-import { RootState } from "@/app/store/store";
-import { WizardFormSelectors } from "@/features/create-project/core/project-form/projectForm.selectors";
-import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
+import type { RootState } from "@/app/store/store";
+import type { WizardFormSelectors } from "@/features/create-project/core/project-form/projectForm.selectors";
+import type { CurrentAndProjectedSoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
 import { makeWizardFormActionType } from "@/shared/core/wizard-form/wizardForm.actions";
 
-import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
+import type { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
 const makeUrbanProjectFormActionType = (prefix: string, actionName: string) =>
   makeWizardFormActionType(prefix, `urbanProject/${actionName}`);

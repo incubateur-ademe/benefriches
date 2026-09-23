@@ -1,9 +1,7 @@
-import {
-  AvailableProjectStakeholder,
-  hasStakeholder,
-} from "@/features/create-project/core/project-form/stakeholders";
-import { ProjectStakeholder } from "@/features/create-project/core/project.types";
-import { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
+import type { AvailableProjectStakeholder } from "@/features/create-project/core/project-form/stakeholders";
+import { hasStakeholder } from "@/features/create-project/core/project-form/stakeholders";
+import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
+import type { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
 
 type Props = {
   projectAvailableStakeholders: AvailableProjectStakeholder[];

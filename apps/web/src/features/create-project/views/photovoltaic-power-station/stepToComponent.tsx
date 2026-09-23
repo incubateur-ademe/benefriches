@@ -1,6 +1,7 @@
-import { lazy, ReactNode } from "react";
+import type { ReactNode } from "react";
+import { lazy } from "react";
 
-import { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
+import type { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 
 const PhotovoltaicPanelsInstallationExpensesForm = lazy(() => import("./expenses/installation"));

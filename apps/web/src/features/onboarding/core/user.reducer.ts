@@ -1,10 +1,11 @@
-import { createReducer, createSelector, PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createReducer, createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
 import { createUser } from "./createUser.action";
 import { initCurrentUser } from "./initCurrentUser.action";
-import { AuthenticatedUser, UserStructure } from "./user";
+import type { AuthenticatedUser, UserStructure } from "./user";
 
 type State = {
   currentUser: AuthenticatedUser | null;

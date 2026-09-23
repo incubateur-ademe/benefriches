@@ -1,7 +1,7 @@
-import { ActionReducerMapBuilder, AsyncThunk, AsyncThunkConfig } from "@reduxjs/toolkit";
+import type { ActionReducerMapBuilder, AsyncThunk, AsyncThunkConfig } from "@reduxjs/toolkit";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 import type {
   ProjectSiteView,
   SiteRelatedLocalAuthorities,

@@ -2,7 +2,7 @@ import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastru
 
 import { StoreBuilder } from ".";
 import { reconversionProjectImpactsBreakEvenLevelRequested } from "../actions";
-import { ProjectImpactsState } from "../projectImpacts.reducer";
+import type { ProjectImpactsState } from "../projectImpacts.reducer";
 import {
   urbanProjectImpactsResultDto as urbanProjectImpactMock,
   urbanProjectImpactMockMeta,

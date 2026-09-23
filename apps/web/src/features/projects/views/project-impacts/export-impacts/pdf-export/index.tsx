@@ -10,7 +10,7 @@ import { selectExportImpactsView } from "@/features/projects/application/project
 import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
-import { Props as ImpactsPdfDocumentProps } from "../../pdf-export";
+import type { Props as ImpactsPdfDocumentProps } from "../../pdf-export";
 import PdfExportDocument from "../../pdf-export";
 import type { PdfExportSectionSelection } from "./pdfExportSections";
 

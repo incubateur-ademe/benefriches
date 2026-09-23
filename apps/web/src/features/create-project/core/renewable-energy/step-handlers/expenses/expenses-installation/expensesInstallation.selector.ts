@@ -1,9 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
-import {
-  TExpense,
-  computePhotovoltaicPowerStationInstallationExpensesFromElectricalPower,
-} from "shared";
+import type { TExpense } from "shared";
+import { computePhotovoltaicPowerStationInstallationExpensesFromElectricalPower } from "shared";
 
 import type { RootState } from "@/app/store/store";
 import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";

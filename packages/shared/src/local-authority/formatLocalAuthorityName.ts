@@ -1,4 +1,4 @@
-import { LocalAuthority } from ".";
+import type { LocalAuthority } from ".";
 import { formatCityWithPlacePreposition } from "./formatCityWithPlacePreposition";
 
 export const formatEpciName = (name: string): string => {

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
+import type { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/impact-description-modals/ImpactModalDescriptionContext";
 
 import { getEconomicBalanceImpactLabel } from "../../../shared/getImpactLabel";

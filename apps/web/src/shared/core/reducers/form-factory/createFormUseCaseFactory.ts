@@ -1,4 +1,5 @@
-import { ActionReducerMapBuilder, createAction, createReducer } from "@reduxjs/toolkit";
+import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
+import { createAction, createReducer } from "@reduxjs/toolkit";
 import type { z } from "zod";
 
 import type {
@@ -7,7 +8,7 @@ import type {
   StepCompletionPayload,
   StepsState,
 } from "./formFactory.types";
-import { AnswerStepHandler } from "./handlerRegistry.types";
+import type { AnswerStepHandler } from "./handlerRegistry.types";
 
 // Garde fou pour éviter de boucler à l'infini dans computeStepChanges,
 // à faire évoluer en fonction du parcours avec le plus grand nombre d'étapes

@@ -1,5 +1,5 @@
-import { CurrentUserGateway } from "../../core/initCurrentUser.action";
-import { AuthenticatedUser, User } from "../../core/user";
+import type { CurrentUserGateway } from "../../core/initCurrentUser.action";
+import type { AuthenticatedUser, User } from "../../core/user";
 
 const CURRENT_USER_STORAGE_KEY = "benefriches/current-user/v0";
 

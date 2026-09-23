@@ -1,11 +1,10 @@
-import {
+import type {
   GetReconversionProjectImpactsResultDto,
-  LOCAL_AUTHORITIES,
   SiteStatuQuoEconomicImpact,
-  sumListWithKey,
   UrbanSprawlComparisonIndirectEconomicImpactItemView,
   AggregatedReconversionProjectOnSiteImpactItemView,
 } from "shared";
+import { LOCAL_AUTHORITIES, sumListWithKey } from "shared";
 
 const isLocalAuthority = (structureType?: string) =>
   structureType === "localAuthority" || LOCAL_AUTHORITIES.some((item) => item === structureType);

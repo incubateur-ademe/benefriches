@@ -1,7 +1,8 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
-import FricheActivityForm, { FormValues } from "./FricheActivityForm";
+import type { FormValues } from "./FricheActivityForm";
+import FricheActivityForm from "./FricheActivityForm";
 
 function FricheActivityFormContainer() {
   const { onBack, onRequestStepCompletion, selectFricheActivity } = useCustomSiteForm();

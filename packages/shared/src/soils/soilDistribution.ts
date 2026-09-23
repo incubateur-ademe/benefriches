@@ -1,12 +1,11 @@
 import z from "zod";
 
-import { isImpermeableSoil, SoilType, soilTypeSchema } from ".";
+import type { SoilType } from ".";
+import { isImpermeableSoil, soilTypeSchema } from ".";
 import { typedObjectEntries } from "../object-entries";
 import { surfaceAreaSchema } from "../surface-area";
-import {
-  SurfaceAreaDistribution,
-  SurfaceAreaDistributionJson,
-} from "../surface-area/surfaceAreaDistribution";
+import type { SurfaceAreaDistributionJson } from "../surface-area/surfaceAreaDistribution";
+import { SurfaceAreaDistribution } from "../surface-area/surfaceAreaDistribution";
 
 export const soilsDistributionSchema = z.partialRecord(soilTypeSchema, surfaceAreaSchema);
 

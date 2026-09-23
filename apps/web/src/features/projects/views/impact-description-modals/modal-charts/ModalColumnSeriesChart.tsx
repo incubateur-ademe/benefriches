@@ -1,5 +1,5 @@
-import { SeriesOptionsType } from "highcharts";
-import { HighchartsReact, HighchartsReactProps } from "highcharts-react-official";
+import type { SeriesOptionsType } from "highcharts";
+import type { HighchartsReact, HighchartsReactProps } from "highcharts-react-official";
 import { useId, useRef } from "react";
 import { sumListWithKey } from "shared";
 

@@ -1,4 +1,4 @@
-import { SoilType } from "./soilType";
+import type { SoilType } from "./soilType";
 
 /**
  * Soil types that can only be part of a reconversion project if they already exist on the site.

@@ -1,8 +1,9 @@
 import { SkipLinks } from "@codegouvfr/react-dsfr/SkipLinks";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import BenefrichesFooter from "../BenefrichesFooter/BenefrichesFooter";
-import AppHeader, { AppLayoutHeaderProps } from "./AppHeader";
+import type { AppLayoutHeaderProps } from "./AppHeader";
+import AppHeader from "./AppHeader";
 
 type AppLayoutProps = {
   children: ReactNode;

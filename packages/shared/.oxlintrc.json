@@ -36,6 +36,7 @@
         ]
       }
     ],
+    "typescript/consistent-type-imports": "error",
     "import/no-named-as-default": "off",
     "typescript/no-confusing-void-expression": "error",
     "typescript/no-dynamic-delete": "error",

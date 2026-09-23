@@ -1,4 +1,5 @@
-import { Address, getSoilsDistributionForNaturalAreaType } from "shared";
+import type { Address } from "shared";
+import { getSoilsDistributionForNaturalAreaType } from "shared";
 
 import { InMemoryCreateSiteService } from "../../../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import { addressStepCompleted } from "../../steps/address/address.actions";

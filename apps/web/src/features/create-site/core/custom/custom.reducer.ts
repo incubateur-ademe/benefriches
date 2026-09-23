@@ -2,7 +2,8 @@ import { createReducer } from "@reduxjs/toolkit";
 
 import type { SiteCreationState } from "../createSite.reducer";
 import { customFormActions } from "./custom.actions";
-import { addCustomFormCasesToBuilder, CustomWizardFormDefinition } from "./customForm.reducer";
+import type { CustomWizardFormDefinition } from "./customForm.reducer";
+import { addCustomFormCasesToBuilder } from "./customForm.reducer";
 import { deriveSiteDataFromCustomSteps } from "./customSteps";
 import { addLegacyCustomActionsToBuilder } from "./legacyActionsAdapter";
 

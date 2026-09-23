@@ -4,7 +4,7 @@ import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import CompatibilityResultRow from "@/features/sites/views/CompatibilityResultRow";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { ReconversionCompatibilityEvaluationViewData } from "../../core/reconversionCompatibilityEvaluation.selectors";
+import type { ReconversionCompatibilityEvaluationViewData } from "../../core/reconversionCompatibilityEvaluation.selectors";
 import { getTextForReliabilityScore } from "../../core/score";
 import CompatibilityCard from "./CompatibilityCard";
 

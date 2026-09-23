@@ -1,7 +1,7 @@
 import { Text, View } from "@react-pdf/renderer";
 import { typedObjectEntries } from "shared";
 
-import {
+import type {
   SocialImpactMetricMainKeyName,
   SocialImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsSocial";

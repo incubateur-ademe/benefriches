@@ -1,5 +1,5 @@
 import { roundTo2Digits } from "../../../services";
-import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
+import type { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
 import { computeExpectedPostDevelopmentResaleSellingPriceFromSurfacesInTenseArea } from "../expectedPostDevelopmentResale";
 import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 

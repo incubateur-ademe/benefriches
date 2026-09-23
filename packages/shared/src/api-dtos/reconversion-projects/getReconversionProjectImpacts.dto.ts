@@ -1,6 +1,6 @@
-import { z } from "zod";
+import type { z } from "zod";
 
-import {
+import type {
   AggregatedReconversionIndirectEconomicImpactsDataView,
   AggregatedProjectImpactMetric,
   ProjectEconomicBalance,
@@ -8,8 +8,8 @@ import {
   ReconversionStakeholders,
   ProjectOnSiteImpactMetric,
 } from "../../reconversion-project-impacts";
-import { BuildingsUseDistribution } from "../../reconversion-projects";
-import { FricheActivity, SiteNature, siteStatuQuoImpactsSchema } from "../../site";
+import type { BuildingsUseDistribution } from "../../reconversion-projects";
+import type { FricheActivity, SiteNature, siteStatuQuoImpactsSchema } from "../../site";
 
 export type GetReconversionProjectImpactsResultDto = {
   contextData: {

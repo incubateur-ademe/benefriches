@@ -1,28 +1,25 @@
-import {
+import type {
   ReconversionProjectSoilsDistribution,
   RecurringExpense,
   ReinstatementExpense,
 } from "../../reconversion-projects";
 import { roundToInteger, sumList, sumListWithKey } from "../../services";
-import {
+import type {
   AgriculturalOperationActivity,
   SiteNature,
   SiteYearlyExpense,
   SiteYearlyIncome,
 } from "../../site";
-import {
-  getProjectSoilDistributionByType,
-  SoilsCarbonStorage,
-  SoilsDistribution,
-} from "../../soils";
-import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SoilsCarbonStorage, SoilsDistribution } from "../../soils";
+import { getProjectSoilDistributionByType } from "../../soils";
+import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
-import {
+import type {
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "../projectImpacts.types";
-import { DevelopmentPlanFeatures } from "../projectImpactsDataView.types";
-import { Schedule } from "./fullTimeJobs.helper";
+import type { DevelopmentPlanFeatures } from "../projectImpactsDataView.types";
+import type { Schedule } from "./fullTimeJobs.helper";
 import { getPhotovoltaicPowerPlantProjectImpacts } from "./renewable-energy/photovoltaicRelatedImpacts";
 import { getReinstatementFullTimeJobs } from "./site-reconversion/siteReconversionRelatedEconomicImpacts";
 import { SoilsTransformationImpactsService } from "./soils-tranformation/SoilsTransformationImpactsService";

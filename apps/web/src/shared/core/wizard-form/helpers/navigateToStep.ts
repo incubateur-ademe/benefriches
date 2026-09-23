@@ -1,5 +1,6 @@
-import { AnswerStepHandler, InfoStepHandler } from "../stepHandler.type";
-import { MutableWizardFormState, MutateStateHelper } from "./mutateState";
+import type { AnswerStepHandler, InfoStepHandler } from "../stepHandler.type";
+import type { MutableWizardFormState } from "./mutateState";
+import { MutateStateHelper } from "./mutateState";
 
 /**
  * Combined (answer + info) handler registry, keyed by every step id — the shape needed to

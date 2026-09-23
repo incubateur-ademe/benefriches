@@ -5,7 +5,7 @@ import { useAppDispatch } from "@/app/hooks/store.hooks";
 
 import { reconversionCompatibilityEvaluationCompleted } from "../../core/actions/compatibilityEvaluationCompleted.actions";
 import { reconversionCompatibilityEvaluationStarted } from "../../core/actions/compatibilityEvaluationStarted.actions";
-import { MutafrichesEvaluationEvent } from "../mutafriches.types";
+import type { MutafrichesEvaluationEvent } from "../mutafriches.types";
 
 export default function EvaluateReconversionCompatibilityPage() {
   const dispatch = useAppDispatch();

@@ -7,7 +7,7 @@ import type {
   StepContext,
 } from "@/shared/core/reducers/form-factory/handlerRegistry.types";
 
-import { ProjectCreationState } from "../createProject.reducer";
+import type { ProjectCreationState } from "../createProject.reducer";
 import type {
   SchematizedAnswerStepId,
   DemoProjectCreationStep,

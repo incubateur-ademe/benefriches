@@ -1,4 +1,4 @@
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import {

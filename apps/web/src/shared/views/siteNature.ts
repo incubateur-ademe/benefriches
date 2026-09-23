@@ -1,4 +1,4 @@
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
 export const getPictogramUrlForSiteNature = (siteNature: SiteNature): string => {
   switch (siteNature) {

@@ -1,11 +1,11 @@
 import z from "zod";
 
-import { TExpense } from "../../../financial";
+import type { TExpense } from "../../../financial";
 import { roundToInteger } from "../../../services";
+import type { SoilsDistribution } from "../../../soils/soilDistribution";
 import {
   getGreenArtificalSurfaceArea,
   getImpermeableSurfaceArea,
-  SoilsDistribution,
 } from "../../../soils/soilDistribution";
 
 export const reinstatementExpensesPurposeSchema = z.enum([

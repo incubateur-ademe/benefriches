@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 import type { RenewableEnergyCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergySteps";
 import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 import type { StepVariant } from "@/shared/core/stepVariant.types";
@@ -11,11 +11,10 @@ import {
   RENEWABLE_ENERGY_STEP_GROUP_LABELS,
   RENEWABLE_ENERGY_STEP_TO_GROUP,
 } from "../step-handlers/renewableEnergyStepperConfig";
+import type { RenewableEnergyStepGroups, RenewableEnergyStepperGroup } from "./stepperNavigation";
 import {
   buildRenewableEnergyStepGroupsFromSequence,
   computeRenewableEnergyStepperGroups,
-  RenewableEnergyStepGroups,
-  RenewableEnergyStepperGroup,
 } from "./stepperNavigation";
 
 type PhotovoltaicPowerPlantStepperDataView = {

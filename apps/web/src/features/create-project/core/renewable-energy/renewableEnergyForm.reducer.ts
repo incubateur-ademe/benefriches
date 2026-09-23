@@ -1,23 +1,26 @@
-import { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
+import type { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
 
 import { applyStepChanges } from "@/shared/core/wizard-form/helpers/applyStepChanges";
-import {
-  computeStepChanges,
-  StepUpdateResult,
-} from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import type { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import { computeStepChanges } from "@/shared/core/wizard-form/helpers/computeStepChanges";
 import { navigateToAndLoadStep } from "@/shared/core/wizard-form/helpers/navigateToStep";
-import {
+import type {
   WizardFormDefinition,
   WizardFormSubState,
 } from "@/shared/core/wizard-form/wizardForm.reducer";
 
-import { RenewableEnergyFormReducerActions } from "./renewableEnergy.actions";
-import { AnswersByStep, AnswerStepId, RenewableEnergyCreationStep } from "./renewableEnergySteps";
-import {
+import type { RenewableEnergyFormReducerActions } from "./renewableEnergy.actions";
+import type {
+  AnswersByStep,
+  AnswerStepId,
+  RenewableEnergyCreationStep,
+} from "./renewableEnergySteps";
+import type {
   RenewableEnergyStepHandlerContext,
   RenewableEnergyStepsState,
 } from "./step-handlers/stepHandler.type";
-import { answerStepHandlers, stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
+import type { answerStepHandlers } from "./step-handlers/stepHandlerRegistry";
+import { stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
 
 // Structural constraint mirroring urban's `S extends UrbanProjectHostState`: any consumer state
 // that nests a renewableEnergyProject sub-state shaped like the generic engine's own

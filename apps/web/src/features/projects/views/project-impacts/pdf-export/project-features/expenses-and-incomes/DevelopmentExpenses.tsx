@@ -1,10 +1,7 @@
-import {
-  PhotovoltaicInstallationExpense,
-  sumListWithKey,
-  UrbanProjectDevelopmentExpense,
-} from "shared";
+import type { PhotovoltaicInstallationExpense, UrbanProjectDevelopmentExpense } from "shared";
+import { sumListWithKey } from "shared";
 
-import {
+import type {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
 } from "@/features/projects/core/projects.types";

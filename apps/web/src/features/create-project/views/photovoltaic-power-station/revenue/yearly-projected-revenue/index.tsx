@@ -1,4 +1,4 @@
-import { RecurringRevenue } from "shared";
+import type { RecurringRevenue } from "shared";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";

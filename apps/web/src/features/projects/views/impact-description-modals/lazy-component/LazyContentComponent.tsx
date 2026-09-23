@@ -1,14 +1,15 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import type { MDXComponents } from "mdx/types";
-import { LazyExoticComponent, useContext, useMemo } from "react";
+import type { LazyExoticComponent } from "react";
+import { useContext, useMemo } from "react";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
-import { ContentComponentType } from "../config-wizard/config.type";
+import type { ContentComponentType } from "../config-wizard/config.type";
 import ModalProjectFeature from "../modal-features/ModalProjectFeature";
 import ModalSiteFeature from "../modal-features/ModalSiteFeature";
 import ModalTitleThree from "../modal-layout/ModalTitleThree";

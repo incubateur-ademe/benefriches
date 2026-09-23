@@ -1,16 +1,18 @@
-import { ReactNode, useEffect } from "react";
-import { LocalAuthority } from "shared";
+import type { ReactNode } from "react";
+import { useEffect } from "react";
+import type { LocalAuthority } from "shared";
 
-import {
+import type {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
 } from "@/features/create-project/core/project-form/stakeholders";
-import {
+import type {
   ProjectStakeholder,
   ProjectStakeholderStructure,
 } from "@/features/create-project/core/project.types";
 
-import StakeholderForm, { FormValues } from "./StakeholderForm";
+import type { FormValues } from "./StakeholderForm";
+import StakeholderForm from "./StakeholderForm";
 
 const DEFAULT_UNKNOWN_NAME = "Aménageur inconnu";
 

@@ -1,8 +1,8 @@
-import {
-  BUILDINGS_ECONOMIC_ACTIVITY_USE,
+import type {
   BuildingsUseDistribution,
   UrbanProjectUseWithBuilding,
 } from "../../../../reconversion-projects";
+import { BUILDINGS_ECONOMIC_ACTIVITY_USE } from "../../../../reconversion-projects";
 import { filterObjectWithKeys, sumObjectValues } from "../../../../services";
 import { InfluenceAreaService } from "../../influence-area-service/InfluenceAreaService";
 

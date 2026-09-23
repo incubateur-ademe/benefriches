@@ -1,4 +1,4 @@
-import { XAxisPlotBandsOptions } from "highcharts";
+import type { XAxisPlotBandsOptions } from "highcharts";
 import { useMemo } from "react";
 
 import { withDefaultChartOptions } from "@/shared/views/charts";

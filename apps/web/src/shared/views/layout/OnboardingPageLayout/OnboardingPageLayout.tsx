@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import StickyBottomBar from "@/shared/views/components/StickyBottomBar/StickyBottomBar";

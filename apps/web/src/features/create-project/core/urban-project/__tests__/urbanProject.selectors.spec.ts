@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 
-import { AnswerStepId } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { AnswerStepId } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
-import { ProjectCreationState } from "../../createProject.reducer";
+import type { ProjectCreationState } from "../../createProject.reducer";
 import { creationProjectFormSelectors } from "../urbanProject.selectors";
 import { mockSiteData } from "./_siteData.mock";
 import { StoreBuilder } from "./_testStoreHelpers";

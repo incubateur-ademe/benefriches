@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 
-import { UseCaseSelectionStep } from "../../core/usecase-selection/useCaseSelection.reducer";
+import type { UseCaseSelectionStep } from "../../core/usecase-selection/useCaseSelection.reducer";
 import { selectUseCaseSelectionWizardViewData } from "../../core/usecase-selection/useCaseSelection.selectors";
 import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
 import CreateModeSelectionForm from "./create-mode-selection";

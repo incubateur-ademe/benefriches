@@ -1,4 +1,5 @@
-import React, { ReactNode, useCallback, useMemo } from "react";
+import type { ReactNode } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
@@ -19,7 +20,8 @@ import {
   updateCustomFormSelectors,
 } from "@/features/update-site/core/updateSite.actions";
 
-import { CustomSiteFormContext, CustomSiteFormContextValue } from "./CustomSiteFormContext";
+import type { CustomSiteFormContextValue } from "./CustomSiteFormContext";
+import { CustomSiteFormContext } from "./CustomSiteFormContext";
 
 type Props = {
   children: ReactNode;

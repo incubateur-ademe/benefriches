@@ -1,4 +1,4 @@
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 import { describe, expect, it } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";

@@ -1,7 +1,8 @@
-import { ComputedReinstatementExpenses, computeProjectReinstatementExpenses } from "shared";
+import type { ComputedReinstatementExpenses } from "shared";
+import { computeProjectReinstatementExpenses } from "shared";
 
 import { getProjectSoilDistributionBySoilType } from "@/features/create-project/core/urban-project/helpers/readers/soilsReaders";
-import { AnswersByStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { AnswersByStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import { type AnswerStepHandler, type StepHandlerParams } from "../../stepHandler.type";

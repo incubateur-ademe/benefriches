@@ -1,7 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { HighchartsReact } from "highcharts-react-official";
+import type { HighchartsReact } from "highcharts-react-official";
 import { useId, useRef } from "react";
-import { SoilsDistribution, typedObjectEntries } from "shared";
+import type { SoilsDistribution } from "shared";
+import { typedObjectEntries } from "shared";
 
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";

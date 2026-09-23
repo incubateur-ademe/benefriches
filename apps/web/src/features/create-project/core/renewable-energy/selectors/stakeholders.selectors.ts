@@ -2,11 +2,11 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
-import {
+import type {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
-  hasStakeholder,
 } from "@/features/create-project/core/project-form/stakeholders";
+import { hasStakeholder } from "@/features/create-project/core/project-form/stakeholders";
 import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 
 import type { ProjectStakeholder } from "../../project.types";

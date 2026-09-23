@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
 import HorizontalCheckableTile from "@/shared/views/components/CheckableTile/HorizontalCheckableTile";
 import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";
 
-import { ProjectDevelopmentPlanType } from "../../core/projects.types";
+import type { ProjectDevelopmentPlanType } from "../../core/projects.types";
 import BreakEvenLevelImpactsActionBar from "../project-break-even-level/ProjectBreakEvenLevelActionBar";
 import ProjectPageHeader from "../project-page/header";
 import ProjectAvoidedInactionCosts from "./avoided-inaction-costs";

@@ -1,4 +1,5 @@
-import { HtmlHTMLAttributes, MouseEvent, ReactNode, useState } from "react";
+import type { HtmlHTMLAttributes, MouseEvent, ReactNode } from "react";
+import { useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 

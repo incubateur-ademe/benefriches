@@ -1,10 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { ReactNode, useContext } from "react";
+import type { ReactNode } from "react";
+import { useContext } from "react";
 
 import classNames from "@/shared/views/clsx";
 
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
-import ModalBreadcrumb, { BreadcrumbProps } from "./ModalBreadcrumb";
+import type { BreadcrumbProps } from "./ModalBreadcrumb";
+import ModalBreadcrumb from "./ModalBreadcrumb";
 
 type Props = {
   title: ReactNode;

@@ -1,4 +1,4 @@
-import { InfoStepHandler } from "../../stepHandlerRegistry";
+import type { InfoStepHandler } from "../../stepHandlerRegistry";
 
 export const DemoCreationResultHandler = {
   stepId: "DEMO_CREATION_RESULT",

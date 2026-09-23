@@ -1,4 +1,4 @@
-import { Address } from "shared";
+import type { Address } from "shared";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useDemoSiteForm } from "@/features/create-site/views/site-form/useDemoSiteForm";

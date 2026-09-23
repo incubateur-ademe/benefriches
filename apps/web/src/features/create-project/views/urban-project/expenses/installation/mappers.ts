@@ -1,10 +1,7 @@
-import {
-  ComputedInstallationExpenses,
-  typedObjectEntries,
-  UrbanProjectDevelopmentExpense,
-} from "shared";
+import type { ComputedInstallationExpenses, UrbanProjectDevelopmentExpense } from "shared";
+import { typedObjectEntries } from "shared";
 
-import { FormValues } from "@/features/create-project/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
+import type { FormValues } from "@/features/create-project/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
 
 const purposeMapKeys = {
   technicalStudyAmount: "technical_studies",

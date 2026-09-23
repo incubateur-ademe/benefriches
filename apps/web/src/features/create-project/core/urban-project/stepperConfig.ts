@@ -48,10 +48,10 @@ import { finalSummaryStepperConfig } from "@/features/create-project/core/urban-
 import { usesIntroductionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/uses/introduction/usesIntroduction.stepperConfig";
 import { publicGreenSpacesSurfaceAreaStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.stepperConfig";
 import { usesSelectionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/uses/selection/usesSelection.stepperConfig";
+import type { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import {
   isAnswersStep,
   isSummaryStep,
-  UrbanProjectCreationStep,
 } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { buildStepGroupsFromSequence } from "@/shared/core/wizard-form/helpers/stepGroups";
 

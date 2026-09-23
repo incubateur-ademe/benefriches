@@ -1,14 +1,14 @@
+import type { SiteImpactsDataView } from "shared";
 import {
   capitalize,
   convertSquareMetersToHectares,
   getFricheActivityLabel,
   getLabelForAgriculturalOperationActivity,
   getLabelForNaturalAreaType,
-  SiteImpactsDataView,
 } from "shared";
 
-import { ProjectImpactsState } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
-import { SiteFeatures } from "@/features/sites/core/site.types";
+import type { ProjectImpactsState } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
+import type { SiteFeatures } from "@/features/sites/core/site.types";
 import SiteFeaturesList from "@/features/sites/views/features/SiteFeaturesList";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import DsfrDialogTitle from "@/shared/views/components/Dialog/DsfrDialogTitle";

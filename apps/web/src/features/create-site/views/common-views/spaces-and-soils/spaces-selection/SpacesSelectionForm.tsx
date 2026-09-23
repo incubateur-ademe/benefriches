@@ -1,7 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
 import { Controller, useForm } from "react-hook-form";
-import { SiteNature, SoilType } from "shared";
+import type { SiteNature, SoilType } from "shared";
 
 import {
   getPictogramForSoilType,

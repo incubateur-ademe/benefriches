@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 
-import { routes, useRoute } from "./router";
+import type { routes } from "./router";
+import { useRoute } from "./router";
 
 type AppRoute = ReturnType<typeof useRoute>;
 

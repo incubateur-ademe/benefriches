@@ -1,15 +1,16 @@
-import React, { useMemo, useCallback, ReactNode } from "react";
+import type { ReactNode } from "react";
+import React, { useMemo, useCallback } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { StepGroupId } from "@/features/create-project/core/urban-project/stepperConfig";
+import type { StepGroupId } from "@/features/create-project/core/urban-project/stepperConfig";
 import {
   creationProjectFormActions,
   creationProjectFormUrbanActions,
 } from "@/features/create-project/core/urban-project/urbanProject.actions";
 import { creationProjectFormSelectors } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project/urbanProjectCustomSaved.action";
-import { StepCompletionPayload } from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import type { StepCompletionPayload } from "@/features/create-project/core/urban-project/urbanProjectForm.actions";
+import type { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import {
   reconversionProjectUpdateSaved,
   updateProjectFormActions,
@@ -17,7 +18,8 @@ import {
 } from "@/features/update-project/core/updateProject.actions";
 import { updateUrbanProjectFormSelectors } from "@/features/update-project/core/updateProject.selectors";
 
-import { ProjectFormContext, ProjectFormContextValue } from "./ProjectFormContext";
+import type { ProjectFormContextValue } from "./ProjectFormContext";
+import { ProjectFormContext } from "./ProjectFormContext";
 
 type ProjectFormProviderProps = {
   children: ReactNode;

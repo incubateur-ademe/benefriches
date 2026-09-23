@@ -1,4 +1,4 @@
-import z from "zod";
+import type z from "zod";
 
 import { addressSelectionSchema } from "./steps/address/address.schema";
 import { siteActivitySelectionSchema } from "./steps/site-activity/siteActivity.schema";

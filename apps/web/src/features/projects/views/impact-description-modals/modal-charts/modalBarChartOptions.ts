@@ -1,8 +1,9 @@
-import { Options, SeriesOptionsType } from "highcharts";
+import type { Options, SeriesOptionsType } from "highcharts";
 
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 
-import { formatModalBarChartValue, extractEmoji, ValueFormat } from "./modalBarChartValueFormat";
+import type { ValueFormat } from "./modalBarChartValueFormat";
+import { formatModalBarChartValue, extractEmoji } from "./modalBarChartValueFormat";
 
 type Props = {
   valueFormat: ValueFormat;

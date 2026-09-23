@@ -1,9 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
+import type { SoilType, SoilsDistribution } from "shared";
 import {
   REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS,
-  SoilType,
-  SoilsDistribution,
   getSuitableSoilsForTransformation,
   typedObjectKeys,
 } from "shared";

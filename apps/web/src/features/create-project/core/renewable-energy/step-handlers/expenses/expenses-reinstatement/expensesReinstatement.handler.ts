@@ -1,7 +1,8 @@
-import { ComputedReinstatementExpenses, computeProjectReinstatementExpenses } from "shared";
+import type { ComputedReinstatementExpenses } from "shared";
+import { computeProjectReinstatementExpenses } from "shared";
 
 import { ReadStateHelper } from "../../../helpers/readState";
-import { AnswersByStep } from "../../../renewableEnergySteps";
+import type { AnswersByStep } from "../../../renewableEnergySteps";
 import type { AnswerStepHandler, StepHandlerParams } from "../../stepHandler.type";
 
 function getProjectSoilDistribution(params: StepHandlerParams) {

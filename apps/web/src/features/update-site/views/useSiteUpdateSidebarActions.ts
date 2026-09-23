@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import { routes, useRoute } from "@/app/router";
-import { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import type { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import { buildSiteUpdateSidebarActions } from "./siteUpdateSidebarActions";
 

@@ -1,22 +1,14 @@
 import { Suspense, useContext, useMemo } from "react";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import {
-  EconomicBalanceImpactKeyName,
-  groupEconomicBalanceByListViewCategory,
-} from "@/features/projects/core/projectImpactsEconomicBalance";
-import {
-  EnvironmentalImpactMetricKeyName,
-  groupEnvironmentalMetricsByListViewCategory,
-} from "@/features/projects/core/projectImpactsEnvironmental";
-import {
-  groupSocialMetricsByListViewCategory,
-  SocialImpactMetricKeyName,
-} from "@/features/projects/core/projectImpactsSocial";
-import {
-  getSocioEconomicProjectImpactsGroupedByCategory,
-  SocioEconomicImpactImpactKeyName,
-} from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
+import { groupEconomicBalanceByListViewCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
+import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
+import { groupEnvironmentalMetricsByListViewCategory } from "@/features/projects/core/projectImpactsEnvironmental";
+import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
+import { groupSocialMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
+import type { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
+import { getSocioEconomicProjectImpactsGroupedByCategory } from "@/features/projects/core/projectImpactsSocioEconomic";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import {
@@ -25,13 +17,13 @@ import {
   getSocialImpactLabel,
   getSocioEconomicImpactLabel,
 } from "../shared/getImpactLabel";
-import {
+import type {
   ContentState,
   EnvironmentalSectionName,
-  ImpactModalDescriptionContext,
   SocialSectionName,
   SocioEconomicSectionName,
 } from "./ImpactModalDescriptionContext";
+import { ImpactModalDescriptionContext } from "./ImpactModalDescriptionContext";
 import { getBreadcrumbProps } from "./breadcrumb";
 import {
   getEconomicBalanceImpactColor,
@@ -39,7 +31,7 @@ import {
   getSocialImpactColor,
   getSocioEconomicImpactColor,
 } from "./colors";
-import { ModalImpactConfig } from "./config-wizard/config.type";
+import type { ModalImpactConfig } from "./config-wizard/config.type";
 import { ECONOMIC_BALANCE_MODAL_CONFIG } from "./config-wizard/economicBalanceConfig";
 import { ENVIRONMENTAL_METRICS_MODAL_CONFIG } from "./config-wizard/environmentalSectionConfig";
 import { SOCIAL_METRICS_MODAL_CONFIG } from "./config-wizard/socialSectionConfig";

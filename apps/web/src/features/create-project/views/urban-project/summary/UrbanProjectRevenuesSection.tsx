@@ -1,7 +1,7 @@
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { roundToInteger, sumListWithKey } from "shared";
 
-import { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
+import type { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForFinancialAssistanceRevenueSource,

@@ -1,9 +1,11 @@
-import { MouseEvent, useState } from "react";
+import type { MouseEvent } from "react";
+import { useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import { ImpactFormatType } from "../../shared/formatImpactValue";
-import ImpactRowValue, { ImpactRowValueProps } from "./ImpactRowValue";
+import type { ImpactFormatType } from "../../shared/formatImpactValue";
+import type { ImpactRowValueProps } from "./ImpactRowValue";
+import ImpactRowValue from "./ImpactRowValue";
 
 export type ImpactItemDetailsProps = {
   label: string;

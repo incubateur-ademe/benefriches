@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { AuthenticationGateway } from "./AuthenticationGateway";
+import type { AuthenticationGateway } from "./AuthenticationGateway";
 import { authenticateWithToken } from "./authenticateWithToken.action";
 
 class FailingAuthService implements AuthenticationGateway {

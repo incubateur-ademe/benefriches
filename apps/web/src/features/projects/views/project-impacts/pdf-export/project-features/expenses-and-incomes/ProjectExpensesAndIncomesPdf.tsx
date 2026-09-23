@@ -1,12 +1,12 @@
-import {
+import type {
   FinancialAssistanceRevenue,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
-  sumListWithKey,
 } from "shared";
+import { sumListWithKey } from "shared";
 
-import {
+import type {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
   UrbanProjectFeatures,

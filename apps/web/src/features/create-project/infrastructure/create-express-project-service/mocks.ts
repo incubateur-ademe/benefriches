@@ -1,4 +1,4 @@
-import { BaseReconversionProjectFeaturesView } from "shared";
+import type { BaseReconversionProjectFeaturesView } from "shared";
 import { v4 as uuid } from "uuid";
 
 export const mockedGeneratedUrbanProject = {

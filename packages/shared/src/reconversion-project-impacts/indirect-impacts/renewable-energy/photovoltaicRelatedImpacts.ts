@@ -1,21 +1,21 @@
+import type { RecurringExpense } from "../../../reconversion-projects";
 import {
   computeDefaultPhotovoltaicConversionFullTimeJobs,
   computeDefaultPhotovoltaicOperationsFullTimeJobs,
-  RecurringExpense,
 } from "../../../reconversion-projects";
 import { roundTo2Digits, sumList } from "../../../services";
-import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../../sum-on-evolution-period/computeCumulativeByYear";
-import {
+import type {
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "../../projectImpacts.types";
-import { DevelopmentPlanFeatures } from "../../projectImpactsDataView.types";
+import type { DevelopmentPlanFeatures } from "../../projectImpactsDataView.types";
 import {
   getDurationFromScheduleInYears,
   spreadTemporaryFullTimeJobsOver,
 } from "../fullTimeJobs.helper";
-import { InputReconversionProjectData } from "../projectIndirectImpacts";
+import type { InputReconversionProjectData } from "../projectIndirectImpacts";
 import { computeAvoidedCO2TonsWithEnergyProductionImpact } from "./avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
 import { computeHouseholdsPoweredByRenewableEnergyImpact } from "./households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
 

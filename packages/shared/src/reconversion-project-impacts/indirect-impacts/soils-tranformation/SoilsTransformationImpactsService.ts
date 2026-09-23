@@ -1,6 +1,7 @@
 import { convertCarbonToCO2eq } from "../../../co2eq";
 import { typedObjectEntries } from "../../../object-entries";
 import { sumList } from "../../../services";
+import type { SoilsDistribution } from "../../../soils";
 import {
   sumSoilsSurfaceAreasWhere,
   isForest,
@@ -9,7 +10,6 @@ import {
   isSurfaceWithEcosystemBenefits,
   isSurfaceWithPermanentVegetation,
   isWetLand,
-  SoilsDistribution,
   isGreenSoil,
   isMineralSoil,
 } from "../../../soils";
@@ -23,9 +23,9 @@ import {
   computeWaterCycleMonetaryValue,
   computeWaterRegulationMonetaryValue,
 } from "../../../soils/impacts/natureConservationYearlyMonetaryValue";
-import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../../sum-on-evolution-period/computeCumulativeByYear";
-import {
+import type {
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpactItemView,
 } from "../../projectImpacts.types";

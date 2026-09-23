@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { SoilsDistribution, SoilType } from "shared";
+import type { SoilsDistribution, SoilType } from "shared";
 import { sumObjectValues } from "shared";
 
 import {

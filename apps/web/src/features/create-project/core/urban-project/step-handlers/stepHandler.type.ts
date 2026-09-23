@@ -1,12 +1,12 @@
-import { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
-import {
+import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
+import type {
   AnswersByStep,
   AnswerStepId,
   SummaryStep,
   IntroductionStep,
   UrbanProjectCreationStep,
 } from "@/features/create-project/core/urban-project/urbanProjectSteps";
-import {
+import type {
   AnswerStepHandler as GenericAnswerStepHandler,
   InfoStepHandler as GenericInfoStepHandler,
   ShortcutResult as GenericShortcutResult,

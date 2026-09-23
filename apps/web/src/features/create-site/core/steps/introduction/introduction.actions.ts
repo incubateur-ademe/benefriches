@@ -1,4 +1,4 @@
-import { ReconversionProjectCreationMode, SiteNature } from "shared";
+import type { ReconversionProjectCreationMode, SiteNature } from "shared";
 
 import { createSiteCreationAction, createStepCompletedAction } from "../../actions/actionsUtils";
 

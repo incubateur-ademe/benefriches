@@ -1,8 +1,7 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
-import ProjectNameAndDescriptionForm, {
-  FormValues,
-} from "@/features/create-project/views/project-form/common/name-and-description/ProjectNameAndDescriptionForm";
+import type { FormValues } from "@/features/create-project/views/project-form/common/name-and-description/ProjectNameAndDescriptionForm";
+import ProjectNameAndDescriptionForm from "@/features/create-project/views/project-form/common/name-and-description/ProjectNameAndDescriptionForm";
 
 function ProjectNameAndDescriptionFormContainer() {
   const { onBack, onRequestStepCompletion, selectNameAndDescriptionInitialValues } =

@@ -1,8 +1,9 @@
-import { ActionCreatorWithPayload, createAction } from "@reduxjs/toolkit";
+import type { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { createAction } from "@reduxjs/toolkit";
 
 import { makeWizardFormActionType } from "@/shared/core/wizard-form/wizardForm.actions";
 
-import { AnswersByStep, DemoAnswerStepId, DemoSiteCreationStep } from "./demoSteps";
+import type { AnswersByStep, DemoAnswerStepId, DemoSiteCreationStep } from "./demoSteps";
 
 const makeDemoFormActionType = (prefix: string, actionName: string) =>
   makeWizardFormActionType(prefix, `demo/${actionName}`);

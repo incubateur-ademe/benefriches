@@ -1,11 +1,12 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { Header, HeaderProps } from "@codegouvfr/react-dsfr/Header";
+import type { HeaderProps } from "@codegouvfr/react-dsfr/Header";
+import { Header } from "@codegouvfr/react-dsfr/Header";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import { useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";

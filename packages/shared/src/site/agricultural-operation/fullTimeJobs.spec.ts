@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { computeAgriculturalOperationEtpFromSurface } from "./fullTimeJobs.js";
-import { AgriculturalOperationActivity } from "./operationActivity.js";
+import type { AgriculturalOperationActivity } from "./operationActivity.js";
 
 const SURFACE_AREA = 15000;
 

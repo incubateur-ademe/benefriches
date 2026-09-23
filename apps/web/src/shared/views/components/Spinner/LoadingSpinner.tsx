@@ -1,4 +1,5 @@
-import classNames, { ClassValue } from "../../clsx";
+import type { ClassValue } from "../../clsx";
+import classNames from "../../clsx";
 
 type Props = {
   loadingText?: string;

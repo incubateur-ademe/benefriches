@@ -1,7 +1,8 @@
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 
 import { createModeSelectionCompleted } from "../../core/steps/introduction/introduction.actions";
-import CreateModeSelectionForm, { FormValues } from "./CreateModeSelectionForm";
+import type { FormValues } from "./CreateModeSelectionForm";
+import CreateModeSelectionForm from "./CreateModeSelectionForm";
 
 export default function CreateModeSelectionFormContainer() {
   const dispatch = useAppDispatch();

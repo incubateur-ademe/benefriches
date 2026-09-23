@@ -1,9 +1,9 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { SoilType } from "shared";
+import type { SoilType } from "shared";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
-import { fetchSiteSoilsCarbonStorage } from "./actions/siteSoilsCarbonStorage.actions";
+import type { fetchSiteSoilsCarbonStorage } from "./actions/siteSoilsCarbonStorage.actions";
 import { selectSiteAddress } from "./selectors/createSite.selectors";
 
 type LoadingState = "idle" | "loading" | "success" | "error";

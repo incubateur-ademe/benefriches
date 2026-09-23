@@ -1,4 +1,5 @@
-import { ActionCreatorWithPayload, createAction } from "@reduxjs/toolkit";
+import type { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { createAction } from "@reduxjs/toolkit";
 
 import { makeWizardFormActionType } from "@/shared/core/wizard-form/wizardForm.actions";
 

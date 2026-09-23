@@ -1,5 +1,5 @@
-import { ReconversionProjectSoilsDistribution } from "../reconversion-projects";
-import { SoilsDistribution as SoilDistributionByType } from "./soilDistribution";
+import type { ReconversionProjectSoilsDistribution } from "../reconversion-projects";
+import type { SoilsDistribution as SoilDistributionByType } from "./soilDistribution";
 
 export const getProjectSoilDistributionByType = (
   projectSoilsDistribution: ReconversionProjectSoilsDistribution,

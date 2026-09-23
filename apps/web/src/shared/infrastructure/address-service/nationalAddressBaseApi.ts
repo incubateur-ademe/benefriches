@@ -1,4 +1,4 @@
-import { Feature, FeatureCollection, Point } from "geojson";
+import type { Feature, FeatureCollection, Point } from "geojson";
 
 import type {
   AddressSearchGateway,

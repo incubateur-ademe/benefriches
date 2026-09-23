@@ -33,6 +33,7 @@
         ]
       }
     ],
+    "typescript/consistent-type-imports": "error",
     "architecture-boundaries/no-cross-layer-import": [
       "error",
       {

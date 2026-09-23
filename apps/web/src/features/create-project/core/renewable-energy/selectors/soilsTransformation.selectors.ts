@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
+import type { SoilsDistribution } from "shared";
 import {
-  SoilsDistribution,
   getSuitableSurfaceAreaForPhotovoltaicPanels,
   isBiodiversityAndClimateSensibleSoil,
   willTransformationNoticeablyImpactBiodiversityAndClimate,

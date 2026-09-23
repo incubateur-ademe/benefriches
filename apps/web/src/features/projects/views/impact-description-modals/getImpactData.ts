@@ -1,18 +1,18 @@
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
-import {
+import type {
   EconomicBalanceDetailsImpactKeyName,
   EconomicBalanceMainImpactKeyName,
 } from "@/features/projects/core/projectImpactsEconomicBalance";
-import {
+import type {
   EnvironmentalImpactMetricDetailsKeyName,
   EnvironmentalImpactMetricMainKeyName,
 } from "@/features/projects/core/projectImpactsEnvironmental";
-import {
+import type {
   SocialImpactMetricDetailsKeyName,
   SocialImpactMetricMainKeyName,
 } from "@/features/projects/core/projectImpactsSocial";
-import {
+import type {
   SocioEconomicImpactDetailsImpactKeyName,
   SocioEconomicImpactMainImpactKeyName,
 } from "@/features/projects/core/projectImpactsSocioEconomic";

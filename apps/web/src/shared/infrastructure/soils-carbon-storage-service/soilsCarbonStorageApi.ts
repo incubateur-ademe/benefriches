@@ -1,4 +1,4 @@
-import {
+import type {
   GetSoilsCarbonStoragePayload,
   SoilsCarbonStorageGateway,
   SoilsCarbonStorageResult,

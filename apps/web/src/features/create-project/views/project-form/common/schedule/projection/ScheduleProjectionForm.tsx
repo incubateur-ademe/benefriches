@@ -1,9 +1,9 @@
 import Input from "@codegouvfr/react-dsfr/Input";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
-import { ProjectSchedule } from "shared";
+import type { ProjectSchedule } from "shared";
 
-import { Schedule } from "@/features/create-project/core/project.types";
+import type { Schedule } from "@/features/create-project/core/project.types";
 import { stringToNumber } from "@/shared/core/number-conversion/numberConversion";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";

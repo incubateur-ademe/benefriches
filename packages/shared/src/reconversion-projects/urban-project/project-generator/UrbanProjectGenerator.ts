@@ -1,16 +1,14 @@
-import { IDateProvider } from "../../../adapters/IDateProvider";
+import type { IDateProvider } from "../../../adapters/IDateProvider";
 import { computePropertyTransferDutiesFromSellingPrice } from "../../../financial";
 import { formatMunicipalityName } from "../../../local-authority";
 import { computeDefaultSitePurchaseFromSiteSurfaceArea } from "../../_common";
 import { DefaultProjectGenerator } from "../../_common/project-generator/DefaultProjectGenerator";
-import { ReconversionProject, SiteData } from "../../_common/project-generator/types";
-import {
-  domainSaveReconversionProjectSchema,
-  ReconversionProjectSoilsDistribution,
-} from "../../reconversionProjectSchemas";
+import type { ReconversionProject, SiteData } from "../../_common/project-generator/types";
+import type { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
+import { domainSaveReconversionProjectSchema } from "../../reconversionProjectSchemas";
 import { computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces } from "../expectedPostDevelopmentResale";
 import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "../installationExpenses";
-import { BuildingsUseDistribution } from "../uses/urbanProjectUse";
+import type { BuildingsUseDistribution } from "../uses/urbanProjectUse";
 
 export class UrbanProjectGenerator extends DefaultProjectGenerator {
   name;

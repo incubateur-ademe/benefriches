@@ -1,4 +1,4 @@
-import { StepVariant } from "./FormBaseStepperStep";
+import type { StepVariant } from "./FormBaseStepperStep";
 import FormStepperStep from "./FormStepperStep";
 import FormStepperWrapper from "./FormStepperWrapper";
 

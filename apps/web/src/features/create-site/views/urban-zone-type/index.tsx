@@ -1,7 +1,8 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 
 import { useCustomSiteForm } from "../site-form/useCustomSiteForm";
-import UrbanZoneTypeForm, { FormValues } from "./UrbanZoneTypeForm";
+import type { FormValues } from "./UrbanZoneTypeForm";
+import UrbanZoneTypeForm from "./UrbanZoneTypeForm";
 
 function UrbanZoneTypeFormContainer() {
   const { onBack, onRequestStepCompletion, selectUrbanZoneTypeViewData } = useCustomSiteForm();

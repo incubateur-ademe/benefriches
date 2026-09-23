@@ -1,11 +1,11 @@
 import { combineReducers, createReducer } from "@reduxjs/toolkit";
 
-import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
-import { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
+import type { CurrentAndProjectedSoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
+import type { StepUpdateResult } from "@/shared/core/wizard-form/helpers/computeStepChanges";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 
 import { stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
-import {
+import type {
   AnswersByStep,
   AnswerStepId,
   IntroductionStep,

@@ -1,7 +1,9 @@
-import { HTMLAttributes, useContext, useEffect, useMemo } from "react";
+import type { HTMLAttributes } from "react";
+import { useContext, useEffect, useMemo } from "react";
 
 import type { StepActivity, StepValidation, StepVariant } from "@/shared/core/stepVariant.types";
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 import { SidebarCurrentStepContext } from "@/shared/views/layout/SidebarLayout/SidebarCurrentStepContext";
 
 export type { StepVariant } from "@/shared/core/stepVariant.types";

@@ -1,7 +1,8 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useRenewableEnergyForm } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/useRenewableEnergyForm";
 
-import NonSuitableSoilsSurfaceForm, { FormValues } from "./NonSuitableSoilsSurfaceToTransformForm";
+import type { FormValues } from "./NonSuitableSoilsSurfaceToTransformForm";
+import NonSuitableSoilsSurfaceForm from "./NonSuitableSoilsSurfaceToTransformForm";
 
 function NonSuitableSoilsSurfaceFormContainer() {
   const { onBack, onRequestStepCompletion, selectNonSuitableSoilsSurfaceAreaToTransformViewData } =

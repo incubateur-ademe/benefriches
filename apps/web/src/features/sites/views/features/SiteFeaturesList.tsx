@@ -1,4 +1,4 @@
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import {
   typedObjectEntries,
   sumObjectValues,
@@ -21,7 +21,7 @@ import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLin
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
 
-import { SiteFeatures } from "../../core/site.types";
+import type { SiteFeatures } from "../../core/site.types";
 import ExpressSiteDisclaimer from "./ExpressSiteDisclaimer";
 import SiteFeaturesManagementSection from "./SiteFeaturesManagementSection";
 

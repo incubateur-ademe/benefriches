@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { createStore } from "@/app/store/store";
-import { SoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
-import { ProjectSite } from "@/features/create-project/core/project.types";
+import type { SoilsCarbonStorageResult } from "@/features/create-project/core/project-form/soilsCarbonStorage.types";
+import type { ProjectSite } from "@/features/create-project/core/project.types";
 import { InMemorySitesService } from "@/features/create-project/infrastructure/sites-service/InMemorySitesService";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";

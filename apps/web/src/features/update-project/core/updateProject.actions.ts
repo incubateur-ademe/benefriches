@@ -21,7 +21,7 @@ import {
   selectSiteSoilsDistribution,
   updateRenewableEnergyFormSelectors,
 } from "./updateProject.selectors";
-import { UpdateProjectView } from "./updateProject.types";
+import type { UpdateProjectView } from "./updateProject.types";
 
 const UPDATE_PROJECT_STORE_KEY = "projectUpdate";
 

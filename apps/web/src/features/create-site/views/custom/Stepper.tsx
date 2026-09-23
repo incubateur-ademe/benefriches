@@ -1,4 +1,4 @@
-import { SiteCreationCustomStep } from "@/features/create-site/core/createSite.reducer";
+import type { SiteCreationCustomStep } from "@/features/create-site/core/createSite.reducer";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
 const fricheStepsCategories = [

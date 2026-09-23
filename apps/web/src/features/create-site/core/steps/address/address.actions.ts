@@ -1,4 +1,4 @@
-import { Address } from "shared";
+import type { Address } from "shared";
 
 import { createStepCompletedAction } from "../../actions/actionsUtils";
 

@@ -1,4 +1,4 @@
-import { AppDependencies } from "@/app/store/store";
+import type { AppDependencies } from "@/app/store/store";
 import { InMemoryAnalytics } from "@/features/analytics/infrastructure/InMemoryAnalytics";
 import { InMemoryAppSettings } from "@/features/app-settings/infrastructure/InMemoryAppSettings";
 import { InMemoryCreateExpressReconversionProjectService } from "@/features/create-project/infrastructure/create-express-project-service/InMemoryCreateExpressReconversionProjectService";

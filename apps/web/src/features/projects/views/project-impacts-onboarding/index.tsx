@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route } from "type-route";
+import type { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";

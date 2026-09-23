@@ -1,11 +1,13 @@
-import {
+import type {
   AgriculturalOperationActivity,
   FricheActivity,
-  getSiteFeaturesResponseDtoSchema,
-  getSiteViewResponseDtoSchema,
   NaturalAreaType,
   SiteYearlyExpensePurpose,
   SiteYearlyIncome,
+} from "shared";
+import {
+  getSiteFeaturesResponseDtoSchema,
+  getSiteViewResponseDtoSchema,
   type GetSiteFeaturesResponseDto,
 } from "shared";
 

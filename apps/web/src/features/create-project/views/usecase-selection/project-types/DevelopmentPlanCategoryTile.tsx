@@ -1,6 +1,6 @@
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { useId } from "react";
-import { DevelopmentPlanCategory } from "shared";
+import type { DevelopmentPlanCategory } from "shared";
 
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";

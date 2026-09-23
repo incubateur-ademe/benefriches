@@ -1,4 +1,4 @@
-import { GetReconversionProjectImpactsResultDto } from "shared";
+import type { GetReconversionProjectImpactsResultDto } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 

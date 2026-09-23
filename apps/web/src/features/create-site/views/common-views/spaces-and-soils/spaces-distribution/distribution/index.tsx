@@ -3,7 +3,8 @@ import { createSoilSurfaceAreaDistribution } from "shared";
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
-import SiteSpacesDistributionForm, { FormValues } from "./SiteSpacesDistributionForm";
+import type { FormValues } from "./SiteSpacesDistributionForm";
+import SiteSpacesDistributionForm from "./SiteSpacesDistributionForm";
 
 export default function SiteSpacesDistributionContainer() {
   const {

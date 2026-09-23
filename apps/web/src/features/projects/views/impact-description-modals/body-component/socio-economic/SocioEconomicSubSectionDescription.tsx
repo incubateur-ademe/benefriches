@@ -1,8 +1,9 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ReactNode, useContext } from "react";
-import { Link } from "type-route";
+import type { ReactNode } from "react";
+import { useContext } from "react";
+import type { Link } from "type-route";
 
-import { SocioEconomicImpactMainImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { SocioEconomicImpactMainImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";

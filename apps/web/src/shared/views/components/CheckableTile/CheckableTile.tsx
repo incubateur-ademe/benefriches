@@ -3,7 +3,8 @@ import React from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import CheckboxCard, { CheckboxCardProps } from "../CheckboxCard/CheckboxCard";
+import type { CheckboxCardProps } from "../CheckboxCard/CheckboxCard";
+import CheckboxCard from "../CheckboxCard/CheckboxCard";
 
 type Props = Omit<CheckboxCardProps, "children"> & {
   title: string;

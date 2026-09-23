@@ -1,8 +1,8 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { DevelopmentPlanCategory, DevelopmentPlanType, ProjectPhase } from "shared";
+import type { DevelopmentPlanCategory, DevelopmentPlanType, ProjectPhase } from "shared";
 
-import { ProjectCreationState } from "../createProject.reducer";
-import { ProjectSuggestion } from "../project.types";
+import type { ProjectCreationState } from "../createProject.reducer";
+import type { ProjectSuggestion } from "../project.types";
 import {
   createModeCompleted,
   developmentPlanCategoriesCompleted,

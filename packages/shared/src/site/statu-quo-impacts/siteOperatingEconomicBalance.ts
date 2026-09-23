@@ -1,9 +1,9 @@
 import { roundToInteger, sumList, sumListWithKey } from "../../services";
-import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
-import { SiteYearlyExpense } from "../yearlyExpenses";
-import { SiteYearlyIncome } from "../yearlyIncome";
-import { OperatingEconomicBalanceItem } from "./impacts.types";
+import type { SiteYearlyExpense } from "../yearlyExpenses";
+import type { SiteYearlyIncome } from "../yearlyIncome";
+import type { OperatingEconomicBalanceItem } from "./impacts.types";
 
 type Props = {
   yearlyIncomes: SiteYearlyIncome[];

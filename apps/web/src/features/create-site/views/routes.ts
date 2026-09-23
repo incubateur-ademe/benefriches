@@ -1,5 +1,5 @@
-import { SiteCreationStep } from "../core/createSite.reducer";
-import { DemoSiteCreationStep } from "../core/demo/demoSteps";
+import type { SiteCreationStep } from "../core/createSite.reducer";
+import type { DemoSiteCreationStep } from "../core/demo/demoSteps";
 
 const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   INTRODUCTION: "introduction",

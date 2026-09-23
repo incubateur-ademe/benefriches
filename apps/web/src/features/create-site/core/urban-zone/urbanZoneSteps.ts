@@ -1,4 +1,4 @@
-import z from "zod";
+import type z from "zod";
 
 import { soilsContaminationSchema } from "./steps/contamination/soilsContamination.schema";
 import { localAuthorityExpensesSchema } from "./steps/expenses/local-authority-expenses/localAuthorityExpenses.schema";

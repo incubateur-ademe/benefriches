@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import { fetchSiteFeatures } from "./fetchSiteFeatures.action";
-import { SiteFeatures } from "./site.types";
+import type { SiteFeatures } from "./site.types";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

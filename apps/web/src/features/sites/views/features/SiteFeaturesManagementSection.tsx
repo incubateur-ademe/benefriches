@@ -1,4 +1,5 @@
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { SiteYearlyExpensePurpose } from "shared";
 import {
   AVERAGE_PROPERTY_TAXES_RATE,
   AVERAGE_RENTAL_VALUE_PER_SQUARE_METERS,
@@ -8,7 +9,6 @@ import {
   ILLEGAL_DUMPING_TON_PER_INHABITANT_PER_YEAR,
   MAINTENANCE_COST_BY_BUILDING_SQUARE_METER_PER_YEAR,
   SECURITY_COST_BY_HECTARE_PER_YEAR,
-  SiteYearlyExpensePurpose,
   sumListWithKey,
   INCOMES_EURO_PER_HECTARE_PER_YEAR,
 } from "shared";
@@ -19,7 +19,7 @@ import { formatNumberFr, formatPercentage } from "@/shared/core/format-number/fo
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 
-import { SiteFeatures } from "../../core/site.types";
+import type { SiteFeatures } from "../../core/site.types";
 
 type Props = SiteFeatures & {
   sectionProps?: { warning?: string; buttonProps?: ButtonProps };

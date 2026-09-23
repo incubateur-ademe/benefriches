@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { mockSiteData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
 import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
 import { stepHandlerRegistry } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
-import { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
 
 import { updateProjectFormUrbanActions } from "./updateProject.actions";

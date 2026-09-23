@@ -1,15 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { GetReconversionProjectImpactsResultDto, SiteNature } from "shared";
+import type { GetReconversionProjectImpactsResultDto, SiteNature } from "shared";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
 import { cropUrbanSprawlSimulationByEvaluationPeriod } from "../../../core/cropImpactsByEvaluationPeriod";
-import {
-  groupIndirectEconomicImpactsByBearerAndCategory,
-  IndirectEconomicImpactsByBearerAndGroupCategory,
-} from "../../../core/groupIndirectImpactsByBearer";
-import { ProjectDevelopmentPlanType } from "../../../core/projects.types";
-import { ProjectImpactsState } from "../projectImpacts.reducer";
+import type { IndirectEconomicImpactsByBearerAndGroupCategory } from "../../../core/groupIndirectImpactsByBearer";
+import { groupIndirectEconomicImpactsByBearerAndCategory } from "../../../core/groupIndirectImpactsByBearer";
+import type { ProjectDevelopmentPlanType } from "../../../core/projects.types";
+import type { ProjectImpactsState } from "../projectImpacts.reducer";
 import { selectImpactsCroppedByEvaluationPeriod } from "./projectImpacts.selectors";
 import { selectDisplayOnboarding } from "./projectUrbanSprawlComparisonOnboardingSkip.selector";
 

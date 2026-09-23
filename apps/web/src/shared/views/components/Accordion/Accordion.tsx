@@ -1,5 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ReactNode, useState } from "react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 
 import classNames from "../../clsx";
 

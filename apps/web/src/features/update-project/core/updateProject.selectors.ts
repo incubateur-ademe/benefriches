@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 import { createRenewableEnergyFormSelectors } from "@/features/create-project/core/renewable-energy/renewableEnergyForm.selectors";
 import { createUrbanProjectFormSelectors } from "@/features/create-project/core/urban-project/urbanProjectForm.selectors";
 

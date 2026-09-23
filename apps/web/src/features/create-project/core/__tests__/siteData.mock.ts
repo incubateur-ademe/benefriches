@@ -1,4 +1,4 @@
-import { ProjectSite } from "../project.types";
+import type { ProjectSite } from "../project.types";
 
 export const relatedSiteData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",

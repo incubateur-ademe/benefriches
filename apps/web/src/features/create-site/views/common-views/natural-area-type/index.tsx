@@ -1,7 +1,8 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
-import NaturalAreaTypeForm, { FormValues } from "./NaturalAreaTypeForm";
+import type { FormValues } from "./NaturalAreaTypeForm";
+import NaturalAreaTypeForm from "./NaturalAreaTypeForm";
 
 export default function NaturalAreaTypeFormContainer() {
   const { onBack, onRequestStepCompletion, selectDerivedSiteData } = useCustomSiteForm();

@@ -1,14 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
-import {
-  getDefaultScheduleForProject,
-  ProjectSchedule,
-  ProjectScheduleBuilder,
-  SoilsDistribution,
-} from "shared";
+import type { ProjectSchedule, SoilsDistribution } from "shared";
+import { getDefaultScheduleForProject, ProjectScheduleBuilder } from "shared";
 
-import { RootState } from "@/app/store/store";
+import type { RootState } from "@/app/store/store";
 
-import { ProjectCreationState } from "../../createProject.reducer";
+import type { ProjectCreationState } from "../../createProject.reducer";
 import { ReadStateHelper } from "../helpers/readState";
 import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
 

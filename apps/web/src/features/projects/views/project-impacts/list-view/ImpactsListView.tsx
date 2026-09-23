@@ -1,7 +1,7 @@
-import { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
-import { EnvironmentalImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsEnvironmental";
-import { SocialImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
-import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
+import type { EnvironmentalImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsEnvironmental";
+import type { SocialImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
+import type { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 
 import EconomicBalanceListSection from "./sections/EconomicBalance";
 import EnvironmentalListSection from "./sections/EnvironmentalListSection";

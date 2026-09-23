@@ -1,10 +1,11 @@
-import { Control, Controller, useFormState, useWatch } from "react-hook-form";
+import type { Control } from "react-hook-form";
+import { Controller, useFormState, useWatch } from "react-hook-form";
 
 import { getFormattedDuration } from "@/shared/core/dates";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import MonthYearInput from "@/shared/views/components/form/MonthYearInput/MonthYearInput";
 
-import { FormValues } from "./ScheduleProjectionForm";
+import type { FormValues } from "./ScheduleProjectionForm";
 
 type Props = {
   label: string;

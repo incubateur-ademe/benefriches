@@ -1,10 +1,10 @@
-import { DevelopmentPlanCategory, ReconversionProjectTemplate } from "shared";
+import type { DevelopmentPlanCategory, ReconversionProjectTemplate } from "shared";
 
 import {
   getLabelForUrbanProjectCategory,
   getPictogramForUrbanProjectCategory,
 } from "@/features/projects/views/shared/urbanProjectCategory";
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
+import type { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 
 export const getLabelForDevelopmentPlanCategory = (value: DevelopmentPlanCategory): string => {
   switch (value) {

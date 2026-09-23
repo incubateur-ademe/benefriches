@@ -1,7 +1,9 @@
-import { AnswerStepHandlerRegistry } from "../stepHandler.type";
-import { StepUpdateResult } from "./computeStepChanges";
-import { MutableWizardFormState, MutateStateHelper } from "./mutateState";
-import { navigateToAndLoadStep, StepRegistry } from "./navigateToStep";
+import type { AnswerStepHandlerRegistry } from "../stepHandler.type";
+import type { StepUpdateResult } from "./computeStepChanges";
+import type { MutableWizardFormState } from "./mutateState";
+import { MutateStateHelper } from "./mutateState";
+import type { StepRegistry } from "./navigateToStep";
+import { navigateToAndLoadStep } from "./navigateToStep";
 import { ReadStateHelper } from "./readState";
 import { computeStepsSequence } from "./stepsSequence";
 

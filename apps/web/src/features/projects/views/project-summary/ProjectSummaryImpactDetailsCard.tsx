@@ -1,7 +1,7 @@
 import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 
-import { ProjectSummaryDataView } from "../../application/project-impacts/selectors/projectSummary.selector";
+import type { ProjectSummaryDataView } from "../../application/project-impacts/selectors/projectSummary.selector";
 
 type Props = Pick<ProjectSummaryDataView, "zanCompliance"> & {
   projectId: string;

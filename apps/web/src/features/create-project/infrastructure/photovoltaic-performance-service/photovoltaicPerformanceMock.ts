@@ -1,4 +1,4 @@
-import {
+import type {
   PhotovoltaicPerformanceApiResult,
   PhotovoltaicPerformanceGateway,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";

@@ -1,5 +1,5 @@
-import { SoilsDistribution } from "../../soils";
-import { AgriculturalOperationActivity } from "./operationActivity";
+import type { SoilsDistribution } from "../../soils";
+import type { AgriculturalOperationActivity } from "./operationActivity";
 
 export function getSoilsDistributionForAgriculturalOperationActivity(
   surfaceArea: number,

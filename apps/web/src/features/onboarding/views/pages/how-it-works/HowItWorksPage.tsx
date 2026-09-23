@@ -1,10 +1,11 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import React, { ReactNode, useMemo } from "react";
+import type { ReactNode } from "react";
+import React, { useMemo } from "react";
 
 import { routes } from "@/app/router";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 
-import { OnboardingVariant } from "../step-shell/onboardingVariant";
+import type { OnboardingVariant } from "../step-shell/onboardingVariant";
 import Step from "./HowItWorksStep";
 
 type Props = {

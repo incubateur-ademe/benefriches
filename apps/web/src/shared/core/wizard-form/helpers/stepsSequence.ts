@@ -1,4 +1,4 @@
-import { StepHandlerParams } from "../stepHandler.type";
+import type { StepHandlerParams } from "../stepHandler.type";
 
 // `getNextStepId`'s second parameter is the answers of the step being left. On the completion
 // path `computeStepChanges` passes the freshly submitted ones (the state isn't mutated yet);

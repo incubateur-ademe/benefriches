@@ -1,9 +1,11 @@
-import { AppDependencies, createStore, RootState } from "@/app/store/store";
+import type { AppDependencies, RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
-import { getInitialState, ProjectCreationState } from "../../createProject.reducer";
-import { RenewableEnergyProjectState } from "../renewableEnergy.reducer";
+import type { ProjectCreationState } from "../../createProject.reducer";
+import { getInitialState } from "../../createProject.reducer";
+import type { RenewableEnergyProjectState } from "../renewableEnergy.reducer";
 import type { RenewableEnergyCreationStep } from "../renewableEnergySteps";
 
 export const getCurrentStep = (store: { getState: () => RootState }): RenewableEnergyCreationStep =>

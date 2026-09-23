@@ -1,6 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { SiteActionStatus, SiteActionType, SiteNature } from "shared";
-import { Route } from "type-route";
+import type { SiteActionStatus, SiteActionType, SiteNature } from "shared";
+import type { Route } from "type-route";
 
 import { routes, useRoute } from "@/app/router";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";

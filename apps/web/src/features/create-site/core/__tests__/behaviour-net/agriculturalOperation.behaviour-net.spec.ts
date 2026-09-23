@@ -1,4 +1,5 @@
-import { Address, getSoilsDistributionForAgriculturalOperationActivity } from "shared";
+import type { Address } from "shared";
+import { getSoilsDistributionForAgriculturalOperationActivity } from "shared";
 
 import { InMemoryCreateSiteService } from "../../../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import { addressStepCompleted } from "../../steps/address/address.actions";

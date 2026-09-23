@@ -1,7 +1,7 @@
-import { ProjectEconomicBalance } from "shared";
+import type { ProjectEconomicBalance } from "shared";
 
-import { ProjectImpactsState } from "../application/project-impacts/projectImpacts.reducer";
-import { ProjectDevelopmentPlanType } from "../core/projects.types";
+import type { ProjectImpactsState } from "../application/project-impacts/projectImpacts.reducer";
+import type { ProjectDevelopmentPlanType } from "../core/projects.types";
 import { extractDetailsGroup } from "./group-impacts/extractDetailsGroup";
 import { filterNonEmptyImpacts } from "./group-impacts/filterNonEmpty";
 import { groupImpactsByName } from "./group-impacts/groupImpactsByName";

@@ -1,4 +1,4 @@
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import {
   EURO_PER_SQUARE_METERS_FOR_ASBESTOS_REMOVAL,
   EURO_PER_SQUARE_METERS_FOR_DEIMPERMEABILIZATION,
@@ -11,7 +11,7 @@ import {
   URBAN_PROJECT_EURO_PER_SQUARE_METERS_FOR_TECHNICAL_STUDIES,
 } from "shared";
 
-import { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
+import type { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForRecurringExpense,

@@ -1,9 +1,9 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
-import { Route } from "type-route";
+import type { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { routes } from "@/app/router";
+import type { routes } from "@/app/router";
 import { CustomSiteFormProvider } from "@/features/create-site/views/site-form/CustomSiteFormProvider";
 import { UrbanZoneSiteFormProvider } from "@/features/create-site/views/site-form/UrbanZoneSiteFormProvider";
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";

@@ -1,6 +1,6 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
-import { Route } from "type-route";
+import type { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { embedRoutes } from "@/embed";
@@ -11,7 +11,7 @@ import {
   viewModeUpdated,
 } from "../../application/project-impacts/actions";
 import { fetchQuickImpactsForUrbanProjectOnFriche } from "../../application/project-impacts/actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
-import { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
+import type { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
 import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
 import ImpactModalDescriptionProvider from "../impact-description-modals/ImpactModalDescription";
 import EmbedImpactsView from "./EmbedImpactsView";

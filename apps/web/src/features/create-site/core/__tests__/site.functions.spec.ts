@@ -1,5 +1,5 @@
 import { hasBuildings, hasImpermeableSoils, hasTenant } from "../site.functions";
-import { SiteCreationData } from "../siteFoncier.types";
+import type { SiteCreationData } from "../siteFoncier.types";
 
 const buildSite = (siteProps: Partial<SiteCreationData> = {}): SiteCreationData => {
   return {

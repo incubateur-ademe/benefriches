@@ -1,4 +1,4 @@
-import { AuthenticationGateway } from "../../core/AuthenticationGateway";
+import type { AuthenticationGateway } from "../../core/AuthenticationGateway";
 
 export default class FakeAuthService implements AuthenticationGateway {
   _emailRequested: string | null = null;

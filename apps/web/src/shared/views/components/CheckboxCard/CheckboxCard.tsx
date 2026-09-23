@@ -1,6 +1,8 @@
-import { ReactNode, useId, useState } from "react";
+import type { ReactNode } from "react";
+import { useId, useState } from "react";
 
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 
 import { getCustomCheckboxStyle, getCustomRadioButtonStyle } from "./styles";
 

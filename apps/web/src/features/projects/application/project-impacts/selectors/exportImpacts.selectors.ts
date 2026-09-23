@@ -1,13 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/store/store";
-import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
-import { SiteFeatures } from "@/features/sites/core/site.types";
+import type { RootState } from "@/app/store/store";
+import type { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { SiteFeatures } from "@/features/sites/core/site.types";
 
-import { EconomicBalanceByCategory } from "../../../core/projectImpactsEconomicBalance";
-import { EnvironmentalImpactMetricsByListViewCategory } from "../../../core/projectImpactsEnvironmental";
-import { SocialImpactMetricsByListViewCategory } from "../../../core/projectImpactsSocial";
-import { ProjectFeatures } from "../../../core/projects.types";
+import type { EconomicBalanceByCategory } from "../../../core/projectImpactsEconomicBalance";
+import type { EnvironmentalImpactMetricsByListViewCategory } from "../../../core/projectImpactsEnvironmental";
+import type { SocialImpactMetricsByListViewCategory } from "../../../core/projectImpactsSocial";
+import type { ProjectFeatures } from "../../../core/projects.types";
 import {
   selectSocioEconomicProjectImpactsListView,
   selectEconomicBalanceProjectImpacts,

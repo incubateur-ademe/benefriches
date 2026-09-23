@@ -1,18 +1,18 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import {
+import type {
   AvoidedFricheCostsIndirectEconomicImpactItemView,
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
-  sumList,
 } from "shared";
+import { sumList } from "shared";
 
 import {
   computeBreakEvenLevel,
   computeProjectImpactsWithBreakEvenLevel,
   computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance,
 } from "./computeImpactsWithBreakEvenLevel";
-import { Schedule } from "./indirect-impacts/fullTimeJobs.helper";
+import type { Schedule } from "./indirect-impacts/fullTimeJobs.helper";
 
 const baseProject = {
   id: "bf8a7d1d-a9d2-4a66-b2bc-3b8d682f9932",

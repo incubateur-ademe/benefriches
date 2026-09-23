@@ -1,4 +1,4 @@
-import { SiteNature, UrbanSprawlImpactsComparisonResultDto } from "shared";
+import type { SiteNature, UrbanSprawlImpactsComparisonResultDto } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 

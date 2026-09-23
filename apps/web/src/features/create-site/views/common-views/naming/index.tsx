@@ -3,7 +3,8 @@ import { generateSiteName } from "shared";
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useCustomSiteForm } from "@/features/create-site/views/site-form/useCustomSiteForm";
 
-import SiteNameAndDescriptionForm, { FormValues } from "./SiteNameAndDescription";
+import type { FormValues } from "./SiteNameAndDescription";
+import SiteNameAndDescriptionForm from "./SiteNameAndDescription";
 
 function SiteNameAndDescriptionFormContainer() {
   const { onBack, onRequestStepCompletion, selectDerivedSiteData } = useCustomSiteForm();

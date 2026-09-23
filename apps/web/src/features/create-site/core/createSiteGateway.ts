@@ -1,5 +1,6 @@
-import { createCustomSiteDtoSchema, CreateExpressSiteDto } from "shared";
-import z from "zod";
+import type { CreateExpressSiteDto } from "shared";
+import { createCustomSiteDtoSchema } from "shared";
+import type z from "zod";
 
 const customSiteSchema = createCustomSiteDtoSchema;
 

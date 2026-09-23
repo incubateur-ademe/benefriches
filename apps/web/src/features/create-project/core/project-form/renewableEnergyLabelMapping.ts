@@ -1,4 +1,4 @@
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
+import type { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 
 export const getLabelForRenewableEnergyProductionType = (
   value: RenewableEnergyDevelopmentPlanType,

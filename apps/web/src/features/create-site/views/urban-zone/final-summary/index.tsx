@@ -2,7 +2,8 @@ import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useUrbanZoneSiteForm } from "@/features/create-site/views/site-form/useUrbanZoneSiteForm";
 import { getSummarySectionProps } from "@/shared/views/components/FeaturesList/summarySectionProps";
 
-import UrbanZoneFinalSummary, { UrbanZoneFinalSummarySectionId } from "./UrbanZoneFinalSummary";
+import type { UrbanZoneFinalSummarySectionId } from "./UrbanZoneFinalSummary";
+import UrbanZoneFinalSummary from "./UrbanZoneFinalSummary";
 
 function UrbanZoneFinalSummaryContainer() {
   const {

@@ -1,5 +1,5 @@
-import { httpSaveReconversionProjectPropsSchema } from "shared";
-import { z } from "zod";
+import type { httpSaveReconversionProjectPropsSchema } from "shared";
+import type { z } from "zod";
 
 export type SaveProjectPayload = z.infer<typeof httpSaveReconversionProjectPropsSchema>;
 

@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
-import { UserFeatureAlert } from "./userFeatureAlert";
+import type { UserFeatureAlert } from "./userFeatureAlert";
 
 export const featureAlertSubscribed = createAppAsyncThunk<
   UserFeatureAlert,

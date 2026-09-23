@@ -1,4 +1,4 @@
-import { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
 
 import PdfPage from "../../components/PdfPage";
 import SocioEconomicImpactsIntroductionPage from "./Introduction";

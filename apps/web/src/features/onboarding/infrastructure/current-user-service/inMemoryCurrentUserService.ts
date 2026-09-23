@@ -1,5 +1,5 @@
-import { CurrentUserGateway } from "../../core/initCurrentUser.action";
-import { AuthenticatedUser } from "../../core/user";
+import type { CurrentUserGateway } from "../../core/initCurrentUser.action";
+import type { AuthenticatedUser } from "../../core/user";
 
 export class InMemoryCurrentUserService implements CurrentUserGateway {
   private readonly shouldFail: boolean;

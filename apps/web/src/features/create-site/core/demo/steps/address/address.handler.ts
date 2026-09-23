@@ -1,4 +1,4 @@
-import { DemoAnswerStepHandler } from "../../stepHandlerRegistry";
+import type { DemoAnswerStepHandler } from "../../stepHandlerRegistry";
 
 export const DemoSiteAddressHandler = {
   stepId: "DEMO_SITE_ADDRESS",

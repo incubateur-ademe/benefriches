@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { GetReconversionProjectImpactsResultDto, ReconversionStakeholders } from "shared";
+import type { GetReconversionProjectImpactsResultDto, ReconversionStakeholders } from "shared";
 
 import type { RootState } from "@/app/store/store";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
@@ -16,15 +16,13 @@ import {
   groupSocialMetricsByListViewCategory,
   type SocialImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsSocial";
-import {
-  getSocioEconomicProjectImpactsGroupedByCategory,
-  SocioEconomicImpactsByBearerListView,
-} from "@/features/projects/core/projectImpactsSocioEconomic";
+import type { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
+import { getSocioEconomicProjectImpactsGroupedByCategory } from "@/features/projects/core/projectImpactsSocioEconomic";
 import {
   getKeyImpactIndicatorsList,
   type KeyImpactIndicatorData,
 } from "@/features/projects/core/projectKeyImpactIndicators";
-import { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
+import type { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 
 import { type ProjectImpactsState, type ViewMode } from "../projectImpacts.reducer";
 

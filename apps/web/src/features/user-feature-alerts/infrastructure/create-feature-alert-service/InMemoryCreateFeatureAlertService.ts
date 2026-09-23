@@ -1,8 +1,8 @@
-import {
+import type {
   CreateFeatureAlertGateway,
   UserFeatureAlertsResult,
 } from "../../core/CreateFeatureAlertGateway";
-import { UserFeatureAlert } from "../../core/userFeatureAlert";
+import type { UserFeatureAlert } from "../../core/userFeatureAlert";
 import { getNewFeatureAlerts } from "./CreateFeatureAlertService";
 
 export class InMemoryCreateFeatureAlertService implements CreateFeatureAlertGateway {

@@ -1,6 +1,6 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 
-import { ProjectFeatures } from "@/features/projects/core/projects.types";
+import type { ProjectFeatures } from "@/features/projects/core/projects.types";
 import ProjectFeaturesView from "@/features/projects/views/project-features/ProjectFeaturesView";
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";

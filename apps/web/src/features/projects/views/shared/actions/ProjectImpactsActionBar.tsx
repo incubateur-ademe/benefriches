@@ -1,9 +1,12 @@
-import { ReactNode, useState } from "react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 
-import { ViewMode } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ViewMode } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 
-import ImpactsActionBar, { ActionBarProps } from "./ActionBar";
+import type { ActionBarProps } from "./ActionBar";
+import ImpactsActionBar from "./ActionBar";
 import StickyActionBar from "./StickyActionBar";
 
 type Props = {

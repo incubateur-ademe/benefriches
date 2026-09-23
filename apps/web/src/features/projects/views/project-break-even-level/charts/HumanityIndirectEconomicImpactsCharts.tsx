@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { sumListWithKey, typedObjectEntries } from "shared";
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
-import { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
+import type { IndirectEconomicImpactsByBearerAndGroupCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 
 import { HUMANITY_IMPACTS_CATEGORIES } from "../../shared/impacts/impactGroupCategory";
 import EconomicColumnChart from "./EconomicColumnChart";

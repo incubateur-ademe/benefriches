@@ -1,6 +1,8 @@
-import { ReactNode, useState } from "react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import type { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 
 import ImpactEvaluationPeriodSelect from "../shared/actions/ImpactEvaluationPeriodSelect";
 import ProjectImpactsStickyActionBar from "../shared/actions/StickyActionBar";

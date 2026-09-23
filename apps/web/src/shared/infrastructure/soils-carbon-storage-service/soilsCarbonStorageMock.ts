@@ -1,4 +1,4 @@
-import {
+import type {
   SoilsCarbonStorageGateway,
   SoilsCarbonStorageResult,
 } from "@/shared/core/gateways/SoilsCarbonStorageGateway";

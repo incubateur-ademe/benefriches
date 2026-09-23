@@ -1,10 +1,10 @@
-import { ReconversionProjectTemplate, CreateExpressSiteDto } from "shared";
-import { MutabilityUsage } from "shared";
+import type { ReconversionProjectTemplate, CreateExpressSiteDto } from "shared";
+import type { MutabilityUsage } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { routes } from "@/app/router";
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
-import { ProjectSuggestion } from "@/features/create-project/core/project.types";
+import type { ProjectSuggestion } from "@/features/create-project/core/project.types";
 
 import { ACTION_PREFIX } from ".";
 
