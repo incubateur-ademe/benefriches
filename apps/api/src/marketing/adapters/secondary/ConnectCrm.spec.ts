@@ -185,10 +185,10 @@ describe("ConnectCrm", () => {
       ]);
     });
 
-    it("strips '+' from firstName/lastName before sending, since Connect CRM silently drops writes containing it", async () => {
+    it("strips characters unsupported by Connect CRM from firstName/lastName before sending, since it silently drops writes containing them", async () => {
       await crm.createContact({
         email: "user@example.com",
-        firstName: "Jean+Paul",
+        firstName: "Jean+Paul(#{@\\_!?$§=)",
         lastName: "VU+THE",
         subscribedToNewsletter: false,
       });
