@@ -9,7 +9,7 @@ import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/Ran
 import { DateProvider } from "src/shared-kernel/dateProvider";
 import { FailureResult } from "src/shared-kernel/result";
 import { UidGenerator } from "src/shared-kernel/uidGenerator";
-import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
+import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySitesRepository";
 import { buildFriche } from "src/sites/core/models/site.mock";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
 

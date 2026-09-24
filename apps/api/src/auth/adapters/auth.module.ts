@@ -33,7 +33,7 @@ import { SqlExternalUserIdentitiesRepository } from "./external-user-identities-
 import { HttpProConnectClient } from "./pro-connect/HttpProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
 import { RandomTokenGenerator } from "./token-generator/RandomTokenGenerator";
-import { SqlUserRepository } from "./user-repository/SqlUsersRepository";
+import { SqlUserRepository } from "./user-repository/SqlUserRepository";
 import { SqlVerifiedEmailRepository } from "./verified-email-repository/SqlVerifiedEmailRepository";
 import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repository/VerifiedEmailRepository";
 

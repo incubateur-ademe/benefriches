@@ -4,7 +4,7 @@ import { describe, it, beforeEach } from "node:test";
 import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { SuccessResult } from "src/shared-kernel/result";
 
-import { GetPhotovoltaicExpectedPerformanceUseCase } from "./getPhotovoltaicExpectedPerformanceUseCase";
+import { GetPhotovoltaicExpectedPerformanceUseCase } from "./getPhotovoltaicExpectedPerformance.usecase";
 
 describe("GetPhotovoltaicExpectedPerformanceUseCase use case", () => {
   let dataProvider: FakePhotovoltaicDataProvider;

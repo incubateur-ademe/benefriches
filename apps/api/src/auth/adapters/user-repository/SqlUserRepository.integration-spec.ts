@@ -6,7 +6,7 @@ import { assertShapeEquals, isDate } from "test/assertShapeEquals";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
-import { SqlUserRepository } from "./SqlUsersRepository";
+import { SqlUserRepository } from "./SqlUserRepository";
 
 describe("SqlUserRepository integration", () => {
   let sqlConnection: Knex;

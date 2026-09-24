@@ -10,7 +10,7 @@ import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 import { DateProvider } from "src/shared-kernel/dateProvider";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { FailureResult } from "src/shared-kernel/result";
-import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
+import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySitesRepository";
 import { InMemoryCityImpactsQuery } from "src/territory/adapters/secondary/city-impacts-query/InMemoryCityImpactsQuery";
 
 import { SITE_CREATED } from "../events/siteCreated.event";

@@ -6,7 +6,7 @@ import { LocalCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/c
 import { SuccessResult } from "src/shared-kernel/result";
 
 import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
-import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "./getCityCarbonStoragePerSoilsCategory";
+import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "./getCityCarbonStoragePerSoilsCategory.usecase";
 
 describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
   let carbonStorageQuery: CarbonStorageQuery;

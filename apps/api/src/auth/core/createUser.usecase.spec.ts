@@ -13,7 +13,7 @@ import {
   buildMinimalUserProps,
   UserBuilder,
 } from "../../users/core/model/user.mock";
-import { InMemoryUserRepository } from "../adapters/user-repository/InMemoryAuthUserRepository";
+import { InMemoryUserRepository } from "../adapters/user-repository/InMemoryUserRepository";
 import { CreateUserUseCase } from "./createUser.usecase";
 import { User } from "./user";
 

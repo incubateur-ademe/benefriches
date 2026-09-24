@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
-import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
+import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory.usecase";
 import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
 
 import { SqlCarbonStorageQuery } from "../secondary/carbon-storage-query/SqlCarbonStorageQuery";

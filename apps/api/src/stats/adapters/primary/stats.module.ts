@@ -7,11 +7,11 @@ import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/car
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { DateProvider } from "src/shared-kernel/dateProvider";
-import { SqlReconversionProjectAndSiteImpactsQuery } from "src/stats/adapters/secondary/SqlStatsQuery";
+import { SqlReconversionProjectAndSiteImpactsQuery } from "src/stats/adapters/secondary/SqlReconversionProjectAndSiteImpactsQuery";
 import { ComputeEvaluatedProjectStatsUseCase } from "src/stats/core/usecases/computeEvaluatedProjectStats.usecase";
 import { ComputeStatsWithPeriodicityUseCase } from "src/stats/core/usecases/computeStatsWithPeriodicity.usecase";
 
-import { SqlReconversionProjectByPeriodicityQuery } from "../secondary/SqlPeriodicityStatsQuery";
+import { SqlReconversionProjectByPeriodicityQuery } from "../secondary/SqlReconversionProjectByPeriodicityQuery";
 import { StatsController } from "./stats.controller";
 
 @Module({

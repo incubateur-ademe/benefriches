@@ -3,7 +3,7 @@ import { describe, it, beforeEach } from "node:test";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/dateProvider";
-import { InMemoryUserFeatureAlertsRepository } from "src/users/adapters/secondary/user-feature-alert-repository/InMemoryUserFeatureAlertRepository";
+import { InMemoryUserFeatureAlertsRepository } from "src/users/adapters/secondary/user-feature-alert-repository/InMemoryUserFeatureAlertsRepository";
 
 import { CreateUserFeatureAlertUseCase, UserFeatureAlert } from "./createUserFeatureAlert.usecase";
 

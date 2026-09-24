@@ -22,7 +22,7 @@ import { AUTH_CONTROLLER_LOGGER_TOKEN } from "./auth.controller";
 import { FakeProConnectClient } from "./pro-connect/FakeProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
 import { RandomTokenGenerator } from "./token-generator/RandomTokenGenerator";
-import { mapUserToSqlRow } from "./user-repository/SqlUsersRepository";
+import { mapUserToSqlRow } from "./user-repository/SqlUserRepository";
 
 type BadRequestResponseBody = {
   errors: { path: string[] }[];

@@ -8,7 +8,7 @@ import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/Ran
 import { DateProvider } from "src/shared-kernel/dateProvider";
 import { FailureResult } from "src/shared-kernel/result";
 import { UidGenerator } from "src/shared-kernel/uidGenerator";
-import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
+import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySitesRepository";
 
 import { SITE_CREATED, SiteCreatedEvent } from "../events/siteCreated.event";
 import {

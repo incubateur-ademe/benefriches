@@ -6,7 +6,7 @@ import supertest from "supertest";
 
 import { AppModule } from "src/app.module";
 import { configureServer } from "src/httpServer";
-import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/photovoltaic-performance/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
+import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/photovoltaic-performance/core/usecases/getPhotovoltaicExpectedPerformance.usecase";
 
 import { FakePhotovoltaicDataProvider } from "../secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { PhotovoltaicPerformanceController } from "./photovoltaicPerformance.controller";

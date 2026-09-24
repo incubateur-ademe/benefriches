@@ -6,7 +6,7 @@ import { describe, it, beforeEach } from "node:test";
 import { FakeAuthLinkMailer } from "src/auth/adapters/auth-link-mailer/FakeAuthLinkMailer";
 import { InMemoryTokenAuthenticationAttemptRepository } from "src/auth/adapters/auth-token-repository/InMemoryTokenAuthenticationAttemptRepository";
 import { DeterministicTokenGenerator } from "src/auth/adapters/token-generator/DeterministicTokenGenerator";
-import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryAuthUserRepository";
+import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryUserRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
