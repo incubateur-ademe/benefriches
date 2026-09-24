@@ -16,7 +16,7 @@ Generate timestamped Knex migrations following project conventions.
    - Creates timestamped file in `apps/api/src/shared-kernel/adapters/sql-knex/migrations/`
 2. Implement `up()` and `down()` functions in the generated file
 3. Update `apps/api/src/shared-kernel/adapters/sql-knex/tableTypes.d.ts` if schema changes
-4. If **new table created**: add table name to `tablesToCleanUp` in `apps/api/test/tablesToCleanUp.ts` (child tables before parent tables)
+4. If **new table created**: run `pnpm --filter api test:integration:file src/shared-kernel/adapters/sql-knex/tableConsistency.integration-spec.ts` (needs Docker). If a table is missing from the `Tables` interface or from `apps/api/test/tablesToCleanUp.ts`, it fails and names it. In `tablesToCleanUp`, put child tables before parent tables.
 5. Run: `pnpm --filter api knex:migrate-latest`
 
 ## Transaction Handling
@@ -215,14 +215,13 @@ declare module "knex/types/tables" {
 - Use `snake_case` for column names (matches DB)
 - Use `| null` for nullable columns (not `?:`)
 - Use `Date` for timestamps (Knex converts)
-- Register table in `Tables` interface
 
 ## Checklist
 
 1. [ ] Migration created with `pnpm --filter api knex:new-migration {description}`
 2. [ ] `up()` implements forward migration
 3. [ ] `down()` reverses migration (or returns void if not possible)
-4. [ ] `tableTypes.d.ts` updated for schema changes (new table → add `SqlXxx` type + register in `Tables` interface)
-5. [ ] If **new table created**: add table name to `tablesToCleanUp` array in `apps/api/test/tablesToCleanUp.ts` (respecting deletion order: child tables before parent tables)
+4. [ ] `tableTypes.d.ts` updated for schema changes
+5. [ ] If **new table created**: `tableConsistency.integration-spec.ts` passes (Quick Start step 4)
 6. [ ] Migration tested: `pnpm --filter api knex:migrate-latest`
 7. [ ] Rollback tested: `pnpm --filter api knex:migrate-rollback`

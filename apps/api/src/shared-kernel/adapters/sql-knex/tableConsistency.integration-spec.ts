@@ -75,7 +75,7 @@ describe("Database table consistency", () => {
     assert.deepStrictEqual(
       missing,
       [],
-      `Tables missing from tableTypes.d.ts Tables interface — add type declarations: ${missing.join(", ")}`,
+      `Tables missing from the Tables interface in src/shared-kernel/adapters/sql-knex/tableTypes.d.ts — declare them there: ${missing.join(", ")}`,
     );
   });
 });

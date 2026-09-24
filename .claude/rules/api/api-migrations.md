@@ -138,7 +138,7 @@ pnpm --filter api knex:migrate-status
 
 **[src/shared-kernel/adapters/sql-knex/tableTypes.d.ts](../../../apps/api/src/shared-kernel/adapters/sql-knex/tableTypes.d.ts)**
 
-This file serves as the **single source of truth** for all SQL table types. When you create a new table via migration, add the corresponding TypeScript type here immediately.
+This file serves as the **single source of truth** for all SQL table types. When you create a table, [`tableConsistency.integration-spec.ts`](../../../apps/api/src/shared-kernel/adapters/sql-knex/tableConsistency.integration-spec.ts) fails until the table is declared in the `Tables` interface here and listed in [`test/tablesToCleanUp.ts`](../../../apps/api/test/tablesToCleanUp.ts).
 
 ### Type Definition Pattern
 
