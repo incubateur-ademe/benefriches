@@ -82,8 +82,6 @@ export class ExampleController {
 
 ## DTO Pattern
 
-**CRITICAL**: All controller route DTOs (input and output) MUST be in `/packages/shared/src/api-dtos/` for frontend-backend type safety.
-
 ### Organization in Shared Package
 
 ```
@@ -137,15 +135,6 @@ export class ExampleController {
   }
 }
 ```
-
-### Why Shared DTOs
-
-**Benefits**:
-- **Frontend-Backend Type Safety**: Frontend imports the exact same types backend uses
-- **Single Source of Truth**: No duplication of type definitions
-- **Type-Safe HTTP Client**: Frontend builds type-safe API calls
-- **Better Organization**: DTOs grouped by feature
-- **Easier Maintenance**: Changes to API contracts visible to both teams
 
 **Real Examples**:
 - Input: [sites/createCustomSite.dto.ts](../../../packages/shared/src/api-dtos/sites/createCustomSite.dto.ts)
@@ -323,7 +312,6 @@ async getById(@Param("id") id: string): Promise<Example> {
 ## Summary: Controller Responsibilities
 
 ### DO:
-- ✅ Use DTOs from `/packages/shared/src/api-dtos/` for all routes
 - ✅ Validate input **shape** with Zod DTOs via `ZodValidationPipe`
 - ✅ Protect routes with `@UseGuards(JwtAuthGuard)` by default
 - ✅ Use intent-driven route names

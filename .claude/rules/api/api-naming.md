@@ -33,20 +33,12 @@ Error types describe the **error state**, not an action:
 
 | Type | Pattern | Example |
 |------|---------|---------|
-| **UseCase** | `[verb][Noun].usecase.ts` | `createSite.usecase.ts`, `getSiteById.usecase.ts` |
-| **UseCase Test** | `[verb][Noun].usecase.spec.ts` | `createSite.usecase.spec.ts` |
-| **SQL Repository** | `Sql[Name]Repository.ts` | `SqlSiteRepository.ts`, `SqlUserRepository.ts` |
 | **SQL Repository Integration Test** | `Sql[Name]Repository.integration-spec.ts` | `SqlSiteRepository.integration-spec.ts` |
-| **SQL Query** | `Sql[Name]Query.ts` | `SqlSitesQuery.ts`, `SqlProjectsQuery.ts` |
 | **SQL Query Integration Test** | `Sql[Name]Query.integration-spec.ts` | `SqlSitesQuery.integration-spec.ts` |
-| **InMemory Repository** | `InMemory[Name]Repository.ts` | `InMemorySiteRepository.ts` |
-| **InMemory Query** | `InMemory[Name]Query.ts` | `InMemorySitesQuery.ts` |
 | **Controller** | `[module].controller.ts` | `sites.controller.ts`, `auth.controller.ts` |
 | **Controller Integration Test** | `[module].controller.integration-spec.ts` | `sites.controller.integration-spec.ts` |
 | **Module** | `[module].module.ts` | `sites.module.ts`, `auth.module.ts` |
-| **DTO** | `[module].dto.ts` | `sites.dto.ts` (future - currently in controller) |
 | **Mock** | `[entity].mock.ts` | `site.mock.ts`, `user.mock.ts` |
-| **Event** | `[eventName].event.ts` | `siteCreated.event.ts`, `userAccountCreated.event.ts` |
 | **Domain Model** | `[entity].ts` | `site.ts`, `user.ts`, `carbonStorage.ts` |
 | **ViewModel** | `[entity]ViewModel.ts` | `siteViewModel.ts`, `userViewModel.ts` |
 | **Gateway Interface** | `[Name]Repository.ts` or `[Name]Query.ts` | `SitesRepository.ts`, `SitesQuery.ts` |
@@ -155,7 +147,6 @@ Erasable syntax only (no enums, no namespaces, no class parameter properties) is
 ### Key Patterns
 
 - **Classes**: `PascalCase`
-- **Files**: Descriptive with type suffix (`.usecase.ts`, `.repository.ts`)
 - **Database**: `snake_case` → map to `camelCase` in app
 - **Imports**: See [API AGENTS.md → Path Aliases](../../../apps/api/AGENTS.md#-path-aliases)
 - **Routes**: Intent-driven, not strictly REST

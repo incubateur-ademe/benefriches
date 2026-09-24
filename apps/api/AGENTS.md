@@ -52,13 +52,10 @@
 - **Constants**: `UPPER_SNAKE_CASE`
 - **Error Types**: `PascalCase` noun-based (no verbs) → `"UserNotFound"`, `"ValidationFailed"`
 
-| File Type  | Pattern                   | Example                 |
-| ---------- | ------------------------- | ----------------------- |
-| UseCase    | `[verb][Noun].usecase.ts` | `createSite.usecase.ts` |
-| Repository | `Sql[Name]Repository.ts`  | `SqlSiteRepository.ts`  |
-| Query      | `Sql[Name]Query.ts`       | `SqlSitesQuery.ts`      |
-| Controller | `[module].controller.ts`  | `sites.controller.ts`   |
-| Module     | `[module].module.ts`      | `sites.module.ts`       |
+| File Type  | Pattern                  | Example               |
+| ---------- | ------------------------ | --------------------- |
+| Controller | `[module].controller.ts` | `sites.controller.ts` |
+| Module     | `[module].module.ts`     | `sites.module.ts`     |
 
 **DB**: snake_case columns (`site_id`, `created_at`) ↔ camelCase app properties (`siteId`, `createdAt`).
 
@@ -133,10 +130,6 @@ Detailed patterns live in [`.claude/rules/api/`](../../.claude/rules/api/) as **
 ### Cold-start: creating new files
 
 For new files that don't exist yet, the trigger fires when Claude **reads an existing similar file** as a reference — which is the recommended first step anyway. Example: creating a new UseCase → read an existing `*.usecase.ts` first (loads `api-usecase.md`), then write the new one.
-
-### DTO Best Practice
-
-All controller route DTOs go in [`/packages/shared/src/api-dtos/`](../../packages/shared/src/api-dtos/). Create `[feature]/[operation].dto.ts` exporting both Zod schema + type, import in controller from `"shared"`, validate with `ZodValidationPipe`. See [packages/shared/AGENTS.md](../../packages/shared/AGENTS.md) and [api-controller.md → DTO Pattern](../../.claude/rules/api/api-controller.md#dto-pattern).
 
 ---
 
