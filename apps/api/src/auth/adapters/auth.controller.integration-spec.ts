@@ -7,7 +7,7 @@ import { after, before, describe, it, mock } from "node:test";
 import { RegisterUserRequestDto } from "shared";
 import request from "supertest";
 import { assertShapeEquals, isDate } from "test/assertShapeEquals";
-import { createTestApp } from "test/testApp";
+import { authenticateUser, createTestApp, saveUser } from "test/testApp";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import type { AppLogger } from "src/shared-kernel/logger";
@@ -167,6 +167,59 @@ describe("Auth integration tests", () => {
       assert.strictEqual(jwtPayload.sub, registerUserPayload.id);
       assert.strictEqual(jwtPayload.email, registerUserPayload.email);
       assert.strictEqual(jwtPayload.authProvider, "benefriches");
+    });
+  });
+
+  describe("GET /auth/me", () => {
+    it("responds with 401 if not authenticated", async () => {
+      const response = await request(app.getHttpServer()).get("/api/auth/me");
+
+      assert.strictEqual(response.status, 401);
+    });
+
+    it("returns current user with isAdmin false when user is not an administrator", async () => {
+      const user = new UserBuilder()
+        .withId("5a8c9b1e-3e4f-4c2a-9d6b-1f2e3d4c5b6a")
+        .withEmail("jane@collectivite.fr")
+        .withFirstName("Jane")
+        .withLastName("Doe")
+        .asLocalAuthority()
+        .build();
+      await saveUser(app)(user);
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await request(app.getHttpServer())
+        .get("/api/auth/me")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
+
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
+        id: "5a8c9b1e-3e4f-4c2a-9d6b-1f2e3d4c5b6a",
+        email: "jane@collectivite.fr",
+        firstName: "Jane",
+        lastName: "Doe",
+        structureType: "municipality",
+        structureActivity: "local_authority",
+        structureName: "Mairie de Blajan",
+        isAdmin: false,
+      });
+    });
+
+    it("returns isAdmin true when user is an administrator", async () => {
+      const user = new UserBuilder().withEmail("admin@benefriches.fr").build();
+      await saveUser(app)(user);
+      await sqlConnection("administrators").insert({
+        user_id: user.id,
+        created_at: new Date("2026-01-01T00:00:00.000Z"),
+      });
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await request(app.getHttpServer())
+        .get("/api/auth/me")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual((response.body as { isAdmin: boolean }).isAdmin, true);
     });
   });
 

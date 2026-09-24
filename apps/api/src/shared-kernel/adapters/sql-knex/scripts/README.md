@@ -53,3 +53,20 @@ scalingo --region osc-secnum-fr1 --app benefriches-api-production run "node apps
 ```
 
 Les données sont issues du fichier [/data/sqlCities.csv](./../../../../../data/sqlCities.csv), généré grâce au script [/data/build-cities-csv.ts](./../../../../../data/build-cities-csv.ts)
+
+## set-user-as-admin
+
+Donne (ou retire avec `--revoke`) les droits d'administration à un utilisateur, identifié par son email. Les administrateurs ont accès au back-office (`/admin`).
+
+### Dev
+
+```sh
+npx tsx src/shared-kernel/adapters/sql-knex/scripts/set-user-as-admin.ts user@ademe.fr
+npx tsx src/shared-kernel/adapters/sql-knex/scripts/set-user-as-admin.ts user@ademe.fr --revoke
+```
+
+### Prod
+
+```sh
+scalingo --region osc-secnum-fr1 --app benefriches-api-production run "node apps/api/dist/src/shared-kernel/adapters/sql-knex/scripts/set-user-as-admin.js user@ademe.fr"
+```

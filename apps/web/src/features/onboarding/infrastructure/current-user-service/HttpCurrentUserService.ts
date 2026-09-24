@@ -24,6 +24,7 @@ export class HttpCurrentUserService implements CurrentUserGateway {
       structureType: result.data.structureType as AuthenticatedUser["structureType"],
       structureActivity: result.data.structureActivity as AuthenticatedUser["structureActivity"],
       structureName: result.data.structureName,
+      isAdmin: result.data.isAdmin,
     };
   }
 

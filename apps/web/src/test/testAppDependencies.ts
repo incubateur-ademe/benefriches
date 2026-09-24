@@ -1,4 +1,5 @@
 import type { AppDependencies } from "@/app/store/store";
+import { InMemoryAdminService } from "@/features/admin/infrastructure/admin-service/InMemoryAdminService";
 import { InMemoryAnalytics } from "@/features/analytics/infrastructure/InMemoryAnalytics";
 import { InMemoryAppSettings } from "@/features/app-settings/infrastructure/InMemoryAppSettings";
 import { InMemoryCreateExpressReconversionProjectService } from "@/features/create-project/infrastructure/create-express-project-service/InMemoryCreateExpressReconversionProjectService";
@@ -32,6 +33,7 @@ export const getTestAppDependencies = (
   depsOverride: Partial<AppDependencies> = {},
 ): AppDependencies => {
   return {
+    adminService: new InMemoryAdminService(),
     appSettingsService: new InMemoryAppSettings(),
     authService: new FakeAuthService(),
     soilsCarbonStorageService: new SoilsCarbonStorageMock({

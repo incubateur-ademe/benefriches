@@ -51,6 +51,7 @@ describe("OnboardingWelcomePage", () => {
           lastName: "Doe",
           structureType: "company",
           structureActivity: "photovoltaic_plants_developer",
+          isAdmin: false,
         },
         currentUserState: "authenticated",
         createUserState: "idle",

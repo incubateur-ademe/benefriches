@@ -6,6 +6,9 @@ export {
   type GetCurrentUserResponseDto,
 } from "./auth";
 
+// Admin DTOs
+export * from "./admin";
+
 // Sites DTOs
 export {
   createCustomSiteDtoSchema,

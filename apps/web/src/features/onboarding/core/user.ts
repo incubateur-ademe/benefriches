@@ -49,4 +49,5 @@ export type AuthenticatedUser = {
   structureType: UserStructureType;
   structureActivity: UserStructureActivity;
   structureName?: string;
+  isAdmin: boolean;
 };

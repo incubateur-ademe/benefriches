@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { JwtModule, JwtService, JwtSignOptions } from "@nestjs/jwt";
 
+import { SqlAdministratorQuery } from "src/admin/adapters/secondary/SqlAdministratorQuery";
+import { ADMINISTRATOR_QUERY_INJECTION_TOKEN } from "src/admin/core/gateways/AdministratorQuery";
 import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
@@ -62,6 +64,10 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
     {
       provide: AUTH_USER_REPOSITORY_INJECTION_TOKEN,
       useClass: SqlUserRepository,
+    },
+    {
+      provide: ADMINISTRATOR_QUERY_INJECTION_TOKEN,
+      useClass: SqlAdministratorQuery,
     },
     {
       provide: PRO_CONNECT_CLIENT_INJECTION_TOKEN,
