@@ -1,7 +1,10 @@
 {
   "$schema": "../../node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "unicorn", "node", "oxc", "import"],
-  "jsPlugins": ["../../.tooling/oxlint/architecture-boundaries.mjs"],
+  "jsPlugins": [
+    "../../.tooling/oxlint/architecture-boundaries.mjs",
+    "../../.tooling/oxlint/api-conventions.mjs"
+  ],
   "options": {
     "typeAware": true
   },
@@ -24,6 +27,8 @@
         "boundaries": [{ "from": "*/core/**", "to": "*/adapters/**" }]
       }
     ],
+    "api-conventions/no-local-dto-schema": "error",
+    "api-conventions/file-naming": "error",
     "typescript/ban-types": "error",
     "typescript/consistent-type-imports": "off",
     "no-restricted-imports": [

@@ -19,6 +19,7 @@ import {
   getPeriodicityStatsRequestDtoSchema,
   type GetPeriodicityStatsResponseDto,
 } from "shared";
+// oxlint-disable-next-line api-conventions/no-local-dto-schema -- legacy local schemas, to move to packages/shared/src/api-dtos
 import { z } from "zod";
 
 import { ComputeEvaluatedProjectStatsUseCase } from "src/stats/core/usecases/computeEvaluatedProjectStats.usecase";

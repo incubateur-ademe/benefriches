@@ -1,5 +1,6 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
+// oxlint-disable-next-line api-conventions/no-local-dto-schema -- legacy local schemas, to move to packages/shared/src/api-dtos
 import { z } from "zod";
 
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/photovoltaic-performance/core/usecases/getPhotovoltaicExpectedPerformance.usecase";
