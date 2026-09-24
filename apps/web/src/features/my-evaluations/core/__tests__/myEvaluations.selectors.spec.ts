@@ -29,6 +29,7 @@ describe("selectMyEvaluationsViewData", () => {
           lastName: "Doe",
           structureType: "local_authority",
           structureActivity: "municipality",
+          isAdmin: false,
         },
         currentUserState: "authenticated",
         createUserState: "idle",

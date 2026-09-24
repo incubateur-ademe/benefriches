@@ -1,5 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
+import { adminReducer as admin } from "@/features/admin/core/admin.reducer";
 import { appSettingsReducer as appSettings } from "@/features/app-settings/core/appSettings";
 import projectCreation from "@/features/create-project/core/createProject.reducer";
 import siteCreation from "@/features/create-site/core/createSite.reducer";
@@ -19,6 +20,7 @@ import siteUpdate from "@/features/update-site/core/updateSite.reducer";
 import userFeatureAlert from "@/features/user-feature-alerts/core/userFeatureAlert.reducer";
 
 export const rootReducer = combineReducers({
+  admin,
   appSettings,
   auth,
   siteCreation,

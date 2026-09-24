@@ -8,6 +8,7 @@ export const getCurrentUserResponseDtoSchema = z.object({
   structureType: z.string(),
   structureActivity: z.string(),
   structureName: z.string().optional(),
+  isAdmin: z.boolean(),
 });
 
 export type GetCurrentUserResponseDto = z.infer<typeof getCurrentUserResponseDtoSchema>;

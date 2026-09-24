@@ -19,6 +19,7 @@ export class InMemoryCurrentUserService implements CurrentUserGateway {
       structureType: "company",
       structureActivity: "urban_planner",
       structureName: "User company",
+      isAdmin: false,
     } as AuthenticatedUser);
   }
 

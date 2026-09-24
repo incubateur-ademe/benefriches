@@ -4,6 +4,7 @@ import { APP_GUARD, APP_PIPE } from "@nestjs/core";
 import { EventEmitterModule, OnEvent } from "@nestjs/event-emitter";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 
+import { AdminModule } from "./admin/adapters/primary/admin.module";
 import { AuthModule } from "./auth/adapters/auth.module";
 import { CarbonStorageModule } from "./carbon-storage/adapters/primary/carbonStorage.module";
 import { HealthCheckModule } from "./healthcheck/healthcheck.module";
@@ -45,6 +46,7 @@ class DomainEventsHandler {
     }),
     SqlConnectionModule,
     AuthModule,
+    AdminModule,
     HealthCheckModule,
     PhotovoltaicPerformanceModule,
     CarbonStorageModule,

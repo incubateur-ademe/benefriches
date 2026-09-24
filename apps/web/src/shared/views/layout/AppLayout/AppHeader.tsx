@@ -11,6 +11,8 @@ import type { Link } from "type-route";
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
 // oxlint-disable-next-line architecture-boundaries/no-cross-layer-import
+import { selectCurrentUserIsAdmin } from "@/features/onboarding/core/user.reducer";
+// oxlint-disable-next-line architecture-boundaries/no-cross-layer-import
 import AboutImpactsContent from "@/features/projects/views/shared/impacts/AboutImpactsContent";
 
 import classNames from "../../clsx";
@@ -56,6 +58,8 @@ function BenefrichesHeader({
     (state) => state.currentUser.currentUserState === "authenticated",
   );
 
+  const isAdmin = useAppSelector(selectCurrentUserIsAdmin);
+
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
@@ -71,9 +75,18 @@ function BenefrichesHeader({
           ? "bg-blue-ultralight text-blue-ultradark"
           : undefined,
       },
+      ...(isAdmin
+        ? [
+            {
+              iconId: "fr-icon-settings-5-line",
+              children: "Administration",
+              linkProps: routes.admin().link,
+            } satisfies ButtonProps,
+          ]
+        : []),
       ABOUT_DIALOG_BTN,
     ];
-  }, [myEvaluationsConfig]);
+  }, [myEvaluationsConfig, isAdmin]);
 
   return (
     <>

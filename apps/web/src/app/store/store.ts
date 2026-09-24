@@ -1,6 +1,7 @@
 import type { Reducer } from "@reduxjs/toolkit";
 import { configureStore } from "@reduxjs/toolkit";
 
+import type { AdminGateway } from "@/features/admin/core/gateways/AdminGateway";
 import type { AnalyticsGateway } from "@/features/analytics/core/gateways/AnalyticsGateway";
 import type { AppSettingsGateway } from "@/features/app-settings/core/AppSettingsGateway";
 import type { GetSitesByIdGateway } from "@/features/create-project/core/actions/reconversionProjectCreationInitiated.action";
@@ -31,6 +32,7 @@ import { getListener, setupAllListeners } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";
 
 export type AppDependencies = {
+  adminService: AdminGateway;
   appSettingsService: AppSettingsGateway;
   authService: AuthenticationGateway;
   soilsCarbonStorageService: SoilsCarbonStorageGateway;
