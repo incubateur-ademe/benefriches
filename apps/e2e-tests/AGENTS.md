@@ -100,6 +100,5 @@ pnpm --filter e2e-tests format:check
 - **Custom `MonthYearInput` needs `pressSequentially`** - Formats as you type, so `fill()` doesn't work; use `pressSequentially("092027")` for "09/2027"
 - **Form buttons depend on pre-filled values** - Many wizard forms (expenses, revenue) are pre-filled with calculated defaults, showing "Valider" instead of "Passer"
 - **Read actual component files for exact French labels** - Don't guess form labels; check the `.tsx` source for the exact `label` prop text
-- **Feature flags must be explicitly forwarded** - `docker-compose.e2e.yml` must list each `WEBAPP_ENABLE_*` var under the web service `environment:` block; vars in `.env.e2e` are not automatically passed to the container
 - **Match fr-FR formatted numbers exactly, don't approximate with regex** - `formatMoney`/`formatSurfaceArea` use a narrow no-break space thousands separator; instead of a loose `/5\s?000/`, use `asEuroAmount`/`asSquareMeters` from `fixtures/helpers/format.helpers.ts` to reproduce the exact rendered string.
 - **Run `make e2e-up-build`/`make e2e-down` from the repo root** - the `.env.e2e` path is resolved relative to cwd; running from `apps/e2e-tests` fails with "Couldn't find env file"

@@ -8,4 +8,8 @@ if git diff --cached --name-only | grep -qE '^\.(agents|claude)/skills(/|$)'; th
   pnpm agent-skills:check
 fi
 
+if git diff --cached --name-only | grep -qE '(^|/)\.env\.(example|e2e)$|^docker-compose\.e2e\.yml$|^scripts/check-env-files\.mjs$'; then
+  pnpm env-files:check
+fi
+
 pnpm lint-staged

@@ -30,7 +30,7 @@ Skills live in `.agents/skills/` (canonical); `.claude/skills/<name>` are symlin
 - Before writing a Zod schema, look for one to reuse in `packages/shared` (e.g. `surfaceAreaSchema`, `soilsDistributionSchema`).
 - Enum-like types: `z.enum([...])` + `z.infer`; read the values with `.options`.
 - Dates: use `date-fns`.
-- New env var: add it to the app's `.env.example` (empty/off), to the root `.env.e2e` (the value the e2e stack needs) and to the service's `environment:` block in `docker-compose.e2e.yml`.
+- New env var: add it to the app's `.env.example` (empty/off), then run `pnpm env-files:check` (also runs in pre-commit and CI): it names every other file to update.
 - Database schema changes: use the `/create-database-migration` skill.
 - To silence a lint rule on one line, use `// eslint-disable-next-line <rule>` (oxlint honours it).
 
