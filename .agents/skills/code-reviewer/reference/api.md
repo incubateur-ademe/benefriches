@@ -34,7 +34,6 @@ Full: [`rules/api/api-usecase.md`](../../../rules/api/api-usecase.md)
 ## Controller (CRITICAL)
 *Why:* the controller is the HTTP boundary — leaking DTOs, validation, or domain entities through it spreads coupling and auth gaps across the app.
 Full: [`rules/api/api-controller.md`](../../../rules/api/api-controller.md)
-- ❌ DTOs defined in controller files (belong in `packages/shared/src/api-dtos/`, schema + type export)
 - ❌ Missing Zod validation (`ZodValidationPipe`); business-logic validation in DTOs
 - ❌ Routes missing `@UseGuards(JwtAuthGuard)` without clear justification
 - ❌ Not handling Result errors (missing `if (result.isFailure())`)
@@ -63,7 +62,6 @@ Full: [`rules/api/api-modules-and-di.md`](../../../rules/api/api-modules-and-di.
 
 ## Naming (HIGH)
 Full: [`rules/api/api-naming.md`](../../../rules/api/api-naming.md)
-- ❌ UseCase not `[verb][Noun].usecase.ts`; repo not `Sql[Name]Repository.ts`; query not `Sql[Name]Query.ts`
 - ❌ Test file not matching source name with `.spec.ts` / `.integration-spec.ts`
 - ❌ Relative `../../../` for cross-module (use `@/`); `@/` for shared package (use `"shared"`)
 
