@@ -45,7 +45,7 @@ Smells in _how a test is designed_, independent of runner mechanics. Full ration
 
 - ❌ Asserting on private methods, internal fields, or intermediate state instead of the public outcome (return value, emitted event, rendered output, persisted state).
 - ❌ Web: querying by CSS class, `container.querySelector`, or `getByTestId` when a role/label/text query works; asserting a reducer's internal shape instead of a selector's output; asserting a child "was called with props X".
-- ❌ Web: shallow rendering; `fireEvent` where `user-event` models the real interaction.
+- ❌ Web: shallow rendering.
 - ❌ Over-mocking: asserting interactions (`toHaveBeenCalledWith`, spies) when an outcome/state assertion would do. Reserve interaction assertions for cases where the call _is_ the observable effect (event published, gateway notified).
 - ❌ Test structure mirroring code structure (one test file per class, tests named after methods) rather than after behaviours.
 
