@@ -67,7 +67,7 @@ Full: [`apps/api/AGENTS.md`](../../../../apps/api/AGENTS.md)
 
 ## Testing mechanics (CRITICAL)
 *Why:* without InMemory implementations and deterministic services, unit tests become slow, flaky, or simply absent — the exact failure modes the test rules exist to prevent.
-Full: [`rules/api/api-unit-testing.md`](../../../../.claude/rules/api/api-unit-testing.md), [`api-integration-testing.md`](../../../../.claude/rules/api/api-integration-testing.md). For design smells (behaviour vs implementation) see [`reference/cross-cutting.md`](cross-cutting.md).
+Full: [`rules/api/api-testing.md`](../../../../.claude/rules/api/api-testing.md), [`rules/testing.md`](../../../../.claude/rules/testing.md). For design smells (behaviour vs implementation) see [`reference/cross-cutting.md`](cross-cutting.md).
 - ❌ New Repository/Query interface without an InMemory implementation (with `_`-prefixed test helpers)
 - ❌ Unit tests accessing the real database (use InMemory)
 - ❌ UseCase instantiation in `beforeEach()` (instantiate in each `it()`)

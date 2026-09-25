@@ -7,7 +7,7 @@ paths:
 
 # Test Design
 
-> **How we design tests** — what to test, how to structure it, and where it lives. This is about test *design*; for runner/assertion mechanics see the API-specific rules linked at the bottom.
+> **How we design tests** — what to test, how to structure it, and where it lives. This is about test *design*; for runner/assertion mechanics see the API testing rule linked at the bottom.
 
 ## 1. Plan tests as Arrange / Act / Assert before writing them
 
@@ -51,7 +51,7 @@ A test should read top-to-bottom as one story, with everything it depends on vis
 - Use fixed IDs and dates (deterministic providers/generators) so the expected shape is stable. No `Date.now()` / random values.
 - Test the success path **and** every distinct failure path.
 
-> **Runners**: web (`apps/web`) uses **Vitest** (`expect`); API (`apps/api`) and the shared package use **node:test** + `node:assert/strict`. For node:test mechanics see the [API unit-testing](api/api-unit-testing.md) and [integration-testing](api/api-integration-testing.md) rules.
+> **Runners**: web (`apps/web`) uses **Vitest** (`expect`); API (`apps/api`) and the shared package use **node:test** + `node:assert/strict`. For node:test mechanics see the [API testing rule](api/api-testing.md).
 
 ## 6. Prefer real collaborators; mock sparingly
 
@@ -95,6 +95,5 @@ A test lives next to the specific unit it exercises — not in a shared grab-bag
 
 ## Related
 
-- **API unit-testing mechanics** (node:test syntax, InMemory, Result pattern, event publishing): [api/api-unit-testing.md](api/api-unit-testing.md)
-- **API integration-testing mechanics** (testcontainers, supertest, `assertShapeEquals`): [api/api-integration-testing.md](api/api-integration-testing.md)
+- **API testing mechanics** (node:test, the integration preload hook, `assertShapeEquals`, `createTestApp`, events and mocks): [api/api-testing.md](api/api-testing.md)
 </content>
