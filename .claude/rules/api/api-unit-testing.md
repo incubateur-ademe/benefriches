@@ -296,6 +296,6 @@ export class InMemoryExampleRepository implements ExampleRepository {
 
 ## Related Patterns
 
-- **UseCase**: [api-usecase.md](api-usecase.md) (Result pattern)
-- **Repository**: [api-repository.md](api-repository.md) (InMemory implementations)
+- **UseCase**: [api-core.md](api-core.md) (Result pattern)
+- **Repository**: [api-persistence.md](api-persistence.md) (InMemory implementations)
 - **Integration Tests**: [api-integration-testing.md](api-integration-testing.md) (SQL testing)

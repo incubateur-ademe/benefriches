@@ -133,7 +133,7 @@
         "typescript/no-floating-promises": "off",
         "typescript/no-non-null-assertion": "off",
         // Unit tests instantiate InMemory/Deterministic/Fake test doubles from adapters/
-        // directly — the project's documented pattern (see api-modules-and-di.md).
+        // directly — the project's documented pattern (see the api testing rules in .claude/rules/api/).
         "architecture-boundaries/no-cross-layer-import": "off"
       }
     }

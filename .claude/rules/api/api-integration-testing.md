@@ -615,7 +615,6 @@ pnpm --filter api test:integration:file src/path/to/file.integration-spec.ts
 ## Related Patterns
 
 - **Unit Testing**: [api-unit-testing.md](api-unit-testing.md) (testing with InMemory)
-- **Controller**: [api-controller.md](api-controller.md) (HTTP layer)
-- **Repository**: [api-repository.md](api-repository.md) (SQL implementation)
-- **Query**: [api-query.md](api-query.md) (SQL queries)
-- **Domain Events**: [api-domain-events.md](api-domain-events.md) (publishing and listening to events)
+- **Controller**: [api-http.md](api-http.md) (HTTP layer)
+- **Repository / Query**: [api-persistence.md](api-persistence.md) (SQL implementations)
+- **Domain Events**: [api-core.md](api-core.md) (publishing and listening to events)
