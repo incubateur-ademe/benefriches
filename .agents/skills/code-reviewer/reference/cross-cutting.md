@@ -3,6 +3,7 @@
 Read this file for **every** review — these lenses apply regardless of which app changed.
 
 ## Contents
+
 - Security (CRITICAL)
 - TypeScript & Node.js compatibility (CRITICAL)
 - Test design antipatterns (HIGH)
@@ -24,32 +25,37 @@ Read this file for **every** review — these lenses apply regardless of which a
 ## TypeScript & Node.js compatibility (CRITICAL)
 
 **Erasable types** (must be valid when annotations are stripped):
+
 - ❌ TypeScript `enum` (use Zod `z.enum()` or a const object)
 - ❌ `namespace` declarations
 - ❌ Class parameter properties: `constructor(private x: T) {}` (lint-enforced by `typescript/parameter-properties`; hoist to explicit fields)
 - ✅ Zod schemas for enum-like types
 
 **Type safety**:
+
 - ❌ `any` (use `unknown` when truly unknown)
 - ❌ Missing explicit return types on public functions/methods
 - ✅ `strict: true` compliance
 
 ## Test design antipatterns (HIGH — all apps)
 
-Smells in *how a test is designed*, independent of runner mechanics. Full rationale: [`.claude/rules/testing.md`](../../../rules/testing.md). Report a test only when the smell is clearly visible in the diff.
+Smells in _how a test is designed_, independent of runner mechanics. Full rationale: [`.claude/rules/testing.md`](../../../../.claude/rules/testing.md). Report a test only when the smell is clearly visible in the diff.
 
 **Coupling to implementation** (highest-value smell — a test that breaks on a behaviour-preserving refactor, or stays green when behaviour breaks):
+
 - ❌ Asserting on private methods, internal fields, or intermediate state instead of the public outcome (return value, emitted event, rendered output, persisted state).
 - ❌ Web: querying by CSS class, `container.querySelector`, or `getByTestId` when a role/label/text query works; asserting a reducer's internal shape instead of a selector's output; asserting a child "was called with props X".
 - ❌ Web: shallow rendering; `fireEvent` where `user-event` models the real interaction.
-- ❌ Over-mocking: asserting interactions (`toHaveBeenCalledWith`, spies) when an outcome/state assertion would do. Reserve interaction assertions for cases where the call *is* the observable effect (event published, gateway notified).
+- ❌ Over-mocking: asserting interactions (`toHaveBeenCalledWith`, spies) when an outcome/state assertion would do. Reserve interaction assertions for cases where the call _is_ the observable effect (event published, gateway notified).
 - ❌ Test structure mirroring code structure (one test file per class, tests named after methods) rather than after behaviours.
 
 **Flakiness & isolation:**
+
 - ❌ Non-determinism: real clock (`Date.now()`/`new Date()`), `sleep`/arbitrary timeouts, real network, random IDs — use deterministic providers/generators.
 - ❌ Order-dependent tests or shared mutable state leaking between `it()` blocks.
 
 **Readability & diagnosis:**
+
 - ❌ Assertion roulette: many unlabeled assertions where a failure can't be traced to a cause. Prefer one exhaustive shape assertion or split into distinct-behaviour tests.
 - ❌ Eager test: one `it()` exercising several behaviours at once.
 - ❌ Mystery guest / hidden setup: preconditions pulled from shared fixtures or external data instead of being explicit in the test.
@@ -57,6 +63,7 @@ Smells in *how a test is designed*, independent of runner mechanics. Full ration
 - ❌ Conditional logic (`if`/loops around assertions) — parameterise with `for..of` over explicit cases instead.
 
 **Scope & value:**
+
 - ❌ Tests for impossible states / dead defensive branches that upstream invariants prevent.
 - ❌ Redundant tests: if test A passing guarantees test B passes, B adds no coverage.
 - ❌ E2E used for edge cases or exhaustive permutations (E2E = 2–4 nominal flows; exhaustive coverage belongs in unit/integration).

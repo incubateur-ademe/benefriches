@@ -1,99 +1,52 @@
 ---
 paths:
   - "apps/**/*.spec.ts"
+  - "apps/**/*.spec.tsx"
   - "apps/**/*.integration-spec.ts"
   - "packages/**/*.spec.ts"
 ---
 
-# Test Design
+# Test design
 
-> **How we design tests** — what to test, how to structure it, and where it lives. This is about test *design*; for runner/assertion mechanics see the API testing rule linked at the bottom.
+How we design tests: what to test, how to structure it, where it lives. Runners and helpers are per app: node:test + `node:assert/strict` in api and shared (api mechanics: [api/api-testing.md](api/api-testing.md)), Vitest + Testing Library in web (the Tests section of [apps/web/AGENTS.md](../../apps/web/AGENTS.md)).
 
-## 1. Plan tests as Arrange / Act / Assert before writing them
+## Plan tests as Arrange / Act / Assert
 
-Before implementing, list each test as explicit **Arrange / Act / Assert** bullets — not a one-line description. This is the format we review and confirm coverage in.
+Before implementing, list each test as **Arrange / Act / Assert** bullets, not a one-line description: that is the format we review coverage in.
 
-- One bullet each for **Arrange**, **Act**, **Assert**.
-- Use real API/builder calls and exact identifiers (action names, step IDs, expected values) — never paraphrase.
-- Tag each item: `(existing, keep)`, `(existing, rename only)`, `(NEW)`, `(NEW, regression guard)`.
-- Explicitly note existing tests that stay unchanged, so scope is clear.
+- Use the real builder and API calls and exact identifiers (action names, step ids, expected values), never a paraphrase.
+- Tag each item `(existing, keep)`, `(existing, rename only)`, `(NEW)` or `(NEW, regression guard)`, and list the existing tests that stay unchanged so the scope is clear.
 
-## 2. Test observable behaviour, not implementation
+## Test behaviour through the public surface
 
-A test must be **sensitive to behaviour changes and insensitive to structure changes**: if the code is refactored but behaves the same, the test stays green; if the behaviour breaks, the test fails. The more a test resembles the way the code is really used, the more confidence it gives.
+A test fails when behaviour breaks and stays green through a behaviour-preserving refactor.
 
-- Assert the **public outcome**: return value, emitted event, rendered output, persisted state — never private methods, internal fields, or intermediate state.
-- Drive and observe through the **public surface**: query the UI by role/label/text (not CSS classes, test-ids, or DOM structure); assert a UseCase's `Result`/published events (not its private helpers); read a selector's output (not a reducer's internal shape).
-- A test that knows *how* the code works rather than *what* it guarantees fails twice over: it breaks on harmless refactors (false alarm) **and** stays green when the feature is actually broken (false confidence). Couple tests to contracts, not to structure.
+- Assert the public outcome: return value, published event, rendered output, persisted state. Never private methods, internal fields or intermediate state.
+- Drive and observe through the public surface: query the UI by role, label or text (not CSS classes, test ids or DOM structure); assert a use case's `Result` and published events, not its helpers; read a selector's output, not the reducer's state shape.
+- Prefer real collaborators and our InMemory fakes over ad-hoc mocks. Assert an interaction ("was called with") only when the call is the behaviour: an event published, a gateway notified.
 
-## 3. One behaviour per test, with an obvious failure
+## One behaviour per test
 
-Each test guards **one behaviour**, and when it fails the cause should be obvious from the name and the single failing assertion — no debugging to find out what broke.
+- Each test guards one behaviour and is named after it, not after the method it calls, so a failure says what broke.
+- Drop test B when test A passing guarantees B passes; don't re-assert happy-path validation that a dedicated test covers.
+- Don't test states that upstream invariants rule out. A `?? <neutral>` that only satisfies a `T | undefined` type at a boundary has no impossible branch to cover.
 
-- Ask: *"If test A passes, would test B always pass?"* — if yes, test B is redundant; drop it.
-- Ask: *"What unique failure mode does this test catch?"*
-- Don't re-assert happy-path validation a dedicated test already covers.
-- Name the test after the behaviour it guards, not the method it calls.
+## Keep each test self-contained
 
-## 4. Keep each test self-contained and readable
+A test reads top to bottom with everything it depends on visible. A little duplication beats a shared abstraction that hides what the test exercises.
 
-A test should read top-to-bottom as one story, with everything it depends on visible inside it. Prefer a little duplication over a shared abstraction that hides what the test actually exercises.
+- Set the preconditions the test relies on in its own setup, even when the builder default already has them: `.withSiteData({ hasContaminatedSoils: true, contaminatedSoilSurface: 2000 })`.
+- Instantiate the subject under test inside each `it()`, not in `beforeEach()`, and share no mutable variables across nested `describe`/`beforeEach` scopes.
+- No `if` or loop around assertions. To parameterise, loop with `for..of` at the `describe` level and generate one named `it` per case (``it(`advances for ${phase} phase`, …)``), so a failure names the input that broke.
+- No real clock, `sleep`, network or random ids: fixed ids and dates from the deterministic providers, and nothing leaks from one test to the next.
 
-- Make preconditions **explicit in the test's own setup** rather than relying on shared mock/builder defaults — set the relevant fields even when the default already has them, e.g. `.withSiteData({ hasContaminatedSoils: true, contaminatedSoilSurface: 2000 })`, so intent is visible without hunting through fixtures.
-- Instantiate the subject under test inside each `it()`, not in `beforeEach()`.
-- Avoid deep `describe`/`beforeEach` nesting with mutable shared variables — the reader shouldn't have to trace state across scopes to understand a test.
-- No branching in tests (`if`/loops around assertions): a test should run the same way every time. Parameterise with a `for..of` over explicit cases instead.
-- When parameterising with `for..of`, loop at the `describe`/`it` level to generate one named `it` per case — never loop *inside* a single `it()` around the assertions. A loop-inside-`it()` fails rule 3's "obvious failure" guarantee: if one case breaks, the test name doesn't say which, and you have to read the diff to find out. Generate the test name from the case (e.g. `` it(`advances for ${phase} phase`, ...) ``) so a failure points straight at the input that broke.
+## Assert the full shape
 
-## 5. Assert the full shape
+- Assert the complete value in one assertion, so extra and missing fields fail: `expect(actual).toEqual({…})` in web, `assert.deepStrictEqual(actual, {…})` in api and shared. Partial matchers (`toMatchObject`, `assert.partialDeepStrictEqual`) silently accept extra keys.
+- Cover the success path and every distinct failure path.
 
-- Assert the **complete shape** in one assertion, not a partial match — catching extra or missing fields is the point. Use the exhaustive matcher for your runner: `expect(actual).toEqual({...})` in web (Vitest), `assert.deepStrictEqual(actual, {...})` / `assertShapeEquals(...)` in API and shared (node:test). Avoid partial matchers (`toMatchObject`, `assert.partialDeepStrictEqual`) for shape checks — they silently allow extra keys.
-- Use fixed IDs and dates (deterministic providers/generators) so the expected shape is stable. No `Date.now()` / random values.
-- Test the success path **and** every distinct failure path.
+## Where tests live
 
-> **Runners**: web (`apps/web`) uses **Vitest** (`expect`); API (`apps/api`) and the shared package use **node:test** + `node:assert/strict`. For node:test mechanics see the [API testing rule](api/api-testing.md).
-
-## 6. Prefer real collaborators; mock sparingly
-
-Reach for a test double only when the real collaborator is slow, non-deterministic, or awkward to construct (network, clock, external service). Prefer our **InMemory fakes** over ad-hoc mocks — they exercise real logic and stay closer to production.
-
-- Assert on **outcomes** (return value, resulting state, emitted event), not on **interactions** ("was called with X"). Interaction assertions verify how the code is wired, not what it does — they pass when the code is broken and break when it is refactored.
-- Reserve spy/interaction assertions for cases where the call *is* the observable behaviour (an event was published, a gateway was notified). Even then, assert the effect, not the internal mechanics.
-
-## 7. Test the real path, never impossible states
-
-Don't write tests for states that upstream invariants guarantee can't occur in production.
-
-- If the code uses `?? <neutral>` to satisfy a `T | undefined` type at a boundary (rather than branching on an impossible case), there is no impossible-case branch to test.
-- Cover the production path; a test for a dead defensive branch just ossifies dead code.
-
-## 8. Keep tests fast, isolated, and self-validating
-
-- **Fast**: a slow suite gets run less, so it catches bugs later. Keep unit tests off I/O; push anything that needs real I/O to the integration layer.
-- **Isolated**: order-independent, no shared mutable state between tests. A test sets up everything it needs and leaks nothing to the next.
-- **Deterministic**: same input, same result — wrap the clock, never `sleep`, don't touch the real network. A flaky test is worse than no test: once people ignore a red build, the suite stops protecting anyone.
-- **Self-validating**: a boolean pass/fail. Never require reading logs or eyeballing output to know whether a test passed.
-
-## 9. Colocate tests with the code they guard
-
-A test lives next to the specific unit it exercises — not in a shared grab-bag spec.
-
-- A test for **one step's** behaviour (forward `stepCompletionRequested` *and* backward `previousStepRequested`) belongs in that step's colocated `steps/<chapter>/<step>.step.spec.ts`, kept together.
-- Only **generic framework** tests (first-step handling, round-trip navigation as a mechanism, cross-cutting edge cases) belong in the shared action specs.
-
-## 10. Match the test type to the layer
-
-| Test type | File | Verifies | I/O |
-|-----------|------|----------|-----|
-| **Unit** | `*.spec.ts` (next to code) | business/domain logic in isolation | none (InMemory/fakes) |
-| **Integration** | `*.integration-spec.ts` (in `adapters/`) | real DB / real network | testcontainers |
-| **E2E** | `*.spec.ts` in `e2e-tests/tests/` | full user flows | running stack |
-
-- Put **exhaustive** coverage in unit/integration tests.
-- **E2E covers 2–4 common nominal flows only** — not edge cases or exhaustive permutations.
-- Coverage is a tool for finding untested code, not a target. Don't chase 100% — a test written only to move the number rarely catches a real bug.
-
-## Related
-
-- **API testing mechanics** (node:test, the integration preload hook, `assertShapeEquals`, `createTestApp`, events and mocks): [api/api-testing.md](api/api-testing.md)
-</content>
+- A test sits next to the unit it guards, not in a grab-bag spec. A wizard step's behaviour (forward `stepCompletionRequested` and back `previousStepRequested`) goes in that step's own `*.step.spec.ts`; only engine-level cases (first step, navigation as a mechanism) go in the shared action specs such as `previousStepRequested.action.spec.ts`.
+- Unit, integration and e2e placement is in the root [AGENTS.md](../../AGENTS.md). Put exhaustive cases in unit and integration tests; e2e covers 2–4 common nominal flows, not edge cases or permutations.
+- Coverage finds untested code; it isn't a target. A test written only to move the number rarely catches a bug.

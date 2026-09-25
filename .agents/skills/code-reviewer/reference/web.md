@@ -30,15 +30,12 @@ _Why:_ the event-based `createReducer` + passive-action pattern is established p
 
 ## Container / Presentational (HIGH)
 
-- ❌ Multiple `useAppSelector` calls in a container
-- ❌ Selectors not following `select{Feature}ViewData`
-- ❌ Presentational components using Redux hooks
-- ✅ Single ViewData selector per container; presentational components receive all data via props
+- ❌ Multiple `useAppSelector` calls in a container; selectors not following `select{Feature}ViewData`; presentational components using Redux hooks — see [Containers and ViewData](../../../../apps/web/AGENTS.md#containers-and-viewdata)
 
 ## Redux hooks (HIGH)
 
 - ❌ Untyped `useSelector`/`useDispatch` from `react-redux`
-- ✅ `useAppSelector`/`useAppDispatch` from `@/shared/views/hooks/store.hooks`
+- ✅ `useAppSelector`/`useAppDispatch` from `@/app/hooks/store.hooks`
 
 ## Gateway (HIGH)
 
@@ -49,7 +46,7 @@ _Why:_ the event-based `createReducer` + passive-action pattern is established p
 
 ## Naming (HIGH)
 
-- ❌ Imperative actions (use passive: `stepCompleted`); selectors not `select{Feature}ViewData`
+- ❌ Imperative actions (use passive: `stepCompleted`)
 - ❌ Relative `../../../` for cross-feature imports (use `@/`); `@/` for shared package (use `"shared"`)
 - ✅ `@/` within web app; `"shared"` for the package; relative `./`/`../` only within the same feature folder
 

@@ -1,6 +1,6 @@
 ---
 name: wizard-form
-description: How the apps/web wizard-form engine works and how to extend it — the generic multi-step form engine (ADR-0015) behind urban & photovoltaic project creation and editing. Use when working on any guided multi-step form, adding a new wizard-form flow or step, touching shared/core/wizard-form, or wiring create/update slices, selectors, or step containers.
+description: How the apps/web wizard-form engine works and how to extend it — the generic multi-step form engine (ADR-0015) behind urban & photovoltaic project creation/editing and site creation & update (custom, urban-zone, demo). Use when working on any guided multi-step form, adding a new wizard-form flow or step, touching shared/core/wizard-form, or wiring create/update slices, selectors, or step containers.
 effort: medium
 allowed-tools: Read, Grep, Glob
 user-invocable: true
@@ -28,8 +28,9 @@ projects, sites, urban, or PV. A consumer connects its concrete form to the engi
 - `selectForm(state)` — locates this instance's `WizardFormSubState` inside the consumer's slice.
 - `buildContext(state)` — builds the eager context (the site) handlers read.
 
-That lens is why the same engine + same handler registry serve four live instances: urban-create,
-urban-update, pv-create, pv-update.
+That lens is why the same engine + same handler registry serve project and site forms alike:
+urban-create, urban-update, pv-create, pv-update, and the site forms — `create-site/core/{custom,
+urban-zone, demo}` and `update-site/core` (reusing the custom and urban-zone lenses).
 
 ## Three layers
 
@@ -59,6 +60,10 @@ Views (feature-owned, shared by create + update):
   .../stepToComponent.tsx    maps StepId -> the lazy-loaded container
 ```
 
+The site forms mirror L3 at `features/create-site/core/{custom, urban-zone, demo}/` (and
+`features/update-site/core/` for editing): same `{type}Steps.ts` / `step-handlers/` /
+`stepHandlerRegistry.ts` / `{type}Form.reducer.ts` layout, no `project-form/`-style L2.
+
 ## The handler contract (`stepHandler.type.ts`)
 
 Handlers are **pure functions of `{ context, answers }`** — no store, no dispatch, no create-vs-update
@@ -69,6 +74,10 @@ awareness. An `AnswerStepHandler` implements:
 - `getRecomputedStepAnswers?`, `getDependencyRules?`, `getShortcut?`, `updateAnswersMiddleware?` —
   optional cascade hooks. Urban uses them; **PV implements none** (the "degenerate" path), so
   `computeStepChanges` always yields empty changes and `applyStepChanges` runs unconditionally.
+
+When `getDependencyRules` invalidates downstream answers, the pending change surfaces a
+`CascadingChangesAlertDialog` (`pendingStepCompletion.showAlert` in `WizardFormSubState`) and waits for
+confirmation before applying — see `AnswerCascadingUpdateDialog.tsx`.
 
 ## Runtime: one step transition
 
@@ -102,6 +111,23 @@ selectForm: (state) => state.projectUpdate.renewableEnergyProject,
 
 Editing adds only: a **hydration** converter (saved project -> answered steps, reconstructing the
 branch path, e.g. PV's POWER vs SURFACE) and a **save-in-place** thunk. Everything else is shared.
+
+## Adding a step
+
+Colocate everything for one step in its own directory next to its siblings, e.g.
+`renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/`: `photovoltaicSurface.handler.ts`,
+`.schema.ts`, `.selector.ts`, `.stepperConfig.ts`, and `photovoltaicSurface.step.spec.ts`. An urban step
+is the same shape minus the selector file (e.g.
+`urban-project/step-handlers/uses/selection/usesSelection.handler.ts`).
+
+1. Add the id to the `{type}Steps.ts` `StepId` union (and its answers schema to `AnswersByStep`).
+2. Write the handler implementing `AnswerStepHandler`/`InfoStepHandler`.
+3. Register it in `step-handlers/stepHandlerRegistry.ts` (the answer or info map).
+4. Register its stepper config in the stepper-config registry (e.g. `renewableEnergyStepperConfig.ts`),
+   adding a group/subgroup label if it starts one.
+5. Wire the view/container and add the step to `stepToComponent.tsx`.
+6. Add a `*.step.spec.ts` next to the handler, driving the store through `StoreBuilder`
+   (the feature's `__tests__/_testStoreHelpers.ts`) and dispatching `stepCompletionRequested`.
 
 ## Adding a new wizard form (e.g. a 3rd consumer)
 

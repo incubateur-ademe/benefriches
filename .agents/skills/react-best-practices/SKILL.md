@@ -30,36 +30,36 @@ Use these practices when:
 
 ## Categories by Priority
 
-| Priority | Category                 | Focus Area                            |
-| -------- | ------------------------ | ------------------------------------- |
-| 🔴       | **Code Quality**         | Readability, maintainability, SRP     |
-| 🟠       | **Component Patterns**   | Container/Presentational, composition |
-| 🟡       | **State Management**     | Local-first, derived state, colocation|
-| 🟢       | **Anti-Patterns**        | Common mistakes to avoid              |
-| 🔵       | **Bundle Optimization**  | Lazy loading, dynamic imports         |
-| 🟣       | **Async Patterns**       | Parallel fetching, Suspense           |
-| 🟤       | **Form Handling**        | react-hook-form patterns, DSFR        |
-| ⬜       | **Accessibility**        | Keyboard nav, ARIA, focus management  |
-| ⬛       | **Error Boundaries**     | Catch errors, prevent app crashes     |
-| ⚫       | **Performance (Measure!)**| Only when needed, after profiling    |
-| ⚪       | **React 19 & Future**    | React Compiler, new APIs              |
+| Priority | Category                   | Focus Area                             |
+| -------- | -------------------------- | -------------------------------------- |
+| 🔴       | **Code Quality**           | Readability, maintainability, SRP      |
+| 🟠       | **Component Patterns**     | Container/Presentational, composition  |
+| 🟡       | **State Management**       | Local-first, derived state, colocation |
+| 🟢       | **Anti-Patterns**          | Common mistakes to avoid               |
+| 🔵       | **Bundle Optimization**    | Lazy loading, dynamic imports          |
+| 🟣       | **Async Patterns**         | Parallel fetching, Suspense            |
+| 🟤       | **Form Handling**          | react-hook-form patterns, DSFR         |
+| ⬜       | **Accessibility**          | Keyboard nav, ARIA, focus management   |
+| ⬛       | **Error Boundaries**       | Catch errors, prevent app crashes      |
+| ⚫       | **Performance (Measure!)** | Only when needed, after profiling      |
+| ⚪       | **React 19 & Future**      | React Compiler, new APIs               |
 
 ---
 
 ## 🔴 CRITICAL: Code Quality & Readability
 
-| Practice                     | Description                                      |
-| ---------------------------- | ------------------------------------------------ |
-| Single Responsibility        | Each component does ONE thing well               |
-| Component Size               | Keep components focused (< 200 lines)            |
-| Descriptive Naming           | Clear names for components, hooks, props         |
-| Props Destructuring          | Improve readability at function signature        |
-| Explicit over Implicit       | Avoid magic values, use named constants          |
-| Extract Custom Hooks         | Share logic via hooks, not copy-paste            |
+| Practice               | Description                               |
+| ---------------------- | ----------------------------------------- |
+| Single Responsibility  | Each component does ONE thing well        |
+| Component Size         | Keep components focused (< 200 lines)     |
+| Descriptive Naming     | Clear names for components, hooks, props  |
+| Props Destructuring    | Improve readability at function signature |
+| Explicit over Implicit | Avoid magic values, use named constants   |
+| Extract Custom Hooks   | Share logic via hooks, not copy-paste     |
 
 ### Benefriches Examples
 
-- ✅ **ViewData pattern**: Single selector per container
+- ✅ **ViewData pattern**: see [Containers and ViewData](../../../apps/web/AGENTS.md#containers-and-viewdata)
 - ✅ **Container/Presentational**: Separation in `views/` folders
 - ✅ **Clean Architecture**: Core has no framework dependencies
 
@@ -77,7 +77,7 @@ Use these practices when:
 
 ### Benefriches Already Follows
 
-- ✅ Container components use single `selectViewData` selector
+- ✅ Containers use one ViewData selector — see [Containers and ViewData](../../../apps/web/AGENTS.md#containers-and-viewdata)
 - ✅ Presentational components receive all data via props
 - ✅ Gateway pattern for external services
 
@@ -85,67 +85,67 @@ Use these practices when:
 
 ## 🟡 HIGH: State Management Principles
 
-| Principle             | Description                                        |
-| --------------------- | -------------------------------------------------- |
-| Local State First     | Don't lift state unless truly shared               |
-| Derived State         | Compute in selectors/render, don't store           |
-| Colocate State        | Keep state close to where it's used                |
-| Single Source         | One authoritative location per piece of data       |
-| Immutability          | Always use `toSorted()`, spread, not `sort()`      |
+| Principle         | Description                                   |
+| ----------------- | --------------------------------------------- |
+| Local State First | Don't lift state unless truly shared          |
+| Derived State     | Compute in selectors/render, don't store      |
+| Colocate State    | Keep state close to where it's used           |
+| Single Source     | One authoritative location per piece of data  |
+| Immutability      | Always use `toSorted()`, spread, not `sort()` |
 
 ### Redux Specifics
 
 - ✅ Derived values in selectors (not duplicated in state)
 - ✅ Functional updates in reducers
-- ✅ Single ViewData selector per container
+- ✅ ViewData selector per container — see [Containers and ViewData](../../../apps/web/AGENTS.md#containers-and-viewdata)
 
 ---
 
 ## 🟢 HIGH: Anti-Patterns to Avoid
 
-| Anti-Pattern              | Problem                    | Solution                         |
-| ------------------------- | -------------------------- | -------------------------------- |
-| Massive Components        | Hard to test/maintain      | Split into focused pieces        |
-| Prop Drilling             | Coupling, maintenance      | Use composition or context       |
-| Array Index as Key        | Bugs with reordering       | Use stable IDs                   |
-| Mutating State            | React won't re-render      | Immutable updates (`toSorted()`) |
-| Over-Engineering          | Complexity without benefit | YAGNI - only what's needed       |
-| Premature Optimization    | Wasted effort              | Measure first, then optimize     |
-| Effect for Derived State  | Sync issues, extra renders | Compute during render            |
+| Anti-Pattern             | Problem                    | Solution                         |
+| ------------------------ | -------------------------- | -------------------------------- |
+| Massive Components       | Hard to test/maintain      | Split into focused pieces        |
+| Prop Drilling            | Coupling, maintenance      | Use composition or context       |
+| Array Index as Key       | Bugs with reordering       | Use stable IDs                   |
+| Mutating State           | React won't re-render      | Immutable updates (`toSorted()`) |
+| Over-Engineering         | Complexity without benefit | YAGNI - only what's needed       |
+| Premature Optimization   | Wasted effort              | Measure first, then optimize     |
+| Effect for Derived State | Sync issues, extra renders | Compute during render            |
 
 ---
 
 ## 🔵 MEDIUM: Bundle Optimization
 
-| Practice                     | Impact                  | When to Apply                       |
-| ---------------------------- | ----------------------- | ----------------------------------- |
-| Avoid Barrel File Imports    | 200-800ms reduction     | Use direct `@/` path imports        |
-| Dynamic Imports (`lazy`)     | Reduce initial bundle   | Maps, charts, modals, forms         |
-| Defer Non-Critical Libraries | Faster initial load     | Analytics, error tracking           |
-| Preload on User Intent       | Reduce perceived delay  | Hover/focus before heavy action     |
+| Practice                     | Impact                 | When to Apply                   |
+| ---------------------------- | ---------------------- | ------------------------------- |
+| Avoid Barrel File Imports    | 200-800ms reduction    | Use direct `@/` path imports    |
+| Dynamic Imports (`lazy`)     | Reduce initial bundle  | Maps, charts, modals, forms     |
+| Defer Non-Critical Libraries | Faster initial load    | Analytics, error tracking       |
+| Preload on User Intent       | Reduce perceived delay | Hover/focus before heavy action |
 
 ---
 
 ## 🟣 MEDIUM: Async Patterns
 
-| Practice                   | Impact              | When to Apply                    |
-| -------------------------- | ------------------- | -------------------------------- |
-| `Promise.all()` Parallel   | 2-10x improvement   | Independent async operations     |
-| Defer Await Until Needed   | Skip wasted work    | Conditional logic before fetch   |
-| Strategic Suspense         | Progressive loading | Wrap data-dependent sections     |
-| Conditional Module Loading | On-demand bundles   | Charts, PDFs, advanced features  |
+| Practice                   | Impact              | When to Apply                   |
+| -------------------------- | ------------------- | ------------------------------- |
+| `Promise.all()` Parallel   | 2-10x improvement   | Independent async operations    |
+| Defer Await Until Needed   | Skip wasted work    | Conditional logic before fetch  |
+| Strategic Suspense         | Progressive loading | Wrap data-dependent sections    |
+| Conditional Module Loading | On-demand bundles   | Charts, PDFs, advanced features |
 
 ---
 
 ## 🟤 MEDIUM: Form Handling
 
-| Practice                     | Description                                      |
-| ---------------------------- | ------------------------------------------------ |
-| react-hook-form              | Preferred library for all forms                  |
-| DSFR Components              | Use @codegouvfr/react-dsfr for inputs            |
-| Validation in Schema         | Use react-hook-form validation rules             |
-| Error State Display          | Map formState.errors to DSFR error states        |
-| Controlled Inputs            | Prefer controlled via `register()`               |
+| Practice             | Description                               |
+| -------------------- | ----------------------------------------- |
+| react-hook-form      | Preferred library for all forms           |
+| DSFR Components      | Use @codegouvfr/react-dsfr for inputs     |
+| Validation in Schema | Use react-hook-form validation rules      |
+| Error State Display  | Map formState.errors to DSFR error states |
+| Controlled Inputs    | Prefer controlled via `register()`        |
 
 ### Benefriches Form Pattern
 
@@ -186,13 +186,13 @@ function MyForm({ onSubmit }: { onSubmit: (data: FormValues) => void }) {
 
 ## ⬜ MEDIUM: Accessibility
 
-| Practice               | Description                                       |
-| ---------------------- | ------------------------------------------------- |
-| Semantic HTML          | Use appropriate elements (button, nav, main)      |
-| ARIA Labels            | Add when semantic HTML isn't sufficient           |
-| Keyboard Navigation    | Support Tab, Enter, Escape for interactive UI     |
-| Focus Management       | Manage focus for modals and dynamic content       |
-| Icon Accessibility     | Use `aria-hidden="true"` for decorative icons     |
+| Practice            | Description                                   |
+| ------------------- | --------------------------------------------- |
+| Semantic HTML       | Use appropriate elements (button, nav, main)  |
+| ARIA Labels         | Add when semantic HTML isn't sufficient       |
+| Keyboard Navigation | Support Tab, Enter, Escape for interactive UI |
+| Focus Management    | Manage focus for modals and dynamic content   |
+| Icon Accessibility  | Use `aria-hidden="true"` for decorative icons |
 
 ### Keyboard Navigation Example
 
@@ -226,6 +226,7 @@ function Modal({ onClose, children }) {
 ### DSFR Provides Accessibility
 
 DSFR components handle most accessibility concerns. Rely on:
+
 - Built-in ARIA attributes in DSFR components
 - Proper focus management in modals via `createModal()`
 - Keyboard support in form controls
@@ -236,11 +237,11 @@ DSFR components handle most accessibility concerns. Rely on:
 
 Error boundaries catch JavaScript errors in component trees and display fallback UI.
 
-| When to Use               | Example                                  |
-| ------------------------- | ---------------------------------------- |
-| Async data sections       | Wrap data-fetching components            |
-| Third-party components    | Isolate potentially failing libraries    |
-| Feature boundaries        | Prevent one feature from crashing app    |
+| When to Use            | Example                               |
+| ---------------------- | ------------------------------------- |
+| Async data sections    | Wrap data-fetching components         |
+| Third-party components | Isolate potentially failing libraries |
+| Feature boundaries     | Prevent one feature from crashing app |
 
 ### Basic Pattern
 
@@ -284,18 +285,18 @@ class ErrorBoundary extends Component<Props, State> {
 
 **Default stance**: Don't memoize. It adds complexity without benefit in most cases.
 
-| When NOT to Memoize                | Why                                   |
-| ---------------------------------- | ------------------------------------- |
-| Props change every render          | Memoization is wasted                 |
-| Component is already fast          | No perceptible benefit                |
-| Simple components                  | Overhead may exceed savings           |
-| Object/array literals as props     | Creates new reference each render     |
+| When NOT to Memoize            | Why                               |
+| ------------------------------ | --------------------------------- |
+| Props change every render      | Memoization is wasted             |
+| Component is already fast      | No perceptible benefit            |
+| Simple components              | Overhead may exceed savings       |
+| Object/array literals as props | Creates new reference each render |
 
-| When to Consider Memoization       | Requirements                          |
-| ---------------------------------- | ------------------------------------- |
-| Measured lag during re-renders     | Profile first!                        |
-| Expensive rendering (long lists)   | And props rarely change               |
-| Heavy computations in render       | And dependencies stable               |
+| When to Consider Memoization     | Requirements            |
+| -------------------------------- | ----------------------- |
+| Measured lag during re-renders   | Profile first!          |
+| Expensive rendering (long lists) | And props rarely change |
+| Heavy computations in render     | And dependencies stable |
 
 ### Better Alternatives to Memoization
 
@@ -312,11 +313,11 @@ React Compiler will auto-memoize, making manual `useMemo`, `useCallback`, and `R
 
 ## ⚪ React 19 & Future
 
-| Feature              | Impact                                        |
-| -------------------- | --------------------------------------------- |
-| React Compiler       | Auto-memoization (manual memo becomes legacy) |
-| `useTransition`      | Non-blocking UI updates for heavy operations  |
-| `use()` hook         | Simplified async data fetching                |
+| Feature         | Impact                                        |
+| --------------- | --------------------------------------------- |
+| React Compiler  | Auto-memoization (manual memo becomes legacy) |
+| `useTransition` | Non-blocking UI updates for heavy operations  |
+| `use()` hook    | Simplified async data fetching                |
 
 ---
 
@@ -327,13 +328,12 @@ React Compiler will auto-memoize, making manual `useMemo`, `useCallback`, and `R
 **Already following best practices:**
 
 - ✅ Derived state in selectors (not duplicated)
-- ✅ Single ViewData selector per container
+- ✅ ViewData selector per container — see [Containers and ViewData](../../../apps/web/AGENTS.md#containers-and-viewdata)
 - ✅ Functional updates in reducers
 - ✅ `toSorted()` for immutability
 
 **Keep doing:**
 
-- 🟡 **Single selector per container** returning composed ViewData
 - 🔴 **Parallel async in thunks** with `Promise.all()`
 - 🟢 **Passive action names** (events: `stepCompleted`, not commands)
 

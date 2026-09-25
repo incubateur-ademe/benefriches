@@ -1,288 +1,57 @@
-# Benefriches Web App - Quick Reference
+# Benefriches Web
 
-> React SPA with Redux event-based architecture + Clean Architecture
+React SPA (Vite, Redux Toolkit, DSFR) in Clean Architecture. Each feature lives in `src/features/<feature>/` with three layers: `core/` (state, events, selectors, gateway interfaces), `infrastructure/` (gateway implementations) and `views/` (React). Cross-feature code has the same layers in `src/shared/`, and `src/app/` is the composition root (store, router, production dependencies). Imports between layers are checked by the `architecture-boundaries` lint rule ([.oxlintrc.json](.oxlintrc.json)).
 
-**⚠️ Redux is ESTABLISHED**: This codebase uses Redux as an event-based architecture. Do NOT refactor to other state management solutions (Zustand, Jotai, etc.). Work with the existing patterns.
+`my-evaluations` and `projects` still name part of their core layer `application/` (they also have `core/`): legacy naming, use `core/` in new code. Most features use `infrastructure/`; `sites` and `reconversion-compatibility` use `infra/` instead (lint accepts both) — use `infrastructure/` in new code.
 
----
+## Checks
 
-## Quality Guards (ALWAYS RUN)
+Before handing work back, run `pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test && pnpm --filter web format:check`. `format:check` covers every `.md` under `apps/web`, this file included.
 
-```bash
-pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test && pnpm --filter web format:check
+## Redux: events, not commands
 
-# Run a single test file
-pnpm --filter web test path/to/file.spec.ts
-```
+Redux stays the state manager ([ADR-0002](../../docs/adr/0002-redux-event-based-state-management.md)): don't move state to Zustand, Jotai or React context.
 
-**If modifying `shared` package**: Run `pnpm --filter shared build` first, then `pnpm --filter web install`, then web checks.
+- Name actions and thunks after what happened: `createModeCompleted`, `siteUpdateSaved`, `authLinkRequested`, not `completeCreateMode`. Older thunks such as `fetchSiteView` or `saveReconversionProject` predate the rule; don't copy their names.
+- Use `useAppSelector` / `useAppDispatch` from [store.hooks.ts](src/app/hooks/store.hooks.ts), not the untyped `react-redux` hooks.
+- Listener middleware is for effects triggered by another action, e.g. fetching the resale price when a step is answered "unknown" ([projectCreationListeners.ts](src/features/create-project/core/listeners/projectCreationListeners.ts)). Keep it for those.
 
----
+## Containers and ViewData
 
-## Architecture Rules
+- A container (`views/**/index.tsx`) reads the store through one selector, `select{Feature}ViewData`, which returns everything the view needs. It dispatches events and passes data and callbacks to a presentational component, which never touches Redux.
+- ViewData selectors live in `core/`, never in `views/`.
+- Simplest pair: `selectUseCaseCreateModeViewData` in [useCaseSelection.selectors.ts](src/features/create-project/core/usecase-selection/useCaseSelection.selectors.ts) and its container [create-mode-selection/index.tsx](src/features/create-project/views/usecase-selection/create-mode-selection/index.tsx). Wizard step containers get their selectors from the form hook instead (`useProjectForm()`, `useRenewableEnergyForm()`, `useCustomSiteForm()`, `useUrbanZoneSiteForm()`).
 
-- **Clean Architecture**: Core has NO dependencies on infrastructure or views
-- **Dependency rule**: Infrastructure and views depend on core, never the reverse
+## Multi-step forms
 
----
+The project and site forms run on one engine, `src/shared/core/wizard-form/` ([ADR-0015](../../docs/adr/0015-extract-wizard-form-engine-via-injected-lens.md)): urban and photovoltaic project creation and update, and site creation/update (`features/create-site/core/{custom,urban-zone,demo}`, `features/update-site/core`). Two flows are exceptions with their own small step reducers, not the engine: `create-project/core/usecase-selection` and `create-project/core/demo`. Before adding or changing a step or a flow, use the `wizard-form` skill: it explains the engine, the handler contract, the create/update lens, and how to add a step or a form.
 
-## Canonical Pattern Examples
+## Gateways and external services
 
-| Pattern                                  | Reference File                                                                                                                                          |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Step Handler (registry)                  | `src/features/create-project/core/renewable-energy/step-handlers/stepHandlerRegistry.ts`                                                                |
-| Step Handler (answer)                    | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.handler.ts`                      |
-| Step Handler (selector)                  | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-contract-duration/photovoltaicContractDuration.selectors.ts` |
-| Step Handler (schema)                    | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.schema.ts`                       |
-| Step Handler (stepper config)            | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.stepperConfig.ts`                |
-| Stepper Config (registry)                | `src/features/create-project/core/renewable-energy/step-handlers/renewableEnergyStepperConfig.ts`                                                       |
-| Step Handler (urban project, with deps)  | `src/features/create-project/core/urban-project/step-handlers/uses/selection/usesSelection.handler.ts`                                                  |
-| Step Handler (urban project, registry)   | `src/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry.ts`                                                                   |
-| Step Handler (urban zone site, registry) | `src/features/create-site/core/urban-zone/stepHandlerRegistry.ts`                                                                                       |
-| Test Store Helper (urban zone site)      | `src/features/create-site/core/urban-zone/__tests__/_testStoreHelpers.ts`                                                                               |
-| ViewData Selector                        | `src/features/create-project/core/createProject.selectors.ts`                                                                                           |
-| Async Thunk                              | `src/features/create-project/core/urban-project/fetchEstimatedSiteResalePrice.action.ts`                                                                |
-| Reducer (createReducer)                  | `src/features/create-site/core/createSite.reducer.ts`                                                                                                   |
-| Container Component                      | `src/features/create-project/views/photovoltaic-power-station/stakeholders/site-purchased/index.tsx`                                                    |
-| Gateway Interface                        | `src/shared/core/gateways/RealEstateValuationGateway.ts`                                                                                                |
-| HTTP POST implementation                 | `src/features/onboarding/infrastructure/create-user-service/HttpCreateUserService.ts`                                                                   |
-| HTTP GET implementation                  | `src/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService.ts`                                                                 |
-| InMemory Mock                            | `src/shared/infrastructure/real-estate-valuation-service/InMemoryRealEstateValuationService.ts`                                                         |
-| Step Handler (test, RE)                  | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.step.spec.ts`                    |
-| Test Store Helper (RE)                   | `src/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers.ts`                                                                      |
-| Test with Store Helper (urban)           | `src/features/create-project/core/urban-project/__tests__/steps/site-resale/siteResaleSelection.step.spec.ts`                                           |
-| Test Store Helper (urban)                | `src/features/create-project/core/urban-project/__tests__/_testStoreHelpers.ts`                                                                         |
-| Listener Middleware                      | `src/features/create-project/core/listeners/projectCreationListeners.ts`                                                                                |
-| Third-Party Gateway                      | `src/features/support/core/gateways/SupportChatGateway.ts`                                                                                              |
-| Fire-and-forget Thunk                    | `src/features/support/core/authLinkNotReceivedHelpRequested.action.ts`                                                                                  |
+Everything the app calls outside itself goes through a gateway:
 
----
+1. An interface in `core/` with only the methods the domain needs, e.g. [RealEstateValuationGateway.ts](src/shared/core/gateways/RealEstateValuationGateway.ts).
+2. An `Http*Service` in `infrastructure/<service>/`. New services validate the request and response bodies with the shared Zod schemas (`safeParse()`), as [HttpCreateUserService.ts](src/features/onboarding/infrastructure/create-user-service/HttpCreateUserService.ts) and [HttpCurrentUserService.ts](src/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService.ts) do; most older services don't yet.
+3. An `InMemory*Service` next to it for tests, e.g. [InMemoryRealEstateValuationService.ts](src/shared/infrastructure/real-estate-valuation-service/InMemoryRealEstateValuationService.ts).
+4. A key in `AppDependencies` ([store.ts](src/app/store/store.ts)), the real service in [appDependencies.ts](src/app/store/appDependencies.ts), the InMemory one in [testAppDependencies.ts](src/test/testAppDependencies.ts). Thunks (`createAppAsyncThunk`) reach it as `extra.<service>`, as in [fetchEstimatedSiteResalePrice.action.ts](src/features/create-project/core/urban-project/fetchEstimatedSiteResalePrice.action.ts).
 
-## Naming Conventions
+Third-party browser SDKs (Crisp in `features/support/`, Matomo in `features/analytics/`) follow the same shape ([ADR-0005](../../docs/adr/0005-gateway-pattern-for-third-party-browser-sdks.md)), not React components or context:
 
-- **Actions**: Passive tense (events): `stepCompleted`, `dataFetched` (NOT `completeStep`, `fetchData`)
-- **Selectors**: `select{Feature}ViewData` - one per container returning composed object
+- The SDK is used only in `infrastructure/`, next to a `Noop*` implementation that `appDependencies.ts` picks when the service is disabled by env.
+- Views dispatch a thunk that calls the gateway, e.g. [authLinkNotReceivedHelpRequested.action.ts](src/features/support/core/authLinkNotReceivedHelpRequested.action.ts), instead of calling the SDK.
+- Lint rejects `crisp-sdk-web` outside `infrastructure/`; give a new npm SDK the same `no-restricted-imports` entry in [.oxlintrc.json](.oxlintrc.json).
 
----
+## Components and styling
 
-## Key Patterns
+- Before creating a component, look in `src/shared/views/components/` (e.g. `RadioButtons`, `CheckableTile`, `BackNextButtons`, `Dialog`, `form/MonthYearInput`), then in `@codegouvfr/react-dsfr`. Create one only if neither has it.
+- Keep a component's internal representation out of its props: if every consumer would write the same conversion, it belongs inside the component. [MonthYearInput](src/shared/views/components/form/MonthYearInput/MonthYearInput.tsx) takes and returns the stored date string and keeps the month/year display to itself.
+- Styling is DSFR plus Tailwind CSS v4, which loads with `@import "tailwindcss/…"` ([main.css](src/main.css)), not the v3 `@tailwind` directives.
+- Imports: `@/…` across features, relative paths only inside a feature, `"shared"` for the shared package.
 
-### Container/Presentational Separation
+## Tests
 
-- **Container** (`index.tsx`): Connects Redux, uses single ViewData selector, dispatches actions
-- **Presentational**: Receives all data via props, no Redux dependencies
+Test design is in [.claude/rules/testing.md](../../.claude/rules/testing.md). Tests run on Vitest with jsdom ([setupTestEnv.ts](src/test/setupTestEnv.ts)).
 
-### ViewData Pattern
-
-Container components access state through a **single selector** returning a composed `ViewData` object:
-
-```typescript
-const dispatch = useAppDispatch();
-const viewData = useAppSelector(selectFeatureViewData);
-return <FeaturePage viewData={viewData} onAction={(data) => dispatch(actionCompleted(data))} />;
-```
-
-### Gateway Pattern
-
-1. **Interface** in `core/gateways/` - defines what domain needs
-2. **HTTP implementation** in `infrastructure/*/Http*Service.ts` - real API calls
-3. **InMemory mock** in `infrastructure/*/InMemory*Service.ts` - required for tests
-4. **Register in store** via `extraArgument` for thunk access
-
-**DTO Validation**: HTTP services should validate request/response bodies using shared Zod schemas from `"shared"` with `safeParse()`. See `src/features/onboarding/infrastructure/create-user-service/HttpCreateUserService.ts` for reference.
-
-### Dependency Injection
-
-Services injected via store's `extraArgument`, accessed in thunks as `extra`:
-
-```typescript
-const result = await extra.featureService.doSomething(payload);
-```
-
-### Testing
-
-- **Store-based unit tests** (`.spec.ts`): `new StoreBuilder().withSiteData({...}).build()` with InMemory services
-- **Component tests** (`.spec.tsx`): Use `@testing-library/react` for DOM-level rendering tests
-
-### Side Effects
-
-- Use `useEffect` in components for most side effects
-- Use listener middleware sparingly for specific Redux action side effects
-
-### Step Handler Pattern
-
-Multi-step wizards use a **step handler registry** instead of per-step actions and large reducers. Two implementations exist:
-
-**Common to both:**
-
-- **Registry** (`stepHandlerRegistry.ts`): Maps step IDs to handler objects
-- **`AnswerStepHandler<T>`**: Data-entry steps with `getNextStepId()`, optional `getDefaultAnswers()`, `updateAnswersMiddleware()`
-- **`InfoStepHandler`**: Navigation-only steps (intros, summaries)
-- **Generic action**: `stepCompletionRequested({ stepId, answers })` replaces individual per-step actions
-- **Colocated files**: Each step has `*.handler.ts`, `*.schema.ts`, `*.selectors.ts`, `*.stepperConfig.ts`
-
-**Renewable Energy** (simpler, creation only — [ADR-0006](../../docs/adr/0006-step-handler-pattern-for-renewable-energy-wizard.md)):
-
-- Location: `src/features/create-project/core/renewable-energy/step-handlers/`
-- Nested per-step directories (e.g., `photovoltaic/photovoltaic-surface/photovoltaicSurface.handler.ts`)
-- Steps are independent (no cascading updates)
-
-**Urban Project** (complex, creation + update — [ADR-0004](../../docs/adr/0004-colocate-urban-project-step-definitions.md)):
-
-- Location: `src/features/create-project/core/urban-project/step-handlers/`
-- Nested per-step folders (e.g., `uses/selection/usesSelection.handler.ts`)
-- **Dependency rules**: `getDependencyRules()` returns `delete`/`invalidate`/`recompute` actions on dependent steps
-- **Shortcuts**: `getShortcut()` auto-completes multiple steps when conditions are met
-- **Recomputation**: `getRecomputedStepAnswers()` recalculates values while preserving user edits
-- **Confirmation dialogs**: Cascading changes trigger user confirmation before applying
-- **Factory actions**: `createUrbanProjectFormActions(prefix)` supports both `"projectCreation"` and `"projectUpdate"` modes
-
-### Component Discovery (lookup order)
-
-Before creating a new UI component, always check these sources in order:
-
-1. **`src/shared/views/components/`** — internal shared components (e.g., `RadioButtons`, `CheckableTile`, `BackNextButtons`, `Dialog`, `Spinner`)
-2. **`@codegouvfr/react-dsfr`** — DSFR component library (buttons, inputs, badges, modals, etc.)
-3. Only if neither has what you need: create a new component
-
-### Component Encapsulation
-
-Internal representation is an implementation detail — don't expose it through props. Design component APIs from the consumer's perspective. If every consumer would need the same adapter code (format conversion, mapping, etc.), that logic belongs inside the component.
-
----
-
-## Creation Checklists
-
-### Container Component Checklist
-
-When creating a new container component:
-
-1. **Create ViewData selector** in the relevant selectors file:
-   - Define typed `{Feature}ViewData` type with all data the container needs
-   - Create `select{Feature}ViewData` selector composing data from state
-   - Export the selector (directly, or via factory function for urban project forms)
-
-2. **Create container** (`index.tsx`):
-   - Get selector via direct import or hook (`useProjectForm()` for urban project forms)
-   - Use single `useAppSelector(select{Feature}ViewData)` call
-   - Destructure ViewData and pass to presentational component
-   - Handle actions with `useAppDispatch`
-
-3. **Reference examples** (simplest first):
-   - `src/features/create-project/core/usecase-selection/useCaseSelection.selectors.ts` → `selectUseCaseCreateModeViewData`
-   - `src/features/create-project/views/usecase-selection/create-mode-selection/index.tsx`
-   - `src/features/create-site/core/steps/spaces/spaces.selectors.ts` → `selectSiteSoilsSummaryViewData`
-   - `src/features/create-site/views/common-views/spaces-and-soils/soils-summary/index.tsx`
-   - Urban project form (factory pattern):
-     - `src/features/create-project/core/urban-project/urbanProject.selectors.ts` → `selectUsesFloorSurfaceAreaViewData`
-     - `src/features/create-project/views/urban-project/buildings/uses-floor-surface-area/index.tsx`
-
-### Step Handler Checklist (Renewable Energy)
-
-When adding a new step to the renewable energy wizard:
-
-1. **Create step directory**: `step-handlers/{group}/{step-id}/`
-2. **Create colocated files**:
-   - `{stepId}.handler.ts` — implement `AnswerStepHandler<T>` or `InfoStepHandler`
-   - `{stepId}.schema.ts` — Zod schema for step answers (if `AnswerStepHandler`)
-   - `{stepId}.selectors.ts` — selector returning step `ViewData`
-   - `{stepId}.stepperConfig.ts` — label + optional group for the stepper UI
-3. **Register in registry**: Add to `step-handlers/stepHandlerRegistry.ts`
-4. **Add step ID** to `renewableEnergySteps.ts` union type
-5. **Write colocated test**: `{stepId}.step.spec.ts` using `StoreBuilder` from `__tests__/_testStoreHelpers.ts`
-
-### Gateway Checklist
-
-When adding a new external service integration:
-
-1. **Create interface** in `core/gateways/` - define methods the domain needs
-2. **Create HTTP implementation** in `infrastructure/*/Http*Service.ts` - real API calls
-3. **Create InMemory mock** in `infrastructure/*/InMemory*Service.ts` - required for tests
-4. **Register in store** via `extraArgument` for thunk access
-
-### Third-Party Service Integration
-
-Third-party services (Crisp, analytics SDKs, etc.) belong in the **infrastructure layer**, not as React components.
-
-- Define gateway interface in `core/gateways/`
-- Implement in `infrastructure/` (real + InMemory + Noop)
-- Register in `AppDependencies` (not React context)
-- Views dispatch thunks that call `extra.service` — no direct SDK imports in views
-- Reference: `features/support/` (Crisp chat), `features/analytics/` (Matomo analytics)
-
----
-
-## Import Conventions
-
-| Import Type             | Pattern       | Example                                                    |
-| ----------------------- | ------------- | ---------------------------------------------------------- |
-| **Within web app**      | `@/` alias    | `import { useAppSelector } from "@/app/hooks/store.hooks"` |
-| **From shared package** | `shared`      | `import type { GetSiteViewResponseDto } from "shared"`     |
-| **Relative**            | `./` or `../` | Only within same feature folder                            |
-
----
-
-## Critical DON'Ts
-
-- **Don't import infrastructure in core** (violates Clean Architecture)
-- **Don't put selectors in `views/`** — selectors are core logic; always place in `core/` (Clean Architecture dependency rule)
-- **Don't call multiple selectors** in containers (compose into single ViewData selector)
-- **Don't skip InMemory implementations** (required for tests)
-- **Don't use untyped Redux hooks** - always use `useAppSelector`/`useAppDispatch` from `@/app/hooks/store.hooks`
-
----
-
-## Feature Structure
-
-### App-Level (Composition Root)
-
-```
-app/                                   # Composition root — app bootstrap & wiring
-├── App.tsx                            # Root component (route dispatch)
-├── envVars.ts                         # Environment variables
-├── router.ts                          # Route definitions (type-route)
-├── hooks/
-│   └── store.hooks.ts                 # Typed useAppSelector/useAppDispatch
-└── store/
-    ├── store.ts                       # createStore + AppDependencies type + RootState/AppDispatch
-    ├── rootReducer.ts                 # Combined reducer
-    ├── appDependencies.ts             # Production dependency wiring
-    ├── appAsyncThunk.ts               # Typed createAsyncThunk
-    └── listenerMiddleware.ts          # Listener middleware setup
-```
-
-### Feature-Level
-
-```
-feature-name/
-├── core/                              # Business logic (preferred name for new features)
-│   ├── feature.types.ts               # Type definitions (single source of truth)
-│   ├── featureName.reducer.ts         # Reducer using createReducer
-│   ├── featureName.selectors.ts       # Selectors including ViewData
-│   ├── actions/*.ts                   # Action creators (passive tense)
-│   └── __tests__/*.spec.ts            # Unit tests
-├── infrastructure/
-│   └── feature-service/
-│       ├── HttpFeatureService.ts      # HTTP implementation
-│       └── InMemoryFeatureService.ts  # Test mock (required)
-└── views/
-    ├── index.tsx                      # Container (Redux-connected)
-    └── FeaturePage.tsx                # Presentational component
-```
-
-**Note**: Some older features use `application/` instead of `core/` (e.g., `my-evaluations`, `projects`). Use `core/` for new features — `application/` is legacy naming.
-
----
-
-## Tech Stack
-
-React 19+, Redux Toolkit 2+, Vite 7+, TypeScript 5+ (strict), Tailwind CSS v4 (uses `@import "tailwindcss/..."` syntax, not v3 `@tailwind` directives) + DSFR, type-route, react-hook-form, Highcharts (impact charts), @react-pdf/renderer (PDF export)
-
----
-
-## Related Documentation
-
-- **Monorepo Guide**: [AGENTS.md](../../AGENTS.md)
-- **API Guide**: [apps/api/AGENTS.md](../api/AGENTS.md)
-- **Feature Example**: [docs/feature-example.md](../../docs/feature-example.md)
-- **React Best Practices**: [.claude/skills/react-best-practices/SKILL.md](../../.claude/skills/react-best-practices/SKILL.md)
+- Core specs (`*.spec.ts`) build a real store with the feature's `StoreBuilder` (e.g. [urban-project `_testStoreHelpers.ts`](src/features/create-project/core/urban-project/__tests__/_testStoreHelpers.ts)), which wires `getTestAppDependencies()`; they dispatch events and assert selector output. Pass an override to swap one service: `getTestAppDependencies({ realEstateValuationService: … })`.
+- Component specs (`*.spec.tsx`) render with `@testing-library/react`. A component that reads the store gets `<Provider store={createStore(getTestAppDependencies())}>` (plus `RouteProvider` if it reads the route), as in [SiteUpdateView.spec.tsx](src/features/update-site/views/SiteUpdateView.spec.tsx).
+- `@testing-library/user-event` isn't installed: drive inputs with `fireEvent`.
