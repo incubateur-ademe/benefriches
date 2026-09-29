@@ -4,8 +4,10 @@ import {
   lifecycleEmailTypeSchema,
   type LifecycleEmailType,
 } from "src/notifications/core/models/lifecycleEmail";
+import type { LifecycleEmailContact } from "src/notifications/core/models/lifecycleEmailContact";
 import {
   buildLifecycleEmailPreview,
+  PREVIEW_SAMPLE_CONTACT,
   PREVIEW_SAMPLE_USER,
 } from "src/notifications/core/previews/lifecycleEmailPreviewSamples";
 import { buildUnsubscribeUrl } from "src/notifications/core/templates/unsubscribeUrl";
@@ -49,17 +51,20 @@ export class SendLifecycleEmailPreviewUseCase implements UseCase<
   private readonly logger: AppLogger;
   private readonly webappUrl: string;
   private readonly unsubscribeTokenService: UnsubscribeTokenService;
+  private readonly contact: LifecycleEmailContact | undefined;
 
   constructor(
     mailer: Mailer,
     logger: AppLogger,
     webappUrl: string,
     unsubscribeTokenService: UnsubscribeTokenService,
+    contact: LifecycleEmailContact | undefined,
   ) {
     this.mailer = mailer;
     this.logger = logger;
     this.webappUrl = webappUrl;
     this.unsubscribeTokenService = unsubscribeTokenService;
+    this.contact = contact;
   }
 
   async execute({ emailType, recipients }: Request): Promise<SendLifecycleEmailPreviewResult> {
@@ -78,7 +83,14 @@ export class SendLifecycleEmailPreviewUseCase implements UseCase<
       this.webappUrl,
       this.unsubscribeTokenService.sign(PREVIEW_SAMPLE_USER.id),
     );
-    const email = buildLifecycleEmailPreview(parsedEmailType.data, this.webappUrl, unsubscribeUrl);
+    // The configured contact when there is one (a reviewer on staging sees the real
+    // signature), the invented sample otherwise, so a preview works where nothing is set.
+    const email = buildLifecycleEmailPreview(
+      parsedEmailType.data,
+      this.webappUrl,
+      unsubscribeUrl,
+      this.contact ?? PREVIEW_SAMPLE_CONTACT,
+    );
 
     for (const recipient of recipients) {
       try {

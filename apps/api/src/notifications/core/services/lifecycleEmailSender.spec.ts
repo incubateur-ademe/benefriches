@@ -49,7 +49,13 @@ describe("LifecycleEmailSender", () => {
   it("does not send and writes no row when the kill switch is off", async () => {
     const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: false });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
 
     const outcome = await sender.send({
@@ -66,7 +72,13 @@ describe("LifecycleEmailSender", () => {
   it("does not send to an unsubscribed user", async () => {
     const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: new Date("2026-01-01") },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: new Date("2026-01-01"),
+      },
     ]);
 
     const outcome = await sender.send({
@@ -83,7 +95,13 @@ describe("LifecycleEmailSender", () => {
   it("does not send a second time when a prior sent delivery exists for the same user, type and entity", async () => {
     const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
     deliveries.push({
       id: "existing-delivery",
@@ -112,7 +130,13 @@ describe("LifecycleEmailSender", () => {
   it("does not retry when a prior failed delivery exists — a later sweeper owns retries", async () => {
     const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
     deliveries.push({
       id: "existing-delivery",
@@ -141,7 +165,13 @@ describe("LifecycleEmailSender", () => {
   it("leaves exactly one sent row on a successful send", async () => {
     const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
     const message = buildMessage();
 
@@ -168,7 +198,13 @@ describe("LifecycleEmailSender", () => {
   it("leaves exactly one failed row carrying the error, and does not throw, when the mailer fails", async () => {
     const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
     mailer.simulateFailure("SMTP unreachable");
 
@@ -198,7 +234,13 @@ describe("LifecycleEmailSender", () => {
   it("sends independently per related entity", async () => {
     const { sender, deliveries, recipientQuery } = setup({ isEnabled: true });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
     deliveries.push({
       id: "existing-delivery",
@@ -232,7 +274,13 @@ describe("LifecycleEmailSender", () => {
     it("sends a failed delivery and marks it sent on the same row", async () => {
       const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
       recipientQuery._setRecipients([
-        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+        {
+          id: "user-1",
+          email: "user@example.fr",
+          firstName: "John",
+          lastName: "Doe",
+          unsubscribedAt: null,
+        },
       ]);
       const delivery: LifecycleEmailDelivery = {
         id: "delivery-1",
@@ -271,7 +319,13 @@ describe("LifecycleEmailSender", () => {
     it("marks the row failed with the new error and one more attempt when the mailer throws below the cap", async () => {
       const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
       recipientQuery._setRecipients([
-        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+        {
+          id: "user-1",
+          email: "user@example.fr",
+          firstName: "John",
+          lastName: "Doe",
+          unsubscribedAt: null,
+        },
       ]);
       mailer.simulateFailure("Connection timeout");
       const delivery: LifecycleEmailDelivery = {
@@ -311,7 +365,13 @@ describe("LifecycleEmailSender", () => {
     it("abandons the delivery when the last allowed attempt fails", async () => {
       const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
       recipientQuery._setRecipients([
-        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+        {
+          id: "user-1",
+          email: "user@example.fr",
+          firstName: "John",
+          lastName: "Doe",
+          unsubscribedAt: null,
+        },
       ]);
       mailer.simulateFailure("Mailbox unavailable");
       const delivery: LifecycleEmailDelivery = {
@@ -351,7 +411,13 @@ describe("LifecycleEmailSender", () => {
     it("abandons a pending row stranded at the cap without rendering or sending", async () => {
       const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
       recipientQuery._setRecipients([
-        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+        {
+          id: "user-1",
+          email: "user@example.fr",
+          firstName: "John",
+          lastName: "Doe",
+          unsubscribedAt: null,
+        },
       ]);
       const render = mock.fn(renderForRecipient);
       const delivery: LifecycleEmailDelivery = {
@@ -392,7 +458,13 @@ describe("LifecycleEmailSender", () => {
     it("counts a render error as a failed attempt", async () => {
       const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
       recipientQuery._setRecipients([
-        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+        {
+          id: "user-1",
+          email: "user@example.fr",
+          firstName: "John",
+          lastName: "Doe",
+          unsubscribedAt: null,
+        },
       ]);
       const delivery: LifecycleEmailDelivery = {
         id: "delivery-1",
@@ -433,7 +505,13 @@ describe("LifecycleEmailSender", () => {
     it("does nothing when the kill switch is off", async () => {
       const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: false });
       recipientQuery._setRecipients([
-        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+        {
+          id: "user-1",
+          email: "user@example.fr",
+          firstName: "John",
+          lastName: "Doe",
+          unsubscribedAt: null,
+        },
       ]);
       const delivery: LifecycleEmailDelivery = {
         id: "delivery-1",
@@ -462,6 +540,8 @@ describe("LifecycleEmailSender", () => {
         {
           id: "user-1",
           email: "user@example.fr",
+          firstName: "John",
+          lastName: "Doe",
           unsubscribedAt: new Date("2025-12-31T12:00:00.000Z"),
         },
       ]);
@@ -513,7 +593,13 @@ describe("LifecycleEmailSender", () => {
     it("skips a delivery another run has already claimed", async () => {
       const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
       recipientQuery._setRecipients([
-        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+        {
+          id: "user-1",
+          email: "user@example.fr",
+          firstName: "John",
+          lastName: "Doe",
+          unsubscribedAt: null,
+        },
       ]);
       const claimedByAnotherRun: LifecycleEmailDelivery = {
         id: "delivery-1",

@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-// Later tickets extend this enum with "first-site-reminder", "first-project-reminder",
-// "project-impacts-summary". Kept kebab-case now so future values stay consistent.
-export const lifecycleEmailTypeSchema = z.enum(["welcome"]);
+// Later tickets extend this enum with "first-project-reminder" and "project-impacts-summary".
+// Kept kebab-case so every value stays consistent.
+export const lifecycleEmailTypeSchema = z.enum(["welcome", "first-site-reminder"]);
 export type LifecycleEmailType = z.infer<typeof lifecycleEmailTypeSchema>;
 
 // "failed" means "will be retried" by the sweeper; "abandoned" is terminal: the delivery

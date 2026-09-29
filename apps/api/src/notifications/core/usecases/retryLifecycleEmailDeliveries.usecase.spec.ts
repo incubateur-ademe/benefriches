@@ -1,12 +1,15 @@
 import assert from "node:assert/strict";
 import { describe, it, mock } from "node:test";
 
+import { InMemoryLifecycleEmailCohortQuery } from "src/notifications/adapters/secondary/lifecycle-email-cohort/InMemoryLifecycleEmailCohortQuery";
 import { InMemoryLifecycleEmailDeliveryQuery } from "src/notifications/adapters/secondary/lifecycle-email-delivery/InMemoryLifecycleEmailDeliveryQuery";
 import { InMemoryLifecycleEmailDeliveryRepository } from "src/notifications/adapters/secondary/lifecycle-email-delivery/InMemoryLifecycleEmailDeliveryRepository";
 import { InMemoryLifecycleEmailRecipientQuery } from "src/notifications/adapters/secondary/lifecycle-email-recipient/InMemoryLifecycleEmailRecipientQuery";
 import { FakeMailer } from "src/notifications/adapters/secondary/mailer/FakeMailer";
 import { HmacUnsubscribeTokenService } from "src/notifications/adapters/secondary/unsubscribe-token/HmacUnsubscribeTokenService";
+import type { FirstSiteReminderRecipient } from "src/notifications/core/gateways/LifecycleEmailCohortQuery";
 import type { LifecycleEmailDelivery } from "src/notifications/core/models/lifecycleEmail";
+import type { LifecycleEmailContact } from "src/notifications/core/models/lifecycleEmailContact";
 import { LifecycleEmailSender } from "src/notifications/core/services/lifecycleEmailSender";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
@@ -17,6 +20,7 @@ import {
   RetryLifecycleEmailDeliveriesUseCase,
   type RetryLifecycleEmailDeliveriesSummary,
 } from "./retryLifecycleEmailDeliveries.usecase";
+import { SendFirstSiteRemindersUseCase } from "./sendFirstSiteReminders.usecase";
 import { SendWelcomeEmailUseCase } from "./sendWelcomeEmail.usecase";
 
 const fakeNow = new Date("2026-01-01T10:00:00.000Z");
@@ -27,7 +31,19 @@ const unsubscribeTokenService = new HmacUnsubscribeTokenService("unsubscribe-sec
 const getSuccessData = <TData>(result: TResult<TData, never>): TData =>
   (result as SuccessResult<TData>).getData();
 
-const setup = (options: { isEnabled: boolean; deliveries: LifecycleEmailDelivery[] }) => {
+const contact = {
+  firstName: "Mathilde",
+  lastName: "Lefèvre",
+  role: "Chargée de déploiement",
+  phone: "01 23 45 67 89",
+  email: "mathilde.lefevre@example.com",
+} satisfies LifecycleEmailContact;
+
+const setup = (options: {
+  isEnabled: boolean;
+  deliveries: LifecycleEmailDelivery[];
+  contact?: LifecycleEmailContact | undefined;
+}) => {
   const deliveryRepository = new InMemoryLifecycleEmailDeliveryRepository(options.deliveries);
   const deliveryQuery = new InMemoryLifecycleEmailDeliveryQuery(options.deliveries);
   const recipientQuery = new InMemoryLifecycleEmailRecipientQuery();
@@ -49,6 +65,7 @@ const setup = (options: { isEnabled: boolean; deliveries: LifecycleEmailDelivery
     dateProvider,
     webappUrl,
     unsubscribeTokenService,
+    "contact" in options ? options.contact : contact,
     logger,
   );
   return { useCase, deliveryRepository, recipientQuery, mailer, logger };
@@ -60,7 +77,13 @@ describe("RetryLifecycleEmailDeliveries UseCase", () => {
     const welcomeDeliveries: LifecycleEmailDelivery[] = [];
     const welcomeRecipientQuery = new InMemoryLifecycleEmailRecipientQuery();
     welcomeRecipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
     const welcomeMailer = new FakeMailer();
     const welcomeUidGenerator = new DeterministicUuidGenerator();
@@ -99,7 +122,13 @@ describe("RetryLifecycleEmailDeliveries UseCase", () => {
       ],
     });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
 
     const result = await useCase.execute();
@@ -134,7 +163,13 @@ describe("RetryLifecycleEmailDeliveries UseCase", () => {
     const deliveries = [{ ...freshPending }];
     const { useCase, recipientQuery, mailer } = setup({ isEnabled: true, deliveries });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
 
     const result = await useCase.execute();
@@ -171,7 +206,13 @@ describe("RetryLifecycleEmailDeliveries UseCase", () => {
     ];
     const { useCase, recipientQuery, mailer } = setup({ isEnabled: true, deliveries });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
 
     await useCase.execute();
@@ -212,7 +253,13 @@ describe("RetryLifecycleEmailDeliveries UseCase", () => {
     const deliveries = [{ ...failed }];
     const { useCase, recipientQuery, mailer } = setup({ isEnabled: false, deliveries });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
 
     const result = await useCase.execute();
@@ -264,8 +311,20 @@ describe("RetryLifecycleEmailDeliveries UseCase", () => {
       deliveries,
     });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user-1@example.fr", unsubscribedAt: null },
-      { id: "user-2", email: "user-2@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user-1@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
+      {
+        id: "user-2",
+        email: "user-2@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
     const dbError = new Error("connection reset");
     const originalClaim = deliveryRepository.claimForRetry.bind(deliveryRepository);
@@ -317,7 +376,13 @@ describe("RetryLifecycleEmailDeliveries UseCase", () => {
       ],
     });
     recipientQuery._setRecipients([
-      { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      {
+        id: "user-1",
+        email: "user@example.fr",
+        firstName: "John",
+        lastName: "Doe",
+        unsubscribedAt: null,
+      },
     ]);
 
     await useCase.execute();
@@ -325,5 +390,161 @@ describe("RetryLifecycleEmailDeliveries UseCase", () => {
     assert.deepStrictEqual(logger._info, [
       "Lifecycle email retry summary: candidates=1, sent=1, failed=0, abandoned=0, skippedDisabled=0, skippedUnsubscribed=0, skippedRecipientNotFound=0, skippedAlreadyClaimed=0, errored=0",
     ]);
+  });
+  describe("first site reminder", () => {
+    const failedFirstSiteReminder = (): LifecycleEmailDelivery => ({
+      id: "delivery-1",
+      userId: "user-1",
+      emailType: "first-site-reminder",
+      relatedEntityId: null,
+      status: "failed",
+      createdAt: aDayBefore,
+      sentAt: null,
+      errorMessage: "SMTP down",
+      attempts: 1,
+      lastAttemptedAt: aDayBefore,
+    });
+
+    it("retries a failed first site reminder with the same message the send use case sends", async () => {
+      // Capture what the daily job sends for this user.
+      const reminderDeliveries: LifecycleEmailDelivery[] = [];
+      const reminderRecipient: FirstSiteReminderRecipient = {
+        userId: "user-1",
+        email: "gregoire.bailleux@example.fr",
+        firstName: "Grégoire",
+        lastName: "Bailleux",
+        registeredAt: new Date("2025-12-30T20:00:00.000Z"),
+      };
+      const cohortQuery = new InMemoryLifecycleEmailCohortQuery();
+      cohortQuery._setFirstSiteReminderRecipients([reminderRecipient]);
+      const reminderRecipientQuery = new InMemoryLifecycleEmailRecipientQuery();
+      reminderRecipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+      const reminderMailer = new FakeMailer();
+      const reminderUidGenerator = new DeterministicUuidGenerator();
+      reminderUidGenerator.nextUuids("reminder-delivery");
+      await new SendFirstSiteRemindersUseCase(
+        cohortQuery,
+        new LifecycleEmailSender(
+          new InMemoryLifecycleEmailDeliveryRepository(reminderDeliveries),
+          new InMemoryLifecycleEmailDeliveryQuery(reminderDeliveries),
+          reminderRecipientQuery,
+          reminderMailer,
+          new DeterministicDateProvider(fakeNow),
+          reminderUidGenerator,
+          true,
+        ),
+        new DeterministicDateProvider(fakeNow),
+        webappUrl,
+        unsubscribeTokenService,
+        contact,
+        new SpyLogger(),
+      ).execute({ dryRun: false });
+      const expectedMessage = reminderMailer.sentEmails[0];
+      assert.ok(expectedMessage);
+
+      const { useCase, recipientQuery, mailer } = setup({
+        isEnabled: true,
+        deliveries: [failedFirstSiteReminder()],
+      });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+
+      const result = await useCase.execute();
+
+      assert.deepStrictEqual(mailer.sentEmails, [expectedMessage]);
+      assert.deepStrictEqual(getSuccessData(result), {
+        candidates: 1,
+        sent: 1,
+        failed: 0,
+        abandoned: 0,
+        skippedDisabled: 0,
+        skippedUnsubscribed: 0,
+        skippedRecipientNotFound: 0,
+        skippedAlreadyClaimed: 0,
+        errored: 0,
+      } satisfies RetryLifecycleEmailDeliveriesSummary);
+    });
+
+    it("greets the recipient with their current name on retry", async () => {
+      const { useCase, recipientQuery, mailer } = setup({
+        isEnabled: true,
+        deliveries: [failedFirstSiteReminder()],
+      });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux-Martin",
+          unsubscribedAt: null,
+        },
+      ]);
+
+      await useCase.execute();
+
+      assert.ok(mailer.sentEmails[0]?.text.startsWith("Bonjour Grégoire Bailleux-Martin,\n\n"));
+    });
+
+    it("counts a first site reminder retry as failed when the contact is not configured", async () => {
+      const deliveries = [failedFirstSiteReminder()];
+      const { useCase, recipientQuery, mailer } = setup({
+        isEnabled: true,
+        deliveries,
+        contact: undefined,
+      });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+
+      const result = await useCase.execute();
+
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "first-site-reminder",
+          relatedEntityId: null,
+          status: "failed",
+          createdAt: aDayBefore,
+          sentAt: null,
+          errorMessage: "Lifecycle email contact is not configured",
+          attempts: 2,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+      assert.deepStrictEqual(getSuccessData(result), {
+        candidates: 1,
+        sent: 0,
+        failed: 1,
+        abandoned: 0,
+        skippedDisabled: 0,
+        skippedUnsubscribed: 0,
+        skippedRecipientNotFound: 0,
+        skippedAlreadyClaimed: 0,
+        errored: 0,
+      } satisfies RetryLifecycleEmailDeliveriesSummary);
+    });
   });
 });

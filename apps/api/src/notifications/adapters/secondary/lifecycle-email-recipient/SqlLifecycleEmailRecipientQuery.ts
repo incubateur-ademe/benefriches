@@ -17,7 +17,7 @@ export class SqlLifecycleEmailRecipientQuery implements LifecycleEmailRecipientQ
 
   async getById(userId: string): Promise<LifecycleEmailRecipient | undefined> {
     const row = await this.sqlConnection("users")
-      .select("id", "email", "lifecycle_emails_unsubscribed_at")
+      .select("id", "email", "firstname", "lastname", "lifecycle_emails_unsubscribed_at")
       .where("id", userId)
       .first();
 
@@ -26,6 +26,8 @@ export class SqlLifecycleEmailRecipientQuery implements LifecycleEmailRecipientQ
     return {
       id: row.id,
       email: row.email,
+      firstName: row.firstname,
+      lastName: row.lastname,
       unsubscribedAt: row.lifecycle_emails_unsubscribed_at,
     };
   }

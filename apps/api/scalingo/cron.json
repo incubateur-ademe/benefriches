@@ -7,6 +7,10 @@
     {
       "command": "15 * * * * cd apps/api && node ./dist/src/notifications/adapters/primary/retryLifecycleEmailDeliveries.script.js",
       "size": "S"
+    },
+    {
+      "command": "0 8 * * * cd apps/api && node ./dist/src/notifications/adapters/primary/sendDailyLifecycleReminders.script.js",
+      "size": "S"
     }
   ]
 }

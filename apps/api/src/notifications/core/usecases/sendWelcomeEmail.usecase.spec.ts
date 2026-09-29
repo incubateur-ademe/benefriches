@@ -25,7 +25,9 @@ const setup = () => {
   const deliveryRepository = new InMemoryLifecycleEmailDeliveryRepository(deliveries);
   const deliveryQuery = new InMemoryLifecycleEmailDeliveryQuery(deliveries);
   const recipientQuery = new InMemoryLifecycleEmailRecipientQuery();
-  recipientQuery._setRecipients([{ id: userId, email: "a@b.fr", unsubscribedAt: null }]);
+  recipientQuery._setRecipients([
+    { id: userId, email: "a@b.fr", firstName: "John", lastName: "Doe", unsubscribedAt: null },
+  ]);
   const mailer = new FakeMailer();
   const dateProvider = new DeterministicDateProvider(fakeNow);
   const uidGenerator = new DeterministicUuidGenerator();

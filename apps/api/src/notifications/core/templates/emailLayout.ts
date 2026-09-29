@@ -9,7 +9,20 @@ export type EmailSection =
   | { type: "heading"; text: string }
   | { type: "paragraph"; html: string; text: string }
   | { type: "featureBlock"; title: string; body: string }
-  | { type: "button"; label: string; url: string };
+  // variant absent = primary (dark). Secondary: light grey cell, dark text.
+  | { type: "button"; variant?: "primary" | "secondary"; label: string; url: string }
+  // A plain-text signature: no image, ever (Outlook blocks remote images by default and
+  // shows a broken-image icon instead).
+  | {
+      type: "contactSignature";
+      name: string;
+      role: string;
+      organisation: string;
+      organisationUrl: string;
+      organisationSuffix: string;
+      phone: string;
+      email: string;
+    };
 
 export type EmailContent = {
   subject: string;
@@ -33,6 +46,7 @@ const FONT_STACK = "Arial, Helvetica, sans-serif";
 export const LINK_COLOR = "#000091";
 const TEXT_COLOR = "#161616";
 const BUTTON_BG_COLOR = "#161616";
+const SECONDARY_BUTTON_BG_COLOR = "#dddddd";
 const MUTED_TEXT_COLOR = "#666666";
 
 export function escapeHtml(value: string): string {
@@ -106,18 +120,32 @@ function renderSectionHtml(section: EmailSection): string {
               ${escapeHtml(section.body)}
             </td>
           </tr>`;
-    case "button":
+    case "button": {
+      const isSecondary = section.variant === "secondary";
+      const backgroundColor = isSecondary ? SECONDARY_BUTTON_BG_COLOR : BUTTON_BG_COLOR;
+      const labelColor = isSecondary ? TEXT_COLOR : "#ffffff";
       return `          <tr>
             <td style="padding:24px;">
               <table role="presentation" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td bgcolor="${BUTTON_BG_COLOR}" style="border-radius:4px;">
-                    <a href="${escapeHtml(section.url)}" style="display:inline-block;padding:14px 24px;font-family:${FONT_STACK};font-size:16px;font-weight:bold;color:#ffffff;text-decoration:none;">
+                  <td bgcolor="${backgroundColor}" style="border-radius:4px;">
+                    <a href="${escapeHtml(section.url)}" style="display:inline-block;padding:14px 24px;font-family:${FONT_STACK};font-size:16px;font-weight:bold;color:${labelColor};text-decoration:none;">
                       ${escapeHtml(section.label)}
                     </a>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>`;
+    }
+    case "contactSignature":
+      return `          <tr>
+            <td style="padding:8px 24px 24px 24px;font-family:${FONT_STACK};font-size:14px;line-height:1.5;color:${TEXT_COLOR};">
+              ${escapeHtml(section.name)}<br>
+              ${escapeHtml(section.role)}<br>
+              <a href="${escapeHtml(section.organisationUrl)}" style="color:${TEXT_COLOR};text-decoration:underline;">${escapeHtml(section.organisation)}</a>${escapeHtml(section.organisationSuffix)}<br>
+              ${escapeHtml(section.phone)}<br>
+              <a href="mailto:${escapeHtml(section.email)}" style="color:${TEXT_COLOR};text-decoration:underline;">${escapeHtml(section.email)}</a>
             </td>
           </tr>`;
   }
@@ -157,5 +185,13 @@ function renderSectionText(section: EmailSection): string {
       return `${section.title}\n${section.body}`;
     case "button":
       return `${section.label} : ${section.url}`;
+    case "contactSignature":
+      return [
+        section.name,
+        section.role,
+        `${section.organisation}${section.organisationSuffix}`,
+        section.phone,
+        section.email,
+      ].join("\n");
   }
 }

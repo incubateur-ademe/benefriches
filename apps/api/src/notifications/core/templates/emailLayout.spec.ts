@@ -42,6 +42,22 @@ describe("renderEmail", () => {
         { type: "paragraph", html: "Mon <em>paragraphe</em>", text: "Mon paragraphe" },
         { type: "featureBlock", title: "Mon bloc", body: "Corps du bloc" },
         { type: "button", label: "Mon bouton", url: "https://example.fr/cta" },
+        {
+          type: "button",
+          variant: "secondary",
+          label: "Mon bouton secondaire",
+          url: "mailto:contact@example.fr",
+        },
+        {
+          type: "contactSignature",
+          name: "Mathilde Lefèvre",
+          role: "Chargée de déploiement",
+          organisation: "Bénéfriches",
+          organisationUrl: "https://example.fr",
+          organisationSuffix: " (Externe)",
+          phone: "01 23 45 67 89",
+          email: "mathilde.lefevre@example.com",
+        },
       ],
     });
 
@@ -51,6 +67,110 @@ describe("renderEmail", () => {
     assert.ok(result.html.includes("Corps du bloc"));
     assert.ok(result.html.includes("Mon bouton"));
     assert.ok(result.html.includes('href="https://example.fr/cta"'));
+    assert.ok(result.html.includes("Mon bouton secondaire"));
+    assert.ok(result.html.includes('href="mailto:contact@example.fr"'));
+    assert.ok(result.html.includes("Mathilde Lefèvre"));
+    assert.ok(result.html.includes("01 23 45 67 89"));
+  });
+
+  it("renders a secondary button as a light grey bgcolor cell wrapping the link", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "button",
+          variant: "secondary",
+          label: "Contacter Mathilde de Bénéfriches",
+          url: "mailto:mathilde.lefevre@example.com",
+        },
+      ],
+    });
+
+    assert.ok(/<td[^>]*bgcolor="#dddddd"[^>]*>/.test(result.html));
+    assert.ok(!result.html.includes('bgcolor="#161616"'));
+    assert.ok(/<a[^>]*href="mailto:mathilde\.lefevre@example\.com"[^>]*>/.test(result.html));
+  });
+
+  it("renders the contact signature without any image, the email as a mailto link", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "contactSignature",
+          name: "Mathilde Lefèvre",
+          role: "Chargée de déploiement",
+          organisation: "Bénéfriches",
+          organisationUrl: "http://localhost:3001",
+          organisationSuffix: " (Externe)",
+          phone: "01 23 45 67 89",
+          email: "mathilde.lefevre@example.com",
+        },
+      ],
+    });
+
+    assert.ok(!result.html.includes("<img"));
+    assert.ok(result.html.includes('href="mailto:mathilde.lefevre@example.com"'));
+    assert.ok(
+      /<a[^>]*href="http:\/\/localhost:3001"[^>]*>Bénéfriches<\/a> \(Externe\)/.test(result.html),
+    );
+    assert.ok(result.html.includes("Chargée de déploiement"));
+    assert.ok(result.html.includes("01 23 45 67 89"));
+    assert.ok(!result.html.includes("tel:"));
+  });
+
+  it("renders the contact signature as five plain-text lines", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "contactSignature",
+          name: "Mathilde Lefèvre",
+          role: "Chargée de déploiement",
+          organisation: "Bénéfriches",
+          organisationUrl: "http://localhost:3001",
+          organisationSuffix: " (Externe)",
+          phone: "01 23 45 67 89",
+          email: "mathilde.lefevre@example.com",
+        },
+      ],
+    });
+
+    assert.ok(
+      result.text.startsWith(
+        "Mathilde Lefèvre\nChargée de déploiement\nBénéfriches (Externe)\n01 23 45 67 89\nmathilde.lefevre@example.com\n\n",
+      ),
+    );
+  });
+
+  it("escapes every contact signature field in the HTML", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "contactSignature",
+          name: "<i>Mathilde</i>",
+          role: "<b>Chef</b>",
+          organisation: "<u>Bénéfriches</u>",
+          organisationUrl: 'http://localhost:3001/?a="x"',
+          organisationSuffix: " <s>(Externe)</s>",
+          phone: "<em>01</em>",
+          email: '"x"@example.com',
+        },
+      ],
+    });
+
+    assert.ok(result.html.includes("&lt;i&gt;Mathilde&lt;/i&gt;"));
+    assert.ok(result.html.includes("&lt;b&gt;Chef&lt;/b&gt;"));
+    assert.ok(!result.html.includes("<b>Chef</b>"));
+    assert.ok(result.html.includes("&lt;u&gt;Bénéfriches&lt;/u&gt;"));
+    assert.ok(result.html.includes('href="http://localhost:3001/?a=&quot;x&quot;"'));
+    assert.ok(result.html.includes(" &lt;s&gt;(Externe)&lt;/s&gt;"));
+    assert.ok(result.html.includes("&lt;em&gt;01&lt;/em&gt;"));
+    assert.ok(result.html.includes('href="mailto:&quot;x&quot;@example.com"'));
   });
 
   it("renders the button as a bgcolor table cell wrapping the link, for Outlook compatibility", () => {

@@ -5,10 +5,12 @@ import type { LifecycleEmailRecipient } from "src/notifications/core/gateways/Li
 import type { LifecycleEmailMessage } from "src/notifications/core/gateways/Mailer";
 import type { UnsubscribeTokenService } from "src/notifications/core/gateways/UnsubscribeTokenService";
 import type { LifecycleEmailDelivery } from "src/notifications/core/models/lifecycleEmail";
+import type { LifecycleEmailContact } from "src/notifications/core/models/lifecycleEmailContact";
 import type {
   LifecycleEmailRetryOutcome,
   LifecycleEmailSender,
 } from "src/notifications/core/services/lifecycleEmailSender";
+import { buildFirstSiteReminderEmail } from "src/notifications/core/templates/firstSiteReminderEmail";
 import { buildUnsubscribeUrl } from "src/notifications/core/templates/unsubscribeUrl";
 import { buildWelcomeEmail } from "src/notifications/core/templates/welcomeEmail";
 import type { DateProvider } from "src/shared-kernel/dateProvider";
@@ -52,6 +54,7 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
   private readonly dateProvider: DateProvider;
   private readonly webappUrl: string;
   private readonly unsubscribeTokenService: UnsubscribeTokenService;
+  private readonly contact: LifecycleEmailContact | undefined;
   private readonly logger: AppLogger;
 
   constructor(
@@ -60,6 +63,7 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
     dateProvider: DateProvider,
     webappUrl: string,
     unsubscribeTokenService: UnsubscribeTokenService,
+    contact: LifecycleEmailContact | undefined,
     logger: AppLogger,
   ) {
     this.deliveryQuery = deliveryQuery;
@@ -67,6 +71,7 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
     this.dateProvider = dateProvider;
     this.webappUrl = webappUrl;
     this.unsubscribeTokenService = unsubscribeTokenService;
+    this.contact = contact;
     this.logger = logger;
   }
 
@@ -108,7 +113,8 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
   }
 
   // The ledger stores no rendered message, so a retry re-renders it from the row and the
-  // recipient's current address. Exhaustive switch with no default: adding a value to
+  // recipient's current address and names. A throw here is recorded by the sender as a
+  // failed attempt. Exhaustive switch with no default: adding a value to
   // lifecycleEmailTypeSchema fails the typecheck here until its retry case is written.
   // Each case calls the same template builder as the type's send use case.
   private renderMessage(
@@ -121,6 +127,25 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
           to: recipient.email,
           ...buildWelcomeEmail({
             recipientEmail: recipient.email,
+            webappUrl: this.webappUrl,
+            unsubscribeUrl: buildUnsubscribeUrl(
+              this.webappUrl,
+              this.unsubscribeTokenService.sign(delivery.userId),
+            ),
+          }),
+        };
+      case "first-site-reminder":
+        // A row only exists if the contact was set when it was first sent, so this only
+        // happens if someone removed it since.
+        if (!this.contact) {
+          throw new Error("Lifecycle email contact is not configured");
+        }
+        return {
+          to: recipient.email,
+          ...buildFirstSiteReminderEmail({
+            firstName: recipient.firstName,
+            lastName: recipient.lastName,
+            contact: this.contact,
             webappUrl: this.webappUrl,
             unsubscribeUrl: buildUnsubscribeUrl(
               this.webappUrl,
