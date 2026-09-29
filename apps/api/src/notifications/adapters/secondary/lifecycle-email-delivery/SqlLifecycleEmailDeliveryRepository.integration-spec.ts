@@ -4,7 +4,7 @@ import { after, before, beforeEach, describe, it } from "node:test";
 import { assertShapeEquals, isDate } from "test/assertShapeEquals";
 import { v4 as uuid } from "uuid";
 
-import { mapUserToSqlRow } from "src/auth/adapters/user-repository/SqlUsersRepository";
+import { mapUserToSqlRow } from "src/auth/adapters/user-repository/SqlUserRepository";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { UserBuilder } from "src/users/core/model/user.mock";
 

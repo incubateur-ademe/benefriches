@@ -5,7 +5,7 @@ import { after, before, beforeEach, describe, it } from "node:test";
 import { createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 
-import { mapUserToSqlRow } from "src/auth/adapters/user-repository/SqlUsersRepository";
+import { mapUserToSqlRow } from "src/auth/adapters/user-repository/SqlUserRepository";
 import { createUserAccountCreatedEvent } from "src/auth/core/events/userAccountCreated.event";
 import { FakeMailer } from "src/notifications/adapters/secondary/mailer/FakeMailer";
 import { SmtpMailer } from "src/notifications/adapters/secondary/mailer/SmtpMailer";
