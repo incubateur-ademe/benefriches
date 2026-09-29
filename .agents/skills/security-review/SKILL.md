@@ -27,37 +27,11 @@ Read `.claude/context/security/security-rules.md` for the complete security chec
 pnpm -r audit
 ```
 
-Use Grep to search for secret patterns listed in security-rules.md section 1.
-
-Search for vulnerability patterns:
-
-| Pattern | What It Finds | Files to Check |
-|---------|---------------|----------------|
-| `.raw(` without `?` | SQL injection | `*.repository.ts`, `*Query.ts` |
-| `whereRaw(` without bindings | SQL injection | Same |
-| `dangerouslySetInnerHTML` | XSS | `*.tsx` |
-| `eval(` | Code injection | `*.ts`, `*.js` |
-| `child_process.exec` with variables | Command injection | `*.ts` |
-| `console.log` with sensitive context | Data exposure | Auth-related files |
-| Missing `@UseGuards` | Auth bypass | `*.controller.ts` |
+With Grep, run the secret patterns of `security-rules.md` section 1 (with its exclusions) and every row of its "Pattern scan" table over the scope.
 
 ### 4. Apply Security Rules
 
-Apply all 11 rule sections from `security-rules.md` to the scoped code:
-
-1. Secrets Management (CRITICAL)
-2. Input Validation (CRITICAL)
-3. SQL Injection Prevention (CRITICAL)
-4. Authentication & Authorization (CRITICAL)
-5. XSS Prevention (HIGH)
-6. CSRF Protection (HIGH)
-7. Rate Limiting (HIGH)
-8. Sensitive Data Exposure (HIGH)
-9. Dependency Security (HIGH)
-10. API Security (HIGH)
-11. Database Security (HIGH)
-
-Then evaluate against the OWASP Top 10 checklist and Benefriches-specific checks.
+Check the scoped code against each section of `security-rules.md`: Benefriches' known weak spots and where each control lives. Then apply general OWASP Top 10 knowledge to anything it doesn't cover.
 
 ### 5. Report Format
 
@@ -122,10 +96,9 @@ Before deploying to production, verify:
 - [ ] All user input is validated with Zod schemas
 - [ ] Database queries use parameterized queries only
 - [ ] Error messages don't expose internal details
-- [ ] Security headers are configured
+- [ ] New third-party origins are allowed in the web CSP (security-rules.md section 8)
 - [ ] Rate limiting is enabled
 - [ ] Logging doesn't include sensitive data
-- [ ] File uploads are validated and sanitized
 
 ---
 
