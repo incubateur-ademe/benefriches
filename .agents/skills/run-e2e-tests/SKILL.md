@@ -16,12 +16,11 @@ Run the full e2e test lifecycle: start stack, run tests, stop stack.
 
 ## Procedure
 
-Execute these steps sequentially. Stop and report on failure at any step.
+Execute these steps sequentially from the repository root: the Makefile and `docker compose` commands resolve `.env.e2e` relative to the working directory, so from `apps/e2e-tests` they fail with "Couldn't find env file". Stop and report on failure at any step.
 
 ### 1. Build Docker images, start the stack, and wait for readiness
 
 ```bash
-cd $PROJECT_ROOT
 make e2e-up-build
 ```
 
@@ -41,12 +40,14 @@ Otherwise:
 pnpm --filter e2e-tests test:headless
 ```
 
+To watch a failing test, rerun it with the browser visible: `pnpm --filter e2e-tests test:headed <path>` (append `--debug` for the Playwright inspector). The stack must still be up.
+
 ### 3. Tear down the stack
 
 Only if tests passed:
 
 ```bash
-docker compose --env-file .env.e2e -f docker-compose.e2e.yml down
+make e2e-down
 ```
 
-If tests failed, keep the stack running and inform the user so they can investigate. Mention they can manually stop it with `docker compose --env-file .env.e2e -f docker-compose.e2e.yml down`.
+If tests failed, keep the stack running and inform the user so they can investigate. Mention they can manually stop it with `make e2e-down` from the repository root.

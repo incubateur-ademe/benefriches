@@ -1,104 +1,29 @@
-# E2E Tests - Quick Reference
+# E2E tests
 
-> Playwright end-to-end tests with Page Object pattern
+Playwright tests of full user flows, run against the e2e docker-compose stack (web on `http://localhost:3001`, see [playwright.config.ts](playwright.config.ts)). To start the stack and run tests, use the `run-e2e-tests` skill. To write a test (page object, fixtures, spec), use the `create-e2e-test` skill.
 
----
+## Checks
 
-## Structure
+Run `pnpm --filter e2e-tests typecheck && pnpm --filter e2e-tests lint && pnpm --filter e2e-tests format:check`. They don't need the stack.
 
-```
-apps/e2e-tests/
-├── pages/           # Page Objects (one per page/screen)
-├── fixtures/
-│   ├── auth.fixtures.ts   # Base auth fixture
-│   └── helpers/           # Shared test helpers
-│       ├── api-client.ts          # Seed DB state via direct API calls (bypasses UI; use in beforeEach for pre-conditions)
-│       ├── cookie.helpers.ts      # Cookie manipulation
-│       └── site-creation.helpers.ts  # Site creation shortcuts
-└── tests/
-    └── [feature]/
-        ├── fixtures.ts              # Shared feature fixtures (when sub-types exist)
-        ├── [feature].fixtures.ts    # Feature fixtures (simple features, no sub-types)
-        ├── [feature].spec.ts        # Single spec (simple features)
-        └── [type]/                  # Sub-type folder (when feature has multiple types/modes)
-            └── [mode]-[type].spec.ts  # e.g. create-custom-friche.spec.ts
-```
+## Layout
 
----
+- `pages/`: page objects, one per page or wizard. Specs hold no selectors.
+- [fixtures/auth.fixtures.ts](fixtures/auth.fixtures.ts): `authenticatedPage` registers a fresh user (unique email) through the API for each test, so tests share no data and run in parallel; `authenticatedApiClient` is an API client logged in as that user.
+- `fixtures/helpers/`: API seeding ([site-creation.helpers.ts](fixtures/helpers/site-creation.helpers.ts), [reconversion-project-creation.helpers.ts](fixtures/helpers/reconversion-project-creation.helpers.ts)), fr-FR formats ([format.helpers.ts](fixtures/helpers/format.helpers.ts)), emails caught by the stack's mail catcher ([mail-catcher.ts](fixtures/helpers/mail-catcher.ts)).
+- `tests/<feature>/`: a single-flow feature has `<feature>.fixtures.ts` and `<feature>.spec.ts`. A feature with several site natures or project types has one `fixtures.ts` and a folder per type holding `<mode>-<type>.spec.ts`, e.g. [tests/site-creation/](tests/site-creation/) with `friche/create-custom-friche.spec.ts`.
 
-## Commands
+## Seed preconditions through the API, not the flow under test
 
-```bash
-# Start e2e stack (required before running tests, run from repo root)
-make e2e-up-build
-
-# Run tests
-pnpm --filter e2e-tests test:headless                              # All tests (headless)
-pnpm --filter e2e-tests test:headless tests/[feature]/             # Specific feature
-pnpm --filter e2e-tests test:headless tests/[feature]/[type]/      # Specific sub-type (e.g. site-creation/friche/)
-pnpm --filter e2e-tests test:headed tests/[feature]/          # With browser visible
-
-# Quality checks
-pnpm --filter e2e-tests typecheck
-pnpm --filter e2e-tests lint
-pnpm --filter e2e-tests format:check
-```
-
----
-
-## Key Patterns
-
-### Page Objects (`pages/*.ts`)
-
-- One class per page/screen
-- Methods: `goto()`, `expect*()` (assertions), action verbs (`click*`, `fill*`, `select*`)
-- Use accessibility-first selectors: `getByRole()` > `getByLabel()` > `getByText()` > `locator()`
-
-### Fixtures
-
-- Simple features: `tests/[feature]/[feature].fixtures.ts`
-- Features with sub-types: shared `tests/[feature]/fixtures.ts`
-- Extend `authTest` for authenticated flows, `base` test otherwise
-- Compose page objects into feature fixtures
-
-### Test Files
-
-- Sub-type specs: `tests/[feature]/[type]/[mode]-[type].spec.ts`
-- Simple specs: `tests/[feature]/[feature].spec.ts`
-- Import `test` from local fixtures
-- Descriptive test names: "allows user to..." / "shows error when..."
-
-### API Client (pre-condition seeding)
-
-- Use `api-client.ts` in `beforeEach` to seed DB state without going through the UI
-- Use for pre-conditions only (e.g. create a site before testing project creation)
-- Don't use for the flow under test — that must go through the UI
-
----
-
-## Reference
-
-**Adding a new test?** Use the `/create-e2e-test` skill — it covers page objects, fixtures, and spec structure.
-**Debugging a failing test?** Run with `--headed` or add `--debug` for step-by-step Playwright inspector.
-
----
-
-## Critical Rules
-
-- **Always use Page Objects** - No direct selectors in test files
-- **Accessibility-first selectors** - Prefer `getByRole()` over CSS selectors
-- **One fixture file per feature** - Compose page objects there
-- **Import shared types** - Use `import type { SiteNature } from "shared"` when needed
-
----
+- Only the flow under test goes through the UI. Create the site or project it starts from in a feature fixture, with `authenticatedApiClient` and the `create*ViaApi` helpers: [tests/project-update/urban/fixtures.ts](tests/project-update/urban/fixtures.ts).
+- Never use the API client to perform or check the flow under test.
 
 ## Gotchas
 
-- **DSFR radio/checkbox inputs require `{ force: true }`** - DSFR labels overlay native inputs, causing "intercepts pointer events" errors with `.check()`
-- **`test.describe` titles must start with lowercase** - oxlint rule `playwright/prefer-lowercase-title`
-- **`CreateCustomSiteDto` is a discriminated union** - Use `Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>` to narrow, not `Omit<>` on the full union
-- **Custom `MonthYearInput` needs `pressSequentially`** - Formats as you type, so `fill()` doesn't work; use `pressSequentially("092027")` for "09/2027"
-- **Form buttons depend on pre-filled values** - Many wizard forms (expenses, revenue) are pre-filled with calculated defaults, showing "Valider" instead of "Passer"
-- **Read actual component files for exact French labels** - Don't guess form labels; check the `.tsx` source for the exact `label` prop text
-- **Match fr-FR formatted numbers exactly, don't approximate with regex** - `formatMoney`/`formatSurfaceArea` use a narrow no-break space thousands separator; instead of a loose `/5\s?000/`, use `asEuroAmount`/`asSquareMeters` from `fixtures/helpers/format.helpers.ts` to reproduce the exact rendered string.
-- **Run `make e2e-up-build`/`make e2e-down` from the repo root** - the `.env.e2e` path is resolved relative to cwd; running from `apps/e2e-tests` fails with "Couldn't find env file"
+- DSFR labels overlay native radio and checkbox inputs, so `.check()` fails with "intercepts pointer events": use `.check({ force: true })`.
+- `CreateCustomSiteDto` is a discriminated union on `nature`: narrow it with `Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>`, not `Omit<>` on the whole union.
+- `MonthYearInput` formats as you type, so `fill()` doesn't work: `pressSequentially("092027")` for "09/2027".
+- Many wizard steps (expenses, revenue) are pre-filled with computed defaults, so their button reads "Valider" instead of "Passer": match `/Valider|Passer/` when both can happen.
+- Don't guess French labels: read the exact `label` prop in the component's `.tsx`.
+- Match fr-FR numbers exactly: the app's `formatMoney` and `formatSurfaceArea` ([formatNumber.ts](../web/src/shared/core/format-number/formatNumber.ts)) use a narrow no-break space as thousands separator. Build the expected string with `asEuroAmount`, `asSquareMeters` and the other helpers of `format.helpers.ts` instead of a loose regex like `/5\s?000/`.
+- Site creation and update specs assert the accessibility tree of `<main>` against committed baselines (`expectWizardAriaSnapshot` in [SiteCreationPage.ts](pages/SiteCreationPage.ts) and [SiteUpdatePage.ts](pages/SiteUpdatePage.ts), files in `*.spec.ts-snapshots/*.aria.yml`). A deliberate UI change on those steps fails them: rerun with Playwright's `--update-snapshots` and review the `.aria.yml` diff.

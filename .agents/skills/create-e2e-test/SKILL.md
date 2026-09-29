@@ -127,7 +127,7 @@ Create `apps/e2e-tests/tests/[feature]/[feature].spec.ts`:
 ```typescript
 import { test } from "./[feature].fixtures";
 
-test.describe("Feature Name", () => {
+test.describe("feature name", () => {
   test("describes what the user can do", async ({ featurePage }) => {
     // Navigate to starting point
     await featurePage.goto();
@@ -153,19 +153,7 @@ test.describe("Feature Name", () => {
 
 ### 6. Run and Verify
 
-```bash
-# Start the e2e stack (builds fresh images and waits for readiness)
-make e2e-up-build
-
-# Run specific test file
-pnpm --filter e2e-tests test:headless tests/[feature]/[feature].spec.ts
-
-# Run with browser visible (for debugging)
-pnpm --filter e2e-tests test:headed tests/[feature]/[feature].spec.ts
-
-# Type check
-pnpm --filter e2e-tests typecheck
-```
+Run `pnpm --filter e2e-tests typecheck`, then run the new spec with the `run-e2e-tests` skill (`/run-e2e-tests tests/[feature]/`): it starts the stack, runs the tests and stops the stack.
 
 ## File Checklist
 
@@ -174,7 +162,7 @@ Before completing, ensure you have created/updated:
 - [ ] Page object(s) in `apps/e2e-tests/pages/[PageName].ts`
 - [ ] Fixtures in `apps/e2e-tests/tests/[feature]/[feature].fixtures.ts`
 - [ ] Test file in `apps/e2e-tests/tests/[feature]/[feature].spec.ts`
-- [ ] Tests pass: `pnpm --filter e2e-tests test:headless tests/[feature]/`
+- [ ] Tests pass: `/run-e2e-tests tests/[feature]/`
 - [ ] Type check passes: `pnpm --filter e2e-tests typecheck`
 
 ## Patterns Reference
@@ -182,7 +170,7 @@ Before completing, ensure you have created/updated:
 ### Using Shared Types
 ```typescript
 import type { SiteNature, FricheActivity } from "shared";
-import { getLabelForSiteNature } from "shared";
+import { getLabelForNaturalAreaType } from "shared";
 ```
 
 ### Waiting for Async Content

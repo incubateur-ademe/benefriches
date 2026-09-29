@@ -1,225 +1,42 @@
-# Shared Package Guide
+# Shared package
 
-> **Purpose**: Framework-agnostic TypeScript types and utilities shared between `api` and `web` apps.
+Framework-free TypeScript used by both `apps/api` and `apps/web`, published to them as `"shared"` through [src/index.ts](src/index.ts). The apps consume the built `dist/`: after a change, follow "Changing `packages/shared`" in the root [AGENTS.md](../../AGENTS.md).
 
----
+## Shared or app?
 
-## What Goes Here
+Put code here only when both apps need it:
 
-| Category                   | Examples                                        | Notes                                                                     |
-| -------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------- |
-| **API DTOs**               | `CreateSiteDto`, `GetSiteViewResponseDto`       | Request/response schemas for API endpoints                                |
-| **Domain Value Objects**   | `SoilType`, `SiteNature`, `DevelopmentPlanType` | Shared domain vocabulary                                                  |
-| **Zod Schemas**            | `createSiteDtoSchema`, `soilTypeSchema`         | Runtime validation + TypeScript types                                     |
-| **Zod Field Schemas**      | `surfaceAreaSchema`, `soilsDistributionSchema`  | Reusable field validators — prefer over inline `z.number().nonnegative()` |
-| **Utility Types**          | `ObjectEntries<T>`, typed `Object.keys()`       | Type-safe object utilities                                                |
-| **Adapter Interfaces**     | `IDateProvider`                                 | Port interfaces for dependency injection                                  |
-| **Pure Utility Functions** | Date formatting, area calculations              | No side effects, no framework deps                                        |
+- request and response DTOs of an API endpoint (Zod schema + inferred type);
+- domain vocabulary: enums such as `soilTypeSchema` or `siteNatureSchema`, field schemas such as `surfaceAreaSchema` or `soilsDistributionSchema`;
+- pure functions (no I/O, no framework): impact calculations, French labels (`getLabelForNaturalAreaType`), `typedObjectKeys` / `typedObjectEntries`;
+- port interfaces both apps implement, e.g. [IDateProvider.ts](src/adapters/IDateProvider.ts).
 
----
+Keep it in the app when only one app uses it, when it needs React or NestJS, when it is infrastructure (database rows, HTTP clients, env config), or when it is business logic that one app owns.
 
-## What Does NOT Go Here
+Runtime dependencies are only `zod`, `date-fns` and `uuid`: a new one ships to both the browser bundle and the API.
 
-| Category                    | Where It Goes  | Why                    |
-| --------------------------- | -------------- | ---------------------- |
-| React components            | `apps/web/`    | Framework-specific     |
-| NestJS decorators/modules   | `apps/api/`    | Framework-specific     |
-| Database entities           | `apps/api/`    | Infrastructure concern |
-| App-specific business logic | Respective app | Not shared             |
-| Environment config          | Respective app | App-specific           |
+## API DTOs
 
----
+- One file per endpoint in `src/api-dtos/<domain>/`, named `{operation}{Entity}.dto.ts`: [getSiteView.dto.ts](src/api-dtos/sites/getSiteView.dto.ts) (response), [register.dto.ts](src/api-dtos/auth/register.dto.ts) (request).
+- Export the schema and the type inferred from it, same name without `Schema`: `getSiteViewResponseDtoSchema` / `GetSiteViewResponseDto`, `registerUserRequestDtoSchema` / `RegisterUserRequestDto`. Several request schemas drop `Request` (`createCustomSiteDtoSchema`).
+- Compose from the domain schemas instead of retyping fields: [createCustomSite.dto.ts](src/api-dtos/sites/createCustomSite.dto.ts) is a `z.discriminatedUnion("nature", …)` built with `siteNatureSchema.extract(["FRICHE"])` and `soilsDistributionSchema`.
+- Exports are explicit: add each new name to the folder's `index.ts` and to [src/api-dtos/index.ts](src/api-dtos/index.ts) (named re-exports, not `export *`), or `"shared"` won't export it.
 
-## DTO Patterns
+## Enums
 
-### File Naming
+Follow [soilType.ts](src/soils/soilType.ts): an `as const` array when the order matters (`ORDERED_SOIL_TYPES`), `z.enum()` on it, the type from `z.infer`. No TypeScript `enum`.
 
-```
-src/api-dtos/
-├── sites/
-│   ├── index.ts                    # Re-exports all DTOs
-│   ├── createCustomSite.dto.ts     # Request DTO
-│   ├── getSiteView.dto.ts          # Response DTO
-│   └── getSiteFeatures.dto.ts
-└── index.ts                        # Re-exports all modules
-```
+## Checks
 
-**Convention**: `{operation}{Entity}.dto.ts` (e.g., `createSite.dto.ts`, `getSiteView.dto.ts`)
+Run `pnpm --filter shared typecheck && pnpm --filter shared lint && pnpm --filter shared test && pnpm --filter shared format:check`. `format:check` covers the `.md` files of the package, this one included.
 
-### DTO Structure
+The root AGENTS.md lists what to run in the other workspaces after a shared change. The api and web test runs don't typecheck: when you rename, remove or retype an exported field, also run `pnpm --filter api typecheck` and `pnpm --filter web typecheck`.
 
-```typescript
-// getSiteView.dto.ts
-import z from "zod";
+## Tests
 
-// 1. Define Zod schema (runtime validation)
-export const getSiteViewResponseDtoSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  // ... fields
-});
+Test design and the runner are in [.claude/rules/testing.md](../../.claude/rules/testing.md). node:test specifics:
 
-// 2. Infer TypeScript type from schema
-export type GetSiteViewResponseDto = z.infer<typeof getSiteViewResponseDtoSchema>;
-```
-
-### Importing in Apps
-
-```typescript
-// In apps/api (controller)
-import { getSiteViewResponseDtoSchema, type GetSiteViewResponseDto } from "shared";
-// In apps/web (API client)
-import type { GetSiteViewResponseDto } from "shared";
-```
-
----
-
-## Domain Value Objects
-
-Use `z.enum()` with `as const` array (no TypeScript enums):
-
-```typescript
-// src/soils/index.ts
-import z from "zod";
-
-// 1. Define values as const array
-export const ORDERED_SOIL_TYPES = [
-  "BUILDINGS",
-  "IMPERMEABLE_SOILS",
-  "MINERAL_SOIL",
-  // ...
-] as const;
-
-// 2. Create Zod schema from array
-export const soilTypeSchema = z.enum(ORDERED_SOIL_TYPES);
-
-// 3. Infer type from schema
-export type SoilType = z.infer<typeof soilTypeSchema>;
-
-// Access values: soilTypeSchema.options
-```
-
----
-
-## Build Process
-
-### When to Rebuild
-
-Run `pnpm --filter shared build` after:
-
-- Adding/modifying any file in `src/`
-- Changing exports in `index.ts`
-
-### No auto-rebuild
-
-There is no lifecycle hook — you must run `pnpm --filter shared build` manually after modifying the shared package.
-
-### Verify Build Worked
-
-```bash
-# Check dist/ was updated
-ls -la packages/shared/dist/
-
-# Verify types are exported
-pnpm --filter api typecheck
-pnpm --filter web typecheck
-```
-
----
-
-## Breaking Changes
-
-When modifying shared types that both apps use:
-
-1. **Make the change** in `shared`
-2. **Build**: `pnpm --filter shared build`
-3. **Check both apps**:
-   ```bash
-   pnpm --filter api typecheck
-   pnpm --filter web typecheck
-   ```
-4. **Fix type errors** in both apps before committing
-
-### Safe Changes
-
-- Adding optional fields to DTOs
-- Adding new exports
-- Adding new Zod schema validations
-
-### Breaking Changes (require app updates)
-
-- Renaming fields
-- Removing fields
-- Changing field types
-- Removing exports
-
----
-
-## Directory Structure
-
-```
-packages/shared/
-├── src/
-│   ├── index.ts                      # Main exports
-│   ├── api-dtos/                     # API request/response DTOs
-│   │   ├── auth/                     #   Auth DTOs (register, getCurrentUser)
-│   │   ├── sites/                    #   Site DTOs (create, view, features)
-│   │   ├── site-actions/             #   Site actions DTOs
-│   │   ├── site-evaluations/         #   Site evaluation DTOs
-│   │   ├── urban-sprawl-impacts-comparison/
-│   │   └── index.ts
-│   ├── adapters/                     # Port interfaces (IDateProvider)
-│   ├── co2eq/                        # CO2 equivalent conversions
-│   ├── financial/                    # Financial calculation types
-│   ├── local-authority/              # Local authority types and formatting
-│   ├── reconversion-project-impacts/ # Impact types (socioeconomic, data views)
-│   ├── reconversion-projects/        # Project domain types
-│   ├── services/                     # Utility functions (math, strings, sum)
-│   ├── site/                         # Site domain types
-│   ├── soils/                        # Soil type definitions
-│   ├── surface-area/                 # Area calculation utilities
-│   └── urban-sprawl-impacts-comparison/
-├── dist/                             # Built output (gitignored)
-├── package.json
-└── tsconfig.json
-```
-
----
-
-## Commands
-
-```bash
-pnpm --filter shared build        # Build package (required after changes)
-pnpm --filter shared typecheck    # Check types
-pnpm --filter shared test         # Run tests
-pnpm --filter shared lint         # Lint code
-```
-
-## Testing (node:test)
-
-Tests use `node:test` + `node:assert/strict`. Runner: `node --import=tsx --test 'src/**/*.spec.ts'` (run from `packages/shared`).
-
-**Gotchas:**
-
-- `assert.deepStrictEqual` treats `{key: undefined}` ≠ `{}` — unlike Vitest's `toEqual`. Tests that spread `{...obj, KEY: undefined}` must explicitly omit removed keys instead.
-- `describe`/`it` return Promises in node:test (unlike Vitest) — `no-floating-promises` is disabled for spec files in `.oxlintrc.json`.
-- No `.each()` — replace `it.each(arr)` with a plain `for...of` loop that generates one `it()` per case (loop outside `it()`, never inside it around the assertions), so a failing case is identifiable from the test name alone.
-- `tsx` loader is required (`--import=tsx`) because `--experimental-strip-types` alone doesn't handle extensionless or directory imports.
-
----
-
-## Decision: Shared vs. App-Specific
-
-**Add to `shared` when**:
-
-- Type is used by both API and Web
-- It's a DTO for an API endpoint
-- It's a domain value object (SoilType, SiteNature)
-- It's a pure utility function with no deps
-
-**Keep app-specific when**:
-
-- Only one app uses it
-- It depends on framework features
-- It's infrastructure (database, HTTP client)
-- It contains business logic specific to one app
+- One file, from `packages/shared`: `node --import=tsx --test src/path/to/file.spec.ts` (`pnpm --filter shared test <path>` still runs the whole suite). Keep `--import=tsx`: `--experimental-strip-types` alone doesn't resolve the extensionless and directory imports used here.
+- `assert.deepStrictEqual` treats `{ key: undefined }` and `{}` as different, unlike Vitest's `toEqual`: when a key is removed, write the expected object without it instead of spreading `{ ...obj, key: undefined }`.
+- `describe` and `it` return Promises, unlike Vitest; that is why `no-floating-promises` is off for spec files in [.oxlintrc.json](.oxlintrc.json).
+- There is no `it.each()`: loop at the `describe` level as testing.md says.
