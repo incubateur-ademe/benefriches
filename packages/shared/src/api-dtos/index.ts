@@ -54,3 +54,11 @@ export {
   getPeriodicityStatsResponseDtoSchema,
   type GetPeriodicityStatsResponseDto,
 } from "./stats";
+
+// Lifecycle emails DTOs
+export {
+  unsubscribeFromLifecycleEmailsRequestDtoSchema,
+  type UnsubscribeFromLifecycleEmailsRequestDto,
+  unsubscribeFromLifecycleEmailsErrorCodeSchema,
+  type UnsubscribeFromLifecycleEmailsErrorCode,
+} from "./lifecycle-emails";

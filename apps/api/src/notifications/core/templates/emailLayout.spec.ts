@@ -7,6 +7,7 @@ describe("renderEmail", () => {
   it("returns the subject unchanged", () => {
     const result = renderEmail({
       subject: "Bienvenue chez Bénéfriches",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [{ type: "heading", text: "Bienvenue chez Bénéfriches." }],
     });
 
@@ -16,6 +17,7 @@ describe("renderEmail", () => {
   it("renders a table-based, single-column layout with no flexbox or grid", () => {
     const result = renderEmail({
       subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         { type: "heading", text: "Titre" },
         { type: "paragraph", html: "Un <b>paragraphe</b>", text: "Un paragraphe" },
@@ -34,6 +36,7 @@ describe("renderEmail", () => {
   it("renders every section type into the HTML output", () => {
     const result = renderEmail({
       subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         { type: "heading", text: "Mon titre" },
         { type: "paragraph", html: "Mon <em>paragraphe</em>", text: "Mon paragraphe" },
@@ -53,6 +56,7 @@ describe("renderEmail", () => {
   it("renders the button as a bgcolor table cell wrapping the link, for Outlook compatibility", () => {
     const result = renderEmail({
       subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [{ type: "button", label: "Go", url: "https://example.fr" }],
     });
 
@@ -63,6 +67,7 @@ describe("renderEmail", () => {
   it("produces a plain-text alternative alongside the HTML", () => {
     const result = renderEmail({
       subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         { type: "heading", text: "Mon titre" },
         { type: "paragraph", html: "Mon <em>paragraphe</em>", text: "Mon paragraphe" },
@@ -83,10 +88,60 @@ describe("renderEmail", () => {
   it("escapes HTML-special characters in a paragraph's text-only rendering path via escapeHtml", () => {
     const result = renderEmail({
       subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [{ type: "featureBlock", title: "<script>alert(1)</script>", body: "corps" }],
     });
 
     assert.ok(!result.html.includes("<script>alert(1)</script>"));
     assert.ok(result.html.includes("&lt;script&gt;"));
+  });
+
+  it("renders an unsubscribe link in the HTML footer of every email", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=v1.a.b",
+      sections: [{ type: "heading", text: "Mon titre" }],
+    });
+
+    assert.match(
+      result.html,
+      /<a[^>]*href="https:\/\/example\.fr\/emails\/desinscription\?token=v1\.a\.b"[^>]*>vous désinscrire<\/a>/,
+    );
+    const footerIndex = result.html.indexOf(
+      "Vous recevez cet e-mail car vous avez un compte Bénéfriches.",
+    );
+    assert.ok(footerIndex > result.html.indexOf("Mon titre"));
+    assert.ok(
+      result.html.includes(
+        "des e-mails d’accompagnement et de résultats d’impacts : votre compte reste actif.",
+      ),
+    );
+  });
+
+  it("puts the unsubscribe URL and wording in the plain-text alternative", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=v1.a.b",
+      sections: [{ type: "heading", text: "Mon titre" }],
+    });
+
+    assert.ok(
+      result.text.endsWith(
+        "---\n" +
+          "Vous recevez cet e-mail car vous avez un compte Bénéfriches.\n" +
+          "Pour ne plus recevoir les e-mails d’accompagnement et de résultats d’impacts (votre compte reste actif) :\n" +
+          "https://example.fr/emails/desinscription?token=v1.a.b",
+      ),
+    );
+  });
+
+  it("escapes the unsubscribe URL in the href", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: 'https://example.fr/?a=1&b="x"',
+      sections: [{ type: "heading", text: "Mon titre" }],
+    });
+
+    assert.ok(result.html.includes('href="https://example.fr/?a=1&amp;b=&quot;x&quot;"'));
   });
 });

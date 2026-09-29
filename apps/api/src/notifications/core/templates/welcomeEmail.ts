@@ -7,6 +7,7 @@ import {
 export type BuildWelcomeEmailInput = {
   recipientEmail: string;
   webappUrl: string;
+  unsubscribeUrl: string;
 };
 
 export function buildWelcomeEmail(input: BuildWelcomeEmailInput): RenderedEmail {
@@ -16,6 +17,7 @@ export function buildWelcomeEmail(input: BuildWelcomeEmailInput): RenderedEmail 
 
   return renderEmail({
     subject: "Bienvenue chez Bénéfriches",
+    unsubscribeUrl: input.unsubscribeUrl,
     sections: [
       { type: "heading", text: "Bienvenue chez Bénéfriches." },
       {

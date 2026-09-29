@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 
 import { routes, useRoute } from "@/app/router";
+import UnsubscribePageContainer from "@/features/lifecycle-emails/views/unsubscribe";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import PublicPageLayout from "@/shared/views/layout/PublicPageLayout/HeaderFooterLayout";
 
@@ -54,6 +55,8 @@ function PublicApp() {
               return <AuthWithToken />;
             case routes.onBoardingIdentity.name:
               return <OnBoardingIdentityPage />;
+            case routes.lifecycleEmailsUnsubscribe.name:
+              return <UnsubscribePageContainer />;
             // 404
             default:
               return <NotFoundScreen />;

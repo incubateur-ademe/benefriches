@@ -2,17 +2,21 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { FakeMailer } from "src/notifications/adapters/secondary/mailer/FakeMailer";
+import { HmacUnsubscribeTokenService } from "src/notifications/adapters/secondary/unsubscribe-token/HmacUnsubscribeTokenService";
+import { PREVIEW_SAMPLE_USER } from "src/notifications/core/previews/lifecycleEmailPreviewSamples";
+import { buildUnsubscribeUrl } from "src/notifications/core/templates/unsubscribeUrl";
 import { SpyLogger } from "src/shared-kernel/adapters/logger/SpyLogger";
 import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
 
 import { SendLifecycleEmailPreviewUseCase } from "./sendLifecycleEmailPreview.usecase";
 
 const webappUrl = "http://app.test.benefriches.fr";
+const tokenService = new HmacUnsubscribeTokenService("unsubscribe-secret-for-tests");
 
 const setup = () => {
   const mailer = new FakeMailer();
   const logger = new SpyLogger();
-  const usecase = new SendLifecycleEmailPreviewUseCase(mailer, logger, webappUrl);
+  const usecase = new SendLifecycleEmailPreviewUseCase(mailer, logger, webappUrl, tokenService);
   return { usecase, mailer, logger };
 };
 
@@ -118,5 +122,17 @@ describe("SendLifecycleEmailPreview UseCase", () => {
       "MailerFailed",
     );
     assert.strictEqual(logger._error.length, 1);
+  });
+
+  it("links the preview to an unsubscribe URL for the sample user, not the recipient", async () => {
+    const { usecase, mailer } = setup();
+
+    await usecase.execute({ emailType: "welcome", recipients: ["reviewer@ademe.fr"] });
+
+    assert.ok(
+      mailer.sentEmails[0]?.text.includes(
+        buildUnsubscribeUrl(webappUrl, tokenService.sign(PREVIEW_SAMPLE_USER.id)),
+      ),
+    );
   });
 });

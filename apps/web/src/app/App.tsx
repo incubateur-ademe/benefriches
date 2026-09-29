@@ -25,6 +25,7 @@ const groups = {
     routes.accessBenefriches,
     routes.authWithToken,
     routes.onBoardingIdentity,
+    routes.lifecycleEmailsUnsubscribe,
   ]),
 };
 

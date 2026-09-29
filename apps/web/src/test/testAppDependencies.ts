@@ -9,6 +9,7 @@ import {
 import { InMemorySaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/InMemorySaveReconversionProjectService";
 import { InMemorySitesService } from "@/features/create-project/infrastructure/sites-service/InMemorySitesService";
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";
+import { InMemoryLifecycleEmailsService } from "@/features/lifecycle-emails/infrastructure/lifecycle-emails-service/InMemoryLifecycleEmailsService";
 import { InMemorySiteEvaluationService } from "@/features/my-evaluations/infrastructure/projects-list-service/InMemorySiteEvaluationsService";
 import FakeAuthService from "@/features/onboarding/infrastructure/auth-service/FakeAuthService";
 import { InMemoryCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/inMemoryCreateUserService";
@@ -79,6 +80,7 @@ export const getTestAppDependencies = (
     realEstateValuationService: new InMemoryRealEstateValuationService(),
     supportChatService: new InMemorySupportChatService(),
     analyticsService: new InMemoryAnalytics(),
+    lifecycleEmailsService: new InMemoryLifecycleEmailsService(),
     ...depsOverride,
   };
 };

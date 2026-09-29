@@ -5,6 +5,7 @@ import projectCreation from "@/features/create-project/core/createProject.reduce
 import siteCreation from "@/features/create-site/core/createSite.reducer";
 import siteMunicipalityData from "@/features/create-site/core/siteMunicipalityData.reducer";
 import siteCarbonStorage from "@/features/create-site/core/siteSoilsCarbonStorage.reducer";
+import { lifecycleEmailsUnsubscribeReducer } from "@/features/lifecycle-emails/core/lifecycleEmailsUnsubscribe.reducer";
 import evaluationsList from "@/features/my-evaluations/application/evaluationsList.reducer";
 import { authReducer as auth } from "@/features/onboarding/core/auth.reducer";
 import { currentUserReducer } from "@/features/onboarding/core/user.reducer";
@@ -34,4 +35,5 @@ export const rootReducer = combineReducers({
   projectFeatures: projectFeaturesReducer,
   siteMunicipalityData,
   reconversionCompatibilityEvaluation: reconversionCompatibilityEvaluationReducer,
+  lifecycleEmailsUnsubscribe: lifecycleEmailsUnsubscribeReducer,
 });

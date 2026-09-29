@@ -8,6 +8,7 @@ import type { SaveReconversionProjectGateway } from "@/features/create-project/c
 import type { CreateExpressReconversionProjectGateway } from "@/features/create-project/core/demo/demoProject.actions";
 import type { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import type { CreateSiteGateway } from "@/features/create-site/core/createSiteGateway";
+import type { LifecycleEmailsGateway } from "@/features/lifecycle-emails/core/LifecycleEmailsGateway";
 import type { SiteEvaluationGateway } from "@/features/my-evaluations/application/evaluationsList.actions";
 import type { AuthenticationGateway } from "@/features/onboarding/core/AuthenticationGateway";
 import type { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
@@ -54,6 +55,7 @@ export type AppDependencies = {
   realEstateValuationService: RealEstateValuationGateway;
   supportChatService: SupportChatGateway;
   analyticsService: AnalyticsGateway;
+  lifecycleEmailsService: LifecycleEmailsGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

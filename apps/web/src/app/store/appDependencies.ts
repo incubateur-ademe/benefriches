@@ -7,6 +7,7 @@ import { ExpectedPhotovoltaicPerformanceApi } from "@/features/create-project/in
 import { HttpSaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/HttpSaveReconversionProjectService";
 import { HttpSitesService } from "@/features/create-project/infrastructure/sites-service/HttpSiteService";
 import { HttpCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/HttpCreateSiteApi";
+import { HttpLifecycleEmailsService } from "@/features/lifecycle-emails/infrastructure/lifecycle-emails-service/HttpLifecycleEmailsService";
 import { HttpSiteEvaluationApi } from "@/features/my-evaluations/infrastructure/projects-list-service/HttpSiteEvaluationApi";
 import { HttpAuthService } from "@/features/onboarding/infrastructure/auth-service/HttpAuthService";
 import { HttpCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/HttpCreateUserService";
@@ -54,6 +55,7 @@ export const appDependencies: AppDependencies = {
   supportChatService: BENEFRICHES_ENV.crispEnabled
     ? new CrispSupportChatService(BENEFRICHES_ENV.crispWebsiteId)
     : new NoopSupportChatService(),
+  lifecycleEmailsService: new HttpLifecycleEmailsService(),
   analyticsService: (() => {
     const service = BENEFRICHES_ENV.matomoTrackingEnabled
       ? new MatomoAnalytics(BENEFRICHES_ENV.matomoSiteId, BENEFRICHES_ENV.matomoUrl)

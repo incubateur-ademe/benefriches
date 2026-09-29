@@ -4,7 +4,7 @@
 > `LifecycleEmailSender` choke point, the delivery ledger and its dedup semantics, the
 > `LIFECYCLE_EMAILS_ENABLED` kill switch, the per-user unsubscribe flag, the event-driven
 > trigger pattern, and the shared email template layout. Read this before adding a new
-> lifecycle email type (reminders, impacts summary), wiring the unsubscribe endpoint, or
+> lifecycle email type (reminders, impacts summary), changing the unsubscribe flow, or
 > touching anything under `notifications/`.
 
 ## Overview
@@ -21,17 +21,21 @@ The module follows the standard Clean/Hexagonal layout:
 notifications/
 ├── core/
 │   ├── models/lifecycleEmail.ts              # LifecycleEmailType, delivery status, LifecycleEmailDelivery
-│   ├── gateways/                             # Mailer, LifecycleEmailDeliveryRepository/Query, LifecycleEmailRecipientQuery
+│   ├── gateways/                             # Mailer, LifecycleEmailDeliveryRepository/Query, LifecycleEmailRecipientQuery,
+│   │                                         # LifecycleEmailSubscriptionRepository, UnsubscribeTokenService
 │   ├── services/lifecycleEmailSender.ts       # LifecycleEmailSender — the mandatory choke point
-│   ├── templates/                            # emailLayout.ts (shared layout) + welcomeEmail.ts
-│   └── usecases/sendWelcomeEmail.usecase.ts
+│   ├── templates/                            # emailLayout.ts (shared layout) + welcomeEmail.ts + unsubscribeUrl.ts
+│   └── usecases/                             # sendWelcomeEmail, sendLifecycleEmailPreview, unsubscribeFromLifecycleEmails
 └── adapters/
     ├── primary/
     │   ├── notifications.module.ts
+    │   ├── notifications.controller.ts        # POST /api/lifecycle-emails/unsubscribe (public)
     │   └── sendWelcomeEmailOnUserAccountCreated.handler.ts
     └── secondary/
         ├── lifecycle-email-delivery/          # Sql/InMemory Repository (write) + Query (read)
         ├── lifecycle-email-recipient/         # Sql/InMemory LifecycleEmailRecipientQuery
+        ├── lifecycle-email-subscription/      # Sql/InMemory LifecycleEmailSubscriptionRepository (sets the opt-out)
+        ├── unsubscribe-token/                 # HmacUnsubscribeTokenService
         └── mailer/                            # SmtpMailer, FakeMailer
 ```
 
@@ -87,7 +91,8 @@ not re-read per call.
 Any new email type (a reminder, an impacts summary) is expected to build its own template
 and its own use case, but call through this same `LifecycleEmailSender` — that is what
 keeps the opt-out check and the ledger write from being reimplemented (and potentially
-forgotten) per email type.
+forgotten) per email type. The use case also builds the recipient's signed unsubscribe link
+and passes it to the template (see [Email templates](#email-templates-emaillayout--per-email-builders)).
 
 ## The delivery ledger
 
@@ -212,9 +217,9 @@ It makes four deliberate bypasses, all load-bearing:
 
 These bypasses are **structural, not conditional**: `SendLifecycleEmailPreviewUseCase`
 (`core/usecases/sendLifecycleEmailPreview.usecase.ts`) depends only on the `Mailer`
-gateway — it holds no `LifecycleEmailDeliveryRepository`, no
-`LifecycleEmailRecipientQuery`, and no `isEnabled` flag, so there is nothing to check and
-nothing to write even if the code tried. It deliberately does **not** go through
+gateway and the `UnsubscribeTokenService` (signing only, no I/O) — it holds no
+`LifecycleEmailDeliveryRepository`, no `LifecycleEmailRecipientQuery`, and no `isEnabled`
+flag, so there is nothing to check and nothing to write even if the code tried. It deliberately does **not** go through
 `LifecycleEmailSender`. Do not route it through that sender, and do not add a "preview
 mode" / `skipLedger` flag to `LifecycleEmailSender` to make it dual-purpose — a flag that
 turns the compliance checks off there is exactly the failure mode the sender
@@ -236,7 +241,7 @@ database trace.
 `users.lifecycle_emails_unsubscribed_at` (migration
 `20260922124313_add-lifecycle-emails-unsubscribed-at-to-users-table.ts`) is a nullable
 timestamp on the `users` table. `NULL` means subscribed (the default for every new user —
-see `mapUserToSqlRow` in `SqlUsersRepository.ts`); a non-null value is the moment the user
+see `mapUserToSqlRow` in `SqlUserRepository.ts`); a non-null value is the moment the user
 unsubscribed.
 
 `LifecycleEmailRecipientQuery.getById(userId)` (via `SqlLifecycleEmailRecipientQuery`)
@@ -245,9 +250,82 @@ reads `id`, `email`, and this column, exposed as `unsubscribedAt: Date | null`.
 `recipient?.unsubscribedAt` is truthy — checked _before_ the dedup check, so an unsubscribe
 after a failed delivery still blocks any further attempt.
 
-**Not yet wired up in this ticket**: there is no endpoint or link that sets this column —
-that is explicitly left to a later ticket (see the comment in `SqlUsersRepository.ts`).
-This doc is the natural place for that ticket to record the endpoint once it exists.
+Unsubscribing is **global**: one flag stops every lifecycle email type, current and future,
+because the check sits in `LifecycleEmailSender` before any per-type logic. There are no
+per-type preferences, and it never touches the account itself or the login-link emails.
+
+### The unsubscribe flow
+
+```
+Footer link in every lifecycle email: ${WEBAPP_URL}/emails/desinscription?token=<token>
+  → web page (public route, PublicApp layout) POSTs the token on load
+    → POST /api/lifecycle-emails/unsubscribe { token }     (no auth guard, throttled 10/min)
+      → UnsubscribeFromLifecycleEmailsUseCase
+        → UnsubscribeTokenService.verify(token)             (HMAC, no DB)
+        → LifecycleEmailSubscriptionRepository.markUnsubscribed(userId, now)
+```
+
+- **Responses**: `204` on success; `400 { error: "INVALID_UNSUBSCRIBE_TOKEN", message }` for
+  a tampered, malformed or foreign-secret token (nothing is written); `400 { errors }` from
+  Zod when `token` is missing. The web page shows a confirmation, an invalid-link error, or
+  a technical error with a retry button. The error code is shared through
+  `unsubscribeFromLifecycleEmailsErrorCodeSchema` in `packages/shared`.
+- **Idempotent**: the update is `… SET lifecycle_emails_unsubscribed_at = ? WHERE id = ? AND
+lifecycle_emails_unsubscribed_at IS NULL`, so a second click returns the same `204` and
+  keeps the first opt-out date (a repeated click or a scanner re-hit does not move it).
+- **Deleted account**: a genuinely signed token for a user that no longer exists returns
+  `204` and writes nothing — the page's promise holds, and the signature proves we issued it.
+- **No mutating GET**: mail security gateways (Outlook Safe Links, Mimecast…) GET every URL in
+  an email. The link therefore points at the SPA, which only acts from JavaScript; the API
+  route is `POST` only. If JS-executing scanners ever cause false unsubscribes, switch the
+  page to require a button click — no API change needed.
+- **Web page**: `apps/web/src/features/lifecycle-emails/` — route
+  `lifecycleEmailsUnsubscribe` (`/emails/desinscription`, `token` query param optional so a
+  truncated link shows the invalid-link page rather than the 404), registered in the public
+  route group and rendered by `PublicApp`, so it works logged in or not. The
+  `unsubscribeLinkOpened` thunk calls `LifecycleEmailsGateway.unsubscribe(token)`
+  (`HttpLifecycleEmailsService` / `InMemoryLifecycleEmailsService`); a `useRef` guard keeps
+  React StrictMode to one request per page load. Page copy is a draft marked
+  `TODO(product)`, like the email footer.
+- **Analytics**: `pageViewed` replaces the value of a `token` query parameter with `REDACTED`
+  before sending the URL to Matomo, so the non-expiring token never lands in a third-party log.
+
+### Token format: signed, stateless, non-expiring
+
+`HmacUnsubscribeTokenService` (`adapters/secondary/unsubscribe-token/`):
+
+```
+v1.<userId>.<base64url(HMAC-SHA256(LIFECYCLE_EMAILS_UNSUBSCRIBE_SECRET, "lifecycle-emails-unsubscribe:v1:" + userId))>
+```
+
+- **Does not expire, by construction**: no timestamp in the token and no `DateProvider` in
+  the service. A "your unsubscribe link has expired" page is not acceptable — people would
+  contact support instead. Do not add an expiry.
+- **Deterministic per user**: every email to a user carries the same link, so forwarded and
+  older emails keep working, with no table, no migration and no cleanup job.
+- **Verification** recomputes the signature and compares the base64url strings with
+  `timingSafeEqual` (after a length check); the version, the UUID shape of the user id and
+  the number of parts are checked first, so a malformed token fails without throwing.
+- **`v1.` prefix**: lets a future format coexist with links already sitting in inboxes.
+- The user id is visible in the token; the signature is what grants the capability.
+
+This differs on purpose from the magic login link (`SendAuthLinkUseCase`): that token is
+random, stored hashed, single-use and expires after 15 minutes — the three properties an
+unsubscribe link must not have. Only the shape is reused: a `?token=` link to a public web
+page that calls the API.
+
+### Secret: `LIFECYCLE_EMAILS_UNSUBSCRIBE_SECRET`
+
+A dedicated secret, not `AUTH_JWT_SECRET`: rotating the session secret after a compromise
+must not silently break every unsubscribe link ever sent. The module factory throws at boot
+when it is missing or empty (an empty HMAC key would make tokens forgeable).
+
+- **Rotating it invalidates every unsubscribe link already sent.** That is the only
+  revocation mechanism; acceptable because a leaked token only lets someone unsubscribe that
+  user from these emails, which an operator can reverse.
+- Values: `apps/api/.env.example` (`use-a-robust-secret`), `apps/api/.env.test`,
+  `.env.e2e` / `docker-compose.e2e.yml`. Staging and production use a long random value
+  (`openssl rand -hex 32`), distinct per environment, set before deploying.
 
 ## Event-driven trigger pattern
 
@@ -281,8 +359,8 @@ event's originating request.
 
 `core/templates/emailLayout.ts` is the shared rendering layer every lifecycle email
 template is expected to build on. It exports `renderEmail(content: EmailContent):
-RenderedEmail`, where `EmailContent` is `{ subject, preheader?, sections }` and a section is
-one of:
+RenderedEmail`, where `EmailContent` is `{ subject, preheader?, sections, unsubscribeUrl }`
+and a section is one of:
 
 - `{ type: "heading", text }`
 - `{ type: "paragraph", html, text }` — callers supply both an HTML fragment and its plain
@@ -292,6 +370,14 @@ one of:
 
 `renderEmail()` always returns `{ subject, html, text }` — it is structurally impossible to
 produce HTML without a plain-text alternative, since both come out of the same call.
+
+`unsubscribeUrl` is **required**: `renderEmail()` appends the unsubscribe footer (a muted
+paragraph with a `vous désinscrire` link in the HTML, a `---`-separated block ending with the
+URL in the text), so a template that forgets it does not compile. Each send use case builds
+it with `buildUnsubscribeUrl(webappUrl, unsubscribeTokenService.sign(userId))`
+(`core/templates/unsubscribeUrl.ts`). The preview script signs it for
+`PREVIEW_SAMPLE_USER.id` (`00000000-0000-4000-8000-000000000000`, matches no real user), so a
+reviewer clicking it sees the real confirmation page while nothing is written.
 
 Layout constraints, driven by the audience (collectivités and ADEME-adjacent structures,
 where Outlook's HTML renderer is the practical constraint):
@@ -312,7 +398,7 @@ into an HTML fragment outside of the section renderers' own escaping — see
 
 ### `welcomeEmail.ts`
 
-`buildWelcomeEmail({ recipientEmail, webappUrl }): RenderedEmail` composes the actual
+`buildWelcomeEmail({ recipientEmail, webappUrl, unsubscribeUrl }): RenderedEmail` composes the actual
 welcome email content on top of `renderEmail()`: a heading, the user's own email shown as
 their login identifier, an intro paragraph, three `featureBlock` sections (impacts
 evaluation, cost-benefit analysis, avoided-costs analysis), and a CTA button linking to
@@ -334,6 +420,15 @@ never a hardcoded domain — so the link resolves correctly per environment.
 - The partial-unique-index dedup behavior is verified at the SQL level in
   `SqlLifecycleEmailDeliveryRepository.integration-spec.ts` (asserting `assert.rejects` on
   a duplicate insert), not just mimicked in the in-memory adapter.
+- The unsubscribe flow is covered by `HmacUnsubscribeTokenService.spec.ts` (sign/verify,
+  tampering, swapped user id, foreign secret, malformed tokens, empty secret),
+  `unsubscribeFromLifecycleEmails.usecase.spec.ts`,
+  `SqlLifecycleEmailSubscriptionRepository.integration-spec.ts` (first date kept, other users
+  untouched) and `notifications.controller.integration-spec.ts` (link taken from a real
+  welcome email, repeated use, tampered token, missing token, no email after unsubscribing,
+  deleted account; no test sends a session cookie). Web: `lifecycleEmailsUnsubscribe.spec.ts`
+  and `UnsubscribePage.spec.tsx`. There is no e2e test for it; the manual QA guide is
+  `docs/qa/lifecycle-emails/03.md`.
 - E2E coverage (`apps/e2e-tests/tests/onboarding/onboarding.spec.ts`) asserts a welcome
   email arrives during signup and contains the user's login identifier.
   `mail-catcher.ts`'s `waitForEmail()` now requires an exact `subject` argument (not just a
@@ -343,8 +438,13 @@ never a hardcoded domain — so the link resolves correctly per environment.
 
 ## What's deliberately out of scope here
 
-- No unsubscribe endpoint yet — only the `users.lifecycle_emails_unsubscribed_at` column
-  and the read side (`LifecycleEmailRecipientQuery`) exist.
+- No `List-Unsubscribe` / `List-Unsubscribe-Post` (RFC 8058) mail headers yet, no
+  re-subscribe from the UI, no per-type preferences, and no domain event on unsubscribe (the
+  column is the record).
+- No confirmation click on the unsubscribe page (it posts on load), no per-token revocation
+  and no overlapping-key secret rotation: rotating `LIFECYCLE_EMAILS_UNSUBSCRIBE_SECRET`
+  breaks every link already sent.
+- The footer and page wording are drafts (`TODO(product)`), pending product review.
 - No retry sweeper for `"failed"`/stranded `"pending"` rows.
 - `lifecycleEmailTypeSchema` currently only has `"welcome"`; reminder and impacts-summary
   email types are planned but not implemented.

@@ -181,6 +181,12 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
     mentionsLegales: defineRoute("/mentions-legales"),
     accessibilite: defineRoute("/accessibilite"),
     politiqueConfidentialite: defineRoute("/politique-de-confidentialite"),
+    // LIFECYCLE EMAILS
+    // Token optional so a truncated link shows the unsubscribe error page, not the 404.
+    lifecycleEmailsUnsubscribe: defineRoute(
+      { token: param.query.optional.string },
+      () => "/emails/desinscription",
+    ),
   },
 );
 

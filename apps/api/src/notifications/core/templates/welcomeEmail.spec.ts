@@ -8,6 +8,7 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.strictEqual(result.subject, "Bienvenue chez Bénéfriches");
@@ -17,6 +18,7 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.ok(result.html.includes("Bienvenue chez Bénéfriches."));
@@ -32,6 +34,7 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.ok(result.html.includes("Votre évaluation des impacts"));
@@ -58,6 +61,7 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.ok(result.html.includes("Votre identifiant de connexion est"));
@@ -68,6 +72,7 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.ok(!result.html.includes("mailto:nomprenom@mail.fr"));
@@ -77,6 +82,7 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.ok(result.html.includes('href="http://localhost:3001/creer-site-foncier"'));
@@ -88,6 +94,7 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.ok(result.html.includes("Commencer l’évaluation socio-économique"));
@@ -97,6 +104,7 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.ok(!result.html.includes("<img"));
@@ -106,6 +114,7 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.ok(!/display\s*:\s*flex/i.test(result.html));
@@ -118,6 +127,7 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.ok(result.text.length > 0);
@@ -133,9 +143,23 @@ describe("buildWelcomeEmail", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "a<b>@mail.fr",
       webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
     assert.ok(!result.html.includes("a<b>@mail.fr"));
     assert.ok(result.html.includes("a&lt;b&gt;@mail.fr"));
+  });
+
+  it("carries the unsubscribe link it was given", () => {
+    const result = buildWelcomeEmail({
+      recipientEmail: "nomprenom@mail.fr",
+      webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
+    });
+
+    assert.ok(
+      result.html.includes('href="http://localhost:3001/emails/desinscription?token=v1.x.y"'),
+    );
+    assert.ok(result.text.includes("http://localhost:3001/emails/desinscription?token=v1.x.y"));
   });
 });

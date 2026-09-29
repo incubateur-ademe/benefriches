@@ -1,9 +1,14 @@
 import type { Mailer } from "src/notifications/core/gateways/Mailer";
+import type { UnsubscribeTokenService } from "src/notifications/core/gateways/UnsubscribeTokenService";
 import {
   lifecycleEmailTypeSchema,
   type LifecycleEmailType,
 } from "src/notifications/core/models/lifecycleEmail";
-import { buildLifecycleEmailPreview } from "src/notifications/core/previews/lifecycleEmailPreviewSamples";
+import {
+  buildLifecycleEmailPreview,
+  PREVIEW_SAMPLE_USER,
+} from "src/notifications/core/previews/lifecycleEmailPreviewSamples";
+import { buildUnsubscribeUrl } from "src/notifications/core/templates/unsubscribeUrl";
 import type { AppLogger } from "src/shared-kernel/logger";
 import { fail, success, type TResult } from "src/shared-kernel/result";
 import type { UseCase } from "src/shared-kernel/usecase";
@@ -32,7 +37,8 @@ type SendLifecycleEmailPreviewResult = TResult<Response, Errors, Issues>;
  * `lifecycle_email_deliveries` row — so previews can neither poison the funnel
  * correlation nor make a later genuine send look like a duplicate. Those bypasses are
  * structural: this class holds no repository, no recipient query and no kill-switch
- * flag. Do not route it through `LifecycleEmailSender`, and do not add a "preview mode"
+ * flag. Its unsubscribe link is signed for `PREVIEW_SAMPLE_USER.id`, which matches no real
+ * user, so clicking it on a preview never unsubscribes the recipient. Do not route it through `LifecycleEmailSender`, and do not add a "preview mode"
  * flag to that sender (see ADR-0016).
  */
 export class SendLifecycleEmailPreviewUseCase implements UseCase<
@@ -42,11 +48,18 @@ export class SendLifecycleEmailPreviewUseCase implements UseCase<
   private readonly mailer: Mailer;
   private readonly logger: AppLogger;
   private readonly webappUrl: string;
+  private readonly unsubscribeTokenService: UnsubscribeTokenService;
 
-  constructor(mailer: Mailer, logger: AppLogger, webappUrl: string) {
+  constructor(
+    mailer: Mailer,
+    logger: AppLogger,
+    webappUrl: string,
+    unsubscribeTokenService: UnsubscribeTokenService,
+  ) {
     this.mailer = mailer;
     this.logger = logger;
     this.webappUrl = webappUrl;
+    this.unsubscribeTokenService = unsubscribeTokenService;
   }
 
   async execute({ emailType, recipients }: Request): Promise<SendLifecycleEmailPreviewResult> {
@@ -61,7 +74,11 @@ export class SendLifecycleEmailPreviewUseCase implements UseCase<
       return fail("UnknownEmailType", { validEmailTypes: lifecycleEmailTypeSchema.options });
     }
 
-    const email = buildLifecycleEmailPreview(parsedEmailType.data, this.webappUrl);
+    const unsubscribeUrl = buildUnsubscribeUrl(
+      this.webappUrl,
+      this.unsubscribeTokenService.sign(PREVIEW_SAMPLE_USER.id),
+    );
+    const email = buildLifecycleEmailPreview(parsedEmailType.data, this.webappUrl, unsubscribeUrl);
 
     for (const recipient of recipients) {
       try {

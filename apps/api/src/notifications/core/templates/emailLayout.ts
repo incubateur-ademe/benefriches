@@ -15,6 +15,9 @@ export type EmailContent = {
   subject: string;
   preheader?: string;
   sections: EmailSection[];
+  // Required, so a template that forgets the unsubscribe link does not compile: every
+  // lifecycle email carries the footer rendered below. Build it with buildUnsubscribeUrl.
+  unsubscribeUrl: string;
 };
 
 export type RenderedEmail = {
@@ -24,12 +27,13 @@ export type RenderedEmail = {
 };
 
 const FONT_STACK = "Arial, Helvetica, sans-serif";
-// Brand colour for links, matching SmtpAuthLinkMailer. Not referenced by any section
-// renderer below (the welcome email has no inline links), but exported so templates
-// build their own `html` fragments (e.g. paragraph links) in a consistent colour.
+// Brand colour for links, matching SmtpAuthLinkMailer. Used by the unsubscribe footer, and
+// exported so templates build their own `html` fragments (e.g. paragraph links) in a
+// consistent colour.
 export const LINK_COLOR = "#000091";
 const TEXT_COLOR = "#161616";
 const BUTTON_BG_COLOR = "#161616";
+const MUTED_TEXT_COLOR = "#666666";
 
 export function escapeHtml(value: string): string {
   return value
@@ -53,7 +57,7 @@ function renderHtml(content: EmailContent): string {
     ? `<div style="display:none;max-height:0;overflow:hidden;">${escapeHtml(content.preheader)}</div>`
     : "";
 
-  const rows = content.sections.map(renderSectionHtml).join("\n");
+  const rows = [...content.sections.map(renderSectionHtml), renderFooterHtml(content)].join("\n");
 
   return `<!DOCTYPE html>
 <html lang="fr">
@@ -119,8 +123,28 @@ function renderSectionHtml(section: EmailSection): string {
   }
 }
 
+// TODO(product): confirm the footer wording (draft, not in the mockups).
+function renderFooterHtml(content: EmailContent): string {
+  return `          <tr>
+            <td style="padding:24px 24px 16px 24px;border-top:1px solid #dddddd;font-family:${FONT_STACK};font-size:12px;line-height:1.5;color:${MUTED_TEXT_COLOR};">
+              Vous recevez cet e-mail car vous avez un compte Bénéfriches.
+              Vous pouvez <a href="${escapeHtml(content.unsubscribeUrl)}" style="color:${LINK_COLOR};text-decoration:underline;">vous désinscrire</a> des e-mails d’accompagnement et de résultats d’impacts : votre compte reste actif.
+            </td>
+          </tr>`;
+}
+
 function renderText(content: EmailContent): string {
-  return content.sections.map(renderSectionText).join("\n\n");
+  return [...content.sections.map(renderSectionText), renderFooterText(content)].join("\n\n");
+}
+
+// TODO(product): confirm the footer wording (draft, not in the mockups).
+function renderFooterText(content: EmailContent): string {
+  return [
+    "---",
+    "Vous recevez cet e-mail car vous avez un compte Bénéfriches.",
+    "Pour ne plus recevoir les e-mails d’accompagnement et de résultats d’impacts (votre compte reste actif) :",
+    content.unsubscribeUrl,
+  ].join("\n");
 }
 
 function renderSectionText(section: EmailSection): string {
