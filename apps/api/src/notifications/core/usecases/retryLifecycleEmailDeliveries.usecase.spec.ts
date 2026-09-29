@@ -5,9 +5,13 @@ import { InMemoryLifecycleEmailCohortQuery } from "src/notifications/adapters/se
 import { InMemoryLifecycleEmailDeliveryQuery } from "src/notifications/adapters/secondary/lifecycle-email-delivery/InMemoryLifecycleEmailDeliveryQuery";
 import { InMemoryLifecycleEmailDeliveryRepository } from "src/notifications/adapters/secondary/lifecycle-email-delivery/InMemoryLifecycleEmailDeliveryRepository";
 import { InMemoryLifecycleEmailRecipientQuery } from "src/notifications/adapters/secondary/lifecycle-email-recipient/InMemoryLifecycleEmailRecipientQuery";
+import { InMemoryLifecycleEmailSiteQuery } from "src/notifications/adapters/secondary/lifecycle-email-site/InMemoryLifecycleEmailSiteQuery";
 import { FakeMailer } from "src/notifications/adapters/secondary/mailer/FakeMailer";
 import { HmacUnsubscribeTokenService } from "src/notifications/adapters/secondary/unsubscribe-token/HmacUnsubscribeTokenService";
-import type { FirstSiteReminderRecipient } from "src/notifications/core/gateways/LifecycleEmailCohortQuery";
+import type {
+  FirstProjectReminderSite,
+  FirstSiteReminderRecipient,
+} from "src/notifications/core/gateways/LifecycleEmailCohortQuery";
 import type { LifecycleEmailDelivery } from "src/notifications/core/models/lifecycleEmail";
 import type { LifecycleEmailContact } from "src/notifications/core/models/lifecycleEmailContact";
 import { LifecycleEmailSender } from "src/notifications/core/services/lifecycleEmailSender";
@@ -20,6 +24,7 @@ import {
   RetryLifecycleEmailDeliveriesUseCase,
   type RetryLifecycleEmailDeliveriesSummary,
 } from "./retryLifecycleEmailDeliveries.usecase";
+import { SendFirstProjectRemindersUseCase } from "./sendFirstProjectReminders.usecase";
 import { SendFirstSiteRemindersUseCase } from "./sendFirstSiteReminders.usecase";
 import { SendWelcomeEmailUseCase } from "./sendWelcomeEmail.usecase";
 
@@ -47,6 +52,7 @@ const setup = (options: {
   const deliveryRepository = new InMemoryLifecycleEmailDeliveryRepository(options.deliveries);
   const deliveryQuery = new InMemoryLifecycleEmailDeliveryQuery(options.deliveries);
   const recipientQuery = new InMemoryLifecycleEmailRecipientQuery();
+  const siteQuery = new InMemoryLifecycleEmailSiteQuery();
   const mailer = new FakeMailer();
   const dateProvider = new DeterministicDateProvider(fakeNow);
   const logger = new SpyLogger();
@@ -61,6 +67,7 @@ const setup = (options: {
   );
   const useCase = new RetryLifecycleEmailDeliveriesUseCase(
     deliveryQuery,
+    siteQuery,
     sender,
     dateProvider,
     webappUrl,
@@ -68,7 +75,7 @@ const setup = (options: {
     "contact" in options ? options.contact : contact,
     logger,
   );
-  return { useCase, deliveryRepository, recipientQuery, mailer, logger };
+  return { useCase, deliveryRepository, recipientQuery, siteQuery, mailer, logger };
 };
 
 describe("RetryLifecycleEmailDeliveries UseCase", () => {
@@ -526,6 +533,262 @@ describe("RetryLifecycleEmailDeliveries UseCase", () => {
           userId: "user-1",
           emailType: "first-site-reminder",
           relatedEntityId: null,
+          status: "failed",
+          createdAt: aDayBefore,
+          sentAt: null,
+          errorMessage: "Lifecycle email contact is not configured",
+          attempts: 2,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+      assert.deepStrictEqual(getSuccessData(result), {
+        candidates: 1,
+        sent: 0,
+        failed: 1,
+        abandoned: 0,
+        skippedDisabled: 0,
+        skippedUnsubscribed: 0,
+        skippedRecipientNotFound: 0,
+        skippedAlreadyClaimed: 0,
+        errored: 0,
+      } satisfies RetryLifecycleEmailDeliveriesSummary);
+    });
+  });
+
+  describe("first project reminder", () => {
+    const failedFirstProjectReminder = (attempts: number): LifecycleEmailDelivery => ({
+      id: "delivery-1",
+      userId: "user-1",
+      emailType: "first-project-reminder",
+      relatedEntityId: "site-1",
+      status: "failed",
+      createdAt: aDayBefore,
+      sentAt: null,
+      errorMessage: "SMTP down",
+      attempts,
+      lastAttemptedAt: aDayBefore,
+    });
+
+    it("retries a failed first project reminder with the same message the send use case sends", async () => {
+      // Capture what the daily job sends for this site.
+      const reminderDeliveries: LifecycleEmailDelivery[] = [];
+      const reminderSite: FirstProjectReminderSite = {
+        siteId: "site-1",
+        siteName: "Ancienne carrière d’argile de Blajan",
+        siteNature: "FRICHE",
+        siteCreatedAt: new Date("2025-12-30T20:00:00.000Z"),
+        userId: "user-1",
+        email: "gregoire.bailleux@example.fr",
+        firstName: "Grégoire",
+        lastName: "Bailleux",
+      };
+      const cohortQuery = new InMemoryLifecycleEmailCohortQuery();
+      cohortQuery._setFirstProjectReminderSites([reminderSite]);
+      const reminderRecipientQuery = new InMemoryLifecycleEmailRecipientQuery();
+      reminderRecipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+      const reminderMailer = new FakeMailer();
+      const reminderUidGenerator = new DeterministicUuidGenerator();
+      reminderUidGenerator.nextUuids("reminder-delivery");
+      await new SendFirstProjectRemindersUseCase(
+        cohortQuery,
+        new LifecycleEmailSender(
+          new InMemoryLifecycleEmailDeliveryRepository(reminderDeliveries),
+          new InMemoryLifecycleEmailDeliveryQuery(reminderDeliveries),
+          reminderRecipientQuery,
+          reminderMailer,
+          new DeterministicDateProvider(fakeNow),
+          reminderUidGenerator,
+          true,
+        ),
+        new DeterministicDateProvider(fakeNow),
+        webappUrl,
+        unsubscribeTokenService,
+        contact,
+        new SpyLogger(),
+      ).execute({ dryRun: false });
+      const expectedMessage = reminderMailer.sentEmails[0];
+      assert.ok(expectedMessage);
+
+      const { useCase, recipientQuery, siteQuery, mailer } = setup({
+        isEnabled: true,
+        deliveries: [failedFirstProjectReminder(1)],
+      });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+      siteQuery._setSites([
+        { id: "site-1", name: "Ancienne carrière d’argile de Blajan", nature: "FRICHE" },
+      ]);
+
+      const result = await useCase.execute();
+
+      assert.deepStrictEqual(mailer.sentEmails, [expectedMessage]);
+      assert.deepStrictEqual(getSuccessData(result), {
+        candidates: 1,
+        sent: 1,
+        failed: 0,
+        abandoned: 0,
+        skippedDisabled: 0,
+        skippedUnsubscribed: 0,
+        skippedRecipientNotFound: 0,
+        skippedAlreadyClaimed: 0,
+        errored: 0,
+      } satisfies RetryLifecycleEmailDeliveriesSummary);
+    });
+
+    it("uses the site's current name on retry", async () => {
+      const { useCase, recipientQuery, siteQuery, mailer } = setup({
+        isEnabled: true,
+        deliveries: [failedFirstProjectReminder(1)],
+      });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+      siteQuery._setSites([{ id: "site-1", name: "Carrière de Blajan", nature: "FRICHE" }]);
+
+      await useCase.execute();
+
+      assert.deepStrictEqual(
+        mailer.sentEmails.map((email) => email.subject),
+        ["Carrière de Blajan : et si vous renseigniez votre projet d’aménagement ?"],
+      );
+    });
+
+    it("counts a retry as failed when the site no longer exists", async () => {
+      const deliveries = [failedFirstProjectReminder(1)];
+      const { useCase, recipientQuery, mailer } = setup({ isEnabled: true, deliveries });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+
+      const result = await useCase.execute();
+
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "first-project-reminder",
+          relatedEntityId: "site-1",
+          status: "failed",
+          createdAt: aDayBefore,
+          sentAt: null,
+          errorMessage: "Site site-1 not found",
+          attempts: 2,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+      assert.deepStrictEqual(getSuccessData(result), {
+        candidates: 1,
+        sent: 0,
+        failed: 1,
+        abandoned: 0,
+        skippedDisabled: 0,
+        skippedUnsubscribed: 0,
+        skippedRecipientNotFound: 0,
+        skippedAlreadyClaimed: 0,
+        errored: 0,
+      } satisfies RetryLifecycleEmailDeliveriesSummary);
+    });
+
+    it("abandons the retry of a deleted site at the last allowed attempt", async () => {
+      const deliveries = [failedFirstProjectReminder(4)];
+      const { useCase, recipientQuery, mailer } = setup({ isEnabled: true, deliveries });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+
+      const result = await useCase.execute();
+
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "first-project-reminder",
+          relatedEntityId: "site-1",
+          status: "abandoned",
+          createdAt: aDayBefore,
+          sentAt: null,
+          errorMessage: "Site site-1 not found",
+          attempts: 5,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+      assert.deepStrictEqual(getSuccessData(result), {
+        candidates: 1,
+        sent: 0,
+        failed: 0,
+        abandoned: 1,
+        skippedDisabled: 0,
+        skippedUnsubscribed: 0,
+        skippedRecipientNotFound: 0,
+        skippedAlreadyClaimed: 0,
+        errored: 0,
+      } satisfies RetryLifecycleEmailDeliveriesSummary);
+    });
+
+    it("counts a first project reminder retry as failed when the contact is not configured", async () => {
+      const deliveries = [failedFirstProjectReminder(1)];
+      const { useCase, recipientQuery, siteQuery, mailer } = setup({
+        isEnabled: true,
+        deliveries,
+        contact: undefined,
+      });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+      siteQuery._setSites([
+        { id: "site-1", name: "Ancienne carrière d’argile de Blajan", nature: "FRICHE" },
+      ]);
+
+      const result = await useCase.execute();
+
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "first-project-reminder",
+          relatedEntityId: "site-1",
           status: "failed",
           createdAt: aDayBefore,
           sentAt: null,

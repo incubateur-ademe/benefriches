@@ -1,6 +1,8 @@
+import type { LifecycleEmailSite } from "src/notifications/core/gateways/LifecycleEmailSiteQuery";
 import { type LifecycleEmailType } from "src/notifications/core/models/lifecycleEmail";
 import type { LifecycleEmailContact } from "src/notifications/core/models/lifecycleEmailContact";
 import type { RenderedEmail } from "src/notifications/core/templates/emailLayout";
+import { buildFirstProjectReminderEmail } from "src/notifications/core/templates/firstProjectReminderEmail";
 import { buildFirstSiteReminderEmail } from "src/notifications/core/templates/firstSiteReminderEmail";
 import { buildWelcomeEmail } from "src/notifications/core/templates/welcomeEmail";
 
@@ -25,29 +27,62 @@ export const PREVIEW_SAMPLE_CONTACT = {
   email: "dominique.exemple@example.com",
 } as const satisfies LifecycleEmailContact;
 
-// Each later ticket that adds a lifecycle email type adds its case here. The switch below
-// is exhaustive with no `default`, so a new value in `lifecycleEmailTypeSchema` fails
-// typecheck here until its sample is added.
-export function buildLifecycleEmailPreview(
+// Invented sites for the first project reminder previews: one friche and one non-friche,
+// since the first paragraph depends on the nature. Their ids match no real site, so the
+// "Renseigner mon projet" link of a preview leads to an error page: nothing real is touched.
+export const PREVIEW_SAMPLE_FRICHE = {
+  id: "00000000-0000-4000-8000-000000000001",
+  // The mockup's site.
+  name: "Ancienne carrière d’argile de Blajan",
+  nature: "FRICHE",
+} as const satisfies LifecycleEmailSite;
+
+export const PREVIEW_SAMPLE_NON_FRICHE_SITE = {
+  id: "00000000-0000-4000-8000-000000000002",
+  name: "Exploitation agricole des Quatre Chemins",
+  nature: "AGRICULTURAL_OPERATION",
+} as const satisfies LifecycleEmailSite;
+
+// Every sample of the type, in order: most types have one, a type whose content varies
+// (first project reminder: friche or not) has one per variant. Each later ticket that adds a
+// lifecycle email type adds its case here. The switch below is exhaustive with no
+// `default`, so a new value in `lifecycleEmailTypeSchema` fails typecheck here until its
+// sample is added.
+export function buildLifecycleEmailPreviews(
   emailType: LifecycleEmailType,
   webappUrl: string,
   unsubscribeUrl: string,
   contact: LifecycleEmailContact,
-): RenderedEmail {
+): RenderedEmail[] {
   switch (emailType) {
     case "welcome":
-      return buildWelcomeEmail({
-        recipientEmail: PREVIEW_SAMPLE_USER.email,
-        webappUrl,
-        unsubscribeUrl,
-      });
+      return [
+        buildWelcomeEmail({
+          recipientEmail: PREVIEW_SAMPLE_USER.email,
+          webappUrl,
+          unsubscribeUrl,
+        }),
+      ];
     case "first-site-reminder":
-      return buildFirstSiteReminderEmail({
-        firstName: PREVIEW_SAMPLE_USER.firstName,
-        lastName: PREVIEW_SAMPLE_USER.lastName,
-        contact,
-        webappUrl,
-        unsubscribeUrl,
-      });
+      return [
+        buildFirstSiteReminderEmail({
+          firstName: PREVIEW_SAMPLE_USER.firstName,
+          lastName: PREVIEW_SAMPLE_USER.lastName,
+          contact,
+          webappUrl,
+          unsubscribeUrl,
+        }),
+      ];
+    case "first-project-reminder":
+      return [PREVIEW_SAMPLE_FRICHE, PREVIEW_SAMPLE_NON_FRICHE_SITE].map((site) =>
+        buildFirstProjectReminderEmail({
+          firstName: PREVIEW_SAMPLE_USER.firstName,
+          lastName: PREVIEW_SAMPLE_USER.lastName,
+          site,
+          contact,
+          webappUrl,
+          unsubscribeUrl,
+        }),
+      );
   }
 }

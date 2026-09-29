@@ -207,4 +207,55 @@ describe("RetryLifecycleEmailDeliveries integration test", () => {
     assert.deepStrictEqual(fakeMailer.sentEmails, []);
     assert.deepStrictEqual(await deliveriesOf(userId), [failed]);
   });
+  it("retries a failed first project reminder, loading the site from the delivery", async () => {
+    const userId = await insertUser({ unsubscribedAt: null });
+    const siteId = uuid();
+    await sqlConnection("sites").insert({
+      id: siteId,
+      created_by: userId,
+      name: "Ancienne carrière d’argile de Blajan",
+      nature: "FRICHE",
+      surface_area: 15000,
+      owner_structure_type: "company",
+      creation_mode: "custom",
+      status: "active",
+      created_at: new Date("2025-12-30T20:00:00.000Z"),
+    });
+    const deliveryId = uuid();
+    await sqlConnection("lifecycle_email_deliveries").insert({
+      id: deliveryId,
+      user_id: userId,
+      email_type: "first-project-reminder",
+      related_entity_id: siteId,
+      status: "failed",
+      created_at: aDayBefore,
+      sent_at: null,
+      error_message: "SMTP down",
+      attempts: 1,
+      last_attempted_at: new Date("2026-01-01T09:00:00.000Z"),
+    });
+
+    await app.get(RetryLifecycleEmailDeliveriesUseCase).execute();
+
+    assert.deepStrictEqual(
+      fakeMailer.sentEmails.map((email) => email.subject),
+      [
+        "Ancienne carrière d’argile de Blajan : et si vous renseigniez votre projet d’aménagement ?",
+      ],
+    );
+    assert.deepStrictEqual(await deliveriesOf(userId), [
+      {
+        id: deliveryId,
+        user_id: userId,
+        email_type: "first-project-reminder",
+        related_entity_id: siteId,
+        status: "sent",
+        created_at: aDayBefore,
+        sent_at: fakeNow,
+        error_message: "SMTP down",
+        attempts: 2,
+        last_attempted_at: fakeNow,
+      },
+    ] satisfies SqlLifecycleEmailDelivery[]);
+  });
 });

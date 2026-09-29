@@ -5,6 +5,7 @@ import {
   renderEmail,
   type RenderedEmail,
 } from "src/notifications/core/templates/emailLayout";
+import { buildGreeting, NBSP } from "src/notifications/core/templates/reminderGreeting";
 
 export type BuildFirstSiteReminderEmailInput = {
   // Nullable: legacy users rows have no first or last name.
@@ -13,18 +14,6 @@ export type BuildFirstSiteReminderEmailInput = {
   contact: LifecycleEmailContact;
   webappUrl: string;
   unsubscribeUrl: string;
-};
-
-// French typography: a non-breaking space before "!", "?", ":" and ";", so the sign never
-// wraps alone onto the next line.
-const NBSP = "\u00a0";
-
-const buildGreeting = (firstName: string | null, lastName: string | null): string => {
-  const name = [firstName, lastName]
-    .map((part) => part?.trim() ?? "")
-    .filter((part) => part !== "")
-    .join(" ");
-  return name === "" ? "Bonjour," : `Bonjour ${name},`;
 };
 
 // Copy transcribed from the mockup (assets/02-first-site-reminder.png), with curly

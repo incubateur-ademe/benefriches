@@ -1,8 +1,13 @@
 import { z } from "zod";
 
-// Later tickets extend this enum with "first-project-reminder" and "project-impacts-summary".
-// Kept kebab-case so every value stays consistent.
-export const lifecycleEmailTypeSchema = z.enum(["welcome", "first-site-reminder"]);
+// Ticket 08 extends this enum with "project-impacts-summary". Kept kebab-case so every value
+// stays consistent. "first-project-reminder" is entity-scoped: its ledger rows carry the
+// site id in related_entity_id (one per user and site).
+export const lifecycleEmailTypeSchema = z.enum([
+  "welcome",
+  "first-site-reminder",
+  "first-project-reminder",
+]);
 export type LifecycleEmailType = z.infer<typeof lifecycleEmailTypeSchema>;
 
 // "failed" means "will be retried" by the sweeper; "abandoned" is terminal: the delivery

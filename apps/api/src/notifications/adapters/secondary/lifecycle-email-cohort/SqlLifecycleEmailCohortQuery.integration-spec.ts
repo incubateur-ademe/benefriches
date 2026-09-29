@@ -2,11 +2,14 @@ import { addHours, subHours } from "date-fns";
 import knex, { Knex } from "knex";
 import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
-import { siteCreationModeSchema, type SiteCreationMode } from "shared";
+import { siteCreationModeSchema, type SiteCreationMode, type SiteNature } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { mapUserToSqlRow } from "src/auth/adapters/user-repository/SqlUserRepository";
-import type { FirstSiteReminderRecipient } from "src/notifications/core/gateways/LifecycleEmailCohortQuery";
+import type {
+  FirstProjectReminderSite,
+  FirstSiteReminderRecipient,
+} from "src/notifications/core/gateways/LifecycleEmailCohortQuery";
 import {
   lifecycleEmailDeliveryStatusSchema,
   type LifecycleEmailDeliveryStatus,
@@ -58,17 +61,38 @@ describe("SqlLifecycleEmailCohortQuery integration", () => {
     createdBy: string;
     creationMode: SiteCreationMode;
     status: "active" | "archived";
-  }) => {
+    createdAt?: Date;
+    name?: string;
+    nature?: SiteNature;
+  }): Promise<string> => {
+    const siteId = uuid();
     await sqlConnection("sites").insert({
-      id: uuid(),
+      id: siteId,
       created_by: options.createdBy,
-      name: "Friche de Blajan",
-      nature: "FRICHE",
+      name: options.name ?? "Friche de Blajan",
+      nature: options.nature ?? "FRICHE",
       surface_area: 15000,
       owner_structure_type: "company",
       creation_mode: options.creationMode,
       status: options.status,
-      created_at: hoursBeforeNow(12),
+      created_at: options.createdAt ?? hoursBeforeNow(12),
+    });
+    return siteId;
+  };
+
+  const insertProject = async (options: {
+    siteId: string;
+    createdBy: string;
+    status: "active" | "archived";
+  }) => {
+    await sqlConnection("reconversion_projects").insert({
+      id: uuid(),
+      created_by: options.createdBy,
+      name: "Projet urbain",
+      related_site_id: options.siteId,
+      creation_mode: "custom",
+      status: options.status,
+      created_at: hoursBeforeNow(6),
     });
   };
 
@@ -76,12 +100,13 @@ describe("SqlLifecycleEmailCohortQuery integration", () => {
     userId: string;
     emailType: LifecycleEmailType;
     status: LifecycleEmailDeliveryStatus;
+    relatedEntityId?: string | null;
   }) => {
     await sqlConnection("lifecycle_email_deliveries").insert({
       id: uuid(),
       user_id: options.userId,
       email_type: options.emailType,
-      related_entity_id: null,
+      related_entity_id: options.relatedEntityId ?? null,
       status: options.status,
       created_at: hoursBeforeNow(1),
       sent_at: options.status === "sent" ? hoursBeforeNow(1) : null,
@@ -295,6 +320,436 @@ describe("SqlLifecycleEmailCohortQuery integration", () => {
           registeredAt: hoursBeforeNow(36),
         },
       ] satisfies FirstSiteReminderRecipient[]);
+    });
+  });
+
+  describe("findFirstProjectReminderSites", () => {
+    it("returns a custom friche created 36 hours ago with no project, mapped to the reminder shape", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      const siteId = await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+        name: "Ancienne carrière d’argile de Blajan",
+        nature: "FRICHE",
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(result, [
+        {
+          siteId,
+          siteName: "Ancienne carrière d’argile de Blajan",
+          siteNature: "FRICHE",
+          siteCreatedAt: hoursBeforeNow(36),
+          userId,
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+        },
+      ] satisfies FirstProjectReminderSite[]);
+    });
+
+    it("returns an express site", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      const siteId = await insertSite({
+        createdBy: userId,
+        creationMode: "express",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(
+        result.map((site) => site.siteId),
+        [siteId],
+      );
+    });
+
+    it("maps the nature of a non-friche site", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+        nature: "AGRICULTURAL_OPERATION",
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(
+        result.map((site) => site.siteNature),
+        ["AGRICULTURAL_OPERATION"],
+      );
+    });
+
+    it("excludes a site created less than 24 hours ago", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(12),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(result, []);
+    });
+
+    it("excludes a site created more than 72 hours ago", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(73),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(result, []);
+    });
+
+    it("includes a site created exactly 24 hours ago", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      const siteId = await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(24),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(
+        result.map((site) => site.siteId),
+        [siteId],
+      );
+    });
+
+    it("excludes a site created exactly 72 hours ago", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(72),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(result, []);
+    });
+
+    it("windows on the site's creation, not the user's registration", async () => {
+      const recentSiteOwnerId = await insertUser({
+        email: "registered-36h-ago@example.fr",
+        createdAt: hoursBeforeNow(36),
+      });
+      await insertSite({
+        createdBy: recentSiteOwnerId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(12),
+      });
+      const oldUserId = await insertUser({
+        email: "registered-500h-ago@example.fr",
+        createdAt: hoursBeforeNow(500),
+      });
+      const siteId = await insertSite({
+        createdBy: oldUserId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(
+        result.map((site) => site.siteId),
+        [siteId],
+      );
+    });
+
+    it("never triggers for a CSV-imported site", async () => {
+      const userId = await insertUser({
+        email: "importer@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      await insertSite({
+        createdBy: userId,
+        creationMode: "csv-import",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(result, []);
+    });
+
+    it("never triggers for an archived site", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "archived",
+        createdAt: hoursBeforeNow(36),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(result, []);
+    });
+
+    it("excludes a site with an active project", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      const siteId = await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+      });
+      await insertProject({ siteId, createdBy: userId, status: "active" });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(result, []);
+    });
+
+    it("excludes a site with an archived project", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      const siteId = await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+      });
+      await insertProject({ siteId, createdBy: userId, status: "archived" });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(result, []);
+    });
+
+    it("does not exclude a site because another site has a project", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      const siteWithProjectId = await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+      });
+      await insertProject({ siteId: siteWithProjectId, createdBy: userId, status: "active" });
+      const siteWithoutProjectId = await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(
+        result.map((site) => site.siteId),
+        [siteWithoutProjectId],
+      );
+    });
+
+    it("returns one row per eligible site of the same user, oldest site first", async () => {
+      const userId = await insertUser({
+        email: "gregoire.bailleux@example.fr",
+        createdAt: hoursBeforeNow(200),
+      });
+      const site36hId = await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+      });
+      const site40hId = await insertSite({
+        createdBy: userId,
+        creationMode: "express",
+        status: "active",
+        createdAt: hoursBeforeNow(40),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(
+        result.map((site) => site.siteId),
+        [site40hId, site36hId],
+      );
+    });
+
+    describe("an existing first project reminder for the site excludes, whatever its status", () => {
+      for (const status of lifecycleEmailDeliveryStatusSchema.options) {
+        it(`excludes a site with a ${status} first project reminder`, async () => {
+          const userId = await insertUser({
+            email: "already@example.fr",
+            createdAt: hoursBeforeNow(200),
+          });
+          const siteId = await insertSite({
+            createdBy: userId,
+            creationMode: "custom",
+            status: "active",
+            createdAt: hoursBeforeNow(36),
+          });
+          await insertDelivery({
+            userId,
+            emailType: "first-project-reminder",
+            status,
+            relatedEntityId: siteId,
+          });
+
+          const result = await query.findFirstProjectReminderSites(window);
+
+          assert.deepStrictEqual(result, []);
+        });
+      }
+
+      it("does not exclude a site because another site got its reminder", async () => {
+        const userId = await insertUser({
+          email: "gregoire.bailleux@example.fr",
+          createdAt: hoursBeforeNow(200),
+        });
+        const remindedSiteId = await insertSite({
+          createdBy: userId,
+          creationMode: "custom",
+          status: "active",
+          createdAt: hoursBeforeNow(36),
+        });
+        await insertDelivery({
+          userId,
+          emailType: "first-project-reminder",
+          status: "sent",
+          relatedEntityId: remindedSiteId,
+        });
+        const otherSiteId = await insertSite({
+          createdBy: userId,
+          creationMode: "custom",
+          status: "active",
+          createdAt: hoursBeforeNow(36),
+        });
+
+        const result = await query.findFirstProjectReminderSites(window);
+
+        assert.deepStrictEqual(
+          result.map((site) => site.siteId),
+          [otherSiteId],
+        );
+      });
+
+      it("ignores ledger rows of other email types", async () => {
+        const userId = await insertUser({
+          email: "gregoire.bailleux@example.fr",
+          createdAt: hoursBeforeNow(200),
+        });
+        const siteId = await insertSite({
+          createdBy: userId,
+          creationMode: "custom",
+          status: "active",
+          createdAt: hoursBeforeNow(36),
+        });
+        await insertDelivery({
+          userId,
+          emailType: "first-site-reminder",
+          status: "sent",
+          relatedEntityId: null,
+        });
+
+        const result = await query.findFirstProjectReminderSites(window);
+
+        assert.deepStrictEqual(
+          result.map((site) => site.siteId),
+          [siteId],
+        );
+      });
+    });
+
+    it("excludes a site whose owner unsubscribed", async () => {
+      const userId = await insertUser({
+        email: "unsubscribed@example.fr",
+        createdAt: hoursBeforeNow(200),
+        unsubscribedAt: hoursBeforeNow(30),
+      });
+      await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(result, []);
+    });
+
+    it("maps the owner's missing names to null", async () => {
+      const userId = await insertUser({
+        email: "legacy@example.fr",
+        createdAt: hoursBeforeNow(200),
+        firstname: null,
+        lastname: null,
+      });
+      const siteId = await insertSite({
+        createdBy: userId,
+        creationMode: "custom",
+        status: "active",
+        createdAt: hoursBeforeNow(36),
+      });
+
+      const result = await query.findFirstProjectReminderSites(window);
+
+      assert.deepStrictEqual(result, [
+        {
+          siteId,
+          siteName: "Friche de Blajan",
+          siteNature: "FRICHE",
+          siteCreatedAt: hoursBeforeNow(36),
+          userId,
+          email: "legacy@example.fr",
+          firstName: null,
+          lastName: null,
+        },
+      ] satisfies FirstProjectReminderSite[]);
     });
   });
 });

@@ -2,6 +2,7 @@ import { subMinutes } from "date-fns";
 
 import type { LifecycleEmailDeliveryQuery } from "src/notifications/core/gateways/LifecycleEmailDeliveryQuery";
 import type { LifecycleEmailRecipient } from "src/notifications/core/gateways/LifecycleEmailRecipientQuery";
+import type { LifecycleEmailSiteQuery } from "src/notifications/core/gateways/LifecycleEmailSiteQuery";
 import type { LifecycleEmailMessage } from "src/notifications/core/gateways/Mailer";
 import type { UnsubscribeTokenService } from "src/notifications/core/gateways/UnsubscribeTokenService";
 import type { LifecycleEmailDelivery } from "src/notifications/core/models/lifecycleEmail";
@@ -10,6 +11,7 @@ import type {
   LifecycleEmailRetryOutcome,
   LifecycleEmailSender,
 } from "src/notifications/core/services/lifecycleEmailSender";
+import { buildFirstProjectReminderEmail } from "src/notifications/core/templates/firstProjectReminderEmail";
 import { buildFirstSiteReminderEmail } from "src/notifications/core/templates/firstSiteReminderEmail";
 import { buildUnsubscribeUrl } from "src/notifications/core/templates/unsubscribeUrl";
 import { buildWelcomeEmail } from "src/notifications/core/templates/welcomeEmail";
@@ -50,6 +52,7 @@ const SUMMARY_KEY_BY_OUTCOME = {
 
 export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Result> {
   private readonly deliveryQuery: LifecycleEmailDeliveryQuery;
+  private readonly siteQuery: LifecycleEmailSiteQuery;
   private readonly sender: LifecycleEmailSender;
   private readonly dateProvider: DateProvider;
   private readonly webappUrl: string;
@@ -59,6 +62,7 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
 
   constructor(
     deliveryQuery: LifecycleEmailDeliveryQuery,
+    siteQuery: LifecycleEmailSiteQuery,
     sender: LifecycleEmailSender,
     dateProvider: DateProvider,
     webappUrl: string,
@@ -67,6 +71,7 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
     logger: AppLogger,
   ) {
     this.deliveryQuery = deliveryQuery;
+    this.siteQuery = siteQuery;
     this.sender = sender;
     this.dateProvider = dateProvider;
     this.webappUrl = webappUrl;
@@ -96,7 +101,7 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
     for (const delivery of candidates) {
       try {
         const outcome = await this.sender.retry(delivery, (recipient) =>
-          Promise.resolve(this.renderMessage(delivery, recipient)),
+          this.renderMessage(delivery, recipient),
         );
         summary[SUMMARY_KEY_BY_OUTCOME[outcome]]++;
       } catch (error) {
@@ -117,10 +122,10 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
   // failed attempt. Exhaustive switch with no default: adding a value to
   // lifecycleEmailTypeSchema fails the typecheck here until its retry case is written.
   // Each case calls the same template builder as the type's send use case.
-  private renderMessage(
+  private async renderMessage(
     delivery: LifecycleEmailDelivery,
     recipient: LifecycleEmailRecipient,
-  ): LifecycleEmailMessage {
+  ): Promise<LifecycleEmailMessage> {
     switch (delivery.emailType) {
       case "welcome":
         return {
@@ -153,6 +158,37 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
             ),
           }),
         };
+      case "first-project-reminder": {
+        if (!this.contact) {
+          throw new Error("Lifecycle email contact is not configured");
+        }
+        // Always set for this type (every send passes the site id); the guard only narrows.
+        if (!delivery.relatedEntityId) {
+          throw new Error("First project reminder delivery has no related site");
+        }
+        // The site's current name and nature. No eligibility re-check (known limitation): an
+        // archived site, or one with a project since, is still sent. A site that no longer
+        // exists (manual SQL only: the app never deletes sites) is a failed attempt, then
+        // abandoned at the cap.
+        const site = await this.siteQuery.getById(delivery.relatedEntityId);
+        if (!site) {
+          throw new Error(`Site ${delivery.relatedEntityId} not found`);
+        }
+        return {
+          to: recipient.email,
+          ...buildFirstProjectReminderEmail({
+            firstName: recipient.firstName,
+            lastName: recipient.lastName,
+            site,
+            contact: this.contact,
+            webappUrl: this.webappUrl,
+            unsubscribeUrl: buildUnsubscribeUrl(
+              this.webappUrl,
+              this.unsubscribeTokenService.sign(delivery.userId),
+            ),
+          }),
+        };
+      }
     }
   }
 }

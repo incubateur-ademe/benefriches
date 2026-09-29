@@ -6,6 +6,7 @@ import { SqlLifecycleEmailCohortQuery } from "src/notifications/adapters/seconda
 import { SqlLifecycleEmailDeliveryQuery } from "src/notifications/adapters/secondary/lifecycle-email-delivery/SqlLifecycleEmailDeliveryQuery";
 import { SqlLifecycleEmailDeliveryRepository } from "src/notifications/adapters/secondary/lifecycle-email-delivery/SqlLifecycleEmailDeliveryRepository";
 import { SqlLifecycleEmailRecipientQuery } from "src/notifications/adapters/secondary/lifecycle-email-recipient/SqlLifecycleEmailRecipientQuery";
+import { SqlLifecycleEmailSiteQuery } from "src/notifications/adapters/secondary/lifecycle-email-site/SqlLifecycleEmailSiteQuery";
 import { SqlLifecycleEmailSubscriptionRepository } from "src/notifications/adapters/secondary/lifecycle-email-subscription/SqlLifecycleEmailSubscriptionRepository";
 import { SmtpMailer } from "src/notifications/adapters/secondary/mailer/SmtpMailer";
 import { HmacUnsubscribeTokenService } from "src/notifications/adapters/secondary/unsubscribe-token/HmacUnsubscribeTokenService";
@@ -13,11 +14,13 @@ import type { LifecycleEmailCohortQuery } from "src/notifications/core/gateways/
 import type { LifecycleEmailDeliveryQuery } from "src/notifications/core/gateways/LifecycleEmailDeliveryQuery";
 import type { LifecycleEmailDeliveryRepository } from "src/notifications/core/gateways/LifecycleEmailDeliveryRepository";
 import type { LifecycleEmailRecipientQuery } from "src/notifications/core/gateways/LifecycleEmailRecipientQuery";
+import type { LifecycleEmailSiteQuery } from "src/notifications/core/gateways/LifecycleEmailSiteQuery";
 import type { LifecycleEmailSubscriptionRepository } from "src/notifications/core/gateways/LifecycleEmailSubscriptionRepository";
 import type { Mailer } from "src/notifications/core/gateways/Mailer";
 import type { UnsubscribeTokenService } from "src/notifications/core/gateways/UnsubscribeTokenService";
 import { LifecycleEmailSender } from "src/notifications/core/services/lifecycleEmailSender";
 import { RetryLifecycleEmailDeliveriesUseCase } from "src/notifications/core/usecases/retryLifecycleEmailDeliveries.usecase";
+import { SendFirstProjectRemindersUseCase } from "src/notifications/core/usecases/sendFirstProjectReminders.usecase";
 import { SendFirstSiteRemindersUseCase } from "src/notifications/core/usecases/sendFirstSiteReminders.usecase";
 import { SendLifecycleEmailPreviewUseCase } from "src/notifications/core/usecases/sendLifecycleEmailPreview.usecase";
 import { SendWelcomeEmailUseCase } from "src/notifications/core/usecases/sendWelcomeEmail.usecase";
@@ -64,6 +67,7 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
       provide: RetryLifecycleEmailDeliveriesUseCase,
       useFactory: (
         deliveryQuery: LifecycleEmailDeliveryQuery,
+        siteQuery: LifecycleEmailSiteQuery,
         sender: LifecycleEmailSender,
         dateProvider: DateProvider,
         configService: ConfigService,
@@ -71,6 +75,7 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
       ) =>
         new RetryLifecycleEmailDeliveriesUseCase(
           deliveryQuery,
+          siteQuery,
           sender,
           dateProvider,
           configService.getOrThrow<string>("WEBAPP_URL"),
@@ -80,6 +85,7 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
         ),
       inject: [
         SqlLifecycleEmailDeliveryQuery,
+        SqlLifecycleEmailSiteQuery,
         LifecycleEmailSender,
         RealDateProvider,
         ConfigService,
@@ -103,6 +109,32 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
           unsubscribeTokenService,
           readLifecycleEmailContact(configService),
           new NestJsAppLogger("SendFirstSiteReminders"),
+        ),
+      inject: [
+        SqlLifecycleEmailCohortQuery,
+        LifecycleEmailSender,
+        RealDateProvider,
+        ConfigService,
+        HmacUnsubscribeTokenService,
+      ],
+    },
+    {
+      provide: SendFirstProjectRemindersUseCase,
+      useFactory: (
+        cohortQuery: LifecycleEmailCohortQuery,
+        sender: LifecycleEmailSender,
+        dateProvider: DateProvider,
+        configService: ConfigService,
+        unsubscribeTokenService: UnsubscribeTokenService,
+      ) =>
+        new SendFirstProjectRemindersUseCase(
+          cohortQuery,
+          sender,
+          dateProvider,
+          configService.getOrThrow<string>("WEBAPP_URL"),
+          unsubscribeTokenService,
+          readLifecycleEmailContact(configService),
+          new NestJsAppLogger("SendFirstProjectReminders"),
         ),
       inject: [
         SqlLifecycleEmailCohortQuery,
@@ -212,6 +244,11 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
       useFactory: (sqlConnection: Knex) => new SqlLifecycleEmailRecipientQuery(sqlConnection),
       inject: [SqlConnection],
     },
+    {
+      provide: SqlLifecycleEmailSiteQuery,
+      useFactory: (sqlConnection: Knex) => new SqlLifecycleEmailSiteQuery(sqlConnection),
+      inject: [SqlConnection],
+    },
     SmtpMailer,
     RealDateProvider,
     RandomUuidGenerator,
@@ -220,6 +257,7 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
     SendLifecycleEmailPreviewUseCase,
     RetryLifecycleEmailDeliveriesUseCase,
     SendFirstSiteRemindersUseCase,
+    SendFirstProjectRemindersUseCase,
   ],
 })
 export class NotificationsModule {}

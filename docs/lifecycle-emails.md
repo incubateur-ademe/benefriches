@@ -6,19 +6,27 @@
 > trigger pattern, and the shared email template layout. Read this before adding a new
 > lifecycle email type (reminders, impacts summary), changing the unsubscribe flow, or
 > touching anything under `notifications/`.
+>
+> Decisions: [ADR-0016](adr/0016-route-all-lifecycle-emails-through-a-single-sender-with-an-idempotent-delivery-ledger.md)
+> (single sender, delivery ledger) and [ADR-0017](adr/0017-opt-out-lifecycle-emails-with-a-stateless-hmac-unsubscribe-token.md)
+> (opt-out, stateless HMAC unsubscribe token).
 
 ## Overview
 
 Lifecycle emails are automated, transactional-ish emails triggered by user/product
 lifecycle milestones — as opposed to the login-link emails handled by `auth/`
-(`SmtpAuthLinkMailer`) or the CRM-facing side effects in `marketing/`. Two email types exist
-today (`lifecycleEmailTypeSchema`):
+(`SmtpAuthLinkMailer`) or the CRM-facing side effects in `marketing/`. Three email types
+exist today (`lifecycleEmailTypeSchema`):
 
 - `welcome`: the **welcome email**, sent inline once when a user account is created
   (event-driven, see [Event-driven trigger pattern](#event-driven-trigger-pattern));
 - `first-site-reminder`: the **first site reminder**, sent by the
   [daily reminder job](#daily-reminder-job) to people who registered 24–72 h earlier and
-  still have no site.
+  still have no site;
+- `first-project-reminder`: the **first project reminder**, sent by the same daily job
+  **once per site**: for each custom or express, active site created 24–72 h earlier that
+  still has no reconversion project. It names the site in its subject. The first
+  entity-scoped type (`related_entity_id` = the site id).
 
 The module follows the standard Clean/Hexagonal layout:
 
@@ -29,13 +37,16 @@ notifications/
 │   ├── models/reminderWindow.ts              # the 24–72 h reminder window, computed from the injected clock
 │   ├── models/lifecycleEmailContact.ts       # the named contact of the reminders (read from configuration)
 │   ├── gateways/                             # Mailer, LifecycleEmailDeliveryRepository/Query, LifecycleEmailRecipientQuery,
-│   │                                         # LifecycleEmailCohortQuery, LifecycleEmailSubscriptionRepository, UnsubscribeTokenService
+│   │                                         # LifecycleEmailCohortQuery, LifecycleEmailSiteQuery (site of a retried reminder),
+│   │                                         # LifecycleEmailSubscriptionRepository, UnsubscribeTokenService
 │   ├── services/lifecycleEmailSender.ts       # LifecycleEmailSender — the mandatory choke point
-│   ├── previews/lifecycleEmailPreviewSamples.ts  # sample user + sample contact for the preview script
+│   ├── previews/lifecycleEmailPreviewSamples.ts  # sample user, contact and sites for the preview script
 │   ├── templates/                            # emailLayout.ts (shared layout), welcomeEmail.ts, firstSiteReminderEmail.ts,
+│   │                                         # firstProjectReminderEmail.ts, reminderGreeting.ts (NBSP + greeting),
 │   │                                         # contactSections.ts (contact button + signature), unsubscribeUrl.ts
-│   └── usecases/                             # sendWelcomeEmail, sendFirstSiteReminders, sendLifecycleEmailPreview,
-│                                             # unsubscribeFromLifecycleEmails, retryLifecycleEmailDeliveries (the retry sweeper)
+│   └── usecases/                             # sendWelcomeEmail, sendFirstSiteReminders, sendFirstProjectReminders,
+│                                             # sendLifecycleEmailPreview, unsubscribeFromLifecycleEmails,
+│                                             # retryLifecycleEmailDeliveries (the retry sweeper)
 └── adapters/
     ├── primary/
     │   ├── notifications.module.ts
@@ -49,6 +60,7 @@ notifications/
         ├── lifecycle-email-cohort/            # SqlLifecycleEmailCohortQuery (eligibility, in SQL) + InMemory stub
         ├── lifecycle-email-delivery/          # Sql/InMemory Repository (write) + Query (read)
         ├── lifecycle-email-recipient/         # Sql/InMemory LifecycleEmailRecipientQuery
+        ├── lifecycle-email-site/              # Sql/InMemory LifecycleEmailSiteQuery (id, name, nature)
         ├── lifecycle-email-subscription/      # Sql/InMemory LifecycleEmailSubscriptionRepository (sets the opt-out)
         ├── unsubscribe-token/                 # HmacUnsubscribeTokenService
         └── mailer/                            # SmtpMailer, FakeMailer
@@ -140,8 +152,8 @@ Table: `lifecycle_email_deliveries` (migration
 | ------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                | uuid, PK        |                                                                                                                                                                                          |
 | `user_id`           | uuid            | FK → `users.id`, `ON DELETE CASCADE`                                                                                                                                                     |
-| `email_type`        | string          | Backed by `lifecycleEmailTypeSchema` (`"welcome"`, `"first-site-reminder"`)                                                                                                              |
-| `related_entity_id` | uuid, null      | No `related_entity_type` column — `email_type` alone determines what kind of entity this is (a site, a reconversion project, …) once entity-scoped email types exist                     |
+| `email_type`        | string          | Backed by `lifecycleEmailTypeSchema` (`"welcome"`, `"first-site-reminder"`, `"first-project-reminder"`)                                                                                  |
+| `related_entity_id` | uuid, null      | No `related_entity_type` column — `email_type` alone determines what kind of entity this is: a site (`sites.id`, no FK) for `first-project-reminder`, `NULL` for account-scoped types    |
 | `status`            | string          | `"pending" \| "sent" \| "failed" \| "abandoned"`, backed by `lifecycleEmailDeliveryStatusSchema`. `failed` = will be retried; `abandoned` = gave up after `LIFECYCLE_EMAIL_MAX_ATTEMPTS` |
 | `created_at`        | timestamp       |                                                                                                                                                                                          |
 | `sent_at`           | timestamp, null | set by `markSent`                                                                                                                                                                        |
@@ -156,9 +168,11 @@ The domain model (`core/models/lifecycleEmail.ts`) mirrors this 1:1 as
 
 Every lifecycle email is deduplicated by the triple `(user_id, email_type,
 related_entity_id)`. The welcome email and the first site reminder are **account-scoped** —
-they have no related entity, so `related_entity_id` is `NULL`. A future entity-scoped email
-(e.g. the first project reminder, one per site) would set `related_entity_id` to that site's id, and could fire once per site
-per user rather than once per user overall.
+they have no related entity, so `related_entity_id` is `NULL`. The first project reminder is
+the first **entity-scoped** type: every send passes `relatedEntityId: site.id`, so its row
+carries `related_entity_id = sites.id` and it fires once per `(user, site)` for life rather
+than once per user overall. No sender or migration change was needed for it: `hasDelivery`
+and the entity-scoped index below already handled that case.
 
 Postgres treats `NULL` as **distinct from every other `NULL`** in a unique index, so a
 single index over `(user_id, email_type, related_entity_id)` would never deduplicate the
@@ -247,21 +261,35 @@ attempts + 1, last_attempted_at = ? WHERE id = ? AND status = ? AND attempts = ?
   `Lifecycle email contact is not configured`, which the sender records as a failed attempt
   (a row only exists if the contact was set at first send, so this only happens if someone
   removed it since). A regression test asserts the retried message equals the one
-  `SendFirstSiteRemindersUseCase` sends. **Adding an email type** fails the typecheck there until you add its
+  `SendFirstSiteRemindersUseCase` sends. The `first-project-reminder` case (the reason `renderMessage` is
+  now `async`) throws the same error when the contact is missing, then loads the site from
+  the row's `related_entity_id` through `LifecycleEmailSiteQuery.getById` (injected into the
+  retry use case; `SqlLifecycleEmailSiteQuery` returns `id`, `name` and `nature`, with **no
+  status filter**) and calls `buildFirstProjectReminderEmail` with the site's _current_ name and
+  nature and the recipient's current names. A site that no longer exists (only possible
+  through manual SQL: the app archives sites, never deletes them) throws `Site <id> not
+found`: a failed attempt, then `abandoned` at the cap, and no email. The glue is duplicated
+  rather than extracted into a `compose…` function: the send path gets the site from the
+  cohort row, the retry path from the site query, so only the builder call is shared; a
+  regression test asserts the retried message equals the one `SendFirstProjectRemindersUseCase`
+  sends. **Adding an email type** fails the typecheck there until you add its
   `case`, plus whatever read gateway it needs injected into the use case; when composition
   needs data loading, extract a `compose…` function shared by the send use case and the
   retry case rather than duplicating it.
 - **Known limitation, not fixed**: a retry does not re-check the cohort's eligibility. A
   first site reminder whose first attempt failed is still retried (for up to ~4 h) even if
-  the user has created a site since. It follows from the generic retry path (ticket 04) and is
+  the user has created a site since; likewise a first project reminder is still retried
+  after the user described a project on that site or archived it. It follows from the generic retry path (ticket 04) and is
   accepted given the short retry span. Fixing it would need a new skip outcome in `retry()`:
   throwing from `render` only records another failed attempt.
 
 ## Daily reminder job
 
 `adapters/primary/sendDailyLifecycleReminders.script.ts` computes each reminder cohort and
-sends the reminders. It is named after the job, not the email: ticket 06 appends the first
-project reminder to it. Today it runs only `SendFirstSiteRemindersUseCase`.
+sends the reminders. It is named after the job, not the email. It runs
+`REMINDER_USE_CASES = [SendFirstSiteRemindersUseCase, SendFirstProjectRemindersUseCase]`, in
+that order. A user is never in both cohorts on the same run: the first site reminder requires
+no site at all, the first project reminder requires one.
 
 ### Schedule: `0 8 * * *`, every day at 08:00 UTC
 
@@ -278,12 +306,14 @@ comments, so this note lives here, in `docs/scripts.md` and in the script's head
 - **Minute `0`, not `15`**: the retry sweeper runs at `:15`, so a reminder that fails at 08:00
   is retried at 08:15.
 
-### The window: 24 to 72 hours after signup
+### The window: 24 to 72 hours after signup (or after the site's creation)
 
 `core/models/reminderWindow.ts`: `computeReminderWindow(now)` returns `{ createdAfter: now −
 72 h, createdAtOrBefore: now − 24 h }` (`REMINDER_MIN_AGE_HOURS`, `REMINDER_MAX_AGE_HOURS`).
 The use case calls it with the injected `DateProvider`; the SQL takes the window and never
-reads a clock. Boundaries: exactly 24 h old is **in**, exactly 72 h old is **out**.
+reads a clock. Boundaries: exactly 24 h old is **in**, exactly 72 h old is **out**. The first
+site reminder applies it to `users.created_at`, the first project reminder to
+`sites.created_at` (never the user's registration).
 
 - 24 h guarantees everyone has had a full day, whatever time they signed up.
 - The 48 h width makes the job **self-healing**: a run missed for a deploy or an incident is
@@ -312,8 +342,8 @@ ORDER BY created_at
 - **Any site suppresses**, whatever its `creation_mode` (`custom`, `express`, `csv-import`)
   and whatever its `status` (`active`, `archived`): someone who bulk-imported sites, or
   created one and archived it, has used the feature. That is the "suppresses" side of the
-  asymmetry in DESIGN.md; the first project reminder (ticket 06) will be stricter about which
-  sites **trigger** a reminder (not CSV imports).
+  asymmetry in DESIGN.md; the first project reminder is stricter about which sites
+  **trigger** a reminder (not CSV imports, not archived sites).
 - **A ledger row of this type in any status excludes** (`pending`, `sent`, `failed`,
   `abandoned`): `failed` and stale `pending` rows belong to the retry sweeper, `abandoned` is
   terminal on purpose (a nudge days late has lost its value), and a second insert would hit
@@ -323,6 +353,61 @@ ORDER BY created_at
 - `InMemoryLifecycleEmailCohortQuery` is a **stub** (`_setFirstSiteReminderRecipients`) that
   applies no rule on purpose: an in-memory eligibility would test TypeScript against itself.
   The rules are covered one by one in `SqlLifecycleEmailCohortQuery.integration-spec.ts`.
+
+### Eligibility (first project reminder)
+
+All in SQL, in `SqlLifecycleEmailCohortQuery.findFirstProjectReminderSites(window)`, one row
+per site (`FirstProjectReminderSite`: site id, name, nature and creation date, owner id,
+email and names):
+
+```sql
+SELECT sites.id, sites.name, sites.nature, sites.created_at,
+       users.id, users.email, users.firstname, users.lastname
+FROM sites JOIN users ON users.id = sites.created_by
+WHERE sites.created_at > :createdAfter AND sites.created_at <= :createdAtOrBefore
+  AND sites.creation_mode IN ('custom', 'express')
+  AND sites.status = 'active'
+  AND users.lifecycle_emails_unsubscribed_at IS NULL
+  AND NOT EXISTS (SELECT 1 FROM reconversion_projects
+                  WHERE reconversion_projects.related_site_id = sites.id)
+  AND NOT EXISTS (SELECT 1 FROM lifecycle_email_deliveries
+                  WHERE lifecycle_email_deliveries.user_id = users.id
+                    AND lifecycle_email_deliveries.email_type = 'first-project-reminder'
+                    AND lifecycle_email_deliveries.related_entity_id = sites.id)
+ORDER BY sites.created_at, sites.id
+```
+
+Triggering is **narrow**, suppression **generous** (the asymmetry in DESIGN.md):
+
+- **Only custom and express sites trigger.** An allowlist, not `<> 'csv-import'`: a CSV
+  import of forty sites sends nothing (rather than forty emails), and a future creation mode
+  or a `NULL` legacy value does not start sending by default.
+- **Only active sites trigger** (`status = 'active'`, so a `NULL` status does not either):
+  archiving a site is a signal of disengagement.
+- **Any project on the site suppresses**, archived included: no filter on
+  `reconversion_projects.status`, on purpose. A project on another site does not.
+- **A ledger row of this type for that site, in any status, excludes** (`pending`, `sent`,
+  `failed`, `abandoned`, as for the first site reminder). It is matched on the site, not
+  only on the user: a reminder for one site does not suppress another site's.
+- **Owner unsubscribed** excludes. A site whose `created_by` matches no user (there is no
+  FK) is silently skipped by the join: there is no one to email.
+- **One row per site, never grouped by user**: two eligible sites mean two emails (six months
+  of production data: 90.7 % of user-mornings have a single eligible site). The ledger row
+  is per site, so batching could be added later without a schema change.
+- `nature` is parsed with `siteNatureSchema`: an unknown value throws, which fails this
+  cohort for the run (logged, exit code 1) rather than guessing a wording.
+- `InMemoryLifecycleEmailCohortQuery._setFirstProjectReminderSites` is a stub too; the rules
+  are covered one by one in the integration spec.
+
+The email (`firstProjectReminderEmail.ts`): subject `<site name> : et si vous renseigniez
+votre projet d’aménagement ?` (non-breaking spaces before `:` and `?`, the name
+whitespace-collapsed onto one line); the first paragraph says `une friche` / `cette friche`
+for a `FRICHE` and `un site` / `ce site` for every other nature; the primary button
+`Renseigner mon projet` links to `${WEBAPP_URL}/creer-projet?siteId=<site id>`; then the
+contact paragraph and `buildContactSections`. The body does not repeat the site name (as in
+the mockup). The mockup's friche-only compatibility offer (paragraph + secondary button) is
+**not built** in v1: no page evaluates an existing site yet. The copy to proofread is marked
+`TODO(product)`.
 
 ### What a run does
 
@@ -354,6 +439,22 @@ for user <userId>`, counted `errored`, and the run continues;
 - **Idempotency**: a second run the same day finds no one (the first run's rows exclude them);
   two overlapping runs are stopped by the sender's `hasDelivery` check or, at worst, by the
   unique index (counted `errored`, no second email).
+
+`SendFirstProjectRemindersUseCase.execute({ dryRun })` does the same per **site**, with the
+same summary shape (`eligible` counts sites):
+
+1. `First project reminders: sites created after <ISO> and at or before <ISO>`;
+2. dry run: one `[DRY RUN] Eligible for first project reminder: siteId=…, siteName=…,
+siteNature=…, userId=…, email=…, siteCreatedAt=<ISO>` line per site;
+3. contact missing: `Lifecycle email contact is not configured (LIFECYCLE_EMAILS_CONTACT_*):
+first project reminders not sent`, `skippedContactNotConfigured` = every site, nothing
+   written;
+4. `LifecycleEmailSender.send({ userId, emailType: "first-project-reminder", relatedEntityId:
+site.siteId, message })` per site; a throw logs `First project reminder failed for site
+<siteId> (user <userId>)` and counts `errored`;
+5. `First project reminder summary: eligible=N, sent=N, failed=N, skippedDisabled=N,
+skippedUnsubscribed=N, skippedAlreadySent=N, skippedContactNotConfigured=N, errored=N`.
+
 - **Script**: one `try/catch` per reminder use case, so one cohort failing does not stop the
   next; a failure logs `sendDailyLifecycleReminders: <UseCase> failed` and sets
   `process.exitCode = 1`. Booting the app context needs `LIFECYCLE_EMAILS_UNSUBSCRIBE_SECRET`.
@@ -446,14 +547,20 @@ flag, so there is nothing to check and nothing to write even if the code tried. 
 `LifecycleEmailSender`. Do not route it through that sender, and do not add a "preview
 mode" / `skipLedger` flag to `LifecycleEmailSender` to make it dual-purpose — a flag that
 turns the compliance checks off there is exactly the failure mode the sender
-(ADR-0016) exists to prevent.
+([ADR-0016](adr/0016-route-all-lifecycle-emails-through-a-single-sender-with-an-idempotent-delivery-ledger.md)) exists to prevent.
 
 Sample data for each email type lives in
 `core/previews/lifecycleEmailPreviewSamples.ts`, keyed by an exhaustive `switch` over
 `LifecycleEmailType` with no `default` case — so a later ticket adding a new email type
-(a reminder, the impacts summary) fails typecheck there until it adds its sample. Samples
-exist for `"welcome"` and `"first-site-reminder"` (`--type=first-site-reminder`, greeting the
-sample user `Camille Durand`). The reminder is signed by the configured contact when
+(a reminder, the impacts summary) fails typecheck there until it adds its sample.
+`buildLifecycleEmailPreviews` returns **every sample of the type**, and the script sends each
+of them to each recipient. `"welcome"` and `"first-site-reminder"` have one sample
+(`--type=first-site-reminder`, greeting the sample user `Camille Durand`);
+`"first-project-reminder"` has two, since its first paragraph depends on the site's nature:
+`PREVIEW_SAMPLE_FRICHE` (`Ancienne carrière d’argile de Blajan`, the mockup's site) and
+`PREVIEW_SAMPLE_NON_FRICHE_SITE` (`Exploitation agricole des Quatre Chemins`, an agricultural
+site). Their ids match no real site, so the `Renseigner mon projet` link of a preview leads to
+an error page (nothing real is touched, like the preview's unsubscribe link). The reminder is signed by the configured contact when
 `LIFECYCLE_EMAILS_CONTACT_*` is set (a reviewer on staging sees the real signature), and by the
 invented `PREVIEW_SAMPLE_CONTACT` (an `example.com` address) otherwise.
 
@@ -463,6 +570,8 @@ recipient is logged, so a preview run is auditable from the logs even though it 
 database trace.
 
 ## Unsubscribe flag
+
+Decision record: [ADR-0017](adr/0017-opt-out-lifecycle-emails-with-a-stateless-hmac-unsubscribe-token.md).
 
 `users.lifecycle_emails_unsubscribed_at` (migration
 `20260922124313_add-lifecycle-emails-unsubscribed-at-to-users-table.ts`) is a nullable
@@ -650,12 +759,22 @@ paragraphs, the `Renseigner mon site` button to `new URL("/creer-site-foncier", 
 the contact paragraph, then `buildContactSections(contact, webappUrl)` from
 `contactSections.ts`: the secondary `Contacter <prénom> de Bénéfriches` button
 (`mailto:<contact email>`, no subject) and the signature (`Bénéfriches` linked to `webappUrl`,
-followed by ` (Externe)`). Ticket 06 reuses `buildContactSections` as is.
+followed by ` (Externe)`). The greeting and the `NBSP` constant live in
+`reminderGreeting.ts`, shared with the first project reminder.
 
 The copy follows French typography: a non-breaking space before `!` (subject) and `?`
 (second paragraph), and curly apostrophes throughout. Proofreading points awaiting product
 ("Hier", `pré-remplies`, `accompagné`, `(Externe)`) are marked `TODO(product)` next to the
 strings.
+
+### `firstProjectReminderEmail.ts`
+
+`buildFirstProjectReminderEmail({ firstName, lastName, site: { id, name, nature }, contact,
+webappUrl, unsubscribeUrl })`: see [Eligibility (first project
+reminder)](#eligibility-first-project-reminder) for its content. Same greeting, typography
+and contact block as the first site reminder. Its `TODO(product)` points: "Hier", the
+non-friche wording (`un site` / `ce site`, ours, not the mockup's), the site name absent from
+the body, `pré-remplies`, `accompagné`.
 
 ## Testing conventions specific to this module
 
@@ -669,9 +788,17 @@ strings.
   `SqlLifecycleEmailCohortQuery.integration-spec.ts` (one test per eligibility rule and
   boundary) and `sendFirstSiteReminders.integration-spec.ts` (against real SQL). Manual QA
   guide: `docs/qa/lifecycle-emails/05.md`.
+- The first project reminder: `firstProjectReminderEmail.spec.ts` (full plain text for a
+  friche and a non-friche site, one test per non-friche nature, no compatibility offer),
+  `sendFirstProjectReminders.usecase.spec.ts` (one email per site, dry run, kill switch,
+  missing contact, per-site errors), the `findFirstProjectReminderSites` tests in
+  `SqlLifecycleEmailCohortQuery.integration-spec.ts` (one per rule),
+  `SqlLifecycleEmailSiteQuery.integration-spec.ts` and
+  `sendFirstProjectReminders.integration-spec.ts` (the ticket's scenarios against real SQL).
+  Manual QA guide: `docs/qa/lifecycle-emails/06.md`.
 - The retry sweeper: `retryLifecycleEmailDeliveries.usecase.spec.ts` (orchestration, summary,
-  per-row errors, and the retried welcome and first site reminder messages equal the ones
-  their send use cases send), `SqlLifecycleEmailDeliveryQuery.integration-spec.ts` (candidate predicate),
+  per-row errors, and the retried welcome, first site reminder and first project reminder
+  messages equal the ones their send use cases send; a deleted site fails, then is abandoned), `SqlLifecycleEmailDeliveryQuery.integration-spec.ts` (candidate predicate),
   `SqlLifecycleEmailDeliveryRepository.integration-spec.ts` (claim, abandon) and
   `retryLifecycleEmailDeliveries.integration-spec.ts` (against real SQL). Manual QA guide:
   `docs/qa/lifecycle-emails/04.md`.
@@ -708,11 +835,11 @@ strings.
   and no overlapping-key secret rotation: rotating `LIFECYCLE_EMAILS_UNSUBSCRIBE_SECRET`
   breaks every link already sent.
 - The footer and page wording are drafts (`TODO(product)`), pending product review.
-- `lifecycleEmailTypeSchema` has `"welcome"` and `"first-site-reminder"`; the first project
-  reminder (06) and the impacts summary (08) are planned but not implemented.
-- `related_entity_id` exists in the schema for future entity-scoped email types but is
-  always `NULL` today (both current emails are account-scoped).
-- No e2e test for the reminder: the daily job is not run on the e2e stack (DESIGN.md: one
+- `lifecycleEmailTypeSchema` has `"welcome"`, `"first-site-reminder"` and
+  `"first-project-reminder"`; the impacts summary (08) is planned but not implemented.
+- The first project reminder's friche-only compatibility offer (mockup) is not built in v1:
+  no page evaluates compatibility for an existing site yet.
+- No e2e test for the reminders: the daily job is not run on the e2e stack (DESIGN.md: one
   e2e assertion for the whole feature, the welcome email).
 - The reminder copy is a draft pending product review (`TODO(product)`), and the job runs every
   day rather than on the "working-day rhythm" of DESIGN.md (see [Daily reminder job](#daily-reminder-job)).

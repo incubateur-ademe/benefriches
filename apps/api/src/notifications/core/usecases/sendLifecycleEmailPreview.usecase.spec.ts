@@ -6,8 +6,11 @@ import { HmacUnsubscribeTokenService } from "src/notifications/adapters/secondar
 import type { LifecycleEmailContact } from "src/notifications/core/models/lifecycleEmailContact";
 import {
   PREVIEW_SAMPLE_CONTACT,
+  PREVIEW_SAMPLE_FRICHE,
+  PREVIEW_SAMPLE_NON_FRICHE_SITE,
   PREVIEW_SAMPLE_USER,
 } from "src/notifications/core/previews/lifecycleEmailPreviewSamples";
+import { buildFirstProjectReminderEmail } from "src/notifications/core/templates/firstProjectReminderEmail";
 import { buildFirstSiteReminderEmail } from "src/notifications/core/templates/firstSiteReminderEmail";
 import { buildUnsubscribeUrl } from "src/notifications/core/templates/unsubscribeUrl";
 import { SpyLogger } from "src/shared-kernel/adapters/logger/SpyLogger";
@@ -65,7 +68,7 @@ describe("SendLifecycleEmailPreview UseCase", () => {
     const failure = result as FailureResult<"UnknownEmailType", { validEmailTypes: string[] }>;
     assert.strictEqual(failure.getError(), "UnknownEmailType");
     assert.deepStrictEqual(failure.getIssues(), {
-      validEmailTypes: ["welcome", "first-site-reminder"],
+      validEmailTypes: ["welcome", "first-site-reminder", "first-project-reminder"],
     });
     assert.strictEqual(mailer.sentEmails.length, 0);
   });
@@ -83,13 +86,13 @@ describe("SendLifecycleEmailPreview UseCase", () => {
       (
         result as SuccessResult<{
           emailType: string;
-          subject: string;
+          subjects: string[];
           recipients: string[];
         }>
       ).getData(),
       {
         emailType: "welcome",
-        subject: "Bienvenue chez Bénéfriches",
+        subjects: ["Bienvenue chez Bénéfriches"],
         recipients: ["alice@example.com", "bob@example.com"],
       },
     );
@@ -198,5 +201,53 @@ describe("SendLifecycleEmailPreview UseCase", () => {
         }),
       },
     ]);
+  });
+
+  it("sends a friche and a non-friche first project reminder preview to each recipient", async () => {
+    const { usecase, mailer } = setup({ contact });
+    const unsubscribeUrl = buildUnsubscribeUrl(
+      webappUrl,
+      tokenService.sign(PREVIEW_SAMPLE_USER.id),
+    );
+
+    const result = await usecase.execute({
+      emailType: "first-project-reminder",
+      recipients: ["relecteur@example.com"],
+    });
+
+    const fricheEmail = buildFirstProjectReminderEmail({
+      firstName: "Camille",
+      lastName: "Durand",
+      site: PREVIEW_SAMPLE_FRICHE,
+      contact,
+      webappUrl,
+      unsubscribeUrl,
+    });
+    const nonFricheEmail = buildFirstProjectReminderEmail({
+      firstName: "Camille",
+      lastName: "Durand",
+      site: PREVIEW_SAMPLE_NON_FRICHE_SITE,
+      contact,
+      webappUrl,
+      unsubscribeUrl,
+    });
+    assert.deepStrictEqual(mailer.sentEmails, [
+      { to: "relecteur@example.com", ...fricheEmail },
+      { to: "relecteur@example.com", ...nonFricheEmail },
+    ]);
+    assert.deepStrictEqual(
+      (
+        result as SuccessResult<{
+          emailType: string;
+          subjects: string[];
+          recipients: string[];
+        }>
+      ).getData(),
+      {
+        emailType: "first-project-reminder",
+        subjects: [fricheEmail.subject, nonFricheEmail.subject],
+        recipients: ["relecteur@example.com"],
+      },
+    );
   });
 });

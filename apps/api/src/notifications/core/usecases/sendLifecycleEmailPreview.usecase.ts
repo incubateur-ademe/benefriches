@@ -6,7 +6,7 @@ import {
 } from "src/notifications/core/models/lifecycleEmail";
 import type { LifecycleEmailContact } from "src/notifications/core/models/lifecycleEmailContact";
 import {
-  buildLifecycleEmailPreview,
+  buildLifecycleEmailPreviews,
   PREVIEW_SAMPLE_CONTACT,
   PREVIEW_SAMPLE_USER,
 } from "src/notifications/core/previews/lifecycleEmailPreviewSamples";
@@ -23,7 +23,8 @@ type Request = {
 
 type Response = {
   emailType: LifecycleEmailType;
-  subject: string;
+  // One per sample, in sending order (two for the first project reminder).
+  subjects: string[];
   recipients: string[];
 };
 
@@ -85,7 +86,9 @@ export class SendLifecycleEmailPreviewUseCase implements UseCase<
     );
     // The configured contact when there is one (a reviewer on staging sees the real
     // signature), the invented sample otherwise, so a preview works where nothing is set.
-    const email = buildLifecycleEmailPreview(
+    // Every sample of the type: a type whose content varies (first project reminder: friche
+    // or not) has one per variant.
+    const emails = buildLifecycleEmailPreviews(
       parsedEmailType.data,
       this.webappUrl,
       unsubscribeUrl,
@@ -93,14 +96,16 @@ export class SendLifecycleEmailPreviewUseCase implements UseCase<
     );
 
     for (const recipient of recipients) {
-      try {
-        await this.mailer.send({ to: recipient, ...email });
-      } catch (error) {
-        this.logger.error(
-          `Lifecycle email preview failed: type=${parsedEmailType.data}, to=${recipient}`,
-          error,
-        );
-        return fail("MailerFailed");
+      for (const email of emails) {
+        try {
+          await this.mailer.send({ to: recipient, ...email });
+        } catch (error) {
+          this.logger.error(
+            `Lifecycle email preview failed: type=${parsedEmailType.data}, to=${recipient}`,
+            error,
+          );
+          return fail("MailerFailed");
+        }
       }
       this.logger.info(
         `Lifecycle email preview sent: type=${parsedEmailType.data}, to=${recipient}`,
@@ -109,9 +114,13 @@ export class SendLifecycleEmailPreviewUseCase implements UseCase<
 
     const durationMs = Date.now() - startedAt;
     this.logger.info(
-      `Lifecycle email preview summary (durationMs=${durationMs}): type=${parsedEmailType.data}, recipients=${recipients.length}, sent=${recipients.length}`,
+      `Lifecycle email preview summary (durationMs=${durationMs}): type=${parsedEmailType.data}, recipients=${recipients.length}, sent=${recipients.length * emails.length}`,
     );
 
-    return success({ emailType: parsedEmailType.data, subject: email.subject, recipients });
+    return success({
+      emailType: parsedEmailType.data,
+      subjects: emails.map((email) => email.subject),
+      recipients,
+    });
   }
 }

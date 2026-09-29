@@ -1,6 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 
 import { AppModule } from "src/app.module";
+import { SendFirstProjectRemindersUseCase } from "src/notifications/core/usecases/sendFirstProjectReminders.usecase";
 import { SendFirstSiteRemindersUseCase } from "src/notifications/core/usecases/sendFirstSiteReminders.usecase";
 
 // Daily lifecycle reminders job (apps/api/scalingo/cron.json): `0 8 * * *`, every day at
@@ -13,10 +14,16 @@ import { SendFirstSiteRemindersUseCase } from "src/notifications/core/usecases/s
 // row), whatever LIFECYCLE_EMAILS_ENABLED says: run it against production data before
 // turning the kill switch on. Without the flag, a no-op when LIFECYCLE_EMAILS_ENABLED is off.
 //
-// Each reminder cohort runs in its own try/catch, so one failing does not stop the next;
-// a failure sets a non-zero exit code so the scheduler shows the failed run. Ticket 06
-// appends the first project reminder.
-const REMINDER_USE_CASES = [SendFirstSiteRemindersUseCase] as const;
+// Two reminder cohorts, in order: the first site reminder (users registered 24–72 h ago with
+// no site) and the first project reminder (one per custom or express active site created
+// 24–72 h ago with no project). A user is never in both on the same run: the first requires
+// no site at all, the second a site. Each cohort runs in its own try/catch, so one failing
+// does not stop the next; a failure sets a non-zero exit code so the scheduler shows the
+// failed run.
+const REMINDER_USE_CASES = [
+  SendFirstSiteRemindersUseCase,
+  SendFirstProjectRemindersUseCase,
+] as const;
 
 async function bootstrap() {
   const dryRun = process.argv.includes("--dry-run");
