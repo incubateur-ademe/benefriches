@@ -36,24 +36,15 @@ Report any critical, high, or moderate vulnerabilities.
 
 #### Secret Detection
 
-Use Grep to search for secret patterns from security-rules.md section 1.
-Exclude: `.env.example`, `*.spec.ts`, `*.test.ts`, documentation files.
+Use Grep to search for the secret patterns of `security-rules.md` section 1, with the exclusions listed there.
 
 #### Vulnerability Pattern Scan
 
-| Pattern | What It Finds | Files to Check |
-|---------|---------------|----------------|
-| `.raw(` without `?` | SQL injection | `*.repository.ts`, `*Query.ts` |
-| `whereRaw(` without bindings | SQL injection | Same |
-| `dangerouslySetInnerHTML` | XSS | `*.tsx` |
-| `eval(` | Code injection | `*.ts`, `*.js` |
-| `child_process.exec` with variables | Command injection | `*.ts` |
-| `console.log` with sensitive context | Data exposure | Auth-related files |
-| Missing `@UseGuards` | Auth bypass | `*.controller.ts` |
+Run every row of the "Pattern scan" table at the end of `security-rules.md`, then read each hit before reporting it.
 
 ### Step 3: Apply Security Rules
 
-Apply all 12 rule sections from `security-rules.md` to the changed code, then evaluate against the OWASP Top 10 checklist and Benefriches-specific checks.
+Check the changed code against each section of `security-rules.md` (Benefriches' known weak spots and where each control lives), then apply general OWASP Top 10 knowledge to anything it doesn't cover.
 
 ### Step 4: Generate Report
 
