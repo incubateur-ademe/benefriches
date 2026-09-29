@@ -20,17 +20,20 @@ The module follows the standard Clean/Hexagonal layout:
 ```
 notifications/
 ├── core/
-│   ├── models/lifecycleEmail.ts              # LifecycleEmailType, delivery status, LifecycleEmailDelivery
+│   ├── models/lifecycleEmail.ts              # LifecycleEmailType, delivery status, LifecycleEmailDelivery, LIFECYCLE_EMAIL_MAX_ATTEMPTS
 │   ├── gateways/                             # Mailer, LifecycleEmailDeliveryRepository/Query, LifecycleEmailRecipientQuery,
 │   │                                         # LifecycleEmailSubscriptionRepository, UnsubscribeTokenService
 │   ├── services/lifecycleEmailSender.ts       # LifecycleEmailSender — the mandatory choke point
 │   ├── templates/                            # emailLayout.ts (shared layout) + welcomeEmail.ts + unsubscribeUrl.ts
-│   └── usecases/                             # sendWelcomeEmail, sendLifecycleEmailPreview, unsubscribeFromLifecycleEmails
+│   └── usecases/                             # sendWelcomeEmail, sendLifecycleEmailPreview, unsubscribeFromLifecycleEmails,
+│                                             # retryLifecycleEmailDeliveries (the retry sweeper)
 └── adapters/
     ├── primary/
     │   ├── notifications.module.ts
     │   ├── notifications.controller.ts        # POST /api/lifecycle-emails/unsubscribe (public)
-    │   └── sendWelcomeEmailOnUserAccountCreated.handler.ts
+    │   ├── sendWelcomeEmailOnUserAccountCreated.handler.ts
+    │   ├── sendLifecycleEmailPreview.script.ts       # manual preview script
+    │   └── retryLifecycleEmailDeliveries.script.ts   # hourly retry sweeper (cron)
     └── secondary/
         ├── lifecycle-email-delivery/          # Sql/InMemory Repository (write) + Query (read)
         ├── lifecycle-email-recipient/         # Sql/InMemory LifecycleEmailRecipientQuery
@@ -78,9 +81,29 @@ and returns one of:
   the unique index (see below) would permanently block the email once re-enabled.
 - `"skipped-unsubscribed"` — the recipient has `unsubscribedAt` set.
 - `"skipped-already-sent"` — a delivery row already exists for `(userId, emailType,
-relatedEntityId)`, in **any** status (`pending`/`sent`/`failed`). A `"failed"` row is
+relatedEntityId)`, in **any** status (`pending`/`sent`/`failed`/`abandoned`). A `"failed"` row is
   deliberately treated as "already handled" here, not retried inline — see
   [Failure handling and retries](#failure-handling-and-retries).
+
+`LifecycleEmailSender.retry(delivery, render)` is the retry sweeper's path through the same
+choke point. It updates the existing ledger row and never inserts one. `render` is a lazy
+`(recipient) => Promise<LifecycleEmailMessage>`, called only once the row is claimed, so
+skipped rows are never rendered. In order:
+
+1. kill switch off → `"skipped-disabled"` (no read, no write);
+2. `delivery.attempts >= LIFECYCLE_EMAIL_MAX_ATTEMPTS` (only a `pending` row stranded by a
+   crash during its last allowed attempt) → row marked `abandoned` with
+   `"Stranded in pending after the last allowed attempt"` → `"abandoned"`, no send (we
+   can't know whether that attempt went out);
+3. recipient gone → `"skipped-recipient-not-found"`; recipient unsubscribed →
+   `"skipped-unsubscribed"`;
+4. optimistic claim (`claimForRetry`) lost to another run → `"skipped-already-claimed"`;
+5. render + send; a throw from either → `markFailed` → `"failed"`, or `markAbandoned` →
+   `"abandoned"` if that was the last allowed attempt. Never rethrows;
+6. otherwise `markSent` → `"sent"`. The previous `error_message` is kept (the row then reads
+   "failed with X, then sent").
+
+`send()` writes `attempts = 1` and `last_attempted_at = created_at` on insert.
 
 Its constructor takes the gateway interfaces (`LifecycleEmailDeliveryRepository`,
 `LifecycleEmailDeliveryQuery`, `LifecycleEmailRecipientQuery`, `Mailer`), plus
@@ -93,22 +116,26 @@ and its own use case, but call through this same `LifecycleEmailSender` — that
 keeps the opt-out check and the ledger write from being reimplemented (and potentially
 forgotten) per email type. The use case also builds the recipient's signed unsubscribe link
 and passes it to the template (see [Email templates](#email-templates-emaillayout--per-email-builders)).
+Each new type also needs a re-render `case` in the retry sweeper and a preview sample (see
+[Failure handling and retries](#failure-handling-and-retries) and [Preview script](#preview-script)).
 
 ## The delivery ledger
 
 Table: `lifecycle_email_deliveries` (migration
 `20260922124312_create-table-lifecycle-email-deliveries.ts`).
 
-| Column              | Type            | Notes                                                                                                                                                                |
-| ------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                | uuid, PK        |                                                                                                                                                                      |
-| `user_id`           | uuid            | FK → `users.id`, `ON DELETE CASCADE`                                                                                                                                 |
-| `email_type`        | string          | Backed by `lifecycleEmailTypeSchema` (currently only `"welcome"`)                                                                                                    |
-| `related_entity_id` | uuid, null      | No `related_entity_type` column — `email_type` alone determines what kind of entity this is (a site, a reconversion project, …) once entity-scoped email types exist |
-| `status`            | string          | `"pending" \| "sent" \| "failed"`, backed by `lifecycleEmailDeliveryStatusSchema`                                                                                    |
-| `created_at`        | timestamp       |                                                                                                                                                                      |
-| `sent_at`           | timestamp, null | set by `markSent`                                                                                                                                                    |
-| `error_message`     | text, null      | set by `markFailed`                                                                                                                                                  |
+| Column              | Type            | Notes                                                                                                                                                                                    |
+| ------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                | uuid, PK        |                                                                                                                                                                                          |
+| `user_id`           | uuid            | FK → `users.id`, `ON DELETE CASCADE`                                                                                                                                                     |
+| `email_type`        | string          | Backed by `lifecycleEmailTypeSchema` (currently only `"welcome"`)                                                                                                                        |
+| `related_entity_id` | uuid, null      | No `related_entity_type` column — `email_type` alone determines what kind of entity this is (a site, a reconversion project, …) once entity-scoped email types exist                     |
+| `status`            | string          | `"pending" \| "sent" \| "failed" \| "abandoned"`, backed by `lifecycleEmailDeliveryStatusSchema`. `failed` = will be retried; `abandoned` = gave up after `LIFECYCLE_EMAIL_MAX_ATTEMPTS` |
+| `created_at`        | timestamp       |                                                                                                                                                                                          |
+| `sent_at`           | timestamp, null | set by `markSent`                                                                                                                                                                        |
+| `error_message`     | text, null      | set by `markFailed` / `markAbandoned`; kept when a retry then succeeds                                                                                                                   |
+| `attempts`          | integer         | default `1`; incremented by each retry claim (migration `20260929114815_add-attempts-and-last-attempted-at-to-lifecycle-email-deliveries-table.ts`)                                      |
+| `last_attempted_at` | timestamp       | not null; set on insert and on every retry claim. Staleness of a `pending` row is measured from it (backfilled from `created_at`)                                                        |
 
 The domain model (`core/models/lifecycleEmail.ts`) mirrors this 1:1 as
 `LifecycleEmailDelivery`, camelCased.
@@ -156,11 +183,56 @@ sent" check for every account-scoped email.
 
 ### Failure handling and retries
 
-A `"failed"` delivery row is _not_ retried by `LifecycleEmailSender` itself — a later
-sweeper (not yet built) is expected to own retrying `"failed"`/stranded `"pending"` rows.
-`LifecycleEmailDeliveryQuery.hasDelivery()` matches on any status specifically so that a
-naive retry-on-replay doesn't attempt a second insert and crash on the unique index instead
-of going through a dedicated retry path.
+A `"failed"` delivery row is _not_ retried by `LifecycleEmailSender.send()` —
+`LifecycleEmailDeliveryQuery.hasDelivery()` matches on any status so that an event replay
+never attempts a second insert (and crashes on the unique index). Retries belong to the
+**hourly retry sweeper**:
+
+- **Script**: `adapters/primary/retryLifecycleEmailDeliveries.script.ts`, registered in
+  `apps/api/scalingo/cron.json` at `15 * * * *` (UTC, off the top of the hour). No flags;
+  it boots the app context, runs `RetryLifecycleEmailDeliveriesUseCase`, and logs one
+  summary line:
+
+  ```
+  Lifecycle email retry summary: candidates=N, sent=N, failed=N, abandoned=N, skippedDisabled=N, skippedUnsubscribed=N, skippedRecipientNotFound=N, skippedAlreadyClaimed=N, errored=N
+  ```
+
+  Hourly because each run boots a full app context and
+  the volume is ~20 emails a month. The cron container inherits the app's environment, so it
+  needs `LIFECYCLE_EMAILS_UNSUBSCRIBE_SECRET` (boot fails without it) and honours
+  `LIFECYCLE_EMAILS_ENABLED` (off → every candidate is `skippedDisabled`, nothing written).
+
+- **Candidates** (`LifecycleEmailDeliveryQuery.findRetryCandidates`): every `failed` row,
+  plus `pending` rows whose `last_attempted_at` is older than
+  `STALE_PENDING_THRESHOLD_MINUTES = 15`. Users who unsubscribed are filtered out in SQL (so
+  their rows don't churn every hour; the sender re-checks anyway), and so are email types
+  the code no longer knows (so parsing can't kill the run).
+- **Stale threshold**: `SmtpMailer`'s timeouts (5s / 5s / 10s) cap an in-flight send at
+  ~20s; 15 minutes is far beyond that, so a `pending` row written by a listener that is still
+  sending is never picked up, and a stranded one is retried on the next hourly run. It is
+  measured from `last_attempted_at`, not `created_at`, so a row another sweeper just claimed
+  doesn't look stale.
+- **Cap**: `LIFECYCLE_EMAIL_MAX_ATTEMPTS = 5` (1 inline send + 4 hourly retries, ≈ 4 h). The
+  failing last attempt writes `abandoned`, a terminal status the sweeper never picks up and
+  that `hasDelivery` still counts, so the row stays the single row for that email. No
+  back-off beyond the hourly cadence.
+- **Concurrency**: the claim is one conditional `UPDATE … SET status = 'pending', attempts =
+attempts + 1, last_attempted_at = ? WHERE id = ? AND status = ? AND attempts = ?`. When two
+  runs overlap, Postgres makes the second `UPDATE` re-check its `WHERE` after the first
+  commits; it updates nothing and reports `skipped-already-claimed`. No lock is held across
+  the SMTP call. Accepted residual risk: a crash after the SMTP server accepted the message
+  but before `markSent` leaves a stale `pending` that gets retried (possible duplicate).
+- **Errors**: candidates are processed sequentially; a thrown error on one row (e.g. a DB
+  error) is logged with the delivery id, counted as `errored`, and the run continues.
+- **Re-rendering**: the ledger stores no rendered message, so
+  `RetryLifecycleEmailDeliveriesUseCase.renderMessage()` rebuilds it from the row and the
+  recipient's _current_ address, with an exhaustive `switch (delivery.emailType)` and no
+  `default` (like the preview samples). Each case calls the same template builder as the
+  type's send use case (`buildWelcomeEmail` for `welcome`, with the unsubscribe link signed
+  for `delivery.userId`). **Adding an email type** fails the typecheck there until you add its
+  `case`, plus whatever read gateway it needs injected into the use case; when composition
+  needs data loading, extract a `compose…` function shared by the send use case and the
+  retry case rather than duplicating it.
 
 ## Kill switch: `LIFECYCLE_EMAILS_ENABLED`
 
@@ -411,7 +483,13 @@ never a hardcoded domain — so the link resolves correctly per environment.
 - `LifecycleEmailSender` is unit-tested (`lifecycleEmailSender.spec.ts`) entirely against
   `InMemory*` gateways and `FakeMailer`, covering every outcome (`sent`, `failed`,
   `skipped-disabled`, `skipped-unsubscribed`, `skipped-already-sent`) plus the
-  entity-scoped-vs-account-scoped dedup distinction.
+  entity-scoped-vs-account-scoped dedup distinction, and every `retry()` outcome.
+- The retry sweeper: `retryLifecycleEmailDeliveries.usecase.spec.ts` (orchestration, summary,
+  per-row errors, and the retried welcome message equals the one `SendWelcomeEmailUseCase`
+  sends), `SqlLifecycleEmailDeliveryQuery.integration-spec.ts` (candidate predicate),
+  `SqlLifecycleEmailDeliveryRepository.integration-spec.ts` (claim, abandon) and
+  `retryLifecycleEmailDeliveries.integration-spec.ts` (against real SQL). Manual QA guide:
+  `docs/qa/lifecycle-emails/04.md`.
 - `FakeMailer` (`adapters/secondary/mailer/FakeMailer.ts`) records `sentEmails` and exposes
   `simulateFailure(message)` / `_reset()` for tests that share one instance across multiple
   cases against a single NestJS app (see the integration spec's `before`/`beforeEach`
@@ -445,7 +523,6 @@ never a hardcoded domain — so the link resolves correctly per environment.
   and no overlapping-key secret rotation: rotating `LIFECYCLE_EMAILS_UNSUBSCRIBE_SECRET`
   breaks every link already sent.
 - The footer and page wording are drafts (`TODO(product)`), pending product review.
-- No retry sweeper for `"failed"`/stranded `"pending"` rows.
 - `lifecycleEmailTypeSchema` currently only has `"welcome"`; reminder and impacts-summary
   email types are planned but not implemented.
 - `related_entity_id` exists in the schema for future entity-scoped email types but is

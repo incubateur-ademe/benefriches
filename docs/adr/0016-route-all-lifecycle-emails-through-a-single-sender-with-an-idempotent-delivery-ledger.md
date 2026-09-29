@@ -39,7 +39,7 @@ Add a `notifications` module whose core is a single `LifecycleEmailSender` servi
 ### Negative
 
 - Registration (and every future lifecycle-email-triggering request) now does synchronous SMTP I/O inline; mitigated with 5s/5s/10s connect/greeting/socket timeouts and a catch-all, but still couples request latency to the mailer.
-- Ledger writes add DB load and two extra partial indexes per lifecycle-email-capable table interaction; a "failed" delivery is not retried automatically yet — that's explicitly deferred to a later sweeper ticket, so failed sends are currently silent beyond a log line.
+- Ledger writes add DB load and two extra partial indexes per lifecycle-email-capable table interaction; a "failed" (or stranded "pending") delivery is retried by the hourly sweeper (`retryLifecycleEmailDeliveries.script.ts`, through `LifecycleEmailSender.retry()`), which updates the same ledger row and marks it "abandoned" after `LIFECYCLE_EMAIL_MAX_ATTEMPTS` — see `docs/lifecycle-emails.md`.
 - New email types must remember to call LifecycleEmailSender rather than the Mailer gateway directly — nothing in the type system prevents a future use case from bypassing it, only the module's own comments and code review.
 
 ## Links

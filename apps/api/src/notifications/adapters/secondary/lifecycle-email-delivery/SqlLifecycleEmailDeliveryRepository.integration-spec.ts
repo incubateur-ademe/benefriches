@@ -6,6 +6,7 @@ import { v4 as uuid } from "uuid";
 
 import { mapUserToSqlRow } from "src/auth/adapters/user-repository/SqlUserRepository";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
+import type { SqlLifecycleEmailDelivery } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
 import { SqlLifecycleEmailDeliveryRepository } from "./SqlLifecycleEmailDeliveryRepository";
@@ -42,6 +43,8 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
       createdAt: new Date("2026-01-01T10:00:00.000Z"),
       sentAt: null,
       errorMessage: null,
+      attempts: 1,
+      lastAttemptedAt: new Date("2026-01-01T10:00:00.000Z"),
     });
 
     const rows = await sqlConnection("lifecycle_email_deliveries").select().where("id", deliveryId);
@@ -57,6 +60,8 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
       created_at: new Date("2026-01-01T10:00:00.000Z"),
       sent_at: null,
       error_message: null,
+      attempts: 1,
+      last_attempted_at: new Date("2026-01-01T10:00:00.000Z"),
     });
   });
 
@@ -71,6 +76,8 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
       createdAt: new Date("2026-01-01T10:00:00.000Z"),
       sentAt: null,
       errorMessage: null,
+      attempts: 1,
+      lastAttemptedAt: new Date("2026-01-01T10:00:00.000Z"),
     });
 
     await repository.markSent(deliveryId, new Date("2026-01-01T10:05:00.000Z"));
@@ -86,6 +93,8 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
         related_entity_id: null,
         status: "sent",
         error_message: null,
+        attempts: 1,
+        last_attempted_at: new Date("2026-01-01T10:00:00.000Z"),
       },
       { created_at: isDate, sent_at: isDate },
     );
@@ -103,6 +112,8 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
       createdAt: new Date("2026-01-01T10:00:00.000Z"),
       sentAt: null,
       errorMessage: null,
+      attempts: 1,
+      lastAttemptedAt: new Date("2026-01-01T10:00:00.000Z"),
     });
 
     await repository.markFailed(deliveryId, "SMTP unreachable");
@@ -119,6 +130,8 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
         status: "failed",
         sent_at: null,
         error_message: "SMTP unreachable",
+        attempts: 1,
+        last_attempted_at: new Date("2026-01-01T10:00:00.000Z"),
       },
       { created_at: isDate },
     );
@@ -134,6 +147,8 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
       createdAt: new Date(),
       sentAt: new Date(),
       errorMessage: null,
+      attempts: 1,
+      lastAttemptedAt: new Date("2026-01-01T10:00:00.000Z"),
     });
 
     await assert.rejects(() =>
@@ -146,6 +161,8 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
         createdAt: new Date(),
         sentAt: null,
         errorMessage: null,
+        attempts: 1,
+        lastAttemptedAt: new Date("2026-01-01T10:00:00.000Z"),
       }),
     );
 
@@ -166,6 +183,8 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
       createdAt: new Date(),
       sentAt: new Date(),
       errorMessage: null,
+      attempts: 1,
+      lastAttemptedAt: new Date("2026-01-01T10:00:00.000Z"),
     });
 
     await repository.save({
@@ -177,6 +196,8 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
       createdAt: new Date(),
       sentAt: new Date(),
       errorMessage: null,
+      attempts: 1,
+      lastAttemptedAt: new Date("2026-01-01T10:00:00.000Z"),
     });
 
     await assert.rejects(() =>
@@ -189,10 +210,130 @@ describe("SqlLifecycleEmailDeliveryRepository integration", () => {
         createdAt: new Date(),
         sentAt: null,
         errorMessage: null,
+        attempts: 1,
+        lastAttemptedAt: new Date("2026-01-01T10:00:00.000Z"),
       }),
     );
 
     const rows = await sqlConnection("lifecycle_email_deliveries").where("user_id", userId);
     assert.strictEqual(rows.length, 2);
+  });
+
+  it("claimForRetry moves the row to pending with one more attempt and returns true", async () => {
+    const deliveryId = uuid();
+    await repository.save({
+      id: deliveryId,
+      userId,
+      emailType: "welcome",
+      relatedEntityId: null,
+      status: "failed",
+      createdAt: new Date("2025-12-31T10:00:00.000Z"),
+      sentAt: null,
+      errorMessage: "SMTP down",
+      attempts: 1,
+      lastAttemptedAt: new Date("2025-12-31T10:00:00.000Z"),
+    });
+
+    const claimed = await repository.claimForRetry({
+      id: deliveryId,
+      expectedStatus: "failed",
+      expectedAttempts: 1,
+      attemptedAt: new Date("2026-01-01T10:00:00.000Z"),
+    });
+
+    assert.strictEqual(claimed, true);
+    const row = await sqlConnection("lifecycle_email_deliveries").where("id", deliveryId).first();
+    assert.deepStrictEqual(row, {
+      id: deliveryId,
+      user_id: userId,
+      email_type: "welcome",
+      related_entity_id: null,
+      status: "pending",
+      created_at: new Date("2025-12-31T10:00:00.000Z"),
+      sent_at: null,
+      error_message: "SMTP down",
+      attempts: 2,
+      last_attempted_at: new Date("2026-01-01T10:00:00.000Z"),
+    } satisfies SqlLifecycleEmailDelivery);
+  });
+
+  it("claimForRetry returns false and changes nothing when the attempts no longer match", async () => {
+    const deliveryId = uuid();
+    await repository.save({
+      id: deliveryId,
+      userId,
+      emailType: "welcome",
+      relatedEntityId: null,
+      status: "failed",
+      createdAt: new Date("2025-12-31T10:00:00.000Z"),
+      sentAt: null,
+      errorMessage: "SMTP down",
+      attempts: 1,
+      lastAttemptedAt: new Date("2025-12-31T10:00:00.000Z"),
+    });
+    await repository.claimForRetry({
+      id: deliveryId,
+      expectedStatus: "failed",
+      expectedAttempts: 1,
+      attemptedAt: new Date("2026-01-01T10:00:00.000Z"),
+    });
+
+    const claimedAgain = await repository.claimForRetry({
+      id: deliveryId,
+      expectedStatus: "failed",
+      expectedAttempts: 1,
+      attemptedAt: new Date("2026-01-01T10:00:30.000Z"),
+    });
+
+    assert.strictEqual(claimedAgain, false);
+    const row = await sqlConnection("lifecycle_email_deliveries").where("id", deliveryId).first();
+    assert.deepStrictEqual(row, {
+      id: deliveryId,
+      user_id: userId,
+      email_type: "welcome",
+      related_entity_id: null,
+      status: "pending",
+      created_at: new Date("2025-12-31T10:00:00.000Z"),
+      sent_at: null,
+      error_message: "SMTP down",
+      attempts: 2,
+      last_attempted_at: new Date("2026-01-01T10:00:00.000Z"),
+    } satisfies SqlLifecycleEmailDelivery);
+  });
+
+  it("sets status to abandoned and records error_message on markAbandoned, leaving sent_at null", async () => {
+    const deliveryId = uuid();
+    await repository.save({
+      id: deliveryId,
+      userId,
+      emailType: "welcome",
+      relatedEntityId: null,
+      status: "pending",
+      createdAt: new Date("2025-12-31T10:00:00.000Z"),
+      sentAt: null,
+      errorMessage: null,
+      attempts: 5,
+      lastAttemptedAt: new Date("2026-01-01T10:00:00.000Z"),
+    });
+
+    await repository.markAbandoned(deliveryId, "Mailbox unavailable");
+
+    const row = await sqlConnection("lifecycle_email_deliveries").where("id", deliveryId).first();
+    assert.ok(row);
+    assertShapeEquals(
+      row,
+      {
+        id: deliveryId,
+        user_id: userId,
+        email_type: "welcome",
+        related_entity_id: null,
+        status: "abandoned",
+        sent_at: null,
+        error_message: "Mailbox unavailable",
+        attempts: 5,
+        last_attempted_at: new Date("2026-01-01T10:00:00.000Z"),
+      },
+      { created_at: isDate },
+    );
   });
 });

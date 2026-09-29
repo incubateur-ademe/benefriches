@@ -15,6 +15,7 @@ import type { LifecycleEmailSubscriptionRepository } from "src/notifications/cor
 import type { Mailer } from "src/notifications/core/gateways/Mailer";
 import type { UnsubscribeTokenService } from "src/notifications/core/gateways/UnsubscribeTokenService";
 import { LifecycleEmailSender } from "src/notifications/core/services/lifecycleEmailSender";
+import { RetryLifecycleEmailDeliveriesUseCase } from "src/notifications/core/usecases/retryLifecycleEmailDeliveries.usecase";
 import { SendLifecycleEmailPreviewUseCase } from "src/notifications/core/usecases/sendLifecycleEmailPreview.usecase";
 import { SendWelcomeEmailUseCase } from "src/notifications/core/usecases/sendWelcomeEmail.usecase";
 import { UnsubscribeFromLifecycleEmailsUseCase } from "src/notifications/core/usecases/unsubscribeFromLifecycleEmails.usecase";
@@ -54,6 +55,31 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
           unsubscribeTokenService,
         ),
       inject: [LifecycleEmailSender, ConfigService, HmacUnsubscribeTokenService],
+    },
+    {
+      provide: RetryLifecycleEmailDeliveriesUseCase,
+      useFactory: (
+        deliveryQuery: LifecycleEmailDeliveryQuery,
+        sender: LifecycleEmailSender,
+        dateProvider: DateProvider,
+        configService: ConfigService,
+        unsubscribeTokenService: UnsubscribeTokenService,
+      ) =>
+        new RetryLifecycleEmailDeliveriesUseCase(
+          deliveryQuery,
+          sender,
+          dateProvider,
+          configService.getOrThrow<string>("WEBAPP_URL"),
+          unsubscribeTokenService,
+          new NestJsAppLogger("RetryLifecycleEmailDeliveries"),
+        ),
+      inject: [
+        SqlLifecycleEmailDeliveryQuery,
+        LifecycleEmailSender,
+        RealDateProvider,
+        ConfigService,
+        HmacUnsubscribeTokenService,
+      ],
     },
     {
       provide: SendLifecycleEmailPreviewUseCase,
@@ -153,6 +179,6 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
     RealDateProvider,
     RandomUuidGenerator,
   ],
-  exports: [SendLifecycleEmailPreviewUseCase],
+  exports: [SendLifecycleEmailPreviewUseCase, RetryLifecycleEmailDeliveriesUseCase],
 })
 export class NotificationsModule {}

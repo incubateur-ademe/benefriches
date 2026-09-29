@@ -25,4 +25,20 @@ export class InMemoryLifecycleEmailDeliveryQuery implements LifecycleEmailDelive
       ),
     );
   }
+
+  // No users here, so no unsubscribe filter: LifecycleEmailSender.retry() covers it.
+  findRetryCandidates(input: { stalePendingBefore: Date }): Promise<LifecycleEmailDelivery[]> {
+    return Promise.resolve(
+      this.deliveries
+        .filter(
+          (d) =>
+            d.status === "failed" ||
+            (d.status === "pending" &&
+              d.lastAttemptedAt.getTime() < input.stalePendingBefore.getTime()),
+        )
+        .toSorted((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+        // Snapshots, like rows read from SQL: later ledger writes must not mutate them.
+        .map((d) => structuredClone(d)),
+    );
+  }
 }

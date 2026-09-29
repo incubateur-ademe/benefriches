@@ -37,9 +37,10 @@ We deliberately do not use a top-level `apps/api/src/scripts/` directory: keepin
 
 ## Scheduled
 
-| Task                          | Schedule (UTC)            | Command                                                                                            | Purpose                                                                                         |
-| ------------------------------ | -------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Newsletter subscription sync  | `0 4 * * *` (daily 04:00) | `cd apps/api && node ./dist/src/marketing/adapters/primary/syncNewsletterSubscriptions.script.js`  | Pulls newsletter subscription status from the ADEME CRM into `users.subscribed_to_newsletter`     |
+| Task                          | Schedule (UTC)             | Command                                                                                                 | Purpose                                                                                                                                          |
+| ----------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Newsletter subscription sync  | `0 4 * * *` (daily 04:00)  | `cd apps/api && node ./dist/src/marketing/adapters/primary/syncNewsletterSubscriptions.script.js`       | Pulls newsletter subscription status from the ADEME CRM into `users.subscribed_to_newsletter`                                                    |
+| Lifecycle email retry sweeper | `15 * * * *` (hourly, :15) | `cd apps/api && node ./dist/src/notifications/adapters/primary/retryLifecycleEmailDeliveries.script.js` | Retries failed and stranded pending lifecycle email deliveries (max 5 attempts, then `abandoned`). No-op when `LIFECYCLE_EMAILS_ENABLED` is off. |
 
 To list the cron tasks currently registered for an app:
 

@@ -288,6 +288,8 @@ export type SqlLifecycleEmailDelivery = {
   created_at: Date;
   sent_at: Date | null;
   error_message: string | null;
+  attempts: number;
+  last_attempted_at: Date;
 };
 
 declare module "knex/types/tables" {

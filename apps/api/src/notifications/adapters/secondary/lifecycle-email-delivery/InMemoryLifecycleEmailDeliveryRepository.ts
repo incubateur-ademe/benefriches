@@ -1,5 +1,8 @@
 import type { LifecycleEmailDeliveryRepository } from "src/notifications/core/gateways/LifecycleEmailDeliveryRepository";
-import type { LifecycleEmailDelivery } from "src/notifications/core/models/lifecycleEmail";
+import type {
+  LifecycleEmailDelivery,
+  LifecycleEmailDeliveryStatus,
+} from "src/notifications/core/models/lifecycleEmail";
 
 // Takes the same backing array as InMemoryLifecycleEmailDeliveryQuery, so unit tests
 // keep the CQS split at the interface without maintaining two separate stores.
@@ -31,5 +34,35 @@ export class InMemoryLifecycleEmailDeliveryRepository implements LifecycleEmailD
       delivery.errorMessage = errorMessage;
     }
     return Promise.resolve();
+  }
+
+  markAbandoned(deliveryId: string, errorMessage: string): Promise<void> {
+    const delivery = this.deliveries.find((d) => d.id === deliveryId);
+    if (delivery) {
+      delivery.status = "abandoned";
+      delivery.errorMessage = errorMessage;
+    }
+    return Promise.resolve();
+  }
+
+  claimForRetry(input: {
+    id: string;
+    expectedStatus: LifecycleEmailDeliveryStatus;
+    expectedAttempts: number;
+    attemptedAt: Date;
+  }): Promise<boolean> {
+    const delivery = this.deliveries.find(
+      (d) =>
+        d.id === input.id &&
+        d.status === input.expectedStatus &&
+        d.attempts === input.expectedAttempts,
+    );
+    if (!delivery) {
+      return Promise.resolve(false);
+    }
+    delivery.status = "pending";
+    delivery.attempts += 1;
+    delivery.lastAttemptedAt = input.attemptedAt;
+    return Promise.resolve(true);
   }
 }

@@ -1,16 +1,19 @@
 import assert from "node:assert/strict";
-import { describe, it } from "node:test";
+import { describe, it, mock } from "node:test";
 
 import { InMemoryLifecycleEmailDeliveryQuery } from "src/notifications/adapters/secondary/lifecycle-email-delivery/InMemoryLifecycleEmailDeliveryQuery";
 import { InMemoryLifecycleEmailDeliveryRepository } from "src/notifications/adapters/secondary/lifecycle-email-delivery/InMemoryLifecycleEmailDeliveryRepository";
 import { InMemoryLifecycleEmailRecipientQuery } from "src/notifications/adapters/secondary/lifecycle-email-recipient/InMemoryLifecycleEmailRecipientQuery";
 import { FakeMailer } from "src/notifications/adapters/secondary/mailer/FakeMailer";
 import type { LifecycleEmailMessage } from "src/notifications/core/gateways/Mailer";
-import type { LifecycleEmailDelivery } from "src/notifications/core/models/lifecycleEmail";
+import {
+  LIFECYCLE_EMAIL_MAX_ATTEMPTS,
+  type LifecycleEmailDelivery,
+} from "src/notifications/core/models/lifecycleEmail";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 
-import { LifecycleEmailSender } from "./lifecycleEmailSender";
+import { LifecycleEmailSender, type RenderLifecycleEmailForRetry } from "./lifecycleEmailSender";
 
 const fakeNow = new Date("2026-01-01T10:00:00.000Z");
 
@@ -91,6 +94,8 @@ describe("LifecycleEmailSender", () => {
       createdAt: fakeNow,
       sentAt: fakeNow,
       errorMessage: null,
+      attempts: 1,
+      lastAttemptedAt: fakeNow,
     });
 
     const outcome = await sender.send({
@@ -118,6 +123,8 @@ describe("LifecycleEmailSender", () => {
       createdAt: fakeNow,
       sentAt: null,
       errorMessage: "boom",
+      attempts: 1,
+      lastAttemptedAt: fakeNow,
     });
 
     const outcome = await sender.send({
@@ -151,8 +158,10 @@ describe("LifecycleEmailSender", () => {
         createdAt: fakeNow,
         sentAt: fakeNow,
         errorMessage: null,
+        attempts: 1,
+        lastAttemptedAt: fakeNow,
       },
-    ]);
+    ] satisfies LifecycleEmailDelivery[]);
     assert.deepStrictEqual(mailer.sentEmails, [message]);
   });
 
@@ -180,8 +189,10 @@ describe("LifecycleEmailSender", () => {
         createdAt: fakeNow,
         sentAt: null,
         errorMessage: "SMTP unreachable",
+        attempts: 1,
+        lastAttemptedAt: fakeNow,
       },
-    ]);
+    ] satisfies LifecycleEmailDelivery[]);
   });
 
   it("sends independently per related entity", async () => {
@@ -198,6 +209,8 @@ describe("LifecycleEmailSender", () => {
       createdAt: fakeNow,
       sentAt: fakeNow,
       errorMessage: null,
+      attempts: 1,
+      lastAttemptedAt: fakeNow,
     });
 
     const outcome = await sender.send({
@@ -209,5 +222,321 @@ describe("LifecycleEmailSender", () => {
 
     assert.strictEqual(outcome, "sent");
     assert.strictEqual(deliveries.length, 2);
+  });
+
+  describe("retry", () => {
+    const aDayBefore = new Date("2025-12-31T10:00:00.000Z");
+    const renderForRecipient: RenderLifecycleEmailForRetry = (recipient) =>
+      Promise.resolve({ ...buildMessage(), to: recipient.email });
+
+    it("sends a failed delivery and marks it sent on the same row", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
+      recipientQuery._setRecipients([
+        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      ]);
+      const delivery: LifecycleEmailDelivery = {
+        id: "delivery-1",
+        userId: "user-1",
+        emailType: "welcome",
+        relatedEntityId: null,
+        status: "failed",
+        createdAt: aDayBefore,
+        sentAt: null,
+        errorMessage: "SMTP down",
+        attempts: 1,
+        lastAttemptedAt: aDayBefore,
+      };
+      deliveries.push({ ...delivery });
+
+      const outcome = await sender.retry(delivery, renderForRecipient);
+
+      assert.strictEqual(outcome, "sent");
+      assert.deepStrictEqual(mailer.sentEmails, [{ ...buildMessage(), to: "user@example.fr" }]);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "welcome",
+          relatedEntityId: null,
+          status: "sent",
+          createdAt: aDayBefore,
+          sentAt: fakeNow,
+          errorMessage: "SMTP down",
+          attempts: 2,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+    });
+
+    it("marks the row failed with the new error and one more attempt when the mailer throws below the cap", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
+      recipientQuery._setRecipients([
+        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      ]);
+      mailer.simulateFailure("Connection timeout");
+      const delivery: LifecycleEmailDelivery = {
+        id: "delivery-1",
+        userId: "user-1",
+        emailType: "welcome",
+        relatedEntityId: null,
+        status: "failed",
+        createdAt: aDayBefore,
+        sentAt: null,
+        errorMessage: "SMTP down",
+        attempts: 1,
+        lastAttemptedAt: aDayBefore,
+      };
+      deliveries.push({ ...delivery });
+
+      const outcome = await sender.retry(delivery, renderForRecipient);
+
+      assert.strictEqual(outcome, "failed");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "welcome",
+          relatedEntityId: null,
+          status: "failed",
+          createdAt: aDayBefore,
+          sentAt: null,
+          errorMessage: "Connection timeout",
+          attempts: 2,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+    });
+
+    it("abandons the delivery when the last allowed attempt fails", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
+      recipientQuery._setRecipients([
+        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      ]);
+      mailer.simulateFailure("Mailbox unavailable");
+      const delivery: LifecycleEmailDelivery = {
+        id: "delivery-1",
+        userId: "user-1",
+        emailType: "welcome",
+        relatedEntityId: null,
+        status: "failed",
+        createdAt: aDayBefore,
+        sentAt: null,
+        errorMessage: "SMTP down",
+        attempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS - 1,
+        lastAttemptedAt: aDayBefore,
+      };
+      deliveries.push({ ...delivery });
+
+      const outcome = await sender.retry(delivery, renderForRecipient);
+
+      assert.strictEqual(outcome, "abandoned");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "welcome",
+          relatedEntityId: null,
+          status: "abandoned",
+          createdAt: aDayBefore,
+          sentAt: null,
+          errorMessage: "Mailbox unavailable",
+          attempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+    });
+
+    it("abandons a pending row stranded at the cap without rendering or sending", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
+      recipientQuery._setRecipients([
+        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      ]);
+      const render = mock.fn(renderForRecipient);
+      const delivery: LifecycleEmailDelivery = {
+        id: "delivery-1",
+        userId: "user-1",
+        emailType: "welcome",
+        relatedEntityId: null,
+        status: "pending",
+        createdAt: aDayBefore,
+        sentAt: null,
+        errorMessage: "SMTP down",
+        attempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS,
+        lastAttemptedAt: aDayBefore,
+      };
+      deliveries.push({ ...delivery });
+
+      const outcome = await sender.retry(delivery, render);
+
+      assert.strictEqual(outcome, "abandoned");
+      assert.strictEqual(render.mock.callCount(), 0);
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "welcome",
+          relatedEntityId: null,
+          status: "abandoned",
+          createdAt: aDayBefore,
+          sentAt: null,
+          errorMessage: "Stranded in pending after the last allowed attempt",
+          attempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS,
+          lastAttemptedAt: aDayBefore,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+    });
+
+    it("counts a render error as a failed attempt", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
+      recipientQuery._setRecipients([
+        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      ]);
+      const delivery: LifecycleEmailDelivery = {
+        id: "delivery-1",
+        userId: "user-1",
+        emailType: "welcome",
+        relatedEntityId: null,
+        status: "failed",
+        createdAt: aDayBefore,
+        sentAt: null,
+        errorMessage: "SMTP down",
+        attempts: 1,
+        lastAttemptedAt: aDayBefore,
+      };
+      deliveries.push({ ...delivery });
+
+      const outcome = await sender.retry(delivery, () =>
+        Promise.reject(new Error("Site not found")),
+      );
+
+      assert.strictEqual(outcome, "failed");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "welcome",
+          relatedEntityId: null,
+          status: "failed",
+          createdAt: aDayBefore,
+          sentAt: null,
+          errorMessage: "Site not found",
+          attempts: 2,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+    });
+
+    it("does nothing when the kill switch is off", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: false });
+      recipientQuery._setRecipients([
+        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      ]);
+      const delivery: LifecycleEmailDelivery = {
+        id: "delivery-1",
+        userId: "user-1",
+        emailType: "welcome",
+        relatedEntityId: null,
+        status: "failed",
+        createdAt: aDayBefore,
+        sentAt: null,
+        errorMessage: "SMTP down",
+        attempts: 1,
+        lastAttemptedAt: aDayBefore,
+      };
+      deliveries.push({ ...delivery });
+
+      const outcome = await sender.retry(delivery, renderForRecipient);
+
+      assert.strictEqual(outcome, "skipped-disabled");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [delivery]);
+    });
+
+    it("skips a recipient who has unsubscribed since the failure", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "user@example.fr",
+          unsubscribedAt: new Date("2025-12-31T12:00:00.000Z"),
+        },
+      ]);
+      const delivery: LifecycleEmailDelivery = {
+        id: "delivery-1",
+        userId: "user-1",
+        emailType: "welcome",
+        relatedEntityId: null,
+        status: "failed",
+        createdAt: aDayBefore,
+        sentAt: null,
+        errorMessage: "SMTP down",
+        attempts: 1,
+        lastAttemptedAt: aDayBefore,
+      };
+      deliveries.push({ ...delivery });
+
+      const outcome = await sender.retry(delivery, renderForRecipient);
+
+      assert.strictEqual(outcome, "skipped-unsubscribed");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [delivery]);
+    });
+
+    it("skips a delivery whose recipient no longer exists", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
+      recipientQuery._setRecipients([]);
+      const delivery: LifecycleEmailDelivery = {
+        id: "delivery-1",
+        userId: "user-1",
+        emailType: "welcome",
+        relatedEntityId: null,
+        status: "failed",
+        createdAt: aDayBefore,
+        sentAt: null,
+        errorMessage: "SMTP down",
+        attempts: 1,
+        lastAttemptedAt: aDayBefore,
+      };
+      deliveries.push({ ...delivery });
+
+      const outcome = await sender.retry(delivery, renderForRecipient);
+
+      assert.strictEqual(outcome, "skipped-recipient-not-found");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [delivery]);
+    });
+
+    it("skips a delivery another run has already claimed", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
+      recipientQuery._setRecipients([
+        { id: "user-1", email: "user@example.fr", unsubscribedAt: null },
+      ]);
+      const claimedByAnotherRun: LifecycleEmailDelivery = {
+        id: "delivery-1",
+        userId: "user-1",
+        emailType: "welcome",
+        relatedEntityId: null,
+        status: "pending",
+        createdAt: aDayBefore,
+        sentAt: null,
+        errorMessage: "SMTP down",
+        attempts: 2,
+        lastAttemptedAt: fakeNow,
+      };
+      deliveries.push({ ...claimedByAnotherRun });
+
+      const outcome = await sender.retry(
+        { ...claimedByAnotherRun, status: "failed", attempts: 1, lastAttemptedAt: aDayBefore },
+        renderForRecipient,
+      );
+
+      assert.strictEqual(outcome, "skipped-already-claimed");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [claimedByAnotherRun]);
+    });
   });
 });
