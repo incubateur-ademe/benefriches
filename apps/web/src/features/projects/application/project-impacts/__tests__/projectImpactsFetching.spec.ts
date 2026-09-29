@@ -1,12 +1,13 @@
+import {
+  urbanProjectImpactsResultDto as urbanProjectImpactMock,
+  urbanProjectImpactMockMeta,
+} from "shared";
+
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
 
 import { StoreBuilder } from ".";
 import { reconversionProjectImpactsBreakEvenLevelRequested } from "../actions";
 import type { ProjectImpactsState } from "../projectImpacts.reducer";
-import {
-  urbanProjectImpactsResultDto as urbanProjectImpactMock,
-  urbanProjectImpactMockMeta,
-} from "./projectImpacts.mock";
 
 describe("Project impacts fetching", () => {
   it("should successfully fetch impacts for a project without evaluation period", async () => {

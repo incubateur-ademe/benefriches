@@ -1,11 +1,12 @@
-import type { GetReconversionProjectImpactsResultDto, SiteStatuQuoImpactMetric } from "shared";
-import { roundToInteger, sumListWithKey } from "shared";
+import type { GetReconversionProjectImpactsResultDto } from "../../api-dtos";
+import { roundToInteger, sumListWithKey } from "../../services";
+import type { SiteStatuQuoImpactMetric } from "../../site";
 
 const buildYearlySeries = (total: number, years: number) => {
   const perYear = roundToInteger(total / years);
   const detailsByYear = Array.from({ length: years }, () => perYear);
   const roundedSum = roundToInteger(perYear * years);
-  detailsByYear[years - 1] = roundToInteger(detailsByYear[years - 1]! + (total - roundedSum));
+  detailsByYear[years - 1] = roundToInteger((detailsByYear[years - 1] ?? 0) + (total - roundedSum));
 
   let cumulative = 0;
   const cumulativeByYear = detailsByYear.map((value) => {

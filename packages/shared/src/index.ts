@@ -1,5 +1,6 @@
 export * from "./object-entries";
 export * from "./object-keys";
+export * from "./filter-by-name";
 export * from "./soils";
 export * from "./surface-area";
 export * from "./site";

@@ -1,9 +1,10 @@
+import { photovoltaicProjectImpactsResultDto as projectImpactMock } from "shared";
+
 import type { RootState } from "@/app/store/store";
 import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { selectSocioEconomicProjectImpactsListView } from "../selectors/projectImpacts.selectors";
-import { photovoltaicProjectImpactsResultDto as projectImpactMock } from "./projectImpacts.mock";
 
 const MOCK_STATES = {
   projectImpacts: {

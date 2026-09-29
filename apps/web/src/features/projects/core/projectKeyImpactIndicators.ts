@@ -4,9 +4,8 @@ import type {
   ReconversionStakeholders,
   SiteNature,
 } from "shared";
-import { isLocalAuthority, sumListWithKey } from "shared";
+import { isLocalAuthority, sumListWithKey, filterByName } from "shared";
 
-import { filterByName } from "@/shared/core/filter-by-name/filterByName";
 import { getPercentageDifference } from "@/shared/core/percentage/percentage";
 
 const getRelatedSiteInfos = (

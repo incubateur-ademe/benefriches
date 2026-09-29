@@ -1,9 +1,10 @@
-import { createStore, type RootState } from "@/app/store/store";
-import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
 import {
   photovoltaicProjectImpactsResultDto as photovoltaicProjectImpactMock,
   photovoltaicProjectImpactMockMeta,
-} from "@/features/projects/application/project-impacts/__tests__/projectImpacts.mock";
+} from "shared";
+
+import { createStore, type RootState } from "@/app/store/store";
+import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import {

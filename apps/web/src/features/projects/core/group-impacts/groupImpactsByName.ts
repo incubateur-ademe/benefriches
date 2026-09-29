@@ -1,6 +1,4 @@
-import { sumListWithKey } from "shared";
-
-import { filterByName } from "@/shared/core/filter-by-name/filterByName";
+import { sumListWithKey, filterByName } from "shared";
 
 export function groupImpactsByName<
   T extends { name: string; total: number },

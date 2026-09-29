@@ -239,13 +239,14 @@ export type ProjectOnSiteImpactMetric =
       name: "soilsDistribution";
     };
 
-export type AggregatedProjectImpactMetric = {
-  total: number;
-  detailsByYear?: number[];
-  name:
-    | ProjectOnSiteImpactMetric["name"]
-    | "oldOperationsFullTimeJobsLoss"
-    | "avoidedFricheAccidentsDeaths"
-    | "avoidedFricheAccidentsSevereInjuries"
-    | "avoidedFricheAccidentsMinorInjuries";
-};
+export type AggregatedProjectImpactMetric =
+  | ProjectOnSiteImpactMetric
+  | {
+      total: number;
+      detailsByYear?: number[];
+      name:
+        | "oldOperationsFullTimeJobsLoss"
+        | "avoidedFricheAccidentsDeaths"
+        | "avoidedFricheAccidentsSevereInjuries"
+        | "avoidedFricheAccidentsMinorInjuries";
+    };

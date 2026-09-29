@@ -1,14 +1,15 @@
-import type { RootState } from "@/app/store/store";
-import { createStore } from "@/app/store/store";
-import { getTestAppDependencies } from "@/test/testAppDependencies";
-
-import { selectEconomicBalanceProjectImpacts } from "../selectors/projectImpacts.selectors";
 import {
   photovoltaicProjectImpactsResultDto,
   photovoltaicProjectImpactMockMeta,
   urbanProjectImpactMockMeta,
   urbanProjectImpactsResultDto,
-} from "./projectImpacts.mock";
+} from "shared";
+
+import type { RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
+
+import { selectEconomicBalanceProjectImpacts } from "../selectors/projectImpacts.selectors";
 
 const MOCK_STATES = {
   projectImpacts: {

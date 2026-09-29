@@ -4,13 +4,11 @@ import type {
   AggregatedReconversionIndirectEconomicImpactsDataView,
   AggregatedReconversionProjectOnSiteImpactItemView,
 } from "shared";
-
-import { filterByName } from "@/shared/core/filter-by-name/filterByName";
+import { groupIndirectEconomicImpactsByBearer, filterByName } from "shared";
 
 import { extractDetailsGroup } from "./group-impacts/extractDetailsGroup";
 import { filterNonEmptyImpacts } from "./group-impacts/filterNonEmpty";
 import { groupImpactsByName } from "./group-impacts/groupImpactsByName";
-import { groupIndirectEconomicImpactsByBearer } from "./groupIndirectImpactsByBearer";
 
 export type SocioEconomicImpactsByBearerListView = {
   total: number;
