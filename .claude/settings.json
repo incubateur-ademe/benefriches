@@ -68,7 +68,6 @@
       "mcp__context7__query-docs"
     ],
     "deny": [
-      "Bash(git commit --no-verify)",
       "Read(.env)",
       "Read(**/.env)",
       "Read(**/.env.local)",
@@ -88,6 +87,11 @@
             "type": "command",
             "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-env-read.sh",
             "statusMessage": "Checking command for .env access..."
+          },
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-hook-bypass.mjs",
+            "statusMessage": "Checking command for pre-commit bypass..."
           }
         ]
       }

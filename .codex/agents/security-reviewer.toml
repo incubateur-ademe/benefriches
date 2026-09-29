@@ -1,6 +1,7 @@
+# Generated from .claude/agents/security-reviewer.md by `pnpm agent-config:sync`. Do not edit.
 name = "security-reviewer"
 description = "Proactive security vulnerability scanner. Use AUTOMATICALLY after writing code that handles user input, authentication, API endpoints, database queries, or sensitive data."
-developer_instructions = """
+developer_instructions = '''
 # Security Reviewer Agent
 
 Proactively scan code for security vulnerabilities after changes to sensitive areas.
@@ -21,7 +22,7 @@ Run this agent AUTOMATICALLY after code changes involving:
 
 ### Step 1: Load Security Rules
 
-Read `.Codex/context/security/security-rules.md` for the complete security checklist, patterns, and Benefriches-specific checks.
+Read `.claude/context/security/security-rules.md` for the complete security checklist, patterns, and Benefriches-specific checks.
 
 ### Step 2: Automated Scans
 
@@ -123,4 +124,5 @@ Apply all 12 rule sections from `security-rules.md` to the changed code, then ev
 - **Prioritize**: Critical > High > Medium > Low
 - **Be actionable**: Provide clear fixes with code examples
 - **Context-aware**: Consider Benefriches patterns (Knex, NestJS, React)
-- **No false positives**: Verify before reporting (check if in test file, etc.)"""
+- **No false positives**: Verify before reporting (check if in test file, etc.)
+'''

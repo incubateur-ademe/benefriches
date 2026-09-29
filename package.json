@@ -17,8 +17,10 @@
     "build": "pnpm run -r build",
     "agent-skills:sync": "node scripts/sync-agent-skills.mjs",
     "agent-skills:check": "node scripts/sync-agent-skills.mjs --check",
+    "agent-config:sync": "node scripts/sync-agent-config.mjs",
+    "agent-config:check": "node scripts/sync-agent-config.mjs --check",
     "env-files:check": "node scripts/check-env-files.mjs",
-    "test:scripts": "node --test \"scripts/**/*.spec.mjs\" \".tooling/**/*.spec.mjs\""
+    "test:scripts": "node --test \"scripts/**/*.spec.mjs\" \".tooling/**/*.spec.mjs\" \".claude/hooks/**/*.spec.mjs\""
   },
   "devDependencies": {
     "@upstash/context7-mcp": "4.0.7",

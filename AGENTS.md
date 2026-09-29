@@ -69,4 +69,4 @@ Single file (paths are relative to the app directory):
 
 ## Git
 
-Trunk-based: every push to `main` runs CI and deploys to staging; production deploy is manual. Don't bypass the pre-commit hook with `--no-verify`.
+Trunk-based: every push to `main` runs CI and deploys to staging; production deploy is manual. Don't bypass the pre-commit hook with `--no-verify`: a hook blocks it in Claude and trusted Codex sessions, not in other agents or untrusted Codex sessions.

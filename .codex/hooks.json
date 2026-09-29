@@ -1,4 +1,5 @@
 {
+  "description": "Generated from the hooks in .claude/settings.json by `pnpm agent-config:sync`. Do not edit.",
   "hooks": {
     "PreToolUse": [
       {
@@ -6,20 +7,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": "'/Users/stephane/dev/incubateur-ademe/benefriches/.codex/hooks/block-env-read.sh'",
+            "command": "\"$(git rev-parse --show-toplevel)\"/.claude/hooks/block-env-read.sh",
             "statusMessage": "Checking command for .env access..."
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
+          },
           {
             "type": "command",
-            "command": "'/Users/stephane/dev/incubateur-ademe/benefriches/.codex/hooks/format-check.sh'",
-            "statusMessage": "Formatting code with Prettier..."
+            "command": "\"$(git rev-parse --show-toplevel)\"/.claude/hooks/block-hook-bypass.mjs",
+            "statusMessage": "Checking command for pre-commit bypass..."
           }
         ]
       }
