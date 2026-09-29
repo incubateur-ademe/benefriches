@@ -79,7 +79,7 @@ describe("SiteEvaluations controller", () => {
         created_by: userId,
         name: "Centrale pv",
         related_site_id: siteInDb1.id,
-        created_at: new Date(),
+        created_at: new Date("2024-03-10"),
         creation_mode: "custom",
       };
       const projectInDb2 = {
@@ -87,7 +87,7 @@ describe("SiteEvaluations controller", () => {
         created_by: userId,
         name: "Centrale pv",
         related_site_id: siteInDb1.id,
-        created_at: new Date(),
+        created_at: new Date("2024-03-05"),
         creation_mode: "express",
       };
       const siteOfAnotherUser = {
