@@ -1,4 +1,5 @@
-import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
+import type { KeyImpactIndicatorData } from "shared";
+
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 
 import ModalBody from "../../modal-layout/ModalBody";

@@ -4,6 +4,7 @@ import type {
   GetReconversionProjectImpactsResultDto,
   UrbanSprawlImpactsComparisonResultDto,
 } from "shared";
+import { getDefaultEvaluationPeriodInYears } from "shared";
 
 import {
   evaluationPeriodUpdated,
@@ -94,8 +95,9 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
       state.impacts = action.payload.impacts;
       state.contextData = action.payload.contextData;
       if (!state.evaluationPeriod) {
-        state.evaluationPeriod =
-          state.contextData.projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" ? 30 : 50;
+        state.evaluationPeriod = getDefaultEvaluationPeriodInYears(
+          state.contextData.projectDevelopmentPlan.type,
+        );
       }
     },
   );

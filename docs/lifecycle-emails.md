@@ -836,7 +836,12 @@ the body, `pré-remplies`, `accompagné`.
   breaks every link already sent.
 - The footer and page wording are drafts (`TODO(product)`), pending product review.
 - `lifecycleEmailTypeSchema` has `"welcome"`, `"first-site-reminder"` and
-  `"first-project-reminder"`; the impacts summary (08) is planned but not implemented.
+  `"first-project-reminder"`; the impacts summary (08) is planned but not implemented. It
+  will take its headline indicators from `"shared"` (ticket 07), in the web app's order:
+  compute the impacts (50 years) → crop them with `cropImpactsByEvaluationPeriod` to
+  `getDefaultEvaluationPeriodInYears` (30 years for a photovoltaic plant, 50 otherwise) →
+  derive with `getKeyImpactIndicatorsList`, `getSummaryHeadlineIndicators` and
+  `getBreakEvenHorizon`.
 - The first project reminder's friche-only compatibility offer (mockup) is not built in v1:
   no page evaluates compatibility for an existing site yet.
 - No e2e test for the reminders: the daily job is not run on the e2e stack (DESIGN.md: one

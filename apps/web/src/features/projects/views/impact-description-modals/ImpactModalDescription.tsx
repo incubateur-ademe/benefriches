@@ -2,12 +2,12 @@ import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import type { ReactNode } from "react";
 import { Suspense, useCallback, useLayoutEffect, useMemo } from "react";
+import { getKeyImpactIndicatorsList } from "shared";
 import type { Link, Route } from "type-route";
 
 import type { routes } from "@/app/router";
 import type { embedRoutes } from "@/embed";
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import { getKeyImpactIndicatorsList } from "@/features/projects/core/projectKeyImpactIndicators";
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 

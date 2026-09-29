@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
-
-import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
-import { PRIORITY_ORDER } from "@/features/projects/core/projectKeyImpactIndicators";
+import type { KeyImpactIndicatorData } from "shared";
+import { KEY_IMPACT_INDICATORS_PRIORITY_ORDER } from "shared";
 
 import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import { getSummaryIndicatorTitle } from "../../shared/impacts/summary";
@@ -18,7 +17,8 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
       {keyImpactIndicatorsList
         .toSorted(
           ({ name: aName }, { name: bName }) =>
-            PRIORITY_ORDER.indexOf(aName) - PRIORITY_ORDER.indexOf(bName),
+            KEY_IMPACT_INDICATORS_PRIORITY_ORDER.indexOf(aName) -
+            KEY_IMPACT_INDICATORS_PRIORITY_ORDER.indexOf(bName),
         )
         .map(({ name, isSuccess }) => (
           <React.Fragment key={name}>

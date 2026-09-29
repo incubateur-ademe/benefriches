@@ -1,6 +1,6 @@
 import { useContext } from "react";
+import type { KeyImpactIndicatorData } from "shared";
 
-import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
 import ImpactItemDetails from "../../../project-impacts/list-view/ImpactItemDetails";

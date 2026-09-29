@@ -1,7 +1,7 @@
 import { useId } from "react";
+import { getPercentageDifference } from "shared";
 
 import { formatEvolutionPercentage } from "@/features/projects/views/shared/formatImpactValue";
-import { getPercentageDifference } from "@/shared/core/percentage/percentage";
 import { withDefaultAreaChartOptions } from "@/shared/views/charts";
 import { useChartCustomSerieColors } from "@/shared/views/charts/useChartCustomColors";
 

@@ -1,11 +1,11 @@
 import { createContext } from "react";
+import type { KeyImpactIndicatorData } from "shared";
 import type { Link } from "type-route";
 
 import type { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
 import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
 import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
 import type { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
-import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 
 import type { SectionCode, DetailsCode } from "./impactModalUrlCodes";
 import {

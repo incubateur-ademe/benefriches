@@ -1,6 +1,6 @@
 import { useContext } from "react";
+import type { KeyImpactIndicatorData } from "shared";
 
-import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/core/carbonEmissions";
 import { formatPerFrenchPersonAnnualEquivalent } from "@/shared/core/format-number/formatCarbonStorage";

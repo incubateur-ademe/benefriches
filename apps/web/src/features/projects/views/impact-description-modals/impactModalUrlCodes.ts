@@ -1,4 +1,6 @@
 // shared/impacts/modals/impactModalUrlCodes.ts
+import type { KeyImpactIndicatorData } from "shared";
+
 import type {
   EconomicBalanceImpactKeyName,
   EconomicBalanceMainImpactKeyName,
@@ -6,7 +8,6 @@ import type {
 import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
 import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
 import type { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
-import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 
 import type {
   EnvironmentalSectionName,

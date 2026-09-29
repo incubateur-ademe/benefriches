@@ -1,14 +1,19 @@
+// The impacts are computed over 50 years; the impacts pages show them over the chosen evaluation
+// period. The urban sprawl crop lives here too although only the web app uses it: it shares
+// cropAndSumEconomicImpact with the impacts crop, and both must slice the years the same way.
+import type {
+  GetReconversionProjectImpactsResultDto,
+  UrbanSprawlImpactsComparisonResultDto,
+} from "../../api-dtos";
+import { sumList, sumListWithKey } from "../../services";
+import type { SiteStatuQuoEconomicImpact } from "../../site";
 import type {
   AggregatedProjectImpactMetric,
   AggregatedReconversionProjectOnSiteImpactItemView,
-  GetReconversionProjectImpactsResultDto,
   ProjectOnSiteImpactMetric,
   ProjectOperatingEconomicBalanceItem,
-  SiteStatuQuoEconomicImpact,
   UrbanSprawlComparisonIndirectEconomicImpactItemView,
-  UrbanSprawlImpactsComparisonResultDto,
-} from "shared";
-import { sumList, sumListWithKey } from "shared";
+} from "../projectImpacts.types";
 
 const cropAndSumEconomicImpact = <
   T extends

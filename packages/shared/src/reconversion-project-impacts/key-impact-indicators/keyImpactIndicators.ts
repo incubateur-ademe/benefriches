@@ -1,12 +1,10 @@
-import type {
-  FricheActivity,
-  GetReconversionProjectImpactsResultDto,
-  ReconversionStakeholders,
-  SiteNature,
-} from "shared";
-import { isLocalAuthority, sumListWithKey, filterByName } from "shared";
-
-import { getPercentageDifference } from "@/shared/core/percentage/percentage";
+import type { GetReconversionProjectImpactsResultDto } from "../../api-dtos";
+import { filterByName } from "../../filter-by-name";
+import { isLocalAuthority } from "../../local-authority";
+import { sumListWithKey } from "../../services";
+import { getPercentageDifference } from "../../services/percentage/percentageDifference";
+import type { FricheActivity, SiteNature } from "../../site";
+import type { ReconversionStakeholders } from "../projectImpacts.types";
 
 const getRelatedSiteInfos = (
   siteData: SiteData,
@@ -289,7 +287,7 @@ export type KeyImpactIndicatorData =
       };
     };
 
-export const PRIORITY_ORDER: KeyImpactIndicatorData["name"][] = [
+export const KEY_IMPACT_INDICATORS_PRIORITY_ORDER: KeyImpactIndicatorData["name"][] = [
   "zanCompliance",
   "projectImpactBalance",
   "avoidedFricheCostsForLocalAuthority",
@@ -459,3 +457,22 @@ export const getKeyImpactIndicatorsList = (
 
   return impacts;
 };
+
+export type ZanComplianceIndicator = Extract<KeyImpactIndicatorData, { name: "zanCompliance" }>;
+
+// The Synthèse tab's headline indicators: ZAN compliance, and the highest-priority indicator
+// other than ZAN compliance and the project balance.
+export const getSummaryHeadlineIndicators = (
+  keyImpactIndicators: KeyImpactIndicatorData[],
+): { zanCompliance?: ZanComplianceIndicator; mainImpactIndicator?: KeyImpactIndicatorData } => ({
+  zanCompliance: keyImpactIndicators.find(
+    (indicator): indicator is ZanComplianceIndicator => indicator.name === "zanCompliance",
+  ),
+  mainImpactIndicator: keyImpactIndicators
+    .toSorted(
+      ({ name: aName }, { name: bName }) =>
+        KEY_IMPACT_INDICATORS_PRIORITY_ORDER.indexOf(aName) -
+        KEY_IMPACT_INDICATORS_PRIORITY_ORDER.indexOf(bName),
+    )
+    .find(({ name }) => name !== "zanCompliance" && name !== "projectImpactBalance"),
+});

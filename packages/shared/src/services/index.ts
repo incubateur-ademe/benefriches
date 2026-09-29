@@ -4,3 +4,4 @@ export * from "./strings/capitalize";
 export * from "./sum/sum";
 export * from "./sum/sumIfNotNil";
 export * from "./objects/filterObject";
+export * from "./percentage/percentageDifference";

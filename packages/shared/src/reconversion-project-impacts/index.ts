@@ -19,3 +19,5 @@ export {
   groupIndirectEconomicImpactsByBearer,
   type IndirectEconomicImpactItem,
 } from "./group-impacts";
+export * from "./key-impact-indicators";
+export * from "./evaluation-period";

@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
+import type { KeyImpactIndicatorData } from "shared";
 
-import type { KeyImpactIndicatorData } from "@/features/projects/core/projectKeyImpactIndicators";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import type { ContentState } from "../../ImpactModalDescriptionContext";

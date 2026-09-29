@@ -1,19 +1,18 @@
 import { createSelector } from "@reduxjs/toolkit";
+import type { KeyImpactIndicatorData, ZanComplianceIndicator } from "shared";
+import { getSummaryHeadlineIndicators } from "shared";
 
 import type { RootState } from "@/app/store/store";
 
-import type { KeyImpactIndicatorData } from "../../../core/projectKeyImpactIndicators";
-import { PRIORITY_ORDER } from "../../../core/projectKeyImpactIndicators";
 import type { ProjectImpactsState } from "../projectImpacts.reducer";
 import {
   selectImpactsCroppedByEvaluationPeriod,
   selectKeyImpactIndicatorsList,
 } from "./projectImpacts.selectors";
 
-type ZanCompliance = Extract<KeyImpactIndicatorData, { name: "zanCompliance" }>;
 export type ProjectSummaryDataView = {
   mainImpactIndicator?: KeyImpactIndicatorData;
-  zanCompliance?: ZanCompliance;
+  zanCompliance?: ZanComplianceIndicator;
   breakEvenYear?: string;
   projectionYears: string[];
   siteAddress: {
@@ -42,16 +41,8 @@ export const selectProjectSummaryDataView = createSelector(
     if (!breakEvenLevel || !contextData) {
       return undefined;
     }
-    const zanCompliance = keyImpactIndicatorList.find(
-      (indicator): indicator is ZanCompliance => indicator.name === "zanCompliance",
-    );
-
-    const mainImpactIndicator = keyImpactIndicatorList
-      .toSorted(
-        ({ name: aName }, { name: bName }) =>
-          PRIORITY_ORDER.indexOf(aName) - PRIORITY_ORDER.indexOf(bName),
-      )
-      .find(({ name }) => name !== "zanCompliance" && name !== "projectImpactBalance");
+    const { zanCompliance, mainImpactIndicator } =
+      getSummaryHeadlineIndicators(keyImpactIndicatorList);
 
     return {
       breakEvenYear: breakEvenLevel.aggregatedReconversionImpacts.breakEvenYear,

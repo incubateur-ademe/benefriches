@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { GetReconversionProjectImpactsResultDto } from "shared";
+import { getBreakEvenHorizon } from "shared";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import type { ClassValue } from "@/shared/views/clsx";
@@ -60,43 +61,47 @@ export default function ProjectBreakEvenLevelSummary({
 }: Props) {
   const { evaluationPeriod = 50 } = useAppSelector(selectImpactsPageViewData);
 
-  const breakEvenIndex = breakEvenYear ? projectionYears.indexOf(breakEvenYear) : undefined;
+  const breakEvenHorizon = getBreakEvenHorizon({ breakEvenYear, projectionYears });
 
-  if (breakEvenIndex !== undefined && breakEvenIndex !== -1) {
-    if (breakEvenIndex === 0) {
+  switch (breakEvenHorizon.status) {
+    case "positiveFromFirstYear":
       return (
         <>
-          <SuccessBadge compact={compact}>En {breakEvenYear}</SuccessBadge>
+          <SuccessBadge compact={compact}>En {breakEvenHorizon.breakEvenYear}</SuccessBadge>
           <h4 className={classNames("mb-4", classes?.title)}>Bilan de l’opération positif</h4>
           <p>
             La somme du bilan économiques et des impacts socio-économiques est positive dès{" "}
-            {breakEvenYear}.
+            {breakEvenHorizon.breakEvenYear}.
           </p>
         </>
       );
-    }
-    return (
-      <>
-        <SuccessBadge compact={compact}>
-          En {breakEvenIndex} {breakEvenIndex > 1 ? "ans" : "an"}
-        </SuccessBadge>
-        <h4 className={classNames("mb-4", classes?.title)}>Coût de l’opération compensé</h4>
-        <p>Les impacts socio-économiques compenseront le coût de l’opération en {breakEvenYear}.</p>
-      </>
-    );
+    case "compensated":
+      return (
+        <>
+          <SuccessBadge compact={compact}>
+            En {breakEvenHorizon.yearsToBreakEven}{" "}
+            {breakEvenHorizon.yearsToBreakEven > 1 ? "ans" : "an"}
+          </SuccessBadge>
+          <h4 className={classNames("mb-4", classes?.title)}>Coût de l’opération compensé</h4>
+          <p>
+            Les impacts socio-économiques compenseront le coût de l’opération en{" "}
+            {breakEvenHorizon.breakEvenYear}.
+          </p>
+        </>
+      );
+    case "notCompensatedWithinPeriod":
+      return (
+        <>
+          <FailBadge compact={compact}>
+            Sur {evaluationPeriod} {evaluationPeriod > 1 ? "ans" : "an"}
+          </FailBadge>
+          <h4 className={classNames("mb-4", classes?.title)}>Coût de l’opération non compensé</h4>
+          <p>
+            {breakEvenHorizon.breakEvenYear
+              ? `Les impacts socio-économiques compenseront le coût de l’opération en ${breakEvenHorizon.breakEvenYear}.`
+              : "Les impacts socio-économiques ne compenseront pas le coût de l’opération."}
+          </p>
+        </>
+      );
   }
-
-  return (
-    <>
-      <FailBadge compact={compact}>
-        Sur {evaluationPeriod} {evaluationPeriod > 1 ? "ans" : "an"}
-      </FailBadge>
-      <h4 className={classNames("mb-4", classes?.title)}>Coût de l’opération non compensé</h4>
-      <p>
-        {breakEvenYear
-          ? `Les impacts socio-économiques compenseront le coût de l’opération en ${breakEvenYear}.`
-          : "Les impacts socio-économiques ne compenseront pas le coût de l’opération."}
-      </p>
-    </>
-  );
 }
