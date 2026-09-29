@@ -23,6 +23,19 @@ Full-stack feature walkthrough: [docs/feature-example.md](docs/feature-example.m
 
 Skills live in `.agents/skills/` (canonical); `.claude/skills/<name>` are symlinks maintained by `pnpm agent-skills:sync` — edit under `.agents/skills/` and run it after adding a skill.
 
+## Rules and nested instructions
+
+Path-scoped rules live in `.claude/rules/`; Claude loads them automatically when it reads a matching file. Other agents (e.g. Codex): before creating or editing a file, read every rule with a glob matching its repo-relative path. One file can match several rules: a `*.controller.integration-spec.ts` matches `api-http`, `api-testing` and `testing`.
+
+- [testing.md](.claude/rules/testing.md): `apps/**/*.spec.ts`, `apps/**/*.spec.tsx`, `apps/**/*.integration-spec.ts`, `packages/**/*.spec.ts`
+- [api/api-core.md](.claude/rules/api/api-core.md): `apps/api/src/**/*.usecase.ts`, `apps/api/src/**/*.usecase.spec.ts`, `apps/api/src/**/core/events/*.event.ts`, `apps/api/src/**/*.module.ts`, `apps/api/src/**/*.handler.ts`, `apps/api/src/**/adapters/primary/*Handler.ts`, `apps/api/src/shared-kernel/adapters/events/**/*.ts`
+- [api/api-persistence.md](.claude/rules/api/api-persistence.md): `apps/api/src/**/core/gateways/*Query.ts`, `apps/api/src/**/core/gateways/*Repository.ts`, `apps/api/src/**/Sql*Query.ts`, `apps/api/src/**/Sql*Repository.ts`, `apps/api/src/**/InMemory*Query.ts`, `apps/api/src/**/InMemory*Repository.ts`, `apps/api/src/**/Sql*.integration-spec.ts`
+- [api/api-http.md](.claude/rules/api/api-http.md): `apps/api/src/**/*.controller.ts`, `apps/api/src/**/*.controller.integration-spec.ts`
+- [api/api-db-migrations.md](.claude/rules/api/api-db-migrations.md): `apps/api/src/shared-kernel/adapters/sql-knex/migrations/*.ts`, `apps/api/src/shared-kernel/adapters/sql-knex/tableTypes.d.ts`
+- [api/api-testing.md](.claude/rules/api/api-testing.md): `apps/api/src/**/*.spec.ts`, `apps/api/src/**/*.integration-spec.ts`, `apps/api/test/**/*.ts`
+
+Also read each nested `AGENTS.md` on the path to the file: the four workspace ones listed above, and `apps/web/src/shared/core/wizard-form/AGENTS.md`. For e2e work, also read `.agents/skills/run-e2e-tests/SKILL.md` and `.agents/skills/create-e2e-test/SKILL.md`.
+
 ## Conventions
 
 - Run scripts with pnpm, not npm: `pnpm --filter <api|web|shared|e2e-tests> <script>`.
