@@ -68,7 +68,9 @@ How we design tests (what to test, structure, placement): [.claude/rules/testing
 - Integration (`*.integration-spec.ts`, in `adapters/`): real database via testcontainers, or real network calls.
 - E2E (`apps/e2e-tests/tests/`): full user flows against the running stack; run them with the `/run-e2e-tests` skill.
 
-The pre-commit hook runs Talisman (secret scan), lint and format checks, not tests. Run these yourself:
+`pnpm verify` is the definition of green, for you and for CI: repo checks, typecheck, lint, format check, and every workspace's unit and integration tests (not e2e). It needs Docker running for the API integration tests.
+
+The pre-commit hook runs Talisman (secret scan), lint and format checks, not tests. While iterating, run the narrower commands below:
 
 | Change            | Run                                                                                                                                                     |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
