@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 
 import type { DevelopmentPlanType } from "../../../reconversion-projects";
 import type { SiteReconversionType, SoilEvolutionDetails } from "../readFeatures.helpers";
-import type { LetterScore } from "../scoring.helpers";
+import type { LetterGrade } from "../scoring.helpers";
 import { getZanComplianceScore } from "./zanCompliance.score";
 
 const testCasesGradeA = [
@@ -228,7 +228,7 @@ type TestData = {
   >;
 };
 
-const assertTestData = (testData: TestData, letterScore: LetterScore) => {
+const assertTestData = (testData: TestData, letterGrade: LetterGrade) => {
   const dataDescList: string[] = [];
   dataDescList.push(`on ${testData.siteReconversionType}`);
   dataDescList.push(
@@ -238,12 +238,12 @@ const assertTestData = (testData: TestData, letterScore: LetterScore) => {
     `with permeable surface variation ${testData.soilsEvolutionDetails.permeableSurfaceDifference.percentVariation}%`,
   );
 
-  it(`returns ${letterScore} grade for ${testData.projectDevelopmentPlanType} ${dataDescList.join(", ")}`, () => {
+  it(`returns ${letterGrade} grade for ${testData.projectDevelopmentPlanType} ${dataDescList.join(", ")}`, () => {
     const result = getZanComplianceScore(
       testData.siteReconversionType,
       testData.soilsEvolutionDetails,
     );
-    assert.strictEqual(result?.letterScore, letterScore);
+    assert.strictEqual(result?.letterGrade, letterGrade);
     assert.strictEqual(
       result?.metrics.newGreenSoilSurfaces,
       testData.soilsEvolutionDetails.newGreenSoilSurfaces,

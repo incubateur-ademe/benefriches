@@ -1,12 +1,24 @@
 import type { SiteReconversionType } from "../readFeatures.helpers";
-import type { ItemScoreResult } from "../scoring.helpers";
+import type { ScoredMetrics } from "../scoring.helpers";
 
 export const getLivingEnvironmentScore = (
   siteReconversionType: SiteReconversionType,
-): ItemScoreResult<{ siteReconversionType: SiteReconversionType }> => {
+): ScoredMetrics<{ siteReconversionType: SiteReconversionType }> => {
   if (siteReconversionType === "friche") {
     return {
-      letterScore: "A",
+      letterGrade: "A",
+      metrics: { siteReconversionType },
+    };
+  }
+  if (siteReconversionType === "friche_agricole") {
+    return {
+      letterGrade: "D",
+      metrics: { siteReconversionType },
+    };
+  }
+  if (siteReconversionType === "enaf") {
+    return {
+      letterGrade: "E",
       metrics: { siteReconversionType },
     };
   }

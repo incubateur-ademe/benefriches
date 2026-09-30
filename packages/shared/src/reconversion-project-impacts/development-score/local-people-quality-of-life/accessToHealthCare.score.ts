@@ -1,6 +1,6 @@
 import type { BuildingsUseDistribution } from "../../../reconversion-projects";
 import { type BuildingUseSurface, filterBuildingsUses } from "../readFeatures.helpers";
-import type { ItemScoreResult } from "../scoring.helpers";
+import type { ScoredMetrics } from "../scoring.helpers";
 
 const HEALTH_RELATED_BUILDINGS: Set<keyof BuildingsUseDistribution> = new Set([
   "LOCAL_HEALTH_SERVICE",
@@ -10,7 +10,7 @@ const HEALTH_RELATED_BUILDINGS: Set<keyof BuildingsUseDistribution> = new Set([
 
 export const getAccessToHealthCareScore = (
   buildingsUseDistribution?: BuildingsUseDistribution,
-): ItemScoreResult<{ matchingBuildingsUses: BuildingUseSurface[] }> => {
+): ScoredMetrics<{ matchingBuildingsUses: BuildingUseSurface[] }> => {
   if (!buildingsUseDistribution) {
     return undefined;
   }
@@ -21,7 +21,7 @@ export const getAccessToHealthCareScore = (
   if (matchingBuildingsUses.length === 0) return undefined;
 
   return {
-    letterScore: matchingBuildingsUses.length > 1 ? "A" : "B",
+    letterGrade: matchingBuildingsUses.length > 1 ? "A" : "B",
     metrics: { matchingBuildingsUses },
   };
 };

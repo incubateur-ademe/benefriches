@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 
 import type { DevelopmentPlanType } from "../../../reconversion-projects";
 import type { AggregatedProjectImpactMetric } from "../../projectImpacts.types";
-import type { LetterScore } from "../scoring.helpers";
+import type { LetterGrade } from "../scoring.helpers";
 import { getAvoidedCo2EmissionsScore } from "./co2EqEmissions.score";
 
 const testCasesGradeA = [
@@ -202,23 +202,24 @@ type TestData = {
   expectedMetrics: { avoidedCo2eqEmissions: number; newStoredCo2Eq: number };
 };
 
-const assertTestData = (testData: TestData, letterScore: LetterScore) => {
+const assertTestData = (testData: TestData, letterGrade: LetterGrade) => {
   const dataDesc =
     testData.aggregatedReconversionImpactMetrics.length === 0
       ? "no impacts data"
       : `impacts metrics ${testData.aggregatedReconversionImpactMetrics.map((item) => `${item.name} -> ${item.total} t`).join(", ")}`;
-  it(`returns ${letterScore} grade for ${testData.projectDevelopmentPlanType} with ${dataDesc}`, () => {
+  it(`returns ${letterGrade} grade for ${testData.projectDevelopmentPlanType} with ${dataDesc}`, () => {
     const result = getAvoidedCo2EmissionsScore({
       projectDevelopmentPlanType: testData.projectDevelopmentPlanType,
       aggregatedReconversionImpactMetrics: testData.aggregatedReconversionImpactMetrics,
       siteStatuQuoImpactMetrics: [{ total: 10, name: "storedCo2Eq" }],
     });
-    assert.strictEqual(result?.letterScore, letterScore);
+    assert.strictEqual(result?.letterGrade, letterGrade);
     assert.strictEqual(
       result?.metrics.avoidedCo2eqEmissions,
       testData.expectedMetrics.avoidedCo2eqEmissions,
     );
     assert.strictEqual(result?.metrics.newStoredCo2Eq, testData.expectedMetrics.newStoredCo2Eq);
+    assert.strictEqual(result?.metrics.siteStatuQuoStoredCo2Eq, 10);
   });
 };
 

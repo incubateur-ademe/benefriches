@@ -1,11 +1,11 @@
 import { filterByName } from "../../../filter-by-name";
 import type { AggregatedReconversionProjectOnSiteImpactItemView } from "../../projectImpacts.types";
-import type { ItemScoreResult, LetterScore } from "../scoring.helpers";
+import type { ScoredMetrics, LetterGrade } from "../scoring.helpers";
 
-const getEcosystemServicesLetterScore = (
+const getEcosystemServicesLetterGrade = (
   positiveCount: number,
   negativeCount: number,
-): LetterScore => {
+): LetterGrade => {
   const A = positiveCount >= 5 && negativeCount === 0;
   const B =
     (positiveCount >= 5 && negativeCount >= 1) ||
@@ -25,7 +25,7 @@ const getEcosystemServicesLetterScore = (
 
 export const getEcosystemServicesScore = (
   aggregatedReconversionEconomicImpacts: AggregatedReconversionProjectOnSiteImpactItemView[],
-): ItemScoreResult<{
+): ScoredMetrics<{
   ecosystemicServices: AggregatedReconversionProjectOnSiteImpactItemView[];
 }> => {
   const ecosystemicServices = filterByName(
@@ -44,7 +44,7 @@ export const getEcosystemServicesScore = (
   const negativeCount = ecosystemicServices.filter((item) => item.total < 0).length;
 
   return {
-    letterScore: getEcosystemServicesLetterScore(positiveCount, negativeCount),
+    letterGrade: getEcosystemServicesLetterGrade(positiveCount, negativeCount),
     metrics: { ecosystemicServices },
   };
 };

@@ -7,7 +7,12 @@ export * from "./projectImpacts.types";
 export * from "../site/statu-quo-impacts/siteImpactsDataView.types";
 
 export * from "./computeImpactsWithBreakEvenLevel";
-export { computeProjectDevelopmentScore, type ProjectDevelopmentScore } from "./development-score";
+export {
+  computeProjectDevelopmentScore,
+  type ProjectDevelopmentScore,
+  type LetterGrade,
+  type LetterGradeWithModifier,
+} from "./development-score";
 export * from "./mocks";
 
 export {

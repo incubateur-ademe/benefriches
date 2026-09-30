@@ -4,7 +4,7 @@ import type { AggregatedReconversionProjectOnSiteImpactItemView } from "../proje
 import { getAvoidedCo2EmissionsScore } from "./environment/co2EqEmissions.score";
 import { getEcosystemServicesScore } from "./environment/ecosystemServices.score";
 import { getSoilsQualityScore } from "./environment/soilsQuality.score";
-import { getWaterQualityLetterScore } from "./environment/waterQuality.score";
+import { getWaterQualityScore } from "./environment/waterQuality.score";
 import { getZanComplianceScore } from "./environment/zanCompliance.score";
 import { getFullTimeJobsScore } from "./jobs/fullTimeJobs.score";
 import { getLocalAuthorityFinancesScore } from "./local-authority-finances/localAuthorityFinances.score";
@@ -23,14 +23,15 @@ import {
 } from "./readFeatures.helpers";
 import {
   computeSectionScore,
-  convertNumberScoreToLetterScore,
-  type ItemScoreResult,
-  type LetterGrade,
+  computeScoreFromGradePoints,
+  type ScoredMetrics,
+  type Score,
 } from "./scoring.helpers";
 
 export const computeProjectDevelopmentScore = (
   contextData: GetReconversionProjectImpactsResultDto["contextData"],
   impacts: GetReconversionProjectImpactsResultDto["impacts"],
+  municipalityYearlyCapitalExpenditures: number,
 ): ProjectDevelopmentScore => {
   const soilsEvolutionDetails = getSoilEvolutionDetails({
     siteStatuQuoImpactMetrics: impacts.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics,
@@ -42,14 +43,14 @@ export const computeProjectDevelopmentScore = (
   const { aggregatedReconversionImpacts, reconversionImpactsBreakdown } = impacts;
 
   const environmentScore = computeSectionScore({
-    avoidedCo2Emissions: getAvoidedCo2EmissionsScore({
+    co2eqEmissionsVariation: getAvoidedCo2EmissionsScore({
       projectDevelopmentPlanType: projectDevelopmentPlanType,
       aggregatedReconversionImpactMetrics: aggregatedReconversionImpacts.impactsMetrics,
       siteStatuQuoImpactMetrics: reconversionImpactsBreakdown.siteStatuQuoImpactMetrics,
     }),
     zanCompliance: getZanComplianceScore(siteReconversionType, soilsEvolutionDetails),
     soilsQuality: getSoilsQualityScore(soilsEvolutionDetails),
-    waterQuality: getWaterQualityLetterScore(soilsEvolutionDetails),
+    waterQuality: getWaterQualityScore(soilsEvolutionDetails),
     ecosystemServices: getEcosystemServicesScore(
       aggregatedReconversionImpacts.indirectEconomicImpacts.details,
     ),
@@ -67,7 +68,7 @@ export const computeProjectDevelopmentScore = (
       aggregatedReconversionEconomicImpacts:
         impacts.aggregatedReconversionImpacts.indirectEconomicImpacts.details,
       stakeholders: impacts.stakeholders,
-      municipalityYearlyCapitalExpenditures: 1500000,
+      municipalityYearlyCapitalExpenditures,
     }),
   });
 
@@ -84,22 +85,19 @@ export const computeProjectDevelopmentScore = (
     }),
     accessToLocalServices: getAccessToLocalServicesScore(buildingsFloorAreaEvolution),
     accessToHealthCare: getAccessToHealthCareScore(buildingsFloorAreaEvolution),
-    avoidedTrafficAccidents: getTrafficSecurityScore(aggregatedReconversionImpacts.impactsMetrics),
-    avoidedFrichesAccidents: getFricheAccidentsScore(aggregatedReconversionImpacts.impactsMetrics),
+    trafficSecurity: getTrafficSecurityScore(aggregatedReconversionImpacts.impactsMetrics),
+    frichesAccidents: getFricheAccidentsScore(aggregatedReconversionImpacts.impactsMetrics),
   });
 
   const scores = [
-    localAuthorityEconomicScore.numericScore,
-    environmentScore.numericScore,
-    fullTimeJobsScore.numericScore,
-    localPeopleQualityOfLifeScore.numericScore,
+    localAuthorityEconomicScore.score.gradePoints,
+    environmentScore.score.gradePoints,
+    fullTimeJobsScore.score.gradePoints,
+    localPeopleQualityOfLifeScore.score.gradePoints,
   ];
 
-  const projectNumericScore = roundTo2Digits(sumList(scores) / scores.length);
-
   return {
-    numericScore: projectNumericScore,
-    letterScore: convertNumberScoreToLetterScore(projectNumericScore),
+    score: computeScoreFromGradePoints(roundTo2Digits(sumList(scores) / scores.length)),
     details: {
       environmentScore,
       fullTimeJobsScore,
@@ -110,14 +108,12 @@ export const computeProjectDevelopmentScore = (
 };
 
 export type ProjectDevelopmentScore = {
-  numericScore: number;
-  letterScore: LetterGrade;
+  score: Score;
   details: {
     fullTimeJobsScore: {
-      letterScore: LetterGrade;
-      numericScore: number;
+      score: Score;
       details: {
-        fullTimeJobs: ItemScoreResult<{
+        fullTimeJobs: ScoredMetrics<{
           fullTimeJobsDifferenceByHectare: number;
           siteStatuQuoFullTimeJobs: number;
           difference: number;
@@ -125,36 +121,34 @@ export type ProjectDevelopmentScore = {
       };
     };
     localPeopleQualityOfLifeScore: {
-      letterScore: LetterGrade;
-      numericScore: number;
+      score: Score;
       details: {
-        livingEnvironment: ItemScoreResult<{
+        livingEnvironment: ScoredMetrics<{
           siteReconversionType: SiteReconversionType;
         }>;
-        localHealthiness: ItemScoreResult<{
+        localHealthiness: ScoredMetrics<{
           siteReconversionType: SiteReconversionType;
           sportsFacilitiesFloorSurface: number;
           newGreenSoilSurfaces: number;
         }>;
-        accessToLocalServices: ItemScoreResult<{
+        accessToLocalServices: ScoredMetrics<{
           matchingBuildingsUses: BuildingUseSurface[];
         }>;
-        accessToHealthCare: ItemScoreResult<{
+        accessToHealthCare: ScoredMetrics<{
           matchingBuildingsUses: BuildingUseSurface[];
         }>;
-        avoidedTrafficAccidents: ItemScoreResult<{
+        trafficSecurity: ScoredMetrics<{
           avoidedTrafficAccidents: number;
         }>;
-        avoidedFrichesAccidents: ItemScoreResult<{
+        frichesAccidents: ScoredMetrics<{
           avoidedFricheAccidents: number;
         }>;
       };
     };
     localAuthorityEconomicScore: {
-      letterScore: LetterGrade;
-      numericScore: number;
+      score: Score;
       details: {
-        localAuthorityFinances: ItemScoreResult<{
+        localAuthorityFinances: ScoredMetrics<{
           localAuthorityTotal: number;
           percentage: number;
           municipalityYearlyCapitalExpenditures: number;
@@ -162,22 +156,23 @@ export type ProjectDevelopmentScore = {
       };
     };
     environmentScore: {
-      letterScore: LetterGrade;
-      numericScore: number;
+      score: Score;
       details: {
-        avoidedCo2Emissions: ItemScoreResult<{
+        co2eqEmissionsVariation: ScoredMetrics<{
           avoidedCo2eqEmissions: number;
           newStoredCo2Eq: number;
+          siteStatuQuoStoredCo2Eq: number;
+          soilStoredPercentageVariation: number;
         }>;
-        zanCompliance: ItemScoreResult<
+        zanCompliance: ScoredMetrics<
           Pick<SoilEvolutionDetails, "newGreenSoilSurfaces" | "permeableSurfaceDifference"> & {
             siteReconversionType: SiteReconversionType;
           }
         >;
-        soilsQuality: ItemScoreResult<
+        soilsQuality: ScoredMetrics<
           Pick<SoilEvolutionDetails, "permeableSurfaceDifference" | "contamination">
         >;
-        waterQuality: ItemScoreResult<
+        waterQuality: ScoredMetrics<
           Pick<SoilEvolutionDetails, "contamination"> & {
             prairieSurfaceDifference: number;
             forestSurfaceDifference: number;
@@ -185,7 +180,7 @@ export type ProjectDevelopmentScore = {
             wetLandSurfaceDifference: number;
           }
         >;
-        ecosystemServices: ItemScoreResult<{
+        ecosystemServices: ScoredMetrics<{
           ecosystemicServices: AggregatedReconversionProjectOnSiteImpactItemView[];
         }>;
       };

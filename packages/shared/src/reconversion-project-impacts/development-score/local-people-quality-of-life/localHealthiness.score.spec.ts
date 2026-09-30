@@ -4,7 +4,7 @@ import { describe, it } from "node:test";
 import { typedObjectEntries } from "../../../object-entries";
 import type { BuildingsUseDistribution } from "../../../reconversion-projects";
 import type { SiteReconversionType, SoilEvolutionDetails } from "../readFeatures.helpers";
-import type { LetterScore } from "../scoring.helpers";
+import type { LetterGrade } from "../scoring.helpers";
 import { getLocalHealthinessScore } from "./localHealthiness.score";
 
 const testCasesGradeA = [
@@ -98,7 +98,7 @@ type TestData = {
   soilEvolutionDetails: Pick<SoilEvolutionDetails, "newGreenSoilSurfaces">;
 };
 
-const assertTestData = (testData: TestData, letterScore: LetterScore) => {
+const assertTestData = (testData: TestData, letterGrade: LetterGrade) => {
   const dataDescList: string[] = [];
   dataDescList.push(`on ${testData.siteReconversionType}`);
   dataDescList.push(
@@ -112,9 +112,9 @@ const assertTestData = (testData: TestData, letterScore: LetterScore) => {
           .join(", ")}`,
   );
 
-  it(`returns ${letterScore} grade ${dataDescList.join(", ")}`, () => {
+  it(`returns ${letterGrade} grade ${dataDescList.join(", ")}`, () => {
     const result = getLocalHealthinessScore(testData);
-    assert.strictEqual(result?.letterScore, letterScore);
+    assert.strictEqual(result?.letterGrade, letterGrade);
     assert.strictEqual(result?.metrics.siteReconversionType, testData.siteReconversionType);
     assert.strictEqual(
       result?.metrics.newGreenSoilSurfaces,

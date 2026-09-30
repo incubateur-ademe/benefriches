@@ -2,22 +2,22 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import {
-  convertLetterScoreToNumberScore,
-  convertNumberScoreToLetterScore,
+  convertLetterGradeToGradePoints,
+  convertGradePointsToLetterGrade,
   LETTER_GRADE_THRESHOLDS,
 } from "./scoring.helpers";
 
-describe("convertLetterScoreToNumberScore", () => {
+describe("convertLetterGradeToGradePoints", () => {
   const EXPECTED: Record<string, number> = { A: 90, B: 70, C: 50, D: 30, E: 10 };
 
   for (const [letter, expected] of Object.entries(EXPECTED)) {
     it(`converts '${letter}' to ${expected}`, () => {
-      assert.equal(convertLetterScoreToNumberScore(letter as never), expected);
+      assert.equal(convertLetterGradeToGradePoints(letter as never), expected);
     });
   }
 });
 
-describe("convertNumberScoreToLetterScore", () => {
+describe("convertGradePointsToLetterGrade", () => {
   describe("spec sanity check", () => {
     const KNOWN_VALUES: [number, string][] = [
       [99.99, "A+"],
@@ -46,29 +46,29 @@ describe("convertNumberScoreToLetterScore", () => {
 
     for (const [score, expectedGrade] of KNOWN_VALUES) {
       it(`${score} -> '${expectedGrade}'`, () => {
-        assert.equal(convertNumberScoreToLetterScore(score), expectedGrade);
+        assert.equal(convertGradePointsToLetterGrade(score), expectedGrade);
       });
     }
   });
 
   describe("boundary behaviour", () => {
-    for (const { grade, minScore } of LETTER_GRADE_THRESHOLDS) {
-      it(`returns '${grade}' exactly at its minScore (${minScore})`, () => {
-        assert.equal(convertNumberScoreToLetterScore(minScore), grade);
+    for (const { grade, minGradePoints } of LETTER_GRADE_THRESHOLDS) {
+      it(`returns '${grade}' exactly at its minGradePoints (${minGradePoints})`, () => {
+        assert.equal(convertGradePointsToLetterGrade(minGradePoints), grade);
       });
 
-      it(`returns '${grade}' for a value well inside its range (minScore + 1)`, () => {
-        assert.equal(convertNumberScoreToLetterScore(minScore + 1), grade);
+      it(`returns '${grade}' for a value well inside its range (minGradePoints + 1)`, () => {
+        assert.equal(convertGradePointsToLetterGrade(minGradePoints + 1), grade);
       });
     }
 
     it("falls back to the lowest grade ('E-') for a NaN score", () => {
-      assert.equal(convertNumberScoreToLetterScore(NaN), "E-");
+      assert.equal(convertGradePointsToLetterGrade(NaN), "E-");
     });
 
     it("returns the top grade for a score above 100", () => {
       const top = LETTER_GRADE_THRESHOLDS[0];
-      assert.equal(convertNumberScoreToLetterScore(1000), top?.grade);
+      assert.equal(convertGradePointsToLetterGrade(1000), top?.grade);
     });
   });
 });

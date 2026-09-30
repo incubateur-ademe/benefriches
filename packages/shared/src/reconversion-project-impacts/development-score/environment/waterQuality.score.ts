@@ -1,11 +1,11 @@
 import { sumListWithKey } from "../../../services";
 import { isForest, isPrairie, isWetLand } from "../../../soils";
 import type { SoilEvolutionDetails } from "../readFeatures.helpers";
-import type { ItemScoreResult } from "../scoring.helpers";
+import type { ScoredMetrics } from "../scoring.helpers";
 
-export const getWaterQualityLetterScore = (
+export const getWaterQualityScore = (
   soilsEvolutionDetails: Pick<SoilEvolutionDetails, "contamination" | "soilsDistribution">,
-): ItemScoreResult<
+): ScoredMetrics<
   Pick<SoilEvolutionDetails, "contamination"> & {
     prairieSurfaceDifference: number;
     forestSurfaceDifference: number;
@@ -44,17 +44,17 @@ export const getWaterQualityLetterScore = (
   };
 
   if (prairieSurfaceDifference < 0 || wetLandSurfaceDifference < 0)
-    return { letterScore: "E", metrics };
+    return { letterGrade: "E", metrics };
   // TODO ajouter condition si projet ZAE avec réduction de la surface réservée
   if (agriculturalSurfaceDifference < 0 || forestSurfaceDifference < 0)
-    return { letterScore: "D", metrics };
+    return { letterGrade: "D", metrics };
 
   if (soilsEvolutionDetails.contamination.siteContaminatedSurface === 0) {
-    return { letterScore: "C", metrics };
+    return { letterGrade: "C", metrics };
   }
 
   const reduction = soilsEvolutionDetails.contamination.percentVariation;
-  if (reduction >= 75) return { letterScore: "A", metrics };
-  if (reduction >= 10) return { letterScore: "B", metrics };
-  return { letterScore: "C", metrics };
+  if (reduction >= 75) return { letterGrade: "A", metrics };
+  if (reduction >= 10) return { letterGrade: "B", metrics };
+  return { letterGrade: "C", metrics };
 };

@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 
 import { type DevelopmentPlanType } from "../../../reconversion-projects";
 import { type AggregatedReconversionIndirectEconomicImpactsDataView } from "../../projectImpacts.types";
-import { type LetterScore } from "../scoring.helpers";
+import { type LetterGrade } from "../scoring.helpers";
 import { getEcosystemServicesScore } from "./ecosystemServices.score";
 
 const testCasesGradeA = [
@@ -172,16 +172,16 @@ type TestData = {
   aggregatedReconversionIndirectEconomicImpacts: AggregatedReconversionIndirectEconomicImpactsDataView["details"];
 };
 
-const assertTestData = (testData: TestData, letterScore: LetterScore) => {
+const assertTestData = (testData: TestData, letterGrade: LetterGrade) => {
   const dataDesc =
     testData.aggregatedReconversionIndirectEconomicImpacts.length === 0
       ? "no impacts data"
       : `ecosystemServices ${testData.aggregatedReconversionIndirectEconomicImpacts.map((item) => `${item.name} -> ${item.total} t`).join(", ")}`;
-  it(`returns ${letterScore} grade for ${testData.projectDevelopmentPlanType} with ${dataDesc}`, () => {
+  it(`returns ${letterGrade} grade for ${testData.projectDevelopmentPlanType} with ${dataDesc}`, () => {
     const result = getEcosystemServicesScore(
       testData.aggregatedReconversionIndirectEconomicImpacts,
     );
-    assert.strictEqual(result?.letterScore, letterScore);
+    assert.strictEqual(result?.letterGrade, letterGrade);
     assert.strictEqual(
       result?.metrics.ecosystemicServices.length,
       testData.aggregatedReconversionIndirectEconomicImpacts.length,

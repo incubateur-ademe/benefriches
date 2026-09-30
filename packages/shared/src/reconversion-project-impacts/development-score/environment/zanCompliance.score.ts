@@ -1,13 +1,13 @@
 import type { SiteReconversionType, SoilEvolutionDetails } from "../readFeatures.helpers";
-import type { ItemScoreResult, LetterScore } from "../scoring.helpers";
+import type { ScoredMetrics, LetterGrade } from "../scoring.helpers";
 
-const getZanComplianceLetterScore = (
+const getZanComplianceLetterGrade = (
   siteReconversionType: SiteReconversionType,
   soilsEvolutionDetails: Pick<
     SoilEvolutionDetails,
     "newGreenSoilSurfaces" | "permeableSurfaceDifference"
   >,
-): LetterScore | undefined => {
+): LetterGrade | undefined => {
   const permeableVariation = soilsEvolutionDetails.permeableSurfaceDifference.percentVariation;
   const hasNewGreenSoil = soilsEvolutionDetails.newGreenSoilSurfaces > 0;
   if (siteReconversionType === "friche") {
@@ -32,19 +32,19 @@ export const getZanComplianceScore = (
     SoilEvolutionDetails,
     "newGreenSoilSurfaces" | "permeableSurfaceDifference"
   >,
-): ItemScoreResult<
+): ScoredMetrics<
   Pick<SoilEvolutionDetails, "newGreenSoilSurfaces" | "permeableSurfaceDifference"> & {
     siteReconversionType: SiteReconversionType;
   }
 > => {
-  const letterScore = getZanComplianceLetterScore(siteReconversionType, soilsEvolutionDetails);
+  const letterGrade = getZanComplianceLetterGrade(siteReconversionType, soilsEvolutionDetails);
 
-  if (!letterScore) {
+  if (!letterGrade) {
     return undefined;
   }
 
   return {
-    letterScore,
+    letterGrade,
     metrics: {
       permeableSurfaceDifference: soilsEvolutionDetails.permeableSurfaceDifference,
       newGreenSoilSurfaces: soilsEvolutionDetails.newGreenSoilSurfaces,

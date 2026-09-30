@@ -2,9 +2,9 @@ import { type DevelopmentPlanType } from "../../../reconversion-projects";
 import { type SiteStatuQuoImpactMetric } from "../../../site";
 import { type AggregatedProjectImpactMetric } from "../../projectImpacts.types";
 import { getEvolutionAsPercentage } from "../readFeatures.helpers";
-import { type ItemScoreResult, type LetterScore, sumMetricsTotalByName } from "../scoring.helpers";
+import { type ScoredMetrics, type LetterGrade, sumMetricsTotalByName } from "../scoring.helpers";
 
-const getPhotovoltaicLetterScore = ({
+const getPhotovoltaicLetterGrade = ({
   avoidedWithEnergyCo2eq,
   totalCo2eq,
   soilStoredPercentageVariation,
@@ -12,7 +12,7 @@ const getPhotovoltaicLetterScore = ({
   avoidedWithEnergyCo2eq: number;
   totalCo2eq: number;
   soilStoredPercentageVariation: number;
-}): LetterScore => {
+}): LetterGrade => {
   if (totalCo2eq < 0) return "E";
 
   if (avoidedWithEnergyCo2eq >= 5000) {
@@ -30,7 +30,7 @@ const getPhotovoltaicLetterScore = ({
   return "D";
 };
 
-const getUrbanProjectLetterScore = ({
+const getUrbanProjectLetterGrade = ({
   avoidedCo2eqEmissions,
   soilStoredPercentageVariation,
   totalCo2eq,
@@ -38,7 +38,7 @@ const getUrbanProjectLetterScore = ({
   avoidedCo2eqEmissions: number;
   soilStoredPercentageVariation: number;
   totalCo2eq: number;
-}): LetterScore => {
+}): LetterGrade => {
   if (totalCo2eq < 0 && soilStoredPercentageVariation < 0) {
     return "E";
   }
@@ -56,7 +56,12 @@ export const getAvoidedCo2EmissionsScore = (props: {
   projectDevelopmentPlanType: DevelopmentPlanType;
   aggregatedReconversionImpactMetrics: AggregatedProjectImpactMetric[];
   siteStatuQuoImpactMetrics: SiteStatuQuoImpactMetric[];
-}): ItemScoreResult<{ avoidedCo2eqEmissions: number; newStoredCo2Eq: number }> => {
+}): ScoredMetrics<{
+  avoidedCo2eqEmissions: number;
+  newStoredCo2Eq: number;
+  siteStatuQuoStoredCo2Eq: number;
+  soilStoredPercentageVariation: number;
+}> => {
   const avoidedCo2eqEmissions = sumMetricsTotalByName(
     props.aggregatedReconversionImpactMetrics,
     "avoidedAirConditioningCo2eqEmissions",
@@ -76,12 +81,17 @@ export const getAvoidedCo2EmissionsScore = (props: {
     difference: newStoredCo2Eq,
   });
 
-  const metrics = { avoidedCo2eqEmissions, newStoredCo2Eq };
+  const metrics = {
+    avoidedCo2eqEmissions,
+    newStoredCo2Eq,
+    siteStatuQuoStoredCo2Eq: co2eqStockBeforeReconversion,
+    soilStoredPercentageVariation,
+  };
 
   switch (props.projectDevelopmentPlanType) {
     case "PHOTOVOLTAIC_POWER_PLANT":
       return {
-        letterScore: getPhotovoltaicLetterScore({
+        letterGrade: getPhotovoltaicLetterGrade({
           avoidedWithEnergyCo2eq: avoidedCo2eqEmissions,
           soilStoredPercentageVariation,
           totalCo2eq,
@@ -90,7 +100,7 @@ export const getAvoidedCo2EmissionsScore = (props: {
       };
     case "URBAN_PROJECT":
       return {
-        letterScore: getUrbanProjectLetterScore({
+        letterGrade: getUrbanProjectLetterGrade({
           avoidedCo2eqEmissions,
           soilStoredPercentageVariation,
           totalCo2eq,

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { urbanProjectImpactsResultDto } from "../../mocks";
-import type { LetterScore } from "../scoring.helpers";
+import type { LetterGrade } from "../scoring.helpers";
 import { getLocalAuthorityFinancesScore } from "./localAuthorityFinances.score";
 
 const MOCK_NEGATIVE_LOCAL_AUTHORITY_TOTAL = -356_404;
@@ -10,9 +10,9 @@ const MOCK_POSITIVE_LOCAL_AUTHORITY_TOTAL = 1_835_960;
 
 const assertPositiveTestData = (
   municipalityYearlyCapitalExpenditures: number,
-  letterScore: LetterScore,
+  letterGrade: LetterGrade,
 ) => {
-  it(`returns ${letterScore} grade for municipalityYearlyCapitalExpenditures ${municipalityYearlyCapitalExpenditures}€`, () => {
+  it(`returns ${letterGrade} grade for municipalityYearlyCapitalExpenditures ${municipalityYearlyCapitalExpenditures}€`, () => {
     const result = getLocalAuthorityFinancesScore({
       aggregatedReconversionEconomicImpacts:
         urbanProjectImpactsResultDto.aggregatedReconversionImpacts.indirectEconomicImpacts.details
@@ -27,15 +27,15 @@ const assertPositiveTestData = (
       result?.metrics.municipalityYearlyCapitalExpenditures,
       municipalityYearlyCapitalExpenditures,
     );
-    assert.strictEqual(result?.letterScore, letterScore);
+    assert.strictEqual(result?.letterGrade, letterGrade);
   });
 };
 
 const assertNegativeTestData = (
   municipalityYearlyCapitalExpenditures: number,
-  letterScore: LetterScore,
+  letterGrade: LetterGrade,
 ) => {
-  it(`returns ${letterScore} grade for municipalityYearlyCapitalExpenditures ${municipalityYearlyCapitalExpenditures}€`, () => {
+  it(`returns ${letterGrade} grade for municipalityYearlyCapitalExpenditures ${municipalityYearlyCapitalExpenditures}€`, () => {
     const result = getLocalAuthorityFinancesScore({
       aggregatedReconversionEconomicImpacts:
         urbanProjectImpactsResultDto.aggregatedReconversionImpacts.indirectEconomicImpacts.details,
@@ -48,7 +48,7 @@ const assertNegativeTestData = (
       result?.metrics.municipalityYearlyCapitalExpenditures,
       municipalityYearlyCapitalExpenditures,
     );
-    assert.strictEqual(result?.letterScore, letterScore);
+    assert.strictEqual(result?.letterGrade, letterGrade);
   });
 };
 

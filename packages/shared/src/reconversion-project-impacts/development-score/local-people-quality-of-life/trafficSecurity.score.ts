@@ -1,9 +1,9 @@
 import { type AggregatedProjectImpactMetric } from "../../projectImpacts.types";
-import { type ItemScoreResult, sumMetricsTotalByName } from "../scoring.helpers";
+import { type ScoredMetrics, sumMetricsTotalByName } from "../scoring.helpers";
 
 export const getTrafficSecurityScore = (
   aggregatedReconversionImpactMetrics: AggregatedProjectImpactMetric[],
-): ItemScoreResult<{
+): ScoredMetrics<{
   avoidedTrafficAccidents: number;
 }> => {
   const avoidedTrafficAccidents = sumMetricsTotalByName(
@@ -14,7 +14,7 @@ export const getTrafficSecurityScore = (
   );
 
   if (avoidedTrafficAccidents > 0) {
-    return { letterScore: "B", metrics: { avoidedTrafficAccidents } };
+    return { letterGrade: "B", metrics: { avoidedTrafficAccidents } };
   }
 
   return undefined;

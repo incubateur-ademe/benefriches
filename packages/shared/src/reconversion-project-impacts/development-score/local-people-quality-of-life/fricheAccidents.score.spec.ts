@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import type { AggregatedProjectImpactMetric } from "../../projectImpacts.types";
-import type { LetterScore } from "../scoring.helpers";
+import type { LetterGrade } from "../scoring.helpers";
 import { getFricheAccidentsScore } from "./fricheAccidents.score";
 
 const testCasesGradeA = [
@@ -41,15 +41,15 @@ type TestData = {
   expectedMetrics: { avoidedFricheAccidents: number } | undefined;
 };
 
-const assertTestData = (testData: TestData, letterScore: LetterScore) => {
+const assertTestData = (testData: TestData, letterGrade: LetterGrade) => {
   const dataDesc =
     testData.aggregatedReconversionImpactMetrics.length === 0
       ? "no impacts data"
       : `impacts metrics ${testData.aggregatedReconversionImpactMetrics.map((item) => `${item.name} -> ${item.total} t`).join(", ")}`;
 
-  it(`returns ${letterScore} grade for ${dataDesc}`, () => {
+  it(`returns ${letterGrade} grade for ${dataDesc}`, () => {
     const result = getFricheAccidentsScore(testData.aggregatedReconversionImpactMetrics);
-    assert.strictEqual(result?.letterScore, letterScore);
+    assert.strictEqual(result?.letterGrade, letterGrade);
     assert.strictEqual(
       result?.metrics.avoidedFricheAccidents,
       testData.expectedMetrics?.avoidedFricheAccidents,

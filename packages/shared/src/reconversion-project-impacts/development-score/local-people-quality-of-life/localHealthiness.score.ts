@@ -1,12 +1,12 @@
 import type { BuildingsUseDistribution } from "../../../reconversion-projects";
 import type { SiteReconversionType, SoilEvolutionDetails } from "../readFeatures.helpers";
-import type { ItemScoreResult } from "../scoring.helpers";
+import type { ScoredMetrics } from "../scoring.helpers";
 
 export const getLocalHealthinessScore = (props: {
   siteReconversionType: SiteReconversionType;
   buildingsFloorAreaDistribution?: BuildingsUseDistribution;
   soilEvolutionDetails: Pick<SoilEvolutionDetails, "newGreenSoilSurfaces">;
-}): ItemScoreResult<{
+}): ScoredMetrics<{
   siteReconversionType: SiteReconversionType;
   sportsFacilitiesFloorSurface: number;
   newGreenSoilSurfaces: number;
@@ -21,7 +21,7 @@ export const getLocalHealthinessScore = (props: {
 
   if (props.siteReconversionType === "friche" || projectHealthinessImprovment) {
     return {
-      letterScore:
+      letterGrade:
         props.siteReconversionType === "friche" && projectHealthinessImprovment ? "A" : "B",
       metrics: {
         siteReconversionType: props.siteReconversionType,

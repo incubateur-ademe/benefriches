@@ -3,8 +3,8 @@ import { describe, it } from "node:test";
 
 import type { DevelopmentPlanType } from "../../../reconversion-projects";
 import type { SoilEvolutionDetails } from "../readFeatures.helpers";
-import type { LetterScore } from "../scoring.helpers";
-import { getWaterQualityLetterScore } from "./waterQuality.score";
+import type { LetterGrade } from "../scoring.helpers";
+import { getWaterQualityScore } from "./waterQuality.score";
 
 const testCasesGradeA = [
   {
@@ -273,7 +273,7 @@ type TestData = {
   soilsEvolutionDetails: Pick<SoilEvolutionDetails, "contamination" | "soilsDistribution">;
 };
 
-const assertTestData = (testData: TestData, letterScore: LetterScore) => {
+const assertTestData = (testData: TestData, letterGrade: LetterGrade) => {
   const dataDescList: string[] = [];
 
   if (testData.soilsEvolutionDetails.contamination.siteContaminatedSurface > 0) {
@@ -282,14 +282,14 @@ const assertTestData = (testData: TestData, letterScore: LetterScore) => {
       `with soilsDistribution ${testData.soilsEvolutionDetails.contamination.percentVariation}% decontamination`,
     );
   }
-  if (letterScore === "D" || letterScore === "E")
+  if (letterGrade === "D" || letterGrade === "E")
     dataDescList.push(
       `with soilsDistribution ${testData.soilsEvolutionDetails.soilsDistribution.map((item) => `${item.soilType} -> ${item.total} m²`).join(", ")}`,
     );
 
-  it(`returns ${letterScore} grade for ${testData.projectDevelopmentPlanType} ${dataDescList.join(", ")}`, () => {
-    const result = getWaterQualityLetterScore(testData.soilsEvolutionDetails);
-    assert.strictEqual(result?.letterScore, letterScore);
+  it(`returns ${letterGrade} grade for ${testData.projectDevelopmentPlanType} ${dataDescList.join(", ")}`, () => {
+    const result = getWaterQualityScore(testData.soilsEvolutionDetails);
+    assert.strictEqual(result?.letterGrade, letterGrade);
     assert.strictEqual(
       result?.metrics.contamination.percentVariation,
       testData.soilsEvolutionDetails.contamination.percentVariation,

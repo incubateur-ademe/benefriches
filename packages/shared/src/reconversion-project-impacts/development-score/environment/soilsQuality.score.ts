@@ -1,7 +1,7 @@
 import type { SoilEvolutionDetails } from "../readFeatures.helpers";
-import type { ItemScoreResult, LetterScore } from "../scoring.helpers";
+import type { ScoredMetrics, LetterGrade } from "../scoring.helpers";
 
-const getSoilsPermeableSurfaceLetterScore = (variationPercent: number): LetterScore => {
+const getSoilsPermeableSurfaceLetterGrade = (variationPercent: number): LetterGrade => {
   if (variationPercent > 80) return "A";
   if (variationPercent > 30) return "B";
   if (variationPercent >= -10) return "C";
@@ -11,8 +11,8 @@ const getSoilsPermeableSurfaceLetterScore = (variationPercent: number): LetterSc
 
 export const getSoilsQualityScore = (
   soilsEvolutionDetails: Pick<SoilEvolutionDetails, "contamination" | "permeableSurfaceDifference">,
-): ItemScoreResult<Pick<SoilEvolutionDetails, "contamination" | "permeableSurfaceDifference">> => {
-  const permeableScore = getSoilsPermeableSurfaceLetterScore(
+): ScoredMetrics<Pick<SoilEvolutionDetails, "contamination" | "permeableSurfaceDifference">> => {
+  const permeableScore = getSoilsPermeableSurfaceLetterGrade(
     soilsEvolutionDetails.permeableSurfaceDifference.percentVariation,
   );
 
@@ -22,16 +22,16 @@ export const getSoilsQualityScore = (
   };
 
   if (soilsEvolutionDetails.contamination.siteContaminatedSurface === 0) {
-    return { letterScore: permeableScore, metrics };
+    return { letterGrade: permeableScore, metrics };
   }
 
   if (soilsEvolutionDetails.contamination.percentVariation > 99 && permeableScore === "A")
-    return { letterScore: "A", metrics };
+    return { letterGrade: "A", metrics };
   if (soilsEvolutionDetails.contamination.percentVariation > 75 && permeableScore === "B")
-    return { letterScore: "B", metrics };
+    return { letterGrade: "B", metrics };
   if (soilsEvolutionDetails.contamination.percentVariation > 50 && permeableScore === "C")
-    return { letterScore: "C", metrics };
+    return { letterGrade: "C", metrics };
   if (soilsEvolutionDetails.contamination.percentVariation > 0 && permeableScore === "D")
-    return { letterScore: "D", metrics };
-  return { letterScore: "E", metrics };
+    return { letterGrade: "D", metrics };
+  return { letterGrade: "E", metrics };
 };
