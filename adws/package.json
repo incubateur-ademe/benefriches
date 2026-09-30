@@ -1,0 +1,11 @@
+{
+  "name": "adws",
+  "private": true,
+  "description": "ADW runner: outside the pnpm workspace so it never affects product CI. No dependencies: Node runs the .ts files directly.",
+  "type": "module",
+  "scripts": {
+    "test:integration": "node --test env.integration-spec.ts",
+    "format": "../node_modules/.bin/prettier --write .",
+    "format:check": "../node_modules/.bin/prettier --check ."
+  }
+}

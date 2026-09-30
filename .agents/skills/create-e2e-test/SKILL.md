@@ -153,7 +153,7 @@ test.describe("feature name", () => {
 
 ### 6. Run and Verify
 
-Run `pnpm --filter e2e-tests typecheck`, then run the new spec with the `run-e2e-tests` skill (`/run-e2e-tests tests/[feature]/`): it starts the stack, runs the tests and stops the stack.
+Run `pnpm --filter e2e-tests typecheck`, then run the new spec with the `run-e2e-tests` skill (`/run-e2e-tests tests/[feature]/`). It reuses the stack described by `.e2e-stack` at the repository root when one is up, otherwise brings one up for a port slot with `node adws/env.ts up <slot>`, runs the tests and tears it down. Never hard-code a host or port in a test: Playwright's `baseURL` and `MAIL_CATCHER_URL` come from `.e2e-stack`.
 
 ## File Checklist
 
