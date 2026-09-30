@@ -15,7 +15,7 @@
     "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/",
     "lint": "oxlint",
     "test:unit": "vitest --globals=true",
-    "test": "pnpm test:unit",
+    "test": "vitest run --globals=true",
     "test:coverage": "vitest run --globals=true --coverage",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview --host 0.0.0.0 --port 3000",
