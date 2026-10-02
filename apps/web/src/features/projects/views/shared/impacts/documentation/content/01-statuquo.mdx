@@ -1,0 +1,45 @@
+# ⏸️ Impacts économiques du statu quo
+
+Que se passerait-il si le site restait en l'état ? Ce calcul établit la situation de référence : les coûts et revenus actuels du site, avant toute reconversion.
+
+> 📌 **Rôle dans le calcul global :** ces impacts statu quo seront ensuite **inversés** lors de l'agrégation ([voir Étape 3](#agregation)).
+>
+> Reconvertir le site, c'est renoncer à ce que le site génère aujourd'hui, ce renoncement devient donc un coût, ou un bénéfice s'il s'agissait d'une charge.
+
+## 🏚️ Coûts de maintien d'une friche
+
+Tant que la friche existe, son propriétaire (ou locataire) supporte des dépenses récurrentes : gardiennage, clôtures, gestion des dépôts sauvages, couverture des accidents. Ces coûts sont calculés sur le site en l'état actuel.
+
+| Impact                                                           | Signe   | Note                                                        |
+| ---------------------------------------------------------------- | ------- | ----------------------------------------------------------- |
+| Coûts de sécurisation et maintenance à la charge du propriétaire | ➖ Coût | Calculés annuellement, actualisés sur la durée d'évaluation |
+| Coûts de sécurisation à la charge du locataire (si applicable)   | ➖ Coût |                                                             |
+
+> ℹ️ Ces coûts statu quo deviennent des **économies réalisées** dans la vue agrégée : reconvertir la friche, c'est ne plus avoir à les payer. [→ Voir l'agrégation](#agregation)
+
+## 🔑 Revenus locatifs actuels
+
+Si le site actuel génère un loyer (terrain loué à un exploitant agricole, bâtiment loué…), ce revenu est comptabilisé dans le statu quo.
+
+| Impact                                 | Signe       | Note                                |
+| -------------------------------------- | ----------- | ----------------------------------- |
+| Loyer perçu par le propriétaire actuel | ➕ Bénéfice | Actualisé sur la durée d'évaluation |
+
+> ⚠️ Ce revenu statu quo deviendra une **perte** dans la vue agrégée (_oldRentalIncomeLoss_) : reconvertir le site signifie renoncer à ce loyer. [→ Voir l'agrégation](#agregation)
+
+## 💼 Bilan d'exploitation du site actuel
+
+Si le site est actuellement exploité (activité agricole, industrielle…), son bilan d'exploitation annuel est calculé : recettes moins charges courantes.
+
+| Impact                                           | Signe       |
+| ------------------------------------------------ | ----------- |
+| Recettes d'exploitation annuelles du site actuel | ➕ Bénéfice |
+| Charges d'exploitation annuelles du site actuel  | ➖ Coût     |
+
+> ⚠️ Ce bilan devient une **perte de bénéfice** dans la vue agrégée si le solde était positif. Si l'exploitation était déficitaire, la reconversion engendre au contraire un gain.
+
+## 🌱 Services écosystémiques
+
+Les services écosystémiques rendus par les sols (prairies, forêts, zones humides) sont pris en compte dans les impacts du site. Afin de pouvoir comparer les valeurs de ces indicateurs aux autres impacts monétaires, il est nécessaire de convertir celles qui ne sont naturellement pas exprimées en valeurs monétaires. On parle alors de « monétarisation ».
+
+> ⚠️ Dans les impacts d'un site statu quo, cette valeur sera toujours un bénéfice.

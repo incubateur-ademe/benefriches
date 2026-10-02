@@ -1,0 +1,15 @@
+Lorsqu'un projet de reconversion de site est analysé, le calcul se déroule en **trois grandes étapes** : on évalue d'abord ce que le site génère aujourd'hui (statu quo), puis ce que le nouveau projet produira, et enfin on agrège les deux pour obtenir l'analyse coût-bénéfice différentielle présentée dans l'outil.
+
+| Étape      | Nom                       | Description                                             |
+| ---------- | ------------------------- | ------------------------------------------------------- |
+| ⏸️ Étape 1 | [Statu quo](#statuquo)    | Impacts économiques si le site reste en l'état          |
+| 🌐 Étape 2 | [Projet](#projet)         | Impacts économiques générés par la reconversion         |
+| 🔀 Étape 3 | [Agrégation](#agregation) | Différentiel projet - statu quo = analyse coût-bénéfice |
+
+> ℹ️ **Pourquoi séparer statu quo et projet ?**
+>
+> Calculer les impacts de chacun des scénarios indépendamment permet de les présenter séparément dans des vues dédiées.
+>
+> - Les onglets « analyse coût-bénéfice » et « aménag'score » présentent une analyse différentielle des deux scénarios « statu quo » et « projet » (agrégation)
+> - La partie « coût de l'inaction » de l'onglet « analyse des coûts évités » présente une comparaison des deux scénarios « statu quo » et « projet »
+> - La partie « coût de l'extension urbaine » de l'onglet « analyse des coûts évités » présente une comparaison des deux scénarios « projet sur site » + « statu quo sur site fictif » d'un côté et « projet sur site fictif » + « statu quo sur site » de l'autre

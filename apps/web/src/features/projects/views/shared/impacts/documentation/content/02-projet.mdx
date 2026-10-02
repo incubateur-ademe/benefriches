@@ -1,0 +1,170 @@
+# 🌐 Impacts économiques du projet
+
+Quels effets le nouveau projet génère-t-il sur les collectivités, les riverains et la société ? Ces impacts sont calculés indépendamment du statu quo et se découpent en 3 parties : le bilan de développement (installation du projet), le bilan d'exploitation et les impacts socio-économiques générés par la reconversion.
+
+## 🏗️ Bilan de développement
+
+Ce que le porteur de projet dépense et perçoit au moment de construire le projet (opérations non récurrentes, comptabilisées une seule fois).
+
+### Dépenses
+
+| Impact                                              | Signe   | Note                                                                                            |
+| --------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------- |
+| Coûts d'installation (études, travaux, équipements) | ➖ Coût |                                                                                                 |
+| Coûts de réhabilitation du site                     | ➖ Coût | Uniquement si le porteur de projet gère aussi la réhabilitation                                 |
+| Achat du terrain                                    | ➖ Coût | Toujours inclus pour un projet urbain ; sinon uniquement si le développeur devient propriétaire |
+
+### Revenus
+
+| Impact                                | Signe       | Note                                                            |
+| ------------------------------------- | ----------- | --------------------------------------------------------------- |
+| Revente du terrain                    | ➕ Bénéfice |                                                                 |
+| Revente des bâtiments                 | ➕ Bénéfice |                                                                 |
+| Subventions liées à la réhabilitation | ➕ Bénéfice | Uniquement si le porteur de projet gère aussi la réhabilitation |
+
+> 📌 Le **total du bilan de développement** est la somme de toutes ces dépenses et tous ces revenus. Un résultat positif indique un gain financier net pour le développeur lors de la phase de création.
+
+## 🔄 Bilan d'exploitation
+
+Les flux financiers annuels (loyers, charges, recettes) cumulés sur toute la durée de vie du projet.
+
+| Impact                                                         | Signe       |
+| -------------------------------------------------------------- | ----------- |
+| Charges d'exploitation annuelles (loyers, maintenance, etc.)   | ➖ Coût     |
+| Produits d'exploitation annuels (revenus, loyers perçus, etc.) | ➕ Bénéfice |
+
+> ℹ️ **Pourquoi « actualiser » ?** Un même montant reçu dans 20 ans a moins de valeur aujourd'hui. L'actualisation financière permet de ramener toutes les valeurs futures à leur équivalent en euros d'aujourd'hui. [→ Note méthodologique](#methodologie)
+
+> 📌 **Où apparaît ce bilan ?**
+>
+> Selon le profil de l'exploitant, ce bilan est intégré soit au [bilan de développement](#bilan-de-developpement) (si l'exploitant et l'aménageur sont le même acteur), soit aux impacts indirects du projet (si l'exploitant est une collectivité locale).
+
+## 📋 Droits de mutation
+
+Chaque transaction immobilière liée au projet (achat ou revente du terrain, revente des bâtiments) génère des **droits de mutation**, soit des taxes perçues par les collectivités locales au moment de la transaction.
+
+| Impact                                          | Signe       | Note                                                  |
+| ----------------------------------------------- | ----------- | ----------------------------------------------------- |
+| Droits de mutation sur l'achat du terrain       | ➕ Bénéfice | S'il y a eu acquisition du terrain avant reconversion |
+| Droits de mutation sur la revente du terrain    | ➕ Bénéfice | Si le site est revendu après reconversion             |
+| Droits de mutation sur la revente des bâtiments | ➕ Bénéfice | Si les bâtiments sont revendus après reconversion     |
+
+> 📌 Ces droits sont comptabilisés **une seule fois en année 0**, au moment des transactions.
+
+## 🏠 Nouveau revenu locatif du projet
+
+Si le projet prévoit un loyer (terrain ou bâtiment loué à l'exploitant), ce nouveau revenu locatif est comptabilisé côté projet.
+
+| Impact                                                 | Signe       | Note                                |
+| ------------------------------------------------------ | ----------- | ----------------------------------- |
+| Loyer projeté versé par l'exploitant du nouveau projet | ➕ Bénéfice | Actualisé sur la durée d'évaluation |
+
+> 📌 Ce revenu est combiné avec la perte du loyer statu quo lors de l'agrégation pour obtenir la variation nette. [→ Voir l'agrégation](#agregation)
+
+## 🌱 Conservation des sols et de la nature
+
+La reconversion modifie la qualité et l'usage des sols. Ce module compare les sols du site actuel avec les sols du projet pour évaluer l'impact environnemental en termes monétaires.
+
+Le sol, quand il n'a pas été artificialisé, est un milieu vivant, en perpétuel renouvellement. Sa création prend plusieurs centaines d'années (pour quelques centimètres de sol en conditions naturelles), mais il peut être détruit en quelques secondes (ex : décapage de la terre végétale sur 30 cm).
+
+Les sols et les végétaux stockent une grande quantité de carbone. À l'échelle globale, ces réservoirs de carbone stockent, dans la matière organique des sols, la litière et la biomasse vivante ou morte (y compris les produits matériaux issus de la biomasse), 3 à 4 fois plus de carbone que l'atmosphère !
+
+### Quelles données sont utilisées dans le calcul ?
+
+**Données systémiques agrégées par Bénéfriches :**
+
+- Stocks de référence en carbone contenu dans les différents types de sols (ex : prairies, forêts, cultures, sols artificialisés) à l'hectare (exprimés en kg éq. C/hectare).
+
+**Données du site**
+
+Les données du site peuvent avoir été saisies par l'utilisateur·ice ou avoir été suggérées par Bénéfriches sur la base d'une moyenne ou d'une hypothèse. Il s'agit de la surface occupée par chaque type de sol du site (exprimée en hectare).
+
+**Données du projet**
+
+Les données du projet peuvent avoir été saisies par l'utilisateur·ice ou avoir été suggérées par Bénéfriches sur la base d'une moyenne ou d'une hypothèse. Il s'agit de la surface occupée par chaque type de sol du projet (exprimée en hectare).
+
+### Comment est fait le calcul ?
+
+La quantité de carbone stockée dans les sols du site (exprimé en kg éq. C) est la somme, pour chacun des sols rencontrés sur le site, du produit du stock de référence associé à un type de sols (exprimé en kg éq. C/hectare) par la surface occupée par ce type de sol (exprimée en hectare).
+
+### Sources
+
+- [Stocks de référence en carbone contenu dans les différents types de sols (ex : prairies, forêts, cultures, sols artificialisés) à l'hectare (exprimés en kg éq. C/hectare)](https://aldo-carbone.ademe.fr/)
+
+### Aller plus loin
+
+- [ADEME « La santé des sols urbains au service de l'aménagement des villes et des territoires », 2024](https://librairie.ademe.fr/recherche-et-innovation/6821-la-sante-des-sols-urbains-au-service-de-l-amenagement-des-villes-et-des-territoires.html)
+
+### Impacts calculés
+
+| Impact                                           | Signe      | Note                                                                                        |
+| ------------------------------------------------ | ---------- | ------------------------------------------------------------------------------------------- |
+| Stockage de CO₂ dans les sols                    | ± Variable | Positif si la végétalisation augmente, négatif sinon                                        |
+| Autres indicateurs de qualité naturelle des sols | ± Variable | Seuls les indicateurs qui changent réellement entre les deux situations sont pris en compte |
+
+> ℹ️ Les valeurs sont calculées en utilisant la **valeur tutélaire du CO₂** et un taux d'actualisation. [→ Note méthodologique](#methodologie)
+
+## ☀️ Impacts spécifiques aux projets photovoltaïques
+
+> ⚠️ Ces impacts s'appliquent **uniquement aux projets de centrale photovoltaïque**.
+
+| Impact                                             | Signe       | Note                                                                                              |
+| -------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------- |
+| CO₂ évité grâce à la production d'énergie solaire  | ➕ Bénéfice | Production (MWh) convertie en tonnes de CO₂ évitées, monétisée via la valeur tutélaire du carbone |
+| Taxes locales payées par l'exploitant (IFER, CFE…) | ➕ Bénéfice | Perçues par les collectivités locales                                                             |
+
+> ℹ️ La **valeur tutélaire du carbone** augmente progressivement dans le temps. [→ Note méthodologique](#methodologie)
+
+## 🏙️ Impacts spécifiques aux projets urbains
+
+> ⚠️ Ces impacts s'appliquent **uniquement aux projets de requalification urbaine** et **uniquement si le site était une friche**.
+
+### 🏡 Valorisation immobilière des biens voisins
+
+La suppression de la friche augmente la valeur des biens immobiliers alentour, générant également une hausse des droits de mutation futurs.
+
+| Impact                                                  | Signe       |
+| ------------------------------------------------------- | ----------- |
+| Hausse de la valeur immobilière des biens voisins       | ➕ Bénéfice |
+| Hausse des droits de mutation liée à cette valorisation | ➕ Bénéfice |
+
+### 🌳 Fraîcheur urbaine
+
+La végétalisation du site réduit les îlots de chaleur urbains.
+
+| Impact                                                    | Signe       |
+| --------------------------------------------------------- | ----------- |
+| CO₂ évité grâce à la réduction de la climatisation        | ➕ Bénéfice |
+| Économies sur les factures de climatisation des résidents | ➕ Bénéfice |
+
+### 🚗 Déplacements (mobilité)
+
+La densification urbaine réduit les distances parcourues en voiture. On calcule un nombre de kilomètres évités, dont découlent plusieurs estimations monétaires.
+
+| Impact                                                  | Signe       | Note                                                                                                               |
+| ------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------ |
+| Frais automobiles évités (carburant, entretien…)        | ➕ Bénéfice | Grâce aux kilomètres évités                                                                                        |
+| CO₂ du trafic routier évité                             | ➕ Bénéfice | Pondéré par l'évolution du CO₂ émis par les véhicules dans le temps, la valeur monétaire du CO₂ et l'actualisation |
+| Coûts de santé liés à la pollution atmosphérique évités | ➕ Bénéfice | Grâce aux kilomètres évités                                                                                        |
+| Dommages matériels évités                               | ➕ Bénéfice | Grâce aux accidents de la route évités                                                                             |
+| Blessures légères évitées                               | ➕ Bénéfice | Grâce aux accidents de la route évités                                                                             |
+| Blessures graves évitées                                | ➕ Bénéfice | Grâce aux accidents de la route évités                                                                             |
+| Décès évités (valeur statistique de la vie humaine)     | ➕ Bénéfice | Grâce aux accidents de la route évités                                                                             |
+| Valeur du temps de trajet économisé                     | ➕ Bénéfice | Grâce aux kilomètres évités                                                                                        |
+
+### 🏛️ Nouvelles taxes liées aux usages créés
+
+| Impact                                              | Signe       | Note                                           |
+| --------------------------------------------------- | ----------- | ---------------------------------------------- |
+| Taxe foncière sur les nouveaux logements construits | ➕ Bénéfice | Calculée sur la surface de logements du projet |
+| Cotisation foncière des entreprises (bureaux)       | ➕ Bénéfice | Calculée sur la surface de bureaux du projet   |
+
+### 🛣️ Voirie et réseaux
+
+La reconversion d'une friche en projet urbain crée de nouveaux besoins en voirie et réseaux. Ces dépenses sont à la charge de la collectivité.
+
+| Impact                                            | Signe   | Note                  |
+| ------------------------------------------------- | ------- | --------------------- |
+| Nouvelles dépenses annuelles de voirie et réseaux | ➖ Coût | À partir de l'année 1 |
+
+> 📌 **Cas particulier dans la vue « Étalement urbain » :** ces dépenses sont transformées en économies comparatives (_coût de construction de VRD évités_ et _coût de maintenance de VRD évités_) pour comparer avec un scénario de construction en périphérie.

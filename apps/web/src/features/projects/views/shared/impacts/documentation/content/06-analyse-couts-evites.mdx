@@ -1,0 +1,82 @@
+# 📉 Analyse des coûts évités
+
+Deux vues comparatives qui répondent à la question : qu'est-ce qu'il en coûte de ne rien faire, ou de construire ailleurs ? Chaque vue affiche deux scénarios côte à côte avec le même cadre de calcul.
+
+## Projet sur site vs. site conservé en l'état
+
+🏷️ **Coût de l'inaction**
+
+Cette vue met en regard le projet de reconversion avec le scénario où **rien n'est fait** : le site reste une friche, une exploitation agricole ou un espace naturel.
+
+Elle permet de quantifier le « coût de l'inaction », c'est-à-dire ce que la collectivité et la société perdent chaque année en laissant le site en l'état.
+
+|                               | Colonne gauche : projet sur site                                   | Colonne droite : statu quo sur site (inaction)        |
+| ----------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------- |
+| **Bilan de l'opération**      | Bilan de développement du projet ([voir](#bilan-de-developpement)) | 0 € (aucune opération lancée)                         |
+| **Impacts socio-économiques** | Impacts directs du projet ([voir Étape 2](#projet))                | Impacts du site en l'état ([voir Étape 1](#statuquo)) |
+
+> ℹ️ **Lecture du tableau :** les deux colonnes utilisent exactement le même calcul (statu quo et projet calculés séparément, [sans agrégation différentielle](#agregation)). La comparaison est directe : on voit ce que chaque scénario génère ou coûte annuellement, par bénéficiaire.
+
+### Détail des lignes affichées par bénéficiaire
+
+**🏛️ Collectivité locale**
+
+| Ligne                         | Projet sur site                    | Statu quo sur site (inaction)  |
+| ----------------------------- | ---------------------------------- | ------------------------------ |
+| 🏚️ Dépenses liées à la friche | -                                  | Coûts statu quo (friche)       |
+| 🔧 Dépenses communales        | Nouvelles dépenses projet          | Dépenses statu quo             |
+| 🏛 Recettes fiscales           | Taxes projet (IFER, CFE, foncier…) | Taxes statu quo                |
+| 💰 Bénéfice d'exploitation    | Bilan d'exploitation projet        | Bilan d'exploitation statu quo |
+| 🔑 Revenu locatif             | Loyer projeté                      | Loyer actuel                   |
+
+**🏘️ Riverains**
+
+| Ligne                             | Projet sur site            | Statu quo sur site (inaction) |
+| --------------------------------- | -------------------------- | ----------------------------- |
+| 🏚️ Dépenses liées à la friche     | -                          | Coûts statu quo               |
+| 👛 Pouvoir d'achat supplémentaire | Mobilité, climatisation…   | -                             |
+| 💰 Bénéfice d'exploitation        | Exploitation projet        | Exploitation statu quo        |
+| 🔑 Revenu locatif                 | Loyer projeté              | Loyer actuel                  |
+| 🏡 Valeur patrimoniale            | Hausse autour de la friche | -                             |
+
+**🌍 Société**
+
+| Ligne                      | Projet sur site                           | Statu quo sur site (inaction)     |
+| -------------------------- | ----------------------------------------- | --------------------------------- |
+| 🫀 Économies santé         | Dépenses évitées (accidents, pollution)   | -                                 |
+| 🌿 Action environnementale | CO₂ évité, services écosystémiques projet | Services écosystémiques statu quo |
+
+## Construire ici vs. construire ailleurs
+
+🏷️ **Coût de l'étalement urbain**
+
+Cette vue compare deux manières de répondre au même besoin d'urbanisation : **construire sur le site existant** (friche, terrain agricole…) ou **construire sur un terrain vierge en périphérie** (étalement urbain).
+
+Elle montre le coût supplémentaire qu'engendre l'étalement urbain pour la société.
+
+> ⚠️ **Données synthétiques :** le scénario de comparaison (site de remplacement) est **généré automatiquement** à partir de la superficie du site réel et des données locales (INSEE), en utilisant des générateurs paramétriques. Ce n'est pas un site réel, mais un site représentatif du territoire.
+
+### Si le site est une friche
+
+| Colonne gauche                                                           | Colonne droite : étalement urbain                                                 |
+| ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| Projet sur **la friche** + exploitation agricole en activité (statu quo) | Projet sur **exploitation agricole** fictive + friche non reconvertie (statu quo) |
+
+### Si le site est un terrain agricole ou naturel
+
+| Colonne gauche : étalement urbain                                               | Colonne droite                                                                   |
+| ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Projet sur **le terrain agricole/naturel** + friche non reconvertie (statu quo) | Projet sur **friche fictive** + terrain agricole/naturel en activité (statu quo) |
+
+### Cas particulier : voirie et réseaux
+
+Dans cette vue, les dépenses de voirie et réseaux du projet sont remplacées par deux impacts comparatifs plus fins :
+
+| Impact                                             | Signe      | Note                                                                     |
+| -------------------------------------------------- | ---------- | ------------------------------------------------------------------------ |
+| Économies sur la construction de voirie et réseaux | ± Variable | Construire sur une friche évite de créer une nouvelle desserte ex nihilo |
+| Économies sur la maintenance annuelle              | ± Variable | Les réseaux existants n'ont pas besoin d'être étendus                    |
+
+> 📌 Ces deux impacts sont positifs si le projet est sur une friche (on évite de créer des réseaux), négatifs si le projet est sur un terrain agricole ou naturel (on doit quand même créer des réseaux, c'est le coût de l'étalement).
+
+> ℹ️ **Point d'équilibre dans cette vue :** chaque colonne affiche également l'année à laquelle le coût de l'opération est compensé par les impacts socio-économiques cumulés. Si la colonne « projet sur friche » atteint l'équilibre plus tôt que la colonne « étalement urbain », cela démontre l'avantage économique de la reconversion.

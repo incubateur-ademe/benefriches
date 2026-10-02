@@ -1,0 +1,408 @@
+# 🏆 Calcul du score d'impact
+
+Une note synthétique de A à E résumant la performance du projet sur 5 critères.
+
+Cette note est déterminé à partir des :
+
+- Données des formulaires : Ce que l'utilisateur a renseigné lors de la saisie du site et du projet (nature du site, type de projet, surfaces, bâtiments prévus, dépenses d'investissement de la commune…).
+- Calculs des impacts : Les résultats calculés par l'outil à partir des formulaires (emplois créés, CO₂eq évité, évolution des sols, impacts économiques…), détaillés précedemment.
+
+> ⚠️ Ce référentiel de notation des projets est en cours de construction, il s'agit ici d'une première version amenée à évoluer prochainement.
+
+## Définitions
+
+- **Friche** : site délaissé (ancienne activité industrielle, commerciale, agricole…).
+- **ENAF** : espaces naturels, agricoles et forestiers.
+- **ZAN** : « Zéro Artificialisation Nette », objectif de limiter la consommation de nouveaux espaces naturels.
+- **Sols perméables** : sols qui laissent passer l'eau (pelouse, forêt, sol minéral perméable…).
+- **Statu quo** : situation du site si rien n'est fait (« avant projet »).
+
+## Les 5 critères et leurs indicateurs
+
+Chaque critère obtient une note de A à E avec des gradations + et -, calculée à partir des notes des indicateurs qui lui sont liés.
+
+| Critère                             | Indicateurs                                                                                                           |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **🏛️ Finances de la collectivité**  | Finances de la collectivité locale                                                                                    |
+| **🏘️ Qualité de vie des habitants** | Cadre de vie, Santé locale, Accès aux commerces et services, Accès aux soins, Sécurité routière, Accidents sur friche |
+| **💼 Emplois**                      | Emplois à temps plein                                                                                                 |
+| **🌿 Environnement**                | Émissions de CO₂eq, Conformité ZAN, Qualité des sols, Qualité de l'eau, Services écosystémiques                       |
+| **🌍 Macroéconomie (hors barème)**  | _en cours de construction_...                                                                                         |
+
+### Comment la note globale est-elle calculée ?
+
+1. Une section contient plusieurs indicateurs qui obtiennent chacun une note A, B, C, D ou E en fonction de leur valeur
+2. Chaque lettre est ensuite convertie en points
+
+| Lettre | A   | B   | C   | D   | E   |
+| ------ | --- | --- | --- | --- | --- |
+| Points | 90  | 70  | 50  | 30  | 10  |
+
+> ℹ️ Un indicateur « non évalué » compte pour **0 point**.
+
+3. La section obtient une note à son tour : c'est la **moyenne des points de tous ses indicateurs**.
+4. La note globale est la **moyenne des points des 5 sections**, arrondie à 2 décimales.
+
+Pour la présentation des résultats, la note globale est les notes de section sont converties en lettre avec + et -
+
+| Points        | Note |
+| ------------- | ---- |
+| 93,34 et plus | A+   |
+| 86,67 à 93,33 | A    |
+| 80 à 86,66    | A-   |
+| 73,34 à 79,99 | B+   |
+| 66,67 à 73,33 | B    |
+| 60 à 66,66    | B-   |
+| 53,34 à 59,99 | C+   |
+| 46,67 à 53,33 | C    |
+| 40 à 46,66    | C-   |
+| 33,34 à 39,99 | D+   |
+| 26,67 à 33,33 | D    |
+| 20 à 26,66    | D-   |
+| 13,34 à 19,99 | E+   |
+| 6,67 à 13,33  | E    |
+| Moins de 6,67 | E-   |
+
+> 📌 **À retenir**
+>
+> - Chaque indicateur de la section est converti en points (A = 90 … E = 10).
+> - **Un indicateur non évalué compte pour 0 point.**
+> - La note de la section est la moyenne de tous les indicateurs, arrondie à 2 décimales, puis convertie en lettre.
+>
+> **Exemple** : la section « Qualité de vie des habitants » a 6 indicateurs.
+>
+> Si seuls « Cadre de vie » (A = 90) et « Accidents sur friche » (A = 90) sont évalués, la moyenne est (90 + 90 + 0 + 0 + 0 + 0) ÷ 6 = 30, soit un **D**, alors que les deux indicateurs évalués sont excellents.
+
+### 🏛️ Finances de la collectivité locale
+
+Cette section ne contient qu'un seul indicateur et compare le bilan économique du projet pour la commune (recettes et dépenses indirectes) à ses dépenses d'investissement annuelles.
+
+#### Source des données
+
+- **Calculs des impacts** : impacts économiques indirects affectés aux acteurs de type collectivité
+- **Données des formulaires** : dépenses d'investissement de la commune (montant et année de référence) issus de [Observatoire des Finances et de la Gestion Publique Locales](https://data.ofgl.fr/explore/dataset/ofgl-base-communes-consolidee/table/?disjunctive.agregat&disjunctive.reg_name&disjunctive.dep_name&disjunctive.epci_name&disjunctive.com_name&disjunctive.tranche_population&disjunctive.tranche_revenu_imposable_par_habitant&sort=exer)
+
+#### Calcul
+
+**Pourcentage** = `total des impacts pour la collectivité x 100 ÷ dépenses d'investissement de la commune (arrondi à l'entier).`
+
+#### Règles de notation
+
+| Pourcentage    | Note  |
+| -------------- | ----- |
+| Plus de 150 %  | **A** |
+| Plus de 15 %   | **B** |
+| Plus de -7 %   | **C** |
+| Plus de -50 %  | **D** |
+| -50 % ou moins | **E** |
+
+### 🧑‍🔧️ Emplois
+
+Cette section ne contient qu'un seul indicateur qui mesure la création (ou la perte) d'emplois par hectare du site.
+
+#### Source des données
+
+- **Calculs des impacts** : emplois liés à la reconversion, à l'exploitation, au réaménagement, et emplois perdus de l'ancienne exploitation.
+- **Données des formulaires** : surface du site.
+
+#### Calcul
+
+**Différence d'emplois** = `emplois créés (reconversion + exploitation + réaménagement) - emplois perdus de l'ancienne activité.`
+
+**Emplois par hectare** = `différence d'emplois ÷ surface du site en hectares (arrondi à 2 décimales).`
+
+#### Règles de notation
+
+| Emplois supplémentaires par hectare | Note  |
+| ----------------------------------- | ----- |
+| Plus de 50                          | **A** |
+| Plus de 0,15                        | **B** |
+| De 0 à 0,15                         | **C** |
+| Négatif                             | **D** |
+
+### Qualité de vie des riverains
+
+#### 🌳 Cadre de vie
+
+Cet indicateur évalue l'apport du projet au cadre de vie, selon le type de site reconverti.
+
+##### Source des données
+
+- **Données des formulaires** : nature du site et activité de la friche (pour déterminer le type de reconversion).
+
+| Condition (Données des formulaires)                                   | Type retenu         |
+| --------------------------------------------------------------------- | ------------------- |
+| Le site est une friche **et** son ancienne activité est l'agriculture | **Friche agricole** |
+| Le site est une exploitation agricole ou un espace naturel            | **ENAF**            |
+| Le site est une friche (autre activité)                               | **Friche**          |
+| Autre                                                                 | Non déterminé       |
+
+##### Règles de notation
+
+| Type de site    | Note  |
+| --------------- | ----- |
+| Friche          | **A** |
+| Friche agricole | **D** |
+| ENAF            | **E** |
+
+#### 🫀 Santé
+
+Cet indicateur évalue si le projet améliore la santé locale : reconversion d'une friche, création d'équipements sportifs, ou création d'espaces verts.
+
+##### Source des données
+
+- **Données des formulaires** : type de site, surface de plancher des équipements sportifs prévus.
+- **Calculs des impacts** : nouvelles surfaces de sols verts (sols enherbés arbustifs artificiels, forêt, prairie, culture, vignes, vergers, zones humides)
+
+##### Règles de notation
+
+Il y a « `amélioration` » s'il y a des équipements sportifs **ou** de nouveaux sols verts.
+
+| Situation                                                            | Note  |
+| -------------------------------------------------------------------- | ----- |
+| Friche **et** amélioration                                           | **A** |
+| Friche sans `amélioration`, ou `amélioration` sur un site non friche | **B** |
+
+##### Non évalué
+
+- Si projet photovoltaïque
+- Si le site n'est pas une friche et qu'il n'y a pas d'amélioration.
+
+#### 🏥 Accès aux soins
+
+Cet indicateur évalue si le projet apporte des services de santé aux habitants.
+
+##### Source des données
+
+- **Données des formulaires** : répartition des surfaces de bâtiments prévus (uniquement pour les projets urbains).
+
+##### Usages de bâtiments pris en compte
+
+- Service de santé de proximité
+- Établissement médico-social,
+- Hôpital.
+
+##### Règles de notation
+
+| Situation                                            | Note  |
+| ---------------------------------------------------- | ----- |
+| Au moins 2 types d'usages de santé différents prévus | **A** |
+| 1 seul type d'usage de santé                         | **B** |
+
+##### Non évalué
+
+Si aucun bâtiment de santé n'est prévu, ou si le projet n'est pas un projet urbain.
+
+#### 🏪 Accès aux commerces et services de proximité
+
+Cet indicateur évalue si le projet apporte des commerces et services aux habitants.
+
+##### Source des données
+
+- **Données des formulaires** : répartition des surfaces de bâtiments prévus (uniquement pour les projets urbains).
+
+##### Usages de bâtiments pris en compte
+
+- Commerce de proximité,
+- Services de proximité.
+
+##### Règles de notation
+
+| Situation                        | Note  |
+| -------------------------------- | ----- |
+| Les 2 types d'usages sont prévus | **A** |
+| 1 seul type d'usage              | **B** |
+
+##### Non évalué
+
+Si aucun de ces bâtiments n'est prévu, ou si le projet n'est pas un projet urbain.
+
+#### 🚙 Sécurité routière
+
+Cet indicateur évalue si le projet évite des accidents de la route.
+
+##### Source des données
+
+- **Calculs des impacts** : accidents de la route évités (décès, blessés graves, blessés légers) à partir du calcul des kilomètres évités.
+
+##### Règles de notation
+
+| Situation                              | Note  |
+| -------------------------------------- | ----- |
+| Au moins un accident évité (total > 0) | **B** |
+
+##### Non évalué
+
+Si aucun accident n'est évité.
+
+#### 💥 Accidents sur friche
+
+Cet indicateur évalue si la reconversion de la friche évite des accidents qui s'y produisaient.
+
+##### Source des données
+
+- **Données des formulaires** : accidents de friche évités (décès, blessés graves, blessés légers), type de site (friche).
+
+##### Règles de notation
+
+| Situation                              | Note  |
+| -------------------------------------- | ----- |
+| Au moins un accident évité (total > 0) | **A** |
+
+##### Non évalué
+
+Si aucun accident n'est évité.
+
+### 🌿 Environnement
+
+#### ☁️ Émissions de CO₂eq
+
+Cet indicateur évalue le bilan carbone du projet : le CO₂eq évité grâce au projet, et l'évolution du CO₂eq stocké dans les sols.
+
+##### Source des données
+
+- **Données des formulaires** : type de projet (centrale photovoltaïque ou projet urbain).
+- **Calculs des impacts** :
+  - Émissions de CO₂eq évités (climatisation évitée, production d'énergie, traffic évité),
+  - Pouvoir de carbone stocké dans les sols **après** projet (converti en CO₂eq),
+  - Pouvoir de carbone stocké dans les sols **avant** projet (statuquo, converti en CO₂eq)
+
+##### Valeurs calculées
+
+- **CO₂eq évité** = somme des sources d'émissions évitées.
+- **Bilan total** = `CO₂eq évité + (CO₂eq stocké après - CO₂eq stocké avant)`.
+- **Variation du stockage dans les sols** = `(CO₂eq stocké après - CO₂eq stocké avant) ÷ CO₂eq stocké avant, en %`.
+
+##### Règles de notation pour un projet de centrale photovoltaïque
+
+| Situation                                            | Note  |
+| ---------------------------------------------------- | ----- |
+| Bilan total négatif                                  | **E** |
+| CO₂eq évité ≥ 5 000 et stockage en hausse (> 0 %)    | **A** |
+| CO₂eq évité ≥ 5 000 et stockage entre -5 % et 0 %    | **B** |
+| CO₂eq évité ≥ 5 000 et stockage entre -10 % et -5 %  | **C** |
+| CO₂eq évité entre 500 et 5 000 et stockage en hausse | **A** |
+| CO₂eq évité entre 500 et 5 000 et stockage ≥ -10 %   | **B** |
+| CO₂eq évité entre 500 et 5 000 et stockage ≥ -20 %   | **C** |
+| CO₂eq évité entre 0 et 500 et stockage > -10 %       | **C** |
+| Tous les autres cas                                  | **D** |
+
+### Règles de notation pour un projet urbain
+
+| Situation                                             | Note  |
+| ----------------------------------------------------- | ----- |
+| Bilan total négatif **et** stockage en baisse         | **E** |
+| CO₂eq évité > 0 et stockage en hausse d'au moins 50 % | **A** |
+| CO₂eq évité > 0 et stockage ≥ 0 %                     | **B** |
+| CO₂eq évité > 0 et stockage ≥ -10 %                   | **C** |
+| Tous les autres cas                                   | **D** |
+
+#### 🌱 Objectif ZAN
+
+Cet indicateur mesure si le projet respecte l'esprit du « Zéro Artificialisation Nette » : ne pas imperméabiliser inutilement les sols, et favoriser les sols verts.
+
+##### Source des données
+
+- **Données des formulaires** : nature du site (donc type de reconversion).
+- **Calculs des impacts** : variation de la surface perméable, nouvelles surfaces de sols verts.
+
+##### Règles de notation
+
+**Si le site est une friche**
+
+| Situation                                                                          | Note  |
+| ---------------------------------------------------------------------------------- | ----- |
+| Création de nouveaux sols verts **ou** surface perméable en hausse de plus de 80 % | **A** |
+| Surface perméable en hausse d'au moins 30 %                                        | **B** |
+| Surface perméable en baisse d'au moins 50 %                                        | **E** |
+| Autres cas                                                                         | **C** |
+
+**Si le site est un ENAF ou une friche agricole**
+
+| Situation                                                                      | Note  |
+| ------------------------------------------------------------------------------ | ----- |
+| Création de sols verts **ou** perte de perméabilité inférieure ou égale à 15 % | **D** |
+| Autres cas                                                                     | **E** |
+
+Un projet sur un espace naturel ou agricole ne peut donc pas dépasser **D**.
+
+#### 🌾 Qualité des sols
+
+Cet indicateur évalue l'évolution de la perméabilité des sols et, s'il y en a, la dépollution du site.
+
+##### Source des données
+
+- **Données des formulaires** : variation de la surface perméable, surface contaminée avant projet et surface dépolluée.
+
+##### Règles de notation
+
+**Étape 1 : note de perméabilité**
+
+| Variation de la surface perméable | Note |
+| --------------------------------- | ---- |
+| Plus de 80 %                      | A    |
+| Plus de 30 %                      | B    |
+| De -10 % à 30 %                   | C    |
+| De -50 % à -10 %                  | D    |
+| Moins de -50 %                    | E    |
+
+**Étape 2 : prise en compte de la pollution**
+
+- **Site non contaminé** : la note finale est la note de perméabilité.
+- **Site contaminé** : la note de perméabilité n'est conservée que si la dépollution est suffisante :
+
+| Note de perméabilité | Réduction de la contamination nécessaire pour la conserver |
+| -------------------- | ---------------------------------------------------------- |
+| A                    | plus de 99 %                                               |
+| B                    | plus de 75 %                                               |
+| C                    | plus de 50 %                                               |
+| D                    | plus de 0 %                                                |
+
+> 📌 Si cette condition n'est pas remplie, la note finale est **E**.
+
+#### 🚰 Qualité de l'eau
+
+Cet indicateur évalue l'effet du projet sur la qualité de l'eau, via l'évolution des surfaces de milieux qui la protègent (prairies, zones humides, forêts) ou la menacent (terres agricoles), et la dépollution des sols.
+
+##### Source des données
+
+**Données des formulaires** : répartition des sols après projet par type, contamination des sols.
+
+##### Valeurs calculées
+
+Différence de surface (après - avant) pour : prairies, zones humides, forêts, surfaces agricoles (cultures, vergers, vignes).
+
+##### Règles de notation (par ordre de priorité)
+
+| Situation                                    | Note  |
+| -------------------------------------------- | ----- |
+| Perte de prairies **ou** de zones humides    | **E** |
+| Perte de surfaces agricoles **ou** de forêts | **D** |
+| Site non contaminé                           | **C** |
+| Dépollution d'au moins 75 %                  | **A** |
+| Dépollution d'au moins 10 %                  | **B** |
+| Autres cas                                   | **C** |
+
+#### 🐸 Services écosystémiques
+
+Cet indicateur évalue les bénéfices (ou pertes) que le projet apporte à la nature : stockage de CO₂eq, produits forestiers, régulation des espèces invasives, loisirs liés à la nature, cycle de l'azote, pollinisation, érosion des sols, cycle de l'eau.
+
+##### Source des données
+
+- **Calculs des impacts** : à partir de la liste des impacts économiques indirects, en ne retenant que les 8 services ci-dessus.
+
+##### Principe
+
+On compte combien de services sont **positifs** (valeur > 0) et combien sont **négatifs** (valeur < 0).
+
+##### Règles de notation (par ordre de priorité)
+
+| Services positifs   | Services négatifs | Note  |
+| ------------------- | ----------------- | ----- |
+| 5 ou plus           | 0                 | **A** |
+| 5 ou plus           | 1 ou plus         | **B** |
+| 2 à 4               | 0 ou 1            | **B** |
+| 0 ou 1              | 0 ou 1            | **C** |
+| 2 à 4               | 2 à 4             | **C** |
+| 0                   | plus de 5         | **E** |
+| Tous les autres cas |                   | **D** |

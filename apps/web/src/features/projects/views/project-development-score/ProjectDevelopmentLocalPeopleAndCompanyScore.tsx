@@ -86,7 +86,7 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, de
         {details.accessToHealthCare ? (
           <MetricCard
             title="Accès aux soins"
-            emoji="🏥 "
+            emoji="🏥"
             letterGrade={details.accessToHealthCare.letterGrade}
             description={
               <>
@@ -106,7 +106,7 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, de
         {details.accessToLocalServices ? (
           <MetricCard
             title="Accès aux services de proximité"
-            emoji="🏪 "
+            emoji="🏪"
             letterGrade={details.accessToLocalServices.letterGrade}
             description={
               <>

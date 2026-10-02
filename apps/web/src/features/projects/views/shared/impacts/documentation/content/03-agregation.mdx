@@ -1,0 +1,18 @@
+# 🔀 Agrégation : la vue différentielle
+
+Les impacts statu quo et les impacts projet sont combinés pour produire les valeurs affichées dans l'analyse coût-bénéfice. La logique est celle d'une comparaison : qu'est-ce que la reconversion change, en mieux ou en pire ?
+
+> ℹ️ **Principe clé :** les impacts statu quo sont **inversés** avant d'être additionnés aux impacts projet. Reconvertir le site, c'est renoncer à ce qu'il générait (coûts ou revenus). Un coût statu quo devient donc un _bénéfice évité_, et un revenu statu quo devient une _perte_.
+
+## Table de correspondance statu quo → agrégé
+
+| Statu quo                                                    | Agrégé                                           |
+| ------------------------------------------------------------ | ------------------------------------------------ |
+| Coût de maintenance de la friche à la charge du propriétaire | Coûts de maintenance évités pour le propriétaire |
+| Coût de maintenance de la friche à la charge du locataire    | Coûts de maintenance évités pour le locataire    |
+| Revenu locatif                                               | Perte de revenu locatif                          |
+| Bénéfice d'exploitation (bilan ± dans statu quo)             | Perte de bénéfice d'exploitation (±)             |
+
+\+ Tous les impacts projet sont ajoutés directement ([voir Étape 2](#projet)).
+
+> 📌 **Résultat :** l'agrégat final est la liste complète utilisée par l'analyse coût-bénéfice et l'AménageScore. C'est sur cet agrégat que sont calculés les totaux par bénéficiaire (collectivité, riverains, société).
