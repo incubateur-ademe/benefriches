@@ -24,7 +24,7 @@ type ChartCardProps = {
   };
   exportingOptions?: ExportingOptionsProps;
   classes?: { title?: ClassValue };
-  actions?: ReactNode;
+  headerSlot?: { element: ReactNode; preventClick: boolean };
 };
 
 const ImpactChartCard = ({
@@ -35,7 +35,7 @@ const ImpactChartCard = ({
   containerProps,
   exportingOptions,
   classes,
-  actions,
+  headerSlot,
 }: ChartCardProps) => {
   const chartRef = useRef<HighchartsReact.RefObject>(null);
   const buttonControlsDialogRef = useRef<HTMLButtonElement>(null);
@@ -78,13 +78,18 @@ const ImpactChartCard = ({
         </div>
 
         <div className="flex">
-          {actions && (
+          {headerSlot && (
             <div
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
+              className="flex items-center"
+              onClick={
+                headerSlot.preventClick
+                  ? (e) => {
+                      e.stopPropagation();
+                    }
+                  : undefined
+              }
             >
-              {actions}
+              {headerSlot.element}
             </div>
           )}
           {linkProps && (

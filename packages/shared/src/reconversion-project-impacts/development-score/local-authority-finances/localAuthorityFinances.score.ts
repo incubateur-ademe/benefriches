@@ -24,11 +24,12 @@ const getLetterGrade = (percentage: number) => {
 export const getLocalAuthorityFinancesScore = (props: {
   aggregatedReconversionEconomicImpacts: AggregatedReconversionIndirectEconomicImpactsDataView["details"];
   stakeholders: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
-  municipalityYearlyCapitalExpenditures: number;
+  municipalityCapitalExpenditures: { amount: number; referenceYear: string };
 }): ScoredMetrics<{
-  localAuthorityTotal: number;
-  percentage: number;
-  municipalityYearlyCapitalExpenditures: number;
+  projectLocalAuthorityIndirectEconomicImpactsTotal: number;
+  municipalityCapitalExpendituresAmount: number;
+  municipalityCapitalExpendituresReferenceYear: string;
+  percentageComparison: number;
 }> => {
   const impactsByBearer = groupIndirectEconomicImpactsByBearer(
     props.aggregatedReconversionEconomicImpacts,
@@ -38,15 +39,17 @@ export const getLocalAuthorityFinancesScore = (props: {
   const localAuthorityTotal = impactsByBearer.localAuthority.total;
 
   const percentage = roundToInteger(
-    (localAuthorityTotal * 100) / props.municipalityYearlyCapitalExpenditures,
+    (localAuthorityTotal * 100) / props.municipalityCapitalExpenditures.amount,
   );
 
   return {
     letterGrade: getLetterGrade(percentage),
     metrics: {
-      localAuthorityTotal,
-      percentage,
-      municipalityYearlyCapitalExpenditures: props.municipalityYearlyCapitalExpenditures,
+      projectLocalAuthorityIndirectEconomicImpactsTotal: localAuthorityTotal,
+      percentageComparison: percentage,
+      municipalityCapitalExpendituresReferenceYear:
+        props.municipalityCapitalExpenditures.referenceYear,
+      municipalityCapitalExpendituresAmount: props.municipalityCapitalExpenditures.amount,
     },
   };
 };

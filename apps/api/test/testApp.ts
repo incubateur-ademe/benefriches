@@ -17,6 +17,8 @@ import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapt
 import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
 import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
 import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/MutafrichesEvaluationQuery";
+import { OFGLApi } from "src/territory/adapters/secondary/municipality-capital-expenditures-query/ApiMunicipalCapitalExpendituresQuery";
+import { FakeMunicipalityCapitalExpendituresProvider } from "src/territory/adapters/secondary/municipality-capital-expenditures-query/FakeMunicipalityCapitalExpendituresProvider";
 
 const ERROR_HTTP_SERVICE = {
   get: () => {
@@ -70,7 +72,9 @@ export async function createTestApp({ providerOverrides }: CreateTestAppInput = 
     .overrideProvider(ConnectCrm)
     .useClass(FakeCrm)
     .overrideProvider(MutafrichesEvaluationQuery)
-    .useClass(InMemoryMutabilityEvaluationQuery);
+    .useClass(InMemoryMutabilityEvaluationQuery)
+    .overrideProvider(OFGLApi)
+    .useClass(FakeMunicipalityCapitalExpendituresProvider);
 
   if (providerOverrides) {
     providerOverrides.forEach((override) => {

@@ -1,34 +1,33 @@
+import type { LetterGrade } from "shared";
+
 import classNames from "@/shared/views/clsx";
+
+import GradeTextBadge from "./ProjectDevelopmentScoreGradeTextBadge";
+import { LETTER_GRADE_COLORS } from "./colors";
 
 type MetricCardProps = {
   emoji: string;
   title: string;
-  isPositive: boolean;
-  badge?: string;
+  letterGrade: LetterGrade;
   description: React.ReactNode;
+  badgeText?: string;
 };
-function MetricCard({ emoji, title, isPositive, badge, description }: MetricCardProps) {
+
+function MetricCard({ emoji, title, letterGrade, description, badgeText }: MetricCardProps) {
   return (
     <div
       className={classNames(
-        "p-6 border border-border-grey rounded-2xl min-h-40",
-        isPositive ? "bg-[#03814114]" : "bg-[#E63E111A]",
+        "p-5 border border-border-grey rounded-2xl min-h-40",
+        LETTER_GRADE_COLORS[letterGrade].bgLightColor,
       )}
     >
-      <div className="flex justify-between items-center mb-2">
-        <h5 className="text-xl mb-0">
+      <div className="flex justify-between items-start gap-2 mb-2">
+        <h5 className="text-xl min-w-0 mb-0">
           {emoji} {title}
         </h5>
-        <span
-          className={classNames(
-            "font-bold text-white rounded-md text-sm py-0.5 px-1.5",
-            isPositive ? "bg-development-score-grade-a" : "bg-[#E63E11]",
-          )}
-        >
-          {badge ?? (isPositive ? "Amélioré" : "Dégradé")}
-        </span>
+        <GradeTextBadge letterGrade={letterGrade} badgeText={badgeText} />
       </div>
-      <span>{description}</span>
+      <span className="text-sm">{description}</span>
     </div>
   );
 }

@@ -1,30 +1,61 @@
+import type { LetterGrade } from "shared";
+
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
 import ImpactChartCard from "../shared/charts/ImpactChartCard";
 import useImpactAreaChartProps from "../shared/charts/useImpactAreaChartProps";
-import IconFail from "./ProjectDevelopmentIconFail";
-import IconSuccess from "./ProjectDevelopmentIconSuccess";
+import ProjectDevelopmentGrade from "./ProjectDevelopmentGrade";
+import GradeTextBadge from "./ProjectDevelopmentScoreGradeTextBadge";
 
-type Props = Pick<DevelopmentScoreDataView, "fullTimeJobsScore">;
+type Props = DevelopmentScoreDataView["details"]["fullTimeJobsScore"];
 
-export default function ProjectDevelopmentFullTimeJobsScore({ fullTimeJobsScore }: Props) {
+const getLetterGradeBadgeText = (letterGrade: LetterGrade) => {
+  switch (letterGrade) {
+    case "A":
+      return "En forte hausse";
+    case "B":
+      return "En hausse significative";
+    case "C":
+      return "En légère hausse ou égal";
+    case "D":
+      return "En baisse";
+    case "E":
+      return "En forte baisse";
+  }
+};
+export default function ProjectDevelopmentFullTimeJobsScore({ score, details }: Props) {
+  const { fullTimeJobs } = details;
+  const { siteStatuQuoFullTimeJobs, difference } = fullTimeJobs?.metrics ?? {
+    difference: 0,
+    siteStatuQuoFullTimeJobs: 0,
+  };
+
   const { options, colors, chartContainerId } = useImpactAreaChartProps({
     title: "🧑‍🔧️ Nombre d’emplois équivalent temps plein",
     type: "etp",
     color: "#CAD3DB",
-    base: fullTimeJobsScore.metrics?.base ?? 0,
-    forecast: fullTimeJobsScore.metrics?.forecast ?? 0,
-    difference: fullTimeJobsScore.metrics?.difference ?? 0,
+    base: siteStatuQuoFullTimeJobs,
+    forecast: siteStatuQuoFullTimeJobs + difference,
+    difference: difference,
   });
 
   return (
-    <div className="grid md:grid-cols-12 gap-12">
-      <div className="md:col-span-4">
+    <div className="grid md:grid-cols-3 gap-6">
+      <div>
         <h4>Emploi</h4>
-        {fullTimeJobsScore.isSuccess ? <IconSuccess /> : <IconFail />}
+        <ProjectDevelopmentGrade score={score} />
       </div>
 
-      <div className="md:col-start-5 md:col-span-8">
+      <div className="md:col-span-2">
         <ImpactChartCard
+          headerSlot={{
+            element: (
+              <GradeTextBadge
+                letterGrade={score.letterGrade}
+                badgeText={getLetterGradeBadgeText(score.letterGrade)}
+              />
+            ),
+            preventClick: false,
+          }}
           title="🧑‍🔧️ Nombre d’emplois équivalent temps plein"
           exportingOptions={{ colors, colorBySeries: true }}
           containerProps={{

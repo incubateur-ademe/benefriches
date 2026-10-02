@@ -7,6 +7,7 @@ import type {
   ReconversionProjectOnSiteIndirectEconomicImpactsDataView,
   ReconversionStakeholders,
   ProjectOnSiteImpactMetric,
+  ProjectDevelopmentScore,
 } from "../../reconversion-project-impacts";
 import type { BuildingsUseDistribution } from "../../reconversion-projects";
 import type { FricheActivity, SiteNature, siteStatuQuoImpactsSchema } from "../../site";
@@ -37,7 +38,9 @@ export type GetReconversionProjectImpactsResultDto = {
     siteNature: SiteNature;
     siteSurfaceArea: number;
     fricheActivity?: FricheActivity;
+    municipalityCapitalExpenditures: { amount: number; referenceYear: string };
   };
+  developmentScore: ProjectDevelopmentScore;
   impacts: {
     projectionYears: string[];
     projectEconomicBalance: ProjectEconomicBalance;

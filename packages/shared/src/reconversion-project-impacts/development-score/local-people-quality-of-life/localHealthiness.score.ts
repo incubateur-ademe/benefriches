@@ -4,7 +4,7 @@ import type { ScoredMetrics } from "../scoring.helpers";
 
 export const getLocalHealthinessScore = (props: {
   siteReconversionType: SiteReconversionType;
-  buildingsFloorAreaDistribution?: BuildingsUseDistribution;
+  buildingsFloorAreaDistribution: BuildingsUseDistribution | undefined;
   soilEvolutionDetails: Pick<SoilEvolutionDetails, "newGreenSoilSurfaces">;
 }): ScoredMetrics<{
   siteReconversionType: SiteReconversionType;

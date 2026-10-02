@@ -1,60 +1,59 @@
+import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
+
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
-import IconFail from "./ProjectDevelopmentIconFail";
-import IconSuccess from "./ProjectDevelopmentIconSuccess";
+import ProjectDevelopmentGrade from "./ProjectDevelopmentGrade";
 import MetricCard from "./ProjectDevelopmentMetricCard";
 
-type Props = Pick<DevelopmentScoreDataView, "localPeopleAndCompanyScore">;
+type Props = DevelopmentScoreDataView["details"]["localPeopleQualityOfLifeScore"];
 
 const listFormatter = new Intl.ListFormat("fr", {
   style: "long",
   type: "conjunction",
 });
 
-export default function ProjectDevelopmentLocalPeopleAndCompanyScore({
-  localPeopleAndCompanyScore,
-}: Props) {
+export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, details }: Props) {
+  if (score.gradePoints === 0) {
+    return null;
+  }
   return (
-    <div className="grid md:grid-cols-12 gap-12">
-      <div className="md:col-span-4">
+    <div className="grid md:grid-cols-3 gap-6">
+      <div>
         <h4>Qualité de vie des riverains</h4>
-        {localPeopleAndCompanyScore.isSuccess ? <IconSuccess /> : <IconFail />}
+        <ProjectDevelopmentGrade score={score} />
       </div>
 
-      <div className="md:col-start-5 md:col-span-8 grid md:grid-cols-2 gap-4">
-        {!localPeopleAndCompanyScore.isSuccess && (
-          <p className="col-span-2">
-            Le projet n'apporte pas d'impacts positifs sur le quotidien des riverains
-          </p>
-        )}
-        {localPeopleAndCompanyScore.metrics.localPropertyValueIncrease ? (
+      <div className=" md:col-span-2 grid md:grid-cols-2 gap-4">
+        {details.livingEnvironment ? (
           <MetricCard
             title="Cadre de vie"
             emoji="🌳"
-            badge="Amélioré"
             description="Grâce à la reconversion de la friche."
-            isPositive={localPeopleAndCompanyScore.metrics.localPropertyValueIncrease > 0}
+            letterGrade={details.livingEnvironment.letterGrade}
           />
         ) : null}
 
-        {localPeopleAndCompanyScore.metrics.avoidedAirPollutionHealthExpenses ||
-        localPeopleAndCompanyScore.metrics.hasDecontamination ? (
+        {details.localHealthiness ? (
           <MetricCard
             title="Santé"
             emoji="🫀"
-            isPositive={true}
-            badge="Améliorée"
+            letterGrade={details.localHealthiness.letterGrade}
             description={
               <>
                 Grâce à{" "}
                 {listFormatter.format(
                   [
                     {
-                      text: "la création d'espaces de nature en ville",
-                      display: localPeopleAndCompanyScore.metrics.avoidedAirPollutionHealthExpenses,
+                      text: "la création d'espaces de nature",
+                      display: details.localHealthiness.metrics.newGreenSoilSurfaces > 0,
                     },
                     {
                       text: "la dépollution des sols de la friche",
-                      display: localPeopleAndCompanyScore.metrics.hasDecontamination,
+                      display: details.localHealthiness.metrics.siteReconversionType === "friche",
+                    },
+                    {
+                      text: "la création d'équipement sportif",
+                      display: details.localHealthiness.metrics.sportsFacilitiesFloorSurface > 0,
                     },
                   ]
                     .filter(({ display }) => display)
@@ -65,33 +64,62 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({
             }
           />
         ) : null}
-        {localPeopleAndCompanyScore.metrics.travelTimeSaved ? (
-          <MetricCard
-            title="Temps libre"
-            emoji="⏱"
-            isPositive={true}
-            badge="En hausse"
-            description="Grâce au temps passé en moins dans les déplacements."
-          />
-        ) : null}
 
-        {localPeopleAndCompanyScore.metrics.avoidedTrafficAccidents ? (
+        {details.trafficSecurity ? (
           <MetricCard
             title="Sécurité routière"
             emoji="🚙"
-            isPositive={true}
-            badge="Améliorée"
+            letterGrade={details.trafficSecurity.letterGrade}
             description="Grâce à la réduction de la distance entre les habitations et l’établissement éducatif."
           />
         ) : null}
 
-        {localPeopleAndCompanyScore.metrics.avoidedFrichesAccidents ? (
+        {details.frichesAccidents ? (
           <MetricCard
             title="Sécurité des riverains"
             emoji="💥"
-            badge="Améliorée"
-            isPositive={true}
+            letterGrade={details.frichesAccidents.letterGrade}
             description="Grâce à la reconversion et la sécurisation de la friche."
+          />
+        ) : null}
+
+        {details.accessToHealthCare ? (
+          <MetricCard
+            title="Accès aux soins"
+            emoji="🏥 "
+            letterGrade={details.accessToHealthCare.letterGrade}
+            description={
+              <>
+                Grâce à la création de{" "}
+                {listFormatter.format(
+                  details.accessToHealthCare.metrics.matchingBuildingsUses.map(
+                    (item) =>
+                      `${formatSurfaceArea(item.floorSurfaceArea)} de ${getLabelForBuildingsUse(item.buildingUse)}`,
+                  ),
+                )}
+                .
+              </>
+            }
+          />
+        ) : null}
+
+        {details.accessToLocalServices ? (
+          <MetricCard
+            title="Accès aux services de proximité"
+            emoji="🏪 "
+            letterGrade={details.accessToLocalServices.letterGrade}
+            description={
+              <>
+                Grâce à la création de{" "}
+                {listFormatter.format(
+                  details.accessToLocalServices.metrics.matchingBuildingsUses.map(
+                    (item) =>
+                      `${formatSurfaceArea(item.floorSurfaceArea)} de ${getLabelForBuildingsUse(item.buildingUse)}`,
+                  ),
+                )}
+                .
+              </>
+            }
           />
         ) : null}
       </div>

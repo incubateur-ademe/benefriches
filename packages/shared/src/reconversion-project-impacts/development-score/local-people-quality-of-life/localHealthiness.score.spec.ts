@@ -90,11 +90,16 @@ const testCasesNoScore = [
     siteReconversionType: "friche_agricole",
     soilEvolutionDetails: { newGreenSoilSurfaces: 0 },
   },
+  {
+    buildingsFloorAreaDistribution: undefined,
+    siteReconversionType: "friche_agricole",
+    soilEvolutionDetails: { newGreenSoilSurfaces: 0 },
+  },
 ] satisfies TestData[];
 
 type TestData = {
   siteReconversionType: SiteReconversionType;
-  buildingsFloorAreaDistribution?: BuildingsUseDistribution;
+  buildingsFloorAreaDistribution: BuildingsUseDistribution | undefined;
   soilEvolutionDetails: Pick<SoilEvolutionDetails, "newGreenSoilSurfaces">;
 };
 

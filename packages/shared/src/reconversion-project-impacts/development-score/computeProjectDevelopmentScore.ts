@@ -30,8 +30,7 @@ import {
 
 export const computeProjectDevelopmentScore = (
   contextData: GetReconversionProjectImpactsResultDto["contextData"],
-  impacts: GetReconversionProjectImpactsResultDto["impacts"],
-  municipalityYearlyCapitalExpenditures: number,
+  impacts: Omit<GetReconversionProjectImpactsResultDto["impacts"], "developmentScore">,
 ): ProjectDevelopmentScore => {
   const soilsEvolutionDetails = getSoilEvolutionDetails({
     siteStatuQuoImpactMetrics: impacts.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics,
@@ -68,7 +67,7 @@ export const computeProjectDevelopmentScore = (
       aggregatedReconversionEconomicImpacts:
         impacts.aggregatedReconversionImpacts.indirectEconomicImpacts.details,
       stakeholders: impacts.stakeholders,
-      municipalityYearlyCapitalExpenditures,
+      municipalityCapitalExpenditures: contextData.municipalityCapitalExpenditures,
     }),
   });
 
@@ -82,6 +81,7 @@ export const computeProjectDevelopmentScore = (
     localHealthiness: getLocalHealthinessScore({
       siteReconversionType: siteReconversionType,
       soilEvolutionDetails: soilsEvolutionDetails,
+      buildingsFloorAreaDistribution: buildingsFloorAreaEvolution,
     }),
     accessToLocalServices: getAccessToLocalServicesScore(buildingsFloorAreaEvolution),
     accessToHealthCare: getAccessToHealthCareScore(buildingsFloorAreaEvolution),
@@ -149,9 +149,10 @@ export type ProjectDevelopmentScore = {
       score: Score;
       details: {
         localAuthorityFinances: ScoredMetrics<{
-          localAuthorityTotal: number;
-          percentage: number;
-          municipalityYearlyCapitalExpenditures: number;
+          projectLocalAuthorityIndirectEconomicImpactsTotal: number;
+          municipalityCapitalExpendituresAmount: number;
+          municipalityCapitalExpendituresReferenceYear: string;
+          percentageComparison: number;
         }>;
       };
     };

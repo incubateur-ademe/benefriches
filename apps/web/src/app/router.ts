@@ -124,7 +124,7 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
     ),
     // PROJECT IMPACTS
     projectImpactsSummary: projectImpacts.extend(`/apercu`),
-    projectImpactsDevelopmentScore: projectImpacts.extend(`/amenagescore`),
+    projectImpactsDevelopmentScore: projectImpacts.extend(`/score-impacts`),
     projectImpactsBreakEvenLevel: projectImpacts.extend(`/analyse-cout-benefice`),
     projectAvoidedCostsAnalysis: projectImpacts.extend(`/analyse-couts-evites`),
     projectImpacts: projectImpacts.extend(`/impacts`),

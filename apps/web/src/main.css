@@ -101,6 +101,12 @@
   --color-development-score-grade-c: #fecb02;
   --color-development-score-grade-d: #ee8100;
   --color-development-score-grade-e: #e63e11;
+
+  --color-development-score-grade-a-light: #03814114;
+  --color-development-score-grade-b-light: #85bb2f1a;
+  --color-development-score-grade-c-light: #fecb021a;
+  --color-development-score-grade-d-light: #ee81001a;
+  --color-development-score-grade-e-light: #e63e111a;
 }
 
 /*
@@ -255,6 +261,7 @@ text.highcharts-data-label {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

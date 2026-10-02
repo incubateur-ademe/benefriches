@@ -6,12 +6,14 @@ import {
   getProjectSoilDistributionByType,
   computeProjectImpactsWithBreakEvenLevel,
   ReconversionProjectImpactsWithBreakEvenLevelInput,
+  computeProjectDevelopmentScore,
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/dateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 import { CityImpactsDataProvider } from "src/territory/core/gateways/CityImpactsDataProvider";
+import { MunicipalityCapitalExpendituresProvider } from "src/territory/core/gateways/MunicipalityCapitalExpendituresProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { Schedule } from "../model/reconversionProject";
@@ -72,18 +74,21 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
   private readonly siteRepository: SiteImpactsQuery;
   private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
   private readonly cityDataQuery: CityImpactsDataProvider;
+  private readonly municipalityCapitalExpendituresQuery: MunicipalityCapitalExpendituresProvider;
   private readonly dateProvider: DateProvider;
   constructor(
     reconversionProjectQuery: ReconversionProjectImpactsQuery,
     siteRepository: SiteImpactsQuery,
     getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
     cityDataQuery: CityImpactsDataProvider,
+    municipalityCapitalExpendituresQuery: MunicipalityCapitalExpendituresProvider,
     dateProvider: DateProvider,
   ) {
     this.reconversionProjectQuery = reconversionProjectQuery;
     this.siteRepository = siteRepository;
     this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
     this.cityDataQuery = cityDataQuery;
+    this.municipalityCapitalExpendituresQuery = municipalityCapitalExpendituresQuery;
     this.dateProvider = dateProvider;
   }
 
@@ -122,36 +127,47 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
 
     const cityData = await this.cityDataQuery.getCityDataAndStats(relatedSite.address.cityCode);
 
-    return success({
-      contextData: {
-        projectId: reconversionProject.id,
-        projectName: reconversionProject.name,
-        relatedSiteId: reconversionProject.relatedSiteId,
-        relatedSiteName: relatedSite.name,
-        isExpressSite: relatedSite.isExpressSite,
-        isExpressProject: reconversionProject.isExpressProject,
-        projectDevelopmentPlan: extractProjectDevelopmentPlan(
-          reconversionProject.developmentPlan as DevelopmentPlanFeatures,
-        ),
-        siteAddress: {
-          lat: relatedSite.address.lat,
-          long: relatedSite.address.long,
-          label: relatedSite.address.value,
-        },
-        siteNature: relatedSite.nature,
-        siteSurfaceArea: relatedSite.surfaceArea,
-        fricheActivity: relatedSite.fricheActivity,
+    const impacts = computeProjectImpactsWithBreakEvenLevel({
+      reconversionProject: {
+        ...reconversionProject,
+        projectSoilsCarbonStorage,
+        operationsFirstYear,
+      } as ReconversionProjectImpactsWithBreakEvenLevelInput,
+      relatedSite: { ...relatedSite, siteSoilsCarbonStorage },
+      evaluationPeriodInYears,
+      city: cityData,
+    });
+
+    const municipalityCapitalExpenditures =
+      await this.municipalityCapitalExpendituresQuery.getLastReferenceYear(
+        relatedSite.address.cityCode,
+      );
+
+    const contextData = {
+      projectId: reconversionProject.id,
+      projectName: reconversionProject.name,
+      relatedSiteId: reconversionProject.relatedSiteId,
+      relatedSiteName: relatedSite.name,
+      isExpressSite: relatedSite.isExpressSite,
+      isExpressProject: reconversionProject.isExpressProject,
+      projectDevelopmentPlan: extractProjectDevelopmentPlan(
+        reconversionProject.developmentPlan as DevelopmentPlanFeatures,
+      ),
+      siteAddress: {
+        lat: relatedSite.address.lat,
+        long: relatedSite.address.long,
+        label: relatedSite.address.value,
       },
-      impacts: computeProjectImpactsWithBreakEvenLevel({
-        reconversionProject: {
-          ...reconversionProject,
-          projectSoilsCarbonStorage,
-          operationsFirstYear,
-        } as ReconversionProjectImpactsWithBreakEvenLevelInput,
-        relatedSite: { ...relatedSite, siteSoilsCarbonStorage },
-        evaluationPeriodInYears,
-        city: cityData,
-      }),
+      siteNature: relatedSite.nature,
+      siteSurfaceArea: relatedSite.surfaceArea,
+      fricheActivity: relatedSite.fricheActivity,
+      municipalityCapitalExpenditures,
+    };
+
+    return success({
+      contextData,
+      developmentScore: computeProjectDevelopmentScore(contextData, impacts),
+      impacts: impacts,
     });
   }
 }

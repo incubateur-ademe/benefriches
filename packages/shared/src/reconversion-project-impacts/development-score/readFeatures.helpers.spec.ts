@@ -30,6 +30,7 @@ const CONTEXT_DATA: GetReconversionProjectImpactsResultDto["contextData"] = {
     installationElectricalPowerKWc: 1000,
     installationSurfaceArea: 2300,
   },
+  municipalityCapitalExpenditures: { amount: 15000000, referenceYear: "2025" },
 };
 
 describe("readFeatures helpers", () => {

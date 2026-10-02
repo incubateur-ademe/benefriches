@@ -86,6 +86,7 @@ services:
       MOCK_CRM_API: ${MOCK_CRM_API}
       MUTAFRICHES_API_URL: ${MUTAFRICHES_API_URL}
       MOCK_PHOTOVOLTAIC_PERFORMANCE_API: ${MOCK_PHOTOVOLTAIC_PERFORMANCE_API}
+      MOCK_OFGL_API: ${MOCK_OFGL_API}
     healthcheck:
       # Use node (no curl/wget in node:24-slim); /api/healthcheck also verifies the DB is reachable.
       # Lets `docker compose up --wait` block until NestJS is actually listening, avoiding boot-race 502s.

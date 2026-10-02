@@ -32,7 +32,13 @@ type Request = {
 };
 
 type QuickComputeUrbanProjectImpactsOnFricheResult = TResult<
-  GetReconversionProjectImpactsResultDto,
+  {
+    impacts: GetReconversionProjectImpactsResultDto["impacts"];
+    contextData: Omit<
+      GetReconversionProjectImpactsResultDto["contextData"],
+      "municipalityCapitalExpenditures"
+    >;
+  },
   never
 >;
 

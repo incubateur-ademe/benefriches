@@ -1,4 +1,5 @@
 import {
+  urbanProjectDevelopmentScoreMock,
   urbanProjectImpactsResultDto as urbanProjectImpactMock,
   urbanProjectImpactMockMeta,
 } from "shared";
@@ -17,6 +18,7 @@ describe("Project impacts fetching", () => {
     projectImpactsServiceMock._setReconversionProjectImpacts({
       impacts: urbanProjectImpactMock,
       contextData: urbanProjectImpactMockMeta,
+      developmentScore: urbanProjectDevelopmentScoreMock,
     });
 
     const store = new StoreBuilder()

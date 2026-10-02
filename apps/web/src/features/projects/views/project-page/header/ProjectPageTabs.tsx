@@ -22,7 +22,8 @@ const ProjectPageTabs = ({ useBetaAmenageScoreView }: { useBetaAmenageScoreView:
           <TabItem
             isActive={route.name === routes.projectImpactsDevelopmentScore.name}
             iconId="fr-icon-award-line"
-            label="Aménage’score"
+            label="Score d'impact"
+            beta
             linkProps={routes.projectImpactsDevelopmentScore(route.params).link}
           />
         )}

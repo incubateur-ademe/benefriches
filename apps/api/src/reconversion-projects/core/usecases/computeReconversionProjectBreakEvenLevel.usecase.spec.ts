@@ -9,6 +9,7 @@ import { DateProvider } from "src/shared-kernel/dateProvider";
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
 import { InMemoryCityImpactsQuery } from "src/territory/adapters/secondary/city-impacts-query/InMemoryCityImpactsQuery";
+import { FakeMunicipalityCapitalExpendituresProvider } from "src/territory/adapters/secondary/municipality-capital-expenditures-query/FakeMunicipalityCapitalExpendituresProvider";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import {
@@ -31,6 +32,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         new InMemorySiteImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
         new InMemoryCityImpactsQuery(),
+        new FakeMunicipalityCapitalExpendituresProvider(),
         dateProvider,
       );
 
@@ -69,6 +71,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         new InMemorySiteImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
         new InMemoryCityImpactsQuery(),
+        new FakeMunicipalityCapitalExpendituresProvider(),
         dateProvider,
       );
 
@@ -113,6 +116,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         new InMemorySiteImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
         new InMemoryCityImpactsQuery(),
+        new FakeMunicipalityCapitalExpendituresProvider(),
         dateProvider,
       );
 
@@ -244,6 +248,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       siteQuery,
       new FakeGetSoilsCarbonStorageService(),
       new InMemoryCityImpactsQuery(),
+      new FakeMunicipalityCapitalExpendituresProvider(),
       dateProvider,
     );
   };
@@ -383,8 +388,11 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         },
         siteNature: fricheSite.nature,
         siteSurfaceArea: fricheSite.surfaceArea,
-
         fricheActivity: fricheSite.fricheActivity,
+        municipalityCapitalExpenditures: {
+          amount: 8000000,
+          referenceYear: "2025",
+        },
       });
     });
 
@@ -688,6 +696,24 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       ).getData();
       // fakeNow is 2024, so the first projection year must be "2024"
       assert.strictEqual(data.projectionYears[0], "2024");
+    });
+  });
+
+  describe("developmentScore", () => {
+    it("compute project developmentScore", async () => {
+      const usecase = buildUseCase(fricheProjectData, fricheSite);
+      const result = await usecase.execute({
+        reconversionProjectId: fricheProjectData.id,
+        evaluationPeriodInYears: 10,
+      });
+
+      const { developmentScore } = (
+        result as SuccessResult<GetReconversionProjectImpactsResultDto>
+      ).getData();
+      assert.ok(developmentScore);
+      assert.deepEqual(developmentScore.score.letterGrade, "C");
+      assert.deepEqual(developmentScore.score.letterGradeWithModifiers, "C-");
+      assert.deepEqual(developmentScore.score.gradePoints, 43.5);
     });
   });
 });

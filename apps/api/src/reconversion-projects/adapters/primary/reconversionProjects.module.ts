@@ -45,6 +45,8 @@ import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
 import { TerritoryModule } from "src/territory/adapters/primary/territory.module";
 import { SqlCityImpactsQuery } from "src/territory/adapters/secondary/city-impacts-query/SqlCityImpactsQuery";
+import { OFGLApi } from "src/territory/adapters/secondary/municipality-capital-expenditures-query/ApiMunicipalCapitalExpendituresQuery";
+import { MunicipalityCapitalExpendituresProvider } from "src/territory/core/gateways/MunicipalityCapitalExpendituresProvider";
 import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
 import { UserQuery } from "src/users/core/gateways/UserQuery";
 
@@ -181,6 +183,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         siteRepo: SqlSiteImpactsQuery,
         getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         cityDataRepo: SqlCityImpactsQuery,
+        municipalityCapitalExpendituresQuery: MunicipalityCapitalExpendituresProvider,
         dateProvider: DateProvider,
       ) {
         return new ComputeReconversionProjectBreakEvenLevelUseCase(
@@ -188,6 +191,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
           siteRepo,
           getCarbonStorageFromSoilDistribution,
           cityDataRepo,
+          municipalityCapitalExpendituresQuery,
           dateProvider,
         );
       },
@@ -196,6 +200,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         SqlSiteImpactsQuery,
         GetCarbonStorageFromSoilDistributionService,
         SqlCityImpactsQuery,
+        OFGLApi,
         RealDateProvider,
       ],
     },
@@ -299,6 +304,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     },
     RandomUuidGenerator,
     RealEventPublisher,
+    OFGLApi,
   ],
 })
 export class ReconversionProjectsModule {}

@@ -281,28 +281,28 @@ export const photovoltaicProjectImpactsResultDto = {
   },
 } satisfies GetReconversionProjectImpactsResultDto["impacts"];
 
-export const photovoltaicProjectImpactMockMeta: GetReconversionProjectImpactsResultDto["contextData"] =
-  {
-    projectName: "Project photovoltaïque",
-    projectId: "1b521325-ee61-40fb-8462-e01669ac767b",
-    relatedSiteId: "68382abb-3a81-45e6-8af4-913767a28141",
-    relatedSiteName: "Friche agricole de Blajan",
-    isExpressSite: false,
-    isExpressProject: false,
-    siteAddress: {
-      label: "Blajan",
-      lat: 2.45,
-      long: 45.26,
-    },
-    siteNature: "FRICHE",
-    siteSurfaceArea: 90000,
-    fricheActivity: "INDUSTRY",
-    projectDevelopmentPlan: {
-      type: "PHOTOVOLTAIC_POWER_PLANT" as const,
-      installationElectricalPowerKWc: 1000,
-      installationSurfaceArea: 2300,
-    },
-  };
+export const photovoltaicProjectImpactMockMeta = {
+  projectName: "Project photovoltaïque",
+  projectId: "1b521325-ee61-40fb-8462-e01669ac767b",
+  relatedSiteId: "68382abb-3a81-45e6-8af4-913767a28141",
+  relatedSiteName: "Friche agricole de Blajan",
+  isExpressSite: false,
+  isExpressProject: false,
+  siteAddress: {
+    label: "Blajan",
+    lat: 2.45,
+    long: 45.26,
+  },
+  siteNature: "FRICHE",
+  siteSurfaceArea: 90000,
+  fricheActivity: "INDUSTRY",
+  projectDevelopmentPlan: {
+    type: "PHOTOVOLTAIC_POWER_PLANT" as const,
+    installationElectricalPowerKWc: 1000,
+    installationSurfaceArea: 2300,
+  },
+  municipalityCapitalExpenditures: { amount: 1000000, referenceYear: "2025" },
+} satisfies GetReconversionProjectImpactsResultDto["contextData"];
 
 const urbanYears = 50;
 
@@ -492,4 +492,5 @@ export const urbanProjectImpactMockMeta = {
       RESIDENTIAL: 70000,
     },
   },
-};
+  municipalityCapitalExpenditures: { amount: 1500000, referenceYear: "2025" },
+} satisfies GetReconversionProjectImpactsResultDto["contextData"];

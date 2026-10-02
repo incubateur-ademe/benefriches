@@ -843,6 +843,7 @@ describe("ReconversionProjects controller", () => {
       assert.strictEqual(response.status, 200);
       assert.ok(response.body !== undefined);
       const result = response.body as GetReconversionProjectImpactsResultDto;
+      assert.ok(result.developmentScore !== undefined);
       assert.ok(result.impacts !== undefined);
       assert.ok(result.contextData !== undefined);
     });

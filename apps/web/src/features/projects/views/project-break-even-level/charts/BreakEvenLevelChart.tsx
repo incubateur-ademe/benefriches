@@ -67,7 +67,12 @@ const BreakEvenLevelChart = (props: Props) => {
       containerProps={containerProps}
       linkProps={props.linkProps}
       exportingOptions={exportConfig}
-      actions={<SegmentedControl small legend="type de graphique" hideLegend segments={segments} />}
+      headerSlot={{
+        element: (
+          <SegmentedControl small legend="type de graphique" hideLegend segments={segments} />
+        ),
+        preventClick: true,
+      }}
     />
   );
 };

@@ -140,8 +140,8 @@ const ProjectPageHeader = ({
               </MenuItemButton>
 
               <MenuItemButton iconId="ri-a-b" onClick={onToggleDevelopmentScoreView}>
-                {isBetaDevelopmentScoreViewActivated ? "Désactiver" : "Activer"} la vue
-                Aménage’score
+                {isBetaDevelopmentScoreViewActivated ? "Désactiver" : "Activer"} la vue Score
+                d'impact
               </MenuItemButton>
 
               <MenuItemButton

@@ -9,7 +9,6 @@ describe("computeProjectDevelopmentScore", () => {
     const result = computeProjectDevelopmentScore(
       urbanProjectImpactMockMeta,
       urbanProjectImpactsResultDto,
-      1500000,
     );
     assert.ok(result?.details.environmentScore);
     assert.ok(result.details.localAuthorityEconomicScore);
@@ -31,11 +30,11 @@ describe("computeProjectDevelopmentScore", () => {
     assert.deepStrictEqual(result?.details.fullTimeJobsScore.score.letterGrade, "B");
     assert.deepStrictEqual(result?.details.fullTimeJobsScore.score.letterGradeWithModifiers, "B");
 
-    assert.deepStrictEqual(result?.details.localPeopleQualityOfLifeScore.score.gradePoints, 53.33);
-    assert.deepStrictEqual(result?.details.localPeopleQualityOfLifeScore.score.letterGrade, "C");
+    assert.deepStrictEqual(result?.details.localPeopleQualityOfLifeScore.score.gradePoints, 65);
+    assert.deepStrictEqual(result?.details.localPeopleQualityOfLifeScore.score.letterGrade, "B");
     assert.deepStrictEqual(
       result?.details.localPeopleQualityOfLifeScore.score.letterGradeWithModifiers,
-      "C",
+      "B-",
     );
 
     assert.ok(result?.details.environmentScore.details);
@@ -43,7 +42,7 @@ describe("computeProjectDevelopmentScore", () => {
     assert.ok(result?.details.fullTimeJobsScore.details);
     assert.ok(result?.details.localPeopleQualityOfLifeScore.details);
 
-    assert.deepStrictEqual(result?.score.gradePoints, 54.83);
+    assert.deepStrictEqual(result?.score.gradePoints, 57.75);
     assert.deepStrictEqual(result?.score.letterGradeWithModifiers, "C+");
     assert.deepStrictEqual(result?.score.letterGrade, "C");
   });
