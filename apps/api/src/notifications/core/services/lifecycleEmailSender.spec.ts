@@ -13,7 +13,7 @@ import {
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 
-import { LifecycleEmailSender, type RenderLifecycleEmailForRetry } from "./lifecycleEmailSender";
+import { LifecycleEmailSender, type RenderLifecycleEmail } from "./lifecycleEmailSender";
 
 const fakeNow = new Date("2026-01-01T10:00:00.000Z");
 
@@ -266,9 +266,185 @@ describe("LifecycleEmailSender", () => {
     assert.strictEqual(deliveries.length, 2);
   });
 
+  describe("lazily rendered email", () => {
+    it("renders a lazily rendered email for the recipient and records it as sent", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "jane@example.com",
+          firstName: "Jane",
+          lastName: "Doe",
+          unsubscribedAt: null,
+        },
+      ]);
+      const render = mock.fn<RenderLifecycleEmail>((recipient) =>
+        Promise.resolve({ to: recipient.email, subject: "S", html: "<p>H</p>", text: "T" }),
+      );
+
+      const outcome = await sender.send({
+        userId: "user-1",
+        emailType: "project-impacts-summary",
+        relatedEntityId: "project-1",
+        render,
+      });
+
+      assert.strictEqual(outcome, "sent");
+      assert.deepStrictEqual(mailer.sentEmails, [
+        { to: "jane@example.com", subject: "S", html: "<p>H</p>", text: "T" },
+      ]);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "project-impacts-summary",
+          relatedEntityId: "project-1",
+          status: "sent",
+          createdAt: fakeNow,
+          sentAt: fakeNow,
+          errorMessage: null,
+          attempts: 1,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+    });
+
+    describe("does not render when the send is skipped", () => {
+      const existingSummary: LifecycleEmailDelivery = {
+        id: "existing-delivery",
+        userId: "user-1",
+        emailType: "project-impacts-summary",
+        relatedEntityId: "project-1",
+        status: "sent",
+        createdAt: fakeNow,
+        sentAt: fakeNow,
+        errorMessage: null,
+        attempts: 1,
+        lastAttemptedAt: fakeNow,
+      };
+      const cases = [
+        {
+          label: "the kill switch is off",
+          isEnabled: false,
+          unsubscribedAt: null,
+          existingDeliveries: [],
+          expectedOutcome: "skipped-disabled",
+        },
+        {
+          label: "the recipient has unsubscribed",
+          isEnabled: true,
+          unsubscribedAt: new Date("2025-12-01T00:00:00.000Z"),
+          existingDeliveries: [],
+          expectedOutcome: "skipped-unsubscribed",
+        },
+        {
+          label: "the recipient already has this project's delivery",
+          isEnabled: true,
+          unsubscribedAt: null,
+          existingDeliveries: [existingSummary],
+          expectedOutcome: "skipped-already-sent",
+        },
+      ] as const;
+
+      for (const {
+        label,
+        isEnabled,
+        unsubscribedAt,
+        existingDeliveries,
+        expectedOutcome,
+      } of cases) {
+        it(`when ${label}`, async () => {
+          const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled });
+          recipientQuery._setRecipients([
+            {
+              id: "user-1",
+              email: "jane@example.com",
+              firstName: "Jane",
+              lastName: "Doe",
+              unsubscribedAt,
+            },
+          ]);
+          deliveries.push(...existingDeliveries);
+          const render = mock.fn<RenderLifecycleEmail>((recipient) =>
+            Promise.resolve({ ...buildMessage(), to: recipient.email }),
+          );
+
+          const outcome = await sender.send({
+            userId: "user-1",
+            emailType: "project-impacts-summary",
+            relatedEntityId: "project-1",
+            render,
+          });
+
+          assert.strictEqual(outcome, expectedOutcome);
+          assert.strictEqual(render.mock.callCount(), 0);
+          assert.deepStrictEqual(mailer.sentEmails, []);
+          assert.deepStrictEqual(deliveries, existingDeliveries);
+        });
+      }
+    });
+
+    it("records a render failure as a failed delivery, like a mailer failure", async () => {
+      const { sender, deliveries, recipientQuery, mailer } = setup({ isEnabled: true });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "jane@example.com",
+          firstName: "Jane",
+          lastName: "Doe",
+          unsubscribedAt: null,
+        },
+      ]);
+
+      const outcome = await sender.send({
+        userId: "user-1",
+        emailType: "project-impacts-summary",
+        relatedEntityId: "project-1",
+        render: () => Promise.reject(new Error("Impacts computation crashed")),
+      });
+
+      assert.strictEqual(outcome, "failed");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "project-impacts-summary",
+          relatedEntityId: "project-1",
+          status: "failed",
+          createdAt: fakeNow,
+          sentAt: null,
+          errorMessage: "Impacts computation crashed",
+          attempts: 1,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+    });
+
+    it("throws before writing anything when a lazily rendered email has no recipient", async () => {
+      const { sender, deliveries, mailer } = setup({ isEnabled: true });
+      const render = mock.fn<RenderLifecycleEmail>((recipient) =>
+        Promise.resolve({ ...buildMessage(), to: recipient.email }),
+      );
+
+      await assert.rejects(
+        sender.send({
+          userId: "user-1",
+          emailType: "project-impacts-summary",
+          relatedEntityId: "project-1",
+          render,
+        }),
+        { message: "Lifecycle email recipient user-1 not found" },
+      );
+      assert.strictEqual(render.mock.callCount(), 0);
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, []);
+    });
+  });
+
   describe("retry", () => {
     const aDayBefore = new Date("2025-12-31T10:00:00.000Z");
-    const renderForRecipient: RenderLifecycleEmailForRetry = (recipient) =>
+    const renderForRecipient: RenderLifecycleEmail = (recipient) =>
       Promise.resolve({ ...buildMessage(), to: recipient.email });
 
     it("sends a failed delivery and marks it sent on the same row", async () => {

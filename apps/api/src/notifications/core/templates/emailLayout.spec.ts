@@ -23,6 +23,13 @@ describe("renderEmail", () => {
         { type: "paragraph", html: "Un <b>paragraphe</b>", text: "Un paragraphe" },
         { type: "featureBlock", title: "Bloc 1", body: "Description du bloc 1" },
         { type: "button", label: "Cliquez ici", url: "https://example.fr/action" },
+        {
+          type: "card",
+          headline: "En 26 ans",
+          title: "Coût de l’opération compensé",
+          body: "Corps de la carte",
+          link: { label: "Voir l’analyse", url: "https://example.fr/analyse" },
+        },
       ],
     });
 
@@ -56,6 +63,13 @@ describe("renderEmail", () => {
           phone: "01 23 45 67 89",
           email: "mathilde.lefevre@example.com",
         },
+        {
+          type: "card",
+          headline: "Ma carte",
+          title: "Titre de la carte",
+          body: "Corps de la carte",
+          link: { label: "Lien de la carte", url: "https://example.fr/carte" },
+        },
       ],
     });
 
@@ -69,6 +83,11 @@ describe("renderEmail", () => {
     assert.ok(result.html.includes('href="mailto:contact@example.fr"'));
     assert.ok(result.html.includes("Mathilde Lefèvre"));
     assert.ok(result.html.includes("01 23 45 67 89"));
+    assert.ok(result.html.includes("Ma carte"));
+    assert.ok(result.html.includes("Titre de la carte"));
+    assert.ok(result.html.includes("Corps de la carte"));
+    assert.ok(result.html.includes('href="https://example.fr/carte"'));
+    assert.ok(result.html.includes("Lien de la carte"));
   });
 
   it("renders a secondary button as a light grey bgcolor cell wrapping the link", () => {
@@ -370,5 +389,140 @@ describe("renderEmail", () => {
     });
 
     assert.ok(result.html.includes('src="https://example.fr/a.png?x=1&amp;y=&quot;z&quot;"'));
+  });
+
+  it("renders a card as a bordered table with its headline, title, body and link rows", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "card",
+          headline: "En 26 ans",
+          title: "Coût de l’opération compensé",
+          body: "Les impacts socio-économiques compenseront le coût de l’opération en 2058.",
+          link: {
+            label: "Voir l’analyse coût-bénéfice",
+            url: "https://app.example/mes-projets/p-1/analyse-cout-benefice",
+          },
+        },
+      ],
+    });
+
+    const expected = `          <tr>
+            <td style="padding:8px 24px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #dddddd;border-radius:8px;">
+                <tr>
+                  <td style="padding:16px 16px 4px 16px;font-family:Arial, Helvetica, sans-serif;font-size:24px;font-weight:bold;line-height:1.25;color:#161616;">
+                    En 26 ans
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 16px 0 16px;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;line-height:1.5;color:#161616;">
+                    Coût de l’opération compensé
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 16px 0 16px;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;color:#161616;">
+                    Les impacts socio-économiques compenseront le coût de l’opération en 2058.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 16px 16px 16px;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;">
+                    <a href="https://app.example/mes-projets/p-1/analyse-cout-benefice" style="color:#000091;text-decoration:underline;">Voir l’analyse coût-bénéfice</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>`;
+    assert.ok(result.html.includes(expected));
+  });
+
+  it("renders a card without a title as headline, body and link rows only", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "card",
+          headline: "Projet favorable au ZAN",
+          body: "Le projet reconvertit un site en friche.",
+          link: {
+            label: "Voir le détail des impacts",
+            url: "https://app.example/mes-projets/p-1/impacts",
+          },
+        },
+      ],
+    });
+
+    const expected = `          <tr>
+            <td style="padding:8px 24px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #dddddd;border-radius:8px;">
+                <tr>
+                  <td style="padding:16px 16px 4px 16px;font-family:Arial, Helvetica, sans-serif;font-size:24px;font-weight:bold;line-height:1.25;color:#161616;">
+                    Projet favorable au ZAN
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 16px 0 16px;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;color:#161616;">
+                    Le projet reconvertit un site en friche.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 16px 16px 16px;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;">
+                    <a href="https://app.example/mes-projets/p-1/impacts" style="color:#000091;text-decoration:underline;">Voir le détail des impacts</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>`;
+    assert.ok(result.html.includes(expected));
+  });
+
+  it("renders a card as plain-text lines ending with its link", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "card",
+          headline: "En 26 ans",
+          title: "Coût de l’opération compensé",
+          body: "Les impacts socio-économiques compenseront le coût de l’opération en 2058.",
+          link: {
+            label: "Voir l’analyse coût-bénéfice",
+            url: "https://app.example/mes-projets/p-1/analyse-cout-benefice",
+          },
+        },
+      ],
+    });
+
+    assert.deepStrictEqual(
+      result.text.split("\n\n")[0],
+      "En 26 ans\nCoût de l’opération compensé\nLes impacts socio-économiques compenseront le coût de l’opération en 2058.\nVoir l’analyse coût-bénéfice : https://app.example/mes-projets/p-1/analyse-cout-benefice",
+    );
+  });
+
+  it("escapes every card field and the link URL in the HTML", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "card",
+          headline: "<b>Titre</b>",
+          title: "A & B",
+          body: `"Corps" 'cité'`,
+          link: { label: "<i>Lien</i>", url: 'https://example.fr/?a=1&b="x"' },
+        },
+      ],
+    });
+
+    assert.ok(result.html.includes("&lt;b&gt;Titre&lt;/b&gt;"));
+    assert.ok(!result.html.includes("<b>"));
+    assert.ok(result.html.includes("A &amp; B"));
+    assert.ok(result.html.includes("&quot;Corps&quot; &#39;cité&#39;"));
+    assert.ok(result.html.includes("&lt;i&gt;Lien&lt;/i&gt;"));
+    assert.ok(result.html.includes('href="https://example.fr/?a=1&amp;b=&quot;x&quot;"'));
   });
 });

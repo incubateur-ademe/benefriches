@@ -1,12 +1,14 @@
 import { z } from "zod";
 
-// Ticket 08 extends this enum with "project-impacts-summary". Kept kebab-case so every value
-// stays consistent. "first-project-reminder" is entity-scoped: its ledger rows carry the
-// site id in related_entity_id (one per user and site).
+// Kept kebab-case so every value stays consistent. Two types are entity-scoped, and
+// email_type alone says what their related_entity_id is: "first-project-reminder" carries
+// the site id (sites.id, one row per user and site), "project-impacts-summary" the project
+// id (reconversion_projects.id, one row per user and project).
 export const lifecycleEmailTypeSchema = z.enum([
   "welcome",
   "first-site-reminder",
   "first-project-reminder",
+  "project-impacts-summary",
 ]);
 export type LifecycleEmailType = z.infer<typeof lifecycleEmailTypeSchema>;
 

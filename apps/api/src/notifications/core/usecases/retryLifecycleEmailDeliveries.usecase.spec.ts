@@ -1,17 +1,25 @@
 import assert from "node:assert/strict";
 import { describe, it, mock } from "node:test";
+import {
+  urbanProjectDevelopmentScoreMock,
+  urbanProjectImpactMockMeta,
+  type GetReconversionProjectImpactsResultDto,
+} from "shared";
 
 import { InMemoryLifecycleEmailCohortQuery } from "src/notifications/adapters/secondary/lifecycle-email-cohort/InMemoryLifecycleEmailCohortQuery";
 import { InMemoryLifecycleEmailDeliveryQuery } from "src/notifications/adapters/secondary/lifecycle-email-delivery/InMemoryLifecycleEmailDeliveryQuery";
 import { InMemoryLifecycleEmailDeliveryRepository } from "src/notifications/adapters/secondary/lifecycle-email-delivery/InMemoryLifecycleEmailDeliveryRepository";
+import { InMemoryLifecycleEmailProjectQuery } from "src/notifications/adapters/secondary/lifecycle-email-project/InMemoryLifecycleEmailProjectQuery";
 import { InMemoryLifecycleEmailRecipientQuery } from "src/notifications/adapters/secondary/lifecycle-email-recipient/InMemoryLifecycleEmailRecipientQuery";
 import { InMemoryLifecycleEmailSiteQuery } from "src/notifications/adapters/secondary/lifecycle-email-site/InMemoryLifecycleEmailSiteQuery";
 import { FakeMailer } from "src/notifications/adapters/secondary/mailer/FakeMailer";
+import { FakeProjectImpactsCalculator } from "src/notifications/adapters/secondary/project-impacts/FakeProjectImpactsCalculator";
 import { HmacUnsubscribeTokenService } from "src/notifications/adapters/secondary/unsubscribe-token/HmacUnsubscribeTokenService";
 import type {
   FirstProjectReminderSite,
   FirstSiteReminderRecipient,
 } from "src/notifications/core/gateways/LifecycleEmailCohortQuery";
+import type { LifecycleEmailProject } from "src/notifications/core/gateways/LifecycleEmailProjectQuery";
 import type { LifecycleEmailDelivery } from "src/notifications/core/models/lifecycleEmail";
 import type { LifecycleEmailContact } from "src/notifications/core/models/lifecycleEmailContact";
 import { LifecycleEmailSender } from "src/notifications/core/services/lifecycleEmailSender";
@@ -26,6 +34,7 @@ import {
 } from "./retryLifecycleEmailDeliveries.usecase";
 import { SendFirstProjectRemindersUseCase } from "./sendFirstProjectReminders.usecase";
 import { SendFirstSiteRemindersUseCase } from "./sendFirstSiteReminders.usecase";
+import { SendProjectImpactsSummaryEmailUseCase } from "./sendProjectImpactsSummaryEmail.usecase";
 import { SendWelcomeEmailUseCase } from "./sendWelcomeEmail.usecase";
 
 const fakeNow = new Date("2026-01-01T10:00:00.000Z");
@@ -53,6 +62,8 @@ const setup = (options: {
   const deliveryQuery = new InMemoryLifecycleEmailDeliveryQuery(options.deliveries);
   const recipientQuery = new InMemoryLifecycleEmailRecipientQuery();
   const siteQuery = new InMemoryLifecycleEmailSiteQuery();
+  const projectQuery = new InMemoryLifecycleEmailProjectQuery();
+  const projectImpactsCalculator = new FakeProjectImpactsCalculator();
   const mailer = new FakeMailer();
   const dateProvider = new DeterministicDateProvider(fakeNow);
   const logger = new SpyLogger();
@@ -68,6 +79,8 @@ const setup = (options: {
   const useCase = new RetryLifecycleEmailDeliveriesUseCase(
     deliveryQuery,
     siteQuery,
+    projectQuery,
+    projectImpactsCalculator,
     sender,
     dateProvider,
     webappUrl,
@@ -75,7 +88,16 @@ const setup = (options: {
     "contact" in options ? options.contact : contact,
     logger,
   );
-  return { useCase, deliveryRepository, recipientQuery, siteQuery, mailer, logger };
+  return {
+    useCase,
+    deliveryRepository,
+    recipientQuery,
+    siteQuery,
+    projectQuery,
+    projectImpactsCalculator,
+    mailer,
+    logger,
+  };
 };
 
 describe("RetryLifecycleEmailDeliveries UseCase", () => {
@@ -793,6 +815,254 @@ describe("RetryLifecycleEmailDeliveries UseCase", () => {
           createdAt: aDayBefore,
           sentAt: null,
           errorMessage: "Lifecycle email contact is not configured",
+          attempts: 2,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+      assert.deepStrictEqual(getSuccessData(result), {
+        candidates: 1,
+        sent: 0,
+        failed: 1,
+        abandoned: 0,
+        skippedDisabled: 0,
+        skippedUnsubscribed: 0,
+        skippedRecipientNotFound: 0,
+        skippedAlreadyClaimed: 0,
+        errored: 0,
+      } satisfies RetryLifecycleEmailDeliveriesSummary);
+    });
+  });
+
+  describe("project impacts summary", () => {
+    const summaryProject = {
+      id: "project-1",
+      name: "Habitation, école et commerce",
+      siteName: "Ancienne carrière d’argile de Blajan",
+      createdAt: new Date("2026-06-15T10:00:00.000Z"),
+    } satisfies LifecycleEmailProject;
+    const failedProjectImpactsSummary = (): LifecycleEmailDelivery => ({
+      id: "delivery-1",
+      userId: "user-1",
+      emailType: "project-impacts-summary",
+      relatedEntityId: "project-1",
+      status: "failed",
+      createdAt: aDayBefore,
+      sentAt: null,
+      errorMessage: "SMTP down",
+      attempts: 1,
+      lastAttemptedAt: aDayBefore,
+    });
+
+    // A friche project over 50 years, compensated in 2052, with 1 000 € of tax income a year.
+    const impactsResult: GetReconversionProjectImpactsResultDto = {
+      contextData: { ...urbanProjectImpactMockMeta, projectId: "project-1" },
+      developmentScore: urbanProjectDevelopmentScoreMock,
+      impacts: {
+        projectionYears: Array.from({ length: 50 }, (_, index) => String(2026 + index)),
+        operationsFirstYear: 2026,
+        projectEconomicBalance: { total: 0, details: [] },
+        stakeholders: {
+          current: { owner: { structureType: "company" } },
+          future: {},
+          project: {
+            developer: { structureType: "unknown" },
+            reinstatementContractOwner: { structureType: "unknown" },
+          },
+        },
+        aggregatedReconversionImpacts: {
+          breakEvenYear: "2052",
+          cumulativeBalanceByYear: [],
+          cumulativeEconomicBalanceByYear: [],
+          cumulativeIndirectEconomicImpactsByYear: [],
+          indirectEconomicImpacts: {
+            total: 50_000,
+            details: [
+              {
+                name: "projectNewHousesTaxesIncome",
+                total: 50_000,
+                detailsByYear: Array.from({ length: 50 }, () => 1000),
+                cumulativeByYear: Array.from({ length: 50 }, (_, index) => 1000 * (index + 1)),
+              },
+            ],
+          },
+          impactsMetrics: [],
+        },
+        reconversionImpactsBreakdown: {
+          siteStatuQuoIndirectEconomicImpactsData: { total: 0, details: [] },
+          projectOnSiteIndirectEconomicImpactsData: { total: 0, details: [] },
+          projectIndirectImpactMetrics: [],
+          siteStatuQuoImpactMetrics: [],
+        },
+      },
+    };
+
+    it("retries a failed project impacts summary with the same message the send use case sends, dated by the project's creation", async () => {
+      // Capture what the inline send path sends for this project, on another clock than the
+      // retry's: the date line is the project's creation date, not the time of rendering.
+      const sendTime = new Date("2026-06-15T10:00:05.000Z");
+      const sendDeliveries: LifecycleEmailDelivery[] = [];
+      const sendRecipientQuery = new InMemoryLifecycleEmailRecipientQuery();
+      sendRecipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+      const sendProjectQuery = new InMemoryLifecycleEmailProjectQuery();
+      sendProjectQuery._setProjects([summaryProject]);
+      const sendCalculator = new FakeProjectImpactsCalculator();
+      sendCalculator._setResult("project-1", impactsResult);
+      const sendMailer = new FakeMailer();
+      const sendUidGenerator = new DeterministicUuidGenerator();
+      sendUidGenerator.nextUuids("summary-delivery");
+      await new SendProjectImpactsSummaryEmailUseCase(
+        new LifecycleEmailSender(
+          new InMemoryLifecycleEmailDeliveryRepository(sendDeliveries),
+          new InMemoryLifecycleEmailDeliveryQuery(sendDeliveries),
+          sendRecipientQuery,
+          sendMailer,
+          new DeterministicDateProvider(sendTime),
+          sendUidGenerator,
+          true,
+        ),
+        sendProjectQuery,
+        sendCalculator,
+        webappUrl,
+        unsubscribeTokenService,
+        new SpyLogger(),
+      ).execute({ reconversionProjectId: "project-1", userId: "user-1" });
+      const expectedMessage = sendMailer.sentEmails[0];
+      assert.ok(expectedMessage);
+
+      const deliveries = [failedProjectImpactsSummary()];
+      const { useCase, recipientQuery, projectQuery, projectImpactsCalculator, mailer } = setup({
+        isEnabled: true,
+        deliveries,
+      });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+      projectQuery._setProjects([summaryProject]);
+      projectImpactsCalculator._setResult("project-1", impactsResult);
+
+      const result = await useCase.execute();
+
+      assert.deepStrictEqual(mailer.sentEmails, [expectedMessage]);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "project-impacts-summary",
+          relatedEntityId: "project-1",
+          status: "sent",
+          createdAt: aDayBefore,
+          sentAt: fakeNow,
+          errorMessage: "SMTP down",
+          attempts: 2,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+      assert.deepStrictEqual(getSuccessData(result), {
+        candidates: 1,
+        sent: 1,
+        failed: 0,
+        abandoned: 0,
+        skippedDisabled: 0,
+        skippedUnsubscribed: 0,
+        skippedRecipientNotFound: 0,
+        skippedAlreadyClaimed: 0,
+        errored: 0,
+      } satisfies RetryLifecycleEmailDeliveriesSummary);
+    });
+
+    it("counts a retry as failed when the project no longer exists", async () => {
+      const deliveries = [failedProjectImpactsSummary()];
+      const { useCase, recipientQuery, projectImpactsCalculator, mailer } = setup({
+        isEnabled: true,
+        deliveries,
+      });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+      projectImpactsCalculator._setResult("project-1", impactsResult);
+
+      const result = await useCase.execute();
+
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "project-impacts-summary",
+          relatedEntityId: "project-1",
+          status: "failed",
+          createdAt: aDayBefore,
+          sentAt: null,
+          errorMessage: "Reconversion project project-1 not found",
+          attempts: 2,
+          lastAttemptedAt: fakeNow,
+        },
+      ] satisfies LifecycleEmailDelivery[]);
+      assert.deepStrictEqual(getSuccessData(result), {
+        candidates: 1,
+        sent: 0,
+        failed: 1,
+        abandoned: 0,
+        skippedDisabled: 0,
+        skippedUnsubscribed: 0,
+        skippedRecipientNotFound: 0,
+        skippedAlreadyClaimed: 0,
+        errored: 0,
+      } satisfies RetryLifecycleEmailDeliveriesSummary);
+    });
+
+    it("counts a retry as failed when the impacts cannot be computed", async () => {
+      const deliveries = [failedProjectImpactsSummary()];
+      const { useCase, recipientQuery, projectQuery, projectImpactsCalculator, mailer } = setup({
+        isEnabled: true,
+        deliveries,
+      });
+      recipientQuery._setRecipients([
+        {
+          id: "user-1",
+          email: "gregoire.bailleux@example.fr",
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          unsubscribedAt: null,
+        },
+      ]);
+      projectQuery._setProjects([summaryProject]);
+      projectImpactsCalculator._simulateFailure("NoDevelopmentPlanType");
+
+      const result = await useCase.execute();
+
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(deliveries, [
+        {
+          id: "delivery-1",
+          userId: "user-1",
+          emailType: "project-impacts-summary",
+          relatedEntityId: "project-1",
+          status: "failed",
+          createdAt: aDayBefore,
+          sentAt: null,
+          errorMessage:
+            "Project impacts could not be computed for project project-1: NoDevelopmentPlanType",
           attempts: 2,
           lastAttemptedAt: fakeNow,
         },

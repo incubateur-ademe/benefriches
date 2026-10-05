@@ -1,17 +1,27 @@
 import assert from "node:assert/strict";
-import { describe, it } from "node:test";
+import { describe, it, mock } from "node:test";
+import {
+  urbanProjectDevelopmentScoreMock,
+  urbanProjectImpactMockMeta,
+  type GetReconversionProjectImpactsResultDto,
+} from "shared";
 
+import { InMemoryLifecycleEmailProjectQuery } from "src/notifications/adapters/secondary/lifecycle-email-project/InMemoryLifecycleEmailProjectQuery";
 import { FakeMailer } from "src/notifications/adapters/secondary/mailer/FakeMailer";
+import { FakeProjectImpactsCalculator } from "src/notifications/adapters/secondary/project-impacts/FakeProjectImpactsCalculator";
 import { HmacUnsubscribeTokenService } from "src/notifications/adapters/secondary/unsubscribe-token/HmacUnsubscribeTokenService";
 import type { LifecycleEmailContact } from "src/notifications/core/models/lifecycleEmailContact";
 import {
   PREVIEW_SAMPLE_CONTACT,
+  PREVIEW_SAMPLE_FAVOURABLE_IMPACTS_SUMMARY,
   PREVIEW_SAMPLE_FRICHE,
   PREVIEW_SAMPLE_NON_FRICHE_SITE,
+  PREVIEW_SAMPLE_UNFAVOURABLE_IMPACTS_SUMMARY,
   PREVIEW_SAMPLE_USER,
 } from "src/notifications/core/previews/lifecycleEmailPreviewSamples";
 import { buildFirstProjectReminderEmail } from "src/notifications/core/templates/firstProjectReminderEmail";
 import { buildFirstSiteReminderEmail } from "src/notifications/core/templates/firstSiteReminderEmail";
+import { buildProjectImpactsSummaryEmail } from "src/notifications/core/templates/projectImpactsSummaryEmail";
 import { buildUnsubscribeUrl } from "src/notifications/core/templates/unsubscribeUrl";
 import { SpyLogger } from "src/shared-kernel/adapters/logger/SpyLogger";
 import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
@@ -32,15 +42,21 @@ const contact = {
 const setup = (options: { contact: LifecycleEmailContact | undefined } = { contact }) => {
   const mailer = new FakeMailer();
   const logger = new SpyLogger();
+  const projectQuery = new InMemoryLifecycleEmailProjectQuery();
+  const projectImpactsCalculator = new FakeProjectImpactsCalculator();
   const usecase = new SendLifecycleEmailPreviewUseCase(
     mailer,
     logger,
     webappUrl,
     tokenService,
     options.contact,
+    projectQuery,
+    projectImpactsCalculator,
   );
-  return { usecase, mailer, logger };
+  return { usecase, mailer, logger, projectQuery, projectImpactsCalculator };
 };
+
+type PreviewResponse = { emailType: string; subjects: string[]; recipients: string[] };
 
 describe("SendLifecycleEmailPreview UseCase", () => {
   it("fails with NoRecipient and sends nothing when no recipient is given", async () => {
@@ -68,7 +84,12 @@ describe("SendLifecycleEmailPreview UseCase", () => {
     const failure = result as FailureResult<"UnknownEmailType", { validEmailTypes: string[] }>;
     assert.strictEqual(failure.getError(), "UnknownEmailType");
     assert.deepStrictEqual(failure.getIssues(), {
-      validEmailTypes: ["welcome", "first-site-reminder", "first-project-reminder"],
+      validEmailTypes: [
+        "welcome",
+        "first-site-reminder",
+        "first-project-reminder",
+        "project-impacts-summary",
+      ],
     });
     assert.strictEqual(mailer.sentEmails.length, 0);
   });
@@ -249,5 +270,206 @@ describe("SendLifecycleEmailPreview UseCase", () => {
         recipients: ["relecteur@example.com"],
       },
     );
+  });
+
+  describe("project impacts summary", () => {
+    // A friche project of user-9 over 50 years, compensated in 2052, with 1 000 € of tax income
+    // a year.
+    const realProject = {
+      id: "project-1",
+      name: "Logements de la gare",
+      siteName: "Friche de la gare",
+      createdAt: new Date("2026-05-04T08:00:00.000Z"),
+    };
+    const impactsResult: GetReconversionProjectImpactsResultDto = {
+      contextData: { ...urbanProjectImpactMockMeta, projectId: "project-1" },
+      developmentScore: urbanProjectDevelopmentScoreMock,
+      impacts: {
+        projectionYears: Array.from({ length: 50 }, (_, index) => String(2026 + index)),
+        operationsFirstYear: 2026,
+        projectEconomicBalance: { total: 0, details: [] },
+        stakeholders: {
+          current: { owner: { structureType: "company" } },
+          future: {},
+          project: {
+            developer: { structureType: "unknown" },
+            reinstatementContractOwner: { structureType: "unknown" },
+          },
+        },
+        aggregatedReconversionImpacts: {
+          breakEvenYear: "2052",
+          cumulativeBalanceByYear: [],
+          cumulativeEconomicBalanceByYear: [],
+          cumulativeIndirectEconomicImpactsByYear: [],
+          indirectEconomicImpacts: {
+            total: 50_000,
+            details: [
+              {
+                name: "projectNewHousesTaxesIncome",
+                total: 50_000,
+                detailsByYear: Array.from({ length: 50 }, () => 1000),
+                cumulativeByYear: Array.from({ length: 50 }, (_, index) => 1000 * (index + 1)),
+              },
+            ],
+          },
+          impactsMetrics: [],
+        },
+        reconversionImpactsBreakdown: {
+          siteStatuQuoIndirectEconomicImpactsData: { total: 0, details: [] },
+          projectOnSiteIndirectEconomicImpactsData: { total: 0, details: [] },
+          projectIndirectImpactMetrics: [],
+          siteStatuQuoImpactMetrics: [],
+        },
+      },
+    };
+
+    it("sends a favourable and an unfavourable project impacts summary preview to each recipient", async () => {
+      const { usecase, mailer } = setup();
+      const unsubscribeUrl = buildUnsubscribeUrl(
+        webappUrl,
+        tokenService.sign(PREVIEW_SAMPLE_USER.id),
+      );
+
+      const result = await usecase.execute({
+        emailType: "project-impacts-summary",
+        recipients: ["a@ademe.fr", "b@ademe.fr"],
+      });
+
+      const favourableEmail = buildProjectImpactsSummaryEmail({
+        ...PREVIEW_SAMPLE_FAVOURABLE_IMPACTS_SUMMARY,
+        webappUrl,
+        unsubscribeUrl,
+      });
+      const unfavourableEmail = buildProjectImpactsSummaryEmail({
+        ...PREVIEW_SAMPLE_UNFAVOURABLE_IMPACTS_SUMMARY,
+        webappUrl,
+        unsubscribeUrl,
+      });
+      assert.deepStrictEqual(mailer.sentEmails, [
+        { to: "a@ademe.fr", ...favourableEmail },
+        { to: "a@ademe.fr", ...unfavourableEmail },
+        { to: "b@ademe.fr", ...favourableEmail },
+        { to: "b@ademe.fr", ...unfavourableEmail },
+      ]);
+      assert.deepStrictEqual((result as SuccessResult<PreviewResponse>).getData(), {
+        emailType: "project-impacts-summary",
+        subjects: [favourableEmail.subject, unfavourableEmail.subject],
+        recipients: ["a@ademe.fr", "b@ademe.fr"],
+      });
+    });
+
+    it("renders a real project's summary when a project id is given, linked to the sample user's unsubscribe page", async () => {
+      const { usecase, mailer, logger, projectQuery, projectImpactsCalculator } = setup();
+      projectQuery._setProjects([realProject]);
+      projectImpactsCalculator._setResult("project-1", impactsResult);
+
+      const result = await usecase.execute({
+        emailType: "project-impacts-summary",
+        projectId: "project-1",
+        recipients: ["relecteur@ademe.fr"],
+      });
+
+      const expectedEmail = buildProjectImpactsSummaryEmail({
+        project: realProject,
+        evaluationPeriodInYears: 50,
+        zanCompliance: {
+          name: "zanCompliance",
+          isSuccess: true,
+          value: {
+            isAgriculturalFriche: false,
+            permeableSurfaceAreaDifference: undefined,
+            artificializedSurfaceArea: 0,
+          },
+        },
+        breakEvenHorizon: { status: "compensated", breakEvenYear: "2052", yearsToBreakEven: 26 },
+        mainImpactIndicator: { name: "taxesIncomesImpact", isSuccess: true, value: 50_000 },
+        webappUrl,
+        unsubscribeUrl: buildUnsubscribeUrl(webappUrl, tokenService.sign(PREVIEW_SAMPLE_USER.id)),
+      });
+      assert.deepStrictEqual(mailer.sentEmails, [{ to: "relecteur@ademe.fr", ...expectedEmail }]);
+      assert.deepStrictEqual((result as SuccessResult<PreviewResponse>).getData(), {
+        emailType: "project-impacts-summary",
+        subjects: [expectedEmail.subject],
+        recipients: ["relecteur@ademe.fr"],
+      });
+      assert.ok(
+        logger._info.includes(
+          "Lifecycle email preview sent: type=project-impacts-summary, project=project-1, to=relecteur@ademe.fr",
+        ),
+      );
+    });
+
+    it("fails with ReconversionProjectNotFound and sends nothing for an unknown project", async () => {
+      const { usecase, mailer } = setup();
+
+      const result = await usecase.execute({
+        emailType: "project-impacts-summary",
+        projectId: "project-1",
+        recipients: ["relecteur@ademe.fr"],
+      });
+
+      assert.ok(result.isFailure());
+      assert.strictEqual(result.getError(), "ReconversionProjectNotFound");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+    });
+
+    it("fails with ProjectImpactsNotComputed and sends nothing when the impacts cannot be computed", async () => {
+      const { usecase, mailer, logger, projectQuery, projectImpactsCalculator } = setup();
+      projectQuery._setProjects([realProject]);
+      projectImpactsCalculator._simulateFailure("SiteNotFound");
+
+      const result = await usecase.execute({
+        emailType: "project-impacts-summary",
+        projectId: "project-1",
+        recipients: ["relecteur@ademe.fr"],
+      });
+
+      assert.ok(result.isFailure());
+      assert.strictEqual(result.getError(), "ProjectImpactsNotComputed");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(logger._error, [
+        {
+          message: "Lifecycle email preview could not load project project-1: SiteNotFound",
+          error: undefined,
+        },
+      ]);
+    });
+
+    it("fails with ProjectImpactsNotComputed and logs the error when the computation throws", async () => {
+      const { usecase, mailer, logger, projectQuery, projectImpactsCalculator } = setup();
+      projectQuery._setProjects([realProject]);
+      const computationError = new Error("Error response from OFGL API");
+      mock.method(projectImpactsCalculator, "execute", () => Promise.reject(computationError));
+
+      const result = await usecase.execute({
+        emailType: "project-impacts-summary",
+        projectId: "project-1",
+        recipients: ["relecteur@ademe.fr"],
+      });
+
+      assert.ok(result.isFailure());
+      assert.strictEqual(result.getError(), "ProjectImpactsNotComputed");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+      assert.deepStrictEqual(logger._error, [
+        {
+          message: "Lifecycle email preview could not load project project-1",
+          error: computationError,
+        },
+      ]);
+    });
+
+    it("fails with ProjectIdNotSupported and sends nothing for another email type", async () => {
+      const { usecase, mailer } = setup();
+
+      const result = await usecase.execute({
+        emailType: "welcome",
+        projectId: "project-1",
+        recipients: ["relecteur@ademe.fr"],
+      });
+
+      assert.ok(result.isFailure());
+      assert.strictEqual(result.getError(), "ProjectIdNotSupported");
+      assert.deepStrictEqual(mailer.sentEmails, []);
+    });
   });
 });

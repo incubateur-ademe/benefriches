@@ -306,5 +306,8 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     RealEventPublisher,
     OFGLApi,
   ],
+  // The impacts computation behind GET /:id/impacts, used by the notifications module's project
+  // impacts summary email.
+  exports: [ComputeReconversionProjectBreakEvenLevelUseCase],
 })
 export class ReconversionProjectsModule {}

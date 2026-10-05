@@ -25,8 +25,10 @@ export type LifecycleEmailRetryOutcome =
   | "skipped-recipient-not-found"
   | "skipped-already-claimed";
 
-// Lazy: called only once the row is claimed, so skipped rows are never rendered.
-export type RenderLifecycleEmailForRetry = (
+// Rendered lazily: called only once the send is allowed (kill switch on, recipient subscribed,
+// and, for send(), no prior delivery) and its ledger row is written or claimed, so a skipped
+// send or retry never pays for it. Used by retry() and by the { render } variant of send().
+export type RenderLifecycleEmail = (
   recipient: LifecycleEmailRecipient,
 ) => Promise<LifecycleEmailMessage>;
 
@@ -39,13 +41,23 @@ export type SendLifecycleEmailRequest = {
   userId: string;
   emailType: LifecycleEmailType;
   relatedEntityId?: string;
-  message: LifecycleEmailMessage;
-};
+} & (
+  | { message: LifecycleEmailMessage }
+  // The project impacts summary computes the project's impacts to render: lazy so that a
+  // disabled, unsubscribed or already-sent case computes nothing. A throw is recorded like a
+  // mailer failure ("failed"), which the retry sweeper picks up.
+  | { render: RenderLifecycleEmail }
+);
 
 /**
  * The single choke point every lifecycle email must go through. No lifecycle email
  * path may bypass this service — it is what guarantees the opt-out check (and the
  * delivery ledger) cannot be forgotten by a future email type.
+ *
+ * `send()` takes either an already-rendered `message` or a lazy `render(recipient)`: the
+ * latter runs only after every check and the pending row, so an expensive render (the project
+ * impacts summary's impacts computation) is skipped along with the send, and its failure is a
+ * "failed" delivery like a mailer failure.
  */
 export class LifecycleEmailSender {
   private readonly deliveryRepository: LifecycleEmailDeliveryRepository;
@@ -88,6 +100,20 @@ export class LifecycleEmailSender {
       return "skipped-unsubscribed";
     }
 
+    // A render needs the recipient, so a missing one throws before any write. (A `message`
+    // send for an unknown user throws too, later, on the ledger's user_id foreign key.)
+    let resolveMessage: () => Promise<LifecycleEmailMessage>;
+    if ("render" in request) {
+      if (!recipient) {
+        throw new Error(`Lifecycle email recipient ${request.userId} not found`);
+      }
+      const { render } = request;
+      resolveMessage = () => render(recipient);
+    } else {
+      const { message } = request;
+      resolveMessage = () => Promise.resolve(message);
+    }
+
     const alreadyHasDelivery = await this.deliveryQuery.hasDelivery({
       userId: request.userId,
       emailType: request.emailType,
@@ -113,9 +139,10 @@ export class LifecycleEmailSender {
     });
 
     try {
-      await this.mailer.send(request.message);
+      const message = await resolveMessage();
+      await this.mailer.send(message);
     } catch (error) {
-      const errorMessage = toErrorMessage(error, "Unknown mailer error");
+      const errorMessage = toErrorMessage(error, "Unknown send error");
       await this.deliveryRepository.markFailed(deliveryId, errorMessage);
       return "failed";
     }
@@ -130,7 +157,7 @@ export class LifecycleEmailSender {
    */
   async retry(
     delivery: LifecycleEmailDelivery,
-    render: RenderLifecycleEmailForRetry,
+    render: RenderLifecycleEmail,
   ): Promise<LifecycleEmailRetryOutcome> {
     if (!this.isEnabled) {
       return "skipped-disabled";

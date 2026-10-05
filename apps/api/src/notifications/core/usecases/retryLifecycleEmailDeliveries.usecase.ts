@@ -1,9 +1,11 @@
 import { subMinutes } from "date-fns";
 
 import type { LifecycleEmailDeliveryQuery } from "src/notifications/core/gateways/LifecycleEmailDeliveryQuery";
+import type { LifecycleEmailProjectQuery } from "src/notifications/core/gateways/LifecycleEmailProjectQuery";
 import type { LifecycleEmailRecipient } from "src/notifications/core/gateways/LifecycleEmailRecipientQuery";
 import type { LifecycleEmailSiteQuery } from "src/notifications/core/gateways/LifecycleEmailSiteQuery";
 import type { LifecycleEmailMessage } from "src/notifications/core/gateways/Mailer";
+import type { ProjectImpactsCalculator } from "src/notifications/core/gateways/ProjectImpactsCalculator";
 import type { UnsubscribeTokenService } from "src/notifications/core/gateways/UnsubscribeTokenService";
 import type { LifecycleEmailDelivery } from "src/notifications/core/models/lifecycleEmail";
 import type { LifecycleEmailContact } from "src/notifications/core/models/lifecycleEmailContact";
@@ -11,6 +13,7 @@ import type {
   LifecycleEmailRetryOutcome,
   LifecycleEmailSender,
 } from "src/notifications/core/services/lifecycleEmailSender";
+import { composeProjectImpactsSummaryEmail } from "src/notifications/core/services/projectImpactsSummaryContent";
 import { buildFirstProjectReminderEmail } from "src/notifications/core/templates/firstProjectReminderEmail";
 import { buildFirstSiteReminderEmail } from "src/notifications/core/templates/firstSiteReminderEmail";
 import { buildUnsubscribeUrl } from "src/notifications/core/templates/unsubscribeUrl";
@@ -24,6 +27,8 @@ import type { UseCase } from "src/shared-kernel/usecase";
 // SmtpMailer's timeouts (connectionTimeout 5s, greetingTimeout 5s, socketTimeout 10s) cap
 // an inline send at ~20s; 15 minutes is ~45x that, and short enough for a stranded row
 // to be retried on the next hourly run. Measured from last_attempted_at, not created_at.
+// The project impacts summary's pending row also lasts its render, the impacts computation
+// (DB reads and the OFGL call, 10s timeout), before the SMTP send: still far below 15 minutes.
 export const STALE_PENDING_THRESHOLD_MINUTES = 15;
 
 export type RetryLifecycleEmailDeliveriesSummary = {
@@ -53,6 +58,8 @@ const SUMMARY_KEY_BY_OUTCOME = {
 export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Result> {
   private readonly deliveryQuery: LifecycleEmailDeliveryQuery;
   private readonly siteQuery: LifecycleEmailSiteQuery;
+  private readonly projectQuery: LifecycleEmailProjectQuery;
+  private readonly projectImpactsCalculator: ProjectImpactsCalculator;
   private readonly sender: LifecycleEmailSender;
   private readonly dateProvider: DateProvider;
   private readonly webappUrl: string;
@@ -63,6 +70,8 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
   constructor(
     deliveryQuery: LifecycleEmailDeliveryQuery,
     siteQuery: LifecycleEmailSiteQuery,
+    projectQuery: LifecycleEmailProjectQuery,
+    projectImpactsCalculator: ProjectImpactsCalculator,
     sender: LifecycleEmailSender,
     dateProvider: DateProvider,
     webappUrl: string,
@@ -72,6 +81,8 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
   ) {
     this.deliveryQuery = deliveryQuery;
     this.siteQuery = siteQuery;
+    this.projectQuery = projectQuery;
+    this.projectImpactsCalculator = projectImpactsCalculator;
     this.sender = sender;
     this.dateProvider = dateProvider;
     this.webappUrl = webappUrl;
@@ -189,6 +200,24 @@ export class RetryLifecycleEmailDeliveriesUseCase implements UseCase<void, Resul
           }),
         };
       }
+      case "project-impacts-summary":
+        // Always set for this type (every send passes the project id); the guard only narrows.
+        if (!delivery.relatedEntityId) {
+          throw new Error("Project impacts summary delivery has no related project");
+        }
+        // Same composition as the send use case: the project's current name and impacts, its
+        // stored creation date. No eligibility re-check (known limitation, like the reminders):
+        // an archived project is still sent. A missing project or a failed computation throws:
+        // a failed attempt, then abandoned at the cap.
+        return composeProjectImpactsSummaryEmail(
+          {
+            projectQuery: this.projectQuery,
+            projectImpactsCalculator: this.projectImpactsCalculator,
+            webappUrl: this.webappUrl,
+            unsubscribeTokenService: this.unsubscribeTokenService,
+          },
+          { projectId: delivery.relatedEntityId, recipient },
+        );
     }
   }
 }

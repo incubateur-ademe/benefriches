@@ -4,6 +4,9 @@
 // No images, with a single exception: the optional decorative icon of a featureBlock
 // (iconUrl), an absolute PNG URL with explicit size and empty alt, so the email reads fine
 // with images blocked.
+// Sections: heading, paragraph, featureBlock, button, contactSignature, and card (a bordered
+// block with a headline, an optional title, a body and a text link: the project impacts
+// summary's headline findings).
 // Every email produced here ships a plain-text alternative alongside the HTML —
 // renderEmail always returns both, so it is structurally impossible to ship
 // HTML without a text fallback.
@@ -22,6 +25,15 @@ export type EmailSection =
     }
   // variant absent = primary (dark). Secondary: light grey cell, dark text.
   | { type: "button"; variant?: "primary" | "secondary"; label: string; url: string }
+  // A bordered card (the impacts summary's headline findings): a large headline, an optional
+  // bold title, a body and a text link. No image. Outlook ignores the border radius.
+  | {
+      type: "card";
+      headline: string;
+      title?: string;
+      body: string;
+      link: { label: string; url: string };
+    }
   // A plain-text signature: no image, ever (Outlook blocks remote images by default and
   // shows a broken-image icon instead).
   | {
@@ -57,6 +69,7 @@ const TEXT_COLOR = "#161616";
 const BUTTON_BG_COLOR = "#161616";
 const SECONDARY_BUTTON_BG_COLOR = "#dddddd";
 const MUTED_TEXT_COLOR = "#666666";
+const CARD_BORDER_COLOR = "#dddddd";
 const FEATURE_TITLE_STYLE = `font-family:${FONT_STACK};font-size:16px;font-weight:bold;color:${TEXT_COLOR};`;
 
 export function escapeHtml(value: string): string {
@@ -161,6 +174,8 @@ ${renderFeatureBodyRow(section.body)}`;
             </td>
           </tr>`;
     }
+    case "card":
+      return renderCardHtml(section);
     case "contactSignature":
       return `          <tr>
             <td style="padding:8px 24px 24px 24px;font-family:${FONT_STACK};font-size:14px;line-height:1.5;color:${TEXT_COLOR};">
@@ -172,6 +187,38 @@ ${renderFeatureBodyRow(section.body)}`;
             </td>
           </tr>`;
   }
+}
+
+function renderCardHtml(card: Extract<EmailSection, { type: "card" }>): string {
+  const titleRow = card.title
+    ? `
+                <tr>
+                  <td style="padding:4px 16px 0 16px;font-family:${FONT_STACK};font-size:16px;font-weight:bold;line-height:1.5;color:${TEXT_COLOR};">
+                    ${escapeHtml(card.title)}
+                  </td>
+                </tr>`
+    : "";
+  return `          <tr>
+            <td style="padding:8px 24px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid ${CARD_BORDER_COLOR};border-radius:8px;">
+                <tr>
+                  <td style="padding:16px 16px 4px 16px;font-family:${FONT_STACK};font-size:24px;font-weight:bold;line-height:1.25;color:${TEXT_COLOR};">
+                    ${escapeHtml(card.headline)}
+                  </td>
+                </tr>${titleRow}
+                <tr>
+                  <td style="padding:4px 16px 0 16px;font-family:${FONT_STACK};font-size:14px;line-height:1.5;color:${TEXT_COLOR};">
+                    ${escapeHtml(card.body)}
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 16px 16px 16px;font-family:${FONT_STACK};font-size:14px;line-height:1.5;">
+                    <a href="${escapeHtml(card.link.url)}" style="color:${LINK_COLOR};text-decoration:underline;">${escapeHtml(card.link.label)}</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>`;
 }
 
 function renderFeatureBodyRow(body: string): string {
@@ -216,6 +263,13 @@ function renderSectionText(section: EmailSection): string {
       return `${section.title}\n${section.body}`;
     case "button":
       return `${section.label} : ${section.url}`;
+    case "card":
+      return [
+        section.headline,
+        ...(section.title ? [section.title] : []),
+        section.body,
+        `${section.link.label} : ${section.link.url}`,
+      ].join("\n");
     case "contactSignature":
       return [section.name, section.role, section.organisation, section.phone, section.email].join(
         "\n",

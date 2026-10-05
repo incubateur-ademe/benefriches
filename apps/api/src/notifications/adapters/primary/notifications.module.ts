@@ -5,6 +5,7 @@ import type { Knex } from "knex";
 import { SqlLifecycleEmailCohortQuery } from "src/notifications/adapters/secondary/lifecycle-email-cohort/SqlLifecycleEmailCohortQuery";
 import { SqlLifecycleEmailDeliveryQuery } from "src/notifications/adapters/secondary/lifecycle-email-delivery/SqlLifecycleEmailDeliveryQuery";
 import { SqlLifecycleEmailDeliveryRepository } from "src/notifications/adapters/secondary/lifecycle-email-delivery/SqlLifecycleEmailDeliveryRepository";
+import { SqlLifecycleEmailProjectQuery } from "src/notifications/adapters/secondary/lifecycle-email-project/SqlLifecycleEmailProjectQuery";
 import { SqlLifecycleEmailRecipientQuery } from "src/notifications/adapters/secondary/lifecycle-email-recipient/SqlLifecycleEmailRecipientQuery";
 import { SqlLifecycleEmailSiteQuery } from "src/notifications/adapters/secondary/lifecycle-email-site/SqlLifecycleEmailSiteQuery";
 import { SqlLifecycleEmailSubscriptionRepository } from "src/notifications/adapters/secondary/lifecycle-email-subscription/SqlLifecycleEmailSubscriptionRepository";
@@ -13,18 +14,23 @@ import { HmacUnsubscribeTokenService } from "src/notifications/adapters/secondar
 import type { LifecycleEmailCohortQuery } from "src/notifications/core/gateways/LifecycleEmailCohortQuery";
 import type { LifecycleEmailDeliveryQuery } from "src/notifications/core/gateways/LifecycleEmailDeliveryQuery";
 import type { LifecycleEmailDeliveryRepository } from "src/notifications/core/gateways/LifecycleEmailDeliveryRepository";
+import type { LifecycleEmailProjectQuery } from "src/notifications/core/gateways/LifecycleEmailProjectQuery";
 import type { LifecycleEmailRecipientQuery } from "src/notifications/core/gateways/LifecycleEmailRecipientQuery";
 import type { LifecycleEmailSiteQuery } from "src/notifications/core/gateways/LifecycleEmailSiteQuery";
 import type { LifecycleEmailSubscriptionRepository } from "src/notifications/core/gateways/LifecycleEmailSubscriptionRepository";
 import type { Mailer } from "src/notifications/core/gateways/Mailer";
+import type { ProjectImpactsCalculator } from "src/notifications/core/gateways/ProjectImpactsCalculator";
 import type { UnsubscribeTokenService } from "src/notifications/core/gateways/UnsubscribeTokenService";
 import { LifecycleEmailSender } from "src/notifications/core/services/lifecycleEmailSender";
 import { RetryLifecycleEmailDeliveriesUseCase } from "src/notifications/core/usecases/retryLifecycleEmailDeliveries.usecase";
 import { SendFirstProjectRemindersUseCase } from "src/notifications/core/usecases/sendFirstProjectReminders.usecase";
 import { SendFirstSiteRemindersUseCase } from "src/notifications/core/usecases/sendFirstSiteReminders.usecase";
 import { SendLifecycleEmailPreviewUseCase } from "src/notifications/core/usecases/sendLifecycleEmailPreview.usecase";
+import { SendProjectImpactsSummaryEmailUseCase } from "src/notifications/core/usecases/sendProjectImpactsSummaryEmail.usecase";
 import { SendWelcomeEmailUseCase } from "src/notifications/core/usecases/sendWelcomeEmail.usecase";
 import { UnsubscribeFromLifecycleEmailsUseCase } from "src/notifications/core/usecases/unsubscribeFromLifecycleEmails.usecase";
+import { ReconversionProjectsModule } from "src/reconversion-projects/adapters/primary/reconversionProjects.module";
+import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
 import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
@@ -37,10 +43,13 @@ import type { UidGenerator } from "src/shared-kernel/uidGenerator";
 
 import { NotificationsController } from "./notifications.controller";
 import { readLifecycleEmailContact } from "./readLifecycleEmailContact";
+import { SendProjectImpactsSummaryOnReconversionProjectCreatedHandler } from "./sendProjectImpactsSummaryOnReconversionProjectCreated.handler";
 import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailOnUserAccountCreated.handler";
 
 @Module({
-  imports: [ConfigModule, SqlConnectionModule],
+  // ReconversionProjectsModule exports the impacts computation the project impacts summary
+  // derives its headlines from.
+  imports: [ConfigModule, SqlConnectionModule, ReconversionProjectsModule],
   controllers: [NotificationsController],
   providers: [
     {
@@ -64,10 +73,45 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
       inject: [LifecycleEmailSender, ConfigService, HmacUnsubscribeTokenService],
     },
     {
+      provide: SendProjectImpactsSummaryOnReconversionProjectCreatedHandler,
+      useFactory: (sendProjectImpactsSummaryEmailUseCase: SendProjectImpactsSummaryEmailUseCase) =>
+        new SendProjectImpactsSummaryOnReconversionProjectCreatedHandler(
+          sendProjectImpactsSummaryEmailUseCase,
+        ),
+      inject: [SendProjectImpactsSummaryEmailUseCase],
+    },
+    {
+      provide: SendProjectImpactsSummaryEmailUseCase,
+      useFactory: (
+        sender: LifecycleEmailSender,
+        projectQuery: LifecycleEmailProjectQuery,
+        projectImpactsCalculator: ProjectImpactsCalculator,
+        configService: ConfigService,
+        unsubscribeTokenService: UnsubscribeTokenService,
+      ) =>
+        new SendProjectImpactsSummaryEmailUseCase(
+          sender,
+          projectQuery,
+          projectImpactsCalculator,
+          configService.getOrThrow<string>("WEBAPP_URL"),
+          unsubscribeTokenService,
+          new NestJsAppLogger("SendProjectImpactsSummaryEmail"),
+        ),
+      inject: [
+        LifecycleEmailSender,
+        SqlLifecycleEmailProjectQuery,
+        ComputeReconversionProjectBreakEvenLevelUseCase,
+        ConfigService,
+        HmacUnsubscribeTokenService,
+      ],
+    },
+    {
       provide: RetryLifecycleEmailDeliveriesUseCase,
       useFactory: (
         deliveryQuery: LifecycleEmailDeliveryQuery,
         siteQuery: LifecycleEmailSiteQuery,
+        projectQuery: LifecycleEmailProjectQuery,
+        projectImpactsCalculator: ProjectImpactsCalculator,
         sender: LifecycleEmailSender,
         dateProvider: DateProvider,
         configService: ConfigService,
@@ -76,6 +120,8 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
         new RetryLifecycleEmailDeliveriesUseCase(
           deliveryQuery,
           siteQuery,
+          projectQuery,
+          projectImpactsCalculator,
           sender,
           dateProvider,
           configService.getOrThrow<string>("WEBAPP_URL"),
@@ -86,6 +132,8 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
       inject: [
         SqlLifecycleEmailDeliveryQuery,
         SqlLifecycleEmailSiteQuery,
+        SqlLifecycleEmailProjectQuery,
+        ComputeReconversionProjectBreakEvenLevelUseCase,
         LifecycleEmailSender,
         RealDateProvider,
         ConfigService,
@@ -150,6 +198,8 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
         mailer: Mailer,
         configService: ConfigService,
         unsubscribeTokenService: UnsubscribeTokenService,
+        projectQuery: LifecycleEmailProjectQuery,
+        projectImpactsCalculator: ProjectImpactsCalculator,
       ) =>
         new SendLifecycleEmailPreviewUseCase(
           mailer,
@@ -157,8 +207,16 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
           configService.getOrThrow<string>("WEBAPP_URL"),
           unsubscribeTokenService,
           readLifecycleEmailContact(configService),
+          projectQuery,
+          projectImpactsCalculator,
         ),
-      inject: [SmtpMailer, ConfigService, HmacUnsubscribeTokenService],
+      inject: [
+        SmtpMailer,
+        ConfigService,
+        HmacUnsubscribeTokenService,
+        SqlLifecycleEmailProjectQuery,
+        ComputeReconversionProjectBreakEvenLevelUseCase,
+      ],
     },
     {
       provide: UnsubscribeFromLifecycleEmailsUseCase,
@@ -247,6 +305,11 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
     {
       provide: SqlLifecycleEmailSiteQuery,
       useFactory: (sqlConnection: Knex) => new SqlLifecycleEmailSiteQuery(sqlConnection),
+      inject: [SqlConnection],
+    },
+    {
+      provide: SqlLifecycleEmailProjectQuery,
+      useFactory: (sqlConnection: Knex) => new SqlLifecycleEmailProjectQuery(sqlConnection),
       inject: [SqlConnection],
     },
     SmtpMailer,

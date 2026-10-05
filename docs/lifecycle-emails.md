@@ -4,8 +4,8 @@
 > `LifecycleEmailSender` choke point, the delivery ledger and its dedup semantics, the
 > `LIFECYCLE_EMAILS_ENABLED` kill switch, the per-user unsubscribe flag, the event-driven
 > trigger pattern, and the shared email template layout. Read this before adding a new
-> lifecycle email type (reminders, impacts summary), changing the unsubscribe flow, or
-> touching anything under `notifications/`.
+> lifecycle email type, changing the unsubscribe flow, or touching anything under
+> `notifications/`.
 >
 > Decisions: [ADR-0016](adr/0016-route-all-lifecycle-emails-through-a-single-sender-with-an-idempotent-delivery-ledger.md)
 > (single sender, delivery ledger) and [ADR-0017](adr/0017-opt-out-lifecycle-emails-with-a-stateless-hmac-unsubscribe-token.md)
@@ -15,7 +15,7 @@
 
 Lifecycle emails are automated, transactional-ish emails triggered by user/product
 lifecycle milestones — as opposed to the login-link emails handled by `auth/`
-(`SmtpAuthLinkMailer`) or the CRM-facing side effects in `marketing/`. Three email types
+(`SmtpAuthLinkMailer`) or the CRM-facing side effects in `marketing/`. Four email types
 exist today (`lifecycleEmailTypeSchema`):
 
 - `welcome`: the **welcome email**, sent inline once when a user account is created
@@ -26,7 +26,13 @@ exist today (`lifecycleEmailTypeSchema`):
 - `first-project-reminder`: the **first project reminder**, sent by the same daily job
   **once per site**: for each custom or express, active site created 24–72 h earlier that
   still has no reconversion project. It names the site in its subject. The first
-  entity-scoped type (`related_entity_id` = the site id).
+  entity-scoped type (`related_entity_id` = the site id);
+- `project-impacts-summary`: the **project impacts summary**, sent inline when a
+  reconversion project is created (`RECONVERSION_PROJECT_CREATED`: custom wizard and express
+  template projects, **not** duplicates), with the three headline findings of the project's
+  Synthèse, each linking to its analysis in the app. Entity-scoped on the project
+  (`related_entity_id` = the project id). See
+  [Project impacts summary](#projectimpactssummaryemailts).
 
 The module follows the standard Clean/Hexagonal layout:
 
@@ -38,20 +44,28 @@ notifications/
 │   ├── models/lifecycleEmailContact.ts       # the named contact of the reminders (read from configuration)
 │   ├── gateways/                             # Mailer, LifecycleEmailDeliveryRepository/Query, LifecycleEmailRecipientQuery,
 │   │                                         # LifecycleEmailCohortQuery, LifecycleEmailSiteQuery (site of a retried reminder),
+│   │                                         # LifecycleEmailProjectQuery (project of an impacts summary),
+│   │                                         # ProjectImpactsCalculator (the impacts computation, structural),
 │   │                                         # LifecycleEmailSubscriptionRepository, UnsubscribeTokenService
 │   ├── services/lifecycleEmailSender.ts       # LifecycleEmailSender — the mandatory choke point
-│   ├── previews/lifecycleEmailPreviewSamples.ts  # sample user, contact and sites for the preview script
+│   ├── services/projectImpactsSummaryContent.ts  # loadProjectImpactsSummaryContent + composeProjectImpactsSummaryEmail
+│   │                                         # (the impacts summary's one derivation: send, retry, preview)
+│   ├── previews/lifecycleEmailPreviewSamples.ts  # sample user, contact, sites and project for the preview script
 │   ├── templates/                            # emailLayout.ts (shared layout), welcomeEmail.ts, firstSiteReminderEmail.ts,
 │   │                                         # firstProjectReminderEmail.ts, reminderGreeting.ts (NBSP + greeting),
-│   │                                         # contactSections.ts (contact button + signature), unsubscribeUrl.ts
+│   │                                         # contactSections.ts (contact button + signature), unsubscribeUrl.ts,
+│   │                                         # projectImpactsSummaryEmail.ts, projectImpactsSummaryCards.ts (card copy),
+│   │                                         # impactValueFormatters.ts (number formats reproduced from the web)
 │   └── usecases/                             # sendWelcomeEmail, sendFirstSiteReminders, sendFirstProjectReminders,
-│                                             # sendLifecycleEmailPreview, unsubscribeFromLifecycleEmails,
+│                                             # sendProjectImpactsSummaryEmail, sendLifecycleEmailPreview,
+│                                             # unsubscribeFromLifecycleEmails,
 │                                             # retryLifecycleEmailDeliveries (the retry sweeper)
 └── adapters/
     ├── primary/
     │   ├── notifications.module.ts
     │   ├── notifications.controller.ts        # POST /api/lifecycle-emails/unsubscribe (public)
     │   ├── sendWelcomeEmailOnUserAccountCreated.handler.ts
+    │   ├── sendProjectImpactsSummaryOnReconversionProjectCreated.handler.ts
     │   ├── readLifecycleEmailContact.ts              # LIFECYCLE_EMAILS_CONTACT_* → LifecycleEmailContact | undefined
     │   ├── sendLifecycleEmailPreview.script.ts       # manual preview script
     │   ├── sendDailyLifecycleReminders.script.ts     # daily reminder job (cron)
@@ -61,6 +75,9 @@ notifications/
         ├── lifecycle-email-delivery/          # Sql/InMemory Repository (write) + Query (read)
         ├── lifecycle-email-recipient/         # Sql/InMemory LifecycleEmailRecipientQuery
         ├── lifecycle-email-site/              # Sql/InMemory LifecycleEmailSiteQuery (id, name, nature)
+        ├── lifecycle-email-project/           # Sql/InMemory LifecycleEmailProjectQuery (id, name, site name, created_at)
+        ├── project-impacts/                   # FakeProjectImpactsCalculator (tests only; the real one is the
+        │                                      # reconversion-projects module's ComputeReconversionProjectBreakEvenLevelUseCase)
         ├── lifecycle-email-subscription/      # Sql/InMemory LifecycleEmailSubscriptionRepository (sets the opt-out)
         ├── unsubscribe-token/                 # HmacUnsubscribeTokenService
         └── mailer/                            # SmtpMailer, FakeMailer
@@ -81,25 +98,43 @@ POST /api/auth/register
           → Mailer (SMTP send)
 ```
 
+The trigger chain for the project impacts summary:
+
+```
+POST /api/reconversion-projects  or  POST /api/reconversion-projects/create-from-template
+  → ReconversionProjectCreatedEvent published (RECONVERSION_PROJECT_CREATED)
+    → SendProjectImpactsSummaryOnReconversionProjectCreatedHandler (@OnEvent)
+      → SendProjectImpactsSummaryEmailUseCase
+        → LifecycleEmailSender.send({ …, relatedEntityId: projectId, render })
+          → kill switch, unsubscribe and dedup checks, pending ledger row
+          → render(recipient) = composeProjectImpactsSummaryEmail()
+            → LifecycleEmailProjectQuery (names, created_at)
+            → ComputeReconversionProjectBreakEvenLevelUseCase (impacts, 50 years)
+            → shared derivation (crop, key indicators, headlines, break-even horizon)
+            → buildProjectImpactsSummaryEmail() (template)
+          → Mailer (SMTP send)
+```
+
 ## LifecycleEmailSender: the mandatory choke point
 
 `LifecycleEmailSender` (`core/services/lifecycleEmailSender.ts`) is the single entry point
 every lifecycle email **must** go through — no code path is meant to call a `Mailer`
 directly for a lifecycle email. It exists so that four concerns can never be forgotten by
-a future email type (reminders, impacts summary, …):
+a future email type:
 
 1. the kill switch check,
 2. the per-user unsubscribe check,
 3. the delivery-ledger dedup check,
 4. writing the ledger row and never letting a mailer failure propagate as a thrown error.
 
-`LifecycleEmailSender.send(request)` takes `{ userId, emailType, relatedEntityId?, message }`
-and returns one of:
+`LifecycleEmailSender.send(request)` takes `{ userId, emailType, relatedEntityId? }` plus
+either an already-rendered `message` or a lazy `render: (recipient) => Promise<LifecycleEmailMessage>`
+(`RenderLifecycleEmail`, the same shape `retry()` takes), and returns one of:
 
 - `"sent"` — the email was sent and the ledger row is `status: "sent"`.
-- `"failed"` — the mailer threw; the ledger row is `status: "failed"` with `errorMessage`
-  set. This is a return value, not a thrown exception — callers get a typed outcome, not a
-  try/catch obligation.
+- `"failed"` — the mailer threw, or `render` threw; the ledger row is `status: "failed"` with
+  `errorMessage` set (the retry sweeper picks it up). This is a return value, not a thrown
+  exception — callers get a typed outcome, not a try/catch obligation.
 - `"skipped-disabled"` — the kill switch (`LIFECYCLE_EMAILS_ENABLED`) is off. **Checked
   first, before any ledger write**: if the system wrote a "would-be" row while disabled,
   the unique index (see below) would permanently block the email once re-enabled.
@@ -127,7 +162,15 @@ skipped rows are never rendered. In order:
 6. otherwise `markSent` → `"sent"`. The previous `error_message` is kept (the row then reads
    "failed with X, then sent").
 
-`send()` writes `attempts = 1` and `last_attempted_at = created_at` on insert.
+`send()` writes `attempts = 1` and `last_attempted_at = created_at` on insert. Its order: kill
+switch → recipient read and unsubscribe check → (`render` only) a missing recipient throws
+`Lifecycle email recipient <userId> not found` before any write (a `message` send for an
+unknown user throws later, on the ledger's `user_id` foreign key) → dedup check → `pending`
+row → `render` (if lazy) and SMTP send → `markSent` / `markFailed`. The `render` variant exists
+for the project impacts summary, whose render computes the project's impacts: with it, a
+disabled, unsubscribed or already-sent case computes nothing (e.g. every project creation
+while the kill switch is off in production, every event replay), and a computation failure is
+recorded and retried like a mailer failure.
 
 Its constructor takes the gateway interfaces (`LifecycleEmailDeliveryRepository`,
 `LifecycleEmailDeliveryQuery`, `LifecycleEmailRecipientQuery`, `Mailer`), plus
@@ -135,10 +178,11 @@ Its constructor takes the gateway interfaces (`LifecycleEmailDeliveryRepository`
 resolved once, in `notifications.module.ts`, from `ConfigService.get("LIFECYCLE_EMAILS_ENABLED") === "true"`,
 not re-read per call.
 
-Any new email type (a reminder, an impacts summary) is expected to build its own template
-and its own use case, but call through this same `LifecycleEmailSender` — that is what
-keeps the opt-out check and the ledger write from being reimplemented (and potentially
-forgotten) per email type. The use case also builds the recipient's signed unsubscribe link
+Any new email type is expected to build its own template and its own use case, but call
+through this same `LifecycleEmailSender` — that is what keeps the opt-out check and the
+ledger write from being reimplemented (and potentially forgotten) per email type. Pass a
+`message` when rendering is cheap (welcome, reminders) and a lazy `render` when it is
+expensive or can fail (the project impacts summary). The use case also builds the recipient's signed unsubscribe link
 and passes it to the template (see [Email templates](#email-templates-emaillayout--per-email-builders)).
 Each new type also needs a re-render `case` in the retry sweeper and a preview sample (see
 [Failure handling and retries](#failure-handling-and-retries) and [Preview script](#preview-script)).
@@ -148,18 +192,18 @@ Each new type also needs a re-render `case` in the retry sweeper and a preview s
 Table: `lifecycle_email_deliveries` (migration
 `20260922124312_create-table-lifecycle-email-deliveries.ts`).
 
-| Column              | Type            | Notes                                                                                                                                                                                    |
-| ------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                | uuid, PK        |                                                                                                                                                                                          |
-| `user_id`           | uuid            | FK → `users.id`, `ON DELETE CASCADE`                                                                                                                                                     |
-| `email_type`        | string          | Backed by `lifecycleEmailTypeSchema` (`"welcome"`, `"first-site-reminder"`, `"first-project-reminder"`)                                                                                  |
-| `related_entity_id` | uuid, null      | No `related_entity_type` column — `email_type` alone determines what kind of entity this is: a site (`sites.id`, no FK) for `first-project-reminder`, `NULL` for account-scoped types    |
-| `status`            | string          | `"pending" \| "sent" \| "failed" \| "abandoned"`, backed by `lifecycleEmailDeliveryStatusSchema`. `failed` = will be retried; `abandoned` = gave up after `LIFECYCLE_EMAIL_MAX_ATTEMPTS` |
-| `created_at`        | timestamp       |                                                                                                                                                                                          |
-| `sent_at`           | timestamp, null | set by `markSent`                                                                                                                                                                        |
-| `error_message`     | text, null      | set by `markFailed` / `markAbandoned`; kept when a retry then succeeds                                                                                                                   |
-| `attempts`          | integer         | default `1`; incremented by each retry claim (migration `20260929114815_add-attempts-and-last-attempted-at-to-lifecycle-email-deliveries-table.ts`)                                      |
-| `last_attempted_at` | timestamp       | not null; set on insert and on every retry claim. Staleness of a `pending` row is measured from it (backfilled from `created_at`)                                                        |
+| Column              | Type            | Notes                                                                                                                                                                                                                                                              |
+| ------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`                | uuid, PK        |                                                                                                                                                                                                                                                                    |
+| `user_id`           | uuid            | FK → `users.id`, `ON DELETE CASCADE`                                                                                                                                                                                                                               |
+| `email_type`        | string          | Backed by `lifecycleEmailTypeSchema` (`"welcome"`, `"first-site-reminder"`, `"first-project-reminder"`, `"project-impacts-summary"`)                                                                                                                               |
+| `related_entity_id` | uuid, null      | No `related_entity_type` column — `email_type` alone determines what kind of entity this is: a site (`sites.id`, no FK) for `first-project-reminder`, a project (`reconversion_projects.id`, no FK) for `project-impacts-summary`, `NULL` for account-scoped types |
+| `status`            | string          | `"pending" \| "sent" \| "failed" \| "abandoned"`, backed by `lifecycleEmailDeliveryStatusSchema`. `failed` = will be retried; `abandoned` = gave up after `LIFECYCLE_EMAIL_MAX_ATTEMPTS`                                                                           |
+| `created_at`        | timestamp       |                                                                                                                                                                                                                                                                    |
+| `sent_at`           | timestamp, null | set by `markSent`                                                                                                                                                                                                                                                  |
+| `error_message`     | text, null      | set by `markFailed` / `markAbandoned`; kept when a retry then succeeds                                                                                                                                                                                             |
+| `attempts`          | integer         | default `1`; incremented by each retry claim (migration `20260929114815_add-attempts-and-last-attempted-at-to-lifecycle-email-deliveries-table.ts`)                                                                                                                |
+| `last_attempted_at` | timestamp       | not null; set on insert and on every retry claim. Staleness of a `pending` row is measured from it (backfilled from `created_at`)                                                                                                                                  |
 
 The domain model (`core/models/lifecycleEmail.ts`) mirrors this 1:1 as
 `LifecycleEmailDelivery`, camelCased.
@@ -172,7 +216,10 @@ they have no related entity, so `related_entity_id` is `NULL`. The first project
 the first **entity-scoped** type: every send passes `relatedEntityId: site.id`, so its row
 carries `related_entity_id = sites.id` and it fires once per `(user, site)` for life rather
 than once per user overall. No sender or migration change was needed for it: `hasDelivery`
-and the entity-scoped index below already handled that case.
+and the entity-scoped index below already handled that case. The project impacts summary is
+entity-scoped the same way on the project (`relatedEntityId: projectId`): once per
+`(user, project)`, so a replayed `RECONVERSION_PROJECT_CREATED` sends nothing, and a second
+project of the same author gets its own summary.
 
 Postgres treats `NULL` as **distinct from every other `NULL`** in a unique index, so a
 single index over `(user_id, email_type, related_entity_id)` would never deduplicate the
@@ -237,7 +284,9 @@ never attempts a second insert (and crashes on the unique index). Retries belong
   ~20s; 15 minutes is far beyond that, so a `pending` row written by a listener that is still
   sending is never picked up, and a stranded one is retried on the next hourly run. It is
   measured from `last_attempted_at`, not `created_at`, so a row another sweeper just claimed
-  doesn't look stale.
+  doesn't look stale. The project impacts summary's `pending` row also lasts its render (the
+  impacts computation: DB reads plus the OFGL HTTP call, 10 s timeout) before the SMTP send,
+  still far below 15 minutes.
 - **Cap**: `LIFECYCLE_EMAIL_MAX_ATTEMPTS = 5` (1 inline send + 4 hourly retries, ≈ 4 h). The
   failing last attempt writes `abandoned`, a terminal status the sweeper never picks up and
   that `hasDelivery` still counts, so the row stays the single row for that email. No
@@ -272,7 +321,19 @@ found`: a failed attempt, then `abandoned` at the cap, and no email. The glue is
   rather than extracted into a `compose…` function: the send path gets the site from the
   cohort row, the retry path from the site query, so only the builder call is shared; a
   regression test asserts the retried message equals the one `SendFirstProjectRemindersUseCase`
-  sends. **Adding an email type** fails the typecheck there until you add its
+  sends. The `project-impacts-summary` case loads the project from the row's
+  `related_entity_id` and **computes its impacts again**, through
+  `composeProjectImpactsSummaryEmail()` (`core/services/projectImpactsSummaryContent.ts`), the
+  same function the send use case's `render` calls: no duplicated glue, since both paths load
+  the same data. `LifecycleEmailProjectQuery` and `ProjectImpactsCalculator`
+  (`ComputeReconversionProjectBreakEvenLevelUseCase`, exported by `ReconversionProjectsModule`)
+  are injected into the retry use case. It renders the project's current name and impacts and
+  its **stored** creation date, so the date line does not move with the retry. No eligibility
+  re-check (an archived project is still sent). A missing project throws
+  `Reconversion project <id> not found`, a failed computation
+  `Project impacts could not be computed for project <id>: <error>` (e.g. `NoDevelopmentPlanType`),
+  and a thrown computation error (DB, OFGL) keeps its own message: a failed attempt, then
+  `abandoned` at the cap. **Adding an email type** fails the typecheck there until you add its
   `case`, plus whatever read gateway it needs injected into the use case; when composition
   needs data loading, extract a `compose…` function shared by the send use case and the
   retry case rather than duplicating it.
@@ -540,8 +601,9 @@ It makes four deliberate bypasses, all load-bearing:
 
 These bypasses are **structural, not conditional**: `SendLifecycleEmailPreviewUseCase`
 (`core/usecases/sendLifecycleEmailPreview.usecase.ts`) depends only on the `Mailer`
-gateway, the `UnsubscribeTokenService` (signing only, no I/O) and the configured contact (a
-plain value, possibly `undefined`) — it holds no
+gateway, the `UnsubscribeTokenService` (signing only, no I/O), the configured contact (a
+plain value, possibly `undefined`) and two read-only gateways for `--project-id`
+(`LifecycleEmailProjectQuery`, `ProjectImpactsCalculator`) — it holds no
 `LifecycleEmailDeliveryRepository`, no `LifecycleEmailRecipientQuery`, and no `isEnabled`
 flag, so there is nothing to check and nothing to write even if the code tried. It deliberately does **not** go through
 `LifecycleEmailSender`. Do not route it through that sender, and do not add a "preview
@@ -552,7 +614,7 @@ turns the compliance checks off there is exactly the failure mode the sender
 Sample data for each email type lives in
 `core/previews/lifecycleEmailPreviewSamples.ts`, keyed by an exhaustive `switch` over
 `LifecycleEmailType` with no `default` case — so a later ticket adding a new email type
-(a reminder, the impacts summary) fails typecheck there until it adds its sample.
+fails typecheck there until it adds its sample.
 `buildLifecycleEmailPreviews` returns **every sample of the type**, and the script sends each
 of them to each recipient. `"welcome"` and `"first-site-reminder"` have one sample
 (`--type=first-site-reminder`, greeting the sample user `Camille Durand`);
@@ -563,6 +625,28 @@ site). Their ids match no real site, so the `Renseigner mon projet` link of a pr
 an error page (nothing real is touched, like the preview's unsubscribe link). The reminder is signed by the configured contact when
 `LIFECYCLE_EMAILS_CONTACT_*` is set (a reviewer on staging sees the real signature), and by the
 invented `PREVIEW_SAMPLE_CONTACT` (an `example.com` address) otherwise.
+
+`"project-impacts-summary"` has two samples for the mockup's project `PREVIEW_SAMPLE_PROJECT`
+(`Habitation, école et commerce` on `Ancienne carrière d’argile de Blajan`, id
+`00000000-0000-4000-8000-000000000003`, created `2026-06-15T10:00:00Z`, so dated `15 juin 2026`):
+`PREVIEW_SAMPLE_FAVOURABLE_IMPACTS_SUMMARY` (favourable to ZAN, `En 26 ans`, `+1 087 355 €`
+gains for the collectivité, the mockup's values) and
+`PREVIEW_SAMPLE_UNFAVOURABLE_IMPACTS_SUMMARY` (`Le projet imperméabilise des sols.`,
+`Sur 50 ans` not compensated, `-45 000 €` tax losses). The samples are already-derived
+indicators, so `buildLifecycleEmailPreviews` stays synchronous; their card links lead to an
+error page (the sample project does not exist).
+
+`--project-id=<id>` (only with `--type=project-impacts-summary`, at most once) renders a
+**real project** instead, through `loadProjectImpactsSummaryContent()`, the same derivation as
+a genuine send: one email per recipient, with that project's name and results (**a real
+user's data when run on production: send it to team addresses only**), its creation date, and
+still the sample user's unsubscribe link (never the author's). The per-recipient log line
+names it (`Lifecycle email preview sent: type=project-impacts-summary, project=<id>, to=<address>`).
+Errors (non-zero exit, nothing sent): `--project-id is only accepted with
+--type=project-impacts-summary.` (`ProjectIdNotSupported`), `No reconversion project with id
+"<id>".` (`ReconversionProjectNotFound`), `The impacts of project "<id>" could not be computed.
+See logs above for details.` (`ProjectImpactsNotComputed`, logged as `Lifecycle email preview
+could not load project <id>…`), and a usage error for an empty or a second `--project-id`.
 
 The script has no default recipient and accepts no cohort/filter/"all users" mode —
 `--to=` is the only way to name a recipient, and it is required. Every send and its
@@ -686,11 +770,46 @@ Two things matter about how this handler behaves at runtime:
   integration test that simulates an SMTP failure and asserts `POST /api/auth/register`
   still returns `201` and the user row still exists.
 
-This is the general pattern later lifecycle-email tickets are expected to follow: define
-the domain event that represents the milestone (first site created, first project created,
-project impacts computed, …), add a listener in `notifications/adapters/primary/` that
-calls a dedicated use case, and never let that listener's failure propagate back into the
-event's originating request.
+This is the general pattern event-driven lifecycle emails follow: listen to the domain
+event that represents the milestone (reuse an existing one when it fits, as the project
+impacts summary does with `RECONVERSION_PROJECT_CREATED`), add a listener in
+`notifications/adapters/primary/` that calls a dedicated use case, and never let that
+listener's failure propagate back into the event's originating request.
+
+The project impacts summary follows it:
+`SendProjectImpactsSummaryOnReconversionProjectCreatedHandler` listens to
+`RECONVERSION_PROJECT_CREATED` (`reconversion-projects/core/events/reconversionProjectCreated.event.ts`,
+payload `{ reconversionProjectId, siteId, createdBy }`) and calls
+`SendProjectImpactsSummaryEmailUseCase` with the project id and its author.
+
+- **Which projects**: `CreateReconversionProjectUseCase` (custom wizard) and
+  `GenerateAndSaveReconversionProjectFromTemplateUseCase` (express) publish that event after
+  saving the project, so both send the email. `DuplicateReconversionProjectUseCase` publishes
+  `reconversion-project.duplicated` instead, and duplicates **deliberately** get no email (the
+  author already received the original's summary; a duplicate is usually a variant being
+  tried). The split looks like an accident of which event each use case publishes; it is a
+  product decision, recorded on the listener: do not "fix" it by listening to the duplicated
+  event. The ADEME CSV import publishes no event and sends nothing.
+- **Inline computation**: the whole impacts computation
+  (`ComputeReconversionProjectBreakEvenLevelUseCase`: DB reads, carbon storage, city data and
+  an OFGL HTTP call with a 10 s timeout) runs inside the project creation request, accepted
+  for v1. The listener catches and logs everything (a failed result and any thrown error) and
+  never rethrows: a failed or slow email never fails a project creation. A computation failure
+  leaves a `failed` ledger row, retried by the hourly sweeper. The use case logs the cause
+  (`Project impacts summary could not be rendered for project <id>: <error>`) and the listener
+  the failed result (`Project impacts summary email failed for project <id> (user <userId>)`).
+- **OFGL, found in QA** (`docs/qa/lifecycle-emails/10.md`): `ReconversionProjectsModule`
+  declares its own plain `OFGLApi` provider, which shadows the `MOCK_OFGL_API`-aware one
+  exported by `TerritoryModule`. So the e2e stack (`MOCK_OFGL_API=true`) calls the **real**
+  OFGL API (`data.ofgl.fr`) from `GET /:id/impacts` and now from every project creation
+  (pre-existing; follow-up: drop `OFGLApi` from that module's providers). Integration tests are
+  unaffected (`createTestApp` overrides `OFGLApi`). An OFGL failure (an outage, a timeout, or a
+  commune OFGL does not know: `OFGLApi` throws `Error response from OFGL API: … for cityCode
+  <code>`) makes the computation throw: project creation still returns `201`, and the summary's
+  ledger row is `failed` with that message (retried hourly, then `abandoned`).
+- **Escape hatch** if express creation gets slow: write a `pending` ledger row with
+  `attempts = 0` and return, letting the sweeper send it (up to ~75 minutes later, since it
+  only picks up a `pending` row older than `STALE_PENDING_THRESHOLD_MINUTES`). No schema change.
 
 ## Email templates: `emailLayout` + per-email builders
 
@@ -710,6 +829,12 @@ and a section is one of:
 - `{ type: "button", variant?, label, url }` — `variant` is `"primary"` (default, dark cell,
   white text) or `"secondary"` (light grey `#dddddd` cell, dark text; the reminders' contact
   button)
+- `{ type: "card", headline, title?, body, link: { label, url } }` — a bordered card (nested
+  table, `border:1px solid #dddddd`, `border-radius:8px` that Outlook ignores): a 24px bold
+  headline row, an optional 16px bold title row, a 14px body row and an underlined text link
+  row. No image. Every field and the URL are escaped. The text path renders the headline, the
+  title (when set), the body and `<label> : <url>`, one per line. Used by the project impacts
+  summary.
 - `{ type: "contactSignature", name, role, organisation, phone, email }` —
   five short lines in one cell, **no image** (remote images are blocked by default in Outlook
   and degrade to a broken-image icon); `organisation` (`Bénéfriches (Externe)`) is plain text
@@ -734,7 +859,7 @@ where Outlook's HTML renderer is the practical constraint):
 - No flexbox or grid anywhere in the generated markup (`emailLayout.spec.ts` asserts this
   with regexes against `display:flex`, `display:grid`, `flex-*`).
 - Images: only the decorative `featureBlock` icons (`iconUrl`), nothing else
-  (`contactSignature` stays image-free):
+  (`contactSignature`, `card` and the project impacts summary stay image-free):
   - PNG only: no SVG, icon font, CSS mask, `data:` URI or CID attachment (Gmail and Outlook
     don't render or block them).
   - 2x resolution (48×48 shown at 24×24), in `#000091` (`LINK_COLOR`) on a transparent
@@ -811,6 +936,74 @@ and contact block as the first site reminder. Its `TODO(product)` points: "Hier"
 non-friche wording (`un site` / `ce site`, ours, not the mockup's), the site name absent from
 the body, `pré-remplies`, `accompagné`.
 
+### `projectImpactsSummaryEmail.ts`
+
+`buildProjectImpactsSummaryEmail({ project, evaluationPeriodInYears, zanCompliance,
+breakEvenHorizon, mainImpactIndicator, webappUrl, unsubscribeUrl })` takes **already-derived**
+indicators (`ProjectImpactsSummaryContent`), so its tests take literal inputs. The derivation
+lives in `loadProjectImpactsSummaryContent()` (`core/services/projectImpactsSummaryContent.ts`),
+in the web's order (ticket 07): compute the impacts (`ComputeReconversionProjectBreakEvenLevelUseCase`,
+50 years) → `cropImpactsByEvaluationPeriod(impacts, getDefaultEvaluationPeriodInYears(type))`
+(30 years for a photovoltaic plant, 50 otherwise) → `getSummaryHeadlineIndicators(getKeyImpactIndicatorsList(cropped, contextData))`
+(cards 1 and 3) and `getBreakEvenHorizon({ breakEvenYear, projectionYears })` on the cropped
+impacts (card 2). Skipping the crop would make a photovoltaic project's email disagree with
+the app.
+
+Content: subject `Projet sur <site name> : résultats de votre évaluation` (NBSP before `:`,
+site name whitespace-collapsed, used as typed: no article); intro
+`Voici les résultats de l’évaluation socio-économique du projet « <project> » sur le site « <site> ».`
+(names escaped in HTML, raw in text); `Évaluation réalisée le <date>`; then up to three `card`
+sections and the footer. No greeting, preheader, closing paragraph, contact signature, map,
+chart or image.
+
+- **Date**: the project's `created_at` (stored, so a retry renders the same date), formatted
+  with `Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris" })` and `1er` for the first of
+  the month (`15 juin 2026`, `1er juillet 2026`). Not date-fns: it cannot format in a named
+  time zone without `@date-fns/tz`, and the API runs in UTC, so a project created at 00:30 in
+  Paris would be dated the day before.
+- **Cards and links** (built with `new URL(path, webappUrl)`, the routes of `apps/web/src/app/router.ts`):
+
+  | Card                                           | Link label                        | Path                                      |
+  | ---------------------------------------------- | --------------------------------- | ----------------------------------------- |
+  | 1. ZAN (omitted when no ZAN indicator)         | `Voir le détail des impacts`      | `/mes-projets/<id>/impacts`               |
+  | 2. Break-even (always)                         | `Voir l’analyse coût-bénéfice`    | `/mes-projets/<id>/analyse-cout-benefice` |
+  | 3. Main indicator (omitted when there is none) | `Voir l’analyse des coûts évités` | `/mes-projets/<id>/analyse-couts-evites`  |
+
+- **Copy** (`projectImpactsSummaryCards.ts`): it mirrors the web Synthèse
+  (`ProjectSummaryImpactDetailsCard.tsx`, `ProjectBreakEvenLevelSummary.tsx`,
+  `ProjectSummaryComparisonCard.tsx`) for every variant, favourable and unfavourable, and for
+  every main-indicator kind (decisions of 2026-10-05): the web badge or value is the card's
+  headline, its heading the title, its sentence the body. Where the mockup differs from the
+  app (`Coûts de l’opération compensés`, `Grâce à la suppression de la friche…`), the app
+  wins. Curly apostrophes throughout, and three web typos fixed in the email only
+  (`est imperméabilise`, `bilan économiques`, `annelle`). All marked `TODO(product)`. The
+  variants:
+  - Card 1 (no title): `Projet favorable au ZAN` (the mockup's sentence), or `Projet
+    défavorable au ZAN` with `Le projet imperméabilise des sols agricoles.` (agricultural
+    friche), `Le projet imperméabilise des sols.` (permeable surface lost) or `Le projet
+    consomme des espaces naturels, agricoles ou forestiers.`
+  - Card 2, by `BreakEvenHorizon.status`: `positiveFromFirstYear` → `En <year>` / `Bilan de
+    l’opération positif`; `compensated` → `En <n> ans` (`an` for 1) / `Coût de l’opération
+    compensé` / `… compenseront le coût de l’opération en <year>.`;
+    `notCompensatedWithinPeriod` → `Sur <30 or 50> ans` / `Coût de l’opération non compensé`,
+    with the break-even year when it falls after the cropped period, otherwise `Les impacts
+    socio-économiques ne compenseront pas le coût de l’opération.`
+  - Card 3, by main indicator: `avoidedFricheCostsForLocalAuthority` and
+    `taxesIncomesImpact` (`Gains pour la collectivité` / `Pertes pour la collectivité`, signed
+    euros), `localPropertyValueIncrease` (riverains), `fullTimeJobs` (`ETP en hausse` /
+    `en baisse`), `householdsPoweredByRenewableEnergy`, `avoidedCo2eqEmissions` (with the
+    French-person equivalent), `permeableSurfaceArea` (`Augmentation` / `Diminution des sols
+    perméables`) and `nonContaminatedSurfaceArea` (`de sols dépollués` / `non dépollués`, with
+    the app's `☢️`, text not an image). All link to `Voir l’analyse des coûts évités`, as
+    agreed, even when the indicator is not a cost.
+- **Number formats** (`impactValueFormatters.ts`): `formatNumberFr`, `formatMonetaryImpact`,
+  `formatCO2Impact`, `formatSurfaceArea`, `formatPercentage` and the CO2-per-French-person
+  equivalent are **reproduced** from the web (`formatNumber.ts`, `formatImpactValue.ts`,
+  `formatCarbonStorage.ts`, `carbonEmissions.ts`), not moved to shared (dozens of web
+  importers). Keep them in step: the spec's expected strings are the web's outputs (U+202F
+  between thousands, U+00A0 before `€` and `t`). The business rules (which indicator, success
+  or not, break-even status) are not reproduced: they come from shared.
+
 ## Testing conventions specific to this module
 
 - `LifecycleEmailSender` is unit-tested (`lifecycleEmailSender.spec.ts`) entirely against
@@ -842,6 +1035,23 @@ the body, `pré-remplies`, `accompagné`.
   `SqlLifecycleEmailDeliveryRepository.integration-spec.ts` (claim, abandon) and
   `retryLifecycleEmailDeliveries.integration-spec.ts` (against real SQL). Manual QA guide:
   `docs/qa/lifecycle-emails/04.md`.
+- The project impacts summary: `impactValueFormatters.spec.ts` (the web's outputs),
+  `emailLayout.spec.ts` (the exact `card` markup with and without a title, its plain text,
+  escaping), `projectImpactsSummaryEmail.spec.ts` (subject, full plain text of a favourable
+  and an unfavourable evaluation, every ZAN, break-even and main-indicator variant, no card 3,
+  Paris dates, href inventory, no image, escaping), `lifecycleEmailSender.spec.ts` (the lazy
+  `render`: not called when skipped, a render failure is `failed`, a missing recipient
+  throws before any write), `sendProjectImpactsSummaryEmail.usecase.spec.ts` (with
+  `FakeProjectImpactsCalculator`: the shared derivation incl. the photovoltaic 30-year crop,
+  unfavourable variants, computation and mailer failures, nothing computed when skipped,
+  dedup per project), the `project impacts summary` tests of
+  `retryLifecycleEmailDeliveries.usecase.spec.ts` (same message as the send use case, project
+  gone, computation failure) and of `sendLifecycleEmailPreview.usecase.spec.ts` (samples,
+  `projectId`, its errors), `SqlLifecycleEmailProjectQuery.integration-spec.ts`, and
+  `sendProjectImpactsSummaryOnReconversionProjectCreated.handler.integration-spec.ts` (wizard,
+  template, duplicate sends nothing, a throwing computation does not fail creation and leaves a
+  `failed` row, a throwing use case does not fail creation, replayed event, unsubscribed
+  author). Manual QA guide: `docs/qa/lifecycle-emails/10.md`.
 - `FakeMailer` (`adapters/secondary/mailer/FakeMailer.ts`) records `sentEmails` and exposes
   `simulateFailure(message)` / `_reset()` for tests that share one instance across multiple
   cases against a single NestJS app (see the integration spec's `before`/`beforeEach`
@@ -879,13 +1089,20 @@ the body, `pré-remplies`, `accompagné`.
   and no overlapping-key secret rotation: rotating `LIFECYCLE_EMAILS_UNSUBSCRIBE_SECRET`
   breaks every link already sent.
 - The footer and page wording are drafts (`TODO(product)`), pending product review.
-- `lifecycleEmailTypeSchema` has `"welcome"`, `"first-site-reminder"` and
-  `"first-project-reminder"`; the impacts summary (BEN-12) is planned but not implemented. It
-  will take its headline indicators from `"shared"` (ticket 07), in the web app's order:
-  compute the impacts (50 years) → crop them with `cropImpactsByEvaluationPeriod` to
-  `getDefaultEvaluationPeriodInYears` (30 years for a photovoltaic plant, 50 otherwise) →
-  derive with `getKeyImpactIndicatorsList`, `getSummaryHeadlineIndicators` and
-  `getBreakEvenHorizon`.
+- No e2e test for the project impacts summary (DESIGN.md: one e2e assertion for the whole
+  feature, the welcome email); the project-creation e2e specs now compute and send it inline.
+- The project impacts summary's copy is the app's, pending product review (`TODO(product)`):
+  the site name as typed in the subject, French guillemets (as in BEN-37), lower-case card 3 bodies, the three
+  typo fixes, the creation date as the evaluation date.
+- The project impacts summary is not deferred to the sweeper: the computation runs inline in
+  project creation (see the escape hatch in [Event-driven trigger
+  pattern](#event-driven-trigger-pattern)).
+- Pre-existing issues the project impacts summary surfaced, left for follow-ups: the
+  `OFGLApi` provider shadowing in `ReconversionProjectsModule` (see above), and
+  `POST /api/reconversion-projects` and `/create-from-template` taking `createdBy` from the
+  request body without checking it against the access token (the summary goes to that user;
+  names are escaped). Also proposed: moving the Synthèse card content (copy and formatters)
+  into `shared` so the web and the email share it, and fixing the three typos in the web.
 - The first project reminder's friche-only compatibility offer (mockup) is not built in v1:
   no page evaluates compatibility for an existing site yet.
 - No e2e test for the reminders: the daily job is not run on the e2e stack (DESIGN.md: one
