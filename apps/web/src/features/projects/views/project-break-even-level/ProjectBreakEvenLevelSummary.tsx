@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { GetReconversionProjectImpactsResultDto } from "shared";
-import { getBreakEvenHorizon } from "shared";
+import { getBreakEvenCardContent, getBreakEvenHorizon } from "shared";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import type { ClassValue } from "@/shared/views/clsx";
@@ -62,46 +62,14 @@ export default function ProjectBreakEvenLevelSummary({
   const { evaluationPeriod = 50 } = useAppSelector(selectImpactsPageViewData);
 
   const breakEvenHorizon = getBreakEvenHorizon({ breakEvenYear, projectionYears });
+  const { headline, title, body } = getBreakEvenCardContent(breakEvenHorizon, evaluationPeriod);
+  const Badge = breakEvenHorizon.status === "notCompensatedWithinPeriod" ? FailBadge : SuccessBadge;
 
-  switch (breakEvenHorizon.status) {
-    case "positiveFromFirstYear":
-      return (
-        <>
-          <SuccessBadge compact={compact}>En {breakEvenHorizon.breakEvenYear}</SuccessBadge>
-          <h4 className={classNames("mb-4", classes?.title)}>Bilan de l’opération positif</h4>
-          <p>
-            La somme du bilan économiques et des impacts socio-économiques est positive dès{" "}
-            {breakEvenHorizon.breakEvenYear}.
-          </p>
-        </>
-      );
-    case "compensated":
-      return (
-        <>
-          <SuccessBadge compact={compact}>
-            En {breakEvenHorizon.yearsToBreakEven}{" "}
-            {breakEvenHorizon.yearsToBreakEven > 1 ? "ans" : "an"}
-          </SuccessBadge>
-          <h4 className={classNames("mb-4", classes?.title)}>Coût de l’opération compensé</h4>
-          <p>
-            Les impacts socio-économiques compenseront le coût de l’opération en{" "}
-            {breakEvenHorizon.breakEvenYear}.
-          </p>
-        </>
-      );
-    case "notCompensatedWithinPeriod":
-      return (
-        <>
-          <FailBadge compact={compact}>
-            Sur {evaluationPeriod} {evaluationPeriod > 1 ? "ans" : "an"}
-          </FailBadge>
-          <h4 className={classNames("mb-4", classes?.title)}>Coût de l’opération non compensé</h4>
-          <p>
-            {breakEvenHorizon.breakEvenYear
-              ? `Les impacts socio-économiques compenseront le coût de l’opération en ${breakEvenHorizon.breakEvenYear}.`
-              : "Les impacts socio-économiques ne compenseront pas le coût de l’opération."}
-          </p>
-        </>
-      );
-  }
+  return (
+    <>
+      <Badge compact={compact}>{headline}</Badge>
+      <h4 className={classNames("mb-4", classes?.title)}>{title}</h4>
+      <p>{body}</p>
+    </>
+  );
 }

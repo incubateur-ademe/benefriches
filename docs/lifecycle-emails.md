@@ -60,9 +60,9 @@ it by listening to the duplicated event. CSV-imported projects publish nothing a
 **Impacts summary: content.** The cards must say what the app's Synthèse says. The derivation
 (which indicators, success or failure, break-even horizon) comes from `shared`, applied in the
 web's order: compute impacts → crop to the default evaluation period (30 years for photovoltaic,
-50 otherwise) → derive headlines. The card wording and number formats are **reproduced** in the
-API from the web components, and pinned by tests whose expected strings are the web's outputs:
-when the Synthèse wording or formatting changes, update the email too. The evaluation date is the
+50 otherwise) → derive headlines. The card wording and number formats come from `shared` too (one
+function per card, which the web Synthèse also renders), so the two cannot drift; only the links
+are app-side. The evaluation date is the
 project's stored creation date, in Paris time, so a retry renders the same date.
 
 **Unsubscribe.** Global (no per-type preferences), works without a session, and the link
@@ -95,7 +95,7 @@ All under `apps/api/src/notifications/` unless stated.
 | Reminder eligibility (the risky logic)         | `adapters/secondary/lifecycle-email-cohort/SqlLifecycleEmailCohortQuery.ts`                  |
 | Reminder window                                | `core/models/reminderWindow.ts`                                                              |
 | Impacts summary derivation                     | `core/services/projectImpactsSummaryContent.ts`                                              |
-| Templates, shared layout, card copy            | `core/templates/` (`emailLayout.ts` first)                                                   |
+| Templates, shared layout                       | `core/templates/` (`emailLayout.ts` first)                                                   |
 | Scheduled jobs (daily reminders, hourly retry) | `adapters/primary/*.script.ts`, `apps/api/scalingo/cron.json`, [scripts.md](scripts.md)      |
 | Preview script and its samples                 | `adapters/primary/sendLifecycleEmailPreview.script.ts`, `core/previews/`                     |
 | Named contact of the reminders                 | `LIFECYCLE_EMAILS_CONTACT_*` env vars, `adapters/primary/readLifecycleEmailContact.ts`       |

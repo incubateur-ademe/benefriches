@@ -1,3 +1,5 @@
+import { getZanComplianceCardContent } from "shared";
+
 import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 
@@ -11,6 +13,8 @@ export default function ProjectSummaryImpactDetailsCard({ zanCompliance, project
   if (!zanCompliance) {
     return null;
   }
+
+  const { headline, body } = getZanComplianceCardContent(zanCompliance);
 
   if (zanCompliance.isSuccess) {
     return (
@@ -26,11 +30,8 @@ export default function ProjectSummaryImpactDetailsCard({ zanCompliance, project
               "before:mb-6",
             )}
           ></span>
-          <h4 className="text-[32px] mb-4">Projet favorable au ZAN</h4>
-          <p>
-            Le projet reconvertit un site en friche et limite la consommation d'espaces naturels,
-            agricoles ou forestiers.
-          </p>
+          <h4 className="text-[32px] mb-4">{headline}</h4>
+          <p>{body}</p>
         </div>
 
         <div>
@@ -54,15 +55,7 @@ export default function ProjectSummaryImpactDetailsCard({ zanCompliance, project
             "before:mb-5 before:mt-1",
           )}
         ></span>
-        <h4 className="mb-4 text-[32px]">Projet défavorable au ZAN</h4>{" "}
-        <p>
-          {zanCompliance.value.isAgriculturalFriche
-            ? "Le projet imperméabilise des sols agricoles."
-            : zanCompliance.value.permeableSurfaceAreaDifference !== undefined &&
-                zanCompliance.value.permeableSurfaceAreaDifference < 0
-              ? "Le projet est imperméabilise des sols."
-              : "Le projet consomme des espaces naturels, agricoles ou forestiers."}
-        </p>
+        <h4 className="mb-4 text-[32px]">{headline}</h4> <p>{body}</p>
       </div>
 
       <div>

@@ -41,7 +41,7 @@ describe("ProjectBreakEvenLevelSummary", () => {
     });
 
     expect(container.textContent).toEqual(
-      "En 2026Bilan de l’opération positifLa somme du bilan économiques et des impacts socio-économiques est positive dès 2026.",
+      "En 2026Bilan de l’opération positifLa somme du bilan économique et des impacts socio-économiques est positive dès 2026.",
     );
   });
 

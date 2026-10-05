@@ -20,4 +20,5 @@ export {
   type IndirectEconomicImpactItem,
 } from "./group-impacts";
 export * from "./key-impact-indicators";
+export * from "./summary-cards";
 export * from "./evaluation-period";
