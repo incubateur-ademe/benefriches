@@ -749,7 +749,9 @@ where Outlook's HTML renderer is the practical constraint):
     a file under a new name.
 - The CTA button is rendered as a `<table><tr><td bgcolor="...">` wrapping an `<a>`, which
   is the standard Outlook-safe way to get a clickable, styled button (Outlook's Word-based
-  rendering engine ignores most CSS on `<a>`/`<button>` directly).
+  rendering engine ignores most CSS on `<a>`/`<button>` directly). It is centred with
+  `align="center"` on both the wrapping cell and the button table (Outlook ignores
+  `margin:0 auto`, kept for other clients).
 
 `escapeHtml()` (also exported from `emailLayout.ts`) escapes `& < > " '` and is used
 anywhere untrusted or user-provided text (e.g. a user's own email address) is interpolated

@@ -174,6 +174,20 @@ describe("renderEmail", () => {
     assert.ok(/<a[^>]*href="https:\/\/example\.fr"[^>]*>/.test(result.html));
   });
 
+  it("centres the button horizontally with align attributes, which Outlook honours", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [{ type: "button", label: "Go", url: "https://example.fr" }],
+    });
+
+    assert.ok(
+      /<td align="center"[^>]*>\s*<table[^>]*align="center"[^>]*>\s*<tr>\s*<td[^>]*bgcolor="#161616"/.test(
+        result.html,
+      ),
+    );
+  });
+
   it("produces a plain-text alternative alongside the HTML", () => {
     const result = renderEmail({
       subject: "Test",

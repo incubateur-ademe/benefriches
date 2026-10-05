@@ -148,8 +148,8 @@ ${renderFeatureBodyRow(section.body)}`;
       const backgroundColor = isSecondary ? SECONDARY_BUTTON_BG_COLOR : BUTTON_BG_COLOR;
       const labelColor = isSecondary ? TEXT_COLOR : "#ffffff";
       return `          <tr>
-            <td style="padding:24px;">
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+            <td align="center" style="padding:24px;text-align:center;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;">
                 <tr>
                   <td bgcolor="${backgroundColor}" style="border-radius:4px;">
                     <a href="${escapeHtml(section.url)}" style="display:inline-block;padding:14px 24px;font-family:${FONT_STACK};font-size:16px;font-weight:bold;color:${labelColor};text-decoration:none;">
