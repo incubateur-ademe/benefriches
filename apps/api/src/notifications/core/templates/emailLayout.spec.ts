@@ -254,4 +254,107 @@ describe("renderEmail", () => {
 
     assert.ok(result.html.includes('href="https://example.fr/?a=1&amp;b=&quot;x&quot;"'));
   });
+
+  it("renders a feature block without an icon as a title row and a body row, with no image", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [{ type: "featureBlock", title: "Mon bloc", body: "Corps du bloc" }],
+    });
+
+    const expected = `          <tr>
+            <td style="padding:16px 24px 0 24px;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;color:#161616;">
+              Mon bloc
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:4px 24px 16px 24px;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;color:#161616;">
+              Corps du bloc
+            </td>
+          </tr>`;
+    assert.ok(result.html.includes(expected));
+    assert.ok(!result.html.includes("<img"));
+  });
+
+  it("renders a feature block with an icon as an icon cell and a title cell, then the body row", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "featureBlock",
+          title: "Mon bloc",
+          body: "Corps du bloc",
+          iconUrl: "https://example.fr/img/emails/impacts-evaluation.png",
+        },
+      ],
+    });
+
+    const expected = `          <tr>
+            <td style="padding:16px 24px 0 24px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="24" valign="middle" style="width:24px;padding:0 8px 0 0;vertical-align:middle;">
+                    <img src="https://example.fr/img/emails/impacts-evaluation.png" width="24" height="24" alt="" border="0" style="display:block;width:24px;height:24px;border:0;outline:none;text-decoration:none;">
+                  </td>
+                  <td valign="middle" style="vertical-align:middle;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;color:#161616;">
+                    Mon bloc
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:4px 24px 16px 24px;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;color:#161616;">
+              Corps du bloc
+            </td>
+          </tr>`;
+    assert.ok(result.html.includes(expected));
+    assert.deepStrictEqual(
+      [...result.html.matchAll(/<img[^>]*>/g)].map(([tag]) => tag),
+      [
+        '<img src="https://example.fr/img/emails/impacts-evaluation.png" width="24" height="24" alt="" border="0" style="display:block;width:24px;height:24px;border:0;outline:none;text-decoration:none;">',
+      ],
+    );
+  });
+
+  it("leaves the plain-text feature block unchanged when an icon is given", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "featureBlock",
+          title: "Mon bloc",
+          body: "Corps du bloc",
+          iconUrl: "https://example.fr/img/emails/impacts-evaluation.png",
+        },
+      ],
+    });
+
+    assert.strictEqual(
+      result.text,
+      [
+        "Mon bloc\nCorps du bloc",
+        "---\nVous recevez cet e-mail car vous avez un compte Bénéfriches.\nPour ne plus recevoir les e-mails d’accompagnement et de résultats d’impacts (votre compte reste actif) :\nhttps://example.fr/emails/desinscription?token=t",
+      ].join("\n\n"),
+    );
+  });
+
+  it("escapes the icon URL in the src attribute", () => {
+    const result = renderEmail({
+      subject: "Test",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [
+        {
+          type: "featureBlock",
+          title: "Mon bloc",
+          body: "Corps du bloc",
+          iconUrl: 'https://example.fr/a.png?x=1&y="z"',
+        },
+      ],
+    });
+
+    assert.ok(result.html.includes('src="https://example.fr/a.png?x=1&amp;y=&quot;z&quot;"'));
+  });
 });

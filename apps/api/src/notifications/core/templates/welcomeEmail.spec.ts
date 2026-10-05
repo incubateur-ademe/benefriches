@@ -100,14 +100,57 @@ describe("buildWelcomeEmail", () => {
     assert.ok(result.html.includes("Commencer l’évaluation socio-économique"));
   });
 
-  it("is text-only for the three feature blocks — no images", () => {
+  it("shows the three feature block icons, in order, from the configured webapp URL", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
       webappUrl: "http://localhost:3001",
       unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
     });
 
-    assert.ok(!result.html.includes("<img"));
+    const srcs = [...result.html.matchAll(/<img[^>]*\ssrc="([^"]+)"/g)].map(([, src]) => src);
+    assert.deepStrictEqual(srcs, [
+      "http://localhost:3001/img/emails/impacts-evaluation.png",
+      "http://localhost:3001/img/emails/cost-benefit-analysis.png",
+      "http://localhost:3001/img/emails/avoided-costs-analysis.png",
+    ]);
+  });
+
+  it("builds the icon URLs without a double slash when the webapp URL ends with a slash", () => {
+    const result = buildWelcomeEmail({
+      recipientEmail: "nomprenom@mail.fr",
+      webappUrl: "https://staging.example.fr/",
+      unsubscribeUrl: "https://staging.example.fr/emails/desinscription?token=v1.x.y",
+    });
+
+    const srcs = [...result.html.matchAll(/<img[^>]*\ssrc="([^"]+)"/g)].map(([, src]) => src);
+    assert.deepStrictEqual(srcs, [
+      "https://staging.example.fr/img/emails/impacts-evaluation.png",
+      "https://staging.example.fr/img/emails/cost-benefit-analysis.png",
+      "https://staging.example.fr/img/emails/avoided-costs-analysis.png",
+    ]);
+  });
+
+  it("produces the full plain-text alternative, without the icons", () => {
+    const result = buildWelcomeEmail({
+      recipientEmail: "nomprenom@mail.fr",
+      webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
+    });
+
+    assert.strictEqual(
+      result.text,
+      [
+        "Bienvenue chez Bénéfriches.",
+        "Votre identifiant de connexion est nomprenom@mail.fr",
+        "Avec Bénéfriches, réalisez l’évaluation socio-économiques de votre projet d’aménagement.",
+        "Renseignez votre site puis votre projet, et découvrez :",
+        "Votre évaluation des impacts\nSur plusieurs indicateur clé : recettes fiscales, cadre de vie des riverains, emploi, émissions de CO2, perméabilité des sols…",
+        "Votre analyse coût-bénéfice\nPour voir si les impacts socio-économiques compenseront le coût de l’opération et, si oui, en quelle année.",
+        "Votre analyse des coûts évités\nPour comprendre ce que coûte la friche tant qu’elle n’est pas reconvertie, ou ce que coûterait le projet s’il se faisait en extension urbaine.",
+        "Commencer l’évaluation socio-économique : http://localhost:3001/creer-site-foncier",
+        "---\nVous recevez cet e-mail car vous avez un compte Bénéfriches.\nPour ne plus recevoir les e-mails d’accompagnement et de résultats d’impacts (votre compte reste actif) :\nhttp://localhost:3001/emails/desinscription?token=v1.x.y",
+      ].join("\n\n"),
+    );
   });
 
   it("has no flexbox or grid layout, staying Outlook-safe", () => {
@@ -121,22 +164,6 @@ describe("buildWelcomeEmail", () => {
     assert.ok(!/display\s*:\s*grid/i.test(result.html));
     assert.ok(!/flex-[a-z]+\s*:/i.test(result.html));
     assert.ok(result.html.includes("<table"));
-  });
-
-  it("produces a non-empty plain-text alternative containing the heading, identifier, block titles and CTA URL", () => {
-    const result = buildWelcomeEmail({
-      recipientEmail: "nomprenom@mail.fr",
-      webappUrl: "http://localhost:3001",
-      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
-    });
-
-    assert.ok(result.text.length > 0);
-    assert.ok(result.text.includes("Bienvenue chez Bénéfriches."));
-    assert.ok(result.text.includes("nomprenom@mail.fr"));
-    assert.ok(result.text.includes("Votre évaluation des impacts"));
-    assert.ok(result.text.includes("Votre analyse coût-bénéfice"));
-    assert.ok(result.text.includes("Votre analyse des coûts évités"));
-    assert.ok(result.text.includes("http://localhost:3001/creer-site-foncier"));
   });
 
   it("escapes an email address containing HTML-special characters in the HTML output", () => {

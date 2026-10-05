@@ -1,6 +1,9 @@
 // Shared layout helper for lifecycle emails. The audience is collectivités and
 // ADEME-adjacent structures, so Outlook is the constraint that matters:
 // table-based single-column layout, inline styles only, no flexbox or grid.
+// No images, with a single exception: the optional decorative icon of a featureBlock
+// (iconUrl), an absolute PNG URL with explicit size and empty alt, so the email reads fine
+// with images blocked.
 // Every email produced here ships a plain-text alternative alongside the HTML —
 // renderEmail always returns both, so it is structurally impossible to ship
 // HTML without a text fallback.
@@ -8,7 +11,15 @@
 export type EmailSection =
   | { type: "heading"; text: string }
   | { type: "paragraph"; html: string; text: string }
-  | { type: "featureBlock"; title: string; body: string }
+  | {
+      type: "featureBlock";
+      title: string;
+      body: string;
+      // Decorative 24×24 PNG (48×48 source) at an absolute URL built from webappUrl. No SVG
+      // or data URI, and the block must read fine with images blocked. HTML only: the
+      // plain-text path ignores it.
+      iconUrl?: string;
+    }
   // variant absent = primary (dark). Secondary: light grey cell, dark text.
   | { type: "button"; variant?: "primary" | "secondary"; label: string; url: string }
   // A plain-text signature: no image, ever (Outlook blocks remote images by default and
@@ -46,6 +57,7 @@ const TEXT_COLOR = "#161616";
 const BUTTON_BG_COLOR = "#161616";
 const SECONDARY_BUTTON_BG_COLOR = "#dddddd";
 const MUTED_TEXT_COLOR = "#666666";
+const FEATURE_TITLE_STYLE = `font-family:${FONT_STACK};font-size:16px;font-weight:bold;color:${TEXT_COLOR};`;
 
 export function escapeHtml(value: string): string {
   return value
@@ -108,16 +120,29 @@ function renderSectionHtml(section: EmailSection): string {
             </td>
           </tr>`;
     case "featureBlock":
+      if (section.iconUrl) {
+        return `          <tr>
+            <td style="padding:16px 24px 0 24px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="24" valign="middle" style="width:24px;padding:0 8px 0 0;vertical-align:middle;">
+                    <img src="${escapeHtml(section.iconUrl)}" width="24" height="24" alt="" border="0" style="display:block;width:24px;height:24px;border:0;outline:none;text-decoration:none;">
+                  </td>
+                  <td valign="middle" style="vertical-align:middle;${FEATURE_TITLE_STYLE}">
+                    ${escapeHtml(section.title)}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+${renderFeatureBodyRow(section.body)}`;
+      }
       return `          <tr>
-            <td style="padding:16px 24px 0 24px;font-family:${FONT_STACK};font-size:16px;font-weight:bold;color:${TEXT_COLOR};">
+            <td style="padding:16px 24px 0 24px;${FEATURE_TITLE_STYLE}">
               ${escapeHtml(section.title)}
             </td>
           </tr>
-          <tr>
-            <td style="padding:4px 24px 16px 24px;font-family:${FONT_STACK};font-size:14px;line-height:1.5;color:${TEXT_COLOR};">
-              ${escapeHtml(section.body)}
-            </td>
-          </tr>`;
+${renderFeatureBodyRow(section.body)}`;
     case "button": {
       const isSecondary = section.variant === "secondary";
       const backgroundColor = isSecondary ? SECONDARY_BUTTON_BG_COLOR : BUTTON_BG_COLOR;
@@ -147,6 +172,14 @@ function renderSectionHtml(section: EmailSection): string {
             </td>
           </tr>`;
   }
+}
+
+function renderFeatureBodyRow(body: string): string {
+  return `          <tr>
+            <td style="padding:4px 24px 16px 24px;font-family:${FONT_STACK};font-size:14px;line-height:1.5;color:${TEXT_COLOR};">
+              ${escapeHtml(body)}
+            </td>
+          </tr>`;
 }
 
 // TODO(product): confirm the footer wording (draft, not in the mockups).
