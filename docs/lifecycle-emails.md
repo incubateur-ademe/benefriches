@@ -49,7 +49,8 @@ weekday-only runs would leave a gap in the window. Because of the window, remind
 
 The first project reminder is one email **per site**, not batched per user (production data:
 90 % of mornings involve a single site). The ledger is per site, so batching can come later
-without a schema change.
+without a schema change. It names the site in its subject and its first paragraph, so two
+reminders about two sites can be told apart.
 
 **Impacts summary: which projects.** Custom (wizard) and express (template) projects get it.
 **Duplicated projects deliberately don't**: the author already has the original's summary. This
