@@ -26,6 +26,7 @@
     "test:scripts": "node --test \"scripts/**/*.spec.mjs\" \".tooling/**/*.spec.mjs\" \".claude/hooks/**/*.spec.mjs\""
   },
   "devDependencies": {
+    "@playwright/mcp": "~0.0.82",
     "@upstash/context7-mcp": "4.0.7",
     "@vitest/coverage-v8": "catalog:",
     "husky": "^9.1.7",
