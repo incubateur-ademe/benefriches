@@ -45,7 +45,7 @@ const formatEvaluationDate = (date: Date): string =>
 
 // Copy transcribed from the mockup (assets/04-project-impacts-summary.png), with curly
 // apostrophes; the cards' copy is the app's (projectImpactsSummaryCards.ts). No greeting, no
-// preheader, no closing paragraph, and no map, chart or image: the mockup's map is struck through,
+// closing paragraph, and no map, chart or image: the mockup's map is struck through,
 // and the welcome email's icons are the only images lifecycle emails carry.
 export function buildProjectImpactsSummaryEmail(
   input: BuildProjectImpactsSummaryEmailInput,
@@ -104,6 +104,8 @@ export function buildProjectImpactsSummaryEmail(
     // TODO(product): the mockup reads "Projet sur l’ancienne carrière…", an article added by
     // hand; we cannot generate articles, so the site name is used as typed (plan P1).
     subject: `Projet sur ${subjectSiteName}${NBSP}: résultats de votre évaluation`,
+    preheader:
+      "Les impacts socio-économiques de votre projet, comparés au maintien du site en l’état.",
     unsubscribeUrl: input.unsubscribeUrl,
     sections,
   });

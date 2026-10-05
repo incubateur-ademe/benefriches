@@ -93,6 +93,17 @@ describe("buildProjectImpactsSummaryEmail", () => {
     );
   });
 
+  it("previews the comparison with keeping the site as is in the inbox", () => {
+    const email = buildProjectImpactsSummaryEmail(favourableInput);
+
+    const [, preheader] =
+      /<div style="display:none;[^"]*">([^<]*?)(?:&zwnj;&nbsp;)*<\/div>/.exec(email.html) ?? [];
+    assert.strictEqual(
+      preheader,
+      "Les impacts socio-économiques de votre projet, comparés au maintien du site en l’état.",
+    );
+  });
+
   it("renders the full plain-text alternative for a favourable evaluation", () => {
     const email = buildProjectImpactsSummaryEmail(favourableInput);
 

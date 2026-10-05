@@ -29,6 +29,24 @@ describe("buildFirstSiteReminderEmail", () => {
     assert.strictEqual(result.subject, "Renseignez votre premier site sur Bénéfriches !");
   });
 
+  it("previews that a few details are enough in the inbox", () => {
+    const result = buildFirstSiteReminderEmail({
+      firstName: "Grégoire",
+      lastName: "Bailleux",
+      contact,
+      webappUrl,
+      unsubscribeUrl,
+    });
+
+    const [, preheader] =
+      /<div style="display:none;[^"]*">([^<]*?)(?:&zwnj;&nbsp;)*<\/div>/.exec(result.html) ?? [];
+    // Non-breaking space before ":".
+    assert.strictEqual(
+      preheader,
+      "Quelques informations suffisent : Bénéfriches complète les données manquantes.",
+    );
+  });
+
   it("renders the full plain-text alternative", () => {
     const result = buildFirstSiteReminderEmail({
       firstName: "Grégoire",

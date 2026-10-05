@@ -17,7 +17,7 @@ export type BuildFirstSiteReminderEmailInput = {
 };
 
 // Copy transcribed from the mockup (assets/02-first-site-reminder.png), with curly
-// apostrophes throughout and non-breaking spaces before "!" and "?".
+// apostrophes throughout and non-breaking spaces before "!", "?" and ":".
 export function buildFirstSiteReminderEmail(
   input: BuildFirstSiteReminderEmailInput,
 ): RenderedEmail {
@@ -39,6 +39,7 @@ export function buildFirstSiteReminderEmail(
 
   return renderEmail({
     subject: `Renseignez votre premier site sur Bénéfriches${NBSP}!`,
+    preheader: `Quelques informations suffisent${NBSP}: Bénéfriches complète les données manquantes.`,
     unsubscribeUrl: input.unsubscribeUrl,
     sections: [
       { type: "paragraph", html: escapeHtml(greeting), text: greeting },

@@ -19,6 +19,7 @@ export function buildWelcomeEmail(input: BuildWelcomeEmailInput): RenderedEmail 
 
   return renderEmail({
     subject: "Bienvenue chez Bénéfriches",
+    preheader: "Votre compte est créé. Voici comment réaliser votre première évaluation.",
     unsubscribeUrl: input.unsubscribeUrl,
     sections: [
       { type: "heading", text: "Bienvenue chez Bénéfriches." },

@@ -7,6 +7,7 @@ describe("renderEmail", () => {
   it("returns the subject unchanged", () => {
     const result = renderEmail({
       subject: "Bienvenue chez Bénéfriches",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [{ type: "heading", text: "Bienvenue chez Bénéfriches." }],
     });
@@ -14,9 +15,54 @@ describe("renderEmail", () => {
     assert.strictEqual(result.subject, "Bienvenue chez Bénéfriches");
   });
 
+  it("renders the padded preheader in a hidden div between the opening body tag and the content table", () => {
+    const result = renderEmail({
+      subject: "Test",
+      preheader: "Votre compte est créé.",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [{ type: "heading", text: "Mon titre" }],
+    });
+
+    const expected = `<body style="margin:0;padding:0;background-color:#f6f6f6;font-family:Arial, Helvetica, sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">Votre compte est créé.${"&zwnj;&nbsp;".repeat(100)}</div>
+  <table role="presentation"`;
+    assert.ok(result.html.includes(expected));
+  });
+
+  it("escapes the preheader but not its padding", () => {
+    const result = renderEmail({
+      subject: "Test",
+      preheader: '<b>Aperçu</b> & "co"',
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [{ type: "heading", text: "Mon titre" }],
+    });
+
+    assert.ok(
+      result.html.includes(
+        `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">&lt;b&gt;Aperçu&lt;/b&gt; &amp; &quot;co&quot;${"&zwnj;&nbsp;".repeat(100)}</div>`,
+      ),
+    );
+    assert.ok(!result.html.includes("<b>Aperçu</b>"));
+  });
+
+  it("keeps the preheader out of the plain-text alternative", () => {
+    const result = renderEmail({
+      subject: "Test",
+      preheader: "Texte d’aperçu",
+      unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
+      sections: [{ type: "heading", text: "Mon titre" }],
+    });
+
+    assert.strictEqual(
+      result.text,
+      "Mon titre\n\n---\nVous recevez cet e-mail car vous avez un compte Bénéfriches.\nPour ne plus recevoir les e-mails d’accompagnement et de résultats d’impacts (votre compte reste actif) :\nhttps://example.fr/emails/desinscription?token=t",
+    );
+  });
+
   it("renders a table-based, single-column layout with no flexbox or grid", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         { type: "heading", text: "Titre" },
@@ -43,6 +89,7 @@ describe("renderEmail", () => {
   it("renders every section type into the HTML output", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         { type: "heading", text: "Mon titre" },
@@ -93,6 +140,7 @@ describe("renderEmail", () => {
   it("renders a secondary button as a light grey bgcolor cell wrapping the link", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {
@@ -112,6 +160,7 @@ describe("renderEmail", () => {
   it("renders the contact signature with no image and the email as its only link", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {
@@ -138,6 +187,7 @@ describe("renderEmail", () => {
   it("renders the contact signature as five plain-text lines", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {
@@ -161,6 +211,7 @@ describe("renderEmail", () => {
   it("escapes every contact signature field in the HTML", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {
@@ -185,6 +236,7 @@ describe("renderEmail", () => {
   it("renders the button as a bgcolor table cell wrapping the link, for Outlook compatibility", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [{ type: "button", label: "Go", url: "https://example.fr" }],
     });
@@ -196,6 +248,7 @@ describe("renderEmail", () => {
   it("centres the button horizontally with align attributes, which Outlook honours", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [{ type: "button", label: "Go", url: "https://example.fr" }],
     });
@@ -210,6 +263,7 @@ describe("renderEmail", () => {
   it("produces a plain-text alternative alongside the HTML", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         { type: "heading", text: "Mon titre" },
@@ -231,6 +285,7 @@ describe("renderEmail", () => {
   it("escapes HTML-special characters in a paragraph's text-only rendering path via escapeHtml", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [{ type: "featureBlock", title: "<script>alert(1)</script>", body: "corps" }],
     });
@@ -242,6 +297,7 @@ describe("renderEmail", () => {
   it("renders an unsubscribe link in the HTML footer of every email", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=v1.a.b",
       sections: [{ type: "heading", text: "Mon titre" }],
     });
@@ -264,6 +320,7 @@ describe("renderEmail", () => {
   it("puts the unsubscribe URL and wording in the plain-text alternative", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=v1.a.b",
       sections: [{ type: "heading", text: "Mon titre" }],
     });
@@ -281,6 +338,7 @@ describe("renderEmail", () => {
   it("escapes the unsubscribe URL in the href", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: 'https://example.fr/?a=1&b="x"',
       sections: [{ type: "heading", text: "Mon titre" }],
     });
@@ -291,6 +349,7 @@ describe("renderEmail", () => {
   it("renders a feature block without an icon as a title row and a body row, with no image", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [{ type: "featureBlock", title: "Mon bloc", body: "Corps du bloc" }],
     });
@@ -312,6 +371,7 @@ describe("renderEmail", () => {
   it("renders a feature block with an icon as an icon cell and a title cell, then the body row", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {
@@ -354,6 +414,7 @@ describe("renderEmail", () => {
   it("leaves the plain-text feature block unchanged when an icon is given", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {
@@ -377,6 +438,7 @@ describe("renderEmail", () => {
   it("escapes the icon URL in the src attribute", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {
@@ -394,6 +456,7 @@ describe("renderEmail", () => {
   it("renders a card as a bordered table with its headline, title, body and link rows", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {
@@ -441,6 +504,7 @@ describe("renderEmail", () => {
   it("renders a card without a title as headline, body and link rows only", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {
@@ -482,6 +546,7 @@ describe("renderEmail", () => {
   it("renders a card as plain-text lines ending with its link", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {
@@ -506,6 +571,7 @@ describe("renderEmail", () => {
   it("escapes every card field and the link URL in the HTML", () => {
     const result = renderEmail({
       subject: "Test",
+      preheader: "Texte d’aperçu",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
       sections: [
         {

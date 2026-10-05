@@ -7,6 +7,7 @@
 // Sections: heading, paragraph, featureBlock, button, contactSignature, and card (a bordered
 // block with a headline, an optional title, a body and a text link: the project impacts
 // summary's headline findings).
+// Every email opens with a hidden, padded preheader: the inbox preview text after the subject.
 // Every email produced here ships a plain-text alternative alongside the HTML —
 // renderEmail always returns both, so it is structurally impossible to ship
 // HTML without a text fallback.
@@ -47,7 +48,10 @@ export type EmailSection =
 
 export type EmailContent = {
   subject: string;
-  preheader?: string;
+  // Required, so a template that forgets it does not compile: without a preheader, inboxes
+  // show the first line of the body as the preview (the login identifier, « Bonjour Prénom
+  // Nom, Hier vous avez… »). HTML only: the plain-text alternative does not carry it.
+  preheader: string;
   sections: EmailSection[];
   // Required, so a template that forgets the unsubscribe link does not compile: every
   // lifecycle email carries the footer rendered below. Build it with buildUnsubscribeUrl.
@@ -71,6 +75,9 @@ const SECONDARY_BUTTON_BG_COLOR = "#dddddd";
 const MUTED_TEXT_COLOR = "#666666";
 const CARD_BORDER_COLOR = "#dddddd";
 const FEATURE_TITLE_STYLE = `font-family:${FONT_STACK};font-size:16px;font-weight:bold;color:${TEXT_COLOR};`;
+// Invisible characters appended to the preheader, so clients don't fill the rest of the
+// preview with the start of the body. Markup, not text: appended after escaping.
+const PREHEADER_PADDING = "&zwnj;&nbsp;".repeat(100);
 
 export function escapeHtml(value: string): string {
   return value
@@ -90,9 +97,9 @@ export function renderEmail(content: EmailContent): RenderedEmail {
 }
 
 function renderHtml(content: EmailContent): string {
-  const preheader = content.preheader
-    ? `<div style="display:none;max-height:0;overflow:hidden;">${escapeHtml(content.preheader)}</div>`
-    : "";
+  // mso-hide:all hides it in Outlook for Windows, which doesn't reliably honour display:none;
+  // max-height:0 and overflow:hidden still clip it (and its padding) if hiding fails.
+  const preheader = `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${escapeHtml(content.preheader)}${PREHEADER_PADDING}</div>`;
 
   const rows = [...content.sections.map(renderSectionHtml), renderFooterHtml(content)].join("\n");
 

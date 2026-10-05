@@ -45,6 +45,44 @@ describe("buildFirstProjectReminderEmail", () => {
     );
   });
 
+  it("previews the comparison with leaving the friche as it is, for a friche", () => {
+    const result = buildFirstProjectReminderEmail({
+      firstName: "Grégoire",
+      lastName: "Bailleux",
+      site: friche,
+      contact,
+      webappUrl,
+      unsubscribeUrl,
+    });
+
+    const [, preheader] =
+      /<div style="display:none;[^"]*">([^<]*?)(?:&zwnj;&nbsp;)*<\/div>/.exec(result.html) ?? [];
+    assert.strictEqual(
+      preheader,
+      "Comparez ses impacts à ceux du maintien de la friche en l’état.",
+    );
+  });
+
+  describe("previews the comparison with leaving the site as it is, for every non-friche nature", () => {
+    for (const nature of siteNatureSchema.options.filter((n) => n !== "FRICHE")) {
+      it(`says "du site" for a ${nature} site`, () => {
+        const result = buildFirstProjectReminderEmail({
+          firstName: "Grégoire",
+          lastName: "Bailleux",
+          site: { ...farm, nature },
+          contact,
+          webappUrl,
+          unsubscribeUrl,
+        });
+
+        const [, preheader] =
+          /<div style="display:none;[^"]*">([^<]*?)(?:&zwnj;&nbsp;)*<\/div>/.exec(result.html) ??
+          [];
+        assert.strictEqual(preheader, "Comparez ses impacts à ceux du maintien du site en l’état.");
+      });
+    }
+  });
+
   it("renders the full plain-text alternative for a friche", () => {
     const result = buildFirstProjectReminderEmail({
       firstName: "Grégoire",

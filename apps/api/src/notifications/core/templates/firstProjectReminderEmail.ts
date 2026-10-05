@@ -33,6 +33,13 @@ const buildIntroParagraph = (site: LifecycleEmailSite): string => {
   return `Hier vous avez renseigné ${indefinite} sur Bénéfriches. Vous pouvez maintenant décrire un projet d’aménagement sur ${demonstrative}, pour ensuite découvrir ses impacts socio-économiques.`;
 };
 
+// Same friche / site split as the intro paragraph. A contraction ("de la" / "du"), so not a
+// plain noun swap.
+const buildPreheader = (site: LifecycleEmailSite): string => {
+  const siteReference = site.nature === "FRICHE" ? "de la friche" : "du site";
+  return `Comparez ses impacts à ceux du maintien ${siteReference} en l’état.`;
+};
+
 // Copy transcribed from the mockup (assets/03-first-project-reminder.png), with curly
 // apostrophes throughout and non-breaking spaces before ":" and "?".
 //
@@ -63,6 +70,7 @@ export function buildFirstProjectReminderEmail(
 
   return renderEmail({
     subject: `${subjectSiteName}${NBSP}: et si vous renseigniez votre projet d’aménagement${NBSP}?`,
+    preheader: buildPreheader(input.site),
     unsubscribeUrl: input.unsubscribeUrl,
     sections: [
       { type: "paragraph", html: escapeHtml(greeting), text: greeting },

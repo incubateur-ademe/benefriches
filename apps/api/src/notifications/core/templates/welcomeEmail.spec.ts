@@ -14,6 +14,21 @@ describe("buildWelcomeEmail", () => {
     assert.strictEqual(result.subject, "Bienvenue chez Bénéfriches");
   });
 
+  it("previews the account creation and the first evaluation in the inbox", () => {
+    const result = buildWelcomeEmail({
+      recipientEmail: "nomprenom@mail.fr",
+      webappUrl: "http://localhost:3001",
+      unsubscribeUrl: "http://localhost:3001/emails/desinscription?token=v1.x.y",
+    });
+
+    const [, preheader] =
+      /<div style="display:none;[^"]*">([^<]*?)(?:&zwnj;&nbsp;)*<\/div>/.exec(result.html) ?? [];
+    assert.strictEqual(
+      preheader,
+      "Votre compte est créé. Voici comment réaliser votre première évaluation.",
+    );
+  });
+
   it("contains the heading and intro paragraphs verbatim", () => {
     const result = buildWelcomeEmail({
       recipientEmail: "nomprenom@mail.fr",
