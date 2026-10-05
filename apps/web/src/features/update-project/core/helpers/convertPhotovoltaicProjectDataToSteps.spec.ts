@@ -244,6 +244,17 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
     });
     expect(steps.RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT).toEqual({
       payload: { reinstatementExpenses: [{ purpose: "demolition", amount: 20000 }] },
+      // Generated from the hydrated answers: the site has nothing to demolish or remediate,
+      // so the saved 20000 € demolition counts as a user edit.
+      defaultValues: {
+        reinstatementExpenses: [
+          { purpose: "asbestos_removal", amount: 0 },
+          { purpose: "deimpermeabilization", amount: 0 },
+          { purpose: "demolition", amount: 0 },
+          { purpose: "sustainable_soils_reinstatement", amount: 0 },
+          { purpose: "remediation", amount: 0 },
+        ],
+      },
       completed: true,
     });
   });

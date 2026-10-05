@@ -11,6 +11,7 @@ import type {
 import { inferDecontaminationPlan } from "@/features/create-project/core/project-form/soilsDecontamination";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { EXPENSE_PURPOSE_TO_FIELD } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
+import { UrbanProjectReinstatementExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
 import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import {
   ANSWER_STEPS,
@@ -333,6 +334,19 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       completed: true,
     };
   });
+
+  // The saved project does not record which reinstatement amounts were generated. Recomputing
+  // them after an answer change (e.g. the decontaminated surface) only replaces the amounts equal
+  // to the step's defaultValues, so rebuild those from the hydrated answers: a saved amount equal
+  // to what the wizard generates counts as generated, any other amount as a user edit.
+  const reinstatementExpensesStep = steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT;
+  if (reinstatementExpensesStep) {
+    reinstatementExpensesStep.defaultValues =
+      UrbanProjectReinstatementExpensesHandler.getDefaultAnswers({
+        context: { siteData },
+        answers: steps,
+      });
+  }
 
   return steps;
 };

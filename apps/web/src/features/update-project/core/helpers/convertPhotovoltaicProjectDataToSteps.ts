@@ -11,6 +11,7 @@ import { canSiteAccomodatePhotovoltaicPanels } from "shared";
 
 import { inferDecontaminationPlan } from "@/features/create-project/core/project-form/soilsDecontamination";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
+import { ReinstatementExpensesHandler } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
 import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 
 import type { UpdateProjectView } from "../updateProject.types";
@@ -249,6 +250,18 @@ export const convertPhotovoltaicProjectDataToSteps = ({
     completed: true,
     payload: { name: projectData.name, description: projectData.description },
   };
+
+  // The saved project does not record which reinstatement amounts were generated. Recomputing
+  // them after an answer change (e.g. the decontaminated surface) only replaces the amounts equal
+  // to the step's defaultValues, so rebuild those from the hydrated answers: a saved amount equal
+  // to what the wizard generates counts as generated, any other amount as a user edit.
+  const reinstatementExpensesStep = steps.RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT;
+  if (reinstatementExpensesStep) {
+    reinstatementExpensesStep.defaultValues = ReinstatementExpensesHandler.getDefaultAnswers?.({
+      context: { siteData },
+      answers: steps,
+    });
+  }
 
   return steps;
 };
