@@ -706,9 +706,9 @@ and a section is one of:
 - `{ type: "button", variant?, label, url }` — `variant` is `"primary"` (default, dark cell,
   white text) or `"secondary"` (light grey `#dddddd` cell, dark text; the reminders' contact
   button)
-- `{ type: "contactSignature", name, role, organisation, organisationSuffix, phone, email }` —
+- `{ type: "contactSignature", name, role, organisation, phone, email }` —
   five short lines in one cell, **no image** (remote images are blocked by default in Outlook
-  and degrade to a broken-image icon); `organisation` and `organisationSuffix` are plain text
+  and degrade to a broken-image icon); `organisation` (`Bénéfriches (Externe)`) is plain text
   (no link), the email is a `mailto:` link, the phone is plain text. Every value is escaped.
   The text path renders the five lines.
 

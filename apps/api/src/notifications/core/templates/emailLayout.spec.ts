@@ -52,8 +52,7 @@ describe("renderEmail", () => {
           type: "contactSignature",
           name: "Mathilde Lefèvre",
           role: "Chargée de déploiement",
-          organisation: "Bénéfriches",
-          organisationSuffix: " (Externe)",
+          organisation: "Bénéfriches (Externe)",
           phone: "01 23 45 67 89",
           email: "mathilde.lefevre@example.com",
         },
@@ -100,8 +99,7 @@ describe("renderEmail", () => {
           type: "contactSignature",
           name: "Mathilde Lefèvre",
           role: "Chargée de déploiement",
-          organisation: "Bénéfriches",
-          organisationSuffix: " (Externe)",
+          organisation: "Bénéfriches (Externe)",
           phone: "01 23 45 67 89",
           email: "mathilde.lefevre@example.com",
         },
@@ -127,8 +125,7 @@ describe("renderEmail", () => {
           type: "contactSignature",
           name: "Mathilde Lefèvre",
           role: "Chargée de déploiement",
-          organisation: "Bénéfriches",
-          organisationSuffix: " (Externe)",
+          organisation: "Bénéfriches (Externe)",
           phone: "01 23 45 67 89",
           email: "mathilde.lefevre@example.com",
         },
@@ -151,8 +148,7 @@ describe("renderEmail", () => {
           type: "contactSignature",
           name: "<i>Mathilde</i>",
           role: "<b>Chef</b>",
-          organisation: "<u>Bénéfriches</u>",
-          organisationSuffix: " <s>(Externe)</s>",
+          organisation: "<u>Bénéfriches</u> (Externe)",
           phone: "<em>01</em>",
           email: '"x"@example.com',
         },
@@ -162,8 +158,7 @@ describe("renderEmail", () => {
     assert.ok(result.html.includes("&lt;i&gt;Mathilde&lt;/i&gt;"));
     assert.ok(result.html.includes("&lt;b&gt;Chef&lt;/b&gt;"));
     assert.ok(!result.html.includes("<b>Chef</b>"));
-    assert.ok(result.html.includes("&lt;u&gt;Bénéfriches&lt;/u&gt;"));
-    assert.ok(result.html.includes(" &lt;s&gt;(Externe)&lt;/s&gt;"));
+    assert.ok(result.html.includes("&lt;u&gt;Bénéfriches&lt;/u&gt; (Externe)"));
     assert.ok(result.html.includes("&lt;em&gt;01&lt;/em&gt;"));
     assert.ok(result.html.includes('href="mailto:&quot;x&quot;@example.com"'));
   });

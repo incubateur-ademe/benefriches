@@ -17,8 +17,7 @@ export function buildContactSections(contact: LifecycleEmailContact): EmailSecti
       role: contact.role,
       // TODO(product): "(Externe)" describes the contact person, not the product; it may
       // belong in configuration with the role. Hardcoded as the ticket lists it.
-      organisation: "Bénéfriches",
-      organisationSuffix: " (Externe)",
+      organisation: "Bénéfriches (Externe)",
       phone: contact.phone,
       email: contact.email,
     },
