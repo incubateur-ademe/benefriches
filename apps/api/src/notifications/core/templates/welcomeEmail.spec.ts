@@ -39,7 +39,7 @@ describe("buildWelcomeEmail", () => {
     assert.ok(result.html.includes("Bienvenue chez Bénéfriches."));
     assert.ok(
       result.html.includes(
-        "Avec Bénéfriches, réalisez l’évaluation socio-économiques de votre projet d’aménagement.",
+        "Avec Bénéfriches, réalisez l’évaluation socio-économique de votre projet d’aménagement.",
       ),
     );
     assert.ok(result.html.includes("Renseignez votre site puis votre projet, et découvrez :"));
@@ -55,7 +55,7 @@ describe("buildWelcomeEmail", () => {
     assert.ok(result.html.includes("Votre évaluation des impacts"));
     assert.ok(
       result.html.includes(
-        "Sur plusieurs indicateur clé : recettes fiscales, cadre de vie des riverains, emploi, émissions de CO2, perméabilité des sols…",
+        "Sur plusieurs indicateurs clés : recettes fiscales, cadre de vie des riverains, emploi, émissions de CO2, perméabilité des sols…",
       ),
     );
     assert.ok(result.html.includes("Votre analyse coût-bénéfice"));
@@ -157,9 +157,9 @@ describe("buildWelcomeEmail", () => {
       [
         "Bienvenue chez Bénéfriches.",
         "Votre identifiant de connexion est nomprenom@mail.fr",
-        "Avec Bénéfriches, réalisez l’évaluation socio-économiques de votre projet d’aménagement.",
+        "Avec Bénéfriches, réalisez l’évaluation socio-économique de votre projet d’aménagement.",
         "Renseignez votre site puis votre projet, et découvrez :",
-        "Votre évaluation des impacts\nSur plusieurs indicateur clé : recettes fiscales, cadre de vie des riverains, emploi, émissions de CO2, perméabilité des sols…",
+        "Votre évaluation des impacts\nSur plusieurs indicateurs clés : recettes fiscales, cadre de vie des riverains, emploi, émissions de CO2, perméabilité des sols…",
         "Votre analyse coût-bénéfice\nPour voir si les impacts socio-économiques compenseront le coût de l’opération et, si oui, en quelle année.",
         "Votre analyse des coûts évités\nPour comprendre ce que coûte la friche tant qu’elle n’est pas reconvertie, ou ce que coûterait le projet s’il se faisait en extension urbaine.",
         "Commencer l’évaluation socio-économique : http://localhost:3001/creer-site-foncier",

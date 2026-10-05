@@ -17,7 +17,10 @@ export type BuildFirstSiteReminderEmailInput = {
 };
 
 // Copy transcribed from the mockup (assets/02-first-site-reminder.png), with curly
-// apostrophes throughout and non-breaking spaces before "!", "?" and ":".
+// apostrophes throughout and non-breaking spaces before "!", "?" and ":". Three wordings
+// differ from the mockup, as decided with product: "Vous avez récemment créé" (the job's
+// 24–72 h window makes "Hier" wrong for most recipients), "préremplies", and the neutral
+// "un accompagnement pour prendre en main l’outil".
 export function buildFirstSiteReminderEmail(
   input: BuildFirstSiteReminderEmailInput,
 ): RenderedEmail {
@@ -25,17 +28,11 @@ export function buildFirstSiteReminderEmail(
   const ctaUrl = new URL("/creer-site-foncier", input.webappUrl).toString();
   const greeting = buildGreeting(input.firstName, input.lastName);
 
-  // TODO(product): "Hier" is inaccurate for most of the cohort: the job runs daily with a
-  // 24–72 h window, so most recipients registered the day before yesterday. Proposal:
-  // "Vous avez récemment créé votre compte sur Bénéfriches." Optional: a comma after "Hier".
   const introParagraph =
-    "Hier vous avez créé votre compte sur Bénéfriches. Vous pouvez maintenant renseigner un site (friche ou autre), pour ensuite y décrire votre projet d’aménagement avant de découvrir les impacts socio-économiques de ce projet sur votre site.";
-  // TODO(product): "pré-remplies" — the recommended spelling is "préremplies".
-  const prefilledDataParagraph = `Vous n’avez pas encore toutes les informations concernant ce site${NBSP}? Pas de panique, Bénéfriches vous propose un maximum de données pré-remplies, basées sur des valeurs représentatives observées sur d’autres sites.`;
-  // TODO(product): "accompagné" is masculine for a mixed audience; neutral alternative:
-  // "Et si vous préférez un accompagnement pour prendre en main l’outil, …".
+    "Vous avez récemment créé votre compte sur Bénéfriches. Vous pouvez maintenant renseigner un site (friche ou autre), pour ensuite y décrire votre projet d’aménagement avant de découvrir les impacts socio-économiques de ce projet sur votre site.";
+  const prefilledDataParagraph = `Vous n’avez pas encore toutes les informations concernant ce site${NBSP}? Pas de panique, Bénéfriches vous propose un maximum de données préremplies, basées sur des valeurs représentatives observées sur d’autres sites.`;
   const contactParagraph =
-    "Et si vous préférez être accompagné dans la prise en main de l’outil, n’hésitez pas à me contacter directement.";
+    "Et si vous préférez un accompagnement pour prendre en main l’outil, n’hésitez pas à me contacter directement.";
 
   return renderEmail({
     subject: `Renseignez votre premier site sur Bénéfriches${NBSP}!`,

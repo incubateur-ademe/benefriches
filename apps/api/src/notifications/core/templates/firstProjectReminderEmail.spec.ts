@@ -98,13 +98,13 @@ describe("buildFirstProjectReminderEmail", () => {
       [
         "Bonjour Grégoire Bailleux,",
         "",
-        "Hier vous avez renseigné une friche sur Bénéfriches. Vous pouvez maintenant décrire un projet d’aménagement sur cette friche, pour ensuite découvrir ses impacts socio-économiques.",
+        "Vous avez récemment renseigné la friche « Ancienne carrière d’argile de Blajan » sur Bénéfriches. Vous pouvez maintenant décrire un projet d’aménagement sur cette friche, pour ensuite découvrir ses impacts socio-économiques.",
         "",
-        "Vous n’avez pas encore toutes les informations concernant ce projet ? Pas de panique, Bénéfriches vous propose un maximum de données pré-remplies, basées sur des valeurs représentatives observées sur d’autres projets.",
+        "Vous n’avez pas encore toutes les informations concernant ce projet ? Pas de panique, Bénéfriches vous propose un maximum de données préremplies, basées sur des valeurs représentatives observées sur d’autres projets.",
         "",
         "Renseigner mon projet : http://localhost:3001/creer-projet?siteId=site-friche-1",
         "",
-        "Et si vous préférez être accompagné dans la prise en main de l’outil, n’hésitez pas à me contacter directement.",
+        "Et si vous préférez un accompagnement pour prendre en main l’outil, n’hésitez pas à me contacter directement.",
         "",
         "Contacter Mathilde de Bénéfriches : mailto:mathilde.lefevre@example.com",
         "",
@@ -137,13 +137,13 @@ describe("buildFirstProjectReminderEmail", () => {
       [
         "Bonjour Grégoire Bailleux,",
         "",
-        "Hier vous avez renseigné un site sur Bénéfriches. Vous pouvez maintenant décrire un projet d’aménagement sur ce site, pour ensuite découvrir ses impacts socio-économiques.",
+        "Vous avez récemment renseigné le site « Exploitation des Quatre Chemins » sur Bénéfriches. Vous pouvez maintenant décrire un projet d’aménagement sur ce site, pour ensuite découvrir ses impacts socio-économiques.",
         "",
-        "Vous n’avez pas encore toutes les informations concernant ce projet ? Pas de panique, Bénéfriches vous propose un maximum de données pré-remplies, basées sur des valeurs représentatives observées sur d’autres projets.",
+        "Vous n’avez pas encore toutes les informations concernant ce projet ? Pas de panique, Bénéfriches vous propose un maximum de données préremplies, basées sur des valeurs représentatives observées sur d’autres projets.",
         "",
         "Renseigner mon projet : http://localhost:3001/creer-projet?siteId=site-farm-1",
         "",
-        "Et si vous préférez être accompagné dans la prise en main de l’outil, n’hésitez pas à me contacter directement.",
+        "Et si vous préférez un accompagnement pour prendre en main l’outil, n’hésitez pas à me contacter directement.",
         "",
         "Contacter Mathilde de Bénéfriches : mailto:mathilde.lefevre@example.com",
         "",
@@ -163,7 +163,7 @@ describe("buildFirstProjectReminderEmail", () => {
 
   describe("uses the non-friche wording for every non-friche nature", () => {
     for (const nature of siteNatureSchema.options.filter((n) => n !== "FRICHE")) {
-      it(`says "un site" for a ${nature} site`, () => {
+      it(`says "le site" for a ${nature} site`, () => {
         const result = buildFirstProjectReminderEmail({
           firstName: "Grégoire",
           lastName: "Bailleux",
@@ -173,12 +173,53 @@ describe("buildFirstProjectReminderEmail", () => {
           unsubscribeUrl,
         });
 
-        assert.ok(result.text.includes("Hier vous avez renseigné un site sur Bénéfriches."));
+        assert.strictEqual(
+          result.text.split("\n\n")[1],
+          "Vous avez récemment renseigné le site « Exploitation des Quatre Chemins » sur Bénéfriches. Vous pouvez maintenant décrire un projet d’aménagement sur ce site, pour ensuite découvrir ses impacts socio-économiques.",
+        );
         // Not bare "friche": "Bénéfriches" contains it.
-        assert.ok(!result.text.includes("une friche"));
+        assert.ok(!result.text.includes("la friche"));
         assert.ok(!result.text.includes("cette friche"));
       });
     }
+  });
+
+  it("escapes the site name in the HTML intro and keeps it verbatim in the plain text", () => {
+    const result = buildFirstProjectReminderEmail({
+      firstName: "Grégoire",
+      lastName: "Bailleux",
+      site: { ...friche, name: 'L\'îlot "Gare" <Nord> & Sud' },
+      contact,
+      webappUrl,
+      unsubscribeUrl,
+    });
+
+    assert.ok(
+      result.html.includes(
+        "Vous avez récemment renseigné la friche « L&#39;îlot &quot;Gare&quot; &lt;Nord&gt; &amp; Sud » sur Bénéfriches. Vous pouvez maintenant décrire un projet d’aménagement sur cette friche, pour ensuite découvrir ses impacts socio-économiques.",
+      ),
+    );
+    assert.ok(!result.html.includes("<Nord>"));
+    assert.strictEqual(
+      result.text.split("\n\n")[1],
+      'Vous avez récemment renseigné la friche « L\'îlot "Gare" <Nord> & Sud » sur Bénéfriches. Vous pouvez maintenant décrire un projet d’aménagement sur cette friche, pour ensuite découvrir ses impacts socio-économiques.',
+    );
+  });
+
+  it("puts the site name on one line in the intro, as in the subject", () => {
+    const result = buildFirstProjectReminderEmail({
+      firstName: "Grégoire",
+      lastName: "Bailleux",
+      site: { ...friche, name: "  Friche\nde   Blajan  " },
+      contact,
+      webappUrl,
+      unsubscribeUrl,
+    });
+
+    const expectedIntro =
+      "Vous avez récemment renseigné la friche « Friche de Blajan » sur Bénéfriches. Vous pouvez maintenant décrire un projet d’aménagement sur cette friche, pour ensuite découvrir ses impacts socio-économiques.";
+    assert.strictEqual(result.text.split("\n\n")[1], expectedIntro);
+    assert.ok(result.html.includes(expectedIntro));
   });
 
   it("links the primary call to action to project creation for that site", () => {

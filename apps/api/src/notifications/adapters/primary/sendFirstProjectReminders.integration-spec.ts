@@ -135,7 +135,7 @@ describe("SendFirstProjectReminders integration test", () => {
     );
   });
 
-  it("sends a reminder worded for a site for an agricultural site", async () => {
+  it("sends a reminder naming the agricultural site, worded for a site", async () => {
     const userId = await insertUser("gregoire.bailleux@example.fr");
     await insertSite({
       createdBy: userId,
@@ -149,7 +149,9 @@ describe("SendFirstProjectReminders integration test", () => {
 
     assert.strictEqual(fakeMailer.sentEmails.length, 1);
     assert.ok(
-      fakeMailer.sentEmails[0]?.text.includes("Hier vous avez renseigné un site sur Bénéfriches."),
+      fakeMailer.sentEmails[0]?.text.includes(
+        "Vous avez récemment renseigné le site « Exploitation des Quatre Chemins » sur Bénéfriches.",
+      ),
     );
   });
 

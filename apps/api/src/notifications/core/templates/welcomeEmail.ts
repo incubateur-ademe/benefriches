@@ -30,10 +30,8 @@ export function buildWelcomeEmail(input: BuildWelcomeEmailInput): RenderedEmail 
       },
       {
         type: "paragraph",
-        // TODO(product): confirm — reproduced from the mockup; "socio-économiques" looks
-        // like it should agree in the singular ("socio-économique") with "l'évaluation".
-        html: "Avec Bénéfriches, réalisez l’évaluation socio-économiques de votre projet d’aménagement.",
-        text: "Avec Bénéfriches, réalisez l’évaluation socio-économiques de votre projet d’aménagement.",
+        html: "Avec Bénéfriches, réalisez l’évaluation socio-économique de votre projet d’aménagement.",
+        text: "Avec Bénéfriches, réalisez l’évaluation socio-économique de votre projet d’aménagement.",
       },
       {
         type: "paragraph",
@@ -44,9 +42,7 @@ export function buildWelcomeEmail(input: BuildWelcomeEmailInput): RenderedEmail 
         type: "featureBlock",
         title: "Votre évaluation des impacts",
         iconUrl: iconUrl("impacts-evaluation.png"),
-        // TODO(product): confirm — reproduced from the mockup; "indicateur clé" looks
-        // like it should be plural ("indicateurs clés").
-        body: "Sur plusieurs indicateur clé : recettes fiscales, cadre de vie des riverains, emploi, émissions de CO2, perméabilité des sols…",
+        body: "Sur plusieurs indicateurs clés : recettes fiscales, cadre de vie des riverains, emploi, émissions de CO2, perméabilité des sols…",
       },
       {
         type: "featureBlock",
