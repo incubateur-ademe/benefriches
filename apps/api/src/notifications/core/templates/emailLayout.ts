@@ -18,7 +18,6 @@ export type EmailSection =
       name: string;
       role: string;
       organisation: string;
-      organisationUrl: string;
       organisationSuffix: string;
       phone: string;
       email: string;
@@ -143,7 +142,7 @@ function renderSectionHtml(section: EmailSection): string {
             <td style="padding:8px 24px 24px 24px;font-family:${FONT_STACK};font-size:14px;line-height:1.5;color:${TEXT_COLOR};">
               ${escapeHtml(section.name)}<br>
               ${escapeHtml(section.role)}<br>
-              <a href="${escapeHtml(section.organisationUrl)}" style="color:${TEXT_COLOR};text-decoration:underline;">${escapeHtml(section.organisation)}</a>${escapeHtml(section.organisationSuffix)}<br>
+              ${escapeHtml(section.organisation)}${escapeHtml(section.organisationSuffix)}<br>
               ${escapeHtml(section.phone)}<br>
               <a href="mailto:${escapeHtml(section.email)}" style="color:${TEXT_COLOR};text-decoration:underline;">${escapeHtml(section.email)}</a>
             </td>

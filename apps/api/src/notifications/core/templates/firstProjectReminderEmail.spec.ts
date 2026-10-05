@@ -159,6 +159,27 @@ describe("buildFirstProjectReminderEmail", () => {
     );
   });
 
+  it("links only the call to action, the contact and the unsubscribe page", () => {
+    const result = buildFirstProjectReminderEmail({
+      firstName: "Grégoire",
+      lastName: "Bailleux",
+      site: friche,
+      contact,
+      webappUrl,
+      unsubscribeUrl,
+    });
+
+    assert.deepStrictEqual(
+      [...result.html.matchAll(/href="([^"]*)"/g)].map((match) => match[1]),
+      [
+        "http://localhost:3001/creer-projet?siteId=site-friche-1",
+        "mailto:mathilde.lefevre@example.com",
+        "mailto:mathilde.lefevre@example.com",
+        "http://localhost:3001/emails/desinscription?token=v1.x.y",
+      ],
+    );
+  });
+
   it("offers no compatibility evaluation, even for a friche", () => {
     const result = buildFirstProjectReminderEmail({
       firstName: "Grégoire",

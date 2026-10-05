@@ -74,7 +74,7 @@ export function buildFirstProjectReminderEmail(
       },
       { type: "button", label: "Renseigner mon projet", url: ctaUrl.toString() },
       { type: "paragraph", html: escapeHtml(contactParagraph), text: contactParagraph },
-      ...buildContactSections(input.contact, input.webappUrl),
+      ...buildContactSections(input.contact),
     ],
   });
 }

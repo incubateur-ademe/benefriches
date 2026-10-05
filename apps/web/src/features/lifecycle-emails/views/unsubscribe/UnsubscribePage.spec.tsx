@@ -15,7 +15,11 @@ describe("UnsubscribePage", () => {
     render(<UnsubscribePage viewData={{ status: "success" }} onRetry={vi.fn()} />);
 
     expect(screen.getByRole("heading", { name: "Désinscription confirmée" })).toBeVisible();
-    expect(screen.getByText(/Votre compte n’est pas supprimé/)).toBeVisible();
+    expect(screen.getAllByRole("paragraph").map((paragraph) => paragraph.textContent)).toEqual([
+      "Vous ne recevrez plus les e-mails d’accompagnement et de résultats d’impacts de Bénéfriches.",
+      "Les e-mails de connexion que vous demandez continueront d’arriver.",
+    ]);
+    expect(screen.getByRole("link", { name: "Aller sur Bénéfriches" })).toBeVisible();
   });
 
   it("shows the invalid-link error", () => {

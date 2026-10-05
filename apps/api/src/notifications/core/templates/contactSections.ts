@@ -3,10 +3,7 @@ import type { EmailSection } from "src/notifications/core/templates/emailLayout"
 
 // The contact offer shared by the reminder emails: a secondary button opening a mail
 // composer, then the signature. Every value comes from configuration.
-export function buildContactSections(
-  contact: LifecycleEmailContact,
-  webappUrl: string,
-): EmailSection[] {
+export function buildContactSections(contact: LifecycleEmailContact): EmailSection[] {
   return [
     {
       type: "button",
@@ -21,7 +18,6 @@ export function buildContactSections(
       // TODO(product): "(Externe)" describes the contact person, not the product; it may
       // belong in configuration with the role. Hardcoded as the ticket lists it.
       organisation: "Bénéfriches",
-      organisationUrl: webappUrl,
       organisationSuffix: " (Externe)",
       phone: contact.phone,
       email: contact.email,

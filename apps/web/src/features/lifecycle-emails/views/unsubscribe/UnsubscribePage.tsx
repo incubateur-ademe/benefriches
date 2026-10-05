@@ -33,11 +33,7 @@ function UnsubscribePage({ viewData, onRetry }: Props) {
                   Vous ne recevrez plus les e-mails d’accompagnement et de résultats d’impacts de
                   Bénéfriches.
                 </p>
-                <p>
-                  Votre compte n’est pas supprimé : vous pouvez toujours vous connecter et retrouver
-                  vos sites et projets. Les e-mails de connexion que vous demandez continueront
-                  d’arriver.
-                </p>
+                <p>Les e-mails de connexion que vous demandez continueront d’arriver.</p>
                 <a className="fr-link" {...routes.home().link}>
                   Aller sur Bénéfriches
                 </a>

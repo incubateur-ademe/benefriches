@@ -50,7 +50,7 @@ export function buildFirstSiteReminderEmail(
       },
       { type: "button", label: "Renseigner mon site", url: ctaUrl },
       { type: "paragraph", html: escapeHtml(contactParagraph), text: contactParagraph },
-      ...buildContactSections(input.contact, input.webappUrl),
+      ...buildContactSections(input.contact),
     ],
   });
 }

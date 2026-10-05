@@ -53,7 +53,6 @@ describe("renderEmail", () => {
           name: "Mathilde Lefèvre",
           role: "Chargée de déploiement",
           organisation: "Bénéfriches",
-          organisationUrl: "https://example.fr",
           organisationSuffix: " (Externe)",
           phone: "01 23 45 67 89",
           email: "mathilde.lefevre@example.com",
@@ -92,7 +91,7 @@ describe("renderEmail", () => {
     assert.ok(/<a[^>]*href="mailto:mathilde\.lefevre@example\.com"[^>]*>/.test(result.html));
   });
 
-  it("renders the contact signature without any image, the email as a mailto link", () => {
+  it("renders the contact signature with no image and the email as its only link", () => {
     const result = renderEmail({
       subject: "Test",
       unsubscribeUrl: "https://example.fr/emails/desinscription?token=t",
@@ -102,7 +101,6 @@ describe("renderEmail", () => {
           name: "Mathilde Lefèvre",
           role: "Chargée de déploiement",
           organisation: "Bénéfriches",
-          organisationUrl: "http://localhost:3001",
           organisationSuffix: " (Externe)",
           phone: "01 23 45 67 89",
           email: "mathilde.lefevre@example.com",
@@ -111,13 +109,13 @@ describe("renderEmail", () => {
     });
 
     assert.ok(!result.html.includes("<img"));
-    assert.ok(result.html.includes('href="mailto:mathilde.lefevre@example.com"'));
-    assert.ok(
-      /<a[^>]*href="http:\/\/localhost:3001"[^>]*>Bénéfriches<\/a> \(Externe\)/.test(result.html),
+    assert.deepStrictEqual(
+      [...result.html.matchAll(/href="([^"]*)"/g)].map((match) => match[1]),
+      ["mailto:mathilde.lefevre@example.com", "https://example.fr/emails/desinscription?token=t"],
     );
+    assert.ok(result.html.includes("Bénéfriches (Externe)<br>"));
     assert.ok(result.html.includes("Chargée de déploiement"));
     assert.ok(result.html.includes("01 23 45 67 89"));
-    assert.ok(!result.html.includes("tel:"));
   });
 
   it("renders the contact signature as five plain-text lines", () => {
@@ -130,7 +128,6 @@ describe("renderEmail", () => {
           name: "Mathilde Lefèvre",
           role: "Chargée de déploiement",
           organisation: "Bénéfriches",
-          organisationUrl: "http://localhost:3001",
           organisationSuffix: " (Externe)",
           phone: "01 23 45 67 89",
           email: "mathilde.lefevre@example.com",
@@ -155,7 +152,6 @@ describe("renderEmail", () => {
           name: "<i>Mathilde</i>",
           role: "<b>Chef</b>",
           organisation: "<u>Bénéfriches</u>",
-          organisationUrl: 'http://localhost:3001/?a="x"',
           organisationSuffix: " <s>(Externe)</s>",
           phone: "<em>01</em>",
           email: '"x"@example.com',
@@ -167,7 +163,6 @@ describe("renderEmail", () => {
     assert.ok(result.html.includes("&lt;b&gt;Chef&lt;/b&gt;"));
     assert.ok(!result.html.includes("<b>Chef</b>"));
     assert.ok(result.html.includes("&lt;u&gt;Bénéfriches&lt;/u&gt;"));
-    assert.ok(result.html.includes('href="http://localhost:3001/?a=&quot;x&quot;"'));
     assert.ok(result.html.includes(" &lt;s&gt;(Externe)&lt;/s&gt;"));
     assert.ok(result.html.includes("&lt;em&gt;01&lt;/em&gt;"));
     assert.ok(result.html.includes('href="mailto:&quot;x&quot;@example.com"'));

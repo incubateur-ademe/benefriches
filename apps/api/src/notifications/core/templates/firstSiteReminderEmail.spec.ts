@@ -82,6 +82,26 @@ describe("buildFirstSiteReminderEmail", () => {
     );
   });
 
+  it("links only the call to action, the contact and the unsubscribe page", () => {
+    const result = buildFirstSiteReminderEmail({
+      firstName: "Grégoire",
+      lastName: "Bailleux",
+      contact,
+      webappUrl,
+      unsubscribeUrl,
+    });
+
+    assert.deepStrictEqual(
+      [...result.html.matchAll(/href="([^"]*)"/g)].map((match) => match[1]),
+      [
+        "http://localhost:3001/creer-site-foncier",
+        "mailto:mathilde.lefevre@example.com",
+        "mailto:mathilde.lefevre@example.com",
+        "http://localhost:3001/emails/desinscription?token=v1.x.y",
+      ],
+    );
+  });
+
   it("opens a mail composer addressed to the configured contact", () => {
     const result = buildFirstSiteReminderEmail({
       firstName: "Grégoire",
