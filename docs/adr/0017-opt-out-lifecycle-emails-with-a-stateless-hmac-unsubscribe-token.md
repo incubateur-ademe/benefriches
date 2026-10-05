@@ -66,7 +66,7 @@ ADR-0016 routes every lifecycle email through `LifecycleEmailSender`, which skip
 ## Links
 
 - Related ADRs: [ADR-0016](0016-route-all-lifecycle-emails-through-a-single-sender-with-an-idempotent-delivery-ledger.md), [ADR-0001](0001-clean-hexagonal-architecture.md)
-- docs/lifecycle-emails.md (section "Unsubscribe flag")
+- docs/lifecycle-emails.md (sections "Business rules, and why" and "What must not break")
 - apps/api/src/notifications/adapters/secondary/unsubscribe-token/HmacUnsubscribeTokenService.ts
 - apps/api/src/notifications/adapters/primary/notifications.controller.ts
 - apps/api/src/notifications/core/templates/emailLayout.ts

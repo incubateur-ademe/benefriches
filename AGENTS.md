@@ -21,6 +21,8 @@ pnpm monorepo; each workspace has its own AGENTS.md:
 
 Full-stack feature walkthrough: [docs/feature-example.md](docs/feature-example.md).
 
+Feature docs (`docs/<feature>.md`, e.g. [lifecycle-emails.md](docs/lifecycle-emails.md)) give the business intent the code can't: what the feature does for users, its business rules and why, where to look, what must not break. Keep one under ~250 lines. Leave out what the code or tests already say (SQL, log lines, copy, file trees, test lists), ticket history, and follow-ups (Linear). Update it only when the intent, a rule or an invariant changes. Manual QA steps go in the Linear ticket, not the repo.
+
 Skills live in `.agents/skills/` (canonical); `.claude/skills/<name>` are symlinks maintained by `pnpm agent-skills:sync` — edit under `.agents/skills/` and run it after adding a skill.
 
 ## Rules and nested instructions
