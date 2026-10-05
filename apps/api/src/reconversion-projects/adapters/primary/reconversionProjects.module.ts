@@ -200,6 +200,8 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         SqlSiteImpactsQuery,
         GetCarbonStorageFromSoilDistributionService,
         SqlCityImpactsQuery,
+        // Provided by TerritoryModule, which honours MOCK_OFGL_API. Don't redeclare it here: a
+        // local provider would shadow that export.
         OFGLApi,
         RealDateProvider,
       ],
@@ -304,7 +306,6 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     },
     RandomUuidGenerator,
     RealEventPublisher,
-    OFGLApi,
   ],
   // The impacts computation behind GET /:id/impacts, used by the notifications module's project
   // impacts summary email.

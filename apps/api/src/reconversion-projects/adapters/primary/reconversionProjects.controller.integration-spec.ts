@@ -1,8 +1,10 @@
 /* oxlint-disable typescript/no-non-null-assertion */
+import { HttpService } from "@nestjs/axios";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import type { Knex } from "knex";
 import assert from "node:assert/strict";
-import { after, before, beforeEach, describe, it } from "node:test";
+import { after, before, beforeEach, describe, it, mock } from "node:test";
+import { of } from "rxjs";
 import {
   reconversionProjectTemplateSchema,
   httpSaveReconversionProjectPropsSchema,
@@ -846,6 +848,115 @@ describe("ReconversionProjects controller", () => {
       assert.ok(result.developmentScore !== undefined);
       assert.ok(result.impacts !== undefined);
       assert.ok(result.contextData !== undefined);
+    });
+
+    // These tests boot their own app to set MOCK_OFGL_API. They don't close it: every app shares
+    // the Knex pool singleton of SqlConnectionModule, which the outer after() hook destroys.
+    describe("municipality capital expenditures", () => {
+      const OFGL_URL =
+        "https://data.ofgl.fr/api/explore/v2.1/catalog/datasets/ofgl-base-communes-consolidee/records";
+
+      const insertUrbanProjectOnSite = async (db: Knex, userId: string) => {
+        const siteId = uuid();
+        const projectId = uuid();
+        await db("sites").insert({
+          id: siteId,
+          created_by: userId,
+          nature: "FRICHE",
+          name: "Site A",
+          surface_area: 14000,
+          owner_structure_type: "company",
+          created_at: new Date("2024-02-10"),
+          creation_mode: "express",
+        });
+        await db("addresses").insert({
+          id: uuid(),
+          ban_id: "40192",
+          value: "Mont-de-Marsan",
+          city: "Mont-de-Marsan",
+          city_code: "40192",
+          post_code: "40000",
+          lat: 43.891274,
+          long: -0.50031,
+          site_id: siteId,
+        });
+        await db("reconversion_projects").insert({
+          id: projectId,
+          created_by: userId,
+          name: "Projet urbain",
+          related_site_id: siteId,
+          created_at: new Date("2024-03-01"),
+          creation_mode: "custom",
+        });
+        await db("reconversion_project_development_plans").insert({
+          id: uuid(),
+          reconversion_project_id: projectId,
+          type: "URBAN_PROJECT",
+          features: { buildingsFloorAreaDistribution: { RESIDENTIAL: 1000 } },
+        });
+        return projectId;
+      };
+
+      it("uses the fake OFGL provider when MOCK_OFGL_API is true", async () => {
+        const httpGet = mock.fn(() => {
+          throw new Error("HTTP requests are not allowed in tests");
+        });
+        const mockedOfglApp = await createTestApp({
+          configOverrides: { MOCK_OFGL_API: "true" },
+          providerOverrides: [{ token: HttpService, useValue: { get: httpGet } }],
+        });
+        await mockedOfglApp.init();
+        const userId = uuid();
+        const projectId = await insertUrbanProjectOnSite(sqlConnection, userId);
+        const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(mockedOfglApp)(user);
+
+        const response = await supertest(mockedOfglApp.getHttpServer())
+          .get(`/api/reconversion-projects/${projectId}/impacts`)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send();
+
+        assert.strictEqual(response.status, 200);
+        const result = response.body as GetReconversionProjectImpactsResultDto;
+        assert.deepStrictEqual(result.contextData.municipalityCapitalExpenditures, {
+          amount: 8_000_000,
+          referenceYear: "2025",
+        });
+        assert.strictEqual(httpGet.mock.callCount(), 0);
+      });
+
+      it("fetches them from the OFGL API when MOCK_OFGL_API is not true", async () => {
+        const httpGet = mock.fn((_url: string) =>
+          of({
+            data: { total_count: 1, results: [{ montant: 1_234_567, annee_join: "2023" }] },
+          }),
+        );
+        const realOfglApp = await createTestApp({
+          configOverrides: { MOCK_OFGL_API: "false" },
+          providerOverrides: [{ token: HttpService, useValue: { get: httpGet } }],
+        });
+        await realOfglApp.init();
+        const userId = uuid();
+        const projectId = await insertUrbanProjectOnSite(sqlConnection, userId);
+        const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(realOfglApp)(user);
+
+        const response = await supertest(realOfglApp.getHttpServer())
+          .get(`/api/reconversion-projects/${projectId}/impacts`)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send();
+
+        assert.strictEqual(response.status, 200);
+        const result = response.body as GetReconversionProjectImpactsResultDto;
+        assert.deepStrictEqual(result.contextData.municipalityCapitalExpenditures, {
+          amount: 1_234_567,
+          referenceYear: "2023",
+        });
+        assert.deepStrictEqual(
+          httpGet.mock.calls.map((call) => call.arguments[0]),
+          [OFGL_URL],
+        );
+      });
     });
   });
 

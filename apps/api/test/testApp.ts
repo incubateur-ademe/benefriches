@@ -17,8 +17,6 @@ import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapt
 import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
 import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
 import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/MutafrichesEvaluationQuery";
-import { OFGLApi } from "src/territory/adapters/secondary/municipality-capital-expenditures-query/ApiMunicipalCapitalExpendituresQuery";
-import { FakeMunicipalityCapitalExpendituresProvider } from "src/territory/adapters/secondary/municipality-capital-expenditures-query/FakeMunicipalityCapitalExpendituresProvider";
 
 const ERROR_HTTP_SERVICE = {
   get: () => {
@@ -55,16 +53,28 @@ type ProviderOverride =
       useClass: any;
     };
 
-type CreateTestAppInput = {
-  providerOverrides?: ProviderOverride[];
+// Config values that take precedence over .env.test. External APIs with a MOCK_* flag are faked
+// through that flag rather than a provider override, so tests go through the same wiring as the
+// e2e stack.
+const DEFAULT_TEST_CONFIG: Record<string, string> = {
+  MOCK_OFGL_API: "true",
 };
 
-export async function createTestApp({ providerOverrides }: CreateTestAppInput = {}) {
+type CreateTestAppInput = {
+  providerOverrides?: ProviderOverride[];
+  configOverrides?: Record<string, string>;
+};
+
+export async function createTestApp({
+  providerOverrides,
+  configOverrides,
+}: CreateTestAppInput = {}) {
+  const testConfig = { ...DEFAULT_TEST_CONFIG, ...configOverrides };
   const testingModule = Test.createTestingModule({
     imports: [AppModule],
   })
     .overrideModule(ConfigModule)
-    .useModule(ConfigModule.forRoot({ envFilePath: ".env.test" }))
+    .useModule(ConfigModule.forRoot({ envFilePath: ".env.test", load: [() => testConfig] }))
     .overrideProvider(HttpService)
     .useValue(ERROR_HTTP_SERVICE)
     .overrideProvider(PhotovoltaicGeoInfoSystemApi)
@@ -72,9 +82,7 @@ export async function createTestApp({ providerOverrides }: CreateTestAppInput = 
     .overrideProvider(ConnectCrm)
     .useClass(FakeCrm)
     .overrideProvider(MutafrichesEvaluationQuery)
-    .useClass(InMemoryMutabilityEvaluationQuery)
-    .overrideProvider(OFGLApi)
-    .useClass(FakeMunicipalityCapitalExpendituresProvider);
+    .useClass(InMemoryMutabilityEvaluationQuery);
 
   if (providerOverrides) {
     providerOverrides.forEach((override) => {

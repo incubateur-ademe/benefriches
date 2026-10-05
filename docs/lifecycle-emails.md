@@ -154,7 +154,5 @@ All under `apps/api/src/notifications/` unless stated.
 
 - A retry does not re-check eligibility: a reminder whose first attempt failed can still go out
   (within about 4 h) after the user has acted.
-- On the e2e stack, project creation calls the real OFGL API: `ReconversionProjectsModule`
-  declares its own `OFGLApi` provider, shadowing the mock (pre-existing, follow-up in DESIGN).
 - Project creation takes the author from the request body without checking it against the
   session (pre-existing, follow-up in DESIGN); the impacts summary goes to that author.
