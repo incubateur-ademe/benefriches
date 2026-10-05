@@ -74,12 +74,16 @@ export function applyStepChanges<StepId extends string, TContext, TAnswers>(
         MutateStateHelper.invalidateStep(form, stepId);
         break;
       case "recompute": {
-        const newValue = answerRegistry[stepId].getRecomputedStepAnswers?.({
-          context,
-          answers: form.steps,
-        });
+        const handler = answerRegistry[stepId];
+        const params = { context, answers: form.steps };
+        const newValue = handler.getRecomputedStepAnswers?.(params);
         if (newValue) {
-          MutateStateHelper.recomputeStep(form, stepId, newValue);
+          MutateStateHelper.recomputeStep(
+            form,
+            stepId,
+            newValue,
+            handler.getDefaultAnswers?.(params) ?? newValue,
+          );
         }
       }
     }

@@ -10,8 +10,11 @@ export const InvolvesReinstatementHandler: AnswerStepHandler<"RENEWABLE_ENERGY_I
   {
     stepId: "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
 
-    getNextStepId() {
-      return "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION";
+    getNextStepId(params) {
+      if (params.context.siteData?.hasContaminatedSoils) {
+        return "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION";
+      }
+      return "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION";
     },
 
     getDependencyRules(params, answers) {

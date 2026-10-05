@@ -180,4 +180,56 @@ describe("update project reducer - photovoltaic", () => {
       payload: { name: "Centrale de test", description: undefined },
     });
   });
+
+  it("recomputes a saved generated reinstatement expense and keeps an edited one when the decontaminated surface changes", () => {
+    const initialState = updateProjectReducer(undefined, { type: "@@INIT" });
+    const hydratedState = updateProjectReducer(
+      initialState,
+      reconversionProjectUpdateInitiated.fulfilled(
+        {
+          projectData: {
+            ...BASE_PROJECT_DATA,
+            involvesReinstatement: true,
+            reinstatementContractOwner: { name: "Contract Owner", structureType: "company" },
+            decontaminatedSoilSurface: 1000,
+            reinstatementCosts: [
+              // edited by the user: the site has no buildings to demolish
+              { purpose: "demolition", amount: 12345 },
+              // generated: 1000 m2 x 66 €/m2
+              { purpose: "remediation", amount: 66000 },
+            ],
+          },
+          siteData: {
+            ...BASE_SITE_DATA,
+            hasContaminatedSoils: true,
+            contaminatedSoilSurface: 2000,
+          },
+        },
+        "request-1",
+        "project-1",
+      ),
+    );
+
+    const pendingState = updateProjectReducer(
+      hydratedState,
+      updateProjectFormRenewableEnergyActions.stepCompletionRequested({
+        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
+        answers: { decontaminationPlan: "unknown" },
+      }),
+    );
+    const confirmedState = updateProjectReducer(
+      pendingState,
+      updateProjectFormRenewableEnergyActions.stepCompletionConfirmed(),
+    );
+
+    expect(
+      confirmedState.renewableEnergyProject.steps.RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT?.payload,
+    ).toEqual({
+      reinstatementExpenses: [
+        { purpose: "demolition", amount: 12345 },
+        // 500 m2 (25% of 2000 m2) x 66 €/m2
+        { purpose: "remediation", amount: 33000 },
+      ],
+    });
+  });
 });

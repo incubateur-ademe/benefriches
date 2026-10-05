@@ -16,8 +16,7 @@ import { YearlyProjectedRevenueHandler } from "./revenue/revenue-yearly-projecte
 import { ScheduleProjectionHandler } from "./schedule/schedule-projection/scheduleProjection.handler";
 import { InvolvesReinstatementHandler } from "./soils-decontamination/involves-reinstatement/involvesReinstatement.handler";
 import { SoilsDecontaminationIntroductionHandler } from "./soils-decontamination/soils-decontamination-introduction/soilsDecontaminationIntroduction.handler";
-import { SoilsDecontaminationSelectionHandler } from "./soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.handler";
-import { SoilsDecontaminationSurfaceAreaHandler } from "./soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.handler";
+import { SoilsDecontaminationHandler } from "./soils-decontamination/soils-decontamination/soilsDecontamination.handler";
 import { ClimateAndBiodiversityImpactNoticeHandler } from "./soils-transformation/soils-transformation-climate-and-biodiversity-impact-notice/soilsTransformationClimateAndBiodiversityImpactNotice.handler";
 import { CustomSoilsSelectionHandler } from "./soils-transformation/soils-transformation-custom-soils-selection/soilsTransformationCustomSoilsSelection.handler";
 import { CustomSurfaceAreaAllocationHandler } from "./soils-transformation/soils-transformation-custom-surface-area-allocation/soilsTransformationCustomSurfaceAreaAllocation.handler";
@@ -56,8 +55,7 @@ export const answerStepHandlers: AnswerStepHandlerMap = {
 
   // Soils decontamination
   RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: InvolvesReinstatementHandler,
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: SoilsDecontaminationSelectionHandler,
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA: SoilsDecontaminationSurfaceAreaHandler,
+  RENEWABLE_ENERGY_SOILS_DECONTAMINATION: SoilsDecontaminationHandler,
 
   // Soils transformation
   RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION: NonSuitableSoilsSelectionHandler,

@@ -158,9 +158,6 @@ export const test = authTest.extend<PhotovoltaicProjectUpdateFixtures>({
       expectedAnnualProduction: ORIGINAL_EXPECTED_ANNUAL_PRODUCTION,
       contractDuration: 20,
       yearlyMaintenanceExpenseAmount: ORIGINAL_MAINTENANCE_EXPENSE_AMOUNT,
-      // No decontamination planned: marks the friche-only decontamination-selection step
-      // answered, so the project opens fully hydrated on the final summary.
-      decontaminatedSoilSurface: 0,
     });
     await use(project);
   },

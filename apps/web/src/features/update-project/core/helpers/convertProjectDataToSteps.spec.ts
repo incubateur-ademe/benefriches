@@ -182,3 +182,70 @@ describe("convertProjectDataToSteps - buildings reuse and construction", () => {
     });
   });
 });
+
+describe("convertProjectDataToSteps - soils decontamination", () => {
+  it("omits the decontamination step on a friche without contaminated soils", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, decontaminatedSoilSurface: 0 },
+      siteData: {
+        ...BASE_SITE_DATA,
+        nature: "FRICHE",
+        hasContaminatedSoils: false,
+        contaminatedSoilSurface: undefined,
+      },
+    });
+
+    expect(steps.URBAN_PROJECT_SOILS_DECONTAMINATION).toBeUndefined();
+  });
+
+  it("pre-fills 'partial' with the saved surface on a non-friche site with contaminated soils", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, decontaminatedSoilSurface: 400 },
+      siteData: {
+        ...BASE_SITE_DATA,
+        nature: "URBAN_ZONE",
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 1000,
+      },
+    });
+
+    expect(steps.URBAN_PROJECT_SOILS_DECONTAMINATION).toEqual({
+      payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 400 },
+      completed: true,
+    });
+  });
+
+  it("pre-fills 'unknown' when the saved surface equals the 25% default", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, decontaminatedSoilSurface: 250 },
+      siteData: {
+        ...BASE_SITE_DATA,
+        nature: "FRICHE",
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 1000,
+      },
+    });
+
+    expect(steps.URBAN_PROJECT_SOILS_DECONTAMINATION).toEqual({
+      payload: { decontaminationPlan: "unknown", decontaminatedSurfaceArea: 250 },
+      completed: true,
+    });
+  });
+
+  it("pre-fills 'none' when the saved surface is 0 on a friche with contaminated soils", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, decontaminatedSoilSurface: 0 },
+      siteData: {
+        ...BASE_SITE_DATA,
+        nature: "FRICHE",
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 1000,
+      },
+    });
+
+    expect(steps.URBAN_PROJECT_SOILS_DECONTAMINATION).toEqual({
+      payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
+      completed: true,
+    });
+  });
+});

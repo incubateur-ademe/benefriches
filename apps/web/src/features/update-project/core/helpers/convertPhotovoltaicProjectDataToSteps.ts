@@ -7,12 +7,11 @@ import type {
   SoilsDistribution,
   SoilType,
 } from "shared";
-import {
-  canSiteAccomodatePhotovoltaicPanels,
-  computeDefaultDecontaminatedSurfaceArea,
-} from "shared";
+import { canSiteAccomodatePhotovoltaicPanels } from "shared";
 
+import { inferDecontaminationPlan } from "@/features/create-project/core/project-form/soilsDecontamination";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
+import { ReinstatementExpensesHandler } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
 import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 
 import type { UpdateProjectView } from "../updateProject.types";
@@ -79,38 +78,23 @@ export const convertPhotovoltaicProjectDataToSteps = ({
     payload: { involvesReinstatement },
   };
 
-  // Decontamination is reached whenever the site is a friche (always, via the reinstatement
-  // step) or carries a known contaminated surface — mirroring ContractDurationHandler and
-  // urban's convertProjectDataToSteps site-nature gate. It is independent of the
-  // involvesReinstatement answer itself, which the wizard still asks unconditionally on friches.
-  if (siteData.nature === "FRICHE" || Boolean(siteData.contaminatedSoilSurface)) {
-    const contaminatedSoilSurface = siteData.contaminatedSoilSurface ?? 0;
-    const defaultDecontaminatedSurfaceArea =
-      computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface);
+  // The wizard enters decontamination only when the site has contaminated soils, whatever its
+  // nature (see InvolvesReinstatementHandler and ContractDurationHandler), independently of the
+  // involvesReinstatement answer.
+  if (siteData.hasContaminatedSoils) {
+    // A missing saved surface is read as no decontamination.
     const decontaminatedSurfaceArea = projectData.decontaminatedSoilSurface ?? 0;
 
-    steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION = {
+    steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION = {
       completed: true,
       payload: {
-        decontaminationPlan:
-          decontaminatedSurfaceArea === 0
-            ? "none"
-            : decontaminatedSurfaceArea === defaultDecontaminatedSurfaceArea
-              ? "unknown"
-              : "partial",
+        decontaminationPlan: inferDecontaminationPlan(
+          decontaminatedSurfaceArea,
+          siteData.contaminatedSoilSurface ?? 0,
+        ),
         decontaminatedSurfaceArea,
       },
     };
-
-    if (
-      decontaminatedSurfaceArea !== 0 &&
-      decontaminatedSurfaceArea !== defaultDecontaminatedSurfaceArea
-    ) {
-      steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA = {
-        completed: true,
-        payload: { decontaminatedSurfaceArea },
-      };
-    }
   }
 
   if (involvesReinstatement) {
@@ -266,6 +250,18 @@ export const convertPhotovoltaicProjectDataToSteps = ({
     completed: true,
     payload: { name: projectData.name, description: projectData.description },
   };
+
+  // The saved project does not record which reinstatement amounts were generated. Recomputing
+  // them after an answer change (e.g. the decontaminated surface) only replaces the amounts equal
+  // to the step's defaultValues, so rebuild those from the hydrated answers: a saved amount equal
+  // to what the wizard generates counts as generated, any other amount as a user edit.
+  const reinstatementExpensesStep = steps.RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT;
+  if (reinstatementExpensesStep) {
+    reinstatementExpensesStep.defaultValues = ReinstatementExpensesHandler.getDefaultAnswers?.({
+      context: { siteData },
+      answers: steps,
+    });
+  }
 
   return steps;
 };

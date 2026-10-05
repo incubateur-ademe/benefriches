@@ -59,14 +59,18 @@ export const MutateStateHelper = {
     step.payload = undefined;
   },
 
+  // `defaultValues` must hold the purely generated answers: handlers compare `payload` against
+  // them to tell generated amounts from user edits, so storing a recomputed payload that kept
+  // user edits as defaults would make those edits look generated on the next recompute.
   recomputeStep<StepId, TAnswers, K extends keyof TAnswers>(
     form: MutableWizardFormState<StepId, TAnswers>,
     stepId: K,
     answers: TAnswers[K],
+    defaultValues: TAnswers[K] = answers,
   ) {
     form.steps[stepId] = {
       completed: true,
-      defaultValues: answers,
+      defaultValues,
       payload: answers,
     };
   },

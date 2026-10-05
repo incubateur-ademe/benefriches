@@ -15,8 +15,7 @@ import { revenueFinancialAssistanceSchema } from "./step-handlers/revenue/revenu
 import { revenueYearlyProjectedRevenueSchema } from "./step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.schema";
 import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-projection/scheduleProjection.schema";
 import { involvesReinstatementSchema } from "./step-handlers/soils-decontamination/involves-reinstatement/involvesReinstatement.schema";
-import { soilsDecontaminationSelectionSchema } from "./step-handlers/soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.schema";
-import { soilsDecontaminationSurfaceAreaSchema } from "./step-handlers/soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.schema";
+import { soilsDecontaminationSchema } from "./step-handlers/soils-decontamination/soils-decontamination/soilsDecontamination.schema";
 import { customSoilsSelectionSchema } from "./step-handlers/soils-transformation/soils-transformation-custom-soils-selection/soilsTransformationCustomSoilsSelection.schema";
 import { customSurfaceAreaAllocationSchema } from "./step-handlers/soils-transformation/soils-transformation-custom-surface-area-allocation/soilsTransformationCustomSurfaceAreaAllocation.schema";
 import { nonSuitableSoilsSelectionSchema } from "./step-handlers/soils-transformation/soils-transformation-non-suitable-soils-selection/soilsTransformationNonSuitableSoilsSelection.schema";
@@ -56,8 +55,7 @@ export const answersByStepSchemas = {
     photovoltaicExpectedAnnualProductionSchema,
   RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION: photovoltaicContractDurationSchema,
   RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: involvesReinstatementSchema,
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionSchema,
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA: soilsDecontaminationSurfaceAreaSchema,
+  RENEWABLE_ENERGY_SOILS_DECONTAMINATION: soilsDecontaminationSchema,
   RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION: nonSuitableSoilsSelectionSchema,
   RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE: nonSuitableSoilsSurfaceSchema,
   RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION:

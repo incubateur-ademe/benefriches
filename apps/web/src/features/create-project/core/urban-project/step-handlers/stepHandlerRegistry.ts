@@ -28,8 +28,7 @@ import { SiteResaleSelectionHandler } from "./site-and-buildings-resale/site-res
 import { InvolvesReinstatementHandler } from "./soils/involves-reinstatement/involvesReinstatement.handler";
 import { SoilsCarbonSummaryHandler } from "./soils/soils-carbon-summary/soilsCarbonSummary.handler";
 import { SoilsDecontaminationIntroductionHandler } from "./soils/soils-decontamination-introduction/soilsDecontaminationIntroduction.handler";
-import { SoilsDecontaminationSelectionHandler } from "./soils/soils-decontamination-selection/soilsDecontaminationSelection.handler";
-import { SoilsDecontaminationSurfaceAreaHandler } from "./soils/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.handler";
+import { SoilsDecontaminationHandler } from "./soils/soils-decontamination/soilsDecontamination.handler";
 import { SoilsSummaryHandler } from "./soils/soils-summary/soilsSummary.handler";
 import { PublicGreenSpacesIntroductionHandler } from "./spaces/public-green-spaces-introduction/publicGreenSpacesIntroduction.handler";
 import { PublicGreenSpacesSoilsDistributionHandler } from "./spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.handler";
@@ -71,8 +70,7 @@ export const answerStepHandlers: AnswerStepHandlerMap = {
     NewBuildingsUsesFloorSurfaceAreaHandler,
   // custom - decontamination
   URBAN_PROJECT_INVOLVES_REINSTATEMENT: InvolvesReinstatementHandler,
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: SoilsDecontaminationSelectionHandler,
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: SoilsDecontaminationSurfaceAreaHandler,
+  URBAN_PROJECT_SOILS_DECONTAMINATION: SoilsDecontaminationHandler,
   // stakeholders and site/buildings resale
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: StakeholdersProjectDeveloperHandler,
   URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: StakeholdersBuildingsDeveloperHandler,

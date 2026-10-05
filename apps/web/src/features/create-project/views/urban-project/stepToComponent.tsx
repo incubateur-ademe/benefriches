@@ -92,11 +92,8 @@ const InvolvesReinstatement = lazy(
 const SoilsDecontaminationIntroduction = lazy(
   () => import("@/features/create-project/views/urban-project/soils/decontamination-introduction"),
 );
-const SoilsDecontaminationSelection = lazy(
-  () => import("@/features/create-project/views/urban-project/soils/decontamination-selection"),
-);
-const SoilsDecontaminationSurfaceArea = lazy(
-  () => import("@/features/create-project/views/urban-project/soils/decontamination-surface-area"),
+const SoilsDecontamination = lazy(
+  () => import("@/features/create-project/views/urban-project/soils/decontamination"),
 );
 const UsesIntroduction = lazy(
   () => import("@/features/create-project/views/urban-project/uses/introduction"),
@@ -264,18 +261,11 @@ export const getUrbanProjectStepView = (
           <SoilsDecontaminationIntroduction />
         </>
       );
-    case "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION":
+    case "URBAN_PROJECT_SOILS_DECONTAMINATION":
       return (
         <>
-          <HtmlTitle>{`Choix de dépolluer - Travaux - ${mainTitle}`}</HtmlTitle>
-          <SoilsDecontaminationSelection />
-        </>
-      );
-    case "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA":
-      return (
-        <>
-          <HtmlTitle>{`Surface à dépolluer - Travaux - ${mainTitle}`}</HtmlTitle>
-          <SoilsDecontaminationSurfaceArea />
+          <HtmlTitle>{`Dépollution des sols - Travaux - ${mainTitle}`}</HtmlTitle>
+          <SoilsDecontamination />
         </>
       );
     case "URBAN_PROJECT_BUILDINGS_INTRODUCTION":

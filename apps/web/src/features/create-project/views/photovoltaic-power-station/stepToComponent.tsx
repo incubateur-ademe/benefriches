@@ -28,8 +28,7 @@ const InvolvesReinstatementContainer = lazy(
   () => import("./soils-decontamination/involves-reinstatement"),
 );
 const SoilsDecontaminationIntroduction = lazy(() => import("./soils-decontamination/introduction"));
-const SoilsDecontaminationSelection = lazy(() => import("./soils-decontamination/selection"));
-const SoilsDecontaminationSurfaceArea = lazy(() => import("./soils-decontamination/surface-area"));
+const SoilsDecontamination = lazy(() => import("./soils-decontamination/decontamination"));
 const ProjectSoilsCarbonStorageContainer = lazy(() => import("./soils/soils-carbon-storage"));
 const ProjectSoilsSummaryContainer = lazy(() => import("./soils/soils-summary"));
 const ClimateAndBiodiversityImpactNotice = lazy(
@@ -253,18 +252,11 @@ export const getPhotovoltaicPowerStationStepView = (
           <SoilsDecontaminationIntroduction />
         </>
       );
-    case "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION":
+    case "RENEWABLE_ENERGY_SOILS_DECONTAMINATION":
       return (
         <>
-          <HtmlTitle>{`Mode de saisie - Dépollution - ${mainTitle}`}</HtmlTitle>
-          <SoilsDecontaminationSelection />
-        </>
-      );
-    case "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA":
-      return (
-        <>
-          <HtmlTitle>{`Surface - Dépollution - ${mainTitle}`}</HtmlTitle>
-          <SoilsDecontaminationSurfaceArea />
+          <HtmlTitle>{`Dépollution des sols - Travaux - ${mainTitle}`}</HtmlTitle>
+          <SoilsDecontamination />
         </>
       );
     case "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION":

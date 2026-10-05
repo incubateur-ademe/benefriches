@@ -41,51 +41,60 @@ describe("Renewable energy creation - Steps - soils transformation introduction"
   });
 
   describe("back navigation", () => {
-    it("should navigate back to contract duration when no decontamination", () => {
+    it("should navigate back to contract duration when site is not a friche and has no contaminated soils", () => {
       const store = new StoreBuilder()
+        .withSiteData({
+          ...relatedSiteData,
+          nature: "AGRICULTURAL_OPERATION",
+          hasContaminatedSoils: false,
+          contaminatedSoilSurface: undefined,
+        })
         .withStepsSequence([
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
           "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
         ])
-        .withSiteData({ ...relatedSiteData, contaminatedSoilSurface: undefined })
         .build();
       store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION");
     });
 
-    it("should navigate back to decontamination surface area when decontamination was done", () => {
+    it("should navigate back to involves reinstatement when site is a friche with no contaminated soils", () => {
       const store = new StoreBuilder()
-        .withSiteData({ ...relatedSiteData, contaminatedSoilSurface: 5000 })
+        .withSiteData({
+          ...relatedSiteData,
+          nature: "FRICHE",
+          hasContaminatedSoils: false,
+          contaminatedSoilSurface: undefined,
+        })
         .withStepsSequence([
-          "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+          "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
           "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
         ])
-        .withSteps({
-          RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: {
-            completed: true,
-            payload: { decontaminationPlan: "partial" },
-          },
-        })
         .build();
       store.dispatch(previousStepRequested());
-      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA");
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT");
     });
 
-    it("should navigate back to contract duration when decontamination is computed with default", () => {
+    it("should navigate back to the decontamination step when site has contaminated soils", () => {
       const store = new StoreBuilder()
+        .withSiteData({
+          ...relatedSiteData,
+          hasContaminatedSoils: true,
+          contaminatedSoilSurface: 5000,
+        })
         .withStepsSequence([
-          "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+          "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
           "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
         ])
         .withSteps({
-          RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: {
+          RENEWABLE_ENERGY_SOILS_DECONTAMINATION: {
             completed: true,
-            payload: { decontaminationPlan: "unknown" },
+            payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1200 },
           },
         })
         .build();
       store.dispatch(previousStepRequested());
-      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION");
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION");
     });
   });
 });

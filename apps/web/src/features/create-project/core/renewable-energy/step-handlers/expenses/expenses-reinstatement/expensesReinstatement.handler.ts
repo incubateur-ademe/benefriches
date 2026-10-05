@@ -1,9 +1,13 @@
-import type { ComputedReinstatementExpenses } from "shared";
+import type { ComputedReinstatementExpenses, ReinstatementExpense } from "shared";
 import { computeProjectReinstatementExpenses } from "shared";
 
 import { ReadStateHelper } from "../../../helpers/readState";
 import type { AnswersByStep } from "../../../renewableEnergySteps";
-import type { AnswerStepHandler, StepHandlerParams } from "../../stepHandler.type";
+import type {
+  AnswerStepHandler,
+  StepHandlerParams,
+  StepInvalidationRule,
+} from "../../stepHandler.type";
 
 function getProjectSoilDistribution(params: StepHandlerParams) {
   const customAllocation = ReadStateHelper.getStepAnswers(
@@ -25,7 +29,7 @@ const getDefaultReinstatementExpenses = (params: StepHandlerParams) => {
   const soilsDistribution = getProjectSoilDistribution(params);
   const decontaminatedSurface = ReadStateHelper.getStepAnswers(
     params.answers,
-    "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+    "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
   )?.decontaminatedSurfaceArea;
 
   return computeProjectReinstatementExpenses(
@@ -52,12 +56,66 @@ const formatDefaultValue = (
   };
 };
 
+const findAmount = (expenses: ReinstatementExpense[] | undefined, purpose: string) =>
+  expenses?.find((expense) => expense.purpose === purpose)?.amount;
+
+// Recompute the reinstatement expenses when at least one amount is still the generated default:
+// user-edited amounts are kept by getRecomputedStepAnswers.
+export const getReinstatementExpensesRecomputationRules = (
+  params: StepHandlerParams,
+): StepInvalidationRule[] => {
+  const reinstatementExpensesStep = ReadStateHelper.getStep(
+    params.answers,
+    "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
+  );
+  const hasGeneratedValues = reinstatementExpensesStep?.payload?.reinstatementExpenses?.some(
+    (expense) =>
+      expense.amount ===
+      findAmount(reinstatementExpensesStep.defaultValues?.reinstatementExpenses, expense.purpose),
+  );
+  return hasGeneratedValues
+    ? [{ stepId: "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT", action: "recompute" }]
+    : [];
+};
+
 export const ReinstatementExpensesHandler: AnswerStepHandler<"RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT"> =
   {
     stepId: "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
 
     getDefaultAnswers(params) {
       return formatDefaultValue(getDefaultReinstatementExpenses(params));
+    },
+
+    // Replaces the amounts still equal to their previous generated default with the new
+    // default; amounts the user edited are kept.
+    getRecomputedStepAnswers(params) {
+      const oldStepState = ReadStateHelper.getStep(
+        params.answers,
+        "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
+      );
+      const newDefaultAnswers = formatDefaultValue(getDefaultReinstatementExpenses(params));
+
+      if (!oldStepState) {
+        return newDefaultAnswers;
+      }
+
+      return {
+        reinstatementExpenses: (oldStepState.payload?.reinstatementExpenses ?? []).map(
+          (oldExpense) => {
+            const oldDefaultAmount = findAmount(
+              oldStepState.defaultValues?.reinstatementExpenses,
+              oldExpense.purpose,
+            );
+            if (oldExpense.amount !== oldDefaultAmount) {
+              return oldExpense;
+            }
+            return {
+              purpose: oldExpense.purpose,
+              amount: findAmount(newDefaultAnswers.reinstatementExpenses, oldExpense.purpose) ?? 0,
+            };
+          },
+        ),
+      };
     },
 
     getPreviousStepId(params) {

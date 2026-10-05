@@ -38,8 +38,7 @@ import { createSelectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialVa
 import { createSelectPVYearlyProjectedRevenueViewData } from "./step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.selector";
 import { createSelectPVScheduleProjectionViewData } from "./step-handlers/schedule/schedule-projection/scheduleProjection.selector";
 import { createSelectInvolvesReinstatementViewData } from "./step-handlers/soils-decontamination/involves-reinstatement/involvesReinstatement.selectors";
-import { createSelectSoilsDecontaminationSelectionViewData } from "./step-handlers/soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.selectors";
-import { createSelectPVDecontaminationSurfaceAreaViewData } from "./step-handlers/soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.selector";
+import { createSelectSoilsDecontaminationViewData } from "./step-handlers/soils-decontamination/soils-decontamination/soilsDecontamination.selector";
 import { createSelectPVClimateAndBiodiversityImpactNoticeViewData } from "./step-handlers/soils-transformation/soils-transformation-climate-and-biodiversity-impact-notice/soilsTransformationClimateAndBiodiversityImpactNotice.selector";
 import { createSelectFutureSoilsSelectionViewData } from "./step-handlers/soils-transformation/soils-transformation-future-soils-selection/soilsTransformationFutureSoilsSelection.selector";
 import { createSelectFutureSoilsSurfaceAreasViewData } from "./step-handlers/soils-transformation/soils-transformation-future-soils-surface-area/soilsTransformationFutureSoilsSurfaceArea.selector";
@@ -252,15 +251,10 @@ export const createRenewableEnergyFormSelectors = (prefix: "projectCreation" | "
   const selectInvolvesReinstatementViewData =
     createSelectInvolvesReinstatementViewData(selectSteps);
 
-  const selectSoilsDecontaminationSelectionViewData =
-    createSelectSoilsDecontaminationSelectionViewData(selectSteps);
-
-  const selectPVDecontaminationSurfaceAreaViewData =
-    createSelectPVDecontaminationSurfaceAreaViewData(
-      selectSteps,
-      wizardFormSelectors.selectSiteData,
-      wizardFormSelectors.selectSiteContaminatedSurfaceArea,
-    );
+  const selectSoilsDecontaminationViewData = createSelectSoilsDecontaminationViewData(
+    selectSteps,
+    wizardFormSelectors.selectSiteContaminatedSurfaceArea,
+  );
 
   const selectPVClimateAndBiodiversityImpactNoticeViewData =
     createSelectPVClimateAndBiodiversityImpactNoticeViewData(
@@ -375,8 +369,7 @@ export const createRenewableEnergyFormSelectors = (prefix: "projectCreation" | "
     selectPVYearlyProjectedRevenueViewData,
     selectPVScheduleProjectionViewData,
     selectInvolvesReinstatementViewData,
-    selectSoilsDecontaminationSelectionViewData,
-    selectPVDecontaminationSurfaceAreaViewData,
+    selectSoilsDecontaminationViewData,
     selectPVClimateAndBiodiversityImpactNoticeViewData,
     selectFutureSoilsSelectionViewData,
     selectFutureSoilsSurfaceAreasViewData,

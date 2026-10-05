@@ -62,10 +62,17 @@ const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
   owner: { structureType: "municipality", name: "Mairie de Meylan" },
 };
 
+const CONTAMINATED_FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
+  ...FRICHE_SITE_DATA,
+  name: "Friche polluée de Meylan",
+  contaminatedSoilSurface: 1000,
+};
+
 type PhotovoltaicProjectCreationFixtures = {
   pvProjectCreationPage: PhotovoltaicProjectCreationPage;
   agriculturalSite: TestSite;
   fricheSite: TestSite;
+  contaminatedFricheSite: TestSite;
 };
 
 export const test = authTest.extend<PhotovoltaicProjectCreationFixtures>({
@@ -80,6 +87,14 @@ export const test = authTest.extend<PhotovoltaicProjectCreationFixtures>({
   fricheSite: async ({ authenticatedApiClient, testUser }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...FRICHE_SITE_DATA,
+      createdBy: testUser.id,
+    });
+    await use(site);
+  },
+
+  contaminatedFricheSite: async ({ authenticatedApiClient, testUser }, use) => {
+    const site = await createCustomSiteViaApi(authenticatedApiClient)({
+      ...CONTAMINATED_FRICHE_SITE_DATA,
       createdBy: testUser.id,
     });
     await use(site);

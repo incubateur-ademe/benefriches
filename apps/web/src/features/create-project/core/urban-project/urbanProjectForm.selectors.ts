@@ -22,7 +22,7 @@ import { createSelectReinstatementExpensesViewData } from "./step-handlers/expen
 import { createSelectSiteResaleRevenueViewData } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.selector";
 import { createSelectScheduleProjectionViewData } from "./step-handlers/schedule/schedule-projection/scheduleProjection.selector";
 import { createSelectSoilsCarbonStorageDifference } from "./step-handlers/soils/soils-carbon-summary/soilsCarbonSummary.selector";
-import { createSelectSoilsDecontaminationSurfaceAreaViewData } from "./step-handlers/soils/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.selector";
+import { createSelectSoilsDecontaminationViewData } from "./step-handlers/soils/soils-decontamination/soilsDecontamination.selector";
 import { createSelectSoilsSummaryViewData } from "./step-handlers/soils/soils-summary/soilsSummary.selector";
 import { createSelectPublicGreenSpacesIntroductionViewData } from "./step-handlers/spaces/public-green-spaces-introduction/publicGreenSpacesIntroduction.selector";
 import { createSelectPublicGreenSpacesSoilsDistributionViewData } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.selector";
@@ -252,11 +252,10 @@ export const createUrbanProjectFormSelectors = (
 
   const selectScheduleProjectionViewData = createSelectScheduleProjectionViewData(selectStepState);
 
-  const selectSoilsDecontaminationSurfaceAreaViewData =
-    createSelectSoilsDecontaminationSurfaceAreaViewData(
-      selectStepState,
-      selectors.selectSiteContaminatedSurfaceArea,
-    );
+  const selectSoilsDecontaminationViewData = createSelectSoilsDecontaminationViewData(
+    selectStepState,
+    selectors.selectSiteContaminatedSurfaceArea,
+  );
 
   const selectNavigationBlockerDialogViewData = createSelector(
     selectSaveState,
@@ -312,7 +311,7 @@ export const createUrbanProjectFormSelectors = (
     selectExpensesBuildingsConstructionAndRehabilitationViewData,
     selectUrbanProjectSummaryViewData,
     selectScheduleProjectionViewData,
-    selectSoilsDecontaminationSurfaceAreaViewData,
+    selectSoilsDecontaminationViewData,
     ...selectors,
   };
 };

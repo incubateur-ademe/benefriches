@@ -4,6 +4,7 @@ import type {
   InfoStepHandler as GenericInfoStepHandler,
   StepHandlerParams as GenericStepHandlerParams,
   StepHandlerRegistry as GenericStepHandlerRegistry,
+  StepInvalidationRule as GenericStepInvalidationRule,
   WizardFormStepsState,
 } from "@/shared/core/wizard-form/stepHandler.type";
 
@@ -49,3 +50,5 @@ export type StepHandlerRegistry = GenericStepHandlerRegistry<
   RenewableEnergyStepHandlerContext,
   AnswersByStep
 >;
+
+export type StepInvalidationRule = GenericStepInvalidationRule<AnswerStepId>;

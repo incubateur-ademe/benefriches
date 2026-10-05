@@ -48,10 +48,10 @@ type RenewableEnergyWizardFormDefinition<S extends RenewableEnergyHostState> = P
 
 // PV's WizardFormDefinition-shaped wiring: same registry that ticket 09's editing slice
 // reuses, running the same shared engine algorithm as urban's `addUrbanProjectFormCasesToBuilder`.
-// PV has no dependency rules/shortcuts (degenerate path), so `computeStepChanges` always yields
-// empty cascadingChanges and `applyStepChanges` is called unconditionally — there is no
-// pending-confirmation state to wire up. Generic over `S` (mirroring urban) so creation and
-// update can each supply their own definition (selectForm/buildContext/onPreviousStepFallback).
+// PV has no shortcuts; its dependency rules (reinstatement, decontamination) put the step
+// completion on hold until the cascading-changes dialog is confirmed. Generic over `S` (mirroring
+// urban) so creation and update can each supply their own definition
+// (selectForm/buildContext/onPreviousStepFallback).
 export const addRenewableEnergyFormCasesToBuilder = <S extends RenewableEnergyHostState>(
   builder: ActionReducerMapBuilder<S>,
   actions: RenewableEnergyFormReducerActions,

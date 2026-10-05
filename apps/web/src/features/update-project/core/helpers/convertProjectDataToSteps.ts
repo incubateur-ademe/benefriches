@@ -1,4 +1,4 @@
-import { computeDefaultDecontaminatedSurfaceArea, sumListWithKey, typedObjectKeys } from "shared";
+import { sumListWithKey, typedObjectKeys } from "shared";
 import type {
   UrbanProjectUse,
   FinancialAssistanceRevenue,
@@ -8,8 +8,10 @@ import type {
   YearlyBuildingsOperationsExpenses,
 } from "shared";
 
+import { inferDecontaminationPlan } from "@/features/create-project/core/project-form/soilsDecontamination";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { EXPENSE_PURPOSE_TO_FIELD } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
+import { UrbanProjectReinstatementExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
 import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import {
   ANSWER_STEPS,
@@ -118,30 +120,16 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
           };
         }
         break;
-      case "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION": {
-        if (siteData.nature === "FRICHE") {
-          const contaminatedSoilSurface = siteData?.contaminatedSoilSurface ?? 0;
-          const defaultValue = computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface);
-          steps["URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"] = {
+      case "URBAN_PROJECT_SOILS_DECONTAMINATION":
+        if (siteData.hasContaminatedSoils) {
+          const decontaminatedSurfaceArea = projectData.decontaminatedSoilSurface ?? 0;
+          steps["URBAN_PROJECT_SOILS_DECONTAMINATION"] = {
             payload: {
-              decontaminationPlan:
-                projectData.decontaminatedSoilSurface === 0
-                  ? "none"
-                  : projectData.decontaminatedSoilSurface === defaultValue
-                    ? "unknown"
-                    : "partial",
-            },
-            completed: true,
-          };
-        }
-
-        break;
-      }
-      case "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA":
-        if (siteData.nature === "FRICHE") {
-          steps["URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"] = {
-            payload: {
-              decontaminatedSurfaceArea: projectData.decontaminatedSoilSurface,
+              decontaminationPlan: inferDecontaminationPlan(
+                decontaminatedSurfaceArea,
+                siteData.contaminatedSoilSurface ?? 0,
+              ),
+              decontaminatedSurfaceArea,
             },
             completed: true,
           };
@@ -346,6 +334,19 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       completed: true,
     };
   });
+
+  // The saved project does not record which reinstatement amounts were generated. Recomputing
+  // them after an answer change (e.g. the decontaminated surface) only replaces the amounts equal
+  // to the step's defaultValues, so rebuild those from the hydrated answers: a saved amount equal
+  // to what the wizard generates counts as generated, any other amount as a user edit.
+  const reinstatementExpensesStep = steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT;
+  if (reinstatementExpensesStep) {
+    reinstatementExpensesStep.defaultValues =
+      UrbanProjectReinstatementExpensesHandler.getDefaultAnswers({
+        context: { siteData },
+        answers: steps,
+      });
+  }
 
   return steps;
 };

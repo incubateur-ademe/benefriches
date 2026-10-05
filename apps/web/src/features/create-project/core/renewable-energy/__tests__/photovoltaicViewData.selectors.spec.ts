@@ -8,7 +8,6 @@ import { USE_CASE_SELECTION_INITIAL_STATE } from "../../usecase-selection/useCas
 import { INITIAL_STATE } from "../renewableEnergy.reducer";
 import {
   selectPVClimateAndBiodiversityImpactNoticeViewData,
-  selectPVDecontaminationSurfaceAreaViewData,
   selectPVDeveloperViewData,
   selectPVNonSuitableSoilsNoticeViewData,
   selectPVOperatorViewData,
@@ -16,6 +15,7 @@ import {
   selectPVScheduleProjectionViewData,
   selectPVSoilsSummaryViewData,
   selectPVYearlyProjectedRevenueViewData,
+  selectSoilsDecontaminationViewData,
 } from "../renewableEnergyProject.selectors";
 import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
 import { exhaustiveSteps } from "./projectData.mock";
@@ -138,13 +138,21 @@ describe("Photovoltaic ViewData selectors", () => {
     });
   });
 
-  describe("selectPVDecontaminationSurfaceAreaViewData", () => {
-    it("returns contaminated surface area and percentage to decontaminate", () => {
-      const viewData = selectPVDecontaminationSurfaceAreaViewData(MOCK_STATE);
+  describe("selectSoilsDecontaminationViewData", () => {
+    it("returns the stored plan and surface with the site contaminated surface", () => {
+      const viewData = selectSoilsDecontaminationViewData(MOCK_STATE);
       expect(viewData).toEqual({
-        contaminatedSurfaceArea: 5000,
-        surfaceAreaToDecontaminateInPercentage: expect.any(Number),
+        initialValues: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1000 },
+        contaminatedSoilSurface: 5000,
       });
+    });
+
+    it("returns no initial values when the step was not answered", () => {
+      const viewData = selectSoilsDecontaminationViewData({
+        ...MOCK_STATE,
+        projectCreation: buildState({ RENEWABLE_ENERGY_SOILS_DECONTAMINATION: undefined }),
+      });
+      expect(viewData).toEqual({ initialValues: undefined, contaminatedSoilSurface: 5000 });
     });
   });
 

@@ -22,8 +22,8 @@ type CreateCustomPhotovoltaicProjectProps = {
   expectedAnnualProduction: number;
   contractDuration: number;
   yearlyMaintenanceExpenseAmount: number;
-  // Friche sites always route through the decontamination-selection step, regardless of the
-  // reinstatement answer — set this so a friche-sited project opens fully answered.
+  // Sites with contaminated soils route through the decontamination steps — set this so a
+  // project on such a site opens fully answered.
   decontaminatedSoilSurface?: number;
 };
 

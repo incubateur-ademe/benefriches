@@ -13,15 +13,11 @@ export const SiteResaleIntroductionHandler = {
     const { answers, context } = params;
     const decontaminationPlan = ReadStateHelper.getStepAnswers(
       answers,
-      "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+      "URBAN_PROJECT_SOILS_DECONTAMINATION",
     )?.decontaminationPlan;
 
-    if (decontaminationPlan === "partial") {
-      return "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA";
-    }
-
     if (context.siteData?.hasContaminatedSoils || decontaminationPlan !== undefined) {
-      return "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION";
+      return "URBAN_PROJECT_SOILS_DECONTAMINATION";
     }
 
     if (context.siteData?.nature === "FRICHE") {

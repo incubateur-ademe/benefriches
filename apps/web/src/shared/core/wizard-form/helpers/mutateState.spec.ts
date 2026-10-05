@@ -158,6 +158,19 @@ describe("MutateStateHelper", () => {
       });
     });
 
+    it("should keep the given generated defaults apart from the recomputed answers", () => {
+      const answers = { name: "Edited Name", description: "Computed Description" };
+      const defaultValues = { name: "Computed Name", description: "Computed Description" };
+
+      MutateStateHelper.recomputeStep(form, "STEP_A", answers, defaultValues);
+
+      expect(form.steps.STEP_A).toEqual({
+        completed: true,
+        defaultValues,
+        payload: answers,
+      });
+    });
+
     it("should completely replace existing step data", () => {
       form.steps.STEP_A = {
         completed: false,

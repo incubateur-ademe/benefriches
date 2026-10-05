@@ -74,13 +74,9 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
           completed: true,
           payload: { involvesReinstatement: true },
         },
-        URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+        URBAN_PROJECT_SOILS_DECONTAMINATION: {
           completed: true,
-          payload: { decontaminationPlan: "partial" },
-        },
-        URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
-          completed: true,
-          payload: { decontaminatedSurfaceArea: 500 },
+          payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 500 },
         },
         URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: {
           completed: true,

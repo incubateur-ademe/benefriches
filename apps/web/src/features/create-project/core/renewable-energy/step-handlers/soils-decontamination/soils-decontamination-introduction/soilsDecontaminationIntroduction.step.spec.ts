@@ -8,12 +8,12 @@ import {
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - soils decontamination introduction", () => {
-  it("should navigate to soils decontamination selection", () => {
+  it("should navigate to soils decontamination", () => {
     const store = new StoreBuilder()
       .withStepsSequence(["RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION"])
       .build();
     store.dispatch(nextStepRequested());
-    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION");
+    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION");
   });
 
   it("should navigate back to contract duration", () => {
