@@ -167,6 +167,62 @@ describe("Urban project creation - Steps - Soils decontamination", () => {
       expect(getRemediationAmount(store)).toBe(100000);
     });
 
+    it("keeps a user-edited expense across two consecutive surface changes", () => {
+      const store = new StoreBuilder()
+        .withSiteData(CONTAMINATED_SITE)
+        .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION")
+        .withSteps({
+          // remediation is generated, demolition was edited by the user
+          URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
+            completed: true,
+            payload: {
+              reinstatementExpenses: [
+                { purpose: "demolition", amount: 12345 },
+                { purpose: "remediation", amount: 100000 },
+              ],
+            },
+            defaultValues: {
+              reinstatementExpenses: [
+                { purpose: "demolition", amount: 0 },
+                { purpose: "remediation", amount: 100000 },
+              ],
+            },
+          },
+          URBAN_PROJECT_SOILS_DECONTAMINATION: {
+            completed: true,
+            payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1200 },
+          },
+        })
+        .build();
+      const getDemolitionAmount = () =>
+        getData(store).reinstatementCosts?.find((expense) => expense.purpose === "demolition")
+          ?.amount;
+
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION",
+          answers: { decontaminationPlan: "unknown" },
+        }),
+      );
+      store.dispatch(stepCompletionConfirmed());
+
+      // 500 m2 (25% of 2000 m2) x 66 €/m2
+      expect(getRemediationAmount(store)).toBe(33000);
+      expect(getDemolitionAmount()).toBe(12345);
+
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION",
+          answers: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1000 },
+        }),
+      );
+      store.dispatch(stepCompletionConfirmed());
+
+      // 1000 m2 x 66 €/m2
+      expect(getRemediationAmount(store)).toBe(66000);
+      expect(getDemolitionAmount()).toBe(12345);
+    });
+
     it("preserves user-entered reinstatement expenses when the resolved surface changes", () => {
       const store = new StoreBuilder()
         .withSiteData(CONTAMINATED_SITE)
