@@ -8,7 +8,7 @@ export const ContractDurationHandler: AnswerStepHandler<"RENEWABLE_ENERGY_PHOTOV
       if (params.context.siteData?.nature === "FRICHE") {
         return "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT";
       }
-      return params.context.siteData?.contaminatedSoilSurface
+      return params.context.siteData?.hasContaminatedSoils
         ? "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION"
         : "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION";
     },

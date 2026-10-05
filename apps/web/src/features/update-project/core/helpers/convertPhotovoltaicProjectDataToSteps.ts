@@ -79,11 +79,10 @@ export const convertPhotovoltaicProjectDataToSteps = ({
     payload: { involvesReinstatement },
   };
 
-  // Decontamination is reached whenever the site is a friche (always, via the reinstatement
-  // step) or carries a known contaminated surface — mirroring ContractDurationHandler and
-  // urban's convertProjectDataToSteps site-nature gate. It is independent of the
-  // involvesReinstatement answer itself, which the wizard still asks unconditionally on friches.
-  if (siteData.nature === "FRICHE" || Boolean(siteData.contaminatedSoilSurface)) {
+  // The wizard enters decontamination only when the site has contaminated soils, whatever its
+  // nature (see InvolvesReinstatementHandler and ContractDurationHandler), independently of the
+  // involvesReinstatement answer.
+  if (siteData.hasContaminatedSoils) {
     const contaminatedSoilSurface = siteData.contaminatedSoilSurface ?? 0;
     const defaultDecontaminatedSurfaceArea =
       computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface);

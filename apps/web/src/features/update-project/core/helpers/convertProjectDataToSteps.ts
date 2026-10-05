@@ -119,7 +119,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         }
         break;
       case "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION": {
-        if (siteData.nature === "FRICHE") {
+        if (siteData.hasContaminatedSoils) {
           const contaminatedSoilSurface = siteData?.contaminatedSoilSurface ?? 0;
           const defaultValue = computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface);
           steps["URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"] = {
@@ -138,7 +138,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         break;
       }
       case "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA":
-        if (siteData.nature === "FRICHE") {
+        if (siteData.hasContaminatedSoils) {
           steps["URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"] = {
             payload: {
               decontaminatedSurfaceArea: projectData.decontaminatedSoilSurface,

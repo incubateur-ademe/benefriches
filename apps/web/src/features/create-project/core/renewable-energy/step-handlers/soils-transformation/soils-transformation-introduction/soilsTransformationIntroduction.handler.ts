@@ -7,8 +7,10 @@ export const SoilsTransformationIntroductionHandler: InfoStepHandler = {
   stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
 
   getPreviousStepId(params) {
-    if (!params.context.siteData?.contaminatedSoilSurface) {
-      return "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION";
+    if (!params.context.siteData?.hasContaminatedSoils) {
+      return params.context.siteData?.nature === "FRICHE"
+        ? "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT"
+        : "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION";
     }
     if (
       ReadStateHelper.getStepAnswers(

@@ -155,7 +155,7 @@ test.describe("photovoltaic project creation - custom mode", () => {
 test.describe("photovoltaic project creation - friche site", () => {
   const FRICHE_PROJECT_NAME = "Centrale photovoltaïque sur friche de Meylan";
 
-  test("allows authenticated user to create a PV project on a friche site", async ({
+  test("allows authenticated user to create a PV project on a friche site without contaminated soils", async ({
     pvProjectCreationPage,
     fricheSite,
   }) => {
@@ -203,7 +203,7 @@ test.describe("photovoltaic project creation - friche site", () => {
     );
     await pvProjectCreationPage.fillContractDuration(20);
 
-    // --- Soils decontamination ---
+    // --- Site works ---
 
     // Involves reinstatement: no
     await pvProjectCreationPage.expectStepTitle(
@@ -211,17 +211,10 @@ test.describe("photovoltaic project creation - friche site", () => {
     );
     await pvProjectCreationPage.selectInvolvesReinstatement(false);
 
-    // Decontamination introduction
-    await pvProjectCreationPage.expectStepTitle("Et si on dépolluait les sols ?");
-    await pvProjectCreationPage.goToNextStep();
-
-    // Decontamination selection: no decontamination
-    await pvProjectCreationPage.expectStepTitle("Est-il est nécessaire de dépolluer les sols ?");
-    await pvProjectCreationPage.selectDecontaminationOption("none");
-
     // --- Soils transformation ---
 
-    // Soils transformation introduction
+    // Soils transformation introduction: the friche has no contaminated soils, so the
+    // decontamination steps are skipped
     await pvProjectCreationPage.expectStepTitle(
       "Nous allons maintenant parler de ce que seront les sols du site.",
     );

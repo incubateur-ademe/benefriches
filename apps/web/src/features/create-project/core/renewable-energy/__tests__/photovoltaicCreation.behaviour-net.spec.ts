@@ -25,7 +25,13 @@ import { getCurrentStep, StoreBuilder } from "./_testStoreHelpers";
  */
 describe("Photovoltaic creation flow (behaviour-net)", () => {
   it("completes the POWER key-parameter happy path with no reinstatement and no decontamination", () => {
-    const store = new StoreBuilder().build();
+    const store = new StoreBuilder()
+      .withSiteData({
+        ...relatedSiteData,
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 2000,
+      })
+      .build();
     const dispatch = store.dispatch;
 
     dispatch(
@@ -237,7 +243,13 @@ describe("Photovoltaic creation flow (behaviour-net)", () => {
   });
 
   it("completes the SURFACE-first key-parameter path, deriving power afterwards", () => {
-    const store = new StoreBuilder().build();
+    const store = new StoreBuilder()
+      .withSiteData({
+        ...relatedSiteData,
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 2000,
+      })
+      .build();
     const dispatch = store.dispatch;
 
     dispatch(
@@ -400,7 +412,13 @@ describe("Photovoltaic creation flow (behaviour-net)", () => {
   });
 
   it("completes the friche path with reinstatement and partial decontamination", () => {
-    const store = new StoreBuilder().build();
+    const store = new StoreBuilder()
+      .withSiteData({
+        ...relatedSiteData,
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 2000,
+      })
+      .build();
     const dispatch = store.dispatch;
 
     dispatch(
@@ -608,7 +626,13 @@ describe("Photovoltaic creation flow (behaviour-net)", () => {
   });
 
   it("completes the non-suitable-soils path when the photovoltaic surface exceeds suitable soils", () => {
-    const store = new StoreBuilder().build();
+    const store = new StoreBuilder()
+      .withSiteData({
+        ...relatedSiteData,
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 2000,
+      })
+      .build();
     const dispatch = store.dispatch;
 
     dispatch(
@@ -804,9 +828,13 @@ describe("Photovoltaic creation flow (behaviour-net)", () => {
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER");
   });
 
-  it("navigates back from the soils transformation introduction to the contract duration step when the site has no recorded contaminated soil surface", () => {
+  it("skips decontamination on a friche without contaminated soils and navigates back to the reinstatement step", () => {
     const store = new StoreBuilder()
-      .withSiteData({ ...relatedSiteData, contaminatedSoilSurface: undefined })
+      .withSiteData({
+        ...relatedSiteData,
+        hasContaminatedSoils: false,
+        contaminatedSoilSurface: undefined,
+      })
       .build();
     const dispatch = store.dispatch;
 
@@ -840,28 +868,17 @@ describe("Photovoltaic creation flow (behaviour-net)", () => {
         answers: { photovoltaicContractDuration: 20 },
       }),
     );
+    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT");
+
     dispatch(
       stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
         answers: { involvesReinstatement: true },
       }),
     );
-    dispatch(nextStepRequested());
-    dispatch(
-      stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
-        answers: { decontaminationPlan: "partial" },
-      }),
-    );
-    dispatch(
-      stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
-        answers: { decontaminatedSurfaceArea: 1500 },
-      }),
-    );
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
 
     dispatch(previousStepRequested());
-    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION");
+    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT");
   });
 });

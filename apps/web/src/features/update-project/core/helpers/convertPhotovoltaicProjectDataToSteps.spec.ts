@@ -104,7 +104,7 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
     });
   });
 
-  it("maps involvesReinstatement: false and omits reinstatement-only steps, even on a friche where decontamination is still asked", () => {
+  it("maps involvesReinstatement: false and omits reinstatement-only steps", () => {
     const steps = convertPhotovoltaicProjectDataToSteps({
       projectData: { ...BASE_PROJECT_DATA, involvesReinstatement: false },
       siteData: BASE_SITE_DATA,
@@ -114,9 +114,23 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
       payload: { involvesReinstatement: false },
       completed: true,
     });
-    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION).toBeDefined();
     expect(steps.RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER).toBeUndefined();
     expect(steps.RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT).toBeUndefined();
+  });
+
+  it("omits decontamination steps on a friche without contaminated soils, even when a decontaminated surface was saved", () => {
+    const steps = convertPhotovoltaicProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, decontaminatedSoilSurface: 0 },
+      siteData: {
+        ...BASE_SITE_DATA,
+        nature: "FRICHE",
+        hasContaminatedSoils: false,
+        contaminatedSoilSurface: undefined,
+      },
+    });
+
+    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION).toBeUndefined();
+    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA).toBeUndefined();
   });
 
   it("omits decontamination steps entirely on a non-friche site with no known contamination", () => {
@@ -131,6 +145,23 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
 
     expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION).toBeUndefined();
     expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA).toBeUndefined();
+  });
+
+  it("pre-fills decontamination on a non-friche site with contaminated soils", () => {
+    const steps = convertPhotovoltaicProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, decontaminatedSoilSurface: 0 },
+      siteData: {
+        ...BASE_SITE_DATA,
+        nature: "URBAN_ZONE",
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 1000,
+      },
+    });
+
+    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION).toEqual({
+      payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
+      completed: true,
+    });
   });
 
   it("maps decontaminationPlan to 'none' when involvesReinstatement is true and no soil was decontaminated", () => {

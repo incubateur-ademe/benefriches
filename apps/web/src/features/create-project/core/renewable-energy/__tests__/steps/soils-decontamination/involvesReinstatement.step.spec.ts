@@ -1,3 +1,4 @@
+import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
 import {
   getCurrentStep,
   StoreBuilder,
@@ -7,27 +8,43 @@ import { selectPVScheduleProjectionViewData } from "@/features/create-project/co
 
 describe("Renewable energy creation - Steps - involves reinstatement", () => {
   describe("completion", () => {
-    it("should navigate to soils decontamination introduction when answer is true", () => {
-      const store = new StoreBuilder().build();
-      store.dispatch(
-        stepCompletionRequested({
-          stepId: "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
-          answers: { involvesReinstatement: true },
-        }),
-      );
-      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
-    });
+    for (const involvesReinstatement of [true, false]) {
+      it(`should navigate to soils decontamination introduction when site has contaminated soils (answer ${involvesReinstatement})`, () => {
+        const store = new StoreBuilder()
+          .withSiteData({
+            ...relatedSiteData,
+            nature: "FRICHE",
+            hasContaminatedSoils: true,
+            contaminatedSoilSurface: 2000,
+          })
+          .build();
+        store.dispatch(
+          stepCompletionRequested({
+            stepId: "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
+            answers: { involvesReinstatement },
+          }),
+        );
+        expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
+      });
 
-    it("should navigate to soils decontamination introduction when answer is false", () => {
-      const store = new StoreBuilder().build();
-      store.dispatch(
-        stepCompletionRequested({
-          stepId: "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
-          answers: { involvesReinstatement: false },
-        }),
-      );
-      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
-    });
+      it(`should navigate to soils transformation introduction when site has no contaminated soils (answer ${involvesReinstatement})`, () => {
+        const store = new StoreBuilder()
+          .withSiteData({
+            ...relatedSiteData,
+            nature: "FRICHE",
+            hasContaminatedSoils: false,
+            contaminatedSoilSurface: undefined,
+          })
+          .build();
+        store.dispatch(
+          stepCompletionRequested({
+            stepId: "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
+            answers: { involvesReinstatement },
+          }),
+        );
+        expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
+      });
+    }
   });
 
   describe("dependency rules", () => {
@@ -59,8 +76,14 @@ describe("Renewable energy creation - Steps - involves reinstatement", () => {
       expect(stepsSequence).toContain("RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT");
     });
 
-    it("should preserve decontamination steps in sequence regardless of involvesReinstatement", () => {
-      const store = new StoreBuilder().build();
+    it("should preserve decontamination steps in sequence regardless of involvesReinstatement when site has contaminated soils", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          ...relatedSiteData,
+          hasContaminatedSoils: true,
+          contaminatedSoilSurface: 2000,
+        })
+        .build();
       store.dispatch(
         stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { relatedSiteData } from "../../../../../../__tests__/siteData.mock";
 import { getCurrentStep, StoreBuilder } from "../../../../../__tests__/_testStoreHelpers";
 import { creationRenewableEnergyFormActions } from "../../../../../renewableEnergy.actions";
 import type { RenewableEnergyProjectState } from "../../../../../renewableEnergy.reducer";
@@ -60,6 +61,11 @@ describe("Renewable energy - InvolvesReinstatement cascade sequencing", () => {
 
   it("applies the cascade and navigates forward past the gate on confirmation", () => {
     const store = new StoreBuilder()
+      .withSiteData({
+        ...relatedSiteData,
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 2000,
+      })
       .withSteps(stepsWithReinstatement(true))
       .withCurrentStep("RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT")
       .build();
