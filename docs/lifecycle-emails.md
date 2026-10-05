@@ -34,7 +34,8 @@ proof.
 **Reminders: when.** The window is 24 to 72 h, not "yesterday": 24 h gives everyone a full day,
 and the 48 h width makes the daily job self-healing (a missed run is caught up the next morning;
 the ledger prevents a second send). The job runs every day at 08:00 UTC (09:00 or 10:00 in Paris);
-weekday-only runs would leave a gap in the window.
+weekday-only runs would leave a gap in the window. Because of the window, reminder copy says
+« récemment », never « hier ».
 
 **Reminders: who.** Generous about reasons not to email, conservative about reasons to email:
 
@@ -77,8 +78,9 @@ the switch on, and use the preview script to see real renderings.
 table-based single-column layout, inline styles, no flexbox or grid, and a plain-text part for
 every email. No images except the welcome email's decorative feature icons (remote images are
 blocked by default in Outlook). Links are always built from `WEBAPP_URL`, so staging emails never
-link into production. French copy awaiting product review is marked `TODO(product)` in the
-templates.
+link into production. Every email sets a preheader (`EmailContent` requires it): without one,
+inboxes preview the first body line instead. French copy awaiting product review is marked
+`TODO(product)` in the templates.
 
 ## Where to look
 
@@ -137,9 +139,9 @@ All under `apps/api/src/notifications/` unless stated.
 ## Adding an email type
 
 1. Add the value to `lifecycleEmailTypeSchema`.
-2. Write its template on top of `renderEmail()` and its own use case calling the sender, with
-   `relatedEntityId` if it is about a site or project. No generic registry until the anticipated
-   D+3/D+7 emails define one.
+2. Write its template on top of `renderEmail()`, with its own preheader, and its own use case
+   calling the sender, with `relatedEntityId` if it is about a site or project. No generic registry
+   until the anticipated D+3/D+7 emails define one.
 3. Add its case to the retry sweeper's re-render and a sample to the preview samples: both are
    exhaustive switches, so the typecheck fails until you do. If rendering loads data, share one
    `compose…` function between the send path and the retry path.
