@@ -16,7 +16,7 @@ if [[ -z "$NAME" || -z "$REPO_ROOT" ]]; then
   exit 1
 fi
 
-WORKTREE_PATH="$REPO_ROOT/.claude/worktrees/$NAME"
+WORKTREE_PATH="$REPO_ROOT/trees/$NAME"
 BRANCH="worktree-$NAME"
 
 # Mirrors worktree.baseRef: "fresh" - branch from origin/HEAD, falling back

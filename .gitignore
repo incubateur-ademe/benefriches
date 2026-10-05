@@ -27,6 +27,7 @@ coverage/
 
 # AI agents
 .claude/settings.local.json
+/trees/
 .claude/worktrees/
 .agents/tasks
 .agents/runs

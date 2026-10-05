@@ -6,8 +6,6 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-REPO_NAME="$(basename "$REPO_ROOT")"
-PARENT_DIR="$(dirname "$REPO_ROOT")"
 
 usage() {
     echo "Usage: $0 <branch-name> [--delete-branch]"
@@ -46,9 +44,8 @@ if [[ $# -ge 2 && "$2" == "--delete-branch" ]]; then
     DELETE_BRANCH=true
 fi
 
-# Sanitize branch name for directory (replace / with -)
-DIR_SUFFIX="${BRANCH_NAME//\//-}"
-WORKTREE_PATH="$PARENT_DIR/${REPO_NAME}-${DIR_SUFFIX}"
+# Resolve the worktree path from the branch (works for any location, incl. legacy ones)
+WORKTREE_PATH="$(git -C "$REPO_ROOT" worktree list --porcelain | awk -v b="refs/heads/$BRANCH_NAME" '/^worktree /{p=substr($0,10)} $0=="branch "b{print p; exit}')"
 
 echo "=== Git Worktree Removal ==="
 echo "Branch:    $BRANCH_NAME"
@@ -56,8 +53,8 @@ echo "Worktree:  $WORKTREE_PATH"
 echo ""
 
 # Check if worktree exists
-if [[ ! -d "$WORKTREE_PATH" ]]; then
-    echo "Error: Worktree directory not found: $WORKTREE_PATH"
+if [[ -z "$WORKTREE_PATH" || ! -d "$WORKTREE_PATH" ]]; then
+    echo "Error: No worktree found for branch: $BRANCH_NAME"
     echo ""
     echo "Available worktrees:"
     cd "$REPO_ROOT"

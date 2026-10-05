@@ -90,14 +90,14 @@ Base the worktree on the run's exact `headSha`:
 
 ```bash
 git fetch origin <headSha>        # ensure the commit is present locally
-git worktree add -b fix/ci-<runId> ../benefriches-fix-ci-<runId> <headSha>
+git worktree add -b fix/ci-<runId> trees/fix-ci-<runId> <headSha>
 ```
 
 Prime the worktree with only what the mapped command actually needs — a lint or
 `format:check` failure needs neither a full build nor a shared rebuild, so skipping them
 saves minutes:
 ```bash
-cd ../benefriches-fix-ci-<runId>
+cd trees/fix-ci-<runId>
 pnpm install                      # always: a fresh worktree has no node_modules
 pnpm --filter shared build        # only for typecheck / test / build / e2e (they consume shared)
 ```
@@ -112,7 +112,7 @@ Run the mapped command in the worktree.
   2. Watch to completion: `gh run watch <id>`
   3. If the rerun **passes** → flaky; report that and stop. The worktree from step 5 is
      now unused, so tell the user they can drop it with
-     `git worktree remove ../benefriches-fix-ci-<runId>`.
+     `git worktree remove trees/fix-ci-<runId>`.
   4. If the rerun **fails again** → escalate: analyze the failed logs and attempt a
      targeted, log-based fix in the worktree (step 7), being explicit that it's inferred
      from logs, not from a local repro.

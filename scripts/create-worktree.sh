@@ -2,8 +2,7 @@
 set -euo pipefail
 
 # Git Worktree Setup Script
-# Creates a worktree under .claude/worktrees/ (same location convention as
-# `claude --worktree`, gitignored so it never pollutes status/diff/search)
+# Creates a worktree under trees/ (gitignored so it never pollutes status/diff/search)
 # and primes the environment.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -21,7 +20,7 @@ usage() {
     echo "Example:"
     echo "  $0 feat/new-feature"
     echo ""
-    echo "The worktree will be created at: .claude/worktrees/<branch-name>"
+    echo "The worktree will be created at: trees/<branch-name>"
     exit 1
 }
 
@@ -38,7 +37,7 @@ DIR_SUFFIX="${DIR_SUFFIX#fix/}"
 DIR_SUFFIX="${DIR_SUFFIX#refactor/}"
 DIR_SUFFIX="${DIR_SUFFIX#chore/}"
 DIR_SUFFIX="${DIR_SUFFIX//\//-}"
-WORKTREE_PATH="$REPO_ROOT/.claude/worktrees/${DIR_SUFFIX}"
+WORKTREE_PATH="$REPO_ROOT/trees/${DIR_SUFFIX}"
 
 echo "=== Git Worktree Setup ==="
 echo "Branch:    $BRANCH_NAME"
@@ -54,7 +53,7 @@ fi
 # Create the worktree
 echo "Creating worktree..."
 cd "$REPO_ROOT"
-mkdir -p "$REPO_ROOT/.claude/worktrees"
+mkdir -p "$REPO_ROOT/trees"
 
 git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH"
 

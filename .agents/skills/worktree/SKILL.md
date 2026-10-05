@@ -19,7 +19,7 @@ Create a new git worktree for isolated feature development.
 
 ## Execution
 
-The script always creates a new branch from current HEAD, places the worktree under `.claude/worktrees/<name>` (gitignored, so it never pollutes `git status`/diff/search), and primes it (pnpm install, shared build, env files):
+The script always creates a new branch from current HEAD, places the worktree under `trees/<name>` (gitignored, so it never pollutes `git status`/diff/search), and primes it (pnpm install, shared build, env files):
 
 ```bash
 scripts/create-worktree.sh <branch-name>
