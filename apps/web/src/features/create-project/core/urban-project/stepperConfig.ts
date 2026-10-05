@@ -27,8 +27,7 @@ import { siteResaleSelectionStepperConfig } from "@/features/create-project/core
 import { involvesReinstatementStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/soils/involves-reinstatement/involvesReinstatement.stepperConfig";
 import { soilsCarbonSummaryStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/soils/soils-carbon-summary/soilsCarbonSummary.stepperConfig";
 import { soilsDecontaminationIntroductionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/soils/soils-decontamination-introduction/soilsDecontaminationIntroduction.stepperConfig";
-import { soilsDecontaminationSelectionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/soils/soils-decontamination-selection/soilsDecontaminationSelection.stepperConfig";
-import { soilsDecontaminationSurfaceAreaStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/soils/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.stepperConfig";
+import { soilsDecontaminationStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/soils/soils-decontamination/soilsDecontamination.stepperConfig";
 import { soilsSummaryStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/soils/soils-summary/soilsSummary.stepperConfig";
 import { publicGreenSpacesIntroductionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/spaces/public-green-spaces-introduction/publicGreenSpacesIntroduction.stepperConfig";
 import { publicGreenSpacesSoilsDistributionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.stepperConfig";
@@ -80,8 +79,7 @@ export const STEP_GROUP_LABELS: Record<InternalStepGroupId | InternalStepSubGrou
   CARBON_STORAGE: "Stockage de carbone",
   SOILS_DECONTAMINATION: "Travaux",
   INVOLVES_REINSTATEMENT: "Remise en état",
-  DECONTAMINATION_SELECTION: "Choix de dépolluer",
-  DECONTAMINATION_SURFACE: "Surface à dépolluer",
+  DECONTAMINATION: "Dépollution des sols",
   BUILDINGS: "Bâtiments",
   FLOOR_SURFACE: "Surface de plancher des usages",
   BUILDINGS_REUSE: "Réutilisation des bâtiments",
@@ -136,8 +134,7 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   // Dépollution des sols
   URBAN_PROJECT_INVOLVES_REINSTATEMENT: involvesReinstatementStepperConfig,
   URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: soilsDecontaminationIntroductionStepperConfig,
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionStepperConfig,
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: soilsDecontaminationSurfaceAreaStepperConfig,
+  URBAN_PROJECT_SOILS_DECONTAMINATION: soilsDecontaminationStepperConfig,
 
   // Bâtiments
   URBAN_PROJECT_BUILDINGS_INTRODUCTION: buildingsIntroductionStepperConfig,

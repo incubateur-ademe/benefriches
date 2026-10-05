@@ -11,7 +11,7 @@ const getDefaultReinstatementExpenses = (params: StepHandlerParams) => {
   const soilsDistribution = getProjectSoilDistributionBySoilType(params.answers);
   const decontaminatedSurface = ReadStateHelper.getStepAnswers(
     params.answers,
-    "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+    "URBAN_PROJECT_SOILS_DECONTAMINATION",
   )?.decontaminatedSurfaceArea;
 
   return computeProjectReinstatementExpenses(

@@ -1,4 +1,4 @@
-import { computeDefaultDecontaminatedSurfaceArea, sumListWithKey, typedObjectKeys } from "shared";
+import { sumListWithKey, typedObjectKeys } from "shared";
 import type {
   UrbanProjectUse,
   FinancialAssistanceRevenue,
@@ -8,6 +8,7 @@ import type {
   YearlyBuildingsOperationsExpenses,
 } from "shared";
 
+import { inferDecontaminationPlan } from "@/features/create-project/core/project-form/soilsDecontamination";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { EXPENSE_PURPOSE_TO_FIELD } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
 import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
@@ -118,30 +119,16 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
           };
         }
         break;
-      case "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION": {
+      case "URBAN_PROJECT_SOILS_DECONTAMINATION":
         if (siteData.hasContaminatedSoils) {
-          const contaminatedSoilSurface = siteData?.contaminatedSoilSurface ?? 0;
-          const defaultValue = computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface);
-          steps["URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"] = {
+          const decontaminatedSurfaceArea = projectData.decontaminatedSoilSurface ?? 0;
+          steps["URBAN_PROJECT_SOILS_DECONTAMINATION"] = {
             payload: {
-              decontaminationPlan:
-                projectData.decontaminatedSoilSurface === 0
-                  ? "none"
-                  : projectData.decontaminatedSoilSurface === defaultValue
-                    ? "unknown"
-                    : "partial",
-            },
-            completed: true,
-          };
-        }
-
-        break;
-      }
-      case "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA":
-        if (siteData.hasContaminatedSoils) {
-          steps["URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"] = {
-            payload: {
-              decontaminatedSurfaceArea: projectData.decontaminatedSoilSurface,
+              decontaminationPlan: inferDecontaminationPlan(
+                decontaminatedSurfaceArea,
+                siteData.contaminatedSoilSurface ?? 0,
+              ),
+              decontaminatedSurfaceArea,
             },
             completed: true,
           };

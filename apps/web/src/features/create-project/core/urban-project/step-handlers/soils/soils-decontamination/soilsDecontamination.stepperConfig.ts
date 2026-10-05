@@ -1,6 +1,6 @@
 import type { StepStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/stepGroups.types";
 
-export const soilsDecontaminationSurfaceAreaStepperConfig = {
+export const soilsDecontaminationStepperConfig = {
   groupId: "SOILS_DECONTAMINATION",
-  subGroupId: "DECONTAMINATION_SURFACE",
+  subGroupId: "DECONTAMINATION",
 } as const satisfies StepStepperConfig;

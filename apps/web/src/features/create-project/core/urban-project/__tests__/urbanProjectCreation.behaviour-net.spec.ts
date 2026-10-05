@@ -22,6 +22,23 @@ const {
  * `mockSiteData` is a FRICHE with contaminated soils (2000 m2), soils BUILDINGS 2000 among a
  * 10000 m2 total.
  */
+// 2000 m2 of contaminated soils: the 25% default is 500 m2.
+const buildStoreAtDecontaminationIntroduction = () =>
+  new StoreBuilder()
+    .withSiteData({ hasContaminatedSoils: true, contaminatedSoilSurface: 2000 })
+    .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
+    .withSteps({
+      URBAN_PROJECT_USES_SELECTION: {
+        completed: true,
+        payload: { usesSelection: ["RESIDENTIAL"] },
+      },
+      URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
+        completed: true,
+        payload: { involvesReinstatement: true },
+      },
+    })
+    .build();
+
 describe("Urban project creation flow (behaviour-net)", () => {
   it("completes the buildings + public green spaces path with reinstatement, partial decontamination and site resale", () => {
     const store = new StoreBuilder().build();
@@ -125,19 +142,11 @@ describe("Urban project creation flow (behaviour-net)", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
     dispatch(nextStepRequested());
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION");
     dispatch(
       stepCompletionRequested({
-        stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-        answers: { decontaminationPlan: "partial" },
-      }),
-    );
-
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA");
-    dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-        answers: { decontaminatedSurfaceArea: 1500 },
+        stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION",
+        answers: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1500 },
       }),
     );
 
@@ -347,11 +356,11 @@ describe("Urban project creation flow (behaviour-net)", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
 
     dispatch(nextStepRequested());
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION");
 
     dispatch(
       stepCompletionRequested({
-        stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+        stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION",
         answers: { decontaminationPlan: "none" },
       }),
     );
@@ -374,33 +383,57 @@ describe("Urban project creation flow (behaviour-net)", () => {
     expect(projectData.reinstatementContractOwner).toBeUndefined();
   });
 
-  it("auto-fills the decontaminated surface area when the 'unknown' decontamination plan is chosen", () => {
-    const store = new StoreBuilder()
-      .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION")
-      .withSteps({
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-        URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
-          completed: true,
-          payload: { involvesReinstatement: true },
-        },
-      })
-      .build();
-    const dispatch = store.dispatch;
+  describe("decontamination answer → submitted decontaminatedSoilSurface", () => {
+    it("submits 0 m2 when the user answers 'Non'", () => {
+      const store = buildStoreAtDecontaminationIntroduction();
 
-    dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-        answers: { decontaminationPlan: "unknown" },
-      }),
-    );
+      store.dispatch(nextStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION",
+          answers: { decontaminationPlan: "none" },
+        }),
+      );
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
-    const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
-    // computeDefaultDecontaminatedSurfaceArea(2000) applied from the mock's contaminated surface
-    expect(projectData.decontaminatedSoilSurface).toBeGreaterThan(0);
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
+      expect(projectData.decontaminatedSoilSurface).toBe(0);
+    });
+
+    it("submits the 25% default when the user answers 'Ne sait pas'", () => {
+      const store = buildStoreAtDecontaminationIntroduction();
+
+      store.dispatch(nextStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION",
+          answers: { decontaminationPlan: "unknown" },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
+      expect(projectData.decontaminatedSoilSurface).toBe(500);
+    });
+
+    it("submits the entered surface when the user answers 'Oui' with a surface", () => {
+      const store = buildStoreAtDecontaminationIntroduction();
+
+      store.dispatch(nextStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION",
+          answers: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1200 },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
+      expect(projectData.decontaminatedSoilSurface).toBe(1200);
+    });
   });
 
   it("navigates backward through the reuse chapter without losing entered answers", () => {

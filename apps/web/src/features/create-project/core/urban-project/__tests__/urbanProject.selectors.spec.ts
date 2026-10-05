@@ -224,9 +224,9 @@ describe("urbanProject.selectors", () => {
               reinstatementExpenses: [{ amount: 50000, purpose: "waste_collection" as const }],
             },
           },
-          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+          URBAN_PROJECT_SOILS_DECONTAMINATION: {
             completed: true,
-            payload: { decontaminatedSurfaceArea: 1500 },
+            payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1500 },
           },
         })
         .build();
@@ -346,33 +346,39 @@ describe("urbanProject.selectors", () => {
     });
   });
 
-  describe("selectSoilsDecontaminationSurfaceAreaViewData", () => {
-    it("returns decontaminated surface area and site contaminated surface area", () => {
+  describe("selectSoilsDecontaminationViewData", () => {
+    it("returns the stored plan and surface with the site contaminated surface", () => {
       const store = new StoreBuilder()
+        .withSiteData({ hasContaminatedSoils: true, contaminatedSoilSurface: 2000 })
         .withSteps({
-          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+          URBAN_PROJECT_SOILS_DECONTAMINATION: {
             completed: true,
-            payload: { decontaminatedSurfaceArea: 1000 },
+            payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1200 },
           },
         })
         .build();
 
-      const rootState = store.getState();
-      const result =
-        creationProjectFormSelectors.selectSoilsDecontaminationSurfaceAreaViewData(rootState);
+      const result = creationProjectFormSelectors.selectSoilsDecontaminationViewData(
+        store.getState(),
+      );
 
-      expect(result.decontaminatedSurfaceArea).toBe(1000);
-      expect(result.siteContaminatedSurfaceArea).toBe(mockSiteData.contaminatedSoilSurface);
+      expect(result).toEqual({
+        initialValues: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1200 },
+        contaminatedSoilSurface: 2000,
+      });
     });
 
-    it("returns undefined decontaminated surface area when no steps completed", () => {
-      const store = new StoreBuilder().withSteps({}).build();
-      const rootState = store.getState();
-      const result =
-        creationProjectFormSelectors.selectSoilsDecontaminationSurfaceAreaViewData(rootState);
+    it("returns no initial values when the step was never answered", () => {
+      const store = new StoreBuilder()
+        .withSiteData({ hasContaminatedSoils: true, contaminatedSoilSurface: 2000 })
+        .withSteps({})
+        .build();
 
-      expect(result.decontaminatedSurfaceArea).toBeUndefined();
-      expect(result.siteContaminatedSurfaceArea).toBe(mockSiteData.contaminatedSoilSurface);
+      const result = creationProjectFormSelectors.selectSoilsDecontaminationViewData(
+        store.getState(),
+      );
+
+      expect(result).toEqual({ initialValues: undefined, contaminatedSoilSurface: 2000 });
     });
   });
 

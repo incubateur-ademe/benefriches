@@ -466,7 +466,9 @@ test.describe("urban project creation - custom mode", () => {
       // --- dépollution des sols ---
       await urbanProjectCreationPage.expectStepTitle("Et si on dépolluait les sols ?");
       await urbanProjectCreationPage.goToNextStep(); // decontamination introduction
-      await urbanProjectCreationPage.submitOrSkipStep(); // decontamination selection (skip)
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dépollution des sols");
+      await urbanProjectCreationPage.expectStepTitle("Est-il nécessaire de dépolluer les sols");
+      await urbanProjectCreationPage.submitOrSkipStep(); // decontamination (skip: "Ne sait pas")
 
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");

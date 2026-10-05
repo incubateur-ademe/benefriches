@@ -26,7 +26,7 @@ export const createSelectReinstatementExpensesViewData = (
           ?.reinstatementExpenses,
       decontaminatedSurfaceArea: ReadStateHelper.getStepAnswers(
         steps,
-        "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+        "URBAN_PROJECT_SOILS_DECONTAMINATION",
       )?.decontaminatedSurfaceArea,
       siteSoilsDistribution,
     }),

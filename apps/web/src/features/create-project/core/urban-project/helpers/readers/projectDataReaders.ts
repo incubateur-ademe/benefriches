@@ -89,7 +89,7 @@ export function getProjectData(steps: Steps): Partial<UrbanProjectFormData> {
       },
     },
     decontaminatedSoilSurface:
-      steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload?.decontaminatedSurfaceArea,
+      steps.URBAN_PROJECT_SOILS_DECONTAMINATION?.payload?.decontaminatedSurfaceArea,
     buildingsResaleExpectedPropertyTransferDuties:
       steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.payload?.buildingsResalePropertyTransferDuties,
     buildingsResaleExpectedSellingPrice:

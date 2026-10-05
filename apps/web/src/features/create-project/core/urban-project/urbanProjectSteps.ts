@@ -19,8 +19,7 @@ import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-proj
 import { buildingsResaleSelectionSchema } from "./step-handlers/site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.schema";
 import { siteResaleSelectionSchema } from "./step-handlers/site-and-buildings-resale/site-resale-selection/siteResaleSelection.schema";
 import { involvesReinstatementSchema } from "./step-handlers/soils/involves-reinstatement/involvesReinstatement.schema";
-import { soilsDecontaminationSelectionSchema } from "./step-handlers/soils/soils-decontamination-selection/soilsDecontaminationSelection.schema";
-import { soilsDecontaminationSurfaceAreaSchema } from "./step-handlers/soils/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.schema";
+import { soilsDecontaminationSchema } from "./step-handlers/soils/soils-decontamination/soilsDecontamination.schema";
 import { publicGreenSpacesSoilsDistributionSchema } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.schema";
 import { spacesSelectionSchema } from "./step-handlers/spaces/spaces-selection/spacesSelection.schema";
 import { spacesSurfaceAreaSchema } from "./step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.schema";
@@ -90,9 +89,7 @@ export const answersByStepSchemas = {
 
   URBAN_PROJECT_INVOLVES_REINSTATEMENT: involvesReinstatementSchema,
 
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionSchema,
-
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: soilsDecontaminationSurfaceAreaSchema,
+  URBAN_PROJECT_SOILS_DECONTAMINATION: soilsDecontaminationSchema,
 
   // custom - buildings
   URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: buildingsUsesFloorSurfaceAreaSchema,

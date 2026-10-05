@@ -236,15 +236,11 @@ export const getProjectSummary = (
       shouldDisplay: stepsSequence.includes("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE"),
     },
     decontaminatedSoilSurface: {
-      value:
-        steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload?.decontaminatedSurfaceArea,
-      isAuto:
-        steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload?.decontaminationPlan ===
-        "unknown",
+      value: steps.URBAN_PROJECT_SOILS_DECONTAMINATION?.payload?.decontaminatedSurfaceArea,
+      isAuto: steps.URBAN_PROJECT_SOILS_DECONTAMINATION?.payload?.decontaminationPlan === "unknown",
       shouldDisplay:
-        stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA") &&
-        !!steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload
-          ?.decontaminatedSurfaceArea,
+        stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION") &&
+        !!steps.URBAN_PROJECT_SOILS_DECONTAMINATION?.payload?.decontaminatedSurfaceArea,
     },
     selectedUses: {
       value: steps.URBAN_PROJECT_USES_SELECTION?.payload?.usesSelection ?? [],
@@ -255,8 +251,8 @@ export const getProjectSummary = (
       shouldDisplay: stepsSequence.includes("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA"),
     },
     decontaminationPlan: {
-      value: steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload?.decontaminationPlan,
-      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"),
+      value: steps.URBAN_PROJECT_SOILS_DECONTAMINATION?.payload?.decontaminationPlan,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION"),
     },
     buildingsFootprintToReuse: {
       value: buildingsFootprintToReuse,

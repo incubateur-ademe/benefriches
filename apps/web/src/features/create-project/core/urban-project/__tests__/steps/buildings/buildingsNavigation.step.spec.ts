@@ -143,13 +143,9 @@ describe("Urban project creation - Steps - Buildings navigation", () => {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
           },
-          URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+          URBAN_PROJECT_SOILS_DECONTAMINATION: {
             completed: true,
-            payload: { decontaminationPlan: "partial" },
-          },
-          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
-            completed: true,
-            payload: { decontaminatedSurfaceArea: 1500 },
+            payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1500 },
           },
         })
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
@@ -168,13 +164,9 @@ describe("Urban project creation - Steps - Buildings navigation", () => {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL"] },
           },
-          URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+          URBAN_PROJECT_SOILS_DECONTAMINATION: {
             completed: true,
-            payload: { decontaminationPlan: "none" },
-          },
-          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
-            completed: true,
-            payload: { decontaminatedSurfaceArea: 0 },
+            payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
           },
         })
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")

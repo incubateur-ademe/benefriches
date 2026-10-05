@@ -18,6 +18,6 @@ export const SoilsDecontaminationIntroductionHandler = {
   },
 
   getNextStepId() {
-    return "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION";
+    return "URBAN_PROJECT_SOILS_DECONTAMINATION";
   },
 } satisfies InfoStepHandler;

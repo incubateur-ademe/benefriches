@@ -27,9 +27,10 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
         },
-        URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+        URBAN_PROJECT_SOILS_DECONTAMINATION: {
           completed: true,
           payload: {
+            decontaminationPlan: "partial",
             decontaminatedSurfaceArea: 200,
           },
         },
