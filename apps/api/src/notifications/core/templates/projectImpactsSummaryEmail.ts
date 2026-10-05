@@ -43,10 +43,10 @@ const formatEvaluationDate = (date: Date): string =>
     .map(({ type, value }) => (type === "day" && value === "1" ? "1er" : value))
     .join("");
 
-// Copy transcribed from the product mockup, with curly apostrophes; the cards' copy comes from
-// shared (projectImpactsSummaryCards.ts). No greeting, no closing paragraph, and no map, chart or
-// image: the mockup's map is struck through, and the welcome email's icons are the only images
-// lifecycle emails carry.
+// Copy transcribed from the product mockup, with straight apostrophes like the app; the cards'
+// copy comes from shared (projectImpactsSummaryCards.ts). No greeting, no closing paragraph, and
+// no map, chart or image: the mockup's map is struck through, and the welcome email's icons are
+// the only images lifecycle emails carry.
 export function buildProjectImpactsSummaryEmail(
   input: BuildProjectImpactsSummaryEmailInput,
 ): RenderedEmail {
