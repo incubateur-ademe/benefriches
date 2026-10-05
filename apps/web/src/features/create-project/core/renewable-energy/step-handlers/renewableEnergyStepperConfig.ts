@@ -21,8 +21,7 @@ import { revenueYearlyProjectedStepperConfig } from "./revenue/revenue-yearly-pr
 import { scheduleProjectionStepperConfig } from "./schedule/schedule-projection/scheduleProjection.stepperConfig";
 import { involvesReinstatementStepperConfig } from "./soils-decontamination/involves-reinstatement/involvesReinstatement.stepperConfig";
 import { soilsDecontaminationIntroductionStepperConfig } from "./soils-decontamination/soils-decontamination-introduction/soilsDecontaminationIntroduction.stepperConfig";
-import { soilsDecontaminationSelectionStepperConfig } from "./soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.stepperConfig";
-import { soilsDecontaminationSurfaceAreaStepperConfig } from "./soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.stepperConfig";
+import { soilsDecontaminationStepperConfig } from "./soils-decontamination/soils-decontamination/soilsDecontamination.stepperConfig";
 import { soilsTransformationClimateAndBiodiversityImpactNoticeStepperConfig } from "./soils-transformation/soils-transformation-climate-and-biodiversity-impact-notice/soilsTransformationClimateAndBiodiversityImpactNotice.stepperConfig";
 import { soilsTransformationCustomSoilsSelectionStepperConfig } from "./soils-transformation/soils-transformation-custom-soils-selection/soilsTransformationCustomSoilsSelection.stepperConfig";
 import { soilsTransformationCustomSurfaceAreaAllocationStepperConfig } from "./soils-transformation/soils-transformation-custom-surface-area-allocation/soilsTransformationCustomSurfaceAreaAllocation.stepperConfig";
@@ -70,8 +69,7 @@ export type RenewableEnergyStepSubGroupId =
   | "PHOTOVOLTAIC_CONTRACT_DURATION"
   // Site works (soils decontamination + soils transformation)
   | "INVOLVES_REINSTATEMENT"
-  | "SOILS_DECONTAMINATION_SELECTION"
-  | "SOILS_DECONTAMINATION_SURFACE_AREA"
+  | "SOILS_DECONTAMINATION"
   | "NON_SUITABLE_SOILS_SELECTION"
   | "NON_SUITABLE_SOILS_SURFACE"
   | "SOILS_TRANSFORMATION_PROJECT_SELECTION"
@@ -121,8 +119,7 @@ export const RENEWABLE_ENERGY_STEP_GROUP_LABELS: Record<
 
   // Site works
   INVOLVES_REINSTATEMENT: "Remise en état",
-  SOILS_DECONTAMINATION_SELECTION: "Choix de dépolluer",
-  SOILS_DECONTAMINATION_SURFACE_AREA: "Surface à dépolluer",
+  SOILS_DECONTAMINATION: "Dépollution des sols",
   NON_SUITABLE_SOILS_SELECTION: "Sols non adaptés",
   NON_SUITABLE_SOILS_SURFACE: "Surface des sols non adaptés",
   SOILS_TRANSFORMATION_PROJECT_SELECTION: "Sols du projet",
@@ -168,8 +165,7 @@ export const RENEWABLE_ENERGY_STEP_TO_GROUP: StepToGroupMapping<
   RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: involvesReinstatementStepperConfig,
   RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION:
     soilsDecontaminationIntroductionStepperConfig,
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionStepperConfig,
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA: soilsDecontaminationSurfaceAreaStepperConfig,
+  RENEWABLE_ENERGY_SOILS_DECONTAMINATION: soilsDecontaminationStepperConfig,
 
   // Soils transformation
   RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION: soilsTransformationIntroductionStepperConfig,

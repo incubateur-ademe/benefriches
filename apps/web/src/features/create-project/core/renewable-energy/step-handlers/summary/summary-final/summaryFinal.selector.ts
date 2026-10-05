@@ -122,11 +122,7 @@ export const createSelectPhotovoltaicFinalSummaryViewData = (
       );
       const decontamination = ReadStateHelper.getStepAnswers(
         steps,
-        "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
-      );
-      const decontaminationSelection = ReadStateHelper.getStepAnswers(
-        steps,
-        "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
+        "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
       );
 
       return {
@@ -157,9 +153,7 @@ export const createSelectPhotovoltaicFinalSummaryViewData = (
           yearlyProjectedRevenues: yearlyRevenues?.yearlyProjectedRevenues ?? [],
           reinstatementSchedule: schedule?.reinstatementSchedule,
           photovoltaicInstallationSchedule: schedule?.photovoltaicInstallationSchedule,
-          decontaminatedSurfaceArea:
-            decontamination?.decontaminatedSurfaceArea ??
-            decontaminationSelection?.decontaminatedSurfaceArea,
+          decontaminatedSurfaceArea: decontamination?.decontaminatedSurfaceArea,
           firstYearOfOperation: schedule?.firstYearOfOperation,
         },
         siteData: {

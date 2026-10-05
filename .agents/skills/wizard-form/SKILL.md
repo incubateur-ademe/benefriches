@@ -72,8 +72,9 @@ awareness. An `AnswerStepHandler` implements:
 - `getNextStepId(params, answers)` — required; the branching logic.
 - `getPreviousStepId?`, `getDefaultAnswers?` — optional nav / pre-fill.
 - `getRecomputedStepAnswers?`, `getDependencyRules?`, `getShortcut?`, `updateAnswersMiddleware?` —
-  optional cascade hooks. Urban uses them; **PV implements none** (the "degenerate" path), so
-  `computeStepChanges` always yields empty changes and `applyStepChanges` runs unconditionally.
+  optional cascade hooks. Urban uses all of them; PV uses `updateAnswersMiddleware`,
+  `getDependencyRules` and `getRecomputedStepAnswers` (e.g. its soils decontamination step
+  recomputes the generated reinstatement expenses) but no `getShortcut`.
 
 When `getDependencyRules` invalidates downstream answers, the pending change surfaces a
 `CascadingChangesAlertDialog` (`pendingStepCompletion.showAlert` in `WizardFormSubState`) and waits for
@@ -136,7 +137,7 @@ You never open `shared/core/wizard-form/`.
 1. **Steps** — a `StepId` union (answer vs info) + the `AnswersByStep` map.
 2. **Handlers** — one pure handler per step; aggregate into a registry.
 3. **Reducer wiring** — an `addXxxFormCasesToBuilder` mapping the 4 actions onto the engine helpers
-   (copy PV's file — it's the degenerate template).
+   (copy PV's file — it's the smallest template).
 4. **Factories** — `createXxxFormActions(prefix)`, `createXxxFormSelectors(prefix)`.
 5. **Slice** — nest a `WizardFormSubState`-shaped sub-state under your key; call the case-builder with
    `{ registry, selectForm, buildContext, config }`.

@@ -103,10 +103,8 @@ export const exhaustiveSteps: RenewableEnergyStepsState = {
       { source: "other", amount: 999.99 },
     ],
   }),
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: makeStep({
+  RENEWABLE_ENERGY_SOILS_DECONTAMINATION: makeStep({
     decontaminationPlan: "partial" as const,
-  }),
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA: makeStep({
     decontaminatedSurfaceArea: 1000,
   }),
   RENEWABLE_ENERGY_SCHEDULE_PROJECTION: makeStep({

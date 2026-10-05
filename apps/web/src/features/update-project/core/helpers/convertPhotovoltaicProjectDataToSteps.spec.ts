@@ -118,7 +118,7 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
     expect(steps.RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT).toBeUndefined();
   });
 
-  it("omits decontamination steps on a friche without contaminated soils, even when a decontaminated surface was saved", () => {
+  it("omits the decontamination step on a friche without contaminated soils, even when a decontaminated surface was saved", () => {
     const steps = convertPhotovoltaicProjectDataToSteps({
       projectData: { ...BASE_PROJECT_DATA, decontaminatedSoilSurface: 0 },
       siteData: {
@@ -129,11 +129,10 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
       },
     });
 
-    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION).toBeUndefined();
-    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA).toBeUndefined();
+    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION).toBeUndefined();
   });
 
-  it("omits decontamination steps entirely on a non-friche site with no known contamination", () => {
+  it("omits the decontamination step on a non-friche site with no known contamination", () => {
     const steps = convertPhotovoltaicProjectDataToSteps({
       projectData: { ...BASE_PROJECT_DATA, involvesReinstatement: false },
       siteData: {
@@ -143,8 +142,7 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
       },
     });
 
-    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION).toBeUndefined();
-    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA).toBeUndefined();
+    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION).toBeUndefined();
   });
 
   it("pre-fills decontamination on a non-friche site with contaminated soils", () => {
@@ -158,7 +156,7 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
       },
     });
 
-    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION).toEqual({
+    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION).toEqual({
       payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
       completed: true,
     });
@@ -174,7 +172,7 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
       siteData: { ...BASE_SITE_DATA, hasContaminatedSoils: true, contaminatedSoilSurface: 1000 },
     });
 
-    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION).toEqual({
+    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION).toEqual({
       payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
       completed: true,
     });
@@ -190,12 +188,40 @@ describe("convertPhotovoltaicProjectDataToSteps", () => {
       siteData: { ...BASE_SITE_DATA, hasContaminatedSoils: true, contaminatedSoilSurface: 1000 },
     });
 
-    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION).toEqual({
+    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION).toEqual({
       payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 400 },
       completed: true,
     });
-    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA).toEqual({
-      payload: { decontaminatedSurfaceArea: 400 },
+  });
+
+  it("maps decontaminationPlan to 'unknown' when the saved surface is the 25% default", () => {
+    const steps = convertPhotovoltaicProjectDataToSteps({
+      projectData: {
+        ...BASE_PROJECT_DATA,
+        involvesReinstatement: true,
+        decontaminatedSoilSurface: 250,
+      },
+      siteData: { ...BASE_SITE_DATA, hasContaminatedSoils: true, contaminatedSoilSurface: 1000 },
+    });
+
+    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION).toEqual({
+      payload: { decontaminationPlan: "unknown", decontaminatedSurfaceArea: 250 },
+      completed: true,
+    });
+  });
+
+  it("reads a missing saved surface as no decontamination", () => {
+    const steps = convertPhotovoltaicProjectDataToSteps({
+      projectData: {
+        ...BASE_PROJECT_DATA,
+        involvesReinstatement: true,
+        decontaminatedSoilSurface: undefined,
+      },
+      siteData: { ...BASE_SITE_DATA, hasContaminatedSoils: true, contaminatedSoilSurface: 1000 },
+    });
+
+    expect(steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION).toEqual({
+      payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
       completed: true,
     });
   });

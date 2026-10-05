@@ -92,7 +92,7 @@ describe("Renewable energy creation - Steps - involves reinstatement", () => {
       );
       const { stepsSequence } = store.getState().projectCreation.renewableEnergyProject;
       expect(stepsSequence).toContain("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
-      expect(stepsSequence).toContain("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION");
+      expect(stepsSequence).toContain("RENEWABLE_ENERGY_SOILS_DECONTAMINATION");
     });
   });
 

@@ -12,15 +12,7 @@ export const SoilsTransformationIntroductionHandler: InfoStepHandler = {
         ? "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT"
         : "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION";
     }
-    if (
-      ReadStateHelper.getStepAnswers(
-        params.answers,
-        "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
-      )?.decontaminationPlan === "partial"
-    ) {
-      return "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA";
-    }
-    return "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION";
+    return "RENEWABLE_ENERGY_SOILS_DECONTAMINATION";
   },
 
   getNextStepId(params) {

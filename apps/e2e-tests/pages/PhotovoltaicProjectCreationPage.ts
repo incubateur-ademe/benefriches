@@ -117,13 +117,21 @@ export class PhotovoltaicProjectCreationPage {
   }
 
   // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
-  async selectDecontaminationOption(option: "partial" | "none" | "unknown"): Promise<void> {
-    const labels: Record<"partial" | "none" | "unknown", string> = {
-      partial: "Oui",
+  async selectDecontaminationOption(option: "none" | "unknown"): Promise<void> {
+    const labels: Record<"none" | "unknown", string> = {
       none: "Non",
       unknown: "Ne sait pas",
     };
     await this.page.getByRole("radio", { name: labels[option] }).check({ force: true });
+    await this.submit();
+  }
+
+  // Answers "Oui" and enters the part of the contaminated soils to decontaminate, in % (the
+  // default surface input mode).
+  // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
+  async fillDecontaminatedSurfacePercentage(percentage: number): Promise<void> {
+    await this.page.getByRole("radio", { name: "Oui" }).check({ force: true });
+    await this.page.getByLabel(/Part à dépolluer/).fill(String(percentage));
     await this.submit();
   }
 
@@ -262,6 +270,14 @@ export class PhotovoltaicProjectCreationPage {
 
   async expectFinalSummary(): Promise<void> {
     await expect(this.page.getByRole("heading", { name: "Récapitulatif du projet" })).toBeVisible();
+  }
+
+  // Summary rows render as `<dl><dd>{label}</dd><dt>{value}</dt></dl>` (FeaturesListDataLine).
+  async expectSummaryLineValue(label: string, value: string | RegExp): Promise<void> {
+    const row = this.page
+      .locator("dl")
+      .filter({ has: this.page.locator("dd", { hasText: label }) });
+    await expect(row.first().locator("dt")).toContainText(value);
   }
 
   async submitFinalSummary(): Promise<void> {

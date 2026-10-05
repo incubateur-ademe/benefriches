@@ -1,6 +1,6 @@
 import type { RenewableEnergyStepStepperConfig } from "../../renewableEnergyStepperConfig";
 
-export const soilsDecontaminationSelectionStepperConfig = {
+export const soilsDecontaminationStepperConfig = {
   groupId: "SITE_WORKS",
-  subGroupId: "SOILS_DECONTAMINATION_SELECTION",
+  subGroupId: "SOILS_DECONTAMINATION",
 } as const satisfies RenewableEnergyStepStepperConfig;

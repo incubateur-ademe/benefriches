@@ -75,7 +75,7 @@ describe("Renewable energy creation - Steps - soils transformation introduction"
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT");
     });
 
-    it("should navigate back to decontamination surface area when site has contaminated soils and plan is partial", () => {
+    it("should navigate back to the decontamination step when site has contaminated soils", () => {
       const store = new StoreBuilder()
         .withSiteData({
           ...relatedSiteData,
@@ -83,42 +83,18 @@ describe("Renewable energy creation - Steps - soils transformation introduction"
           contaminatedSoilSurface: 5000,
         })
         .withStepsSequence([
-          "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+          "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
           "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
         ])
         .withSteps({
-          RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: {
+          RENEWABLE_ENERGY_SOILS_DECONTAMINATION: {
             completed: true,
-            payload: { decontaminationPlan: "partial" },
+            payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1200 },
           },
         })
         .build();
       store.dispatch(previousStepRequested());
-      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA");
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION");
     });
-
-    for (const decontaminationPlan of ["none", "unknown"] as const) {
-      it(`should navigate back to decontamination selection when site has contaminated soils and plan is ${decontaminationPlan}`, () => {
-        const store = new StoreBuilder()
-          .withSiteData({
-            ...relatedSiteData,
-            hasContaminatedSoils: true,
-            contaminatedSoilSurface: 5000,
-          })
-          .withStepsSequence([
-            "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
-            "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
-          ])
-          .withSteps({
-            RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: {
-              completed: true,
-              payload: { decontaminationPlan },
-            },
-          })
-          .build();
-        store.dispatch(previousStepRequested());
-        expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION");
-      });
-    }
   });
 });

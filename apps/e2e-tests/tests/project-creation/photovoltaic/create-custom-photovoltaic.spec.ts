@@ -1,3 +1,4 @@
+import { asSquareMeters } from "../../../fixtures/helpers/format.helpers";
 import { test } from "./fixtures";
 
 const PROJECT_NAME = "Centrale photovoltaïque de Meylan";
@@ -302,6 +303,115 @@ test.describe("photovoltaic project creation - friche site", () => {
     // --- Creation result ---
 
     await pvProjectCreationPage.expectCreationSuccess(FRICHE_PROJECT_NAME);
+  });
+});
+
+test.describe("photovoltaic project creation - friche site with contaminated soils", () => {
+  const CONTAMINATED_FRICHE_PROJECT_NAME = "Centrale photovoltaïque sur friche polluée de Meylan";
+
+  test("allows authenticated user to create a PV project decontaminating part of the polluted soils", async ({
+    pvProjectCreationPage,
+    contaminatedFricheSite,
+  }) => {
+    await pvProjectCreationPage.goto(contaminatedFricheSite.id);
+
+    // --- Project phase, mode and type ---
+    await pvProjectCreationPage.expectStepTitle("A quelle phase du projet êtes-vous ?");
+    await pvProjectCreationPage.selectProjectPhase("Montage / Développement");
+    await pvProjectCreationPage.expectStepTitle("Que savez vous de votre projet ?");
+    await pvProjectCreationPage.selectCreateMode("custom");
+    await pvProjectCreationPage.expectStepTitle("Quel type de projet souhaitez-vous évaluer ?");
+    await pvProjectCreationPage.selectProjectType();
+    await pvProjectCreationPage.expectStepTitle("Quel système d'EnR souhaitez-vous installer ?");
+    await pvProjectCreationPage.selectRenewableEnergyType();
+
+    // --- Photovoltaic parameters ---
+    await pvProjectCreationPage.expectStepTitle(
+      "Quel est le paramètre déterminant pour la centrale photovoltaïque ?",
+    );
+    await pvProjectCreationPage.selectKeyParameter("POWER");
+    await pvProjectCreationPage.expectStepTitle("Quelle sera la puissance de l'installation ?");
+    await pvProjectCreationPage.fillPower(296);
+    await pvProjectCreationPage.expectStepTitle(
+      "Quelle superficie du site occuperont les panneaux photovoltaïques ?",
+    );
+    await pvProjectCreationPage.fillSurface(2700);
+    await pvProjectCreationPage.expectStepTitle(
+      "Quelle est la production annuelle attendue de l'installation ?",
+    );
+    await pvProjectCreationPage.fillExpectedAnnualProduction(374);
+    await pvProjectCreationPage.expectStepTitle(
+      "Quelle sera la durée prévisionnelle du contrat de la revente d'énergie au distributeur ?",
+    );
+    await pvProjectCreationPage.fillContractDuration(20);
+
+    // --- Site works ---
+    await pvProjectCreationPage.expectStepTitle(
+      "Le projet prévoit-il une remise en état du site ?",
+    );
+    await pvProjectCreationPage.selectInvolvesReinstatement(false);
+
+    // The friche has 1 000 m² of contaminated soils: decontamination is asked
+    await pvProjectCreationPage.expectStepTitle("Et si on dépolluait les sols ?");
+    await pvProjectCreationPage.goToNextStep();
+
+    await pvProjectCreationPage.expectStepTitle("Est-il nécessaire de dépolluer les sols ?");
+    await pvProjectCreationPage.fillDecontaminatedSurfacePercentage(60);
+
+    // --- Soils transformation ---
+    await pvProjectCreationPage.expectStepTitle(
+      "Nous allons maintenant parler de ce que seront les sols du site.",
+    );
+    await pvProjectCreationPage.goToNextStep();
+    await pvProjectCreationPage.expectStepTitle("Que souhaitez-vous faire des sols du site ?");
+    await pvProjectCreationPage.selectSoilsTransformationProject("keepCurrentSoils");
+    await pvProjectCreationPage.expectSoilsSummaryStep();
+    await pvProjectCreationPage.goToNextStep();
+    await pvProjectCreationPage.expectSoilsCarbonStorageStep();
+    await pvProjectCreationPage.goToNextStep();
+
+    // --- Stakeholders ---
+    await pvProjectCreationPage.expectStepTitle(
+      "Différents acteurs vont prendre part à votre projet",
+    );
+    await pvProjectCreationPage.goToNextStep();
+    await pvProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site ?");
+    await pvProjectCreationPage.selectStakeholder(/Ma structure/);
+    await pvProjectCreationPage.expectStepTitle(
+      "Qui sera l'exploitant de la centrale photovoltaïque ?",
+    );
+    await pvProjectCreationPage.selectStakeholder(/Ma structure/);
+    await pvProjectCreationPage.expectStepTitle("Le site sera-t-il racheté à Mairie de Meylan ?");
+    await pvProjectCreationPage.selectSitePurchase(false);
+
+    // --- Expenses and revenue: accept pre-filled defaults ---
+    await pvProjectCreationPage.expectStepTitle("Votre projet va engendrer des dépenses.");
+    await pvProjectCreationPage.goToNextStep();
+    await pvProjectCreationPage.expectStepTitle(
+      "Dépenses d'installation de la centrale photovoltaïque",
+    );
+    await pvProjectCreationPage.submitOrSkipStep();
+    await pvProjectCreationPage.expectStepTitle("Dépenses annuelles");
+    await pvProjectCreationPage.submitOrSkipStep();
+    await pvProjectCreationPage.expectStepTitle("Votre projet peut aussi engendrer des recettes");
+    await pvProjectCreationPage.goToNextStep();
+    await pvProjectCreationPage.expectStepTitle("Recettes annuelles");
+    await pvProjectCreationPage.submitOrSkipStep();
+    await pvProjectCreationPage.expectStepTitle("Aides financières");
+    await pvProjectCreationPage.submitOrSkipStep();
+
+    // --- Schedule and naming ---
+    await pvProjectCreationPage.expectStepTitle("Calendrier");
+    await pvProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
+    await pvProjectCreationPage.expectStepTitle("Dénomination du projet");
+    await pvProjectCreationPage.fillNameAndDescription(CONTAMINATED_FRICHE_PROJECT_NAME);
+
+    // --- Final summary: 60% of 1 000 m² ---
+    await pvProjectCreationPage.expectFinalSummary();
+    await pvProjectCreationPage.expectSummaryLineValue("Surface dépolluée", asSquareMeters(600));
+    await pvProjectCreationPage.submitFinalSummary();
+
+    await pvProjectCreationPage.expectCreationSuccess(CONTAMINATED_FRICHE_PROJECT_NAME);
   });
 });
 

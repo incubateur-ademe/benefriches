@@ -7,11 +7,9 @@ import type {
   SoilsDistribution,
   SoilType,
 } from "shared";
-import {
-  canSiteAccomodatePhotovoltaicPanels,
-  computeDefaultDecontaminatedSurfaceArea,
-} from "shared";
+import { canSiteAccomodatePhotovoltaicPanels } from "shared";
 
+import { inferDecontaminationPlan } from "@/features/create-project/core/project-form/soilsDecontamination";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 
@@ -83,33 +81,19 @@ export const convertPhotovoltaicProjectDataToSteps = ({
   // nature (see InvolvesReinstatementHandler and ContractDurationHandler), independently of the
   // involvesReinstatement answer.
   if (siteData.hasContaminatedSoils) {
-    const contaminatedSoilSurface = siteData.contaminatedSoilSurface ?? 0;
-    const defaultDecontaminatedSurfaceArea =
-      computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface);
+    // A missing saved surface is read as no decontamination.
     const decontaminatedSurfaceArea = projectData.decontaminatedSoilSurface ?? 0;
 
-    steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION = {
+    steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION = {
       completed: true,
       payload: {
-        decontaminationPlan:
-          decontaminatedSurfaceArea === 0
-            ? "none"
-            : decontaminatedSurfaceArea === defaultDecontaminatedSurfaceArea
-              ? "unknown"
-              : "partial",
+        decontaminationPlan: inferDecontaminationPlan(
+          decontaminatedSurfaceArea,
+          siteData.contaminatedSoilSurface ?? 0,
+        ),
         decontaminatedSurfaceArea,
       },
     };
-
-    if (
-      decontaminatedSurfaceArea !== 0 &&
-      decontaminatedSurfaceArea !== defaultDecontaminatedSurfaceArea
-    ) {
-      steps.RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA = {
-        completed: true,
-        payload: { decontaminatedSurfaceArea },
-      };
-    }
   }
 
   if (involvesReinstatement) {

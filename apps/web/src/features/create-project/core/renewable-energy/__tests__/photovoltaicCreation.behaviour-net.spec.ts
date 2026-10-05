@@ -23,6 +23,23 @@ import { getCurrentStep, StoreBuilder } from "./_testStoreHelpers";
  * 10000, FOREST_DECIDUOUS 12000 (total 30000). Suitable soils for photovoltaic panels are
  * MINERAL_SOIL + ARTIFICIAL_GRASS_OR_BUSHES_FILLED = 15000 m2.
  */
+// 2000 m2 of contaminated soils: the 25% default is 500 m2.
+const buildStoreAtDecontaminationIntroduction = () =>
+  new StoreBuilder()
+    .withSiteData({
+      ...relatedSiteData,
+      hasContaminatedSoils: true,
+      contaminatedSoilSurface: 2000,
+    })
+    .withCurrentStep("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION")
+    .withSteps({
+      RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: {
+        completed: true,
+        payload: { involvesReinstatement: true },
+      },
+    })
+    .build();
+
 describe("Photovoltaic creation flow (behaviour-net)", () => {
   it("completes the POWER key-parameter happy path with no reinstatement and no decontamination", () => {
     const store = new StoreBuilder()
@@ -83,11 +100,11 @@ describe("Photovoltaic creation flow (behaviour-net)", () => {
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
 
     dispatch(nextStepRequested());
-    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION");
+    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION");
 
     dispatch(
       stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
+        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
         answers: { decontaminationPlan: "none" },
       }),
     );
@@ -299,7 +316,7 @@ describe("Photovoltaic creation flow (behaviour-net)", () => {
     dispatch(nextStepRequested());
     dispatch(
       stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
+        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
         answers: { decontaminationPlan: "none" },
       }),
     );
@@ -462,20 +479,12 @@ describe("Photovoltaic creation flow (behaviour-net)", () => {
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
 
     dispatch(nextStepRequested());
-    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION");
+    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION");
 
     dispatch(
       stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
-        answers: { decontaminationPlan: "partial" },
-      }),
-    );
-    expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA");
-
-    dispatch(
-      stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
-        answers: { decontaminatedSurfaceArea: 1500 },
+        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
+        answers: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1500 },
       }),
     );
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
@@ -674,7 +683,7 @@ describe("Photovoltaic creation flow (behaviour-net)", () => {
     dispatch(nextStepRequested());
     dispatch(
       stepCompletionRequested({
-        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
+        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
         answers: { decontaminationPlan: "none" },
       }),
     );
@@ -801,6 +810,65 @@ describe("Photovoltaic creation flow (behaviour-net)", () => {
 
     expect(projectData.developmentPlan.features.surfaceArea).toBe(20000);
     expect(projectData.involvesReinstatement).toBe(false);
+  });
+
+  describe("decontamination answer → submitted decontaminatedSoilSurface", () => {
+    it("submits 0 m2 when the user answers 'Non'", () => {
+      const store = buildStoreAtDecontaminationIntroduction();
+
+      store.dispatch(nextStepRequested());
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
+          answers: { decontaminationPlan: "none" },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
+      const projectData = getProjectData(
+        store.getState().projectCreation.renewableEnergyProject.steps,
+      );
+      expect(projectData.decontaminatedSoilSurface).toBe(0);
+    });
+
+    it("submits the 25% default when the user answers 'Ne sait pas'", () => {
+      const store = buildStoreAtDecontaminationIntroduction();
+
+      store.dispatch(nextStepRequested());
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
+          answers: { decontaminationPlan: "unknown" },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
+      const projectData = getProjectData(
+        store.getState().projectCreation.renewableEnergyProject.steps,
+      );
+      expect(projectData.decontaminatedSoilSurface).toBe(500);
+    });
+
+    it("submits the entered surface when the user answers 'Oui' with a surface", () => {
+      const store = buildStoreAtDecontaminationIntroduction();
+
+      store.dispatch(nextStepRequested());
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
+          answers: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1200 },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
+      const projectData = getProjectData(
+        store.getState().projectCreation.renewableEnergyProject.steps,
+      );
+      expect(projectData.decontaminatedSoilSurface).toBe(1200);
+    });
   });
 
   it("navigates back to the key-parameter step from the surface step", () => {

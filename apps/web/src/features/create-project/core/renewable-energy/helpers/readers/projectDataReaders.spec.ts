@@ -89,25 +89,11 @@ describe("renewable energy - getProjectData reader", () => {
     });
   });
 
-  it("reads decontaminated surface from the dedicated surface-area step when present", () => {
-    // exhaustiveSteps sets both the selection ("partial") and the explicit surface (1000).
+  it("reads the decontaminated surface from the decontamination step", () => {
+    // exhaustiveSteps answers the decontamination step with "partial" and 1000 m2.
     const result = getProjectData(exhaustiveSteps);
 
     expect(result.decontaminatedSoilSurface).toBe(1000);
-  });
-
-  it("falls back to the decontamination selection surface when the surface-area step is absent", () => {
-    const steps: RenewableEnergyStepsState = {
-      ...minimalSteps,
-      RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: {
-        completed: true,
-        payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 750 },
-      },
-    };
-
-    const result = getProjectData(steps);
-
-    expect(result.decontaminatedSoilSurface).toBe(750);
   });
 
   it("prefers the custom surface-area allocation over the project selection for soils distribution", () => {

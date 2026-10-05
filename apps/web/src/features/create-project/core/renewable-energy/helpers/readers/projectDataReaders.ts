@@ -66,13 +66,9 @@ export const getProjectData = (steps: RenewableEnergyStepsState) => {
   );
   const schedule = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_SCHEDULE_PROJECTION");
   const naming = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_NAMING");
-  const decontaminationSelection = ReadStateHelper.getStepAnswers(
+  const decontamination = ReadStateHelper.getStepAnswers(
     steps,
-    "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
-  );
-  const decontaminationSurface = ReadStateHelper.getStepAnswers(
-    steps,
-    "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+    "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
   );
   const involvesReinstatementStep = ReadStateHelper.getStepAnswers(
     steps,
@@ -125,8 +121,6 @@ export const getProjectData = (steps: RenewableEnergyStepsState) => {
       },
     },
     involvesReinstatement,
-    decontaminatedSoilSurface:
-      decontaminationSurface?.decontaminatedSurfaceArea ??
-      decontaminationSelection?.decontaminatedSurfaceArea,
+    decontaminatedSoilSurface: decontamination?.decontaminatedSurfaceArea,
   };
 };

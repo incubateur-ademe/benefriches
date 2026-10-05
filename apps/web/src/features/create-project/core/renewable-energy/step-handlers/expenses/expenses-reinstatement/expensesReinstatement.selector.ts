@@ -16,13 +16,9 @@ export const createSelectPVReinstatementExpensesViewData = (
   selectSteps: Selector<RootState, RenewableEnergyStepsState>,
 ) =>
   createSelector([selectSteps], (steps): PVReinstatementExpensesViewData => {
-    const decontaminationSelection = ReadStateHelper.getStepAnswers(
+    const decontamination = ReadStateHelper.getStepAnswers(
       steps,
-      "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
-    );
-    const decontaminationSurface = ReadStateHelper.getStepAnswers(
-      steps,
-      "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+      "RENEWABLE_ENERGY_SOILS_DECONTAMINATION",
     );
     const reinstatementExpenses =
       ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT")
@@ -30,10 +26,7 @@ export const createSelectPVReinstatementExpensesViewData = (
       ReadStateHelper.getDefaultAnswers(steps, "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT")
         ?.reinstatementExpenses;
     return {
-      decontaminatedSurfaceArea:
-        decontaminationSurface?.decontaminatedSurfaceArea ??
-        decontaminationSelection?.decontaminatedSurfaceArea ??
-        0,
+      decontaminatedSurfaceArea: decontamination?.decontaminatedSurfaceArea ?? 0,
       reinstatementExpenses: reinstatementExpenses,
     };
   });
