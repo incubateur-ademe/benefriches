@@ -702,7 +702,11 @@ and a section is one of:
 - `{ type: "heading", text }`
 - `{ type: "paragraph", html, text }` — callers supply both an HTML fragment and its plain
   text equivalent themselves (the layout doesn't strip HTML for the text path)
-- `{ type: "featureBlock", title, body }`
+- `{ type: "featureBlock", title, body, iconUrl? }` — without `iconUrl`, a bold title row
+  then a body row. With it, the title row holds a nested two-cell table: a 24×24 `<img>`
+  (`width`/`height` attributes, `alt=""`, `border="0"`, `display:block`) in a
+  `valign="middle"` cell, then the title in a second `valign="middle"` cell; the body row is
+  unchanged. The text path never shows the icon.
 - `{ type: "button", variant?, label, url }` — `variant` is `"primary"` (default, dark cell,
   white text) or `"secondary"` (light grey `#dddddd` cell, dark text; the reminders' contact
   button)
@@ -729,7 +733,20 @@ where Outlook's HTML renderer is the practical constraint):
 - Table-based, single-column layout (`<table role="presentation">`), inline styles only.
 - No flexbox or grid anywhere in the generated markup (`emailLayout.spec.ts` asserts this
   with regexes against `display:flex`, `display:grid`, `flex-*`).
-- No `<img>` tags — every template here is text/table only.
+- Images: only the decorative `featureBlock` icons (`iconUrl`), nothing else
+  (`contactSignature` stays image-free):
+  - PNG only: no SVG, icon font, CSS mask, `data:` URI or CID attachment (Gmail and Outlook
+    don't render or block them).
+  - 2x resolution (48×48 shown at 24×24), in `#000091` (`LINK_COLOR`) on a transparent
+    background.
+  - Hosted in `apps/web/public/img/emails/` (served unhashed at `/img/emails/<file>`) and
+    referenced as `new URL("/img/emails/<file>", webappUrl)`, never a hardcoded domain.
+  - Decorative: `alt=""` and explicit `width`/`height`, so the email reads fine with images
+    blocked (Outlook's default).
+  - **Never rename, move, delete or overwrite a published PNG**: emails already in inboxes
+    (and Gmail's image proxy cache) point at it, and nginx's `try_files … /index.html`
+    fallback answers a missing file with `200 text/html`, not a 404. To change an icon, add
+    a file under a new name.
 - The CTA button is rendered as a `<table><tr><td bgcolor="...">` wrapping an `<a>`, which
   is the standard Outlook-safe way to get a clickable, styled button (Outlook's Word-based
   rendering engine ignores most CSS on `<a>`/`<button>` directly).
@@ -749,6 +766,23 @@ evaluation, cost-benefit analysis, avoided-costs analysis), and a CTA button lin
 `new URL("/creer-site-foncier", webappUrl)`. The CTA URL is always built from the injected
 `webappUrl` (wired from the `WEBAPP_URL` config value in `notifications.module.ts`) —
 never a hardcoded domain — so the link resolves correctly per environment.
+
+Each feature block shows, left of its title, the DSFR icon of the matching project page tab
+(`ProjectPageTabs.tsx`), with its URL built the same way
+(`new URL("/img/emails/<file>", webappUrl)`):
+
+| Feature block                  | DSFR icon                     | File                         |
+| ------------------------------ | ----------------------------- | ---------------------------- |
+| Votre évaluation des impacts   | `fr-icon-bar-chart-box-line`  | `impacts-evaluation.png`     |
+| Votre analyse coût-bénéfice    | `fr-icon-line-chart-line`     | `cost-benefit-analysis.png`  |
+| Votre analyse des coûts évités | `fr-icon-money-euro-box-line` | `avoided-costs-analysis.png` |
+
+The PNGs were rasterised from the `@codegouvfr/react-dsfr` SVGs
+(`dsfr/icons/business/bar-chart-box-line.svg`, `dsfr/icons/business/line-chart-line.svg`,
+`dsfr/icons/finance/money-euro-box-line.svg`, 24×24 viewBox) at 48×48 with
+`fill="#000091"` and a transparent background (a Playwright Chromium screenshot of the SVG
+with `omitBackground: true`; the script is not committed). To change one, regenerate it the
+same way under a new file name (see the image rule above).
 
 ### `firstSiteReminderEmail.ts`
 
@@ -781,6 +815,11 @@ the body, `pré-remplies`, `accompagné`.
   `InMemory*` gateways and `FakeMailer`, covering every outcome (`sent`, `failed`,
   `skipped-disabled`, `skipped-unsubscribed`, `skipped-already-sent`) plus the
   entity-scoped-vs-account-scoped dedup distinction, and every `retry()` outcome.
+- The welcome email's feature block icons: `emailLayout.spec.ts` pins the exact `featureBlock`
+  markup without an icon (unchanged, no `<img>`) and with one (nested table, a single `<img>`,
+  escaped `src`, same plain text); `welcomeEmail.spec.ts` checks the three icon URLs in order
+  (also with a trailing slash on `webappUrl`) and the full plain text. Manual QA guide:
+  `docs/qa/lifecycle-emails/08.md`.
 - The daily reminder job: `reminderWindow.spec.ts`, `firstSiteReminderEmail.spec.ts` (the full
   plain-text copy is the regression guard), `sendFirstSiteReminders.usecase.spec.ts` (dry run,
   kill switch, missing contact, twice, per-user errors), `readLifecycleEmailContact.spec.ts`,
@@ -839,7 +878,7 @@ the body, `pré-remplies`, `accompagné`.
   breaks every link already sent.
 - The footer and page wording are drafts (`TODO(product)`), pending product review.
 - `lifecycleEmailTypeSchema` has `"welcome"`, `"first-site-reminder"` and
-  `"first-project-reminder"`; the impacts summary (08) is planned but not implemented. It
+  `"first-project-reminder"`; the impacts summary (BEN-12) is planned but not implemented. It
   will take its headline indicators from `"shared"` (ticket 07), in the web app's order:
   compute the impacts (50 years) → crop them with `cropImpactsByEvaluationPeriod` to
   `getDefaultEvaluationPeriodInYears` (30 years for a photovoltaic plant, 50 otherwise) →
