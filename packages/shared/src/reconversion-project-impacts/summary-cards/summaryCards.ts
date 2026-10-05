@@ -29,7 +29,7 @@ export const getZanComplianceCardContent = (
   if (zanCompliance.isSuccess) {
     return {
       headline: "Projet favorable au ZAN",
-      body: "Le projet reconvertit un site en friche et limite la consommation d’espaces naturels, agricoles ou forestiers.",
+      body: "Le projet reconvertit un site en friche et limite la consommation d'espaces naturels, agricoles ou forestiers.",
     };
   }
 
@@ -53,23 +53,23 @@ export const getBreakEvenCardContent = (
     case "positiveFromFirstYear":
       return {
         headline: `En ${breakEvenHorizon.breakEvenYear}`,
-        title: "Bilan de l’opération positif",
+        title: "Bilan de l'opération positif",
         body: `La somme du bilan économique et des impacts socio-économiques est positive dès ${breakEvenHorizon.breakEvenYear}.`,
       };
     case "compensated":
-      // TODO(product): the email mockup reads "Coûts de l’opération compensés" (plural).
+      // TODO(product): the email mockup reads "Coûts de l'opération compensés" (plural).
       return {
         headline: `En ${pluralizeYears(breakEvenHorizon.yearsToBreakEven)}`,
-        title: "Coût de l’opération compensé",
-        body: `Les impacts socio-économiques compenseront le coût de l’opération en ${breakEvenHorizon.breakEvenYear}.`,
+        title: "Coût de l'opération compensé",
+        body: `Les impacts socio-économiques compenseront le coût de l'opération en ${breakEvenHorizon.breakEvenYear}.`,
       };
     case "notCompensatedWithinPeriod":
       return {
         headline: `Sur ${pluralizeYears(evaluationPeriodInYears)}`,
-        title: "Coût de l’opération non compensé",
+        title: "Coût de l'opération non compensé",
         body: breakEvenHorizon.breakEvenYear
-          ? `Les impacts socio-économiques compenseront le coût de l’opération en ${breakEvenHorizon.breakEvenYear}.`
-          : "Les impacts socio-économiques ne compenseront pas le coût de l’opération.",
+          ? `Les impacts socio-économiques compenseront le coût de l'opération en ${breakEvenHorizon.breakEvenYear}.`
+          : "Les impacts socio-économiques ne compenseront pas le coût de l'opération.",
       };
   }
 };
@@ -103,7 +103,7 @@ export const getMainImpactIndicatorCardContent = (
         : {
             headline: formatMonetaryImpact(indicator.value),
             title: "Pertes pour la collectivité",
-            body: "à cause d’une perte de recettes fiscales",
+            body: "à cause d'une perte de recettes fiscales",
           };
     case "localPropertyValueIncrease":
       return {

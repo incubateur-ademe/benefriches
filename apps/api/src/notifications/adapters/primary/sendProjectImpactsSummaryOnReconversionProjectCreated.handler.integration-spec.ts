@@ -128,7 +128,7 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
       [{ to: "gregoire.bailleux@example.fr", subject: expectedSubject }],
     );
     assert.deepStrictEqual(fakeMailer.sentEmails[0]?.text.split("\n\n").slice(0, 2), [
-      "Voici les résultats de l’évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Friche de la Sucrerie ».",
+      "Voici les résultats de l'évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Friche de la Sucrerie ».",
       "Évaluation réalisée le 15 juin 2026",
     ]);
     const rows = await summaryRows(userId);

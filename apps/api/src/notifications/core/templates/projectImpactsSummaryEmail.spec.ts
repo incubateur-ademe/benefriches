@@ -100,7 +100,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
       /<div style="display:none;[^"]*">([^<]*?)(?:&zwnj;&nbsp;)*<\/div>/.exec(email.html) ?? [];
     assert.strictEqual(
       preheader,
-      "Les impacts socio-économiques de votre projet, comparés au maintien du site en l’état.",
+      "Les impacts socio-économiques de votre projet, comparés au maintien du site en l&#39;état.",
     );
   });
 
@@ -110,24 +110,24 @@ describe("buildProjectImpactsSummaryEmail", () => {
     assert.strictEqual(
       email.text,
       [
-        "Voici les résultats de l’évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Ancienne carrière d’argile de Blajan ».",
+        "Voici les résultats de l'évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Ancienne carrière d’argile de Blajan ».",
         "Évaluation réalisée le 15 juin 2026",
         [
           "Projet favorable au ZAN",
-          "Le projet reconvertit un site en friche et limite la consommation d’espaces naturels, agricoles ou forestiers.",
+          "Le projet reconvertit un site en friche et limite la consommation d'espaces naturels, agricoles ou forestiers.",
           `Voir le détail des impacts : ${impactsUrl}`,
         ].join("\n"),
         [
           "En 26 ans",
-          "Coût de l’opération compensé",
-          "Les impacts socio-économiques compenseront le coût de l’opération en 2058.",
-          `Voir l’analyse coût-bénéfice : ${costBenefitUrl}`,
+          "Coût de l'opération compensé",
+          "Les impacts socio-économiques compenseront le coût de l'opération en 2058.",
+          `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
         ].join("\n"),
         [
           `+1${NNBSP}087${NNBSP}355${NBSP}€`,
           "Gains pour la collectivité",
           "grâce à la reconversion de la friche",
-          `Voir l’analyse des coûts évités : ${avoidedCostsUrl}`,
+          `Voir l'analyse des coûts évités : ${avoidedCostsUrl}`,
         ].join("\n"),
         footer,
       ].join("\n\n"),
@@ -140,7 +140,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
     assert.strictEqual(
       email.text,
       [
-        "Voici les résultats de l’évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Ancienne carrière d’argile de Blajan ».",
+        "Voici les résultats de l'évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Ancienne carrière d’argile de Blajan ».",
         "Évaluation réalisée le 15 juin 2026",
         [
           "Projet défavorable au ZAN",
@@ -149,15 +149,15 @@ describe("buildProjectImpactsSummaryEmail", () => {
         ].join("\n"),
         [
           "Sur 50 ans",
-          "Coût de l’opération non compensé",
-          "Les impacts socio-économiques ne compenseront pas le coût de l’opération.",
-          `Voir l’analyse coût-bénéfice : ${costBenefitUrl}`,
+          "Coût de l'opération non compensé",
+          "Les impacts socio-économiques ne compenseront pas le coût de l'opération.",
+          `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
         ].join("\n"),
         [
           `-45${NNBSP}000${NBSP}€`,
           "Pertes pour la collectivité",
-          "à cause d’une perte de recettes fiscales",
-          `Voir l’analyse des coûts évités : ${avoidedCostsUrl}`,
+          "à cause d'une perte de recettes fiscales",
+          `Voir l'analyse des coûts évités : ${avoidedCostsUrl}`,
         ].join("\n"),
         footer,
       ].join("\n\n"),
@@ -220,9 +220,9 @@ describe("buildProjectImpactsSummaryEmail", () => {
         breakEvenHorizon: { status: "positiveFromFirstYear", breakEvenYear: "2026" },
         expected: [
           "En 2026",
-          "Bilan de l’opération positif",
+          "Bilan de l'opération positif",
           "La somme du bilan économique et des impacts socio-économiques est positive dès 2026.",
-          `Voir l’analyse coût-bénéfice : ${costBenefitUrl}`,
+          `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
         ],
       },
       {
@@ -231,9 +231,9 @@ describe("buildProjectImpactsSummaryEmail", () => {
         breakEvenHorizon: { status: "compensated", breakEvenYear: "2027", yearsToBreakEven: 1 },
         expected: [
           "En 1 an",
-          "Coût de l’opération compensé",
-          "Les impacts socio-économiques compenseront le coût de l’opération en 2027.",
-          `Voir l’analyse coût-bénéfice : ${costBenefitUrl}`,
+          "Coût de l'opération compensé",
+          "Les impacts socio-économiques compenseront le coût de l'opération en 2027.",
+          `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
         ],
       },
       {
@@ -242,9 +242,9 @@ describe("buildProjectImpactsSummaryEmail", () => {
         breakEvenHorizon: { status: "notCompensatedWithinPeriod", breakEvenYear: "2061" },
         expected: [
           "Sur 30 ans",
-          "Coût de l’opération non compensé",
-          "Les impacts socio-économiques compenseront le coût de l’opération en 2061.",
-          `Voir l’analyse coût-bénéfice : ${costBenefitUrl}`,
+          "Coût de l'opération non compensé",
+          "Les impacts socio-économiques compenseront le coût de l'opération en 2061.",
+          `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
         ],
       },
     ];
@@ -263,7 +263,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
   });
 
   describe("main indicator card", () => {
-    const avoidedCostsLink = `Voir l’analyse des coûts évités : ${avoidedCostsUrl}`;
+    const avoidedCostsLink = `Voir l'analyse des coûts évités : ${avoidedCostsUrl}`;
     const cases: { label: string; indicator: KeyImpactIndicatorData; expected: string[] }[] = [
       {
         label: "the collectivité's gains from the avoided friche costs",
@@ -319,7 +319,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
         expected: [
           `-5${NNBSP}000${NBSP}€`,
           "Pertes pour la collectivité",
-          "à cause d’une perte de recettes fiscales",
+          "à cause d'une perte de recettes fiscales",
           avoidedCostsLink,
         ],
       },
@@ -476,18 +476,18 @@ describe("buildProjectImpactsSummaryEmail", () => {
     });
 
     assert.deepStrictEqual(email.text.split("\n\n"), [
-      "Voici les résultats de l’évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Ancienne carrière d’argile de Blajan ».",
+      "Voici les résultats de l'évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Ancienne carrière d’argile de Blajan ».",
       "Évaluation réalisée le 15 juin 2026",
       [
         "Projet favorable au ZAN",
-        "Le projet reconvertit un site en friche et limite la consommation d’espaces naturels, agricoles ou forestiers.",
+        "Le projet reconvertit un site en friche et limite la consommation d'espaces naturels, agricoles ou forestiers.",
         `Voir le détail des impacts : ${impactsUrl}`,
       ].join("\n"),
       [
         "En 26 ans",
-        "Coût de l’opération compensé",
-        "Les impacts socio-économiques compenseront le coût de l’opération en 2058.",
-        `Voir l’analyse coût-bénéfice : ${costBenefitUrl}`,
+        "Coût de l'opération compensé",
+        "Les impacts socio-économiques compenseront le coût de l'opération en 2058.",
+        `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
       ].join("\n"),
       footer,
     ]);
@@ -574,7 +574,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
     assert.ok(!email.html.includes("<b>"));
     assert.strictEqual(
       email.text.split("\n\n")[0],
-      'Voici les résultats de l’évaluation socio-économique du projet « <b>Lot "A" & B</b> » sur le site « Friche <i> ».',
+      `Voici les résultats de l'évaluation socio-économique du projet « <b>Lot "A" & B</b> » sur le site « Friche <i> ».`,
     );
   });
 

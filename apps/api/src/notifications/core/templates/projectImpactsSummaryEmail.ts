@@ -43,10 +43,10 @@ const formatEvaluationDate = (date: Date): string =>
     .map(({ type, value }) => (type === "day" && value === "1" ? "1er" : value))
     .join("");
 
-// Copy transcribed from the mockup (assets/04-project-impacts-summary.png), with curly
-// apostrophes; the cards' copy is the app's (projectImpactsSummaryCards.ts). No greeting, no
-// closing paragraph, and no map, chart or image: the mockup's map is struck through,
-// and the welcome email's icons are the only images lifecycle emails carry.
+// Copy transcribed from the product mockup, with curly apostrophes; the cards' copy comes from
+// shared (projectImpactsSummaryCards.ts). No greeting, no closing paragraph, and no map, chart or
+// image: the mockup's map is struck through, and the welcome email's icons are the only images
+// lifecycle emails carry.
 export function buildProjectImpactsSummaryEmail(
   input: BuildProjectImpactsSummaryEmailInput,
 ): RenderedEmail {
@@ -61,12 +61,12 @@ export function buildProjectImpactsSummaryEmail(
   // French guillemets with non-breaking spaces inside, as product chose for the first project
   // reminder (BEN-37); the mockup had “ ”.
   const intro = (projectName: string, siteName: string): string =>
-    `Voici les résultats de l’évaluation socio-économique du projet «${NBSP}${projectName}${NBSP}» sur le site «${NBSP}${siteName}${NBSP}».`;
-  // TODO(product): the evaluation date is the project's creation date (plan P5).
+    `Voici les résultats de l'évaluation socio-économique du projet «${NBSP}${projectName}${NBSP}» sur le site «${NBSP}${siteName}${NBSP}».`;
+  // TODO(product): the evaluation date is the project's creation date.
   const evaluationDate = `Évaluation réalisée le ${formatEvaluationDate(project.createdAt)}`;
 
   // No ZAN indicator: no card 1 (type-level only, the derivation always yields one). No main
-  // indicator: no card 3 (decisions.md).
+  // indicator: no card 3.
   const zanComplianceCard = input.zanCompliance
     ? buildZanComplianceCard(input.zanCompliance, {
         label: "Voir le détail des impacts",
@@ -74,12 +74,12 @@ export function buildProjectImpactsSummaryEmail(
       })
     : undefined;
   const breakEvenCard = buildBreakEvenCard(input.breakEvenHorizon, input.evaluationPeriodInYears, {
-    label: "Voir l’analyse coût-bénéfice",
+    label: "Voir l'analyse coût-bénéfice",
     url: projectUrl("analyse-cout-benefice"),
   });
   const mainImpactIndicatorCard = input.mainImpactIndicator
     ? buildMainImpactIndicatorCard(input.mainImpactIndicator, {
-        label: "Voir l’analyse des coûts évités",
+        label: "Voir l'analyse des coûts évités",
         url: projectUrl("analyse-couts-evites"),
       })
     : undefined;
@@ -102,10 +102,10 @@ export function buildProjectImpactsSummaryEmail(
 
   return renderEmail({
     // TODO(product): the mockup reads "Projet sur l’ancienne carrière…", an article added by
-    // hand; we cannot generate articles, so the site name is used as typed (plan P1).
+    // hand; we cannot generate articles, so the site name is used as typed.
     subject: `Projet sur ${subjectSiteName}${NBSP}: résultats de votre évaluation`,
     preheader:
-      "Les impacts socio-économiques de votre projet, comparés au maintien du site en l’état.",
+      "Les impacts socio-économiques de votre projet, comparés au maintien du site en l'état.",
     unsubscribeUrl: input.unsubscribeUrl,
     sections,
   });

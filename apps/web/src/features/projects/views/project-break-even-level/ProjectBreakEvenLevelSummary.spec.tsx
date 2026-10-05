@@ -41,7 +41,7 @@ describe("ProjectBreakEvenLevelSummary", () => {
     });
 
     expect(container.textContent).toEqual(
-      "En 2026Bilan de l’opération positifLa somme du bilan économique et des impacts socio-économiques est positive dès 2026.",
+      "En 2026Bilan de l'opération positifLa somme du bilan économique et des impacts socio-économiques est positive dès 2026.",
     );
   });
 
@@ -53,7 +53,7 @@ describe("ProjectBreakEvenLevelSummary", () => {
     });
 
     expect(container.textContent).toEqual(
-      "En 3 ansCoût de l’opération compenséLes impacts socio-économiques compenseront le coût de l’opération en 2029.",
+      "En 3 ansCoût de l'opération compenséLes impacts socio-économiques compenseront le coût de l'opération en 2029.",
     );
   });
 
@@ -65,7 +65,7 @@ describe("ProjectBreakEvenLevelSummary", () => {
     });
 
     expect(container.textContent).toEqual(
-      "En 1 anCoût de l’opération compenséLes impacts socio-économiques compenseront le coût de l’opération en 2027.",
+      "En 1 anCoût de l'opération compenséLes impacts socio-économiques compenseront le coût de l'opération en 2027.",
     );
   });
 
@@ -77,7 +77,7 @@ describe("ProjectBreakEvenLevelSummary", () => {
     });
 
     expect(container.textContent).toEqual(
-      "Sur 5 ansCoût de l’opération non compenséLes impacts socio-économiques compenseront le coût de l’opération en 2045.",
+      "Sur 5 ansCoût de l'opération non compenséLes impacts socio-économiques compenseront le coût de l'opération en 2045.",
     );
   });
 
@@ -89,7 +89,7 @@ describe("ProjectBreakEvenLevelSummary", () => {
     });
 
     expect(container.textContent).toEqual(
-      "Sur 5 ansCoût de l’opération non compenséLes impacts socio-économiques ne compenseront pas le coût de l’opération.",
+      "Sur 5 ansCoût de l'opération non compenséLes impacts socio-économiques ne compenseront pas le coût de l'opération.",
     );
   });
 });

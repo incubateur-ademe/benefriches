@@ -32,7 +32,7 @@ describe("getZanComplianceCardContent", () => {
       },
       expected: {
         headline: "Projet favorable au ZAN",
-        body: "Le projet reconvertit un site en friche et limite la consommation d’espaces naturels, agricoles ou forestiers.",
+        body: "Le projet reconvertit un site en friche et limite la consommation d'espaces naturels, agricoles ou forestiers.",
       },
     },
     {
@@ -101,7 +101,7 @@ describe("getBreakEvenCardContent", () => {
       evaluationPeriodInYears: 50,
       expected: {
         headline: "En 2026",
-        title: "Bilan de l’opération positif",
+        title: "Bilan de l'opération positif",
         body: "La somme du bilan économique et des impacts socio-économiques est positive dès 2026.",
       },
     },
@@ -111,8 +111,8 @@ describe("getBreakEvenCardContent", () => {
       evaluationPeriodInYears: 50,
       expected: {
         headline: "En 1 an",
-        title: "Coût de l’opération compensé",
-        body: "Les impacts socio-économiques compenseront le coût de l’opération en 2027.",
+        title: "Coût de l'opération compensé",
+        body: "Les impacts socio-économiques compenseront le coût de l'opération en 2027.",
       },
     },
     {
@@ -121,8 +121,8 @@ describe("getBreakEvenCardContent", () => {
       evaluationPeriodInYears: 50,
       expected: {
         headline: "En 26 ans",
-        title: "Coût de l’opération compensé",
-        body: "Les impacts socio-économiques compenseront le coût de l’opération en 2058.",
+        title: "Coût de l'opération compensé",
+        body: "Les impacts socio-économiques compenseront le coût de l'opération en 2058.",
       },
     },
     {
@@ -131,8 +131,8 @@ describe("getBreakEvenCardContent", () => {
       evaluationPeriodInYears: 30,
       expected: {
         headline: "Sur 30 ans",
-        title: "Coût de l’opération non compensé",
-        body: "Les impacts socio-économiques compenseront le coût de l’opération en 2061.",
+        title: "Coût de l'opération non compensé",
+        body: "Les impacts socio-économiques compenseront le coût de l'opération en 2061.",
       },
     },
     {
@@ -141,8 +141,8 @@ describe("getBreakEvenCardContent", () => {
       evaluationPeriodInYears: 50,
       expected: {
         headline: "Sur 50 ans",
-        title: "Coût de l’opération non compensé",
-        body: "Les impacts socio-économiques ne compenseront pas le coût de l’opération.",
+        title: "Coût de l'opération non compensé",
+        body: "Les impacts socio-économiques ne compenseront pas le coût de l'opération.",
       },
     },
   ];
@@ -214,7 +214,7 @@ describe("getMainImpactIndicatorCardContent", () => {
       expected: {
         headline: `-5${NNBSP}000${NBSP}€`,
         title: "Pertes pour la collectivité",
-        body: "à cause d’une perte de recettes fiscales",
+        body: "à cause d'une perte de recettes fiscales",
       },
     },
     {
