@@ -8,7 +8,6 @@ import type { CreateExpressReconversionProjectGateway } from "../../core/demo/de
 type GetExpressReconversionProjectParams = {
   reconversionProjectId: string;
   siteId: string;
-  createdBy: string;
   template: ReconversionProjectTemplate;
 };
 

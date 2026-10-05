@@ -50,7 +50,6 @@ class UpdateReconversionProjectBodyDto extends createZodDto(
 class GenerateReconversionProjectFromTemplateQueryDto extends createZodDto(
   z.object({
     siteId: z.string(),
-    createdBy: z.string(),
     template: reconversionProjectTemplateSchema,
   }),
 ) {}
@@ -175,10 +174,13 @@ export class ReconversionProjectController {
   @Get("create-from-template")
   async getReconversionProjectFromTemplate(
     @Query() getReconversionProjectFromTemplateDto: GenerateReconversionProjectFromTemplateQueryDto,
+    @Req() req: RequestWithAuthenticatedUser,
   ): Promise<ReconversionProjectFeaturesView> {
-    const result = await this.generateReconversionProjectFromTemplateUseCase.execute(
-      getReconversionProjectFromTemplateDto,
-    );
+    const result = await this.generateReconversionProjectFromTemplateUseCase.execute({
+      siteId: getReconversionProjectFromTemplateDto.siteId,
+      template: getReconversionProjectFromTemplateDto.template,
+      createdBy: req.accessTokenPayload.userId,
+    });
 
     if (result.isFailure()) {
       switch (result.getError()) {

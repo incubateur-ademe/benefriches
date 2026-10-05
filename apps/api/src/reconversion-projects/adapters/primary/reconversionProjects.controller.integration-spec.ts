@@ -19,6 +19,7 @@ import { v4 as uuid } from "uuid";
 import { ZodError } from "zod";
 
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
+import { mapUserToSqlRow } from "src/auth/adapters/user-repository/SqlUserRepository";
 import {
   ReconversionProjectFeaturesView,
   ReconversionProjectUpdatePropsDto,
@@ -206,29 +207,22 @@ describe("ReconversionProjects controller", () => {
 
     it("responds with a 401 when no access token is provided", async () => {
       const response = await supertest(app.getHttpServer())
-        .post("/api/reconversion-projects/create-from-template")
-        .send({
-          reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
-          siteId: siteId,
-          template: "PUBLIC_FACILITIES",
-        });
+        .get(
+          `/api/reconversion-projects/create-from-template?template=PUBLIC_FACILITIES&siteId=${siteId}`,
+        )
+        .send();
 
       assert.strictEqual(response.status, 401);
     });
 
     it("can't generate a reconversion project without template", async () => {
-      const requestBody = {
-        reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
-        createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
-        siteId: siteId,
-      };
-      const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+      const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);
 
       const response = await supertest(app.getHttpServer())
-        .post("/api/reconversion-projects/create-from-template")
+        .get(`/api/reconversion-projects/create-from-template?siteId=${siteId}`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
-        .send(requestBody);
+        .send();
 
       assert.strictEqual(response.status, 400);
       assert.ok("errors" in (response.body as BadRequestResponseBody));
@@ -240,13 +234,12 @@ describe("ReconversionProjects controller", () => {
 
     for (const template of reconversionProjectTemplateSchema.options) {
       it(`get a 201 response and reconversion project is returned with template ${template}`, async () => {
-        const createdBy = "612d16c7-b6e4-4e2c-88a8-0512cc51946c";
-        const user = new UserBuilder().withId(createdBy).asLocalAuthority().build();
+        const user = new UserBuilder().asLocalAuthority().build();
         const { accessToken } = await authenticateUser(app)(user);
 
         const response = await supertest(app.getHttpServer())
           .get(
-            `/api/reconversion-projects/create-from-template?template=${template}&siteId=${siteId}&createdBy=${createdBy}`,
+            `/api/reconversion-projects/create-from-template?template=${template}&siteId=${siteId}`,
           )
           .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send();
@@ -256,6 +249,45 @@ describe("ReconversionProjects controller", () => {
         assert.ok(result.name !== undefined);
       });
     }
+
+    it("builds a photovoltaic preview with the authenticated user's structure, ignoring a createdBy sent in the query", async () => {
+      const authenticatedUser = new UserBuilder()
+        .withStructure({
+          structureName: "Énergies Grenobloises",
+          structureType: "company",
+          structureActivity: "energy_producer",
+        })
+        .build();
+      const otherUser = new UserBuilder()
+        .withStructure({
+          structureName: "Autre structure",
+          structureType: "company",
+          structureActivity: "other",
+        })
+        .build();
+      await sqlConnection("users").insert([
+        mapUserToSqlRow(authenticatedUser),
+        mapUserToSqlRow(otherUser),
+      ]);
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      const response = await supertest(app.getHttpServer())
+        .get(
+          `/api/reconversion-projects/create-from-template?template=PHOTOVOLTAIC_POWER_PLANT&siteId=${siteId}&createdBy=${otherUser.id}`,
+        )
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      assert.strictEqual(response.status, 200);
+      const result = response.body as ReconversionProjectFeaturesView;
+      assert.deepStrictEqual(
+        {
+          developerName: result.developmentPlan.developerName,
+          futureOperator: result.futureOperator,
+        },
+        { developerName: "Énergies Grenobloises", futureOperator: "Énergies Grenobloises" },
+      );
+    });
   });
 
   describe("POST /create-from-template", () => {
