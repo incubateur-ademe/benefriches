@@ -706,11 +706,11 @@ and a section is one of:
 - `{ type: "button", variant?, label, url }` — `variant` is `"primary"` (default, dark cell,
   white text) or `"secondary"` (light grey `#dddddd` cell, dark text; the reminders' contact
   button)
-- `{ type: "contactSignature", name, role, organisation, organisationUrl, organisationSuffix,
-phone, email }` — five short lines in one cell, **no image** (remote images are blocked by
-  default in Outlook and degrade to a broken-image icon); `organisation` links to
-  `organisationUrl`, the email is a `mailto:` link, the phone is plain text. Every value is
-  escaped. The text path renders the five lines.
+- `{ type: "contactSignature", name, role, organisation, organisationSuffix, phone, email }` —
+  five short lines in one cell, **no image** (remote images are blocked by default in Outlook
+  and degrade to a broken-image icon); `organisation` and `organisationSuffix` are plain text
+  (no link), the email is a `mailto:` link, the phone is plain text. Every value is escaped.
+  The text path renders the five lines.
 
 `renderEmail()` always returns `{ subject, html, text }` — it is structurally impossible to
 produce HTML without a plain-text alternative, since both come out of the same call.
@@ -756,11 +756,10 @@ never a hardcoded domain — so the link resolves correctly per environment.
 subject `Renseignez votre premier site sur Bénéfriches !`, greeting `Bonjour <prénom> <nom>,`
 (the non-empty names only; `Bonjour,` when both are missing, escaped in HTML), two
 paragraphs, the `Renseigner mon site` button to `new URL("/creer-site-foncier", webappUrl)`,
-the contact paragraph, then `buildContactSections(contact, webappUrl)` from
-`contactSections.ts`: the secondary `Contacter <prénom> de Bénéfriches` button
-(`mailto:<contact email>`, no subject) and the signature (`Bénéfriches` linked to `webappUrl`,
-followed by ` (Externe)`). The greeting and the `NBSP` constant live in
-`reminderGreeting.ts`, shared with the first project reminder.
+the contact paragraph, then `buildContactSections(contact)` from `contactSections.ts`: the
+secondary `Contacter <prénom> de Bénéfriches` button (`mailto:<contact email>`, no subject)
+and the signature (`Bénéfriches (Externe)`, plain text). The greeting and the `NBSP`
+constant live in `reminderGreeting.ts`, shared with the first project reminder.
 
 The copy follows French typography: a non-breaking space before `!` (subject) and `?`
 (second paragraph), and curly apostrophes throughout. Proofreading points awaiting product
@@ -819,6 +818,10 @@ the body, `pré-remplies`, `accompagné`.
   deleted account; no test sends a session cookie). Web: `lifecycleEmailsUnsubscribe.spec.ts`
   and `UnsubscribePage.spec.tsx`. There is no e2e test for it; the manual QA guide is
   `docs/qa/lifecycle-emails/03.md`.
+- The unlinked contact signature and the unsubscribe confirmation copy: `emailLayout.spec.ts`,
+  the href inventory test of `firstSiteReminderEmail.spec.ts` and
+  `firstProjectReminderEmail.spec.ts`, and `UnsubscribePage.spec.tsx` (exact paragraphs).
+  Manual QA guide: `docs/qa/lifecycle-emails/09.md`.
 - E2E coverage (`apps/e2e-tests/tests/onboarding/onboarding.spec.ts`) asserts a welcome
   email arrives during signup and contains the user's login identifier.
   `mail-catcher.ts`'s `waitForEmail()` now requires an exact `subject` argument (not just a
