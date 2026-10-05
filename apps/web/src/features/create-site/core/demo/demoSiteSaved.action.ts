@@ -29,7 +29,6 @@ export const demoSiteSaved = createAppAsyncThunk(
       surfaceArea: DEMO_SITE_SURFACE_AREA?.payload?.surfaceArea,
       address: DEMO_SITE_ADDRESS?.payload?.address,
       nature: DEMO_SITE_NATURE_SELECTION?.payload?.siteNature,
-      createdBy: currentUser.currentUser.id,
       siteNature: siteActivity.siteNature,
       activity:
         siteActivity.siteNature === "AGRICULTURAL_OPERATION"

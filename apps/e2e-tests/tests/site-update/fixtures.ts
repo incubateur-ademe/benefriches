@@ -20,7 +20,7 @@ import { UrbanZoneSiteCreationPage } from "../../pages/UrbanZoneSiteCreationPage
 // suitable soils (IMPERMEABLE_SOILS + MINERAL_SOIL) so `SPACES_SELECTION.getNextStepId` does not
 // short-circuit to SOILS_CARBON_STORAGE (that shortcut only fires for a single soil type), which
 // would make the converter omit the two distribution steps and silently shorten the wizard.
-export const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
+export const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id"> = {
   nature: "FRICHE",
   name: "Friche industrielle de Meylan",
   address: {
@@ -45,12 +45,12 @@ export const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
 
 // A second, independent friche (own fixture, isolated under `fullyParallel`) so the address
 // cascade spec is free to mutate address/owner without interfering with the main edit spec.
-export const ADDRESS_CASCADE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
+export const ADDRESS_CASCADE_SITE_DATA: Omit<FricheCustomSiteDto, "id"> = {
   ...FRICHE_SITE_DATA,
   name: "Friche cascade adresse de Meylan",
 };
 
-export const URBAN_ZONE_SITE_DATA: Omit<UrbanZoneCustomSiteDto, "id" | "createdBy"> = {
+export const URBAN_ZONE_SITE_DATA: Omit<UrbanZoneCustomSiteDto, "id"> = {
   nature: "URBAN_ZONE",
   name: "ZAE de Meylan",
   urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
@@ -85,7 +85,7 @@ export const URBAN_ZONE_SITE_DATA: Omit<UrbanZoneCustomSiteDto, "id" | "createdB
   yearlyIncomes: [],
 };
 
-export const SITE_WITH_PROJECT_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
+export const SITE_WITH_PROJECT_DATA: Omit<FricheCustomSiteDto, "id"> = {
   nature: "FRICHE",
   name: "Friche avec projet de Meylan",
   address: {
@@ -133,42 +133,37 @@ export const test = authTest.extend<SiteUpdateFixtures>({
     await use(new SiteFeaturesPage(authenticatedPage));
   },
 
-  fricheSite: async ({ authenticatedApiClient, testUser }, use) => {
+  fricheSite: async ({ authenticatedApiClient }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...FRICHE_SITE_DATA,
-      createdBy: testUser.id,
     });
     await use(site);
   },
 
-  addressCascadeSite: async ({ authenticatedApiClient, testUser }, use) => {
+  addressCascadeSite: async ({ authenticatedApiClient }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...ADDRESS_CASCADE_SITE_DATA,
-      createdBy: testUser.id,
     });
     await use(site);
   },
 
-  urbanZoneSite: async ({ authenticatedApiClient, testUser }, use) => {
+  urbanZoneSite: async ({ authenticatedApiClient }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...URBAN_ZONE_SITE_DATA,
-      createdBy: testUser.id,
     });
     await use(site);
   },
 
-  siteWithActiveProject: async ({ authenticatedApiClient, testUser }, use) => {
+  siteWithActiveProject: async ({ authenticatedApiClient }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...SITE_WITH_PROJECT_DATA,
-      createdBy: testUser.id,
     });
     await use(site);
   },
 
-  photovoltaicProject: async ({ authenticatedApiClient, testUser, siteWithActiveProject }, use) => {
+  photovoltaicProject: async ({ authenticatedApiClient, siteWithActiveProject }, use) => {
     const project = await createCustomPhotovoltaicProjectViaApi(authenticatedApiClient)({
       id: crypto.randomUUID(),
-      createdBy: testUser.id,
       relatedSiteId: siteWithActiveProject.id,
       name: "Centrale photovoltaïque de Meylan",
       electricalPowerKWc: 296,

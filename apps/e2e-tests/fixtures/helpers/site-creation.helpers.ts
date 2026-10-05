@@ -25,7 +25,7 @@ export const createExpressSiteViaApi =
 
     if (!response.ok()) {
       throw new Error(
-        `Failed to create express site for user ${siteData.createdBy}: ${response.status()} ${await response.text()}`,
+        `Failed to create express site: ${response.status()} ${await response.text()}`,
       );
     }
 
@@ -51,7 +51,7 @@ export const createCustomSiteViaApi =
 
     if (!response.ok()) {
       throw new Error(
-        `Failed to create custom site for user ${siteData.createdBy}: ${response.status()} ${await response.text()}`,
+        `Failed to create custom site: ${response.status()} ${await response.text()}`,
       );
     }
 

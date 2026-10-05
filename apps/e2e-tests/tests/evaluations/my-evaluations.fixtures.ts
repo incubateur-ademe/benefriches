@@ -11,7 +11,7 @@ type MyEvaluationsFixtures = {
   myEvaluationsPage: MyEvaluationsPage;
 };
 
-const CUSTOM_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
+const CUSTOM_SITE_DATA: Omit<FricheCustomSiteDto, "id"> = {
   address: {
     city: "Segré-en-Anjou Bleu",
     cityCode: "49331",
@@ -42,10 +42,9 @@ export const test = authTest.extend<MyEvaluationsFixtures>({
 
 // Extended fixture with two test sites (one express, one custom)
 export const testWithSites = test.extend<{ testSites: TestSite[] }>({
-  testSites: async ({ authenticatedApiClient, testUser }, use) => {
+  testSites: async ({ authenticatedApiClient }, use) => {
     const [expressSite, customSite] = await Promise.all([
       createExpressSiteViaApi(authenticatedApiClient)({
-        createdBy: testUser.id,
         nature: "FRICHE",
         fricheActivity: "RAILWAY",
         surfaceArea: 15000,
@@ -62,7 +61,6 @@ export const testWithSites = test.extend<{ testSites: TestSite[] }>({
       createCustomSiteViaApi(authenticatedApiClient)({
         ...CUSTOM_SITE_DATA,
         name: "Friche ferroviaire de Segré",
-        createdBy: testUser.id,
       }),
     ]);
 

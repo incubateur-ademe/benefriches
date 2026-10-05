@@ -31,7 +31,7 @@ const ADDRESS: Address = {
 describe("Site creation behaviour net — urban zone", () => {
   it("walks a fully-answered urban-zone wizard, asserting the current step at each branch and the exact submitted payload", async () => {
     const createSiteService = new InMemoryCreateSiteService();
-    const { store, user } = buildBehaviourNetStore(createSiteService);
+    const { store } = buildBehaviourNetStore(createSiteService);
 
     store.dispatch(siteCreationInitiated({ createMode: "custom" }));
     store.dispatch(introductionStepCompleted());
@@ -211,7 +211,6 @@ describe("Site creation behaviour net — urban zone", () => {
     expect(createSiteService._customSites).toEqual([
       {
         id: siteId(store),
-        createdBy: user.id,
         nature: "URBAN_ZONE",
         name: "ZAE Blajan",
         description: "Zone d'activites",

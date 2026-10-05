@@ -49,7 +49,6 @@ export const fricheSavedFromCompatibilityEvaluation = createAppAsyncThunk(
       id: siteId,
       nature: "FRICHE",
       fricheActivity: "INDUSTRY",
-      createdBy: currentUserState.currentUser.id,
       surfaceArea: evaluationResults.evaluationInput.surfaceArea,
       builtSurfaceArea: evaluationResults.evaluationInput.buildingsFootprintSurfaceArea,
       hasContaminatedSoils: evaluationResults.evaluationInput.hasContaminatedSoils,

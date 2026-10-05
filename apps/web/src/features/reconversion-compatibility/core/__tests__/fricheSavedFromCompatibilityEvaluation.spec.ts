@@ -117,7 +117,6 @@ describe("Reconversion compatibility evaluation actions: fricheSavedFromCompatib
         id: expect.any(String),
         nature: "FRICHE",
         fricheActivity: "INDUSTRY",
-        createdBy: user.id,
         surfaceArea: 25000,
         builtSurfaceArea: 5000,
         hasContaminatedSoils: true,

@@ -14,7 +14,7 @@ import { UrbanProjectUpdatePage } from "../../../pages/UrbanProjectUpdatePage";
 
 type AgriculturalCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>;
 
-const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"> = {
+const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id"> = {
   nature: "AGRICULTURAL_OPERATION",
   name: "Terrain agricole de Meylan",
   agriculturalOperationActivity: "CEREALS_AND_OILSEEDS_CULTIVATION",
@@ -61,18 +61,16 @@ type UrbanProjectUpdateFixtures = {
 };
 
 export const test = authTest.extend<UrbanProjectUpdateFixtures>({
-  agriculturalSite: async ({ authenticatedApiClient, testUser }, use) => {
+  agriculturalSite: async ({ authenticatedApiClient }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...AGRICULTURAL_SITE_DATA,
-      createdBy: testUser.id,
     });
     await use(site);
   },
 
-  urbanProject: async ({ authenticatedApiClient, testUser, agriculturalSite }, use) => {
+  urbanProject: async ({ authenticatedApiClient, agriculturalSite }, use) => {
     const project = await createCustomUrbanProjectViaApi(authenticatedApiClient)({
       id: crypto.randomUUID(),
-      createdBy: testUser.id,
       relatedSiteId: agriculturalSite.id,
       name: URBAN_PROJECT_NAME,
       buildingsFloorAreaDistribution: BUILDINGS_FLOOR_AREA_DISTRIBUTION,

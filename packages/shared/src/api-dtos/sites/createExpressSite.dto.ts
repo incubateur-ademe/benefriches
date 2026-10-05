@@ -5,7 +5,6 @@ import { surfaceAreaSchema } from "../../surface-area";
 
 const baseExpressSiteDtoSchema = z.object({
   id: z.string(),
-  createdBy: z.string(),
   surfaceArea: surfaceAreaSchema,
   address: addressSchema,
   nature: siteNatureSchema,

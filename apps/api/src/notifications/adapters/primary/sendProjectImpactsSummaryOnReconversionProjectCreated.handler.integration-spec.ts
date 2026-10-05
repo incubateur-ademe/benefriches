@@ -94,18 +94,19 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
 
   const createCustomProject = (
     accessToken: string,
-    { projectId, userId, siteId }: { projectId: string; userId: string; siteId: string },
-  ) =>
-    supertest(app.getHttpServer())
+    { projectId, siteId }: { projectId: string; siteId: string },
+  ) => {
+    const { createdBy: _, ...projectProps } = buildUrbanProjectReconversionProjectProps();
+    return supertest(app.getHttpServer())
       .post("/api/reconversion-projects")
       .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
       .send({
-        ...buildUrbanProjectReconversionProjectProps(),
+        ...projectProps,
         id: projectId,
-        createdBy: userId,
         relatedSiteId: siteId,
         name: "Habitation, école et commerce",
       });
+  };
 
   const summaryRows = (userId: string) =>
     sqlConnection("lifecycle_email_deliveries")
@@ -120,7 +121,7 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
       email: "gregoire.bailleux@example.fr",
     });
 
-    const response = await createCustomProject(accessToken, { projectId, userId, siteId });
+    const response = await createCustomProject(accessToken, { projectId, siteId });
 
     assert.strictEqual(response.status, 201);
     assert.deepStrictEqual(
@@ -165,7 +166,6 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
       .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
       .send({
         reconversionProjectId: projectId,
-        createdBy: userId,
         siteId,
         template: "PUBLIC_FACILITIES",
       });
@@ -184,6 +184,64 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
     );
   });
 
+  it("emails the summary to the authenticated author only, when a wizard project body names another user", async () => {
+    const authorId = uuid();
+    const otherUserId = uuid();
+    const projectId = uuid();
+    const { siteId, accessToken } = await seedAuthorAndSite({
+      userId: authorId,
+      email: "gregoire.bailleux@example.fr",
+    });
+    await seedAuthorAndSite({ userId: otherUserId, email: "other.user@example.fr" });
+    const { createdBy: _, ...projectProps } = buildUrbanProjectReconversionProjectProps();
+
+    const response = await supertest(app.getHttpServer())
+      .post("/api/reconversion-projects")
+      .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+      .send({
+        ...projectProps,
+        id: projectId,
+        createdBy: otherUserId,
+        relatedSiteId: siteId,
+        name: "Habitation, école et commerce",
+      });
+
+    assert.strictEqual(response.status, 201);
+    assert.deepStrictEqual(
+      fakeMailer.sentEmails.map(({ to }) => to),
+      ["gregoire.bailleux@example.fr"],
+    );
+    assert.deepStrictEqual(await summaryRows(otherUserId), []);
+  });
+
+  it("emails the summary to the authenticated author only, when a template project body names another user", async () => {
+    const authorId = uuid();
+    const otherUserId = uuid();
+    const projectId = uuid();
+    const { siteId, accessToken } = await seedAuthorAndSite({
+      userId: authorId,
+      email: "gregoire.bailleux@example.fr",
+    });
+    await seedAuthorAndSite({ userId: otherUserId, email: "other.user@example.fr" });
+
+    const response = await supertest(app.getHttpServer())
+      .post("/api/reconversion-projects/create-from-template")
+      .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+      .send({
+        reconversionProjectId: projectId,
+        createdBy: otherUserId,
+        siteId,
+        template: "PUBLIC_FACILITIES",
+      });
+
+    assert.strictEqual(response.status, 201);
+    assert.deepStrictEqual(
+      fakeMailer.sentEmails.map(({ to }) => to),
+      ["gregoire.bailleux@example.fr"],
+    );
+    assert.deepStrictEqual(await summaryRows(otherUserId), []);
+  });
+
   it("sends no summary for a duplicated project", async () => {
     const userId = uuid();
     const projectId = uuid();
@@ -192,7 +250,7 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
       userId,
       email: "gregoire.bailleux@example.fr",
     });
-    await createCustomProject(accessToken, { projectId, userId, siteId });
+    await createCustomProject(accessToken, { projectId, siteId });
     fakeMailer._reset();
 
     const response = await supertest(app.getHttpServer())
@@ -219,7 +277,7 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
       Promise.reject(new Error("Impacts computation crashed")),
     );
 
-    const response = await createCustomProject(accessToken, { projectId, userId, siteId });
+    const response = await createCustomProject(accessToken, { projectId, siteId });
 
     assert.strictEqual(response.status, 201);
     assert.deepStrictEqual(
@@ -254,7 +312,7 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
       Promise.reject(new Error("Ledger unavailable")),
     );
 
-    const response = await createCustomProject(accessToken, { projectId, userId, siteId });
+    const response = await createCustomProject(accessToken, { projectId, siteId });
 
     assert.strictEqual(response.status, 201);
     assert.deepStrictEqual(
@@ -271,7 +329,7 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
       userId,
       email: "gregoire.bailleux@example.fr",
     });
-    await createCustomProject(accessToken, { projectId, userId, siteId });
+    await createCustomProject(accessToken, { projectId, siteId });
 
     await app.get(RealEventPublisher).publish(
       createReconversionProjectCreatedEvent(uuid(), {
@@ -296,7 +354,7 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
       .where("id", userId)
       .update({ lifecycle_emails_unsubscribed_at: new Date("2026-06-01T00:00:00.000Z") });
 
-    const response = await createCustomProject(accessToken, { projectId, userId, siteId });
+    const response = await createCustomProject(accessToken, { projectId, siteId });
 
     assert.strictEqual(response.status, 201);
     assert.deepStrictEqual(fakeMailer.sentEmails, []);

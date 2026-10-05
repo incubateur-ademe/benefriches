@@ -11,7 +11,7 @@ import { deriveSiteDataFromCustomSteps } from "@/features/create-site/core/custo
 export const customSiteSaved = createAppAsyncThunk(
   "siteCreation/customSiteSaved",
   async (_, { getState, extra }) => {
-    const { siteCreation, currentUser } = getState();
+    const { siteCreation } = getState();
     const siteData = deriveSiteDataFromCustomSteps(
       {
         ...siteCreation.initialSiteData,
@@ -24,7 +24,6 @@ export const customSiteSaved = createAppAsyncThunk(
     const siteToCreate: CustomSitePayload = customSiteSchema.parse({
       ...siteData,
       creationMode: "custom",
-      createdBy: currentUser.currentUser?.id,
     });
 
     await extra.createSiteService.saveCustom(siteToCreate);
@@ -52,7 +51,6 @@ export const expressSiteSaved = createAppAsyncThunk(
       ...siteData,
       activity: siteData.agriculturalOperationActivity,
       type: siteData.naturalAreaType,
-      createdBy: currentUser.currentUser.id,
     });
 
     await extra.createSiteService.saveExpress(siteToCreate);

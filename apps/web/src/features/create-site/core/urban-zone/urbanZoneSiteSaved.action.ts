@@ -11,7 +11,7 @@ import { makeUrbanZoneActionType } from "./urban-zone.actions";
 export const urbanZoneSiteSaved = createAppAsyncThunk(
   makeUrbanZoneActionType("saved"),
   async (_, { getState, extra }) => {
-    const { siteCreation, currentUser } = getState();
+    const { siteCreation } = getState();
     const { urbanZone } = siteCreation;
     const siteData = deriveSiteDataFromCustomSteps(
       {
@@ -22,10 +22,9 @@ export const urbanZoneSiteSaved = createAppAsyncThunk(
       siteCreation.custom.steps,
     );
 
-    const siteToCreate: CustomSitePayload = customSiteSchema.parse({
-      createdBy: currentUser.currentUser?.id,
-      ...buildUrbanZoneSiteDataForSave(siteData, urbanZone.steps),
-    });
+    const siteToCreate: CustomSitePayload = customSiteSchema.parse(
+      buildUrbanZoneSiteDataForSave(siteData, urbanZone.steps),
+    );
 
     await extra.createSiteService.saveCustom(siteToCreate);
   },

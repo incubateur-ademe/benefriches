@@ -10,7 +10,7 @@ import { PhotovoltaicProjectCreationPage } from "../../../pages/PhotovoltaicProj
 type AgriculturalCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>;
 type FricheCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "FRICHE" }>;
 
-const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"> = {
+const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id"> = {
   nature: "AGRICULTURAL_OPERATION",
   name: "Terrain agricole de Meylan",
   agriculturalOperationActivity: "CEREALS_AND_OILSEEDS_CULTIVATION",
@@ -40,7 +40,7 @@ const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"
   tenant: { structureType: "company", name: "Société agricole" },
 };
 
-const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
+const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id"> = {
   nature: "FRICHE",
   name: "Friche industrielle de Meylan",
   address: {
@@ -76,18 +76,16 @@ type PhotovoltaicProjectCreationFixtures = {
 };
 
 export const test = authTest.extend<PhotovoltaicProjectCreationFixtures>({
-  agriculturalSite: async ({ authenticatedApiClient, testUser }, use) => {
+  agriculturalSite: async ({ authenticatedApiClient }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...AGRICULTURAL_SITE_DATA,
-      createdBy: testUser.id,
     });
     await use(site);
   },
 
-  fricheSite: async ({ authenticatedApiClient, testUser }, use) => {
+  fricheSite: async ({ authenticatedApiClient }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...FRICHE_SITE_DATA,
-      createdBy: testUser.id,
     });
     await use(site);
   },

@@ -166,7 +166,6 @@ describe("urbanZoneSiteSaved", () => {
     expect(createSiteService._customSites).toEqual([
       {
         id: siteId,
-        createdBy: user.id,
         nature: "URBAN_ZONE",
         name: "ZAE Blajan",
         description: "Zone d'activites",

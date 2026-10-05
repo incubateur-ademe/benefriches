@@ -14,7 +14,6 @@ import {
 import { soilsDistributionSchema } from "../../soils";
 
 export const baseCustomSiteSchema = z.object({
-  createdBy: z.string(),
   id: z.string(),
   name: z.string(),
   description: z.string().optional(),

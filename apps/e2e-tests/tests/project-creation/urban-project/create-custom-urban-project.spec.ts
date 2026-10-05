@@ -7,7 +7,7 @@ import { createCustomSiteViaApi } from "../../../fixtures/helpers/site-creation.
 type AgriculturalCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>;
 type FricheCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "FRICHE" }>;
 
-const BASE_AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy" | "name"> = {
+const BASE_AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "name"> = {
   nature: "AGRICULTURAL_OPERATION",
   agriculturalOperationActivity: "CEREALS_AND_OILSEEDS_CULTIVATION",
   isSiteOperated: true,
@@ -32,7 +32,7 @@ const BASE_AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "creat
   tenant: { structureType: "company", name: "Société agricole" },
 };
 
-const BASE_FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy" | "name"> = {
+const BASE_FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "name"> = {
   nature: "FRICHE",
   fricheActivity: "RAILWAY",
   description: "Ancienne friche ferroviaire en reconversion",
@@ -62,7 +62,7 @@ const BASE_FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy" | "nam
 function createAgriculturalSiteData(
   name: string,
   soilsDistribution: AgriculturalCustomSiteDto["soilsDistribution"],
-): Omit<AgriculturalCustomSiteDto, "id" | "createdBy"> {
+): Omit<AgriculturalCustomSiteDto, "id"> {
   return {
     ...BASE_AGRICULTURAL_SITE_DATA,
     name,
@@ -73,7 +73,7 @@ function createAgriculturalSiteData(
 function createFricheSiteData(
   name: string,
   soilsDistribution: FricheCustomSiteDto["soilsDistribution"],
-): Omit<FricheCustomSiteDto, "id" | "createdBy"> {
+): Omit<FricheCustomSiteDto, "id"> {
   return {
     ...BASE_FRICHE_SITE_DATA,
     name,
@@ -85,7 +85,6 @@ test.describe("urban project creation - custom mode", () => {
   test.describe("agricultural operation without buildings", () => {
     test("allows creating a custom urban project for a site without buildings", async ({
       authenticatedApiClient,
-      testUser,
       urbanProjectCreationPage,
     }) => {
       const testSite = await createCustomSiteViaApi(authenticatedApiClient)({
@@ -94,7 +93,6 @@ test.describe("urban project creation - custom mode", () => {
           MINERAL_SOIL: 1500,
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1500,
         }),
-        createdBy: testUser.id,
       });
 
       await urbanProjectCreationPage.goto(testSite.id);
@@ -200,7 +198,6 @@ test.describe("urban project creation - custom mode", () => {
 
     test("allows creating a custom urban project with only public green spaces for a site without buildings", async ({
       authenticatedApiClient,
-      testUser,
       urbanProjectCreationPage,
     }) => {
       const testSite = await createCustomSiteViaApi(authenticatedApiClient)({
@@ -208,7 +205,6 @@ test.describe("urban project creation - custom mode", () => {
           MINERAL_SOIL: 2000,
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 3000,
         }),
-        createdBy: testUser.id,
       });
 
       await urbanProjectCreationPage.goto(testSite.id);
@@ -292,7 +288,6 @@ test.describe("urban project creation - custom mode", () => {
   test.describe("friche with buildings but no buildings in project uses", () => {
     test("allows creating a custom urban project with only public green spaces on a friche with buildings", async ({
       authenticatedApiClient,
-      testUser,
       urbanProjectCreationPage,
     }) => {
       const testSite = await createCustomSiteViaApi(authenticatedApiClient)({
@@ -300,7 +295,6 @@ test.describe("urban project creation - custom mode", () => {
           BUILDINGS: 2000,
           IMPERMEABLE_SOILS: 1000,
         }),
-        createdBy: testUser.id,
       });
 
       await urbanProjectCreationPage.goto(testSite.id);
@@ -392,7 +386,6 @@ test.describe("urban project creation - custom mode", () => {
   test.describe("friche with existing buildings", () => {
     test("allows creating a custom urban project on a friche with full demolition and new construction", async ({
       authenticatedApiClient,
-      testUser,
       urbanProjectCreationPage,
     }) => {
       const testSite = await createCustomSiteViaApi(authenticatedApiClient)({
@@ -403,8 +396,7 @@ test.describe("urban project creation - custom mode", () => {
             MINERAL_SOIL: 2000,
           }),
           contaminatedSoilSurface: 2000,
-        } satisfies Omit<FricheCustomSiteDto, "id" | "createdBy">),
-        createdBy: testUser.id,
+        } satisfies Omit<FricheCustomSiteDto, "id">),
       });
 
       await urbanProjectCreationPage.goto(testSite.id);
@@ -519,7 +511,6 @@ test.describe("urban project creation - custom mode", () => {
 
     test("allows creating a custom urban project on a friche with full reuse plus additional new construction", async ({
       authenticatedApiClient,
-      testUser,
       urbanProjectCreationPage,
     }) => {
       const testSite = await createCustomSiteViaApi(authenticatedApiClient)({
@@ -528,7 +519,6 @@ test.describe("urban project creation - custom mode", () => {
           IMPERMEABLE_SOILS: 1000,
           MINERAL_SOIL: 2000,
         }),
-        createdBy: testUser.id,
       });
 
       await urbanProjectCreationPage.goto(testSite.id);

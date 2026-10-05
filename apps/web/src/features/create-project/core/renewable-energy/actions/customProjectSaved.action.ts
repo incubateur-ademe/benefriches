@@ -1,4 +1,4 @@
-import { httpSaveReconversionProjectPropsSchema } from "shared";
+import { createReconversionProjectRequestDtoSchema } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
@@ -8,20 +8,19 @@ import { makeRenewableEnergyProjectCreationActionType } from "../renewableEnergy
 export const saveReconversionProject = createAppAsyncThunk(
   makeRenewableEnergyProjectCreationActionType("saved"),
   async (_, { getState, extra }) => {
-    const { projectCreation, currentUser } = getState();
+    const { projectCreation } = getState();
     const { renewableEnergyProject, siteData, projectId, useCaseSelection } = projectCreation;
 
     const creationData = getProjectData(renewableEnergyProject.steps);
 
     const mappedProjectData = {
       id: projectId,
-      createdBy: currentUser.currentUser?.id,
       relatedSiteId: siteData?.id,
       projectPhase: useCaseSelection.projectPhase,
       ...creationData,
     };
 
-    const projectToSave = httpSaveReconversionProjectPropsSchema.parse(mappedProjectData);
+    const projectToSave = createReconversionProjectRequestDtoSchema.parse(mappedProjectData);
 
     await extra.saveReconversionProjectService.save(projectToSave);
   },

@@ -31,7 +31,7 @@ const ADDRESS: Address = {
 describe("Site creation behaviour net — express (demo)", () => {
   it("walks a fully-answered demo wizard for a friche, asserting the current step and the exact submitted payload", async () => {
     const createSiteService = new InMemoryCreateSiteService();
-    const { store, user } = buildBehaviourNetStore(createSiteService);
+    const { store } = buildBehaviourNetStore(createSiteService);
 
     store.dispatch(siteCreationInitiated({ createMode: "express" }));
 
@@ -73,7 +73,6 @@ describe("Site creation behaviour net — express (demo)", () => {
     expect(createSiteService._expressSites).toEqual([
       {
         id: expressSiteId(store),
-        createdBy: user.id,
         nature: "FRICHE",
         address: ADDRESS,
         surfaceArea: 15000,

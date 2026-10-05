@@ -8,7 +8,7 @@ import {
   urbanZoneCustomSiteFieldsSchema,
 } from "./createCustomSite.dto";
 
-const baseUpdateSchema = baseCustomSiteSchema.omit({ createdBy: true, id: true });
+const baseUpdateSchema = baseCustomSiteSchema.omit({ id: true });
 
 const fricheCustomUpdateDtoSchema = baseUpdateSchema.extend(fricheCustomSiteFieldsSchema.shape);
 

@@ -17,7 +17,8 @@ import {
   reconversionProjectTemplateSchema,
   httpUpdateReconversionProjectPropsSchema,
   getUrbanSprawlImpactsComparisonDtoSchema,
-  httpSaveReconversionProjectPropsSchema,
+  createReconversionProjectRequestDtoSchema,
+  type CreateReconversionProjectRequestDto,
   type GetReconversionProjectFeaturesResponseDto,
 } from "shared";
 // oxlint-disable-next-line api-conventions/no-local-dto-schema -- legacy local schemas, to move to packages/shared/src/api-dtos
@@ -40,7 +41,7 @@ import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion
 import { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/updateReconversionProject.usecase";
 
 class CreateReconversionProjectBodyDto extends createZodDto(
-  httpSaveReconversionProjectPropsSchema,
+  createReconversionProjectRequestDtoSchema,
 ) {}
 class UpdateReconversionProjectBodyDto extends createZodDto(
   httpUpdateReconversionProjectPropsSchema,
@@ -58,7 +59,6 @@ class GenerateAndSaveReconversionProjectFromTemplateBodyDto extends createZodDto
   z.object({
     reconversionProjectId: z.string(),
     siteId: z.string(),
-    createdBy: z.string(),
     template: reconversionProjectTemplateSchema,
   }),
 ) {}
@@ -130,9 +130,16 @@ export class ReconversionProjectController {
   @Post()
   async createReconversionProject(
     @Body() createReconversionProjectDto: CreateReconversionProjectBodyDto,
+    @Req() req: RequestWithAuthenticatedUser,
   ) {
+    // Typed as the plain DTO: no-misused-spread rejects spreading the createZodDto class type.
+    const reconversionProjectProps: CreateReconversionProjectRequestDto =
+      createReconversionProjectDto;
     await this.createReconversionProjectUseCase.execute({
-      reconversionProjectProps: createReconversionProjectDto,
+      reconversionProjectProps: {
+        ...reconversionProjectProps,
+        createdBy: req.accessTokenPayload.userId,
+      },
     });
   }
 
@@ -187,10 +194,14 @@ export class ReconversionProjectController {
   @Post("create-from-template")
   async createReconversionProjectFromTemplate(
     @Body() createReconversionProjectDto: GenerateAndSaveReconversionProjectFromTemplateBodyDto,
+    @Req() req: RequestWithAuthenticatedUser,
   ) {
-    const result = await this.generateAndSaveReconversionProjectFromTemplateUseCase.execute(
-      createReconversionProjectDto,
-    );
+    const result = await this.generateAndSaveReconversionProjectFromTemplateUseCase.execute({
+      reconversionProjectId: createReconversionProjectDto.reconversionProjectId,
+      siteId: createReconversionProjectDto.siteId,
+      template: createReconversionProjectDto.template,
+      createdBy: req.accessTokenPayload.userId,
+    });
 
     if (result.isFailure()) {
       switch (result.getError()) {

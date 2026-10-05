@@ -44,6 +44,8 @@ export {
 
 // Reconversion Projects DTOs
 export {
+  createReconversionProjectRequestDtoSchema,
+  type CreateReconversionProjectRequestDto,
   type GetReconversionProjectFeaturesResponseDto,
   type GetReconversionProjectImpactsResultDto,
 } from "./reconversion-projects";

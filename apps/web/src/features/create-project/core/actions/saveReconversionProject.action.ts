@@ -1,7 +1,6 @@
-import type { httpSaveReconversionProjectPropsSchema } from "shared";
-import type { z } from "zod";
+import type { CreateReconversionProjectRequestDto } from "shared";
 
-export type SaveProjectPayload = z.infer<typeof httpSaveReconversionProjectPropsSchema>;
+export type SaveProjectPayload = CreateReconversionProjectRequestDto;
 
 export interface SaveReconversionProjectGateway {
   save(siteData: SaveProjectPayload): Promise<void>;

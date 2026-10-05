@@ -1,4 +1,4 @@
-import type { ReconversionProjectSavePropsDto } from "shared";
+import type { CreateReconversionProjectRequestDto } from "shared";
 
 import type { ApiClient } from "./api-client";
 
@@ -14,7 +14,6 @@ export type TestPhotovoltaicProject = {
 
 type CreateCustomPhotovoltaicProjectProps = {
   id: string;
-  createdBy: string;
   relatedSiteId: string;
   name: string;
   electricalPowerKWc: number;
@@ -31,7 +30,6 @@ export const createCustomPhotovoltaicProjectViaApi =
   (apiClient: ApiClient) =>
   async ({
     id,
-    createdBy,
     relatedSiteId,
     name,
     electricalPowerKWc,
@@ -41,9 +39,8 @@ export const createCustomPhotovoltaicProjectViaApi =
     yearlyMaintenanceExpenseAmount,
     decontaminatedSoilSurface,
   }: CreateCustomPhotovoltaicProjectProps): Promise<TestPhotovoltaicProject> => {
-    const body: ReconversionProjectSavePropsDto = {
+    const body: CreateReconversionProjectRequestDto = {
       id,
-      createdBy,
       relatedSiteId,
       name,
       developmentPlan: {
@@ -90,7 +87,7 @@ export const createCustomPhotovoltaicProjectViaApi =
 
     if (!response.ok()) {
       throw new Error(
-        `Failed to create custom photovoltaic project for user ${createdBy}: ${response.status()} ${await response.text()}`,
+        `Failed to create custom photovoltaic project: ${response.status()} ${await response.text()}`,
       );
     }
 
@@ -99,7 +96,6 @@ export const createCustomPhotovoltaicProjectViaApi =
 
 type CreateCustomUrbanProjectProps = {
   id: string;
-  createdBy: string;
   relatedSiteId: string;
   name: string;
   buildingsFloorAreaDistribution: Record<string, number>;
@@ -109,14 +105,12 @@ export const createCustomUrbanProjectViaApi =
   (apiClient: ApiClient) =>
   async ({
     id,
-    createdBy,
     relatedSiteId,
     name,
     buildingsFloorAreaDistribution,
   }: CreateCustomUrbanProjectProps): Promise<TestUrbanProject> => {
-    const body: ReconversionProjectSavePropsDto = {
+    const body: CreateReconversionProjectRequestDto = {
       id,
-      createdBy,
       relatedSiteId,
       name,
       developmentPlan: {
@@ -196,7 +190,7 @@ export const createCustomUrbanProjectViaApi =
 
     if (!response.ok()) {
       throw new Error(
-        `Failed to create custom urban project for user ${createdBy}: ${response.status()} ${await response.text()}`,
+        `Failed to create custom urban project: ${response.status()} ${await response.text()}`,
       );
     }
 

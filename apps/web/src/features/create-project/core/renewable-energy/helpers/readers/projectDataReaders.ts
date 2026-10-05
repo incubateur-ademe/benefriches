@@ -6,8 +6,8 @@ import { ReadStateHelper } from "../readState";
 /**
  * Reads the per-step wizard state and maps it into the flat reconversion-project
  * data shape submitted to the API. Returns everything derivable from the steps;
- * the save thunk folds in the contextual fields (`id`, `createdBy`, `relatedSiteId`,
- * `projectPhase`) before validating with `httpSaveReconversionProjectPropsSchema`.
+ * the save thunk folds in the contextual fields (`id`, `relatedSiteId`,
+ * `projectPhase`) before validating with `createReconversionProjectRequestDtoSchema`.
  *
  * This reader is the behaviour-level boundary for the creation flow: tests assert on
  * its output rather than on the internal `{ completed, payload }` step shape, so they

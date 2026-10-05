@@ -81,12 +81,16 @@ export class SitesController {
     this.getSiteImpactsUseCase = getSiteImpactsUseCase;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post("/sites/create-custom")
   async createNewCustomSite(
     @Body(new ZodValidationPipe(createCustomSiteDtoSchema)) createSiteDto: CreateCustomSiteDto,
+    @Req() req: RequestWithAuthenticatedUser,
   ) {
-    const { createdBy, ...siteProps } = createSiteDto;
-    const result = await this.createNewSiteUseCase.execute({ siteProps, createdBy });
+    const result = await this.createNewSiteUseCase.execute({
+      siteProps: createSiteDto,
+      createdBy: req.accessTokenPayload.userId,
+    });
 
     if (result.isFailure()) {
       switch (result.getError()) {
@@ -154,14 +158,15 @@ export class SitesController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post("/sites/create-express")
   async createNewExpressSite(
     @Body(new ZodValidationPipe(createExpressSiteDtoSchema)) createSiteDto: CreateExpressSiteDto,
+    @Req() req: RequestWithAuthenticatedUser,
   ) {
-    const { createdBy, ...siteProps } = createSiteDto;
     const result = await this.createNewExpressSiteUseCase.execute({
-      siteProps: siteProps as ExpressSiteProps,
-      createdBy,
+      siteProps: createSiteDto as ExpressSiteProps,
+      createdBy: req.accessTokenPayload.userId,
     });
 
     if (result.isFailure()) {

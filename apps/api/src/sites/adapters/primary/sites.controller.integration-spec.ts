@@ -56,11 +56,37 @@ describe("Sites controller", () => {
   });
 
   describe("POST /sites/create-express", () => {
-    for (const mandatoryField of ["id", "nature", "createdBy", "address"] as const) {
+    it("responds with a 401 when no access token is provided", async () => {
+      const requestBody: CreateExpressSiteDto = {
+        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+        nature: "AGRICULTURAL_OPERATION",
+        activity: "CATTLE_FARMING",
+        surfaceArea: 12399,
+        address: {
+          lat: 2.347,
+          long: 48.859,
+          city: "Paris",
+          banId: "75110_7043",
+          cityCode: "75110",
+          postCode: "75010",
+          value: "Rue de Paradis 75010 Paris",
+        },
+      };
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-express")
+        .send(requestBody);
+
+      assert.strictEqual(response.status, 401);
+      assert.deepStrictEqual(await sqlConnection("sites").select("id"), []);
+    });
+
+    for (const mandatoryField of ["id", "nature", "address"] as const) {
       it(`can't create a site without mandatory field ${mandatoryField}`, async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
         const requestBody: CreateExpressSiteDto = {
           id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-          createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
           nature: "AGRICULTURAL_OPERATION",
           activity: "CATTLE_FARMING",
           surfaceArea: 12399,
@@ -79,6 +105,7 @@ describe("Sites controller", () => {
 
         const response = await supertest(app.getHttpServer())
           .post("/api/sites/create-express")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send(requestBody);
 
         assertBadRequestWithMissingField(response, mandatoryField);
@@ -86,9 +113,11 @@ describe("Sites controller", () => {
     }
 
     it("can't create an express friche without friche activity", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
       const requestBody: Omit<CreateExpressSiteDto, "fricheActivity"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-        createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
         nature: "FRICHE",
         surfaceArea: 12399,
         address: {
@@ -104,15 +133,18 @@ describe("Sites controller", () => {
 
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-express")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(requestBody);
 
       assertBadRequestWithMissingField(response, "fricheActivity");
     });
 
     it("can't create an express agricultral operation without activity", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
       const requestBody: Omit<CreateExpressSiteDto, "activity"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-        createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
         nature: "AGRICULTURAL_OPERATION",
         surfaceArea: 12399,
         address: {
@@ -128,15 +160,18 @@ describe("Sites controller", () => {
 
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-express")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(requestBody);
 
       assertBadRequestWithMissingField(response, "activity");
     });
 
     it("can't create an express natural area without activity", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
       const requestBody: Omit<CreateExpressSiteDto, "type"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-        createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
         nature: "NATURAL_AREA",
         surfaceArea: 12399,
         address: {
@@ -152,15 +187,18 @@ describe("Sites controller", () => {
 
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-express")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(requestBody);
 
       assertBadRequestWithMissingField(response, "type");
     });
 
     it("can create an agricultural operation from express props", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
       const agriculturalOperationDto: CreateExpressSiteDto = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-        createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         nature: "AGRICULTURAL_OPERATION",
         surfaceArea: 12000,
         activity: "MARKET_GARDENING",
@@ -177,6 +215,7 @@ describe("Sites controller", () => {
       };
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-express")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(agriculturalOperationDto);
 
       assert.strictEqual(response.status, 201);
@@ -191,15 +230,17 @@ describe("Sites controller", () => {
       assert.deepStrictEqual(sitesInDb[0], {
         id: agriculturalOperationDto.id,
         nature: "AGRICULTURAL_OPERATION",
-        created_by: agriculturalOperationDto.createdBy,
+        created_by: user.id,
         surface_area: 12000,
       });
     });
 
     it("can create a friche from express props", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
       const frichDto: CreateExpressSiteDto = {
         id: "599e0580-06eb-4cdd-9c87-aa84ae41a5aa",
-        createdBy: "6c97f648-4e22-481e-9bc4-106ff00accdf",
         nature: "FRICHE",
         surfaceArea: 134000,
         fricheActivity: "INDUSTRY",
@@ -216,6 +257,7 @@ describe("Sites controller", () => {
       };
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-express")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(frichDto);
 
       assert.strictEqual(response.status, 201);
@@ -231,18 +273,80 @@ describe("Sites controller", () => {
       assert.deepStrictEqual(sitesInDb[0], {
         id: frichDto.id,
         nature: "FRICHE",
-        created_by: frichDto.createdBy,
+        created_by: user.id,
         surface_area: 134000,
         friche_activity: "INDUSTRY",
       });
     });
+
+    it("creates the site as the authenticated user, ignoring a createdBy sent in the body", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const otherUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-express")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({
+          id: "599e0580-06eb-4cdd-9c87-aa84ae41a5aa",
+          createdBy: otherUser.id,
+          nature: "FRICHE",
+          surfaceArea: 134000,
+          fricheActivity: "INDUSTRY",
+          address: {
+            lat: 2.347,
+            long: 48.859,
+            // using a city that is mocked in MockCityDataService
+            city: "Longlaville",
+            banId: "79f390cd-afe8-41ba-bd62-6b095eb8e6bd",
+            cityCode: "54321",
+            postCode: "54810",
+            value: "Longlaville",
+          },
+        });
+
+      assert.strictEqual(response.status, 201);
+      assert.deepStrictEqual(await sqlConnection("sites").select("id", "created_by"), [
+        { id: "599e0580-06eb-4cdd-9c87-aa84ae41a5aa", created_by: authenticatedUser.id },
+      ]);
+    });
   });
 
   describe("POST /sites/create-custom", () => {
+    it("responds with a 401 when no access token is provided", async () => {
+      const requestBody: CreateCustomSiteDto = {
+        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+        nature: "NATURAL_AREA",
+        naturalAreaType: "FOREST",
+        name: "Forêt",
+        address: {
+          lat: 2.347,
+          long: 48.859,
+          city: "Paris",
+          banId: "75110_7043",
+          cityCode: "75110",
+          postCode: "75010",
+          value: "Rue de Paradis 75010 Paris",
+        },
+        soilsDistribution: {
+          PRAIRIE_GRASS: 1400,
+          FOREST_POPLAR: 1500,
+        },
+        yearlyExpenses: [],
+        yearlyIncomes: [],
+      };
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-custom")
+        .send(requestBody);
+
+      assert.strictEqual(response.status, 401);
+      assert.deepStrictEqual(await sqlConnection("sites").select("id"), []);
+    });
+
     for (const mandatoryField of [
       "id",
       "nature",
-      "createdBy",
       "name",
       "address",
       "soilsDistribution",
@@ -250,9 +354,10 @@ describe("Sites controller", () => {
       "yearlyIncomes",
     ] as const) {
       it(`can't create a site without mandatory field ${mandatoryField}`, async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
         const requestBody = {
           id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-          createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
           nature: "AGRICULTURAL_OPERATION",
           isSiteOperated: false,
           owner: { name: "Owner name", structureType: "company" },
@@ -279,6 +384,7 @@ describe("Sites controller", () => {
 
         const response = await supertest(app.getHttpServer())
           .post("/api/sites/create-custom")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send(requestBody);
 
         assert.strictEqual(response.status, 400);
@@ -291,9 +397,11 @@ describe("Sites controller", () => {
     }
 
     it("can create an agricultural operation", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
       const agriculturalOperationDto: CreateCustomSiteDto = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-        createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         nature: "AGRICULTURAL_OPERATION",
         agriculturalOperationActivity: "CATTLE_FARMING",
         isSiteOperated: true,
@@ -330,6 +438,7 @@ describe("Sites controller", () => {
       };
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-custom")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(agriculturalOperationDto);
 
       assert.strictEqual(response.status, 201);
@@ -341,7 +450,7 @@ describe("Sites controller", () => {
         sitesInDb[0],
         {
           id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-          created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+          created_by: user.id,
           description: "Description of site",
           name: "Exploitation agricole",
           nature: "AGRICULTURAL_OPERATION",
@@ -403,9 +512,11 @@ describe("Sites controller", () => {
     });
 
     it("can create a natural area site", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
       const naturalAreaDto: CreateCustomSiteDto = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-        createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         nature: "NATURAL_AREA",
         naturalAreaType: "FOREST",
         name: "Forêt",
@@ -429,6 +540,7 @@ describe("Sites controller", () => {
       };
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-custom")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(naturalAreaDto);
 
       assert.strictEqual(response.status, 201);
@@ -440,7 +552,7 @@ describe("Sites controller", () => {
         sitesInDb[0],
         {
           id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-          created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+          created_by: user.id,
           description: "Description of site",
           name: "Forêt",
           nature: "NATURAL_AREA",
@@ -482,10 +594,12 @@ describe("Sites controller", () => {
     });
 
     it("can create a friche site", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
       const fricheDto: CreateCustomSiteDto = {
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
         nature: "FRICHE",
-        createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         name: "Ancienne gare de Bercy",
         description: "Description of site",
         fricheActivity: "RAILWAY",
@@ -521,6 +635,7 @@ describe("Sites controller", () => {
       };
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-custom")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(fricheDto);
 
       assert.strictEqual(response.status, 201);
@@ -532,7 +647,7 @@ describe("Sites controller", () => {
         sitesInDb[0],
         {
           id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
-          created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+          created_by: user.id,
           creation_mode: "custom",
           name: "Ancienne gare de Bercy",
           owner_structure_type: "department",
@@ -588,9 +703,11 @@ describe("Sites controller", () => {
     });
 
     it("can create an urban zone site", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
       const urbanZoneDto: Extract<CreateCustomSiteDto, { nature: "URBAN_ZONE" }> = {
         id: "9fef4ed1-61cd-4787-b48c-20d7b419f3d3",
-        createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         nature: "URBAN_ZONE",
         urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
         name: "Zone d'activites des Chenes",
@@ -649,6 +766,7 @@ describe("Sites controller", () => {
 
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-custom")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(urbanZoneDto);
 
       assert.strictEqual(response.status, 201);
@@ -660,7 +778,7 @@ describe("Sites controller", () => {
         sitesInDb[0],
         {
           id: urbanZoneDto.id,
-          created_by: urbanZoneDto.createdBy,
+          created_by: user.id,
           creation_mode: "custom",
           name: "Zone d'activites des Chenes",
           owner_structure_type: "municipality",
@@ -719,6 +837,43 @@ describe("Sites controller", () => {
 
       const soilsDistributionInDb = await sqlConnection("site_soils_distributions").select("*");
       assert.deepStrictEqual(soilsDistributionInDb, []);
+    });
+
+    it("creates the site as the authenticated user, ignoring a createdBy sent in the body", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const otherUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-custom")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({
+          id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+          createdBy: otherUser.id,
+          nature: "NATURAL_AREA",
+          naturalAreaType: "FOREST",
+          name: "Forêt",
+          address: {
+            lat: 2.347,
+            long: 48.859,
+            city: "Paris",
+            banId: "75110_7043",
+            cityCode: "75110",
+            postCode: "75010",
+            value: "Rue de Paradis 75010 Paris",
+          },
+          soilsDistribution: {
+            PRAIRIE_GRASS: 1400,
+            FOREST_POPLAR: 1500,
+          },
+          yearlyExpenses: [],
+          yearlyIncomes: [],
+        });
+
+      assert.strictEqual(response.status, 201);
+      assert.deepStrictEqual(await sqlConnection("sites").select("id", "created_by"), [
+        { id: "03a53ffd-4f71-419e-8d04-041311eefa23", created_by: authenticatedUser.id },
+      ]);
     });
   });
 

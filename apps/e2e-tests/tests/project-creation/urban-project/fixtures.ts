@@ -11,9 +11,8 @@ type UrbanProjectCreationFixtures = {
 };
 
 export const test = authTest.extend<UrbanProjectCreationFixtures>({
-  testSite: async ({ authenticatedApiClient, testUser }, use) => {
+  testSite: async ({ authenticatedApiClient }, use) => {
     const site = await createExpressSiteViaApi(authenticatedApiClient)({
-      createdBy: testUser.id,
       nature: "FRICHE",
       fricheActivity: "INDUSTRY",
       surfaceArea: 12000,

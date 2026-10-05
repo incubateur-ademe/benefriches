@@ -15,7 +15,7 @@ import { PhotovoltaicProjectUpdatePage } from "../../../pages/PhotovoltaicProjec
 type AgriculturalCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>;
 type FricheCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "FRICHE" }>;
 
-const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"> = {
+const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id"> = {
   nature: "AGRICULTURAL_OPERATION",
   name: "Terrain agricole de Meylan",
   agriculturalOperationActivity: "CEREALS_AND_OILSEEDS_CULTIVATION",
@@ -45,7 +45,7 @@ const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"
   tenant: { structureType: "company", name: "Société agricole" },
 };
 
-const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
+const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id"> = {
   nature: "FRICHE",
   name: "Friche industrielle de Meylan",
   address: {
@@ -98,18 +98,16 @@ type PhotovoltaicProjectUpdateFixtures = {
 };
 
 export const test = authTest.extend<PhotovoltaicProjectUpdateFixtures>({
-  agriculturalSite: async ({ authenticatedApiClient, testUser }, use) => {
+  agriculturalSite: async ({ authenticatedApiClient }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...AGRICULTURAL_SITE_DATA,
-      createdBy: testUser.id,
     });
     await use(site);
   },
 
-  photovoltaicProject: async ({ authenticatedApiClient, testUser, agriculturalSite }, use) => {
+  photovoltaicProject: async ({ authenticatedApiClient, agriculturalSite }, use) => {
     const project = await createCustomPhotovoltaicProjectViaApi(authenticatedApiClient)({
       id: crypto.randomUUID(),
-      createdBy: testUser.id,
       relatedSiteId: agriculturalSite.id,
       name: PHOTOVOLTAIC_PROJECT_NAME,
       electricalPowerKWc: ORIGINAL_ELECTRICAL_POWER_KWC,
@@ -122,12 +120,11 @@ export const test = authTest.extend<PhotovoltaicProjectUpdateFixtures>({
   },
 
   nonSuitableSoilsPhotovoltaicProject: async (
-    { authenticatedApiClient, testUser, agriculturalSite },
+    { authenticatedApiClient, agriculturalSite },
     use,
   ) => {
     const project = await createCustomPhotovoltaicProjectViaApi(authenticatedApiClient)({
       id: crypto.randomUUID(),
-      createdBy: testUser.id,
       relatedSiteId: agriculturalSite.id,
       name: NON_SUITABLE_SOILS_PROJECT_NAME,
       electricalPowerKWc: NON_SUITABLE_SOILS_ELECTRICAL_POWER_KWC,
@@ -139,18 +136,16 @@ export const test = authTest.extend<PhotovoltaicProjectUpdateFixtures>({
     await use(project);
   },
 
-  fricheSite: async ({ authenticatedApiClient, testUser }, use) => {
+  fricheSite: async ({ authenticatedApiClient }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...FRICHE_SITE_DATA,
-      createdBy: testUser.id,
     });
     await use(site);
   },
 
-  fricheReinstatementProject: async ({ authenticatedApiClient, testUser, fricheSite }, use) => {
+  fricheReinstatementProject: async ({ authenticatedApiClient, fricheSite }, use) => {
     const project = await createCustomPhotovoltaicProjectViaApi(authenticatedApiClient)({
       id: crypto.randomUUID(),
-      createdBy: testUser.id,
       relatedSiteId: fricheSite.id,
       name: FRICHE_PHOTOVOLTAIC_PROJECT_NAME,
       electricalPowerKWc: ORIGINAL_ELECTRICAL_POWER_KWC,

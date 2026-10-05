@@ -38,14 +38,6 @@ describe("Save created site", () => {
       expect(store.getState().siteCreation.saveLoadingState).toEqual("error");
     });
 
-    it("should be in error state when no user id in store", async () => {
-      const store = new StoreBuilder().withCreationData(siteWithMinimalData).build();
-      await store.dispatch(customSiteSaved());
-
-      expectCurrentStep(store, "CREATION_RESULT");
-      expect(store.getState().siteCreation.saveLoadingState).toEqual("error");
-    });
-
     it("should be in error state when createSiteService fails", async () => {
       const failingCreateService = new InMemoryCreateSiteService();
       failingCreateService.shouldFailOnCall();
@@ -78,7 +70,6 @@ describe("Save created site", () => {
       "should be in success state and move to CREATION_RESULT step after saving $dataType",
       async ({ siteData }) => {
         const createSiteService = new InMemoryCreateSiteService();
-        const user = buildUser();
         const store = new StoreBuilder()
           .withCreationData(siteData)
           .withCurrentUser(buildUser())
@@ -106,7 +97,6 @@ describe("Save created site", () => {
             accidentsMinorInjuries: (siteData as SiteCreationData).accidentsMinorInjuries,
             accidentsSevereInjuries: (siteData as SiteCreationData).accidentsSevereInjuries,
             accidentsDeaths: (siteData as SiteCreationData).accidentsDeaths,
-            createdBy: user.id,
             agriculturalOperationActivity: (siteData as SiteCreationData)
               .agriculturalOperationActivity,
             isSiteOperated: siteData.isSiteOperated,
@@ -215,7 +205,6 @@ describe("Save created site", () => {
       "should be in success state after saving $dataType",
       async ({ siteData }) => {
         const createSiteService = new InMemoryCreateSiteService();
-        const user = buildUser();
         const store = new StoreBuilder()
           .withCreationData(siteData)
           .withCurrentUser(buildUser())
@@ -232,7 +221,6 @@ describe("Save created site", () => {
             nature: siteData.nature,
             address: siteData.address,
             surfaceArea: siteData.surfaceArea,
-            createdBy: user.id,
             type: siteData.naturalAreaType,
             activity: siteData.agriculturalOperationActivity,
             fricheActivity: siteData.fricheActivity,

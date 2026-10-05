@@ -10,12 +10,13 @@ import {
   httpSaveReconversionProjectPropsSchema,
   domainSaveReconversionProjectPropsSchema,
   GetReconversionProjectImpactsResultDto,
+  CreateReconversionProjectRequestDto,
 } from "shared";
 import supertest from "supertest";
 import { assertShapeEquals, isDate } from "test/assertShapeEquals";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
-import { z, ZodError } from "zod";
+import { ZodError } from "zod";
 
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
 import {
@@ -71,17 +72,16 @@ describe("ReconversionProjects controller", () => {
       for (const mandatoryField of [
         "id",
         "name",
-        "createdBy",
         "relatedSiteId",
         "developmentPlan",
         "soilsDistribution",
         "yearlyProjectedCosts",
         "yearlyProjectedRevenues",
         "projectPhase",
-      ] satisfies (keyof z.infer<typeof httpSaveReconversionProjectPropsSchema>)[]) {
+      ] satisfies (keyof CreateReconversionProjectRequestDto)[]) {
         it(`can't create a reconversion project without mandatory field ${mandatoryField}`, async () => {
-          const requestBody = buildMinimalReconversionProjectProps();
-          const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+          const { createdBy: _, ...requestBody } = buildMinimalReconversionProjectProps();
+          const user = new UserBuilder().asLocalAuthority().build();
           const { accessToken } = await authenticateUser(app)(user);
           // oxlint-disable-next-line typescript/no-dynamic-delete
           delete requestBody[mandatoryField];
@@ -101,13 +101,17 @@ describe("ReconversionProjects controller", () => {
       }
     });
 
-    for (const { case: testCase, requestBody } of [
-      { case: "with minimal data", requestBody: buildMinimalReconversionProjectProps() },
-      { case: "with exhaustive data", requestBody: buildExhaustiveReconversionProjectProps() },
-      { case: "with urban project data", requestBody: buildUrbanProjectReconversionProjectProps() },
+    for (const { case: testCase, projectProps } of [
+      { case: "with minimal data", projectProps: buildMinimalReconversionProjectProps() },
+      { case: "with exhaustive data", projectProps: buildExhaustiveReconversionProjectProps() },
+      {
+        case: "with urban project data",
+        projectProps: buildUrbanProjectReconversionProjectProps(),
+      },
     ]) {
       it(`get a 201 response and reconversion project is created ${testCase}`, async () => {
-        const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+        const { createdBy: _, ...requestBody } = projectProps;
+        const user = new UserBuilder().asLocalAuthority().build();
         const { accessToken } = await authenticateUser(app)(user);
 
         await sqlConnection("sites").insert({
@@ -128,6 +132,7 @@ describe("ReconversionProjects controller", () => {
         const reconversionProjectsInDb = await sqlConnection("reconversion_projects").select(
           "id",
           "name",
+          "created_by",
           "project_phase",
           "creation_mode",
         );
@@ -135,11 +140,38 @@ describe("ReconversionProjects controller", () => {
         assert.deepStrictEqual(reconversionProjectsInDb[0], {
           id: requestBody.id,
           name: requestBody.name,
+          created_by: user.id,
           project_phase: requestBody.projectPhase,
           creation_mode: "custom",
         });
       });
     }
+
+    it("creates the project as the authenticated user, ignoring a createdBy sent in the body", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const otherUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const projectProps = buildMinimalReconversionProjectProps();
+      await sqlConnection("sites").insert({
+        id: projectProps.relatedSiteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-projects")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ ...projectProps, createdBy: otherUser.id });
+
+      assert.strictEqual(response.status, 201);
+      assert.deepStrictEqual(
+        await sqlConnection("reconversion_projects").select("id", "created_by"),
+        [{ id: projectProps.id, created_by: authenticatedUser.id }],
+      );
+    });
   });
 
   describe("GET /create-from-template", () => {
@@ -177,7 +209,6 @@ describe("ReconversionProjects controller", () => {
         .post("/api/reconversion-projects/create-from-template")
         .send({
           reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
-          createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
           siteId: siteId,
           template: "PUBLIC_FACILITIES",
         });
@@ -262,7 +293,6 @@ describe("ReconversionProjects controller", () => {
         .post("/api/reconversion-projects/create-from-template")
         .send({
           reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
-          createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
           siteId: siteId,
           template: "PUBLIC_FACILITIES",
         });
@@ -273,10 +303,9 @@ describe("ReconversionProjects controller", () => {
     it("can't create a reconversion project without template", async () => {
       const requestBody = {
         reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
-        createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
         siteId: siteId,
       };
-      const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+      const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);
 
       const response = await supertest(app.getHttpServer())
@@ -296,11 +325,10 @@ describe("ReconversionProjects controller", () => {
       it(`get a 201 response and reconversion project is created with template ${template}`, async () => {
         const requestBody = {
           reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
-          createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
           siteId: siteId,
           template,
         };
-        const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+        const user = new UserBuilder().asLocalAuthority().build();
         const { accessToken } = await authenticateUser(app)(user);
 
         const response = await supertest(app.getHttpServer())
@@ -318,12 +346,34 @@ describe("ReconversionProjects controller", () => {
         assert.strictEqual(reconversionProjectsInDb.length, 1);
         assert.deepStrictEqual(reconversionProjectsInDb[0], {
           id: requestBody.reconversionProjectId,
-          created_by: requestBody.createdBy,
+          created_by: user.id,
           related_site_id: requestBody.siteId,
           creation_mode: "express",
         });
       });
     }
+
+    it("creates the project as the authenticated user, ignoring a createdBy sent in the body", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const otherUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-projects/create-from-template")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({
+          reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
+          createdBy: otherUser.id,
+          siteId: siteId,
+          template: "PUBLIC_FACILITIES",
+        });
+
+      assert.strictEqual(response.status, 201);
+      assert.deepStrictEqual(
+        await sqlConnection("reconversion_projects").select("id", "created_by"),
+        [{ id: "64789135-afad-46ea-97a2-f14ba460d485", created_by: authenticatedUser.id }],
+      );
+    });
   });
 
   describe("GET /reconversion-projects/list-by-site", () => {

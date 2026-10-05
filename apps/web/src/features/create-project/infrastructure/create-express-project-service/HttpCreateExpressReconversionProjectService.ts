@@ -15,7 +15,6 @@ type GetExpressReconversionProjectParams = {
 export type SaveExpressReconversionProjectPayload = {
   reconversionProjectId: string;
   siteId: string;
-  createdBy: string;
   template: ReconversionProjectTemplate;
 };
 

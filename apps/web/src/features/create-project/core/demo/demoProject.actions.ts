@@ -17,8 +17,12 @@ const makeDemoProjectCreationActionType = (actionName: string) => {
 export const saveExpressProjectSchema = z.object({
   reconversionProjectId: z.string(),
   siteId: z.string(),
-  createdBy: z.string(),
   template: reconversionProjectTemplateSchema,
+});
+
+// Generating a preview still sends createdBy as a query parameter: only the save derives it from the session.
+const generateExpressProjectSchema = saveExpressProjectSchema.extend({
+  createdBy: z.string(),
 });
 
 type ExpressReconversionProjectPayload = z.infer<typeof saveExpressProjectSchema>;
@@ -36,13 +40,12 @@ export interface CreateExpressReconversionProjectGateway {
 export const demoProjectSaved = createAppAsyncThunk(
   makeDemoProjectCreationActionType("projectSaved"),
   async (_, { getState, extra }) => {
-    const { projectCreation, currentUser } = getState();
+    const { projectCreation } = getState();
     const expressProjectPayload = await saveExpressProjectSchema.parseAsync({
       reconversionProjectId: projectCreation.projectId,
       siteId: projectCreation.siteData?.id,
       template:
         projectCreation.demoProject.steps.DEMO_PROJECT_TEMPLATE_SELECTION?.payload?.projectTemplate,
-      createdBy: currentUser.currentUser?.id,
     });
 
     await extra.createExpressReconversionProjectService.save(expressProjectPayload);
@@ -64,7 +67,7 @@ export const demoProjectCreated = createAppAsyncThunk<
       }),
     );
 
-    const expressProjectPayload = await saveExpressProjectSchema.parseAsync({
+    const expressProjectPayload = await generateExpressProjectSchema.parseAsync({
       reconversionProjectId: projectCreation.projectId,
       siteId: projectCreation.siteData?.id,
       template: projectTemplate,
