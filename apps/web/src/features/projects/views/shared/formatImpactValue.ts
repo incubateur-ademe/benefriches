@@ -6,12 +6,17 @@ import {
   SQUARE_METERS_HTML_SYMBOL,
 } from "@/shared/core/format-number/formatNumber";
 
-const NO_BREAK_SPACE = "\u00A0";
+export { formatCO2Impact, formatMonetaryImpact } from "shared";
+
+const NO_BREAK_SPACE = " ";
 
 export type ImpactFormatType = "monetary" | "co2" | "surface_area" | "etp" | "time" | "default";
 
+// "monetary" and "co2" are formatted by the shared formatMonetaryImpact and formatCO2Impact.
+type LocalImpactFormatType = Exclude<ImpactFormatType, "monetary" | "co2">;
+
 type ImpactFormatConfig = Record<
-  ImpactFormatType,
+  LocalImpactFormatType,
   {
     unitSuffix: string;
     maximumFractionDigits: number;
@@ -19,14 +24,6 @@ type ImpactFormatConfig = Record<
 >;
 
 const impactFormatConfig = {
-  monetary: {
-    maximumFractionDigits: 0,
-    unitSuffix: `${NO_BREAK_SPACE}€`,
-  },
-  co2: {
-    maximumFractionDigits: 1,
-    unitSuffix: `${NO_BREAK_SPACE}t`,
-  },
   surface_area: {
     maximumFractionDigits: 1,
     unitSuffix: `${NO_BREAK_SPACE}${SQUARE_METERS_HTML_SYMBOL}`,
@@ -50,7 +47,7 @@ const getSignPrefix = (value: number) => {
 };
 
 const formatImpactValue =
-  (formatType: ImpactFormatType) =>
+  (formatType: LocalImpactFormatType) =>
   (impactValue: number, { withSignPrefix } = { withSignPrefix: true }) => {
     const { maximumFractionDigits, unitSuffix } = impactFormatConfig[formatType];
 
@@ -61,9 +58,7 @@ const formatImpactValue =
   };
 
 export const formatDefaultImpact = formatImpactValue("default");
-export const formatMonetaryImpact = formatImpactValue("monetary");
 export const formatSurfaceAreaImpact = formatImpactValue("surface_area");
-export const formatCO2Impact = formatImpactValue("co2");
 export const formatETPImpact = formatImpactValue("etp");
 export const formatTimeImpact = formatImpactValue("time");
 

@@ -10,6 +10,7 @@ export * from "./services";
 export * from "./financial";
 export * from "./local-authority";
 export * from "./co2eq";
+export * from "./format-number";
 export * from "./api-dtos";
 export * from "./siteActions";
 export { type IDateProvider } from "./adapters/IDateProvider";
