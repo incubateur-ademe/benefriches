@@ -17,6 +17,8 @@ Implement the spec at `$ARGUMENTS` on the current branch, in the current worktre
 4. Run the spec's Validation commands and `pnpm verify`. Fix every failure and rerun until all are green. Never weaken, skip or delete a test or a check to make it pass; if a check fails for a reason outside the spec (environment, an unrelated flaky test), keep its full output and report it rather than working around it.
 5. Commit as you go, one small commit per coherent step, with a conventional commit message (the `generate-commit-message` skill writes one when it is available). Leave no uncommitted changes.
 
+The runner may resume this session with the failing output of its acceptance check, or with a JSON list of review `blockers`. Fix each one as in steps 3 to 5, then end with the same report.
+
 Never push, merge, rebase onto another branch or open a pull request: the branch leaves the machine through the runner and a human.
 
 If a required input is missing (user-facing copy, a design, a business rule, an endpoint) and neither the spec nor the code provides it, do not guess: commit only what is complete and verified, then start your final message with the line `BLOCKED` followed by one bullet per missing input.

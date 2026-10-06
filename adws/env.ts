@@ -4,7 +4,7 @@
 // a KEY=value file read by Playwright, the e2e skills, and compose itself (--env-file).
 import { execFile } from "node:child_process";
 import { appendFile, readFile, rm, writeFile } from "node:fs/promises";
-import { connect } from "node:net";
+import { connect, createServer } from "node:net";
 import { join, resolve } from "node:path";
 import process from "node:process";
 
@@ -137,10 +137,7 @@ async function healthCheck(vars: Record<string, string>) {
     try {
       await retry(check);
     } catch (error) {
-      throw {
-        command: `health check: ${name}`,
-        output: String(error),
-      } satisfies StepFailure;
+      throw { command: `health check: ${name}`, output: String(error) } satisfies StepFailure;
     }
   }
 }
@@ -189,6 +186,28 @@ export async function envUp(worktree: string, slot: number): Promise<EnvUpResult
         : { command: step, output: String(error) };
     return { outcome: "env-failed", step, ...failure };
   }
+}
+
+const portFree = (port: number) =>
+  new Promise<boolean>((done) => {
+    const server = createServer()
+      .once("error", () => done(false))
+      .listen(port, () => server.close(() => done(true)));
+  });
+
+/** The first slot whose compose project isn't running and whose host ports are all free. */
+export async function freeSlot(cwd: string): Promise<number> {
+  const format = '{{.Label "com.docker.compose.project"}}';
+  const ps = await run(cwd, "docker", ["ps", "--format", format]).catch((f: StepFailure) => {
+    throw new Error(`${f.command} failed:\n${f.output}`);
+  });
+  // Slot 0 is left to `make e2e-up`; other stacks may hold a slot's ports under another name.
+  for (let slot = 1; slot < 100; slot++) {
+    if (ps.split("\n").includes(`benefriches-e2e-${slot}`)) continue;
+    const free = await Promise.all(Object.values(portsForSlot(slot)).map(portFree));
+    if (free.every(Boolean)) return slot;
+  }
+  throw new Error("no free port slot");
 }
 
 /** Removes the stack's containers and database volume. The worktree is kept. */

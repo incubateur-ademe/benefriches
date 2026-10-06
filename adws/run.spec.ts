@@ -1,5 +1,5 @@
 // Runner flow with scripted fake sessions, a fake Linear adapter and a fake shell:
-// each outcome, the Linear calls it makes, the correction budget and the run directory.
+// each outcome, the Linear calls it makes, the correction and review budgets, QA and the run directory.
 import assert from "node:assert/strict";
 import { mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
@@ -10,14 +10,22 @@ import { afterEach, beforeEach, describe, it } from "node:test";
 import type { EnvUpResult } from "./env.ts";
 import {
   deniedCommand,
+  hasScenarios,
   OUTCOME_PREFIX,
   runIssue,
   type Deps,
   type SessionRequest,
   type SessionResult,
+  verdict,
 } from "./run.ts";
 
 const ID = "BEN-42";
+const finalMessage = (value: unknown) => `Done.\n\n\`\`\`json\n${JSON.stringify(value)}\n\`\`\`\n`;
+const approve = finalMessage({ approve: true, blockers: [], techDebt: [] });
+const blocker = { title: "Missing test", location: "a.ts:1", detail: "add one" };
+const debt = { title: "Rename x", location: "b.ts:2", detail: "x is unclear" };
+const writeSpec = (r: SessionRequest, spec: string) =>
+  writeFile(join(r.prompt.replace("/adw-plan ", ""), "spec.md"), spec);
 
 type Fixture = {
   state: { name: string; type: string };
@@ -43,18 +51,22 @@ function fakeWorld(runsDir: string) {
   };
   const linearCalls: string[] = [];
   const comments: string[] = [];
+  const followUps: string[] = [];
   const sessions: SessionRequest[] = [];
   const shellCalls: string[] = [];
   const checks: Record<string, boolean[]> = { verify: [], e2e: [] };
   let envUp: EnvUpResult["outcome"] = "ready";
   let envUps = 0;
   let envDowns = 0;
-  // What each session does, by step; default: plan writes a spec, build succeeds.
+  // What each session does, by step; default: plan writes a spec without scenarios, build
+  // succeeds, review approves, QA passes.
   const script: Record<string, (r: SessionRequest) => Promise<Partial<SessionResult>>> = {
     plan: async (r) => {
-      await writeFile(join(r.prompt.replace("/adw-plan ", ""), "spec.md"), "# spec\n");
+      await writeSpec(r, "# spec\n\n## Scenarios\n\nNone\n");
       return {};
     },
+    review: async () => ({ text: approve }),
+    qa: async () => ({ text: finalMessage({ pass: true, failures: [], observations: [] }) }),
   };
 
   const deps: Deps = {
@@ -90,11 +102,16 @@ function fakeWorld(runsDir: string) {
         comments.push(body);
         issue.comments.push({ body });
       },
+      async issueCreate(project, title, file) {
+        linearCalls.push(`issue-create ${project} ${title}`);
+        followUps.push(readFileSync(file, "utf8"));
+        return `BEN-${100 + followUps.length}`;
+      },
     },
     async agent(request) {
       sessions.push(request);
       await writeFile(request.transcript, "{}\n", { flag: "wx" });
-      const step = request.step.replace(/-correction-\d+$/, "");
+      const step = request.step.replace(/-(correction|review)-\d+$/, "");
       const scripted = await (script[step]?.(request) ?? Promise.resolve({}));
       return {
         sessionId: `session-${sessions.length}`,
@@ -144,6 +161,7 @@ function fakeWorld(runsDir: string) {
     issue,
     linearCalls,
     comments,
+    followUps,
     sessions,
     shellCalls,
     checks,
@@ -175,19 +193,24 @@ describe("adw run", () => {
       `comment ${ID}`,
       `review ${ID}`,
     ]);
-    assert.deepEqual(world.steps(), ["plan", "build"]);
+    assert.deepEqual(world.steps(), ["plan", "build", "review"]);
     assert.equal(world.sessions[0].prompt, `/adw-plan ${result.runDir}`);
     assert.equal(world.sessions[1].prompt, `/adw-build ${join(result.runDir, "spec.md")}`);
+    assert.equal(world.sessions[2].prompt, `/adw-review ${join(result.runDir, "spec.md")} abc123`);
     assert.ok(Object.keys(world.sessions[0].mcpServers).includes("context7"));
     assert.deepEqual(world.sessions[1].mcpServers, {});
     assert.ok(world.shellCalls.includes("git push -u origin my-task"));
     assert.ok(world.shellCalls.includes("git worktree add -b my-task /repo/trees/my-task main"));
     assert.match(world.comments[0], /^## ADW report: BEN-42/);
     assert.match(world.comments[0], /def456 feat: do it/);
+    assert.match(world.comments[0], /Review: approved after 1\/2 rounds/);
+    assert.match(world.comments[0], /QA: skipped: the spec has no Scenarios/);
+    assert.match(world.comments[0], /Total cost: \$1\.50, wall time: \d+\.\d min/);
     assert.deepEqual(world.envCounts(), { up: 2, down: 1 });
     assert.deepEqual(readdirSync(join(result.runDir, "transcripts")), [
       "01-plan.jsonl",
       "02-build.jsonl",
+      "03-review.jsonl",
     ]);
   });
 
@@ -233,13 +256,7 @@ describe("adw run", () => {
   });
 
   it("ends blocked when the plan writes BLOCKED", async () => {
-    world.script.plan = async (r) => {
-      await writeFile(
-        join(r.prompt.replace("/adw-plan ", ""), "spec.md"),
-        "BLOCKED\n- the banner copy\n",
-      );
-      return {};
-    };
+    world.script.plan = async (r) => (await writeSpec(r, "BLOCKED\n- the banner copy\n"), {});
     const result = await run();
     assert.equal(result.outcome, "blocked");
     assert.deepEqual(world.steps(), ["plan"]);
@@ -251,7 +268,7 @@ describe("adw run", () => {
     world.checks.verify = [false, false, true];
     const result = await run();
     assert.equal(result.outcome, "ready");
-    assert.deepEqual(world.steps(), ["plan", "build", "build-correction-1"]);
+    assert.deepEqual(world.steps(), ["plan", "build", "build-correction-1", "review"]);
     const correction = world.sessions[2];
     assert.equal(correction.resume, "session-2");
     assert.equal(correction.prompt, "$ pnpm verify\nverify output");
@@ -275,7 +292,7 @@ describe("adw run", () => {
     world.checks.e2e = [false, true];
     const result = await run();
     assert.equal(result.outcome, "ready");
-    assert.deepEqual(world.steps(), ["plan", "build"]);
+    assert.deepEqual(world.steps(), ["plan", "build", "review"]);
     assert.match(world.comments[0], /Flakes: e2e \(failed once, passed on re-run/);
     assert.match(world.comments[0], /Corrections after the acceptance check: 0\/2/);
   });
@@ -307,6 +324,101 @@ describe("adw run", () => {
     assert.equal(readdirSync(join(runsDir, ID)).length, 3);
     // second reused the first spec (only the runner's own comment changed); third re-planned
     assert.deepEqual(world.steps(), ["plan", "build", "build", "plan", "build"]);
+  });
+
+  it("runs QA when the spec has scenarios, and reports both verdicts", async () => {
+    world.script.plan = async (r) => (await writeSpec(r, "## Scenarios\n\n- see it\n"), {});
+    const result = await run();
+    assert.equal(result.outcome, "ready");
+    assert.deepEqual(world.steps(), ["plan", "build", "review", "qa"]);
+    assert.equal(world.sessions[3].prompt, `/adw-qa ${join(result.runDir, "spec.md")}`);
+    assert.ok(Object.keys(world.sessions[3].mcpServers).includes("playwright"));
+    assert.deepEqual(world.sessions[2].mcpServers, {});
+    assert.match(world.comments[0], /Review: approved after 1\/2 rounds/);
+    assert.match(world.comments[0], /QA: passed/);
+  });
+
+  it("ends needs-human with the failures when QA fails, without pushing", async () => {
+    world.script.plan = async (r) => (await writeSpec(r, "## Scenarios\n\n- see it\n"), {});
+    const failure = { scenario: "see it", expected: "a banner", observed: "no banner" };
+    world.script.qa = async () => ({ text: finalMessage({ pass: false, failures: [failure] }) });
+    const result = await run();
+    assert.equal(result.outcome, "needs-human");
+    assert.match(
+      world.comments[0],
+      /^ADW outcome: needs-human\n\nQA failed.*\n- see it: no banner/,
+    );
+    assert.ok(!world.shellCalls.some((c) => c.startsWith("git push")));
+    assert.deepEqual(world.linearCalls, [`snapshot ${ID}`, `claim ${ID}`, `comment ${ID}`]);
+  });
+
+  it("sends only the review blockers back to the same build session, then re-checks", async () => {
+    const verdicts = [{ approve: false, blockers: [blocker], techDebt: [debt] }, { approve: true }];
+    world.script.review = async () => ({ text: finalMessage(verdicts.shift()) });
+    const result = await run();
+    assert.equal(result.outcome, "ready");
+    assert.deepEqual(world.steps(), ["plan", "build", "review", "build-review-1", "review"]);
+    const fix = world.sessions[3];
+    assert.equal(fix.resume, "session-2");
+    assert.deepEqual(JSON.parse(fix.prompt), { blockers: [blocker] });
+    assert.equal(world.shellCalls.filter((c) => c === "pnpm verify").length, 2);
+    assert.match(world.comments[0], /Review: approved after 2\/2 rounds/);
+  });
+
+  it("ends needs-human when blockers remain after 2 review rounds", async () => {
+    world.script.review = async () => ({
+      text: finalMessage({ approve: false, blockers: [blocker] }),
+    });
+    const result = await run();
+    assert.equal(result.outcome, "needs-human");
+    assert.deepEqual(world.steps(), ["plan", "build", "review", "build-review-1", "review"]);
+    assert.match(
+      world.comments[0],
+      /review blockers remain after 2 rounds:\n- Missing test \(`a.ts:1`\): add one/,
+    );
+    assert.ok(!world.linearCalls.includes(`review ${ID}`));
+  });
+
+  it("ends needs-human when the review gives no verdict", async () => {
+    world.script.review = async () => ({ text: "Looks fine." });
+    assert.equal((await run()).outcome, "needs-human");
+    assert.match(world.comments[0], /review: done, no verdict/);
+  });
+
+  it("files each tech-debt finding as a follow-up issue, never as builder work", async () => {
+    const other = { ...debt, title: "Split y" };
+    world.script.review = async () => ({
+      text: finalMessage({ approve: true, blockers: [], techDebt: [debt, other] }),
+    });
+    const result = await run();
+    assert.equal(result.outcome, "ready");
+    assert.deepEqual(world.steps(), ["plan", "build", "review"]);
+    assert.deepEqual(world.linearCalls.slice(2), [
+      "issue-create my-task Rename x",
+      "issue-create my-task Split y",
+      `comment ${ID}`,
+      `review ${ID}`,
+    ]);
+    assert.ok(world.followUps.every((body) => body.startsWith(`Follow-up from ${ID}\n`)));
+    assert.match(
+      world.comments[0],
+      /### Tech-debt follow-ups\n\n- BEN-101: Rename x\n- BEN-102: Split y/,
+    );
+  });
+});
+
+describe("verdict and hasScenarios", () => {
+  it("reads the last json block of a final message", () => {
+    assert.deepEqual(verdict(`\`\`\`json\n{"a":1}\n\`\`\`\n${finalMessage({ a: 2 })}`), { a: 2 });
+    assert.equal(verdict("no block"), undefined);
+    assert.equal(verdict("```json\n{not json\n```"), undefined);
+  });
+
+  it("finds scenarios only when the section is neither missing nor None", () => {
+    assert.ok(hasScenarios("## Scenarios\n\n- open /\n\n## Notes\n"));
+    assert.ok(!hasScenarios("## Scenarios\n\nNone\n\n## Notes\n- x\n"));
+    assert.ok(!hasScenarios("## Scenarios\n\nNone: nothing user-visible changes.\n"));
+    assert.ok(!hasScenarios("# spec\n"));
   });
 });
 

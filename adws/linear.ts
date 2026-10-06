@@ -12,6 +12,8 @@ export type Linear = {
   claim(id: string): Promise<void>;
   review(id: string): Promise<void>;
   comment(id: string, file: string): Promise<void>;
+  /** Creates a Todo issue, in `project` when given; returns its identifier. */
+  issueCreate(project: string | undefined, title: string, file: string): Promise<string>;
 };
 
 const DEFAULT_CLI = join(homedir(), ".claude/skills/benefriches-linear-tasks/linear.mjs");
@@ -33,13 +35,18 @@ function cli(args: string[], env: Record<string, string> = {}) {
 
 export async function linearCli(): Promise<Linear> {
   const token = process.env.LINEAR_TOKEN ?? (await cli(["token"]));
-  const call = async (...args: string[]) => {
-    await cli(args, { LINEAR_TOKEN: token });
-  };
+  const call = (...args: string[]) => cli(args, { LINEAR_TOKEN: token });
+  const done = () => {};
   return {
-    snapshot: (id, dir) => call("snapshot", id, dir),
-    claim: (id) => call("claim", id),
-    review: (id) => call("review", id),
-    comment: (id, file) => call("comment", id, "--file", file),
+    snapshot: (id, dir) => call("snapshot", id, dir).then(done),
+    claim: (id) => call("claim", id).then(done),
+    review: (id) => call("review", id).then(done),
+    comment: (id, file) => call("comment", id, "--file", file).then(done),
+    // prints `<identifier>\t<url>`
+    issueCreate: async (project, title, file) => {
+      const where = project ? ["--project", project] : [];
+      const created = await call("issue-create", ...where, "--title", title, "--file", file);
+      return created.split("\t")[0];
+    },
   };
 }
