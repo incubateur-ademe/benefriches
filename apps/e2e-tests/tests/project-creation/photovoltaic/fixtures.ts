@@ -90,10 +90,9 @@ export const test = authTest.extend<PhotovoltaicProjectCreationFixtures>({
     await use(site);
   },
 
-  contaminatedFricheSite: async ({ authenticatedApiClient, testUser }, use) => {
+  contaminatedFricheSite: async ({ authenticatedApiClient }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
       ...CONTAMINATED_FRICHE_SITE_DATA,
-      createdBy: testUser.id,
     });
     await use(site);
   },
