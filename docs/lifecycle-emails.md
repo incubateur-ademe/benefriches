@@ -80,8 +80,7 @@ table-based single-column layout, inline styles, no flexbox or grid, and a plain
 every email. No images except the welcome email's decorative feature icons (remote images are
 blocked by default in Outlook). Links are always built from `WEBAPP_URL`, so staging emails never
 link into production. Every email sets a preheader (`EmailContent` requires it): without one,
-inboxes preview the first body line instead. French copy awaiting product review is marked
-`TODO(product)` in the templates.
+inboxes preview the first body line instead.
 
 ## Where to look
 
@@ -154,5 +153,3 @@ All under `apps/api/src/notifications/` unless stated.
 
 - A retry does not re-check eligibility: a reminder whose first attempt failed can still go out
   (within about 4 h) after the user has acted.
-- Project creation takes the author from the request body without checking it against the
-  session (pre-existing, follow-up in DESIGN); the impacts summary goes to that author.
