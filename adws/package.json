@@ -1,11 +1,16 @@
 {
   "name": "adws",
   "private": true,
-  "description": "ADW runner: outside the pnpm workspace so it never affects product CI. No dependencies: Node runs the .ts files directly.",
+  "description": "ADW runner: outside the pnpm workspace so it never affects product CI. Install with `pnpm install --ignore-workspace`; Node runs the .ts files directly.",
   "type": "module",
   "scripts": {
+    "adw": "node run.ts",
+    "test": "node --test run.spec.ts",
     "test:integration": "node --test env.integration-spec.ts",
     "format": "../node_modules/.bin/prettier --write .",
     "format:check": "../node_modules/.bin/prettier --check ."
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "0.3.283"
   }
 }
