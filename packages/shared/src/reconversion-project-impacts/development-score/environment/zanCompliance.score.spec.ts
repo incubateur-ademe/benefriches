@@ -65,6 +65,9 @@ const testCasesGradeB = [
       newGreenSoilSurfaces: 0,
     },
   },
+] satisfies TestData[];
+
+const testCasesGradeC = [
   {
     projectDevelopmentPlanType: "URBAN_PROJECT",
     siteReconversionType: "friche",
@@ -76,9 +79,6 @@ const testCasesGradeB = [
       newGreenSoilSurfaces: 0,
     },
   },
-] satisfies TestData[];
-
-const testCasesGradeC = [
   {
     projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
     siteReconversionType: "friche",

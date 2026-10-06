@@ -54,7 +54,7 @@ export const getWaterQualityScore = (
   }
 
   const reduction = soilsEvolutionDetails.contamination.percentVariation;
-  if (reduction >= 75) return { letterGrade: "A", metrics };
+  if (reduction > 75) return { letterGrade: "A", metrics };
   if (reduction >= 10) return { letterGrade: "B", metrics };
   return { letterGrade: "C", metrics };
 };

@@ -212,9 +212,6 @@ const testCasesGradeD = [
       },
     },
   },
-] satisfies TestData[];
-
-const testCasesGradeE = [
   {
     projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
     soilsEvolutionDetails: {
@@ -229,6 +226,23 @@ const testCasesGradeE = [
       },
     },
   },
+  {
+    projectDevelopmentPlanType: "URBAN_PROJECT",
+    soilsEvolutionDetails: {
+      permeableSurfaceDifference: {
+        difference: -2000,
+        percentVariation: -30,
+      },
+      contamination: {
+        siteContaminatedSurface: 15000,
+        difference: 0,
+        percentVariation: 0,
+      },
+    },
+  },
+] satisfies TestData[];
+
+const testCasesGradeE = [
   {
     projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
     soilsEvolutionDetails: {
@@ -252,20 +266,6 @@ const testCasesGradeE = [
       },
       contamination: {
         siteContaminatedSurface: 0,
-        difference: 0,
-        percentVariation: 0,
-      },
-    },
-  },
-  {
-    projectDevelopmentPlanType: "URBAN_PROJECT",
-    soilsEvolutionDetails: {
-      permeableSurfaceDifference: {
-        difference: -2000,
-        percentVariation: -30,
-      },
-      contamination: {
-        siteContaminatedSurface: 15000,
         difference: 0,
         percentVariation: 0,
       },

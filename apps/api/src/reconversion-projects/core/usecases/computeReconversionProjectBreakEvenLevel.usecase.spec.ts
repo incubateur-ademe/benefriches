@@ -713,7 +713,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       assert.ok(developmentScore);
       assert.deepEqual(developmentScore.score.letterGrade, "C");
       assert.deepEqual(developmentScore.score.letterGradeWithModifiers, "C-");
-      assert.deepEqual(developmentScore.score.gradePoints, 43.5);
+      assert.deepEqual(developmentScore.score.gradePoints, 44.5);
     });
   });
 });

@@ -110,7 +110,11 @@ export const urbanProjectDevelopmentScoreMock = {
         livingEnvironment: {
           letterGrade: "A",
           metrics: {
+            siteNature: "FRICHE",
+            projectDevelopmentPlanType: "URBAN_PROJECT",
             siteReconversionType: "friche",
+            buildingsFloorAreaDistribution: undefined,
+            soilEvolutionDetails: { newGreenSoilSurfaces: 5400 },
           },
         },
         frichesAccidents: {
@@ -256,7 +260,11 @@ export const photovoltaicProjectDevelopmentScoreMock = {
         livingEnvironment: {
           letterGrade: "A",
           metrics: {
+            siteNature: "FRICHE",
+            projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
             siteReconversionType: "friche",
+            buildingsFloorAreaDistribution: undefined,
+            soilEvolutionDetails: { newGreenSoilSurfaces: 5400 },
           },
         },
         frichesAccidents: {

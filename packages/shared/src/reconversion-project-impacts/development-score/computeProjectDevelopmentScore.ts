@@ -11,7 +11,10 @@ import { getLocalAuthorityFinancesScore } from "./local-authority-finances/local
 import { getAccessToHealthCareScore } from "./local-people-quality-of-life/accessToHealthCare.score";
 import { getAccessToLocalServicesScore } from "./local-people-quality-of-life/accessToLocalStore.score";
 import { getFricheAccidentsScore } from "./local-people-quality-of-life/fricheAccidents.score";
-import { getLivingEnvironmentScore } from "./local-people-quality-of-life/livingEnvironment.score";
+import {
+  getLivingEnvironmentScore,
+  type LivingEnvironmentContext,
+} from "./local-people-quality-of-life/livingEnvironment.score";
 import { getLocalHealthinessScore } from "./local-people-quality-of-life/localHealthiness.score";
 import { getTrafficSecurityScore } from "./local-people-quality-of-life/trafficSecurity.score";
 import {
@@ -77,7 +80,13 @@ export const computeProjectDevelopmentScore = (
       : undefined;
 
   const localPeopleQualityOfLifeScore = computeSectionScore({
-    livingEnvironment: getLivingEnvironmentScore(siteReconversionType),
+    livingEnvironment: getLivingEnvironmentScore({
+      siteNature: contextData.siteNature,
+      siteReconversionType: siteReconversionType,
+      soilEvolutionDetails: soilsEvolutionDetails,
+      buildingsFloorAreaDistribution: buildingsFloorAreaEvolution,
+      projectDevelopmentPlanType,
+    }),
     localHealthiness: getLocalHealthinessScore({
       siteReconversionType: siteReconversionType,
       soilEvolutionDetails: soilsEvolutionDetails,
@@ -123,9 +132,7 @@ export type ProjectDevelopmentScore = {
     localPeopleQualityOfLifeScore: {
       score: Score;
       details: {
-        livingEnvironment: ScoredMetrics<{
-          siteReconversionType: SiteReconversionType;
-        }>;
+        livingEnvironment: ScoredMetrics<LivingEnvironmentContext>;
         localHealthiness: ScoredMetrics<{
           siteReconversionType: SiteReconversionType;
           sportsFacilitiesFloorSurface: number;

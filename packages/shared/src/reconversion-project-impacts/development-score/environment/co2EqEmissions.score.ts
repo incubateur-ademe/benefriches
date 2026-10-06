@@ -29,21 +29,16 @@ const getPhotovoltaicLetterGrade = ({
 
   return "D";
 };
-
 const getUrbanProjectLetterGrade = ({
-  avoidedCo2eqEmissions,
   soilStoredPercentageVariation,
   totalCo2eq,
 }: {
-  avoidedCo2eqEmissions: number;
   soilStoredPercentageVariation: number;
   totalCo2eq: number;
 }): LetterGrade => {
-  if (totalCo2eq < 0 && soilStoredPercentageVariation < 0) {
-    return "E";
-  }
+  if (totalCo2eq < 0 && soilStoredPercentageVariation < 0) return "E";
 
-  if (avoidedCo2eqEmissions > 0) {
+  if (totalCo2eq > 0) {
     if (soilStoredPercentageVariation >= 50) return "A";
     if (soilStoredPercentageVariation >= 0) return "B";
     if (soilStoredPercentageVariation >= -10) return "C";
@@ -101,7 +96,6 @@ export const getAvoidedCo2EmissionsScore = (props: {
     case "URBAN_PROJECT":
       return {
         letterGrade: getUrbanProjectLetterGrade({
-          avoidedCo2eqEmissions,
           soilStoredPercentageVariation,
           totalCo2eq,
         }),

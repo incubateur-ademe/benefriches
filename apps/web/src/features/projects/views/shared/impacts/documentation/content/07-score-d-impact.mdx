@@ -124,26 +124,40 @@ Cette section ne contient qu'un seul indicateur qui mesure la création (ou la p
 
 #### 🌳 Cadre de vie
 
-Cet indicateur évalue l'apport du projet au cadre de vie, selon le type de site reconverti.
+Cet indicateur évalue l'apport du projet au cadre de vie, selon la nature du site reconverti, le type de projet et les aménagements prévus.
 
 ##### Source des données
 
-- **Données des formulaires** : nature du site et activité de la friche (pour déterminer le type de reconversion).
+- **Données des formulaires** : nature du site (friche, exploitation agricole, espace naturel), activité de la friche (pour repérer une friche agricole), type de projet (densification de zone pavillonnaire, grand ensemble, autre projet urbain, centrale photovoltaïque), répartition des surfaces de bâtiments prévus.
+- **Calculs des impacts** : nouvelles surfaces de sols verts.
 
-| Condition (Données des formulaires)                                   | Type retenu         |
-| --------------------------------------------------------------------- | ------------------- |
-| Le site est une friche **et** son ancienne activité est l'agriculture | **Friche agricole** |
-| Le site est une exploitation agricole ou un espace naturel            | **ENAF**            |
-| Le site est une friche (autre activité)                               | **Friche**          |
-| Autre                                                                 | Non déterminé       |
+Une **friche agricole** est une friche dont l'ancienne activité est l'agriculture.
 
-##### Règles de notation
+##### Définitions
 
-| Type de site    | Note  |
-| --------------- | ----- |
-| Friche          | **A** |
-| Friche agricole | **D** |
-| ENAF            | **E** |
+Il y a « `amélioration` » s'il y a de **nouveaux sols verts** **ou** au moins un des usages de bâtiments suivants prévu :
+
+- Logements,
+- Commerces de proximité, services de proximité,
+- Locaux artisanaux, industriels ou logistiques,
+- Équipements publics,
+- Santé : service de santé de proximité, établissement médico-social, hôpital,
+- Culture et loisirs : cinéma, musée, théâtre, équipement de loisirs, autre lieu culturel, équipements sportifs.
+
+Les **établissements éducatifs** pris en compte sont : école maternelle ou primaire, collège ou lycée, autre établissement éducatif.
+
+##### Règles de notation (par ordre de priorité)
+
+| Situation                                                                                  | Note  |
+| ------------------------------------------------------------------------------------------ | ----- |
+| Le site est un espace naturel                                                              | **E** |
+| Le site est une exploitation agricole ou une friche agricole                               | **D** |
+| Projet de densification de zone pavillonnaire **sans** `amélioration`                      | **D** |
+| Projet de densification de zone pavillonnaire **avec** `amélioration`                      | **C** |
+| Le site est une friche (hors friche agricole) ou projet de grand ensemble, **sans** `amélioration` | **B** |
+| Le site est une friche (hors friche agricole) ou projet de grand ensemble, **avec** `amélioration` | **A** |
+| Autres cas, avec `amélioration` **ou** établissement éducatif prévu                        | **B** |
+| Autres cas (ZAE...)                                                                               | **C** |
 
 #### 🫀 Santé
 
@@ -287,14 +301,14 @@ Cet indicateur évalue le bilan carbone du projet : le CO₂eq évité grâce au
 | CO₂eq évité entre 0 et 500 et stockage > -10 %       | **C** |
 | Tous les autres cas                                  | **D** |
 
-### Règles de notation pour un projet urbain
+##### Règles de notation pour un projet urbain
 
 | Situation                                             | Note  |
 | ----------------------------------------------------- | ----- |
 | Bilan total négatif **et** stockage en baisse         | **E** |
-| CO₂eq évité > 0 et stockage en hausse d'au moins 50 % | **A** |
-| CO₂eq évité > 0 et stockage ≥ 0 %                     | **B** |
-| CO₂eq évité > 0 et stockage ≥ -10 %                   | **C** |
+| Bilan total > 0 et stockage en hausse d'au moins 50 % | **A** |
+| Bilan total > 0 et stockage ≥ 0 %                     | **B** |
+| Bilan total > 0 et stockage ≥ -10 %                   | **C** |
 | Tous les autres cas                                   | **D** |
 
 #### 🌱 Objectif ZAN
@@ -313,8 +327,8 @@ Cet indicateur mesure si le projet respecte l'esprit du « Zéro Artificialisati
 | Situation                                                                          | Note  |
 | ---------------------------------------------------------------------------------- | ----- |
 | Création de nouveaux sols verts **ou** surface perméable en hausse de plus de 80 % | **A** |
-| Surface perméable en hausse d'au moins 30 %                                        | **B** |
-| Surface perméable en baisse d'au moins 50 %                                        | **E** |
+| Surface perméable en hausse de plus de 30 %                                        | **B** |
+| Surface perméable en baisse de plus de 50 %                                        | **E** |
 | Autres cas                                                                         | **C** |
 
 **Si le site est un ENAF ou une friche agricole**
@@ -346,19 +360,23 @@ Cet indicateur évalue l'évolution de la perméabilité des sols et, s'il y en 
 | De -50 % à -10 %                  | D    |
 | Moins de -50 %                    | E    |
 
-**Étape 2 : prise en compte de la pollution**
+**Étape 2 : note de dépollution (uniquement si le site est contaminé)**
+
+| Réduction de la contamination | Note |
+| ----------------------------- | ---- |
+| Plus de 99 %                  | A    |
+| Plus de 75 %                  | B    |
+| Plus de 50 %                  | C    |
+| De 0 à 50 %                   | D    |
+
+> 📌 La dépollution ne peut pas à elle seule donner la note E : la note la plus basse possible pour ce volet est **D**.
+
+**Étape 3 : note finale**
 
 - **Site non contaminé** : la note finale est la note de perméabilité.
-- **Site contaminé** : la note de perméabilité n'est conservée que si la dépollution est suffisante :
+- **Site contaminé** : la note finale est la **plus basse** des deux notes (perméabilité et dépollution).
 
-| Note de perméabilité | Réduction de la contamination nécessaire pour la conserver |
-| -------------------- | ---------------------------------------------------------- |
-| A                    | plus de 99 %                                               |
-| B                    | plus de 75 %                                               |
-| C                    | plus de 50 %                                               |
-| D                    | plus de 0 %                                                |
-
-> 📌 Si cette condition n'est pas remplie, la note finale est **E**.
+_Exemple : perméabilité en forte hausse (A) mais dépollution de 90 % (B) → note finale **B**._
 
 #### 🚰 Qualité de l'eau
 
@@ -379,7 +397,7 @@ Différence de surface (après - avant) pour : prairies, zones humides, forêts,
 | Perte de prairies **ou** de zones humides    | **E** |
 | Perte de surfaces agricoles **ou** de forêts | **D** |
 | Site non contaminé                           | **C** |
-| Dépollution d'au moins 75 %                  | **A** |
+| Dépollution de plus de 75 %                  | **A** |
 | Dépollution d'au moins 10 %                  | **B** |
 | Autres cas                                   | **C** |
 

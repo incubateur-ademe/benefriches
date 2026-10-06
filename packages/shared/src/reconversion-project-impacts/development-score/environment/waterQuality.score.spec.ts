@@ -29,6 +29,9 @@ const testCasesGradeA = [
       },
     },
   },
+] satisfies TestData[];
+
+const testCasesGradeB = [
   {
     projectDevelopmentPlanType: "URBAN_PROJECT",
     soilsEvolutionDetails: {
@@ -41,9 +44,6 @@ const testCasesGradeA = [
       },
     },
   },
-] satisfies TestData[];
-
-const testCasesGradeB = [
   {
     projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
     soilsEvolutionDetails: {

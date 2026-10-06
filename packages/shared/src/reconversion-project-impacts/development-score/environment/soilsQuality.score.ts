@@ -1,5 +1,6 @@
 import type { SoilEvolutionDetails } from "../readFeatures.helpers";
 import type { ScoredMetrics, LetterGrade } from "../scoring.helpers";
+import { convertLetterGradeToGradePoints } from "../scoring.helpers";
 
 const getSoilsPermeableSurfaceLetterGrade = (variationPercent: number): LetterGrade => {
   if (variationPercent > 80) return "A";
@@ -9,13 +10,22 @@ const getSoilsPermeableSurfaceLetterGrade = (variationPercent: number): LetterGr
   return "E";
 };
 
+const getContaminationLetterGrade = (reductionPercent: number): LetterGrade => {
+  if (reductionPercent > 99) return "A";
+  if (reductionPercent > 75) return "B";
+  if (reductionPercent > 50) return "C";
+  return "D"; // 0 à 50 % : plancher D, E réservé à la perméabilité
+};
+
+const getWorstLetterGrade = (a: LetterGrade, b: LetterGrade): LetterGrade =>
+  convertLetterGradeToGradePoints(a) <= convertLetterGradeToGradePoints(b) ? a : b;
+
 export const getSoilsQualityScore = (
   soilsEvolutionDetails: Pick<SoilEvolutionDetails, "contamination" | "permeableSurfaceDifference">,
 ): ScoredMetrics<Pick<SoilEvolutionDetails, "contamination" | "permeableSurfaceDifference">> => {
   const permeableScore = getSoilsPermeableSurfaceLetterGrade(
     soilsEvolutionDetails.permeableSurfaceDifference.percentVariation,
   );
-
   const metrics = {
     permeableSurfaceDifference: soilsEvolutionDetails.permeableSurfaceDifference,
     contamination: soilsEvolutionDetails.contamination,
@@ -25,13 +35,11 @@ export const getSoilsQualityScore = (
     return { letterGrade: permeableScore, metrics };
   }
 
-  if (soilsEvolutionDetails.contamination.percentVariation > 99 && permeableScore === "A")
-    return { letterGrade: "A", metrics };
-  if (soilsEvolutionDetails.contamination.percentVariation > 75 && permeableScore === "B")
-    return { letterGrade: "B", metrics };
-  if (soilsEvolutionDetails.contamination.percentVariation > 50 && permeableScore === "C")
-    return { letterGrade: "C", metrics };
-  if (soilsEvolutionDetails.contamination.percentVariation > 0 && permeableScore === "D")
-    return { letterGrade: "D", metrics };
-  return { letterGrade: "E", metrics };
+  return {
+    letterGrade: getWorstLetterGrade(
+      permeableScore,
+      getContaminationLetterGrade(soilsEvolutionDetails.contamination.percentVariation),
+    ),
+    metrics,
+  };
 };

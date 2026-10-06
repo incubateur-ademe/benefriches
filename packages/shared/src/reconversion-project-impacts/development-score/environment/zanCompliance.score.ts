@@ -12,8 +12,8 @@ const getZanComplianceLetterGrade = (
   const hasNewGreenSoil = soilsEvolutionDetails.newGreenSoilSurfaces > 0;
   if (siteReconversionType === "friche") {
     if (hasNewGreenSoil || permeableVariation > 80) return "A";
-    if (permeableVariation >= 30) return "B";
-    if (permeableVariation <= -50) return "E";
+    if (permeableVariation > 30) return "B";
+    if (permeableVariation < -50) return "E";
     return "C";
   }
 
