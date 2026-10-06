@@ -137,7 +137,7 @@ describe("renderEmail", () => {
     assert.ok(result.html.includes("Lien de la carte"));
   });
 
-  it("renders a secondary button as a light grey bgcolor cell wrapping the link", () => {
+  it("renders a secondary button as a white bgcolor cell with a blue-france border and label", () => {
     const result = renderEmail({
       subject: "Test",
       preheader: "Texte d’aperçu",
@@ -152,8 +152,14 @@ describe("renderEmail", () => {
       ],
     });
 
-    assert.ok(/<td[^>]*bgcolor="#dddddd"[^>]*>/.test(result.html));
-    assert.ok(!result.html.includes('bgcolor="#161616"'));
+    assert.ok(
+      /<td[^>]*bgcolor="#ffffff"[^>]*style="[^"]*border:1px solid #000091;[^"]*"[^>]*>/.test(
+        result.html,
+      ),
+    );
+    assert.ok(/<a[^>]*style="[^"]*color:#000091;[^"]*"[^>]*>/.test(result.html));
+    assert.ok(!result.html.includes('bgcolor="#000091"'));
+    assert.ok(!result.html.includes('bgcolor="#dddddd"'));
     assert.ok(/<a[^>]*href="mailto:mathilde\.lefevre@example\.com"[^>]*>/.test(result.html));
   });
 
@@ -241,8 +247,11 @@ describe("renderEmail", () => {
       sections: [{ type: "button", label: "Go", url: "https://example.fr" }],
     });
 
-    assert.ok(/<td[^>]*bgcolor="#161616"[^>]*>/.test(result.html));
-    assert.ok(/<a[^>]*href="https:\/\/example\.fr"[^>]*>/.test(result.html));
+    assert.ok(/<td[^>]*bgcolor="#000091"[^>]*>/.test(result.html));
+    assert.ok(
+      /<a[^>]*href="https:\/\/example\.fr"[^>]*style="[^"]*color:#ffffff;/.test(result.html),
+    );
+    assert.ok(!result.html.includes('bgcolor="#161616"'));
   });
 
   it("centres the button horizontally with align attributes, which Outlook honours", () => {
@@ -254,7 +263,7 @@ describe("renderEmail", () => {
     });
 
     assert.ok(
-      /<td align="center"[^>]*>\s*<table[^>]*align="center"[^>]*>\s*<tr>\s*<td[^>]*bgcolor="#161616"/.test(
+      /<td align="center"[^>]*>\s*<table[^>]*align="center"[^>]*>\s*<tr>\s*<td[^>]*bgcolor="#000091"/.test(
         result.html,
       ),
     );

@@ -24,7 +24,8 @@ export type EmailSection =
       // plain-text path ignores it.
       iconUrl?: string;
     }
-  // variant absent = primary (dark). Secondary: light grey cell, dark text.
+  // variant absent = primary (blue-france cell, white text). Secondary: white cell, blue-france
+  // border and text.
   | { type: "button"; variant?: "primary" | "secondary"; label: string; url: string }
   // A bordered card (the impacts summary's headline findings): a large headline, an optional
   // bold title, a body and a text link. No image. Outlook ignores the border radius.
@@ -70,8 +71,9 @@ const FONT_STACK = "Arial, Helvetica, sans-serif";
 // consistent colour.
 export const LINK_COLOR = "#000091";
 const TEXT_COLOR = "#161616";
-const BUTTON_BG_COLOR = "#161616";
-const SECONDARY_BUTTON_BG_COLOR = "#dddddd";
+// DSFR blue-france, shared with the web app: buttons and links. White on it is about 15:1.
+const BUTTON_COLOR = LINK_COLOR;
+const BUTTON_LABEL_COLOR = "#ffffff";
 const MUTED_TEXT_COLOR = "#666666";
 const CARD_BORDER_COLOR = "#dddddd";
 const FEATURE_TITLE_STYLE = `font-family:${FONT_STACK};font-size:16px;font-weight:bold;color:${TEXT_COLOR};`;
@@ -165,13 +167,15 @@ ${renderFeatureBodyRow(section.body)}`;
 ${renderFeatureBodyRow(section.body)}`;
     case "button": {
       const isSecondary = section.variant === "secondary";
-      const backgroundColor = isSecondary ? SECONDARY_BUTTON_BG_COLOR : BUTTON_BG_COLOR;
-      const labelColor = isSecondary ? TEXT_COLOR : "#ffffff";
+      // The border sits on the <td>, which Outlook honours (it ignores it on the <a>). Both
+      // variants carry it, so they have the same height.
+      const backgroundColor = isSecondary ? "#ffffff" : BUTTON_COLOR;
+      const labelColor = isSecondary ? BUTTON_COLOR : BUTTON_LABEL_COLOR;
       return `          <tr>
             <td align="center" style="padding:24px;text-align:center;">
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;">
                 <tr>
-                  <td bgcolor="${backgroundColor}" style="border-radius:4px;">
+                  <td bgcolor="${backgroundColor}" style="border:1px solid ${BUTTON_COLOR};border-radius:4px;">
                     <a href="${escapeHtml(section.url)}" style="display:inline-block;padding:14px 24px;font-family:${FONT_STACK};font-size:16px;font-weight:bold;color:${labelColor};text-decoration:none;">
                       ${escapeHtml(section.label)}
                     </a>
