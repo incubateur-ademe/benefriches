@@ -35,6 +35,7 @@ const ProjectPageHeaderContainer = ({ projectId }: { projectId: string }) => {
     projectId,
     updateProjectLinkProps: routes.updateProject({ projectId, from: "impacts" }).link,
     createProjectLinkProps: routes.createProject({ siteId: contextData?.relatedSiteId ?? "" }).link,
+    documentationLinkProps: routes.readImpactsDoc().link,
   };
 
   return <ProjectPageHeader {...headerProps} />;

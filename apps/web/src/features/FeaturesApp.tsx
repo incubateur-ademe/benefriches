@@ -17,6 +17,7 @@ import OnboardingTestimonialsPage from "./onboarding/views/pages/testimonials/On
 import OnboardingWelcomePage from "./onboarding/views/pages/welcome/OnboardingWelcomePage";
 import OnboardingWhenNotToUsePage from "./onboarding/views/pages/when-not-to-use/OnboardingWhenNotToUsePage";
 import OnboardingWhenToUsePage from "./onboarding/views/pages/when-to-use/OnboardingWhenToUsePage";
+import ImpactDocumentationPage from "./projects/views/shared/impacts/documentation";
 import UpdateProjectPage from "./update-project/views";
 
 /* Lazy-loaded pages */
@@ -140,6 +141,8 @@ function FeaturesApp() {
                 return (
                   <ProjectImpactsOnboardingPage projectId={route.params.projectId} route={route} />
                 );
+              case routes.readImpactsDoc.name:
+                return <ImpactDocumentationPage />;
               case routes.siteFeatures.name:
               case routes.siteEvaluatedProjects.name:
               case routes.siteActionsList.name:

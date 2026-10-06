@@ -1,7 +1,9 @@
+import Button from "@codegouvfr/react-dsfr/Button";
 import type { MDXProps } from "mdx/types";
 import type { ComponentType } from "react";
 import { useEffect, useRef, useState } from "react";
 
+import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 
 import Intro from "./content/00-intro.mdx";
@@ -135,44 +137,96 @@ const Sidebar = ({ displayDevelopmentScore }: { displayDevelopmentScore: boolean
   );
 };
 
-export default function ImpactsEconomiquesDocumentation({
+const PageTitle = ({
+  header = false,
+  ref,
+}: {
+  header?: boolean;
+  ref?: React.Ref<HTMLDivElement>;
+}) => {
+  return (
+    <div className="flex flex-col">
+      <span className="text-sm font-semibold uppercase tracking-widest text-blue-medium truncate">
+        Méthodologie
+      </span>
+      {!header ? (
+        <h1 className="text-3xl font-extrabold leading-tight" ref={ref}>
+          Comment sont calculés les impacts ?
+        </h1>
+      ) : (
+        "Comment sont calculés les impacts ?"
+      )}
+    </div>
+  );
+};
+
+export default function ImpactsComputationMethodology({
   displayDevelopmentScore = true,
 }: {
   displayDevelopmentScore?: boolean;
 }) {
+  const [isHeaderInViewport, setIsHeaderInViewPort] = useState(false);
+
+  const inlineHeaderRef = (node: HTMLDivElement) => {
+    const observer = new IntersectionObserver(([entry]) => {
+      const entryIntersecting = entry?.isIntersecting ?? false;
+      setIsHeaderInViewPort(entryIntersecting);
+    });
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  };
+
   return (
-    <div>
-      <div className="mb-10">
-        <span className="text-sm font-semibold uppercase tracking-widest text-blue-medium truncate">
-          Documentation
-        </span>
-        <h1 className="text-3xl font-extrabold leading-tight">
-          Comment sont calculés les impacts économiques ?
-        </h1>
-        <div className="mt-3">
-          <Intro components={mdxComponents} />
+    <>
+      {!isHeaderInViewport && (
+        <div className="fixed w-full left-0 top-0 z-10 bg-white dark:bg-black border-b">
+          <div className="flex items-center py-4 px-8">
+            <div className="fr-container flex justify-between">
+              <PageTitle header />
+              <Button
+                size="small"
+                priority="tertiary no outline"
+                iconId="fr-icon-bar-chart-box-line"
+                linkProps={routes.myEvaluations().link}
+                className={classNames("text-(--text-default-grey)")}
+              >
+                Mes évaluations
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="fr-container">
+        <div className="my-10">
+          <PageTitle ref={inlineHeaderRef} />
+          <div className="mt-3">
+            <Intro components={mdxComponents} />
+          </div>
+        </div>
+
+        <div className="flex gap-12 items-start">
+          <Sidebar displayDevelopmentScore={displayDevelopmentScore} />
+
+          <div className="flex-1 min-w-0 space-y-14">
+            <h2 className="text-3xl uppercase mb-3">Calculs</h2>
+            <MdxSection id="statuquo" />
+            <MdxSection id="projet" />
+            <MdxSection id="agregation" />
+
+            <h2 className="uppercase mb-8">Présentation des résultats</h2>
+            <MdxSection id="analyse-cout-benefice" />
+            <MdxSection id="beneficiaires" />
+            <MdxSection id="analyse-couts-evites" />
+
+            {displayDevelopmentScore && <MdxSection id="score-impacts" />}
+
+            <MdxSection id="methodologie" />
+          </div>
         </div>
       </div>
-
-      <div className="flex gap-12 items-start">
-        <Sidebar displayDevelopmentScore={displayDevelopmentScore} />
-
-        <div className="flex-1 min-w-0 space-y-14">
-          <h2 className="text-3xl uppercase mb-3">Calculs</h2>
-          <MdxSection id="statuquo" />
-          <MdxSection id="projet" />
-          <MdxSection id="agregation" />
-
-          <h2 className="uppercase mb-8">Présentation des résultats</h2>
-          <MdxSection id="analyse-cout-benefice" />
-          <MdxSection id="beneficiaires" />
-          <MdxSection id="analyse-couts-evites" />
-
-          {displayDevelopmentScore && <MdxSection id="score-impacts" />}
-
-          <MdxSection id="methodologie" />
-        </div>
-      </div>
-    </div>
+    </>
   );
 }

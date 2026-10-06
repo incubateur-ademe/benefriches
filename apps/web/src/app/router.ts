@@ -8,7 +8,6 @@ const onBoarding = defineRoute("/premiers-pas");
 const projectImpacts = defineRoute(
   {
     projectId: param.path.string,
-    documentation: param.query.optional.boolean,
     details: param.query.optional.string,
   },
   (params) => `/mes-projets/${params.projectId}`,
@@ -135,6 +134,7 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
       () => `/onboarding-impacts`,
     ),
     projectFeatures: projectImpacts.extend(`/caracterisques`),
+    readImpactsDoc: defineRoute("/methodologie-calculs-impacts"),
     // MES EVALUATIONS
     myEvaluations: defineRoute("/mes-evaluations"),
     siteFeatures: defineRoute(

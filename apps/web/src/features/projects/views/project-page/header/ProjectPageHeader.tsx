@@ -30,6 +30,7 @@ type HeaderProps = {
   projectId: string;
   updateProjectLinkProps: Link;
   createProjectLinkProps: Link;
+  documentationLinkProps: Link;
 };
 
 const ProjectPageHeader = ({
@@ -42,6 +43,7 @@ const ProjectPageHeader = ({
   className,
   updateProjectLinkProps,
   createProjectLinkProps,
+  documentationLinkProps,
   isBetaDevelopmentScoreViewActivated,
   onDuplicateProject,
   onSuccessArchiveProject,
@@ -73,7 +75,7 @@ const ProjectPageHeader = ({
             className={classNames(
               "col-start-1",
               "sm:row-start-1 sm:row-span-2",
-              isSmallSize ? "w-[60px] h-[60px]" : "md:w-[72px] md:h-[72px]",
+              isSmallSize ? "w-15 h-15" : "md:w-18 md:h-18",
             )}
             src={getScenarioPictoUrl(projectType)}
             aria-hidden={true}
@@ -142,6 +144,10 @@ const ProjectPageHeader = ({
               <MenuItemButton iconId="ri-a-b" onClick={onToggleDevelopmentScoreView}>
                 {isBetaDevelopmentScoreViewActivated ? "Désactiver" : "Activer"} la vue Score
                 d'impact
+              </MenuItemButton>
+
+              <MenuItemButton iconId="ri-file-marked-line" linkProps={documentationLinkProps}>
+                Comprendre la méthodologie
               </MenuItemButton>
 
               <MenuItemButton
