@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 
+import { BENEFRICHES_ENV } from "@/app/envVars";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
+import { unsubscribeLinkInvalidHelpRequested } from "@/features/support/core/unsubscribeLinkInvalidHelpRequested.action";
 
 import { selectLifecycleEmailsUnsubscribeViewData } from "../../core/lifecycleEmailsUnsubscribe.selectors";
 import { unsubscribeLinkOpened } from "../../core/unsubscribeLinkOpened.action";
@@ -30,6 +32,13 @@ function UnsubscribePageContainer() {
       onRetry={() => {
         if (token) void dispatch(unsubscribeLinkOpened({ token }));
       }}
+      onContactSupport={
+        BENEFRICHES_ENV.crispEnabled
+          ? () => {
+              void dispatch(unsubscribeLinkInvalidHelpRequested());
+            }
+          : undefined
+      }
     />
   );
 }

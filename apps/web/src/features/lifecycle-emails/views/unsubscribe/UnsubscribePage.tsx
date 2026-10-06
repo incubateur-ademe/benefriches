@@ -9,10 +9,11 @@ import type { LifecycleEmailsUnsubscribeViewData } from "../../core/lifecycleEma
 type Props = {
   viewData: LifecycleEmailsUnsubscribeViewData;
   onRetry: () => void;
+  // Undefined when the support chat is disabled: the page then offers no contact.
+  onContactSupport?: () => void;
 };
 
-// TODO(product): confirm the wording of every state below (draft, not in the mockups).
-function UnsubscribePage({ viewData, onRetry }: Props) {
+function UnsubscribePage({ viewData, onRetry, onContactSupport }: Props) {
   return (
     <section className="fr-container fr-py-4w">
       {(() => {
@@ -49,8 +50,19 @@ function UnsubscribePage({ viewData, onRetry }: Props) {
                   l’un de nos e-mails, ou copiez le lien en entier dans votre navigateur.
                 </p>
                 <p>Vos préférences n’ont pas été modifiées.</p>
-                {/* TODO(product): confirm the contact channel (support e-mail address or chat). */}
-                <p>Si le problème persiste, contactez l’équipe Bénéfriches.</p>
+                {onContactSupport && (
+                  <>
+                    <p>Si le problème persiste, contactez l’équipe Bénéfriches.</p>
+                    <Button
+                      type="button"
+                      priority="secondary"
+                      iconId="ri-chat-3-line"
+                      onClick={onContactSupport}
+                    >
+                      Contacter le support
+                    </Button>
+                  </>
+                )}
               </>
             ) : (
               <>

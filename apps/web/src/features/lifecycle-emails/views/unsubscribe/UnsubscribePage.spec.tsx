@@ -34,6 +34,35 @@ describe("UnsubscribePage", () => {
     expect(screen.queryByRole("button", { name: "Réessayer" })).toBeNull();
   });
 
+  it("offers the support chat on an invalid link", () => {
+    const onContactSupport = vi.fn();
+    render(
+      <UnsubscribePage
+        viewData={{ status: "error", reason: "invalid-link" }}
+        onRetry={vi.fn()}
+        onContactSupport={onContactSupport}
+      />,
+    );
+
+    expect(
+      screen.getByText("Si le problème persiste, contactez l’équipe Bénéfriches."),
+    ).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Contacter le support" }));
+
+    expect(onContactSupport).toHaveBeenCalledTimes(1);
+  });
+
+  it("offers no support contact on an invalid link when the support chat is disabled", () => {
+    render(
+      <UnsubscribePage viewData={{ status: "error", reason: "invalid-link" }} onRetry={vi.fn()} />,
+    );
+
+    expect(
+      screen.queryByText("Si le problème persiste, contactez l’équipe Bénéfriches."),
+    ).toBeNull();
+    expect(screen.queryByRole("button", { name: "Contacter le support" })).toBeNull();
+  });
+
   it("offers a retry on a technical error", () => {
     const onRetry = vi.fn();
     render(
