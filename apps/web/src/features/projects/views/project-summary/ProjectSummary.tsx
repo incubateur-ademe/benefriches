@@ -71,7 +71,7 @@ export default function ProjectSummaryTab({
 
           <div>
             <a className="fr-link" {...routes.projectImpactsBreakEvenLevel({ projectId }).link}>
-              Voir l'analyse coût-bénéfice
+              Voir l'analyse coût-bénéfices
             </a>
           </div>
         </div>

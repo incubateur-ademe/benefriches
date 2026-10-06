@@ -58,7 +58,7 @@ describe("buildWelcomeEmail", () => {
         "Sur plusieurs indicateurs clés : recettes fiscales, cadre de vie des riverains, emploi, émissions de CO2, perméabilité des sols…",
       ),
     );
-    assert.ok(result.html.includes("Votre analyse coût-bénéfice"));
+    assert.ok(result.html.includes("Votre analyse coût-bénéfices"));
     assert.ok(
       result.html.includes(
         "Pour voir si les impacts socio-économiques compenseront le coût de l’opération et, si oui, en quelle année.",
@@ -160,7 +160,7 @@ describe("buildWelcomeEmail", () => {
         "Avec Bénéfriches, réalisez l’évaluation socio-économique de votre projet d’aménagement.",
         "Renseignez votre site puis votre projet, et découvrez :",
         "Votre évaluation des impacts\nSur plusieurs indicateurs clés : recettes fiscales, cadre de vie des riverains, emploi, émissions de CO2, perméabilité des sols…",
-        "Votre analyse coût-bénéfice\nPour voir si les impacts socio-économiques compenseront le coût de l’opération et, si oui, en quelle année.",
+        "Votre analyse coût-bénéfices\nPour voir si les impacts socio-économiques compenseront le coût de l’opération et, si oui, en quelle année.",
         "Votre analyse des coûts évités\nPour comprendre ce que coûte la friche tant qu’elle n’est pas reconvertie, ou ce que coûterait le projet s’il se faisait en extension urbaine.",
         "Commencer l’évaluation socio-économique : http://localhost:3001/creer-site-foncier",
         "---\nVous recevez cet e-mail car vous avez un compte Bénéfriches.\nPour ne plus recevoir les e-mails d’accompagnement et de résultats d’impacts (votre compte reste actif) :\nhttp://localhost:3001/emails/desinscription?token=v1.x.y",

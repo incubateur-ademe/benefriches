@@ -474,7 +474,7 @@ describe("renderEmail", () => {
           title: "Coût de l’opération compensé",
           body: "Les impacts socio-économiques compenseront le coût de l’opération en 2058.",
           link: {
-            label: "Voir l’analyse coût-bénéfice",
+            label: "Voir l’analyse coût-bénéfices",
             url: "https://app.example/mes-projets/p-1/analyse-cout-benefice",
           },
         },
@@ -501,7 +501,7 @@ describe("renderEmail", () => {
                 </tr>
                 <tr>
                   <td style="padding:12px 16px 16px 16px;font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:1.5;">
-                    <a href="https://app.example/mes-projets/p-1/analyse-cout-benefice" style="color:#000091;text-decoration:underline;">Voir l’analyse coût-bénéfice</a>
+                    <a href="https://app.example/mes-projets/p-1/analyse-cout-benefice" style="color:#000091;text-decoration:underline;">Voir l’analyse coût-bénéfices</a>
                   </td>
                 </tr>
               </table>
@@ -564,7 +564,7 @@ describe("renderEmail", () => {
           title: "Coût de l’opération compensé",
           body: "Les impacts socio-économiques compenseront le coût de l’opération en 2058.",
           link: {
-            label: "Voir l’analyse coût-bénéfice",
+            label: "Voir l’analyse coût-bénéfices",
             url: "https://app.example/mes-projets/p-1/analyse-cout-benefice",
           },
         },
@@ -573,7 +573,7 @@ describe("renderEmail", () => {
 
     assert.deepStrictEqual(
       result.text.split("\n\n")[0],
-      "En 26 ans\nCoût de l’opération compensé\nLes impacts socio-économiques compenseront le coût de l’opération en 2058.\nVoir l’analyse coût-bénéfice : https://app.example/mes-projets/p-1/analyse-cout-benefice",
+      "En 26 ans\nCoût de l’opération compensé\nLes impacts socio-économiques compenseront le coût de l’opération en 2058.\nVoir l’analyse coût-bénéfices : https://app.example/mes-projets/p-1/analyse-cout-benefice",
     );
   });
 

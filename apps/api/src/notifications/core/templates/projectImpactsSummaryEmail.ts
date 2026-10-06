@@ -74,7 +74,7 @@ export function buildProjectImpactsSummaryEmail(
       })
     : undefined;
   const breakEvenCard = buildBreakEvenCard(input.breakEvenHorizon, input.evaluationPeriodInYears, {
-    label: "Voir l'analyse coût-bénéfice",
+    label: "Voir l'analyse coût-bénéfices",
     url: projectUrl("analyse-cout-benefice"),
   });
   const mainImpactIndicatorCard = input.mainImpactIndicator

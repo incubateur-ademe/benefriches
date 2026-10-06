@@ -87,7 +87,7 @@ export default function ProjectAvoidedInactionCosts({
         scenarioValue={siteStatuQuoImpactsByBearerAndCategory.total}
       />
       <ComparisonMonetaryRow
-        label="Total coût-bénéfice"
+        label="Total coût-bénéfices"
         totalRow
         projectValue={projectEconomicBalance.total + projectImpactsByBearerAndCategory.total}
         scenarioValue={siteStatuQuoImpactsByBearerAndCategory.total}

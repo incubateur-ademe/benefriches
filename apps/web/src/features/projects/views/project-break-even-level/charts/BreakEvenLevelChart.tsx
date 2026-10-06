@@ -28,7 +28,7 @@ const BreakEvenLevelChart = (props: Props) => {
     props.breakEvenIndex ? "area" : "column",
   );
   const exportConfig = useExportConfig({
-    title: "📈 Évolution de la balance coût-bénéfice",
+    title: "📈 Évolution de la balance coût-bénéfices",
   });
 
   const columnChartProps = useGetBreakEventLevelColumnChartProps(props);
@@ -62,7 +62,7 @@ const BreakEvenLevelChart = (props: Props) => {
   return (
     <ImpactChartCard
       key={chartType} // force React à démonter/remonter pour qu'Highcharts recrée l'instance
-      title="📈 Évolution de la balance coût-bénéfice"
+      title="📈 Évolution de la balance coût-bénéfices"
       options={options}
       containerProps={containerProps}
       linkProps={props.linkProps}

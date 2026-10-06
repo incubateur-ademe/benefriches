@@ -121,7 +121,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
           "En 26 ans",
           "Coût de l'opération compensé",
           "Les impacts socio-économiques compenseront le coût de l'opération en 2058.",
-          `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
+          `Voir l'analyse coût-bénéfices : ${costBenefitUrl}`,
         ].join("\n"),
         [
           `+1${NNBSP}087${NNBSP}355${NBSP}€`,
@@ -151,7 +151,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
           "Sur 50 ans",
           "Coût de l'opération non compensé",
           "Les impacts socio-économiques ne compenseront pas le coût de l'opération.",
-          `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
+          `Voir l'analyse coût-bénéfices : ${costBenefitUrl}`,
         ].join("\n"),
         [
           `-45${NNBSP}000${NBSP}€`,
@@ -222,7 +222,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
           "En 2026",
           "Bilan de l'opération positif",
           "La somme du bilan économique et des impacts socio-économiques est positive dès 2026.",
-          `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
+          `Voir l'analyse coût-bénéfices : ${costBenefitUrl}`,
         ],
       },
       {
@@ -233,7 +233,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
           "En 1 an",
           "Coût de l'opération compensé",
           "Les impacts socio-économiques compenseront le coût de l'opération en 2027.",
-          `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
+          `Voir l'analyse coût-bénéfices : ${costBenefitUrl}`,
         ],
       },
       {
@@ -244,7 +244,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
           "Sur 30 ans",
           "Coût de l'opération non compensé",
           "Les impacts socio-économiques compenseront le coût de l'opération en 2061.",
-          `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
+          `Voir l'analyse coût-bénéfices : ${costBenefitUrl}`,
         ],
       },
     ];
@@ -487,7 +487,7 @@ describe("buildProjectImpactsSummaryEmail", () => {
         "En 26 ans",
         "Coût de l'opération compensé",
         "Les impacts socio-économiques compenseront le coût de l'opération en 2058.",
-        `Voir l'analyse coût-bénéfice : ${costBenefitUrl}`,
+        `Voir l'analyse coût-bénéfices : ${costBenefitUrl}`,
       ].join("\n"),
       footer,
     ]);

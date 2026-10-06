@@ -46,7 +46,7 @@ export function buildWelcomeEmail(input: BuildWelcomeEmailInput): RenderedEmail 
       },
       {
         type: "featureBlock",
-        title: "Votre analyse coût-bénéfice",
+        title: "Votre analyse coût-bénéfices",
         iconUrl: iconUrl("cost-benefit-analysis.png"),
         body: "Pour voir si les impacts socio-économiques compenseront le coût de l’opération et, si oui, en quelle année.",
       },

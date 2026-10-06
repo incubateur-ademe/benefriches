@@ -263,7 +263,7 @@ export const ABOUT_SECTIONS: AboutSection[] = [
       {
         type: "paragraph",
         texts: [
-          "Par principe, une analyse coût-bénéfices est une approche comparative. Il s'agit de comparer les effets du projet (positifs (bénéfices) ou négatifs (dommages)) à une option de référence. L'option de référence correspond à la situation la plus probable en l'absence de réalisation du projet.",
+          "Par principe, une analyse coût-bénéficess est une approche comparative. Il s'agit de comparer les effets du projet (positifs (bénéfices) ou négatifs (dommages)) à une option de référence. L'option de référence correspond à la situation la plus probable en l'absence de réalisation du projet.",
         ],
       },
       {

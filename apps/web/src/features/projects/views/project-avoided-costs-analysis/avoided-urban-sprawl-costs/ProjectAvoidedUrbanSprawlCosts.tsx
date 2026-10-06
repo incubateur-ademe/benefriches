@@ -143,7 +143,7 @@ export default function ProjectAvoidedUrbanSprawlCosts({
       />
 
       <ComparisonMonetaryRow
-        label="Total coût-bénéfice"
+        label="Total coût-bénéfices"
         labelBold
         totalRow
         projectValue={

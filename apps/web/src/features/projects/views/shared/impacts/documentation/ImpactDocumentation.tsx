@@ -41,7 +41,7 @@ const TOC_GROUPS = [
   {
     label: "Présentation des résultats",
     items: [
-      { id: "analyse-cout-benefice", emoji: "⚖️", label: "Analyse coût-bénéfice" },
+      { id: "analyse-cout-benefice", emoji: "⚖️", label: "Analyse coût-bénéfices" },
       { id: "beneficiaires", emoji: "👥", label: "Répartition par bénéficiaires" },
       { id: "analyse-couts-evites", emoji: "📉", label: "Analyse des coûts évités" },
       { id: "score-impacts", emoji: "🏆", label: "Score d'impacts" },
