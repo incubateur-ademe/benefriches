@@ -18,7 +18,6 @@ export class CrispSupportChatService implements SupportChatGateway {
   }
 
   openWithMessage(message: string): void {
-    if (!Crisp.isCrispInjected()) return;
     Crisp.load();
 
     Crisp.chat.open();
