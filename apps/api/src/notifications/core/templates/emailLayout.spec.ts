@@ -106,7 +106,7 @@ describe("renderEmail", () => {
           type: "contactSignature",
           name: "Mathilde Lefèvre",
           role: "Chargée de déploiement",
-          organisation: "Bénéfriches (Externe)",
+          organisation: "Bénéfriches",
           phone: "01 23 45 67 89",
           email: "mathilde.lefevre@example.com",
         },
@@ -167,7 +167,7 @@ describe("renderEmail", () => {
           type: "contactSignature",
           name: "Mathilde Lefèvre",
           role: "Chargée de déploiement",
-          organisation: "Bénéfriches (Externe)",
+          organisation: "Bénéfriches",
           phone: "01 23 45 67 89",
           email: "mathilde.lefevre@example.com",
         },
@@ -179,7 +179,7 @@ describe("renderEmail", () => {
       [...result.html.matchAll(/href="([^"]*)"/g)].map((match) => match[1]),
       ["mailto:mathilde.lefevre@example.com", "https://example.fr/emails/desinscription?token=t"],
     );
-    assert.ok(result.html.includes("Bénéfriches (Externe)<br>"));
+    assert.ok(result.html.includes("Bénéfriches<br>"));
     assert.ok(result.html.includes("Chargée de déploiement"));
     assert.ok(result.html.includes("01 23 45 67 89"));
   });
@@ -194,7 +194,7 @@ describe("renderEmail", () => {
           type: "contactSignature",
           name: "Mathilde Lefèvre",
           role: "Chargée de déploiement",
-          organisation: "Bénéfriches (Externe)",
+          organisation: "Bénéfriches",
           phone: "01 23 45 67 89",
           email: "mathilde.lefevre@example.com",
         },
@@ -203,7 +203,7 @@ describe("renderEmail", () => {
 
     assert.ok(
       result.text.startsWith(
-        "Mathilde Lefèvre\nChargée de déploiement\nBénéfriches (Externe)\n01 23 45 67 89\nmathilde.lefevre@example.com\n\n",
+        "Mathilde Lefèvre\nChargée de déploiement\nBénéfriches\n01 23 45 67 89\nmathilde.lefevre@example.com\n\n",
       ),
     );
   });
@@ -218,7 +218,7 @@ describe("renderEmail", () => {
           type: "contactSignature",
           name: "<i>Mathilde</i>",
           role: "<b>Chef</b>",
-          organisation: "<u>Bénéfriches</u> (Externe)",
+          organisation: "<u>Bénéfriches</u>",
           phone: "<em>01</em>",
           email: '"x"@example.com',
         },
@@ -228,7 +228,7 @@ describe("renderEmail", () => {
     assert.ok(result.html.includes("&lt;i&gt;Mathilde&lt;/i&gt;"));
     assert.ok(result.html.includes("&lt;b&gt;Chef&lt;/b&gt;"));
     assert.ok(!result.html.includes("<b>Chef</b>"));
-    assert.ok(result.html.includes("&lt;u&gt;Bénéfriches&lt;/u&gt; (Externe)"));
+    assert.ok(result.html.includes("&lt;u&gt;Bénéfriches&lt;/u&gt;"));
     assert.ok(result.html.includes("&lt;em&gt;01&lt;/em&gt;"));
     assert.ok(result.html.includes('href="mailto:&quot;x&quot;@example.com"'));
   });

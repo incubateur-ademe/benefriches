@@ -1,7 +1,6 @@
 // The copy of the Synthèse tab's three headline cards, shared by the web app and the project
 // impacts summary email so both read the same. Plain text only: the apps add layout, icons and
 // links.
-// TODO(product): proofread the copy of every card.
 import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "../../co2eq";
 import {
   formatCO2Impact,
@@ -57,7 +56,8 @@ export const getBreakEvenCardContent = (
         body: `La somme du bilan économique et des impacts socio-économiques est positive dès ${breakEvenHorizon.breakEvenYear}.`,
       };
     case "compensated":
-      // TODO(product): the email mockup reads "Coûts de l'opération compensés" (plural).
+      // Singular on purpose: the email mockup's plural ("Coûts de l'opération compensés") was
+      // not kept.
       return {
         headline: `En ${pluralizeYears(breakEvenHorizon.yearsToBreakEven)}`,
         title: "Coût de l'opération compensé",
@@ -74,9 +74,8 @@ export const getBreakEvenCardContent = (
   }
 };
 
-// The headline is the indicator's value; the body continues the title, hence its lower-case start.
-// TODO(product): the email mockup had a capitalised sentence as body ("Grâce à la suppression de
-// la friche…").
+// The headline is the indicator's value; the body continues the title, hence its lower-case start
+// (not the email mockup's capitalised sentence, "Grâce à la suppression de la friche…").
 export const getMainImpactIndicatorCardContent = (
   indicator: KeyImpactIndicatorData,
 ): Required<SummaryCardContent> | undefined => {

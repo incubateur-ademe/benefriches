@@ -73,7 +73,7 @@ describe("buildFirstSiteReminderEmail", () => {
         "",
         "Mathilde Lefèvre",
         "Chargée de déploiement",
-        "Bénéfriches (Externe)",
+        "Bénéfriches",
         "01 23 45 67 89",
         "mathilde.lefevre@example.com",
         "",

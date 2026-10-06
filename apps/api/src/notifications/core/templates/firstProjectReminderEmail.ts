@@ -21,9 +21,7 @@ export type BuildFirstProjectReminderEmailInput = {
 // Names the site, so that two reminders for two sites are told apart: "la friche « … »" for
 // a friche, "le site « … »" for every other nature ("site" is the word the app itself uses
 // for all of them). "Récemment", not "Hier": the job's 24–72 h window means most sites were
-// created the day before yesterday.
-// TODO(product): the non-friche wording ("le site" / "ce site") is ours, not the mockup's:
-// to agree with product (plan P3). A per-nature wording ("une exploitation agricole", …) was
+// created the day before yesterday. A per-nature wording ("une exploitation agricole", …) was
 // considered and not kept.
 const buildIntroParagraph = (nature: LifecycleEmailSite["nature"], siteName: string): string => {
   const [definite, demonstrative] =

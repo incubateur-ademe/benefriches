@@ -236,7 +236,6 @@ function renderFeatureBodyRow(body: string): string {
           </tr>`;
 }
 
-// TODO(product): confirm the footer wording (draft, not in the mockups).
 function renderFooterHtml(content: EmailContent): string {
   return `          <tr>
             <td style="padding:24px 24px 16px 24px;border-top:1px solid #dddddd;font-family:${FONT_STACK};font-size:12px;line-height:1.5;color:${MUTED_TEXT_COLOR};">
@@ -250,7 +249,6 @@ function renderText(content: EmailContent): string {
   return [...content.sections.map(renderSectionText), renderFooterText(content)].join("\n\n");
 }
 
-// TODO(product): confirm the footer wording (draft, not in the mockups).
 function renderFooterText(content: EmailContent): string {
   return [
     "---",

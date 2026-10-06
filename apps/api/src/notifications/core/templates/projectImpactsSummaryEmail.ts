@@ -62,7 +62,7 @@ export function buildProjectImpactsSummaryEmail(
   // reminder (BEN-37); the mockup had “ ”.
   const intro = (projectName: string, siteName: string): string =>
     `Voici les résultats de l'évaluation socio-économique du projet «${NBSP}${projectName}${NBSP}» sur le site «${NBSP}${siteName}${NBSP}».`;
-  // TODO(product): the evaluation date is the project's creation date.
+  // The evaluation date is the project's creation date.
   const evaluationDate = `Évaluation réalisée le ${formatEvaluationDate(project.createdAt)}`;
 
   // No ZAN indicator: no card 1 (type-level only, the derivation always yields one). No main
@@ -101,8 +101,7 @@ export function buildProjectImpactsSummaryEmail(
   ];
 
   return renderEmail({
-    // TODO(product): the mockup reads "Projet sur l’ancienne carrière…", an article added by
-    // hand; we cannot generate articles, so the site name is used as typed.
+    // No article before the site name: we cannot generate one, so the name is used as typed.
     subject: `Projet sur ${subjectSiteName}${NBSP}: résultats de votre évaluation`,
     preheader:
       "Les impacts socio-économiques de votre projet, comparés au maintien du site en l'état.",
