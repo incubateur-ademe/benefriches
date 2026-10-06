@@ -10,7 +10,7 @@ If Scenarios is `None`, write `qa.md` saying so and return a pass.
 
 1. Read `.e2e-stack` at the repository root: the app is at `BASE_URL`, the API at `API_URL`, the mail catcher at `MAILCATCHER_URL`, the database at `DATABASE_URL`. Use only these. If the file is missing or the app does not answer, stop and report an environment failure, not a QA verdict.
 2. Drive the browser with the Playwright MCP tools. If they are missing, stop and say the session must be started with `--mcp-config adws/mcp/playwright.json`.
-3. Collect the design: images and PDFs in the `attachments/` folder beside the spec, and Figma links in `issue.md` (read them with the Figma MCP server when it is available).
+3. Collect the design: images and PDFs in the `attachments/` folder beside the spec.
 4. Set up each scenario's starting state the way the e2e fixtures do (`apps/e2e-tests/AGENTS.md`): a fresh user, sites and projects seeded through the API, the database only for what the API cannot do. Never seed the behaviour the scenario checks.
 5. Walk each scenario as a user would, through the UI, then check its expected result on the page. Take at least one screenshot per scenario, at the expected result, and copy it to `qa/<n>-<slug>.png`.
 6. A scenario fails when its expected result does not hold, or when you cannot run it (setup impossible, step unclear). Record the steps, expected, observed and the screenshot. Never retry until it passes: a failure seen once is reported.
