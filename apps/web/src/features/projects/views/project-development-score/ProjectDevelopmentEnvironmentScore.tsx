@@ -3,8 +3,8 @@ import type { LetterGrade } from "shared";
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
 import ImpactChartCard from "../shared/charts/ImpactChartCard";
 import useImpactAreaChartProps from "../shared/charts/useImpactAreaChartProps";
-import ProjectDevelopmentGrade from "./ProjectDevelopmentGrade";
-import MetricCard from "./ProjectDevelopmentMetricCard";
+import ProjectDevelopmentGrade from "./layout/ProjectDevelopmentGrade";
+import MetricCard from "./layout/ProjectDevelopmentMetricCard";
 
 type Props = DevelopmentScoreDataView["details"]["environmentScore"];
 

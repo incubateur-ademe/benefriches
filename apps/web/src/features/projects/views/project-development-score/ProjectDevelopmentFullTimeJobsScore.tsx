@@ -3,8 +3,8 @@ import type { LetterGrade } from "shared";
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
 import ImpactChartCard from "../shared/charts/ImpactChartCard";
 import useImpactAreaChartProps from "../shared/charts/useImpactAreaChartProps";
-import ProjectDevelopmentGrade from "./ProjectDevelopmentGrade";
-import GradeTextBadge from "./ProjectDevelopmentScoreGradeTextBadge";
+import ProjectDevelopmentGrade from "./layout/ProjectDevelopmentGrade";
+import GradeTextBadge from "./layout/ProjectDevelopmentScoreGradeTextBadge";
 
 type Props = DevelopmentScoreDataView["details"]["fullTimeJobsScore"];
 

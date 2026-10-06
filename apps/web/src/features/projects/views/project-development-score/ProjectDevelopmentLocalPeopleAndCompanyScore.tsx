@@ -2,8 +2,8 @@ import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
 
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
-import ProjectDevelopmentGrade from "./ProjectDevelopmentGrade";
-import MetricCard from "./ProjectDevelopmentMetricCard";
+import ProjectDevelopmentGrade from "./layout/ProjectDevelopmentGrade";
+import MetricCard from "./layout/ProjectDevelopmentMetricCard";
 
 type Props = DevelopmentScoreDataView["details"]["localPeopleQualityOfLifeScore"];
 

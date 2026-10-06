@@ -9,11 +9,11 @@ import BreakEvenLevelImpactsActionBar from "../project-break-even-level/ProjectB
 import ProjectPageHeader from "../project-page/header";
 import ProjectDevelopmentEnvironmentScore from "./ProjectDevelopmentEnvironmentScore";
 import ProjectDevelopmentFullTimeJobsScore from "./ProjectDevelopmentFullTimeJobsScore";
-import ProjectDevelopmentGrade from "./ProjectDevelopmentGrade";
 import ProjectDevelopmentLocalAuthorityFinancesScore from "./ProjectDevelopmentLocalAuthorityFinancesScore";
 import ProjectDevelopmentLocalPeopleAndCompanyScore from "./ProjectDevelopmentLocalPeopleAndCompanyScore";
-import GradeScale from "./ProjectDevelopmentScoreGradeScale";
-import { LETTER_GRADE_COLORS } from "./colors";
+import ProjectDevelopmentGrade from "./layout/ProjectDevelopmentGrade";
+import GradeScale from "./layout/ProjectDevelopmentScoreGradeScale";
+import { LETTER_GRADE_COLORS } from "./layout/colors";
 
 const getLetterGradeText = (letterGrade: LetterGrade) => {
   switch (letterGrade) {

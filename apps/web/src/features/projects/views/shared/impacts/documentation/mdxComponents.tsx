@@ -8,7 +8,7 @@ import type { LetterGradeWithModifier } from "shared";
 import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { LETTER_GRADE_COLORS } from "../../../project-development-score/colors";
+import { LETTER_GRADE_COLORS } from "../../../project-development-score/layout/colors";
 
 /**
  * Conventions utilisées dans les .mdx :
