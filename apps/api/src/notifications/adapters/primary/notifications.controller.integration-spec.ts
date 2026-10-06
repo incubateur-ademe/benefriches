@@ -129,6 +129,21 @@ describe("NotificationsController integration test", () => {
       assert.deepStrictEqual(await getUnsubscribedAt(user.id), fakeNow);
     });
 
+    it("stores one lifecycle-emails.unsubscribed event, even when the link is used twice", async () => {
+      const user = await insertUser(null);
+      const token = tokenService.sign(user.id);
+
+      await request(app.getHttpServer()).post("/api/lifecycle-emails/unsubscribe").send({ token });
+      await request(app.getHttpServer()).post("/api/lifecycle-emails/unsubscribe").send({ token });
+
+      assert.deepStrictEqual(
+        await sqlConnection("domain_events")
+          .select("name", "payload")
+          .where("name", "lifecycle-emails.unsubscribed"),
+        [{ name: "lifecycle-emails.unsubscribed", payload: { userId: user.id } }],
+      );
+    });
+
     it("keeps the original unsubscribe date on a repeated use", async () => {
       const firstUnsubscribedAt = new Date("2025-06-01T08:00:00.000Z");
       const user = await insertUser(firstUnsubscribedAt);

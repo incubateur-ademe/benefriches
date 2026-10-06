@@ -68,7 +68,9 @@ project's stored creation date, in Paris time, so a retry renders the same date.
 **Unsubscribe.** Global (no per-type preferences), works without a session, and the link
 **never expires**: a "your link has expired" page would send people to support. The token is
 a deterministic HMAC of the user id, so there is nothing to store; rotating its dedicated secret
-is the only way to revoke links, and it revokes all of them.
+is the only way to revoke links, and it revokes all of them. The first successful unsubscribe
+publishes `lifecycle-emails.unsubscribed` (`{ userId }`, never the token), stored in
+`domain_events`; a repeated use, an invalid token or a deleted account publishes nothing.
 
 **Operations.** `LIFECYCLE_EMAILS_ENABLED` is an all-or-nothing kill switch, off unless set to
 exactly `"true"`, and enabled in production only. There is no non-production recipient

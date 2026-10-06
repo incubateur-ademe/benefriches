@@ -11,10 +11,11 @@ export class InMemoryLifecycleEmailSubscriptionRepository implements LifecycleEm
     return this.unsubscribedAtByUserId.get(userId);
   }
 
-  markUnsubscribed(userId: string, unsubscribedAt: Date): Promise<void> {
-    if (this.unsubscribedAtByUserId.get(userId) === null) {
-      this.unsubscribedAtByUserId.set(userId, unsubscribedAt);
+  markUnsubscribed(userId: string, unsubscribedAt: Date): Promise<boolean> {
+    if (this.unsubscribedAtByUserId.get(userId) !== null) {
+      return Promise.resolve(false);
     }
-    return Promise.resolve();
+    this.unsubscribedAtByUserId.set(userId, unsubscribedAt);
+    return Promise.resolve(true);
   }
 }

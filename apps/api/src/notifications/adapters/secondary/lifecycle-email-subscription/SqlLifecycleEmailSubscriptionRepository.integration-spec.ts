@@ -57,6 +57,32 @@ describe("SqlLifecycleEmailSubscriptionRepository integration", () => {
     assert.deepStrictEqual(await getUnsubscribedAt(user.id), firstUnsubscribedAt);
   });
 
+  it("reports a change when it records the first unsubscribe", async () => {
+    const user = new UserBuilder().withEmail("subscribed@example.fr").build();
+    await sqlConnection("users").insert({
+      ...mapUserToSqlRow(user),
+      lifecycle_emails_unsubscribed_at: null,
+    });
+    const repository = new SqlLifecycleEmailSubscriptionRepository(sqlConnection);
+
+    const result = await repository.markUnsubscribed(user.id, fakeNow);
+
+    assert.strictEqual(result, true);
+  });
+
+  it("reports no change for an already unsubscribed user", async () => {
+    const user = new UserBuilder().withEmail("already-unsubscribed@example.fr").build();
+    await sqlConnection("users").insert({
+      ...mapUserToSqlRow(user),
+      lifecycle_emails_unsubscribed_at: new Date("2025-06-01T08:00:00.000Z"),
+    });
+    const repository = new SqlLifecycleEmailSubscriptionRepository(sqlConnection);
+
+    const result = await repository.markUnsubscribed(user.id, fakeNow);
+
+    assert.strictEqual(result, false);
+  });
+
   it("leaves other users untouched", async () => {
     const userA = new UserBuilder().withEmail("user-a@example.fr").build();
     const userB = new UserBuilder().withEmail("user-b@example.fr").build();
@@ -82,5 +108,15 @@ describe("SqlLifecycleEmailSubscriptionRepository integration", () => {
       "SELECT COUNT(*)::int AS count FROM users",
     );
     assert.deepStrictEqual(usersCount.rows, [{ count: 1 }]);
+  });
+
+  it("reports no change for an unknown user", async () => {
+    const user = new UserBuilder().withEmail("existing@example.fr").build();
+    await sqlConnection("users").insert(mapUserToSqlRow(user));
+    const repository = new SqlLifecycleEmailSubscriptionRepository(sqlConnection);
+
+    const result = await repository.markUnsubscribed(uuid(), fakeNow);
+
+    assert.strictEqual(result, false);
   });
 });

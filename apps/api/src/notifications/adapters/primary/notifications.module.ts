@@ -32,6 +32,7 @@ import { UnsubscribeFromLifecycleEmailsUseCase } from "src/notifications/core/us
 import { ReconversionProjectsModule } from "src/reconversion-projects/adapters/primary/reconversionProjects.module";
 import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
+import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
 import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
 import {
@@ -39,6 +40,7 @@ import {
   SqlConnectionModule,
 } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import type { DateProvider } from "src/shared-kernel/dateProvider";
+import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import type { UidGenerator } from "src/shared-kernel/uidGenerator";
 
 import { NotificationsController } from "./notifications.controller";
@@ -224,16 +226,22 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
         unsubscribeTokenService: UnsubscribeTokenService,
         subscriptionRepository: LifecycleEmailSubscriptionRepository,
         dateProvider: DateProvider,
+        uidGenerator: UidGenerator,
+        eventPublisher: DomainEventPublisher,
       ) =>
         new UnsubscribeFromLifecycleEmailsUseCase(
           unsubscribeTokenService,
           subscriptionRepository,
           dateProvider,
+          uidGenerator,
+          eventPublisher,
         ),
       inject: [
         HmacUnsubscribeTokenService,
         SqlLifecycleEmailSubscriptionRepository,
         RealDateProvider,
+        RandomUuidGenerator,
+        RealEventPublisher,
       ],
     },
     {
@@ -315,6 +323,7 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
     SmtpMailer,
     RealDateProvider,
     RandomUuidGenerator,
+    RealEventPublisher,
   ],
   exports: [
     SendLifecycleEmailPreviewUseCase,
