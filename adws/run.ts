@@ -1,11 +1,10 @@
-// ADW runner: `node adws/run.ts run BEN-x` takes one Linear issue to a pushed branch.
-// It owns the sequence, the correction budget, git push, the run directory, transcripts and
+// ADW runner: `node adws/run.ts run BEN-x` takes one Linear issue to a reviewed, pushed branch.
+// It owns the sequence, the correction and review budgets, git push, the run directory, transcripts and
 // the report. What each agent step does lives in .claude/commands/adw-*.md, never here.
 import { spawn } from "node:child_process";
 import { createHash, randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
 import { copyFile, mkdir, open, readdir, readFile, writeFile } from "node:fs/promises";
-import { createServer } from "node:net";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import process from "node:process";
@@ -13,7 +12,7 @@ import { fileURLToPath } from "node:url";
 
 import { query, type HookCallback, type McpServerConfig } from "@anthropic-ai/claude-agent-sdk";
 
-import { envDown, envUp, portsForSlot, type EnvUpResult } from "./env.ts";
+import { envDown, envUp, freeSlot, type EnvUpResult } from "./env.ts";
 import { linearCli, type Linear } from "./linear.ts";
 
 export type Outcome = "ready" | "needs-human" | "blocked" | "env-failed";
@@ -60,6 +59,7 @@ export type RunOptions = { slot?: number; base: string };
 export const OUTCOME_PREFIX = "ADW outcome:";
 const REPORT_HEADING = "## ADW report";
 const MAX_CORRECTIONS = 2;
+const MAX_REVIEW_ROUNDS = 2;
 const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
 const MAX_CHECK_OUTPUT = 200_000;
 const MCP_DIR = fileURLToPath(new URL("mcp/", import.meta.url));
@@ -78,6 +78,10 @@ type Relation = {
   project: string | null;
 };
 type Snapshot = { issue: Issue; comments: { body: string }[]; blockedBy: Relation[] };
+// The verdicts /adw-review and /adw-qa end with; their shape is defined in those commands.
+type Finding = { title: string; location: string; detail: string };
+type ReviewVerdict = { approve: boolean; blockers?: Finding[]; techDebt?: Finding[] };
+type QaVerdict = { pass: boolean; failures?: { scenario: string; observed: string }[] };
 
 const readJson = async <T>(path: string): Promise<T> => JSON.parse(await readFile(path, "utf8"));
 const readOptional = (path: string) => readFile(path, "utf8").catch(() => "");
@@ -143,10 +147,30 @@ async function reusableSpec(issueDir: string, runDir: string, inputs: string) {
 }
 
 const isBlocked = (text: string) => text.trimStart().startsWith("BLOCKED");
+/** The last `json` code block of a session's final message, or undefined. */
+export function verdict<T>(text: string): T | undefined {
+  const block = [...text.matchAll(/```json\s*\n([\s\S]*?)```/g)].at(-1);
+  try {
+    return block && JSON.parse(block[1]);
+  } catch {
+    return undefined;
+  }
+}
+/** QA runs only when the spec's Scenarios section exists and does not start with `None`. */
+export function hasScenarios(spec: string) {
+  const section =
+    spec
+      .split(/^## Scenarios[ \t]*$/m)[1]
+      ?.split(/^## /m)[0]
+      .trim() ?? "";
+  return !/^(none\b|$)/i.test(section);
+}
+const bullets = (items: string[]) => items.map((item) => `- ${item}`).join("\n");
 const cut = (output: string, path: string) =>
   output.length <= MAX_CHECK_OUTPUT
     ? output
     : `[${output.length - MAX_CHECK_OUTPUT} characters cut; full output: ${path}]\n${output.slice(-MAX_CHECK_OUTPUT)}`;
+const seq = (n: number) => String(n).padStart(2, "0");
 const minutes = (ms: number) => `${(ms / 60000).toFixed(1)} min`;
 
 export async function runIssue(id: string, options: RunOptions, deps: Deps): Promise<RunResult> {
@@ -187,13 +211,9 @@ export async function runIssue(id: string, options: RunOptions, deps: Deps): Pro
   let refused = refusal(snapshot);
   if (!refused && remoteBranch) await git(deps.repo, "fetch", "origin", branch);
   if (!refused && remoteBranch && localBranch) {
-    const upToDate = await sh(deps.repo, "git", [
-      "merge-base",
-      "--is-ancestor",
-      `origin/${branch}`,
-      branch,
-    ]);
-    if (!upToDate.ok) refused = `branch ${branch} is behind origin/${branch}: pull it first`;
+    const upToDate = ["merge-base", "--is-ancestor", `origin/${branch}`, branch];
+    if (!(await sh(deps.repo, "git", upToDate)).ok)
+      refused = `branch ${branch} is behind origin/${branch}: pull it first`;
   }
   if (refused) {
     await writeFile(join(runDir, "refused.md"), `${refused}\n`);
@@ -212,6 +232,10 @@ export async function runIssue(id: string, options: RunOptions, deps: Deps): Pro
   let buildReport = "";
   let checkSeq = 0;
   let sessionSeq = 0;
+  let reviewRounds = 0;
+  let review: ReviewVerdict | undefined;
+  let qaStatus = "not reached";
+  const followUps: string[] = [];
 
   async function session(step: string, prompt: string, mcp: string | undefined, resume?: string) {
     const mcpServers = mcp
@@ -220,20 +244,10 @@ export async function runIssue(id: string, options: RunOptions, deps: Deps): Pro
       : {};
     // A session that times out is resumed once, with the same prompt.
     for (let attempt = 1; ; attempt++) {
-      const transcript = join(
-        runDir,
-        "transcripts",
-        `${String(++sessionSeq).padStart(2, "0")}-${step}.jsonl`,
-      );
+      const transcript = join(runDir, "transcripts", `${seq(++sessionSeq)}-${step}.jsonl`);
       log(`${step}: session ${sessionSeq}${resume ? ` (resuming ${resume})` : ""}`);
-      const result = await deps.agent({
-        step,
-        prompt,
-        cwd: worktree,
-        transcript,
-        mcpServers,
-        resume,
-      });
+      const request = { step, prompt, cwd: worktree, transcript, mcpServers, resume };
+      const result = await deps.agent(request);
       sessions.push({ ...result, step, transcript });
       if (result.status !== "timeout" || attempt === 2) return result;
       resume = result.sessionId;
@@ -242,7 +256,7 @@ export async function runIssue(id: string, options: RunOptions, deps: Deps): Pro
 
   async function check(name: string, cmd: string, args: string[]) {
     const result = await sh(worktree, cmd, args);
-    const logFile = join(runDir, "checks", `${String(++checkSeq).padStart(2, "0")}-${name}.log`);
+    const logFile = join(runDir, "checks", `${seq(++checkSeq)}-${name}.log`);
     await writeFile(logFile, result.output);
     return { ...result, logFile, header: `$ ${[cmd, ...args].join(" ")}` };
   }
@@ -284,18 +298,15 @@ export async function runIssue(id: string, options: RunOptions, deps: Deps): Pro
       `- Branch: \`${branch}\`${outcome === "ready" ? " (pushed)" : ""}`,
       `- Spec: ${specSource}`,
       `- Corrections after the acceptance check: ${corrections}/${MAX_CORRECTIONS}`,
+      `- Review: ${review ? `${review.blockers?.length ? "blockers remain" : "approved"} after ${reviewRounds}/${MAX_REVIEW_ROUNDS} rounds (\`${join(runDir, "review.md")}\`)` : "not reached"}`,
+      `- QA: ${qaStatus}`,
       `- Flakes: ${flakes.length ? flakes.map((f) => `${f.check} (failed once, passed on re-run; \`${f.log}\`)`).join(", ") : "none"}`,
-      `- Cost: $${cost.toFixed(2)}, time: ${minutes(Date.now() - started)}`,
+      `- Total cost: $${cost.toFixed(2)}, wall time: ${minutes(Date.now() - started)}`,
       `- Run directory: \`${runDir}\``,
       "",
       "### Commits",
       "",
-      commits
-        ? commits
-            .split("\n")
-            .map((c) => `- ${c}`)
-            .join("\n")
-        : "None",
+      commits ? bullets(commits.split("\n")) : "None",
       "",
       "### Sessions",
       "",
@@ -305,6 +316,7 @@ export async function runIssue(id: string, options: RunOptions, deps: Deps): Pro
         (s) => `| ${s.step} | ${s.status} | ${minutes(s.durationMs)} | $${s.costUsd.toFixed(2)} |`,
       ),
     ];
+    if (followUps.length) lines.push("", "### Tech-debt follow-ups", "", bullets(followUps));
     if (buildReport) lines.push("", "### Build report", "", buildReport);
     const path = join(runDir, "report.md");
     await writeFile(path, `${lines.join("\n")}\n`);
@@ -345,7 +357,7 @@ export async function runIssue(id: string, options: RunOptions, deps: Deps): Pro
       const dirty = await git(worktree, "status", "--porcelain", "--untracked-files=no");
       if (dirty) throw new Error(`${worktree} has uncommitted changes:\n${dirty}`);
       startSha = await git(worktree, "rev-parse", "HEAD");
-      slot = options.slot ?? (await freeSlot(sh, deps.repo));
+      slot = options.slot ?? (await freeSlot(worktree));
     } catch (error) {
       return await end("env-failed", String(error instanceof Error ? error.message : error));
     }
@@ -373,7 +385,8 @@ export async function runIssue(id: string, options: RunOptions, deps: Deps): Pro
     if (!specText) return await end("needs-human", `the plan session wrote no ${spec}`);
     if (isBlocked(specText)) return await end("blocked", specText.trim());
 
-    // --- Build, then the acceptance check; failures go back to the same build session.
+    // --- Build, then the acceptance check, then review. Check failures and review blockers go
+    // back to the same build session; a fix for blockers goes through the acceptance check again.
     let build = await session("build", `/adw-build ${spec}`, undefined);
     for (;;) {
       buildReport = build.text.trim();
@@ -381,25 +394,73 @@ export async function runIssue(id: string, options: RunOptions, deps: Deps): Pro
         return await end("needs-human", `build session ${build.status}:\n${build.text}`);
       if (isBlocked(build.text)) return await end("blocked", build.text.trim());
       const failures = await acceptance();
-      if (!failures) break;
-      if (corrections === MAX_CORRECTIONS) {
+      if (failures) {
+        if (corrections === MAX_CORRECTIONS) {
+          return await end(
+            "needs-human",
+            `acceptance check still red after ${MAX_CORRECTIONS} corrections:\n${failures.slice(0, 2000)}`,
+          );
+        }
+        corrections++;
+        build = await session(
+          `build-correction-${corrections}`,
+          failures,
+          undefined,
+          build.sessionId,
+        );
+        continue;
+      }
+
+      reviewRounds++;
+      const reviewed = await session("review", `/adw-review ${spec} ${startSha}`, undefined);
+      review = verdict<ReviewVerdict>(reviewed.text);
+      if (reviewed.status !== "done" || !review) {
         return await end(
           "needs-human",
-          `acceptance check still red after ${MAX_CORRECTIONS} corrections:\n${failures.slice(0, 2000)}`,
+          `review: ${reviewed.status}, no verdict:\n${reviewed.text}`,
         );
       }
-      corrections++;
-      build = await session(
-        `build-correction-${corrections}`,
-        failures,
-        undefined,
-        build.sessionId,
-      );
+      // Blockers decide, whatever `approve` says: tech debt alone never goes back to the builder.
+      if (!review.blockers?.length) break;
+      if (reviewRounds === MAX_REVIEW_ROUNDS) {
+        const blockers = review.blockers.map((b) => `${b.title} (\`${b.location}\`): ${b.detail}`);
+        return await end(
+          "needs-human",
+          `review blockers remain after ${MAX_REVIEW_ROUNDS} rounds:\n${bullets(blockers)}`,
+        );
+      }
+      // Only the blockers, verbatim: tech debt becomes follow-up issues at finish.
+      const fix = JSON.stringify({ blockers: review.blockers }, null, 2);
+      build = await session(`build-review-${reviewRounds}`, fix, undefined, build.sessionId);
+    }
+
+    // --- QA, only when the spec has user-visible scenarios.
+    if (!hasScenarios(specText)) qaStatus = "skipped: the spec has no Scenarios";
+    else {
+      const walked = await session("qa", `/adw-qa ${spec}`, "playwright.json");
+      const qa = verdict<QaVerdict>(walked.text);
+      if (walked.status !== "done" || !qa) {
+        qaStatus = `no verdict (session ${walked.status})`;
+        return await end("needs-human", `QA: ${walked.status}, no verdict:\n${walked.text}`);
+      }
+      const failed = (qa.failures ?? []).map((f) => `${f.scenario}: ${f.observed}`);
+      qaStatus = `${qa.pass && !failed.length ? "passed" : "failed"} (\`${join(runDir, "qa.md")}\`)`;
+      if (!qa.pass || failed.length) {
+        return await end("needs-human", `QA failed (details in qa.md):\n${bullets(failed)}`);
+      }
     }
 
     // --- Finish
     const push = await sh(worktree, "git", ["push", "-u", "origin", branch]);
     if (!push.ok) return await end("needs-human", `git push failed:\n${push.output}`);
+    for (const [n, debt] of (review?.techDebt ?? []).entries()) {
+      const body = join(runDir, `follow-up-${n + 1}.md`);
+      await writeFile(body, `Follow-up from ${id}\n\n\`${debt.location}\`\n\n${debt.detail}\n`);
+      const created = await linear
+        .issueCreate(issue.project?.name, debt.title, body)
+        .catch((e) => `not filed (${String(e.message).split("\n")[0]})`);
+      followUps.push(`${created}: ${debt.title}`);
+    }
     return await end("ready");
   } catch (error) {
     return await end(
@@ -410,27 +471,6 @@ export async function runIssue(id: string, options: RunOptions, deps: Deps): Pro
     if (stackUp) await deps.env.down(worktree, slot!).catch((e) => log(`env down failed: ${e}`));
   }
 }
-
-/** The first port slot whose compose project isn't running and whose host ports are all free. */
-async function freeSlot(sh: Shell, cwd: string) {
-  const ps = await sh(cwd, "docker", ["ps", "--format", '{{.Label "com.docker.compose.project"}}']);
-  if (!ps.ok) throw new Error(`docker ps failed:\n${ps.output}`);
-  const used = new Set(ps.output.split("\n").map((name) => name.trim()));
-  // Slot 0 is left to `make e2e-up`; other stacks may hold a slot's ports under another name.
-  for (let slot = 1; slot < 100; slot++) {
-    if (used.has(`benefriches-e2e-${slot}`)) continue;
-    const free = await Promise.all(Object.values(portsForSlot(slot)).map(portFree));
-    if (free.every(Boolean)) return slot;
-  }
-  throw new Error("no free port slot");
-}
-
-const portFree = (port: number) =>
-  new Promise<boolean>((done) => {
-    const server = createServer()
-      .once("error", () => done(false))
-      .listen(port, () => server.close(() => done(true)));
-  });
 
 // --- Real adapters
 
