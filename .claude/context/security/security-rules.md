@@ -32,7 +32,7 @@ Route conventions are in [api-http.md](../../rules/api/api-http.md); review chan
 
 ## 3. Input validation (API)
 
-- `ZodValidationPipe` from `nestjs-zod` is global (`APP_PIPE` in [app.module.ts](../../../apps/api/src/app.module.ts)). It validates only a parameter typed with a `createZodDto` class; a parameter typed with a plain type or an inline object goes through unchecked, unless the route passes `new ZodValidationPipe(schema)` itself (older routes of `sites.controller.ts`).
+- Nest's `StandardSchemaValidationPipe` is global (`APP_PIPE` in [app.module.ts](../../../apps/api/src/app.module.ts)). It validates only a parameter whose decorator declares a schema (`@Body({ schema })`, `@Query({ schema })`, `@Param("id", { schema })`); a parameter without one goes through unchecked, whatever its TypeScript type.
 - Flag `@Body()`, `@Query()` or `@Param()` typed without a Zod DTO. Existing case: `sendAuthLink` in [auth.controller.ts](../../../apps/api/src/auth/adapters/auth.controller.ts) (`@Body() body: { email: string; … }`).
 - Request schemas live in `packages/shared/src/api-dtos/`.
 
@@ -57,12 +57,12 @@ A global `ThrottlerGuard` allows 5 requests per second per IP, off when `NODE_EN
 
 Hosts come from constants or env vars, never from the request. Flag an outbound URL whose host or path is built from user input.
 
-| Service | Code | Watch |
-|---|---|---|
-| PVGIS (`re.jrc.ec.europa.eu`) | [PhotovoltaicGeoInfoSystemApi.ts](../../../apps/api/src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.ts) | `lat`, `long`, `peakPower` interpolated into the URL: must stay numbers validated by the controller DTO |
-| ProConnect (OpenID) | [HttpProConnectClient.ts](../../../apps/api/src/auth/adapters/pro-connect/HttpProConnectClient.ts) | client id, secret and provider domain from env ([auth.module.ts](../../../apps/api/src/auth/adapters/auth.module.ts)) |
-| Connect CRM | [ConnectCrm.ts](../../../apps/api/src/marketing/adapters/secondary/ConnectCrm.ts) | `client_id` / `client_secret` headers, base URL from `CONNECT_CRM_BASE_URL` |
-| SMTP | [SmtpAuthLinkMailer.ts](../../../apps/api/src/auth/adapters/auth-link-mailer/SmtpAuthLinkMailer.ts) | the auth link carries a login token: never log it |
+| Service                       | Code                                                                                                                                                            | Watch                                                                                                                 |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| PVGIS (`re.jrc.ec.europa.eu`) | [PhotovoltaicGeoInfoSystemApi.ts](../../../apps/api/src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.ts) | `lat`, `long`, `peakPower` interpolated into the URL: must stay numbers validated by the controller DTO               |
+| ProConnect (OpenID)           | [HttpProConnectClient.ts](../../../apps/api/src/auth/adapters/pro-connect/HttpProConnectClient.ts)                                                              | client id, secret and provider domain from env ([auth.module.ts](../../../apps/api/src/auth/adapters/auth.module.ts)) |
+| Connect CRM                   | [ConnectCrm.ts](../../../apps/api/src/marketing/adapters/secondary/ConnectCrm.ts)                                                                               | `client_id` / `client_secret` headers, base URL from `CONNECT_CRM_BASE_URL`                                           |
+| SMTP                          | [SmtpAuthLinkMailer.ts](../../../apps/api/src/auth/adapters/auth-link-mailer/SmtpAuthLinkMailer.ts)                                                             | the auth link carries a login token: never log it                                                                     |
 
 ## 8. Web
 
@@ -74,13 +74,13 @@ Hosts come from constants or env vars, never from the request. Flag an outbound 
 
 Run with Grep over the scope, then read each hit before reporting it. `\|` in a pattern is the table's escaped `|`: it means alternation.
 
-| Pattern | Finds | Where |
-|---|---|---|
-| `\.raw\(\|Raw\(`, then look for `${` in the SQL string | SQL injection (section 6) | `apps/api/src/**/Sql*.ts`, `apps/api/src/shared-kernel/adapters/sql-knex/scripts/` |
-| `dangerouslySetInnerHTML`, `innerHTML =` | XSS | `apps/web/src/**/*.tsx` |
-| `eval\(`, `new Function\(`, `child_process` | code / command injection | `apps/**/src/**/*.ts` |
-| `@(Body\|Query\|Param)\(\)` | parameter possibly not validated (section 3) | `*.controller.ts` |
-| `@(Get\|Post\|Put\|Patch\|Delete)\(` without `@UseGuards` above | missing auth (section 2) | `*.controller.ts` |
-| `redirect\(`, `redirectTo` | open redirect (section 5) | `apps/api/src/auth/` |
-| `logger\.\|console\.` near `token\|secret\|password\|authLink` | data exposure | `apps/api/src/**` |
-| `sameSite`, `cookie\(`, `enableCors` | cookie / CORS change (section 5) | `apps/api/src/**` |
+| Pattern                                                         | Finds                                        | Where                                                                              |
+| --------------------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `\.raw\(\|Raw\(`, then look for `${` in the SQL string          | SQL injection (section 6)                    | `apps/api/src/**/Sql*.ts`, `apps/api/src/shared-kernel/adapters/sql-knex/scripts/` |
+| `dangerouslySetInnerHTML`, `innerHTML =`                        | XSS                                          | `apps/web/src/**/*.tsx`                                                            |
+| `eval\(`, `new Function\(`, `child_process`                     | code / command injection                     | `apps/**/src/**/*.ts`                                                              |
+| `@(Body\|Query\|Param)\(\)`                                     | parameter possibly not validated (section 3) | `*.controller.ts`                                                                  |
+| `@(Get\|Post\|Put\|Patch\|Delete)\(` without `@UseGuards` above | missing auth (section 2)                     | `*.controller.ts`                                                                  |
+| `redirect\(`, `redirectTo`                                      | open redirect (section 5)                    | `apps/api/src/auth/`                                                               |
+| `logger\.\|console\.` near `token\|secret\|password\|authLink`  | data exposure                                | `apps/api/src/**`                                                                  |
+| `sameSite`, `cookie\(`, `enableCors`                            | cookie / CORS change (section 5)             | `apps/api/src/**`                                                                  |

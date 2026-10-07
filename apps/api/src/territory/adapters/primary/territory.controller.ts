@@ -1,5 +1,4 @@
 import { Controller, Get, Query } from "@nestjs/common";
-import { ZodValidationPipe } from "nestjs-zod";
 import {
   getCityRuralityRequestDtoSchema,
   type GetCityRuralityRequestDto,
@@ -17,7 +16,7 @@ export class TerritoryController {
 
   @Get("city-rurality")
   async getCityRurality(
-    @Query(new ZodValidationPipe(getCityRuralityRequestDtoSchema))
+    @Query({ schema: getCityRuralityRequestDtoSchema })
     query: GetCityRuralityRequestDto,
   ): Promise<GetCityRuralityResponseDto> {
     const result = await this.getCityRuralityUseCase.execute({ cityCode: query.cityCode });

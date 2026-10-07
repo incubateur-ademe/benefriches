@@ -8,7 +8,6 @@ import {
   UseGuards,
   Param,
 } from "@nestjs/common";
-import { createZodDto } from "nestjs-zod";
 // oxlint-disable-next-line api-conventions/no-local-dto-schema -- legacy local schemas, to move to packages/shared/src/api-dtos
 import { z } from "zod";
 
@@ -21,24 +20,24 @@ const startReconversionCompatibilityEvaluationBodySchema = z.object({
   id: z.uuid(),
 });
 
-class StartReconversionCompatibilityEvaluationBodyDto extends createZodDto(
-  startReconversionCompatibilityEvaluationBodySchema,
-) {}
+type StartReconversionCompatibilityEvaluationBody = z.infer<
+  typeof startReconversionCompatibilityEvaluationBodySchema
+>;
 
 const completeReconversionCompatibilityEvaluationBodySchema = z.object({
   id: z.string(),
   mutafrichesId: z.string(),
 });
 
-class CompleteReconversionCompatibilityEvaluationBodyDto extends createZodDto(
-  completeReconversionCompatibilityEvaluationBodySchema,
-) {}
+type CompleteReconversionCompatibilityEvaluationBody = z.infer<
+  typeof completeReconversionCompatibilityEvaluationBodySchema
+>;
 
 const addRelatedSiteIdBodySchema = z.object({
   relatedSiteId: z.uuid(),
 });
 
-class AddRelatedSiteBodyDto extends createZodDto(addRelatedSiteIdBodySchema) {}
+type AddRelatedSiteBody = z.infer<typeof addRelatedSiteIdBodySchema>;
 
 @Controller("reconversion-compatibility")
 export class ReconversionCompatibilityController {
@@ -61,7 +60,8 @@ export class ReconversionCompatibilityController {
   @UseGuards(JwtAuthGuard)
   @Post("start-evaluation")
   async startEvaluation(
-    @Body() body: StartReconversionCompatibilityEvaluationBodyDto,
+    @Body({ schema: startReconversionCompatibilityEvaluationBodySchema })
+    body: StartReconversionCompatibilityEvaluationBody,
     @Req() request: RequestWithAuthenticatedUser,
   ) {
     const result = await this.startReconversionCompatibilityEvaluationUseCase.execute({
@@ -82,7 +82,10 @@ export class ReconversionCompatibilityController {
 
   @UseGuards(JwtAuthGuard)
   @Post("complete-evaluation")
-  async completeEvaluation(@Body() body: CompleteReconversionCompatibilityEvaluationBodyDto) {
+  async completeEvaluation(
+    @Body({ schema: completeReconversionCompatibilityEvaluationBodySchema })
+    body: CompleteReconversionCompatibilityEvaluationBody,
+  ) {
     const result = await this.completeReconversionCompatibilityEvaluationUseCase.execute({
       id: body.id,
       mutafrichesId: body.mutafrichesId,
@@ -97,7 +100,7 @@ export class ReconversionCompatibilityController {
   @Post(":evaluationId/add-related-site")
   async addSiteCreation(
     @Param("evaluationId") evaluationId: string,
-    @Body() body: AddRelatedSiteBodyDto,
+    @Body({ schema: addRelatedSiteIdBodySchema }) body: AddRelatedSiteBody,
   ) {
     const result = await this.addRelatedSiteToReconversionCompatibilityEvaluationUseCase.execute({
       evaluationId: evaluationId,

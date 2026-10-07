@@ -41,7 +41,7 @@ Full: [`rules/api/api-core.md`](../../../../.claude/rules/api/api-core.md)
 _Why:_ the controller is the HTTP boundary — leaking DTOs, validation, or domain entities through it spreads coupling and auth gaps across the app.
 Full: [`rules/api/api-http.md`](../../../../.claude/rules/api/api-http.md)
 
-- ❌ Body/query parameter typed with a plain type instead of a `createZodDto` class (the global `ZodValidationPipe` skips it) and no explicit `new ZodValidationPipe(schema)`; business-logic validation in DTOs
+- ❌ Body/query parameter without a `schema` in its decorator (`@Body({ schema })`): the global `StandardSchemaValidationPipe` skips it; business-logic validation in DTOs
 - ❌ Routes missing `@UseGuards(JwtAuthGuard)` without clear justification
 - ❌ Not handling Result errors (missing `if (result.isFailure())`)
 - ❌ Inconsistent HTTP status mapping (`*NotFound` should throw `NotFoundException`)

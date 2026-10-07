@@ -16,7 +16,6 @@ import {
   InternalServerErrorException,
 } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
-import { ZodValidationPipe } from "nestjs-zod";
 import {
   createCustomSiteDtoSchema,
   type CreateCustomSiteDto,
@@ -84,7 +83,7 @@ export class SitesController {
   @UseGuards(JwtAuthGuard)
   @Post("/sites/create-custom")
   async createNewCustomSite(
-    @Body(new ZodValidationPipe(createCustomSiteDtoSchema)) createSiteDto: CreateCustomSiteDto,
+    @Body({ schema: createCustomSiteDtoSchema }) createSiteDto: CreateCustomSiteDto,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
     const result = await this.createNewSiteUseCase.execute({
@@ -112,7 +111,7 @@ export class SitesController {
   @Put("/sites/:siteId")
   async updateCustomSite(
     @Param("siteId") siteId: string,
-    @Body(new ZodValidationPipe(updateCustomSiteDtoSchema)) updateSiteDto: UpdateCustomSiteDto,
+    @Body({ schema: updateCustomSiteDtoSchema }) updateSiteDto: UpdateCustomSiteDto,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
     const authenticatedUserId = req.accessTokenPayload.userId;
@@ -161,7 +160,7 @@ export class SitesController {
   @UseGuards(JwtAuthGuard)
   @Post("/sites/create-express")
   async createNewExpressSite(
-    @Body(new ZodValidationPipe(createExpressSiteDtoSchema)) createSiteDto: CreateExpressSiteDto,
+    @Body({ schema: createExpressSiteDtoSchema }) createSiteDto: CreateExpressSiteDto,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
     const result = await this.createNewExpressSiteUseCase.execute({
