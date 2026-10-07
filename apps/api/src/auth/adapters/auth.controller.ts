@@ -19,9 +19,12 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { Throttle } from "@nestjs/throttler";
 import type { Request, Response } from "express";
-import { createZodDto } from "nestjs-zod";
 import { randomUUID } from "node:crypto";
-import { registerUserRequestDtoSchema, type GetCurrentUserResponseDto } from "shared";
+import {
+  registerUserRequestDtoSchema,
+  type GetCurrentUserResponseDto,
+  type RegisterUserRequestDto,
+} from "shared";
 
 import { CreateUserUseCase, type UserProps } from "src/auth/core/createUser.usecase";
 import {
@@ -68,8 +71,6 @@ declare module "express-session" {
   }
 }
 
-export class RegisterUserBodyDto extends createZodDto(registerUserRequestDtoSchema) {}
-
 @Controller("auth")
 export class AuthController {
   private readonly createUserUseCase: CreateUserUseCase;
@@ -115,7 +116,10 @@ export class AuthController {
   }
 
   @Post("/register")
-  async createUser(@Body() createUserDto: RegisterUserBodyDto, @Res() response: Response) {
+  async createUser(
+    @Body({ schema: registerUserRequestDtoSchema }) createUserDto: RegisterUserRequestDto,
+    @Res() response: Response,
+  ) {
     const userProps: UserProps = {
       id: createUserDto.id,
       email: createUserDto.email,

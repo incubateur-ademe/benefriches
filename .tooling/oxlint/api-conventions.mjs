@@ -34,7 +34,8 @@ function isTypeOnlyImport(node) {
   return (
     node.specifiers.length > 0 &&
     node.specifiers.every(
-      (specifier) => specifier.type === "ImportSpecifier" && specifier.importKind === "type",
+      (specifier) =>
+        specifier.type === "ImportSpecifier" && specifier.importKind === "type",
     )
   );
 }
@@ -49,7 +50,7 @@ const noLocalDtoSchema = {
         context.report({
           node,
           message:
-            'Controllers must not build Zod schemas. Request/response DTOs live in packages/shared/src/api-dtos/<feature>/<operation>.dto.ts (export the schema and its z.infer type) so the web app uses the exact contract the API validates. Import the schema from "shared" and validate with ZodValidationPipe or createZodDto.',
+            'Controllers must not build Zod schemas. Request/response DTOs live in packages/shared/src/api-dtos/<feature>/<operation>.dto.ts (export the schema and its z.infer type) so the web app uses the exact contract the API validates. Import the schema from "shared" and pass it to the parameter decorator: @Body({ schema }).',
         });
       },
     };
@@ -78,7 +79,10 @@ const fileNaming = {
 
     return {
       Program(node) {
-        if (filename.includes("/core/usecases/") && !USECASE_FILE.test(basename)) {
+        if (
+          filename.includes("/core/usecases/") &&
+          !USECASE_FILE.test(basename)
+        ) {
           context.report({
             node,
             message: `"${basename}" is in core/usecases/, so it must be named <verb><Noun>.usecase.ts (its unit test: <verb><Noun>.usecase.spec.ts). The suffix is how use cases are found and paired with their tests by name and glob.`,

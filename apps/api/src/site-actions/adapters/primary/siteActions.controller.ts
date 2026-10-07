@@ -1,5 +1,4 @@
 import { Body, Controller, NotFoundException, Param, Patch, UseGuards } from "@nestjs/common";
-import { ZodValidationPipe } from "nestjs-zod";
 import { type UpdateSiteActionStatusDto, updateSiteActionStatusDtoSchema } from "shared";
 
 import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
@@ -17,7 +16,7 @@ export class SiteActionsController {
   async updateSiteActionStatus(
     @Param("siteId") siteId: string,
     @Param("actionId") actionId: string,
-    @Body(new ZodValidationPipe(updateSiteActionStatusDtoSchema))
+    @Body({ schema: updateSiteActionStatusDtoSchema })
     updateStatusDto: UpdateSiteActionStatusDto,
   ): Promise<void> {
     const result = await this.updateSiteActionStatusUseCase.execute({

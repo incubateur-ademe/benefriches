@@ -11,9 +11,8 @@ import {
   Delete,
   MethodNotAllowedException,
 } from "@nestjs/common";
-import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
+import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
 import { Throttle } from "@nestjs/throttler";
-import { createZodDto, ZodValidationPipe } from "nestjs-zod";
 import {
   type GetPeriodicityStatsRequestDto,
   getPeriodicityStatsRequestDtoSchema,
@@ -25,11 +24,13 @@ import { z } from "zod";
 import { ComputeEvaluatedProjectStatsUseCase } from "src/stats/core/usecases/computeEvaluatedProjectStats.usecase";
 import { ComputeStatsWithPeriodicityUseCase } from "src/stats/core/usecases/computeStatsWithPeriodicity.usecase";
 
-class getEvaluatedProjectStatsDto extends createZodDto(
-  z.object({
-    reconversionProjectIds: z.array(z.string()),
-  }),
-) {}
+const getEvaluatedProjectStatsBodySchema = z.object({
+  // meta only documents the field in Swagger, it does not change validation
+  reconversionProjectIds: z
+    .array(z.string().meta({ format: "uuid" }))
+    .meta({ example: ["4db37f9b-ff75-41b4-9798-c17f5a5dd5ed"] }),
+});
+type GetEvaluatedProjectStatsBody = z.infer<typeof getEvaluatedProjectStatsBodySchema>;
 
 @Controller("stats")
 export class StatsController {
@@ -47,26 +48,14 @@ export class StatsController {
   @Post("average-impacts/search")
   @Throttle({ default: { ttl: 60_000, limit: 10 } })
   @ApiOperation({ summary: "Statistiques impacts" })
-  @ApiBody({
-    schema: {
-      type: "object",
-      properties: {
-        reconversionProjectIds: {
-          type: "array",
-          items: { type: "string", format: "uuid" },
-          example: ["4db37f9b-ff75-41b4-9798-c17f5a5dd5ed"],
-        },
-      },
-      required: ["reconversionProjectIds"],
-    },
-  })
   @ApiResponse({
     status: 200,
     description: "Délai moyen où les impacts compensent le déficit et coût de l'inaction révélé",
   })
   @ApiResponse({ status: 400, description: "Paramètres invalides" })
   async getEvaluatedProjectStatsUseCase(
-    @Body() getReconversionProjectFromTemplateDto: getEvaluatedProjectStatsDto,
+    @Body({ schema: getEvaluatedProjectStatsBodySchema })
+    getReconversionProjectFromTemplateDto: GetEvaluatedProjectStatsBody,
   ): Promise<{
     averageBreakEvenIndex: number;
     projectWithBreakEvenIndex: number;
@@ -96,7 +85,7 @@ export class StatsController {
   @ApiResponse({ status: 200, description: "Statistiques agrégées par période" })
   @ApiResponse({ status: 400, description: "Paramètres invalides" })
   async getStatsByPeriodicity(
-    @Query(new ZodValidationPipe(getPeriodicityStatsRequestDtoSchema))
+    @Query({ schema: getPeriodicityStatsRequestDtoSchema })
     query: GetPeriodicityStatsRequestDto,
   ): Promise<GetPeriodicityStatsResponseDto> {
     const result = await this.computeStatsWithPeriodicityUseCase.execute(query);

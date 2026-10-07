@@ -1,5 +1,4 @@
 import { Controller, Get, Query } from "@nestjs/common";
-import { createZodDto } from "nestjs-zod";
 // oxlint-disable-next-line api-conventions/no-local-dto-schema -- legacy local schemas, to move to packages/shared/src/api-dtos
 import { z } from "zod";
 
@@ -11,9 +10,9 @@ const GetPhotovoltaicExpectedPerformanceDtoSchema = z.object({
   peakPower: z.coerce.number().nonnegative(),
 });
 
-class GetPhotovoltaicExpectedPerformanceDto extends createZodDto(
-  GetPhotovoltaicExpectedPerformanceDtoSchema,
-) {}
+type GetPhotovoltaicExpectedPerformanceDto = z.infer<
+  typeof GetPhotovoltaicExpectedPerformanceDtoSchema
+>;
 
 @Controller("photovoltaic-performance")
 export class PhotovoltaicPerformanceController {
@@ -25,7 +24,10 @@ export class PhotovoltaicPerformanceController {
   }
 
   @Get()
-  async getPhotovoltaicExpectedPerformance(@Query() query: GetPhotovoltaicExpectedPerformanceDto) {
+  async getPhotovoltaicExpectedPerformance(
+    @Query({ schema: GetPhotovoltaicExpectedPerformanceDtoSchema })
+    query: GetPhotovoltaicExpectedPerformanceDto,
+  ) {
     const { lat, long, peakPower } = query;
 
     const result = await this.getPhotovoltaicExpectedPerformanceUseCase.execute({

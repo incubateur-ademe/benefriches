@@ -1,5 +1,4 @@
 import { Controller, Get, Query } from "@nestjs/common";
-import { createZodDto } from "nestjs-zod";
 import { soilTypeSchema } from "shared";
 // oxlint-disable-next-line api-conventions/no-local-dto-schema -- legacy local schemas, to move to packages/shared/src/api-dtos
 import { z } from "zod";
@@ -16,7 +15,7 @@ const GetSoilsCarbonStorageDtoSchema = z.object({
   ),
 });
 
-class GetSoilsCarbonStorageDto extends createZodDto(GetSoilsCarbonStorageDtoSchema) {}
+type GetSoilsCarbonStorageDto = z.infer<typeof GetSoilsCarbonStorageDtoSchema>;
 
 @Controller("carbon-storage")
 export class CarbonStorageController {
@@ -26,7 +25,9 @@ export class CarbonStorageController {
   }
 
   @Get("site-soils")
-  async getSiteSoilsCarbonStorage(@Query() query: GetSoilsCarbonStorageDto) {
+  async getSiteSoilsCarbonStorage(
+    @Query({ schema: GetSoilsCarbonStorageDtoSchema }) query: GetSoilsCarbonStorageDto,
+  ) {
     const { cityCode, soils } = query;
     const result = await this.getCityCarbonStoragePerSoilsCategory.execute({
       cityCode,
