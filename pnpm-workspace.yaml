@@ -13,6 +13,8 @@ trustPolicyExclude:
   - react-redux@9.2.0
   - reselect@5.1.1
   - semver@6.3.1
+  # https://github.com/mafintosh/why-is-node-running/issues/90
+  - why-is-node-running@3.2.2
 allowBuilds:
   '@nestjs/core': true
   '@swc/core': true
@@ -23,3 +25,6 @@ allowBuilds:
   cpu-features: false
   ssh2: false
   '@scarf/scarf': false
+catalog:
+  vitest: ~5.0.2
+  "@vitest/coverage-v8": ^5.0.2
