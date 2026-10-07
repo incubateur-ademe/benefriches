@@ -33,7 +33,7 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, de
           />
         ) : null}
 
-        {details.localHealthiness ? (
+        {"localHealthiness" in details && details.localHealthiness ? (
           <MetricCard
             title="Santé"
             emoji="🫀"
@@ -65,7 +65,7 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, de
           />
         ) : null}
 
-        {details.trafficSecurity ? (
+        {"trafficSecurity" in details && details.trafficSecurity ? (
           <MetricCard
             title="Sécurité routière"
             emoji="🚙"
@@ -74,16 +74,16 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, de
           />
         ) : null}
 
-        {details.frichesAccidents ? (
+        {details.fricheAccidents ? (
           <MetricCard
             title="Sécurité des riverains"
             emoji="💥"
-            letterGrade={details.frichesAccidents.letterGrade}
+            letterGrade={details.fricheAccidents.letterGrade}
             description="Grâce à la reconversion et la sécurisation de la friche."
           />
         ) : null}
 
-        {details.accessToHealthCare ? (
+        {"accessToHealthCare" in details && details.accessToHealthCare ? (
           <MetricCard
             title="Accès aux soins"
             emoji="🏥"
@@ -103,7 +103,7 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, de
           />
         ) : null}
 
-        {details.accessToLocalServices ? (
+        {"accessToLocalServices" in details && details.accessToLocalServices ? (
           <MetricCard
             title="Accès aux services de proximité"
             emoji="🏪"

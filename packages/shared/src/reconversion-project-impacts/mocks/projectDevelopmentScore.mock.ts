@@ -117,7 +117,7 @@ export const urbanProjectDevelopmentScoreMock = {
             soilEvolutionDetails: { newGreenSoilSurfaces: 5400 },
           },
         },
-        frichesAccidents: {
+        fricheAccidents: {
           letterGrade: "A",
           metrics: {
             avoidedFricheAccidents: 11,
@@ -252,9 +252,9 @@ export const photovoltaicProjectDevelopmentScoreMock = {
     },
     localPeopleQualityOfLifeScore: {
       score: {
-        letterGradeWithModifiers: "D",
-        letterGrade: "D",
-        gradePoints: 30,
+        letterGradeWithModifiers: "A",
+        letterGrade: "A",
+        gradePoints: 90,
       },
       details: {
         livingEnvironment: {
@@ -267,16 +267,12 @@ export const photovoltaicProjectDevelopmentScoreMock = {
             soilEvolutionDetails: { newGreenSoilSurfaces: 5400 },
           },
         },
-        frichesAccidents: {
+        fricheAccidents: {
           letterGrade: "A",
           metrics: {
             avoidedFricheAccidents: 11,
           },
         },
-        trafficSecurity: undefined,
-        accessToHealthCare: undefined,
-        accessToLocalServices: undefined,
-        localHealthiness: undefined,
       },
     },
     localAuthorityEconomicScore: {

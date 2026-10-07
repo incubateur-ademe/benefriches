@@ -79,24 +79,36 @@ export const computeProjectDevelopmentScore = (
       ? contextData.projectDevelopmentPlan.buildingsFloorAreaDistribution
       : undefined;
 
-  const localPeopleQualityOfLifeScore = computeSectionScore({
-    livingEnvironment: getLivingEnvironmentScore({
-      siteNature: contextData.siteNature,
-      siteReconversionType: siteReconversionType,
-      soilEvolutionDetails: soilsEvolutionDetails,
-      buildingsFloorAreaDistribution: buildingsFloorAreaEvolution,
-      projectDevelopmentPlanType,
-    }),
-    localHealthiness: getLocalHealthinessScore({
-      siteReconversionType: siteReconversionType,
-      soilEvolutionDetails: soilsEvolutionDetails,
-      buildingsFloorAreaDistribution: buildingsFloorAreaEvolution,
-    }),
-    accessToLocalServices: getAccessToLocalServicesScore(buildingsFloorAreaEvolution),
-    accessToHealthCare: getAccessToHealthCareScore(buildingsFloorAreaEvolution),
-    trafficSecurity: getTrafficSecurityScore(aggregatedReconversionImpacts.impactsMetrics),
-    frichesAccidents: getFricheAccidentsScore(aggregatedReconversionImpacts.impactsMetrics),
-  });
+  const localPeopleQualityOfLifeScore =
+    projectDevelopmentPlanType === "PHOTOVOLTAIC_POWER_PLANT"
+      ? computeSectionScore({
+          livingEnvironment: getLivingEnvironmentScore({
+            siteNature: contextData.siteNature,
+            siteReconversionType: siteReconversionType,
+            soilEvolutionDetails: soilsEvolutionDetails,
+            buildingsFloorAreaDistribution: buildingsFloorAreaEvolution,
+            projectDevelopmentPlanType,
+          }),
+          fricheAccidents: getFricheAccidentsScore(aggregatedReconversionImpacts.impactsMetrics),
+        })
+      : computeSectionScore({
+          livingEnvironment: getLivingEnvironmentScore({
+            siteNature: contextData.siteNature,
+            siteReconversionType: siteReconversionType,
+            soilEvolutionDetails: soilsEvolutionDetails,
+            buildingsFloorAreaDistribution: buildingsFloorAreaEvolution,
+            projectDevelopmentPlanType,
+          }),
+          localHealthiness: getLocalHealthinessScore({
+            siteReconversionType: siteReconversionType,
+            soilEvolutionDetails: soilsEvolutionDetails,
+            buildingsFloorAreaDistribution: buildingsFloorAreaEvolution,
+          }),
+          accessToLocalServices: getAccessToLocalServicesScore(buildingsFloorAreaEvolution),
+          accessToHealthCare: getAccessToHealthCareScore(buildingsFloorAreaEvolution),
+          trafficSecurity: getTrafficSecurityScore(aggregatedReconversionImpacts.impactsMetrics),
+          fricheAccidents: getFricheAccidentsScore(aggregatedReconversionImpacts.impactsMetrics),
+        });
 
   const scores = [
     localAuthorityEconomicScore.score.gradePoints,
@@ -131,26 +143,33 @@ export type ProjectDevelopmentScore = {
     };
     localPeopleQualityOfLifeScore: {
       score: Score;
-      details: {
-        livingEnvironment: ScoredMetrics<LivingEnvironmentContext>;
-        localHealthiness: ScoredMetrics<{
-          siteReconversionType: SiteReconversionType;
-          sportsFacilitiesFloorSurface: number;
-          newGreenSoilSurfaces: number;
-        }>;
-        accessToLocalServices: ScoredMetrics<{
-          matchingBuildingsUses: BuildingUseSurface[];
-        }>;
-        accessToHealthCare: ScoredMetrics<{
-          matchingBuildingsUses: BuildingUseSurface[];
-        }>;
-        trafficSecurity: ScoredMetrics<{
-          avoidedTrafficAccidents: number;
-        }>;
-        frichesAccidents: ScoredMetrics<{
-          avoidedFricheAccidents: number;
-        }>;
-      };
+      details:
+        | {
+            livingEnvironment: ScoredMetrics<LivingEnvironmentContext>;
+            localHealthiness: ScoredMetrics<{
+              siteReconversionType: SiteReconversionType;
+              sportsFacilitiesFloorSurface: number;
+              newGreenSoilSurfaces: number;
+            }>;
+            accessToLocalServices: ScoredMetrics<{
+              matchingBuildingsUses: BuildingUseSurface[];
+            }>;
+            accessToHealthCare: ScoredMetrics<{
+              matchingBuildingsUses: BuildingUseSurface[];
+            }>;
+            trafficSecurity: ScoredMetrics<{
+              avoidedTrafficAccidents: number;
+            }>;
+            fricheAccidents: ScoredMetrics<{
+              avoidedFricheAccidents: number;
+            }>;
+          }
+        | {
+            livingEnvironment: ScoredMetrics<LivingEnvironmentContext>;
+            fricheAccidents: ScoredMetrics<{
+              avoidedFricheAccidents: number;
+            }>;
+          };
     };
     localAuthorityEconomicScore: {
       score: Score;

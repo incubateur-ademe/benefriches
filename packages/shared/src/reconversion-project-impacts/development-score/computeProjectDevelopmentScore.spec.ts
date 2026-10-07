@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { urbanProjectImpactMockMeta, urbanProjectImpactsResultDto } from "../mocks";
+import {
+  photovoltaicProjectImpactMockMeta,
+  photovoltaicProjectImpactsResultDto,
+  urbanProjectImpactMockMeta,
+  urbanProjectImpactsResultDto,
+} from "../mocks";
 import { computeProjectDevelopmentScore } from "./computeProjectDevelopmentScore";
 
 describe("computeProjectDevelopmentScore", () => {
@@ -45,5 +50,55 @@ describe("computeProjectDevelopmentScore", () => {
     assert.deepStrictEqual(result?.score.gradePoints, 58.75);
     assert.deepStrictEqual(result?.score.letterGradeWithModifiers, "C+");
     assert.deepStrictEqual(result?.score.letterGrade, "C");
+  });
+
+  it(`computes localPeopleQualityOfLifeScore with only livingEnvironment and fricheAccidents for photovoltaic project`, () => {
+    const result = computeProjectDevelopmentScore(
+      photovoltaicProjectImpactMockMeta,
+      photovoltaicProjectImpactsResultDto,
+    );
+    assert.ok(result?.details.environmentScore);
+    assert.ok(result.details.localAuthorityEconomicScore);
+    assert.ok(result?.details.fullTimeJobsScore);
+    assert.ok(result?.details.localPeopleQualityOfLifeScore);
+
+    assert.deepStrictEqual(result.details.localPeopleQualityOfLifeScore.score.gradePoints, 80);
+    assert.deepStrictEqual(result.details.localPeopleQualityOfLifeScore.score.letterGrade, "A");
+    assert.deepStrictEqual(
+      result.details.localPeopleQualityOfLifeScore.score.letterGradeWithModifiers,
+      "A-",
+    );
+
+    assert.deepStrictEqual(Object.keys(result?.details.localPeopleQualityOfLifeScore.details), [
+      "livingEnvironment",
+      "fricheAccidents",
+    ]);
+  });
+
+  it(`computes localPeopleQualityOfLifeScore with all sub indicators for urban project`, () => {
+    const result = computeProjectDevelopmentScore(
+      urbanProjectImpactMockMeta,
+      urbanProjectImpactsResultDto,
+    );
+    assert.ok(result?.details.environmentScore);
+    assert.ok(result.details.localAuthorityEconomicScore);
+    assert.ok(result?.details.fullTimeJobsScore);
+    assert.ok(result?.details.localPeopleQualityOfLifeScore);
+
+    assert.deepStrictEqual(result?.details.localPeopleQualityOfLifeScore.score.gradePoints, 65);
+    assert.deepStrictEqual(result?.details.localPeopleQualityOfLifeScore.score.letterGrade, "B");
+    assert.deepStrictEqual(
+      result?.details.localPeopleQualityOfLifeScore.score.letterGradeWithModifiers,
+      "B-",
+    );
+
+    assert.deepStrictEqual(Object.keys(result?.details.localPeopleQualityOfLifeScore.details), [
+      "livingEnvironment",
+      "localHealthiness",
+      "accessToLocalServices",
+      "accessToHealthCare",
+      "trafficSecurity",
+      "fricheAccidents",
+    ]);
   });
 });
