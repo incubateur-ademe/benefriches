@@ -77,14 +77,14 @@ export const computeRenewableEnergyStepperGroups = ({
   stepsSequence: RenewableEnergyCreationStep[];
 }): RenewableEnergyStepperGroup[] => {
   const { groupId: currentGroupId } = RENEWABLE_ENERGY_STEP_TO_GROUP[currentStep];
+  const isStepCompleted = (stepId: RenewableEnergyCreationStep) =>
+    isRenewableEnergyStepCompleted(stepId, steps);
 
   return RENEWABLE_ENERGY_STEP_GROUP_IDS.map((groupId) => {
     const stepsInGroup = stepsSequence.filter(
       (stepId) => RENEWABLE_ENERGY_STEP_TO_GROUP[stepId].groupId === groupId,
     );
     const navigableStepsInGroup = stepsInGroup.filter(isNavigableRenewableEnergyStep);
-    const isStepCompleted = (stepId: RenewableEnergyCreationStep) =>
-      isRenewableEnergyStepCompleted(stepId, steps);
 
     const firstIncompleteStep = navigableStepsInGroup.find((stepId) => !isStepCompleted(stepId));
     const targetStepId = firstIncompleteStep ?? navigableStepsInGroup[0] ?? currentStep;

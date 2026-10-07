@@ -25,7 +25,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
       .withSiteData({
         soilsDistribution: { BUILDINGS: 2500 },
         hasContaminatedSoils: false,
-      } as never)
+      })
       .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
@@ -51,7 +51,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
       .withSiteData({
         soilsDistribution: { BUILDINGS: 0 },
         hasContaminatedSoils: false,
-      } as never)
+      })
       .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,

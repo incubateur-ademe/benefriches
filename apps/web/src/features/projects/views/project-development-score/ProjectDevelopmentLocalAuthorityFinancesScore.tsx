@@ -137,52 +137,50 @@ export default function ProjectDevelopmentLocalAuthorityFinancesScore({
           }}
 
           title="🏛️ Impacts économiques pour la collectivité locale"
-          options={
-            {
-              ...barChartOptions,
-              chart: {
-                ...barChartOptions.chart,
-                events: {
-                  render: function () {
-                    if (!this.container) {
-                      return;
-                    }
-                    colors.forEach((color, colorIndex) => {
-                      this.container
-                        .querySelectorAll<HTMLElement>(
-                          `.highcharts-point.highcharts-color-${colorIndex}`,
-                        )
-                        .forEach((point) => {
-                          point.style.setProperty(`--highcharts-color-${colorIndex}`, color);
-                        });
-                    });
-                  },
+          options={{
+            ...barChartOptions,
+            chart: {
+              ...barChartOptions.chart,
+              events: {
+                render: function () {
+                  if (!this.container) {
+                    return;
+                  }
+                  colors.forEach((color, colorIndex) => {
+                    this.container
+                      .querySelectorAll<HTMLElement>(
+                        `.highcharts-point.highcharts-color-${colorIndex}`,
+                      )
+                      .forEach((point) => {
+                        point.style.setProperty(`--highcharts-color-${colorIndex}`, color);
+                      });
+                  });
                 },
               },
-              subtitle: {
-                useHTML: true,
-                text: `<span class='text-sm py-4'>${projectLocalAuthorityIndirectEconomicImpactsTotal > 0 ? "Bénéfice" : "Déficit"} du projet : <span class='font-bold'>${formatEvolutionPercentage(percentageComparison)}</span> par rapport aux dépenses d'équipement de la commune`,
-                verticalAlign: "bottom",
-                align: "left",
-              },
-              xAxis: {
-                categories: data.map(({ name }) => name),
-                labels: {
-                  formatter: function () {
-                    return `<strong>${data[this.pos]?.name}</strong><br>${formatMonetaryImpact(data[this.pos]?.y ?? 0)}`;
-                  },
+            },
+            subtitle: {
+              useHTML: true,
+              text: `<span class='text-sm py-4'>${projectLocalAuthorityIndirectEconomicImpactsTotal > 0 ? "Bénéfice" : "Déficit"} du projet : <span class='font-bold'>${formatEvolutionPercentage(percentageComparison)}</span> par rapport aux dépenses d'équipement de la commune`,
+              verticalAlign: "bottom",
+              align: "left",
+            },
+            xAxis: {
+              categories: data.map(({ name }) => name),
+              labels: {
+                formatter: function () {
+                  return `<strong>${data[this.pos]?.name}</strong><br>${formatMonetaryImpact(data[this.pos]?.y ?? 0)}`;
                 },
               },
+            },
 
-              series: [
-                {
-                  type: "column",
-                  name: "Montant (en €)",
-                  data,
-                },
-              ],
-            } as Highcharts.Options
-          }
+            series: [
+              {
+                type: "column",
+                name: "Montant (en €)",
+                data,
+              },
+            ],
+          }}
           exportingOptions={{
             chartOptions: { xAxis: { lineWidth: 0 } },
             colors,

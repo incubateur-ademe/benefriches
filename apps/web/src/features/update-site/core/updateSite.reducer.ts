@@ -103,7 +103,7 @@ const getInitialState = (): SiteUpdateState => {
     loadingState: "idle",
     isEditable: undefined,
     notEditableReason: null,
-  } as SiteUpdateState;
+  };
 };
 
 const updateSiteCustomFormDefinition: CustomWizardFormDefinition<SiteUpdateState> = {

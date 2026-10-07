@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 import { typedObjectEntries } from "shared";
 
-import type { StepVariant } from "@/shared/core/stepVariant.types";
-
+import type { StepVariant } from "../../stepVariant.types";
 import type { StepGroups, StepToGroupMapping } from "./stepGroups";
 
 type UseBuildStepperNavigationItemsProps<
@@ -17,6 +16,22 @@ type UseBuildStepperNavigationItemsProps<
   disableCurrent?: boolean;
 };
 
+type UseBuildStepperNavigationItemsResult<
+  TStepId extends string,
+  TGroupId extends string,
+  TSubGroupId extends string,
+> = {
+  groupId: TGroupId;
+  title: Record<TGroupId, string>[TGroupId];
+  variant: StepVariant;
+  subGroups: {
+    targetStepId: TStepId;
+    variant: StepVariant;
+    subGroupId: TSubGroupId;
+    title: Record<TSubGroupId, string>[TSubGroupId];
+  }[];
+}[];
+
 export const useBuildStepperNavigationItems = <
   TStepId extends string,
   TGroupId extends string,
@@ -27,7 +42,11 @@ export const useBuildStepperNavigationItems = <
   stepToGroupMapping,
   labels,
   disableCurrent,
-}: UseBuildStepperNavigationItemsProps<TStepId, TGroupId, TSubGroupId>) => {
+}: UseBuildStepperNavigationItemsProps<
+  TStepId,
+  TGroupId,
+  TSubGroupId
+>): UseBuildStepperNavigationItemsResult<TStepId, TGroupId, TSubGroupId> => {
   return useMemo(() => {
     const { groupId: currentGroupId, subGroupId: currentSubGroupId } =
       stepToGroupMapping[currentStep];
@@ -46,7 +65,7 @@ export const useBuildStepperNavigationItems = <
               : "current"
             : "inactive",
           validation: isGroupCompleted ? "completed" : "empty",
-        } as StepVariant,
+        },
         subGroups: subGroups
           .filter(
             (item): item is typeof item & { subGroupId: NonNullable<typeof item.subGroupId> } =>
@@ -59,7 +78,7 @@ export const useBuildStepperNavigationItems = <
                 activity:
                   isCurrentGroup && currentSubGroupId === subGroupId ? "current" : "inactive",
                 validation: isStepCompleted ? "completed" : "empty",
-              } as StepVariant,
+              },
               subGroupId,
               title: labels[subGroupId],
             };

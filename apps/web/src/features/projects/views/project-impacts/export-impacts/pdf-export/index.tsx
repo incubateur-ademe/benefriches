@@ -1,5 +1,5 @@
 import { usePDF } from "@react-pdf/renderer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { roundToInteger } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
@@ -44,6 +44,8 @@ const PdfDownload = ({
   onDownloadAvailable,
   onExportDownloaded,
 }: PdfDownloadProps) => {
+  const [currentDate] = useState(() => new Date().toLocaleDateString("fr-FR"));
+
   const [instance] = usePDF({
     document: (
       <PdfExportDocument
@@ -68,7 +70,7 @@ const PdfDownload = ({
     return (
       <a
         href={instance.url}
-        download={`Export Bénéfriches ${new Date().toLocaleDateString()} - Projet ${projectFeatures.name}.pdf`}
+        download={`Export Bénéfriches ${currentDate} - Projet ${projectFeatures.name}.pdf`}
         onClick={onExportDownloaded}
       >
         Télécharger le document ({formatFileSize(instance.blob?.size ?? 0)})

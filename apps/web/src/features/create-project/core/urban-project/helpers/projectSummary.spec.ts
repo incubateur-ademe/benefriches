@@ -84,7 +84,7 @@ describe("getProjectSummary", () => {
         payload: { projectDeveloper: DEVELOPER },
       },
       ...overrides,
-    } as Parameters<typeof getProjectSummary>[0];
+    };
   }
 
   describe("buildingsContractorName", () => {
@@ -114,9 +114,7 @@ describe("getProjectSummary", () => {
         },
       });
 
-      const result = getProjectSummary(steps, [
-        "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
-      ] as Parameters<typeof getProjectSummary>[1]);
+      const result = getProjectSummary(steps, ["URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER"]);
 
       expect(result.buildingsContractorName).toEqual({
         value: undefined,
@@ -127,10 +125,7 @@ describe("getProjectSummary", () => {
     it("returns shouldDisplay false when URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER is not in steps sequence", () => {
       const steps = makeSteps({});
 
-      const result = getProjectSummary(
-        steps,
-        [] as unknown as Parameters<typeof getProjectSummary>[1],
-      );
+      const result = getProjectSummary(steps, []);
 
       expect(result.buildingsContractorName).toEqual({
         value: undefined,

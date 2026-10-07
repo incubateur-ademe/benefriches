@@ -7,7 +7,7 @@ export const mapFormDataToIncomes = (formData: FormValues): SiteYearlyIncome[] =
   return typedObjectEntries(formData).map(([source, amount]) => ({
     source,
     amount: amount ?? 0,
-  })) as SiteYearlyIncome[];
+  }));
 };
 
 export const mapIncomesListToFormValues = (incomes: SiteYearlyIncome[]): FormValues => {

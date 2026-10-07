@@ -67,33 +67,31 @@ export default function EconomicColumnChart({
         id: chartContainerId,
       }}
       title={title}
-      options={
-        {
-          ...barChartOptions,
-          subtitle: {
-            useHTML: true,
-            text: `<span class='text-sm py-4'>${legendText} : <span class='font-bold ${getPositiveNegativeTextClassesFromValue(legendTotal)}'>${formatMonetaryImpact(legendTotal)}</span>`,
-            verticalAlign: "bottom",
-            align: "left",
-          },
-          xAxis: {
-            categories: data.map(({ name }) => name),
-            labels: {
-              formatter: function () {
-                return `<strong>${data[this.pos]?.name}</strong><br>${formatMonetaryImpact(data[this.pos]?.y ?? 0)}`;
-              },
+      options={{
+        ...barChartOptions,
+        subtitle: {
+          useHTML: true,
+          text: `<span class='text-sm py-4'>${legendText} : <span class='font-bold ${getPositiveNegativeTextClassesFromValue(legendTotal)}'>${formatMonetaryImpact(legendTotal)}</span>`,
+          verticalAlign: "bottom",
+          align: "left",
+        },
+        xAxis: {
+          categories: data.map(({ name }) => name),
+          labels: {
+            formatter: function () {
+              return `<strong>${data[this.pos]?.name}</strong><br>${formatMonetaryImpact(data[this.pos]?.y ?? 0)}`;
             },
           },
+        },
 
-          series: [
-            {
-              type: "column",
-              name: "Montant (en €)",
-              data,
-            },
-          ],
-        } as Highcharts.Options
-      }
+        series: [
+          {
+            type: "column",
+            name: "Montant (en €)",
+            data,
+          },
+        ],
+      }}
       exportingOptions={{
         chartOptions: { xAxis: { lineWidth: 0 } },
         colors,

@@ -1,7 +1,5 @@
 import { describe, it, expect } from "vitest";
 
-import type { AnswerStepId } from "@/features/create-project/core/urban-project/urbanProjectSteps";
-
 import type { ProjectCreationState } from "../../createProject.reducer";
 import { creationProjectFormSelectors } from "../urbanProject.selectors";
 import { mockSiteData } from "./_siteData.mock";
@@ -84,7 +82,7 @@ describe("urbanProject.selectors", () => {
       const rootState = store.getState();
 
       const selector = creationProjectFormSelectors.selectStepAnswers(
-        "URBAN_PROJECT_USES_SELECTION" as AnswerStepId,
+        "URBAN_PROJECT_USES_SELECTION",
       );
 
       expect(selector(rootState)).toEqual({

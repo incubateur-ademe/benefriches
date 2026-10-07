@@ -69,33 +69,31 @@ export default function EconomicBalanceChart({
         id: chartContainerId,
       }}
       title="💰 Bilan de l’opération"
-      options={
-        {
-          ...barChartOptions,
-          subtitle: {
-            useHTML: true,
-            text: `<span class='text-sm py-4'>Bilan total de l’opération : <span class='font-bold ${getPositiveNegativeTextClassesFromValue(projectEconomicBalanceByCategory.total)}'>${formatMonetaryImpact(projectEconomicBalanceByCategory.total)}</span>`,
-            verticalAlign: "bottom",
-            align: "left",
-          },
-          xAxis: {
-            categories: data.map((item) => item.name),
-            labels: {
-              formatter: function () {
-                return `<strong>${data[this.pos]?.name}</strong><br>${formatMonetaryImpact(data[this.pos]?.y ?? 0)}`;
-              },
+      options={{
+        ...barChartOptions,
+        subtitle: {
+          useHTML: true,
+          text: `<span class='text-sm py-4'>Bilan total de l’opération : <span class='font-bold ${getPositiveNegativeTextClassesFromValue(projectEconomicBalanceByCategory.total)}'>${formatMonetaryImpact(projectEconomicBalanceByCategory.total)}</span>`,
+          verticalAlign: "bottom",
+          align: "left",
+        },
+        xAxis: {
+          categories: data.map((item) => item.name),
+          labels: {
+            formatter: function () {
+              return `<strong>${data[this.pos]?.name}</strong><br>${formatMonetaryImpact(data[this.pos]?.y ?? 0)}`;
             },
           },
+        },
 
-          series: [
-            {
-              type: "column",
-              name: "Montant (en €)",
-              data,
-            },
-          ],
-        } as Highcharts.Options
-      }
+        series: [
+          {
+            type: "column",
+            name: "Montant (en €)",
+            data,
+          },
+        ],
+      }}
       exportingOptions={{
         chartOptions: { xAxis: { lineWidth: 0 } },
         colors,

@@ -45,7 +45,6 @@ export const formatStakeholders = ({
   reconversionProject: ReconversionProjectImpactsWithBreakEvenLevelInput;
   relatedSite: SiteInputData;
 }): GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"] =>
-  // oxlint-disable-next-line typescript/no-unsafe-type-assertion
   ({
     current: {
       owner: {
@@ -88,6 +87,7 @@ export const formatStakeholders = ({
         structureName: reconversionProject.reinstatementContractOwnerName,
       },
     },
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion
   }) as GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
 
 export const computeBreakEvenLevel = ({

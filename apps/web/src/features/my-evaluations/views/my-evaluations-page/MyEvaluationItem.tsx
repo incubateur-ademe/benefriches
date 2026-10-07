@@ -159,7 +159,7 @@ function MyEvaluationItem({ evaluation, onRemoveProjectFromList, onRemoveSiteFro
                       })),
                     },
                   ],
-                } as Highcharts.Options
+                } satisfies Highcharts.Options
               }
             />
           </div>

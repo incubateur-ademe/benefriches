@@ -54,7 +54,7 @@ export function success<T>(data?: T): SuccessResult<T> | SuccessResult {
     getData(this: SuccessResult<T, never>): T {
       return this._data as T;
     },
-  } as SuccessResult<T> | SuccessResult;
+  };
 }
 
 /**

@@ -163,7 +163,7 @@ $$
 
 ##### Effet carbone de la création d'un ilot de fraicheur :
 
-- $Valeur =  217 685 / 1000000$ (tCO2 évités / an)
+- $Valeur = 217 685 / 1000000$ (tCO2 évités / an)
 - Période d'évaluation = 50 ans
 - Année de mise en service = 2025
 

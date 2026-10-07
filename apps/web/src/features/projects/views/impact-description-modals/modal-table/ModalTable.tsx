@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Table from "@codegouvfr/react-dsfr/Table";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Link } from "type-route";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
@@ -27,11 +27,9 @@ export const BagdeLabel = ({ label, color }: { label: string; color: string }) =
     <span
       className={classNames("mr-2", "inline-flex", "min-h-5", "min-w-5", "rounded-sm")}
       aria-hidden="true"
-      style={
-        {
-          backgroundColor: color,
-        } as CSSProperties
-      }
+      style={{
+        backgroundColor: color,
+      }}
     ></span>
     {label}
   </span>

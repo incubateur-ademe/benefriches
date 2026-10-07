@@ -156,7 +156,7 @@ describe("CreateUser Use Case", () => {
               ? fakeNow
               : undefined,
             subscribedToNewsletter: props.subscribedToNewsletter,
-          } as User,
+          },
         ] as User[]);
         assert.deepStrictEqual(eventPublisher.events, [
           {

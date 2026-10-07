@@ -18,7 +18,6 @@ export const computeStatuQuoSiteImpacts = ({
   site: Omit<SiteImpactsDataView, "address">;
   siteSoilsCarbonStorage?: SoilsCarbonStorage;
 }): SiteStatuQuoImpacts => {
-  // oxlint-disable-next-line typescript/no-unsafe-type-assertion
   const stakeholders = {
     owner: {
       structureType: site.ownerStructureType,
@@ -39,6 +38,7 @@ export const computeStatuQuoSiteImpacts = ({
       structureType: site.tenantStructureType,
       structureName: site.tenantName,
     },
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion
   } as GetSiteImpactsDto["stakeholders"];
 
   const sumOnEvolutionPeriodService = new SumOnEvolutionPeriodService({

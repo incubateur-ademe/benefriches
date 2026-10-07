@@ -12,7 +12,7 @@ export const mapFormDataToExpenses = (
     purpose,
     bearer: fixedBearer ?? formData[purpose]?.bearer ?? "tenant",
     amount: formData[purpose]?.amount ?? 0,
-  })) as SiteYearlyExpense[];
+  }));
 };
 
 type SiteExpensesInitialValues = {

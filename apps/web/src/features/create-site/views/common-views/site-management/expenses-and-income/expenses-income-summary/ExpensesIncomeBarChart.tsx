@@ -182,7 +182,7 @@ const ExpensesIncomeBarChart = ({
       width: "33%",
       verticalAlign: "middle",
     },
-    series: series as Highcharts.SeriesOptionsType[],
+    series: series,
   });
 
   return (

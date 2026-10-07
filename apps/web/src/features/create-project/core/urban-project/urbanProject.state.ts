@@ -95,5 +95,5 @@ export const getUrbanProjectInitialState = <
     siteResaleEstimationLoadingState: createReducer<LoadingState>("idle", () => {}),
   });
 
-  return composedReducer(undefined, { type: "@@INIT" }) as UrbanProjectState<T>;
+  return composedReducer(undefined, { type: "@@INIT" });
 };

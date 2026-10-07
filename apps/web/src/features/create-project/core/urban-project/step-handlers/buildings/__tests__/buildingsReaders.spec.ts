@@ -212,7 +212,7 @@ describe("willReuseExistingBuildings", () => {
   });
 
   it("returns false when reuse step is missing", () => {
-    expect(willReuseExistingBuildings({} as StepsState)).toBe(false);
+    expect(willReuseExistingBuildings({})).toBe(false);
   });
 });
 

@@ -90,7 +90,7 @@ function buildUrbanProjectFeatures(
     soilsDistribution: [],
     yearlyProjectedExpenses: [],
     yearlyProjectedRevenues: [],
-  } as ReconversionProjectFeaturesView;
+  };
 }
 
 function buildPhotovoltaicProjectFeatures(): ReconversionProjectFeaturesView {

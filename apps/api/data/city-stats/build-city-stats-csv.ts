@@ -147,7 +147,7 @@ const fetchArrondissement = (codeInsee: string): Promise<Commune> => {
             const arrondissement = JSON.parse(data) as Commune;
             resolve(arrondissement);
           } catch (error: unknown) {
-            reject(error as Error);
+            reject(new Error(String(error)));
           }
         });
       })
@@ -214,10 +214,10 @@ const fetchCommunes = (): Promise<Commune[]> => {
                 resolve(communesFiltered);
               })
               .catch((error: unknown) => {
-                reject(error as Error);
+                reject(new Error(String(error)));
               });
           } catch (error: unknown) {
-            reject(error as Error);
+            reject(new Error(String(error)));
           }
         });
       })

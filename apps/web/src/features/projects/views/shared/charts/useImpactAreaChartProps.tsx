@@ -105,7 +105,7 @@ const useImpactAreaChartProps = ({
         name: label,
         type: "area",
         data: [base, forecast],
-      })) as Highcharts.SeriesOptionsType[],
+      })),
     }),
   };
 };

@@ -1,4 +1,5 @@
 import { Document } from "@react-pdf/renderer";
+import { useState } from "react";
 
 import type { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 import type { EnvironmentalImpactMetricsByListViewCategory } from "@/features/projects/core/projectImpactsEnvironmental";
@@ -35,6 +36,8 @@ export default function ProjectPdfExport({
   selectedSections,
   impacts,
 }: Props) {
+  const [currentDate] = useState(() => new Date().toLocaleDateString("fr-FR"));
+
   return (
     <ExportImpactsContext
       value={{
@@ -46,7 +49,7 @@ export default function ProjectPdfExport({
     >
       <Document
         author="Bénéfriches - ADEME"
-        title={`Export Bénéfriches - Projet ${projectFeatures.name} - ${new Date().toLocaleDateString()}`}
+        title={`Export Bénéfriches - Projet ${projectFeatures.name} - ${currentDate}`}
         language="fr"
       >
         <ProjectPdfExportCoverPage />

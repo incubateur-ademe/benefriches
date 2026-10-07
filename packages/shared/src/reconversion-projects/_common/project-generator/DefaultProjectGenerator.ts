@@ -62,20 +62,20 @@ export class DefaultProjectGenerator {
         this.projectSoilsDistributionByType,
         this.decontaminatedSoilSurface ?? 0,
       ),
-    )
-      .filter(([, amount]) => amount && amount > 0)
-      .map(([purpose, amount]) => {
-        switch (purpose) {
-          case "deimpermeabilization":
-          case "remediation":
-          case "demolition":
-            return { amount, purpose };
-          case "sustainableSoilsReinstatement":
-            return { amount, purpose: "sustainable_soils_reinstatement" };
-          case "asbestosRemoval":
-            return { amount, purpose: "asbestos_removal" };
-        }
-      }) as { amount: number; purpose: ReinstatementExpensePurpose }[];
+    ).flatMap(([purpose, amount]): { amount: number; purpose: ReinstatementExpensePurpose }[] => {
+      if (amount === undefined || amount <= 0) return [];
+
+      switch (purpose) {
+        case "deimpermeabilization":
+        case "remediation":
+        case "demolition":
+          return [{ amount, purpose }];
+        case "sustainableSoilsReinstatement":
+          return [{ amount, purpose: "sustainable_soils_reinstatement" }];
+        case "asbestosRemoval":
+          return [{ amount, purpose: "asbestos_removal" }];
+      }
+    });
   }
 
   get reinstatementSchedule() {

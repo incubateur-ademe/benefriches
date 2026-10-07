@@ -1,4 +1,4 @@
-import type { SoilsDistribution, SoilType } from "../../soils";
+import type { SoilsDistribution } from "../../soils";
 import { SurfaceAreaDistribution } from "../../surface-area";
 import type { FricheActivity } from "./fricheActivity";
 
@@ -85,8 +85,7 @@ export function getSoilsDistributionForFricheActivity(
     if (soilType !== "BUILDINGS" && ratio > 0) {
       const area = ratio * adjustmentFactor * surfaceArea;
       if (area > 0) {
-        // oxlint-disable-next-line typescript/no-unsafe-type-assertion
-        distribution.addSurface(soilType as SoilType, area);
+        distribution.addSurface(soilType, area);
       }
     }
   }

@@ -8,7 +8,6 @@ import type {
   StepCompletionPayload,
   StepsState,
 } from "./formFactory.types";
-import type { AnswerStepHandler } from "./handlerRegistry.types";
 
 // Garde fou pour éviter de boucler à l'infini dans computeStepChanges,
 // à faire évoluer en fonction du parcours avec le plus grand nombre d'étapes
@@ -111,7 +110,7 @@ export function createFormFactory<
 
     MutateStateHelper.setDefaultAnswers(
       state,
-      handler.stepId as SchematizedStepId,
+      handler.stepId,
       defaultAnswers as Answers[SchematizedStepId],
     );
   }
@@ -128,8 +127,7 @@ export function createFormFactory<
     state: TState,
     payload: Payload<K>,
   ): StepUpdateResult<K> {
-    const handler = cfg.answerStepHandlers[payload.stepId] as
-      AnswerStepHandler<Schemas, CreationStep, TStepContext, K> | undefined;
+    const handler = cfg.answerStepHandlers[payload.stepId];
 
     if (!handler) {
       throw new Error(`No handler registered for step ${String(payload.stepId)}`);

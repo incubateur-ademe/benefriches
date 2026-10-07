@@ -1,5 +1,5 @@
 import { Image, Link, Text, View } from "@react-pdf/renderer";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { ExportImpactsContext, useTableOfContents } from "../context";
 import { getPageLinkForId, pageIds } from "../pageIds";
@@ -15,7 +15,7 @@ const TableOfContentsItem = ({ label, link }: { label: string; link: string }) =
 export default function ProjectPdfExportCoverPage() {
   const { projectName, siteName } = useContext(ExportImpactsContext);
   const tableOfContents = useTableOfContents();
-
+  const [currentDate] = useState(() => new Date().toLocaleDateString("fr-FR"));
   return (
     <PdfPage withHeader={false} withFooter={false}>
       <View style={tw("flex flex-col justify-center h-full")}>
@@ -30,9 +30,7 @@ export default function ProjectPdfExportCoverPage() {
           « {projectName} »
         </Text>
         <Text style={tw("text-xl text-center mt-2")}>{siteName}</Text>
-        <Text style={tw("text-sm text-center mt-2 text-gray-500")}>
-          Exporté le {new Date().toLocaleDateString()}
-        </Text>
+        <Text style={tw("text-sm text-center mt-2 text-gray-500")}>Exporté le {currentDate}</Text>
         <View style={tw("mt-16 ml-16 text-lg")}>
           {tableOfContents.map((entry) => (
             <View key={entry.pageId}>
