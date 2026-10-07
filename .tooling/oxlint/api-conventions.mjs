@@ -34,8 +34,7 @@ function isTypeOnlyImport(node) {
   return (
     node.specifiers.length > 0 &&
     node.specifiers.every(
-      (specifier) =>
-        specifier.type === "ImportSpecifier" && specifier.importKind === "type",
+      (specifier) => specifier.type === "ImportSpecifier" && specifier.importKind === "type",
     )
   );
 }
@@ -79,10 +78,7 @@ const fileNaming = {
 
     return {
       Program(node) {
-        if (
-          filename.includes("/core/usecases/") &&
-          !USECASE_FILE.test(basename)
-        ) {
+        if (filename.includes("/core/usecases/") && !USECASE_FILE.test(basename)) {
           context.report({
             node,
             message: `"${basename}" is in core/usecases/, so it must be named <verb><Noun>.usecase.ts (its unit test: <verb><Noun>.usecase.spec.ts). The suffix is how use cases are found and paired with their tests by name and glob.`,
