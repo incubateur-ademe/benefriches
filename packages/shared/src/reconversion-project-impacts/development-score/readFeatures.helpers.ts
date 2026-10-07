@@ -63,13 +63,12 @@ const getContaminatedSurfaceDifference = ({
     "decontaminatedSurface",
   );
 
-  const contaminatedSurfaceDifference = contaminatedSurface - decontaminatedSurface;
   return {
     siteContaminatedSurface: contaminatedSurface,
-    difference: contaminatedSurfaceDifference,
+    difference: decontaminatedSurface,
     percentVariation: getEvolutionAsPercentage({
       before: contaminatedSurface,
-      difference: contaminatedSurfaceDifference,
+      difference: decontaminatedSurface,
     }),
   };
 };

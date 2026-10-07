@@ -20,9 +20,9 @@ describe("computeProjectDevelopmentScore", () => {
     assert.ok(result?.details.fullTimeJobsScore);
     assert.ok(result?.details.localPeopleQualityOfLifeScore);
 
-    assert.deepStrictEqual(result?.details.environmentScore.score.gradePoints, 70);
-    assert.deepStrictEqual(result?.details.environmentScore.score.letterGrade, "B");
-    assert.deepStrictEqual(result?.details.environmentScore.score.letterGradeWithModifiers, "B");
+    assert.deepStrictEqual(result?.details.environmentScore.score.gradePoints, 90);
+    assert.deepStrictEqual(result?.details.environmentScore.score.letterGrade, "A");
+    assert.deepStrictEqual(result?.details.environmentScore.score.letterGradeWithModifiers, "A");
 
     assert.deepStrictEqual(result.details.localAuthorityEconomicScore.score.gradePoints, 30);
     assert.deepStrictEqual(result.details.localAuthorityEconomicScore.score.letterGrade, "D");
@@ -47,9 +47,9 @@ describe("computeProjectDevelopmentScore", () => {
     assert.ok(result?.details.fullTimeJobsScore.details);
     assert.ok(result?.details.localPeopleQualityOfLifeScore.details);
 
-    assert.deepStrictEqual(result?.score.gradePoints, 58.75);
-    assert.deepStrictEqual(result?.score.letterGradeWithModifiers, "C+");
-    assert.deepStrictEqual(result?.score.letterGrade, "C");
+    assert.deepStrictEqual(result?.score.gradePoints, 63.75);
+    assert.deepStrictEqual(result?.score.letterGradeWithModifiers, "B-");
+    assert.deepStrictEqual(result?.score.letterGrade, "B");
   });
 
   it(`computes localPeopleQualityOfLifeScore with only livingEnvironment and fricheAccidents for photovoltaic project`, () => {

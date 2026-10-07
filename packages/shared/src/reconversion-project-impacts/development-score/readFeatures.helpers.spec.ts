@@ -81,6 +81,58 @@ describe("readFeatures helpers", () => {
       assert.strictEqual(result?.permeableSurfaceDifference.percentVariation, 133);
       assert.strictEqual(result?.soilsDistribution.length, 2);
     });
+
+    it(`returns contamination, newGreenSoilSurfaces, soilsDistribution and permeableSurfaceDifference with no decontamination`, () => {
+      const result = getSoilEvolutionDetails({
+        siteStatuQuoImpactMetrics: [
+          { name: "contaminatedSurface", total: 500 },
+          { name: "permeableGreenSurface", total: 1000 },
+          { name: "permeableMineralSurface", total: 2000 },
+          { name: "soilsDistribution", soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", total: 1000 },
+          { name: "soilsDistribution", soilType: "MINERAL_SOIL", total: 2000 },
+        ],
+        aggregatedReconversionImpactMetrics: [
+          { name: "decontaminatedSurface", total: 0 },
+          { name: "newPermeableMineralSurface", total: 2000 },
+          { name: "newPermeableGreenSurface", total: 2000 },
+          { name: "soilsDistribution", soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", total: 2000 },
+          { name: "soilsDistribution", soilType: "MINERAL_SOIL", total: 2000 },
+        ],
+      });
+      assert.strictEqual(result?.contamination.siteContaminatedSurface, 500);
+      assert.strictEqual(result?.contamination.difference, 0);
+      assert.strictEqual(result?.contamination.percentVariation, 0);
+      assert.strictEqual(result.newGreenSoilSurfaces, 2000);
+      assert.strictEqual(result?.permeableSurfaceDifference.difference, 4000);
+      assert.strictEqual(result?.permeableSurfaceDifference.percentVariation, 133);
+      assert.strictEqual(result?.soilsDistribution.length, 2);
+    });
+
+    it(`returns contamination, newGreenSoilSurfaces, soilsDistribution and permeableSurfaceDifference with full decontamination`, () => {
+      const result = getSoilEvolutionDetails({
+        siteStatuQuoImpactMetrics: [
+          { name: "contaminatedSurface", total: 500 },
+          { name: "permeableGreenSurface", total: 1000 },
+          { name: "permeableMineralSurface", total: 2000 },
+          { name: "soilsDistribution", soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", total: 1000 },
+          { name: "soilsDistribution", soilType: "MINERAL_SOIL", total: 2000 },
+        ],
+        aggregatedReconversionImpactMetrics: [
+          { name: "decontaminatedSurface", total: 500 },
+          { name: "newPermeableMineralSurface", total: 2000 },
+          { name: "newPermeableGreenSurface", total: 2000 },
+          { name: "soilsDistribution", soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", total: 2000 },
+          { name: "soilsDistribution", soilType: "MINERAL_SOIL", total: 2000 },
+        ],
+      });
+      assert.strictEqual(result?.contamination.siteContaminatedSurface, 500);
+      assert.strictEqual(result?.contamination.difference, 500);
+      assert.strictEqual(result?.contamination.percentVariation, 100);
+      assert.strictEqual(result.newGreenSoilSurfaces, 2000);
+      assert.strictEqual(result?.permeableSurfaceDifference.difference, 4000);
+      assert.strictEqual(result?.permeableSurfaceDifference.percentVariation, 133);
+      assert.strictEqual(result?.soilsDistribution.length, 2);
+    });
   });
 
   describe("getSiteReconversionType", () => {
