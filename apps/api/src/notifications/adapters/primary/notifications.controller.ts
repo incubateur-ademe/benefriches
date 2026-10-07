@@ -1,16 +1,12 @@
 import { BadRequestException, Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
-import { createZodDto } from "nestjs-zod";
 import {
+  type UnsubscribeFromLifecycleEmailsRequestDto,
   unsubscribeFromLifecycleEmailsRequestDtoSchema,
   type UnsubscribeFromLifecycleEmailsErrorCode,
 } from "shared";
 
 import { UnsubscribeFromLifecycleEmailsUseCase } from "src/notifications/core/usecases/unsubscribeFromLifecycleEmails.usecase";
-
-export class UnsubscribeFromLifecycleEmailsBodyDto extends createZodDto(
-  unsubscribeFromLifecycleEmailsRequestDtoSchema,
-) {}
 
 @Controller("lifecycle-emails")
 export class NotificationsController {
@@ -26,7 +22,10 @@ export class NotificationsController {
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   @Post("unsubscribe")
   @HttpCode(HttpStatus.NO_CONTENT)
-  async unsubscribe(@Body() body: UnsubscribeFromLifecycleEmailsBodyDto): Promise<void> {
+  async unsubscribe(
+    @Body({ schema: unsubscribeFromLifecycleEmailsRequestDtoSchema })
+    body: UnsubscribeFromLifecycleEmailsRequestDto,
+  ): Promise<void> {
     const result = await this.unsubscribeFromLifecycleEmailsUseCase.execute({
       token: body.token,
     });

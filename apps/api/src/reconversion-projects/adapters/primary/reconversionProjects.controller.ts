@@ -12,7 +12,6 @@ import {
   Req,
   UseGuards,
 } from "@nestjs/common";
-import { createZodDto } from "nestjs-zod";
 import {
   reconversionProjectTemplateSchema,
   httpUpdateReconversionProjectPropsSchema,
@@ -40,43 +39,36 @@ import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-proje
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
 import { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/updateReconversionProject.usecase";
 
-class CreateReconversionProjectBodyDto extends createZodDto(
-  createReconversionProjectRequestDtoSchema,
-) {}
-class UpdateReconversionProjectBodyDto extends createZodDto(
-  httpUpdateReconversionProjectPropsSchema,
-) {}
+type UpdateReconversionProjectBody = z.infer<typeof httpUpdateReconversionProjectPropsSchema>;
 
-class GenerateReconversionProjectFromTemplateQueryDto extends createZodDto(
-  z.object({
-    siteId: z.string(),
-    template: reconversionProjectTemplateSchema,
-  }),
-) {}
+const generateReconversionProjectFromTemplateQuerySchema = z.object({
+  siteId: z.string(),
+  template: reconversionProjectTemplateSchema,
+});
+type GenerateReconversionProjectFromTemplateQuery = z.infer<
+  typeof generateReconversionProjectFromTemplateQuerySchema
+>;
 
-class GenerateAndSaveReconversionProjectFromTemplateBodyDto extends createZodDto(
-  z.object({
-    reconversionProjectId: z.string(),
-    siteId: z.string(),
-    template: reconversionProjectTemplateSchema,
-  }),
-) {}
+const generateAndSaveReconversionProjectFromTemplateBodySchema = z.object({
+  reconversionProjectId: z.string(),
+  siteId: z.string(),
+  template: reconversionProjectTemplateSchema,
+});
+type GenerateAndSaveReconversionProjectFromTemplateBody = z.infer<
+  typeof generateAndSaveReconversionProjectFromTemplateBodySchema
+>;
 
-class GetListGroupedBySiteQueryDto extends createZodDto(
-  z.object({
-    userId: z.uuid(),
-  }),
-) {}
+const getListGroupedBySiteQuerySchema = z.object({
+  userId: z.uuid(),
+});
+type GetListGroupedBySiteQuery = z.infer<typeof getListGroupedBySiteQuerySchema>;
 
-class UrbanSprawlComparisonQueryDto extends createZodDto(
-  getUrbanSprawlImpactsComparisonDtoSchema,
-) {}
+type UrbanSprawlComparisonQuery = z.infer<typeof getUrbanSprawlImpactsComparisonDtoSchema>;
 
-class DuplicateReconversionProjectBodyDto extends createZodDto(
-  z.object({
-    newProjectId: z.uuid(),
-  }),
-) {}
+const duplicateReconversionProjectBodySchema = z.object({
+  newProjectId: z.uuid(),
+});
+type DuplicateReconversionProjectBody = z.infer<typeof duplicateReconversionProjectBodySchema>;
 
 @Controller("reconversion-projects")
 export class ReconversionProjectController {
@@ -128,15 +120,13 @@ export class ReconversionProjectController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async createReconversionProject(
-    @Body() createReconversionProjectDto: CreateReconversionProjectBodyDto,
+    @Body({ schema: createReconversionProjectRequestDtoSchema })
+    createReconversionProjectDto: CreateReconversionProjectRequestDto,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
-    // Typed as the plain DTO: no-misused-spread rejects spreading the createZodDto class type.
-    const reconversionProjectProps: CreateReconversionProjectRequestDto =
-      createReconversionProjectDto;
     await this.createReconversionProjectUseCase.execute({
       reconversionProjectProps: {
-        ...reconversionProjectProps,
+        ...createReconversionProjectDto,
         createdBy: req.accessTokenPayload.userId,
       },
     });
@@ -146,7 +136,7 @@ export class ReconversionProjectController {
   @Put(":reconversionProjectId")
   async updateReconversionProject(
     @Param("reconversionProjectId") reconversionProjectId: string,
-    @Body() body: UpdateReconversionProjectBodyDto,
+    @Body({ schema: httpUpdateReconversionProjectPropsSchema }) body: UpdateReconversionProjectBody,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
     const authenticatedUserId = req.accessTokenPayload.userId;
@@ -173,7 +163,8 @@ export class ReconversionProjectController {
   @UseGuards(JwtAuthGuard)
   @Get("create-from-template")
   async getReconversionProjectFromTemplate(
-    @Query() getReconversionProjectFromTemplateDto: GenerateReconversionProjectFromTemplateQueryDto,
+    @Query({ schema: generateReconversionProjectFromTemplateQuerySchema })
+    getReconversionProjectFromTemplateDto: GenerateReconversionProjectFromTemplateQuery,
     @Req() req: RequestWithAuthenticatedUser,
   ): Promise<ReconversionProjectFeaturesView> {
     const result = await this.generateReconversionProjectFromTemplateUseCase.execute({
@@ -195,7 +186,8 @@ export class ReconversionProjectController {
   @UseGuards(JwtAuthGuard)
   @Post("create-from-template")
   async createReconversionProjectFromTemplate(
-    @Body() createReconversionProjectDto: GenerateAndSaveReconversionProjectFromTemplateBodyDto,
+    @Body({ schema: generateAndSaveReconversionProjectFromTemplateBodySchema })
+    createReconversionProjectDto: GenerateAndSaveReconversionProjectFromTemplateBody,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
     const result = await this.generateAndSaveReconversionProjectFromTemplateUseCase.execute({
@@ -217,7 +209,8 @@ export class ReconversionProjectController {
   @Post(":reconversionProjectId/duplicate")
   async duplicateReconversionProject(
     @Param("reconversionProjectId") reconversionProjectId: string,
-    @Body() body: DuplicateReconversionProjectBodyDto,
+    @Body({ schema: duplicateReconversionProjectBodySchema })
+    body: DuplicateReconversionProjectBody,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
     const authenticatedUserId = req.accessTokenPayload.userId;
@@ -269,7 +262,9 @@ export class ReconversionProjectController {
 
   @UseGuards(JwtAuthGuard)
   @Get("list-by-site")
-  async getListGroupedBySite(@Query() { userId }: GetListGroupedBySiteQueryDto) {
+  async getListGroupedBySite(
+    @Query({ schema: getListGroupedBySiteQuerySchema }) { userId }: GetListGroupedBySiteQuery,
+  ) {
     const result = await this.getReconversionProjectsBySite.execute({ userId });
 
     if (result.isFailure()) {
@@ -340,7 +335,8 @@ export class ReconversionProjectController {
   @Get(":reconversionProjectId/urban-sprawl-comparison")
   async getUrbanSprawlImpactsComparison(
     @Param("reconversionProjectId") reconversionProjectId: string,
-    @Query() urbanSprawlComparisonQueryDto: UrbanSprawlComparisonQueryDto,
+    @Query({ schema: getUrbanSprawlImpactsComparisonDtoSchema })
+    urbanSprawlComparisonQueryDto: UrbanSprawlComparisonQuery,
   ) {
     const result = await this.getProjectUrbanSprawlImpactsComparisonUseCase.execute({
       reconversionProjectId,

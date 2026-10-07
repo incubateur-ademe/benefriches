@@ -3,7 +3,6 @@ import { ConfigModule } from "@nestjs/config";
 import { APP_GUARD, APP_PIPE } from "@nestjs/core";
 import { EventEmitterModule, OnEvent } from "@nestjs/event-emitter";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
-import { ZodValidationPipe } from "nestjs-zod";
 
 import { AuthModule } from "./auth/adapters/auth.module";
 import { CarbonStorageModule } from "./carbon-storage/adapters/primary/carbonStorage.module";
@@ -15,6 +14,7 @@ import { ReconversionCompatibilityModule } from "./reconversion-compatibility/ad
 import { ReconversionProjectsModule } from "./reconversion-projects/adapters/primary/reconversionProjects.module";
 import { DomainEventsRepository } from "./shared-kernel/adapters/events/repository/DomainEventsRepository";
 import { SqlDomainEventsRepository } from "./shared-kernel/adapters/events/repository/SqlDomainEventsRepository";
+import { createRequestValidationPipe } from "./shared-kernel/adapters/http/requestValidationPipe";
 import { SqlConnectionModule } from "./shared-kernel/adapters/sql-knex/sqlConnection.module";
 import type { DomainEvent } from "./shared-kernel/domainEvent";
 import { SiteActionsModule } from "./site-actions/adapters/primary/siteActions.module";
@@ -73,7 +73,7 @@ class DomainEventsHandler {
     StatistiquesModule,
   ],
   providers: [
-    { provide: APP_PIPE, useClass: ZodValidationPipe },
+    { provide: APP_PIPE, useValue: createRequestValidationPipe() },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
     {
       provide: DomainEventsHandler,

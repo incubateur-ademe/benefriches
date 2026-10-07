@@ -1,13 +1,11 @@
 import { Body, Controller, Post, UseGuards } from "@nestjs/common";
-import { createZodDto } from "nestjs-zod";
+import type { z } from "zod";
 
 import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
 import {
   createFeatureAlertProps,
   CreateUserFeatureAlertUseCase,
 } from "src/users/core/usecases/createUserFeatureAlert.usecase";
-
-class CreateFeatureAlertBodyDto extends createZodDto(createFeatureAlertProps) {}
 
 @Controller("users")
 export class UsersController {
@@ -18,7 +16,10 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Post("/feature-alert")
-  async createFeatureAlert(@Body() createFeatureAlertBodySchema: CreateFeatureAlertBodyDto) {
+  async createFeatureAlert(
+    @Body({ schema: createFeatureAlertProps })
+    createFeatureAlertBodySchema: z.infer<typeof createFeatureAlertProps>,
+  ) {
     await this.createFeatureAlertUseCase.execute(createFeatureAlertBodySchema);
   }
 }
