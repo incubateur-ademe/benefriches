@@ -18,7 +18,7 @@ import { MunicipalityCapitalExpendituresProvider } from "src/territory/core/gate
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { Schedule } from "../model/reconversionProject";
 
-const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 50;
+const EVALUATION_PERIOD_IN_YEARS = 50;
 
 export interface SiteImpactsQuery {
   getById(siteId: string): Promise<SiteImpactsDataView | undefined>;
@@ -43,10 +43,9 @@ export interface ReconversionProjectImpactsQuery {
 
 type Request = {
   reconversionProjectId: string;
-  evaluationPeriodInYears?: number;
 };
 
-type ComputeReconversionProjectImpactsResult = TResult<
+type GetProjectImpactAnalysisResult = TResult<
   GetReconversionProjectImpactsResultDto,
   "ReconversionProjectNotFound" | "SiteNotFound" | "NoDevelopmentPlanType"
 >;
@@ -66,9 +65,9 @@ const extractProjectDevelopmentPlan = (developmentPlan: DevelopmentPlanFeatures)
   };
 };
 
-export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
+export class GetProjectImpactAnalysisUseCase implements UseCase<
   Request,
-  ComputeReconversionProjectImpactsResult
+  GetProjectImpactAnalysisResult
 > {
   private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery;
   private readonly siteRepository: SiteImpactsQuery;
@@ -92,10 +91,7 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
     this.dateProvider = dateProvider;
   }
 
-  async execute({
-    reconversionProjectId,
-    evaluationPeriodInYears = DEFAULT_EVALUATION_PERIOD_IN_YEARS,
-  }: Request): Promise<ComputeReconversionProjectImpactsResult> {
+  async execute({ reconversionProjectId }: Request): Promise<GetProjectImpactAnalysisResult> {
     const reconversionProject = await this.reconversionProjectQuery.getById(reconversionProjectId);
     if (!reconversionProject) return fail("ReconversionProjectNotFound");
 
@@ -134,7 +130,7 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
         operationsFirstYear,
       } as ReconversionProjectImpactsWithBreakEvenLevelInput,
       relatedSite: { ...relatedSite, siteSoilsCarbonStorage },
-      evaluationPeriodInYears,
+      evaluationPeriodInYears: EVALUATION_PERIOD_IN_YEARS,
       city: cityData,
     });
 

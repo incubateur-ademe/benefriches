@@ -13,7 +13,6 @@ import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gate
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
 import { ArchiveReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/archiveReconversionProject.usecase";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
-import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import {
   CreateReconversionProjectUseCase,
@@ -25,6 +24,7 @@ import {
   GenerateReconversionProjectFromTemplateUseCase,
   SiteQuery,
 } from "src/reconversion-projects/core/usecases/generateReconversionProjectFromTemplate.usecase";
+import { GetProjectImpactAnalysisUseCase } from "src/reconversion-projects/core/usecases/getProjectImpactsAnalysisUseCase.usecase";
 import { GetReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/getReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import {
@@ -177,7 +177,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       ],
     },
     {
-      provide: ComputeReconversionProjectBreakEvenLevelUseCase,
+      provide: GetProjectImpactAnalysisUseCase,
       useFactory(
         reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
         siteRepo: SqlSiteImpactsQuery,
@@ -186,7 +186,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         municipalityCapitalExpendituresQuery: MunicipalityCapitalExpendituresProvider,
         dateProvider: DateProvider,
       ) {
-        return new ComputeReconversionProjectBreakEvenLevelUseCase(
+        return new GetProjectImpactAnalysisUseCase(
           reconversionProjectRepo,
           siteRepo,
           getCarbonStorageFromSoilDistribution,
@@ -309,6 +309,6 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
   ],
   // The impacts computation behind GET /:id/impacts, used by the notifications module's project
   // impacts summary email.
-  exports: [ComputeReconversionProjectBreakEvenLevelUseCase],
+  exports: [GetProjectImpactAnalysisUseCase],
 })
 export class ReconversionProjectsModule {}

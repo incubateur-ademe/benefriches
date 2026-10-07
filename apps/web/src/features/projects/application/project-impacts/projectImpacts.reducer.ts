@@ -31,6 +31,7 @@ export type ProjectImpactsState = {
   evaluationPeriod: number | undefined;
 
   impacts?: GetReconversionProjectImpactsResultDto["impacts"];
+  developmentScore?: GetReconversionProjectImpactsResultDto["developmentScore"];
   urbanSprawlSimulation?: UrbanSprawlImpactsComparisonResultDto;
 };
 
@@ -93,6 +94,7 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
     (state, action) => {
       state.dataLoadingState.impacts = "success";
       state.impacts = action.payload.impacts;
+      state.developmentScore = action.payload.developmentScore;
       state.contextData = action.payload.contextData;
       if (!state.evaluationPeriod) {
         state.evaluationPeriod = getDefaultEvaluationPeriodInYears(

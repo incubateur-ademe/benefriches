@@ -13,11 +13,11 @@ import { FakeMunicipalityCapitalExpendituresProvider } from "src/territory/adapt
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import {
-  ComputeReconversionProjectBreakEvenLevelUseCase,
+  GetProjectImpactAnalysisUseCase,
   ReconversionProjectImpactsQueryResult,
-} from "./computeReconversionProjectBreakEvenLevel.usecase";
+} from "./getProjectImpactsAnalysisUseCase.usecase";
 
-describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
+describe("GetProjectImpactAnalysisUseCase", () => {
   let dateProvider: DateProvider;
   const fakeNow = new Date("2024-01-05T13:00:00");
 
@@ -27,7 +27,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
 
   describe("Error cases", () => {
     it("fails when reconversion project does not exist", async () => {
-      const usecase = new ComputeReconversionProjectBreakEvenLevelUseCase(
+      const usecase = new GetProjectImpactAnalysisUseCase(
         new InMemoryReconversionProjectImpactsQuery(),
         new InMemorySiteImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
@@ -38,7 +38,6 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
 
       const result = await usecase.execute({
         reconversionProjectId: uuid(),
-        evaluationPeriodInYears: 10,
       });
 
       assert.strictEqual(result.isFailure(), true);
@@ -66,7 +65,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         yearlyProjectedRevenues: [],
       });
 
-      const usecase = new ComputeReconversionProjectBreakEvenLevelUseCase(
+      const usecase = new GetProjectImpactAnalysisUseCase(
         projectQuery,
         new InMemorySiteImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
@@ -75,7 +74,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         dateProvider,
       );
 
-      const result = await usecase.execute({ reconversionProjectId, evaluationPeriodInYears: 10 });
+      const result = await usecase.execute({ reconversionProjectId });
 
       assert.strictEqual(result.isFailure(), true);
       assert.strictEqual(
@@ -111,7 +110,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         yearlyProjectedRevenues: [],
       });
 
-      const usecase = new ComputeReconversionProjectBreakEvenLevelUseCase(
+      const usecase = new GetProjectImpactAnalysisUseCase(
         projectQuery,
         new InMemorySiteImpactsQuery(),
         new FakeGetSoilsCarbonStorageService(),
@@ -120,7 +119,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         dateProvider,
       );
 
-      const result = await usecase.execute({ reconversionProjectId, evaluationPeriodInYears: 10 });
+      const result = await usecase.execute({ reconversionProjectId });
 
       assert.strictEqual(result.isFailure(), true);
       assert.strictEqual((result as FailureResult<"SiteNotFound">).getError(), "SiteNotFound");
@@ -243,7 +242,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
     const siteQuery = new InMemorySiteImpactsQuery();
     siteQuery._setData(siteData);
 
-    return new ComputeReconversionProjectBreakEvenLevelUseCase(
+    return new GetProjectImpactAnalysisUseCase(
       projectQuery,
       siteQuery,
       new FakeGetSoilsCarbonStorageService(),
@@ -262,35 +261,28 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       const usecase = buildUseCase(fricheProjectData, fricheSite);
       const result = await usecase.execute({
         reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears: 10,
       });
 
       assert.strictEqual(result.isSuccess(), true);
     });
 
     it("projectionYears has exactly evaluationPeriodInYears entries", async () => {
-      const evaluationPeriodInYears = 10;
       const usecase = buildUseCase(fricheProjectData, fricheSite);
       const result = await usecase.execute({
         reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears,
       });
 
       const { impacts: data } = (
         result as SuccessResult<GetReconversionProjectImpactsResultDto>
       ).getData();
-      assert.strictEqual(data.projectionYears.length, evaluationPeriodInYears);
-      assert.strictEqual(
-        data.aggregatedReconversionImpacts.cumulativeBalanceByYear.length,
-        evaluationPeriodInYears,
-      );
+      assert.strictEqual(data.projectionYears.length, 50);
+      assert.strictEqual(data.aggregatedReconversionImpacts.cumulativeBalanceByYear.length, 50);
     });
 
     it("projectionYears starts at operationsFirstYear", async () => {
       const usecase = buildUseCase(fricheProjectData, fricheSite);
       const result = await usecase.execute({
         reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears: 10,
       });
 
       const { impacts: data } = (
@@ -308,7 +300,6 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       const usecase = buildUseCase(fricheProjectData, fricheSite);
       const result = await usecase.execute({
         reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears: 10,
       });
 
       const { impacts: data } = (
@@ -317,8 +308,8 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
 
       assert.strictEqual(data.projectEconomicBalance.total, -720000);
       assert.ok(
-        Math.abs(data.aggregatedReconversionImpacts.indirectEconomicImpacts.total - 32940923) < 0.5,
-        `expected indirectEconomicImpacts.total to be close to 32940923, got ${data.aggregatedReconversionImpacts.indirectEconomicImpacts.total}`,
+        Math.abs(data.aggregatedReconversionImpacts.indirectEconomicImpacts.total - 33436715) < 0.5,
+        `expected indirectEconomicImpacts.total to be close to 33436715, got ${data.aggregatedReconversionImpacts.indirectEconomicImpacts.total}`,
       );
     });
 
@@ -326,7 +317,6 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       const usecase = buildUseCase(fricheProjectData, fricheSite);
       const result = await usecase.execute({
         reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears: 10,
       });
 
       const { impacts: data } = (
@@ -453,11 +443,9 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
     };
 
     it("economicBalance.total includes operating balance", async () => {
-      const evaluationPeriodInYears = 10;
       const usecase = buildUseCase(privateDevProject, fricheSite);
       const result = await usecase.execute({
         reconversionProjectId: privateDevProject.id,
-        evaluationPeriodInYears,
       });
 
       assert.strictEqual(result.isSuccess(), true);
@@ -474,18 +462,15 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
     });
 
     it("indirectEconomicImpacts does NOT include operating balance", async () => {
-      const evaluationPeriodInYears = 10;
       const usecase = buildUseCase(privateDevProject, fricheSite);
       const resultPrivate = await usecase.execute({
         reconversionProjectId: privateDevProject.id,
-        evaluationPeriodInYears,
       });
 
       // Compare with local-authority version where operating IS in indirect
       const usecaseLocalAuth = buildUseCase(fricheProjectData, fricheSite);
       const resultLocalAuth = await usecaseLocalAuth.execute({
         reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears,
       });
 
       const { impacts: dataPrivate } = (
@@ -525,11 +510,9 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
     };
 
     it("economicBalance equals development-only balance", async () => {
-      const evaluationPeriodInYears = 10;
       const usecase = buildUseCase(thirdPartyProject, fricheSite);
       const result = await usecase.execute({
         reconversionProjectId: thirdPartyProject.id,
-        evaluationPeriodInYears,
       });
 
       const { impacts: data } = (
@@ -540,17 +523,14 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
     });
 
     it("indirectEconomicImpacts does not include operating balance", async () => {
-      const evaluationPeriodInYears = 10;
       const usecase = buildUseCase(thirdPartyProject, fricheSite);
       const result = await usecase.execute({
         reconversionProjectId: thirdPartyProject.id,
-        evaluationPeriodInYears,
       });
 
       const usecaseLocalAuth = buildUseCase(fricheProjectData, fricheSite);
       const resultLocalAuth = await usecaseLocalAuth.execute({
         reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears,
       });
 
       const { impacts: data } = (
@@ -595,85 +575,6 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Evaluation period sensitivity
-  // ---------------------------------------------------------------------------
-
-  describe("Evaluation period sensitivity", () => {
-    it("longer period yields more projection years", async () => {
-      const usecase10 = buildUseCase(fricheProjectData, fricheSite);
-      const result10 = await usecase10.execute({
-        reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears: 10,
-      });
-
-      const usecase30 = buildUseCase(fricheProjectData, fricheSite);
-      const result30 = await usecase30.execute({
-        reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears: 30,
-      });
-
-      const { impacts: data10 } = (
-        result10 as SuccessResult<GetReconversionProjectImpactsResultDto>
-      ).getData();
-      const { impacts: data30 } = (
-        result30 as SuccessResult<GetReconversionProjectImpactsResultDto>
-      ).getData();
-
-      assert.strictEqual(data10.projectionYears.length, 10);
-      assert.strictEqual(data30.projectionYears.length, 30);
-    });
-
-    it("longer period yields higher indirectEconomicImpacts.total (more years of impact)", async () => {
-      const usecase10 = buildUseCase(fricheProjectData, fricheSite);
-      const result10 = await usecase10.execute({
-        reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears: 10,
-      });
-
-      const usecase30 = buildUseCase(fricheProjectData, fricheSite);
-      const result30 = await usecase30.execute({
-        reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears: 30,
-      });
-
-      const total10 = (result10 as SuccessResult<GetReconversionProjectImpactsResultDto>).getData()
-        .impacts.aggregatedReconversionImpacts.indirectEconomicImpacts.total;
-
-      const total30 = (result30 as SuccessResult<GetReconversionProjectImpactsResultDto>).getData()
-        .impacts.aggregatedReconversionImpacts.indirectEconomicImpacts.total;
-
-      assert.ok(total30 > total10, `expected total30 (${total30}) > total10 (${total10})`);
-    });
-
-    it("breakEvenYear is undefined when the balance never turns positive within the period", async () => {
-      // With only 1 year the development costs are unlikely to be recovered
-      const usecase = buildUseCase(
-        {
-          ...fricheProjectData,
-          soilsDistribution: [
-            {
-              soilType: "IMPERMEABLE_SOILS",
-              surfaceArea: 50000,
-              spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
-            },
-          ],
-        },
-        fricheSite,
-      );
-      const result = await usecase.execute({
-        reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears: 1,
-      });
-
-      const { impacts: data } = (
-        result as SuccessResult<GetReconversionProjectImpactsResultDto>
-      ).getData();
-      // cumulativeBalanceByYear[0] is very negative (development costs dominate)
-      assert.strictEqual(data.aggregatedReconversionImpacts.breakEvenYear, undefined);
-    });
-  });
-
-  // ---------------------------------------------------------------------------
   // operationsFirstYear fallback
   // ---------------------------------------------------------------------------
 
@@ -688,7 +589,6 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       const usecase = buildUseCase(projectWithoutFirstYear, fricheSite);
       const result = await usecase.execute({
         reconversionProjectId: projectWithoutFirstYear.id,
-        evaluationPeriodInYears: 10,
       });
 
       const { impacts: data } = (
@@ -704,7 +604,6 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       const usecase = buildUseCase(fricheProjectData, fricheSite);
       const result = await usecase.execute({
         reconversionProjectId: fricheProjectData.id,
-        evaluationPeriodInYears: 10,
       });
 
       const { developmentScore } = (

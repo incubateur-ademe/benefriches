@@ -29,11 +29,11 @@ import { formatReconversionProjectInputToFeatures } from "src/reconversion-proje
 import type { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
 import { ArchiveReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/archiveReconversionProject.usecase";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
-import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
 import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { DuplicateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/duplicateReconversionProject.usecase";
 import { GenerateAndSaveReconversionProjectFromTemplateUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveReconversionProjectFromTemplate.usecase";
 import { GenerateReconversionProjectFromTemplateUseCase } from "src/reconversion-projects/core/usecases/generateReconversionProjectFromTemplate.usecase";
+import { GetProjectImpactAnalysisUseCase } from "src/reconversion-projects/core/usecases/getProjectImpactsAnalysisUseCase.usecase";
 import { GetReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/getReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
@@ -84,7 +84,7 @@ export class ReconversionProjectController {
   private readonly updateReconversionProjectUseCase: UpdateReconversionProjectUseCase;
   private readonly getReconversionProjectUseCase: GetReconversionProjectUseCase;
   private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase;
-  private readonly getReconversionProjectImpactsBreakEvenLevelUseCase: ComputeReconversionProjectBreakEvenLevelUseCase;
+  private readonly getProjectImpactsAnalysisUseCase: GetProjectImpactAnalysisUseCase;
   private readonly generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase;
   private readonly generateAndSaveReconversionProjectFromTemplateUseCase: GenerateAndSaveReconversionProjectFromTemplateUseCase;
   private readonly getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase;
@@ -97,7 +97,7 @@ export class ReconversionProjectController {
     updateReconversionProjectUseCase: UpdateReconversionProjectUseCase,
     getReconversionProjectUseCase: GetReconversionProjectUseCase,
     getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
-    getReconversionProjectImpactsBreakEvenLevelUseCase: ComputeReconversionProjectBreakEvenLevelUseCase,
+    getProjectImpactsAnalysisUseCase: GetProjectImpactAnalysisUseCase,
     generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase,
     generateAndSaveReconversionProjectFromTemplateUseCase: GenerateAndSaveReconversionProjectFromTemplateUseCase,
     getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase,
@@ -110,8 +110,7 @@ export class ReconversionProjectController {
     this.updateReconversionProjectUseCase = updateReconversionProjectUseCase;
     this.getReconversionProjectUseCase = getReconversionProjectUseCase;
     this.getReconversionProjectsBySite = getReconversionProjectsBySite;
-    this.getReconversionProjectImpactsBreakEvenLevelUseCase =
-      getReconversionProjectImpactsBreakEvenLevelUseCase;
+    this.getProjectImpactsAnalysisUseCase = getProjectImpactsAnalysisUseCase;
     this.generateReconversionProjectFromTemplateUseCase =
       generateReconversionProjectFromTemplateUseCase;
     this.generateAndSaveReconversionProjectFromTemplateUseCase =
@@ -282,7 +281,7 @@ export class ReconversionProjectController {
   @UseGuards(JwtAuthGuard)
   @Get(":reconversionProjectId/impacts")
   async getProjectImpacts(@Param("reconversionProjectId") reconversionProjectId: string) {
-    const result = await this.getReconversionProjectImpactsBreakEvenLevelUseCase.execute({
+    const result = await this.getProjectImpactsAnalysisUseCase.execute({
       reconversionProjectId,
     });
 

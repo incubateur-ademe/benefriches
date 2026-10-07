@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import type { LetterGrade } from "shared";
 
 import classNames from "@/shared/views/clsx";
 
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
-import BreakEvenLevelImpactsActionBar from "../project-break-even-level/ProjectBreakEvenLevelActionBar";
 import ProjectPageHeader from "../project-page/header";
 import ProjectDevelopmentEnvironmentScore from "./ProjectDevelopmentEnvironmentScore";
 import ProjectDevelopmentFullTimeJobsScore from "./ProjectDevelopmentFullTimeJobsScore";
@@ -62,16 +61,23 @@ function buildHighlightSentence(
 
 type Props = DevelopmentScoreDataView & {
   projectId: string;
-  onEvaluationPeriodChange: (value: number) => void;
 };
 
-export default function ProjectDevelopmentScore({
-  projectId,
-  details,
-  score,
-  evaluationPeriodInYears,
-  onEvaluationPeriodChange,
-}: Props) {
+export default function ProjectDevelopmentScore({ projectId, details, score }: Props) {
+  const [isTitleInViewport, setIsTitleInViewPort] = useState(false);
+
+  const titleRef = (node: HTMLHeadingElement) => {
+    const observer = new IntersectionObserver(([entry]) => {
+      const entryIntersecting = entry?.isIntersecting ?? false;
+      setIsTitleInViewPort(entryIntersecting);
+    });
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  };
+
   const {
     localAuthorityEconomicScore,
     localPeopleQualityOfLifeScore,
@@ -119,12 +125,28 @@ export default function ProjectDevelopmentScore({
   return (
     <div className="flex flex-col gap-14">
       <div className="flex items-center justify-between">
-        <h3 className="text-2xl mb-0">Score d'impact</h3>
-        <BreakEvenLevelImpactsActionBar
-          evaluationPeriod={evaluationPeriodInYears}
-          onEvaluationPeriodChange={onEvaluationPeriodChange}
-          header={<ProjectPageHeader projectId={projectId} />}
-        />
+        <h3 className="text-2xl mb-0" ref={titleRef}>
+          Score d'impact
+        </h3>
+        <span className="px-4 py-2 font-medium rounded-sm text-(--text-action-high-blue-france) shadow-[inset_0_0_0_1px_var(--border-action-high-blue-france)]">
+          Durée : 50 ans
+        </span>
+        {!isTitleInViewport && (
+          <div
+            className={classNames(
+              "bg-dsfr-grey",
+              "shadow-md",
+              "left-0",
+              "z-30",
+              "w-full",
+              "fixed",
+              "top-0",
+              "py-4 md:p-4",
+            )}
+          >
+            <ProjectPageHeader projectId={projectId} />
+          </div>
+        )}
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">

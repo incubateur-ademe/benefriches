@@ -14,7 +14,7 @@ import { SmtpMailer } from "src/notifications/adapters/secondary/mailer/SmtpMail
 import { SendProjectImpactsSummaryEmailUseCase } from "src/notifications/core/usecases/sendProjectImpactsSummaryEmail.usecase";
 import { createReconversionProjectCreatedEvent } from "src/reconversion-projects/core/events/reconversionProjectCreated.event";
 import { buildUrbanProjectReconversionProjectProps } from "src/reconversion-projects/core/model/reconversionProject.mock";
-import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
+import { GetProjectImpactAnalysisUseCase } from "src/reconversion-projects/core/usecases/getProjectImpactsAnalysisUseCase.usecase";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
@@ -273,7 +273,7 @@ describe("SendProjectImpactsSummaryOnReconversionProjectCreatedHandler integrati
       userId,
       email: "gregoire.bailleux@example.fr",
     });
-    mock.method(app.get(ComputeReconversionProjectBreakEvenLevelUseCase), "execute", () =>
+    mock.method(app.get(GetProjectImpactAnalysisUseCase), "execute", () =>
       Promise.reject(new Error("Impacts computation crashed")),
     );
 

@@ -30,7 +30,7 @@ import { SendProjectImpactsSummaryEmailUseCase } from "src/notifications/core/us
 import { SendWelcomeEmailUseCase } from "src/notifications/core/usecases/sendWelcomeEmail.usecase";
 import { UnsubscribeFromLifecycleEmailsUseCase } from "src/notifications/core/usecases/unsubscribeFromLifecycleEmails.usecase";
 import { ReconversionProjectsModule } from "src/reconversion-projects/adapters/primary/reconversionProjects.module";
-import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
+import { GetProjectImpactAnalysisUseCase } from "src/reconversion-projects/core/usecases/getProjectImpactsAnalysisUseCase.usecase";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
@@ -102,7 +102,7 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
       inject: [
         LifecycleEmailSender,
         SqlLifecycleEmailProjectQuery,
-        ComputeReconversionProjectBreakEvenLevelUseCase,
+        GetProjectImpactAnalysisUseCase,
         ConfigService,
         HmacUnsubscribeTokenService,
       ],
@@ -135,7 +135,7 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
         SqlLifecycleEmailDeliveryQuery,
         SqlLifecycleEmailSiteQuery,
         SqlLifecycleEmailProjectQuery,
-        ComputeReconversionProjectBreakEvenLevelUseCase,
+        GetProjectImpactAnalysisUseCase,
         LifecycleEmailSender,
         RealDateProvider,
         ConfigService,
@@ -217,7 +217,7 @@ import { SendWelcomeEmailOnUserAccountCreatedHandler } from "./sendWelcomeEmailO
         ConfigService,
         HmacUnsubscribeTokenService,
         SqlLifecycleEmailProjectQuery,
-        ComputeReconversionProjectBreakEvenLevelUseCase,
+        GetProjectImpactAnalysisUseCase,
       ],
     },
     {

@@ -38,6 +38,7 @@ describe("Project impacts fetching", () => {
       },
       contextData: urbanProjectImpactMockMeta,
       impacts: urbanProjectImpactMock,
+      developmentScore: urbanProjectDevelopmentScoreMock,
       evaluationPeriod: 50,
       currentViewMode: "summary",
     });
