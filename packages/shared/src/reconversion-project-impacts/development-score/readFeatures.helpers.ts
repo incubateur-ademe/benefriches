@@ -3,11 +3,16 @@ import { typedObjectEntries } from "../../object-entries";
 import type { BuildingsUseDistribution } from "../../reconversion-projects";
 import { roundToInteger, sumListWithKey } from "../../services";
 import type { SiteStatuQuoImpactMetric } from "../../site";
-import { isGreenSoil, type SoilType } from "../../soils";
+import { isGreenSoil } from "../../soils";
 import type {
   AggregatedProjectImpactMetric,
   ProjectOnSiteImpactMetric,
 } from "../projectImpacts.types";
+import type {
+  BuildingUseSurface,
+  SiteReconversionType,
+  SoilEvolutionDetails,
+} from "./developmentScore.types";
 import { sumMetricsTotalByName } from "./scoring.helpers";
 
 export type ContextData = GetReconversionProjectImpactsResultDto["contextData"];
@@ -91,13 +96,6 @@ const getNewGreenSoilSurfaces = (
     "total",
   );
 
-export type SoilEvolutionDetails = {
-  soilsDistribution: { soilType: SoilType; total: number }[];
-  permeableSurfaceDifference: { difference: number; percentVariation: number };
-  contamination: { siteContaminatedSurface: number; difference: number; percentVariation: number };
-  newGreenSoilSurfaces: number;
-};
-
 export const getSoilEvolutionDetails = (props: {
   siteStatuQuoImpactMetrics: SiteStatuQuoImpactMetric[];
   aggregatedReconversionImpactMetrics: AggregatedProjectImpactMetric[];
@@ -109,8 +107,6 @@ export const getSoilEvolutionDetails = (props: {
     newGreenSoilSurfaces: getNewGreenSoilSurfaces(props.aggregatedReconversionImpactMetrics),
   };
 };
-
-export type SiteReconversionType = "friche" | "enaf" | "friche_agricole" | undefined;
 
 export const getSiteReconversionType = (contextData: ContextData): SiteReconversionType => {
   if (contextData.siteNature === "FRICHE" && contextData.fricheActivity === "AGRICULTURE") {
@@ -126,10 +122,6 @@ export const getSiteReconversionType = (contextData: ContextData): SiteReconvers
   return undefined;
 };
 
-export type BuildingUseSurface = {
-  buildingUse: keyof BuildingsUseDistribution;
-  floorSurfaceArea: number;
-};
 export const filterBuildingsUses = (
   buildingsUseDistribution: BuildingsUseDistribution,
   usesToKeep: ReadonlySet<keyof BuildingsUseDistribution>,

@@ -2,8 +2,11 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import type { DevelopmentPlanType } from "../../../reconversion-projects";
-import type { SiteReconversionType, SoilEvolutionDetails } from "../readFeatures.helpers";
-import type { LetterGrade } from "../scoring.helpers";
+import type {
+  SoilEvolutionDetails,
+  LetterGrade,
+  SiteReconversionType,
+} from "../developmentScore.types";
 import { getZanComplianceScore } from "./zanCompliance.score";
 
 const testCasesGradeA = [
@@ -239,10 +242,7 @@ const assertTestData = (testData: TestData, letterGrade: LetterGrade) => {
   );
 
   it(`returns ${letterGrade} grade for ${testData.projectDevelopmentPlanType} ${dataDescList.join(", ")}`, () => {
-    const result = getZanComplianceScore(
-      testData.siteReconversionType,
-      testData.soilsEvolutionDetails,
-    );
+    const result = getZanComplianceScore(testData);
     assert.strictEqual(result?.letterGrade, letterGrade);
     assert.strictEqual(
       result?.metrics.newGreenSoilSurfaces,

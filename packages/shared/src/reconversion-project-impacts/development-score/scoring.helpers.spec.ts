@@ -5,6 +5,7 @@ import {
   convertLetterGradeToGradePoints,
   convertGradePointsToLetterGrade,
   LETTER_GRADE_THRESHOLDS,
+  computeSectionScore,
 } from "./scoring.helpers";
 
 describe("convertLetterGradeToGradePoints", () => {
@@ -70,5 +71,28 @@ describe("convertGradePointsToLetterGrade", () => {
       const top = LETTER_GRADE_THRESHOLDS[0];
       assert.equal(convertGradePointsToLetterGrade(1000), top?.grade);
     });
+  });
+});
+
+const grade = (letterGrade: "A" | "B" | "C" | "D" | "E") => ({
+  letterGrade,
+  metrics: {},
+});
+
+describe("computeSectionScore", () => {
+  it("returns average score from indicators", () => {
+    const { score } = computeSectionScore({ indicator1: grade("A"), indicator2: grade("B") });
+    assert.equal(score.gradePoints, 80);
+  });
+
+  it("counts an undefined indicator as 0 point", () => {
+    const { score } = computeSectionScore({ indicator1: grade("A"), indicator2: undefined });
+    assert.equal(score.gradePoints, 45);
+  });
+
+  it("does not return NaN if there is no indicator defined", () => {
+    const { score } = computeSectionScore({});
+    assert.equal(score.gradePoints, 0);
+    assert.equal(score.letterGrade, "E");
   });
 });

@@ -1,6 +1,6 @@
 import type { BuildingsUseDistribution } from "../../../reconversion-projects";
-import { type BuildingUseSurface, filterBuildingsUses } from "../readFeatures.helpers";
-import type { ScoredMetrics } from "../scoring.helpers";
+import type { AccessToHealthCareIndicator } from "../developmentScore.types";
+import { filterBuildingsUses } from "../readFeatures.helpers";
 
 const HEALTH_RELATED_BUILDINGS: Set<keyof BuildingsUseDistribution> = new Set([
   "LOCAL_HEALTH_SERVICE",
@@ -10,7 +10,7 @@ const HEALTH_RELATED_BUILDINGS: Set<keyof BuildingsUseDistribution> = new Set([
 
 export const getAccessToHealthCareScore = (
   buildingsUseDistribution?: BuildingsUseDistribution,
-): ScoredMetrics<{ matchingBuildingsUses: BuildingUseSurface[] }> => {
+): AccessToHealthCareIndicator => {
   if (!buildingsUseDistribution) {
     return undefined;
   }

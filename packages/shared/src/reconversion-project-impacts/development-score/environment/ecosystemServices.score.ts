@@ -1,6 +1,6 @@
 import { filterByName } from "../../../filter-by-name";
 import type { AggregatedReconversionProjectOnSiteImpactItemView } from "../../projectImpacts.types";
-import type { ScoredMetrics, LetterGrade } from "../scoring.helpers";
+import type { LetterGrade, EcosystemServicesIndicator } from "../developmentScore.types";
 
 const getEcosystemServicesLetterGrade = (
   positiveCount: number,
@@ -25,9 +25,7 @@ const getEcosystemServicesLetterGrade = (
 
 export const getEcosystemServicesScore = (
   aggregatedReconversionEconomicImpacts: AggregatedReconversionProjectOnSiteImpactItemView[],
-): ScoredMetrics<{
-  ecosystemicServices: AggregatedReconversionProjectOnSiteImpactItemView[];
-}> => {
+): EcosystemServicesIndicator => {
   const ecosystemicServices = filterByName(
     aggregatedReconversionEconomicImpacts,
     "newStoredCo2Eq",

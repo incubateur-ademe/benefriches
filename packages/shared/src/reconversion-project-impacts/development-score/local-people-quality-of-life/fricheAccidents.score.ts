@@ -1,11 +1,10 @@
 import { type AggregatedProjectImpactMetric } from "../../projectImpacts.types";
-import { type ScoredMetrics, sumMetricsTotalByName } from "../scoring.helpers";
+import type { FricheAccidentsIndicator } from "../developmentScore.types";
+import { sumMetricsTotalByName } from "../scoring.helpers";
 
 export const getFricheAccidentsScore = (
   aggregatedReconversionImpactMetrics: AggregatedProjectImpactMetric[],
-): ScoredMetrics<{
-  avoidedFricheAccidents: number;
-}> => {
+): FricheAccidentsIndicator => {
   const avoidedFricheAccidents = sumMetricsTotalByName(
     aggregatedReconversionImpactMetrics,
     "avoidedFricheAccidentsDeaths",

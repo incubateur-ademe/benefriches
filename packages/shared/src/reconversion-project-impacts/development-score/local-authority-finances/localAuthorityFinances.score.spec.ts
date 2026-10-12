@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { urbanProjectImpactsResultDto } from "../../mocks";
-import type { LetterGrade } from "../scoring.helpers";
+import type { LetterGrade } from "../developmentScore.types";
 import { getLocalAuthorityFinancesScore } from "./localAuthorityFinances.score";
 
 const MOCK_NEGATIVE_LOCAL_AUTHORITY_TOTAL = -356_404;

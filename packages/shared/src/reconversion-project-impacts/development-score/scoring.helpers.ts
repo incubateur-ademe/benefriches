@@ -1,8 +1,11 @@
 import { filterByName } from "../../filter-by-name";
 import { roundTo2Digits, sumList, sumListWithKey } from "../../services";
-
-export type LetterGrade = "A" | "B" | "C" | "D" | "E";
-export type LetterGradeWithModifier = LetterGrade | `${LetterGrade}+` | `${LetterGrade}-`;
+import type {
+  LetterGrade,
+  LetterGradeWithModifier,
+  Score,
+  ScoredIndicator,
+} from "./developmentScore.types";
 
 const LETTER_GRADE_NUMBER_VALUES: Record<LetterGrade, number> = {
   A: 90,
@@ -59,12 +62,6 @@ const getLetterGradeFromLetterGradeWithModifiers = (letterGrade: LetterGradeWith
   }
 };
 
-export type Score = {
-  letterGrade: LetterGrade;
-  letterGradeWithModifiers: LetterGradeWithModifier;
-  gradePoints: number;
-};
-
 export const computeScoreFromGradePoints = (gradePoints: number): Score => {
   const letterGradeWithModifiers = convertGradePointsToLetterGrade(gradePoints);
 
@@ -79,15 +76,16 @@ export const convertGradePointsToLetterGrade = (gradePoints: number): LetterGrad
   LETTER_GRADE_THRESHOLDS.find(({ minGradePoints }) => gradePoints >= minGradePoints)?.grade ??
   "E-";
 
-export type ScoredMetrics<TMetrics> = { letterGrade: LetterGrade; metrics: TMetrics } | undefined;
-
-export const computeSectionScore = <TDetails extends Record<string, ScoredMetrics<unknown>>>(
+export const computeSectionScore = <TDetails extends Record<string, ScoredIndicator<unknown>>>(
   details: TDetails,
 ) => {
   const gradePointsList = Object.values(details).map((item) =>
     item ? convertLetterGradeToGradePoints(item.letterGrade) : 0,
   );
-  const gradePoints = roundTo2Digits(sumList(gradePointsList) / gradePointsList.length);
+  const gradePoints =
+    gradePointsList.length > 0
+      ? roundTo2Digits(sumList(gradePointsList) / gradePointsList.length)
+      : 0;
 
   return {
     score: computeScoreFromGradePoints(gradePoints),

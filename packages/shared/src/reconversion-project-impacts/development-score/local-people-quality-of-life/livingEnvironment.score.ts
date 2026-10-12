@@ -1,24 +1,10 @@
 import type { BuildingsUseDistribution } from "../../../reconversion-projects";
-import type { SiteNature } from "../../../site";
-import {
-  filterBuildingsUses,
-  type SiteReconversionType,
-  type SoilEvolutionDetails,
-} from "../readFeatures.helpers";
-import type { LetterGrade, ScoredMetrics } from "../scoring.helpers";
-
-export type LivingEnvironmentContext = {
-  siteNature: SiteNature;
-  projectDevelopmentPlanType:
-    | "SUBURBAN_DENSIFICATION"
-    | "GRAND_ENSEMBLE"
-    | "ZAE_TRANSFORMATION"
-    | "URBAN_PROJECT"
-    | "PHOTOVOLTAIC_POWER_PLANT";
-  siteReconversionType: SiteReconversionType;
-  buildingsFloorAreaDistribution: BuildingsUseDistribution | undefined;
-  soilEvolutionDetails: Pick<SoilEvolutionDetails, "newGreenSoilSurfaces">;
-};
+import type {
+  LetterGrade,
+  LivingEnvironmentContext,
+  LivingEnvironmentIndicator,
+} from "../developmentScore.types";
+import { filterBuildingsUses } from "../readFeatures.helpers";
 
 const PROXIMITY_AMENITY_BUILDINGS: Set<keyof BuildingsUseDistribution> = new Set([
   "RESIDENTIAL",
@@ -74,7 +60,7 @@ const getLivingEnvironmentLetterGrade = (ctx: LivingEnvironmentContext): LetterG
 
 export const getLivingEnvironmentScore = (
   ctx: LivingEnvironmentContext,
-): ScoredMetrics<LivingEnvironmentContext> => ({
+): LivingEnvironmentIndicator => ({
   letterGrade: getLivingEnvironmentLetterGrade(ctx),
   metrics: ctx,
 });

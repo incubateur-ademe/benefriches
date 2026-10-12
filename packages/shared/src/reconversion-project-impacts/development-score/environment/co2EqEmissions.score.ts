@@ -1,8 +1,9 @@
 import { type DevelopmentPlanType } from "../../../reconversion-projects";
 import { type SiteStatuQuoImpactMetric } from "../../../site";
 import { type AggregatedProjectImpactMetric } from "../../projectImpacts.types";
+import type { Co2eqEmissionsVariationIndicator, LetterGrade } from "../developmentScore.types";
 import { getEvolutionAsPercentage } from "../readFeatures.helpers";
-import { type ScoredMetrics, type LetterGrade, sumMetricsTotalByName } from "../scoring.helpers";
+import { sumMetricsTotalByName } from "../scoring.helpers";
 
 const getPhotovoltaicLetterGrade = ({
   avoidedWithEnergyCo2eq,
@@ -51,12 +52,7 @@ export const getAvoidedCo2EmissionsScore = (props: {
   projectDevelopmentPlanType: DevelopmentPlanType;
   aggregatedReconversionImpactMetrics: AggregatedProjectImpactMetric[];
   siteStatuQuoImpactMetrics: SiteStatuQuoImpactMetric[];
-}): ScoredMetrics<{
-  avoidedCo2eqEmissions: number;
-  newStoredCo2Eq: number;
-  siteStatuQuoStoredCo2Eq: number;
-  soilStoredPercentageVariation: number;
-}> => {
+}): Co2eqEmissionsVariationIndicator => {
   const avoidedCo2eqEmissions = sumMetricsTotalByName(
     props.aggregatedReconversionImpactMetrics,
     "avoidedAirConditioningCo2eqEmissions",

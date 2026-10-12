@@ -3,8 +3,11 @@ import { describe, it } from "node:test";
 
 import { typedObjectEntries } from "../../../object-entries";
 import type { BuildingsUseDistribution } from "../../../reconversion-projects";
-import type { SiteReconversionType, SoilEvolutionDetails } from "../readFeatures.helpers";
-import type { LetterGrade } from "../scoring.helpers";
+import type {
+  LetterGrade,
+  SiteReconversionType,
+  SoilEvolutionDetails,
+} from "../developmentScore.types";
 import { getLocalHealthinessScore } from "./localHealthiness.score";
 
 const testCasesGradeA = [

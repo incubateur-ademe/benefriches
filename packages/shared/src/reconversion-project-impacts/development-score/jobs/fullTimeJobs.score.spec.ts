@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 
 import type { DevelopmentPlanType } from "../../../reconversion-projects";
 import type { AggregatedProjectImpactMetric } from "../../projectImpacts.types";
-import type { LetterGrade } from "../scoring.helpers";
+import type { LetterGrade } from "../developmentScore.types";
 import { getFullTimeJobsScore } from "./fullTimeJobs.score";
 
 const SITE_SURFACE_AREA = 10000;

@@ -1,6 +1,7 @@
-export {
-  computeProjectDevelopmentScore,
-  type ProjectDevelopmentScore,
-} from "./computeProjectDevelopmentScore";
+export { computeProjectDevelopmentScore } from "./computeProjectDevelopmentScore";
 
-export { type LetterGrade, type LetterGradeWithModifier } from "./scoring.helpers";
+export type {
+  ProjectDevelopmentScore,
+  LetterGrade,
+  LetterGradeWithModifier,
+} from "./developmentScore.types";

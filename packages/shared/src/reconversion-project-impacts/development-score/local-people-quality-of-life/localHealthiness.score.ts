@@ -1,16 +1,15 @@
 import type { BuildingsUseDistribution } from "../../../reconversion-projects";
-import type { SiteReconversionType, SoilEvolutionDetails } from "../readFeatures.helpers";
-import type { ScoredMetrics } from "../scoring.helpers";
+import type {
+  LocalHealthinessIndicator,
+  SiteReconversionType,
+  SoilEvolutionDetails,
+} from "../developmentScore.types";
 
 export const getLocalHealthinessScore = (props: {
   siteReconversionType: SiteReconversionType;
   buildingsFloorAreaDistribution: BuildingsUseDistribution | undefined;
   soilEvolutionDetails: Pick<SoilEvolutionDetails, "newGreenSoilSurfaces">;
-}): ScoredMetrics<{
-  siteReconversionType: SiteReconversionType;
-  sportsFacilitiesFloorSurface: number;
-  newGreenSoilSurfaces: number;
-}> => {
+}): LocalHealthinessIndicator => {
   if (!props.buildingsFloorAreaDistribution) {
     return undefined;
   }

@@ -1,11 +1,10 @@
 import { type AggregatedProjectImpactMetric } from "../../projectImpacts.types";
-import { type ScoredMetrics, sumMetricsTotalByName } from "../scoring.helpers";
+import type { TrafficSecurityIndicator } from "../developmentScore.types";
+import { sumMetricsTotalByName } from "../scoring.helpers";
 
 export const getTrafficSecurityScore = (
   aggregatedReconversionImpactMetrics: AggregatedProjectImpactMetric[],
-): ScoredMetrics<{
-  avoidedTrafficAccidents: number;
-}> => {
+): TrafficSecurityIndicator => {
   const avoidedTrafficAccidents = sumMetricsTotalByName(
     aggregatedReconversionImpactMetrics,
     "avoidedTrafficAccidentsDeaths",
