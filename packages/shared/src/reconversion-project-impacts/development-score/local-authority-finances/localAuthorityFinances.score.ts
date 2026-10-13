@@ -2,7 +2,11 @@ import type { GetReconversionProjectImpactsResultDto } from "../../../api-dtos";
 import { roundToInteger } from "../../../services";
 import { groupIndirectEconomicImpactsByBearer } from "../../group-impacts";
 import type { AggregatedReconversionIndirectEconomicImpactsDataView } from "../../projectImpacts.types";
-import type { LocalAuthorityFinancesIndicator, LetterGrade } from "../developmentScore.types";
+import type {
+  LocalAuthorityFinancesIndicatorMetrics,
+  LetterGrade,
+} from "../developmentScore.types";
+import type { RequiredIndicatorScore } from "../scoring.helpers";
 
 const getLetterGrade = (percentage: number): LetterGrade => {
   if (percentage > 150) {
@@ -25,7 +29,7 @@ export const getLocalAuthorityFinancesScore = (props: {
   aggregatedReconversionEconomicImpacts: AggregatedReconversionIndirectEconomicImpactsDataView["details"];
   stakeholders: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
   municipalityCapitalExpenditures: { amount: number; referenceYear: string };
-}): LocalAuthorityFinancesIndicator => {
+}): RequiredIndicatorScore<LocalAuthorityFinancesIndicatorMetrics> => {
   const impactsByBearer = groupIndirectEconomicImpactsByBearer(
     props.aggregatedReconversionEconomicImpacts,
     props.stakeholders,

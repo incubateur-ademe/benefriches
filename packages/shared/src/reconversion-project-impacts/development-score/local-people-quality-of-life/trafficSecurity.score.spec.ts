@@ -70,7 +70,7 @@ describe("trafficSecurity score", () => {
 
     it(`returns undefined for ${dataDesc}`, () => {
       const result = getTrafficSecurityScore(testData.aggregatedReconversionImpactMetrics);
-      assert.strictEqual(result, undefined);
+      assert.strictEqual(result.letterGrade, undefined);
     });
   }
 });

@@ -70,21 +70,17 @@ const getLetterGradeBadgeText = (letterGrade: LetterGrade) => {
 
 export default function ProjectDevelopmentLocalAuthorityFinancesScore({
   score,
-  details,
+  indicators,
   linkProps,
 }: Props) {
   const chartContainerId = useId();
-
-  if (!details.localAuthorityFinances) {
-    return null;
-  }
 
   const {
     projectLocalAuthorityIndirectEconomicImpactsTotal,
     municipalityCapitalExpendituresAmount,
     municipalityCapitalExpendituresReferenceYear,
     percentageComparison,
-  } = details.localAuthorityFinances.metrics;
+  } = indicators.localAuthorityFinances.metrics;
 
   const data = [
     {

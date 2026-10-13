@@ -1,9 +1,12 @@
 import { type DevelopmentPlanType } from "../../../reconversion-projects";
 import { type SiteStatuQuoImpactMetric } from "../../../site";
 import { type AggregatedProjectImpactMetric } from "../../projectImpacts.types";
-import type { Co2eqEmissionsVariationIndicator, LetterGrade } from "../developmentScore.types";
+import type {
+  Co2eqEmissionsVariationIndicatorMetrics,
+  LetterGrade,
+} from "../developmentScore.types";
 import { getEvolutionAsPercentage } from "../readFeatures.helpers";
-import { sumMetricsTotalByName } from "../scoring.helpers";
+import { type RequiredIndicatorScore, sumMetricsTotalByName } from "../scoring.helpers";
 
 const getPhotovoltaicLetterGrade = ({
   avoidedWithEnergyCo2eq,
@@ -52,7 +55,7 @@ export const getAvoidedCo2EmissionsScore = (props: {
   projectDevelopmentPlanType: DevelopmentPlanType;
   aggregatedReconversionImpactMetrics: AggregatedProjectImpactMetric[];
   siteStatuQuoImpactMetrics: SiteStatuQuoImpactMetric[];
-}): Co2eqEmissionsVariationIndicator => {
+}): RequiredIndicatorScore<Co2eqEmissionsVariationIndicatorMetrics> => {
   const avoidedCo2eqEmissions = sumMetricsTotalByName(
     props.aggregatedReconversionImpactMetrics,
     "avoidedAirConditioningCo2eqEmissions",
@@ -79,25 +82,21 @@ export const getAvoidedCo2EmissionsScore = (props: {
     soilStoredPercentageVariation,
   };
 
-  switch (props.projectDevelopmentPlanType) {
-    case "PHOTOVOLTAIC_POWER_PLANT":
-      return {
-        letterGrade: getPhotovoltaicLetterGrade({
-          avoidedWithEnergyCo2eq: avoidedCo2eqEmissions,
-          soilStoredPercentageVariation,
-          totalCo2eq,
-        }),
-        metrics,
-      };
-    case "URBAN_PROJECT":
-      return {
-        letterGrade: getUrbanProjectLetterGrade({
-          soilStoredPercentageVariation,
-          totalCo2eq,
-        }),
-        metrics,
-      };
-    default:
-      return undefined;
+  if (props.projectDevelopmentPlanType === "PHOTOVOLTAIC_POWER_PLANT") {
+    return {
+      letterGrade: getPhotovoltaicLetterGrade({
+        avoidedWithEnergyCo2eq: avoidedCo2eqEmissions,
+        soilStoredPercentageVariation,
+        totalCo2eq,
+      }),
+      metrics,
+    };
   }
+  return {
+    letterGrade: getUrbanProjectLetterGrade({
+      soilStoredPercentageVariation,
+      totalCo2eq,
+    }),
+    metrics,
+  };
 };

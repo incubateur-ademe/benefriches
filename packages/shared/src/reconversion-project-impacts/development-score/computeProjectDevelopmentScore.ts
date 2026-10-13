@@ -15,10 +15,20 @@ import { getLivingEnvironmentScore } from "./local-people-quality-of-life/living
 import { getLocalHealthinessScore } from "./local-people-quality-of-life/localHealthiness.score";
 import { getTrafficSecurityScore } from "./local-people-quality-of-life/trafficSecurity.score";
 import { getSiteReconversionType, getSoilEvolutionDetails } from "./readFeatures.helpers";
-import { computeSectionScore, computeScoreFromGradePoints } from "./scoring.helpers";
+import {
+  withFamilyScore,
+  computeScoreFromGradePoints,
+  withRequiredIndicatorScore,
+  withNullableIndicatorScore,
+} from "./scoring.helpers";
+
+type ContextData = GetReconversionProjectImpactsResultDto["contextData"];
+
+const isUrbanProject = (cx: ContextData) => cx.projectDevelopmentPlan.type === "URBAN_PROJECT";
+const isFricheReconversion = (cx: ContextData) => cx.siteNature === "FRICHE";
 
 export const computeProjectDevelopmentScore = (
-  contextData: GetReconversionProjectImpactsResultDto["contextData"],
+  contextData: ContextData,
   impacts: Omit<GetReconversionProjectImpactsResultDto["impacts"], "developmentScore">,
 ): ProjectDevelopmentScore => {
   const soilsEvolutionDetails = getSoilEvolutionDetails({
@@ -30,67 +40,92 @@ export const computeProjectDevelopmentScore = (
 
   const { aggregatedReconversionImpacts, reconversionImpactsBreakdown } = impacts;
 
-  const environmentScore = computeSectionScore({
-    co2eqEmissionsVariation: getAvoidedCo2EmissionsScore({
-      projectDevelopmentPlanType: projectDevelopmentPlanType,
-      aggregatedReconversionImpactMetrics: aggregatedReconversionImpacts.impactsMetrics,
-      siteStatuQuoImpactMetrics: reconversionImpactsBreakdown.siteStatuQuoImpactMetrics,
+  const environmentScore = withFamilyScore({
+    co2eqEmissionsVariation: withRequiredIndicatorScore(
+      getAvoidedCo2EmissionsScore({
+        projectDevelopmentPlanType: projectDevelopmentPlanType,
+        aggregatedReconversionImpactMetrics: aggregatedReconversionImpacts.impactsMetrics,
+        siteStatuQuoImpactMetrics: reconversionImpactsBreakdown.siteStatuQuoImpactMetrics,
+      }),
+    ),
+    zanCompliance: withNullableIndicatorScore({
+      role: "core",
+      applies: true,
+      getScore: () => getZanComplianceScore({ siteReconversionType, soilsEvolutionDetails }),
     }),
-    zanCompliance: getZanComplianceScore({ siteReconversionType, soilsEvolutionDetails }),
-    soilsQuality: getSoilsQualityScore(soilsEvolutionDetails),
-    waterQuality: getWaterQualityScore(soilsEvolutionDetails),
-    ecosystemServices: getEcosystemServicesScore(
-      aggregatedReconversionImpacts.indirectEconomicImpacts.details,
+    soilsQuality: withRequiredIndicatorScore(getSoilsQualityScore(soilsEvolutionDetails)),
+    waterQuality: withRequiredIndicatorScore(getWaterQualityScore(soilsEvolutionDetails)),
+    ecosystemServices: withRequiredIndicatorScore(
+      getEcosystemServicesScore(aggregatedReconversionImpacts.indirectEconomicImpacts.details),
     ),
   });
 
-  const fullTimeJobsScore = computeSectionScore({
-    fullTimeJobs: getFullTimeJobsScore({
-      aggregatedReconversionImpactMetrics: impacts.aggregatedReconversionImpacts.impactsMetrics,
-      siteSurfaceArea: contextData.siteSurfaceArea,
-    }),
+  const fullTimeJobsScore = withFamilyScore({
+    fullTimeJobs: withRequiredIndicatorScore(
+      getFullTimeJobsScore({
+        aggregatedReconversionImpactMetrics: impacts.aggregatedReconversionImpacts.impactsMetrics,
+        siteSurfaceArea: contextData.siteSurfaceArea,
+      }),
+    ),
   });
 
-  const localAuthorityEconomicScore = computeSectionScore({
-    localAuthorityFinances: getLocalAuthorityFinancesScore({
-      aggregatedReconversionEconomicImpacts:
-        impacts.aggregatedReconversionImpacts.indirectEconomicImpacts.details,
-      stakeholders: impacts.stakeholders,
-      municipalityCapitalExpenditures: contextData.municipalityCapitalExpenditures,
-    }),
+  const localAuthorityEconomicScore = withFamilyScore({
+    localAuthorityFinances: withRequiredIndicatorScore(
+      getLocalAuthorityFinancesScore({
+        aggregatedReconversionEconomicImpacts:
+          impacts.aggregatedReconversionImpacts.indirectEconomicImpacts.details,
+        stakeholders: impacts.stakeholders,
+        municipalityCapitalExpenditures: contextData.municipalityCapitalExpenditures,
+      }),
+    ),
   });
 
-  const buildingsFloorAreaEvolution =
+  const buildingsFloorAreaDistribution =
     projectDevelopmentPlanType === "URBAN_PROJECT"
       ? contextData.projectDevelopmentPlan.buildingsFloorAreaDistribution
-      : undefined;
+      : {};
 
-  const livingEnvironment = getLivingEnvironmentScore({
-    siteNature: contextData.siteNature,
-    siteReconversionType: siteReconversionType,
-    soilEvolutionDetails: soilsEvolutionDetails,
-    buildingsFloorAreaDistribution: buildingsFloorAreaEvolution,
-    projectDevelopmentPlanType,
+  const localPeopleQualityOfLifeScore = withFamilyScore({
+    livingEnvironment: withRequiredIndicatorScore(
+      getLivingEnvironmentScore({
+        siteNature: contextData.siteNature,
+        siteReconversionType: siteReconversionType,
+        soilEvolutionDetails: soilsEvolutionDetails,
+        buildingsFloorAreaDistribution: buildingsFloorAreaDistribution,
+        projectDevelopmentPlanType,
+      }),
+    ),
+    localHealthiness: withNullableIndicatorScore({
+      role: "core",
+      applies: isUrbanProject(contextData),
+      getScore: () =>
+        getLocalHealthinessScore({
+          siteReconversionType: siteReconversionType,
+          soilEvolutionDetails: soilsEvolutionDetails,
+          buildingsFloorAreaDistribution: buildingsFloorAreaDistribution,
+        }),
+    }),
+    accessToLocalServices: withNullableIndicatorScore({
+      role: "bonus",
+      applies: isUrbanProject(contextData),
+      getScore: () => getAccessToLocalServicesScore(buildingsFloorAreaDistribution),
+    }),
+    accessToHealthCare: withNullableIndicatorScore({
+      role: "bonus",
+      applies: isUrbanProject(contextData),
+      getScore: () => getAccessToHealthCareScore(buildingsFloorAreaDistribution),
+    }),
+    trafficSecurity: withNullableIndicatorScore({
+      role: "bonus",
+      applies: isFricheReconversion(contextData) && isUrbanProject(contextData),
+      getScore: () => getTrafficSecurityScore(aggregatedReconversionImpacts.impactsMetrics),
+    }),
+    fricheAccidents: withNullableIndicatorScore({
+      role: "bonus",
+      applies: isFricheReconversion(contextData),
+      getScore: () => getFricheAccidentsScore(aggregatedReconversionImpacts.impactsMetrics),
+    }),
   });
-
-  const localPeopleQualityOfLifeScore =
-    projectDevelopmentPlanType === "PHOTOVOLTAIC_POWER_PLANT"
-      ? computeSectionScore({
-          livingEnvironment,
-          fricheAccidents: getFricheAccidentsScore(aggregatedReconversionImpacts.impactsMetrics),
-        })
-      : computeSectionScore({
-          livingEnvironment,
-          localHealthiness: getLocalHealthinessScore({
-            siteReconversionType: siteReconversionType,
-            soilEvolutionDetails: soilsEvolutionDetails,
-            buildingsFloorAreaDistribution: buildingsFloorAreaEvolution,
-          }),
-          accessToLocalServices: getAccessToLocalServicesScore(buildingsFloorAreaEvolution),
-          accessToHealthCare: getAccessToHealthCareScore(buildingsFloorAreaEvolution),
-          trafficSecurity: getTrafficSecurityScore(aggregatedReconversionImpacts.impactsMetrics),
-          fricheAccidents: getFricheAccidentsScore(aggregatedReconversionImpacts.impactsMetrics),
-        });
 
   const scores = [
     localAuthorityEconomicScore.score.gradePoints,

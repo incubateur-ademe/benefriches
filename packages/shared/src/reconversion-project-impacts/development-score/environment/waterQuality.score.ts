@@ -1,10 +1,11 @@
 import { sumListWithKey } from "../../../services";
 import { isForest, isPrairie, isWetLand } from "../../../soils";
-import type { SoilEvolutionDetails, WaterQualityIndicator } from "../developmentScore.types";
+import type { SoilEvolutionDetails, WaterQualityIndicatorMetrics } from "../developmentScore.types";
+import type { RequiredIndicatorScore } from "../scoring.helpers";
 
 export const getWaterQualityScore = (
   soilsEvolutionDetails: Pick<SoilEvolutionDetails, "contamination" | "soilsDistribution">,
-): WaterQualityIndicator => {
+): RequiredIndicatorScore<WaterQualityIndicatorMetrics> => {
   const prairieSurfaceDifference = sumListWithKey(
     soilsEvolutionDetails.soilsDistribution.filter((item) => isPrairie(item.soilType)),
     "total",

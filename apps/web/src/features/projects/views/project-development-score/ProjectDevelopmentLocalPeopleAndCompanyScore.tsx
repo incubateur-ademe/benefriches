@@ -12,7 +12,7 @@ const listFormatter = new Intl.ListFormat("fr", {
   type: "conjunction",
 });
 
-export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, details }: Props) {
+export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, indicators }: Props) {
   if (score.gradePoints === 0) {
     return null;
   }
@@ -24,101 +24,110 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, de
       </div>
 
       <div className=" md:col-span-2 grid md:grid-cols-2 gap-4">
-        {details.livingEnvironment ? (
+        {indicators.livingEnvironment ? (
           <MetricCard
             title="Cadre de vie"
             emoji="🌳"
             description="Grâce à la reconversion de la friche."
-            letterGrade={details.livingEnvironment.letterGrade}
+            letterGrade={indicators.livingEnvironment.letterGrade}
           />
         ) : null}
 
-        {"localHealthiness" in details && details.localHealthiness ? (
+        {indicators.localHealthiness.applies && indicators.localHealthiness.letterGrade ? (
           <MetricCard
             title="Santé"
             emoji="🫀"
-            letterGrade={details.localHealthiness.letterGrade}
+            letterGrade={indicators.localHealthiness.letterGrade}
             description={
-              <>
-                Grâce à{" "}
-                {listFormatter.format(
-                  [
-                    {
-                      text: "la création d'espaces de nature",
-                      display: details.localHealthiness.metrics.newGreenSoilSurfaces > 0,
-                    },
-                    {
-                      text: "la dépollution des sols de la friche",
-                      display: details.localHealthiness.metrics.siteReconversionType === "friche",
-                    },
-                    {
-                      text: "la création d'équipement sportif",
-                      display: details.localHealthiness.metrics.sportsFacilitiesFloorSurface > 0,
-                    },
-                  ]
-                    .filter(({ display }) => display)
-                    .map(({ text }) => text),
-                )}
-                .
-              </>
+              indicators.localHealthiness.metrics && (
+                <>
+                  Grâce à{" "}
+                  {listFormatter.format(
+                    [
+                      {
+                        text: "la création d'espaces de nature",
+                        display: indicators.localHealthiness.metrics.newGreenSoilSurfaces > 0,
+                      },
+                      {
+                        text: "la dépollution des sols de la friche",
+                        display:
+                          indicators.localHealthiness.metrics.siteReconversionType === "friche",
+                      },
+                      {
+                        text: "la création d'équipement sportif",
+                        display:
+                          indicators.localHealthiness.metrics.sportsFacilitiesFloorSurface > 0,
+                      },
+                    ]
+                      .filter(({ display }) => display)
+                      .map(({ text }) => text),
+                  )}
+                  .
+                </>
+              )
             }
           />
         ) : null}
 
-        {"trafficSecurity" in details && details.trafficSecurity ? (
+        {indicators.trafficSecurity.applies && indicators.trafficSecurity.letterGrade ? (
           <MetricCard
             title="Sécurité routière"
             emoji="🚙"
-            letterGrade={details.trafficSecurity.letterGrade}
+            letterGrade={indicators.trafficSecurity.letterGrade}
             description="Grâce à la réduction de la distance entre les habitations et l’établissement éducatif."
           />
         ) : null}
 
-        {details.fricheAccidents ? (
+        {indicators.fricheAccidents.applies && indicators.fricheAccidents.letterGrade ? (
           <MetricCard
             title="Sécurité des riverains"
             emoji="💥"
-            letterGrade={details.fricheAccidents.letterGrade}
+            letterGrade={indicators.fricheAccidents.letterGrade}
             description="Grâce à la reconversion et la sécurisation de la friche."
           />
         ) : null}
 
-        {"accessToHealthCare" in details && details.accessToHealthCare ? (
+        {indicators.accessToHealthCare.applies && indicators.accessToHealthCare.letterGrade ? (
           <MetricCard
             title="Accès aux soins"
             emoji="🏥"
-            letterGrade={details.accessToHealthCare.letterGrade}
+            letterGrade={indicators.accessToHealthCare.letterGrade}
             description={
-              <>
-                Grâce à la création de{" "}
-                {listFormatter.format(
-                  details.accessToHealthCare.metrics.matchingBuildingsUses.map(
-                    (item) =>
-                      `${formatSurfaceArea(item.floorSurfaceArea)} de ${getLabelForBuildingsUse(item.buildingUse)}`,
-                  ),
-                )}
-                .
-              </>
+              indicators.accessToHealthCare.metrics && (
+                <>
+                  Grâce à la création de{" "}
+                  {listFormatter.format(
+                    indicators.accessToHealthCare.metrics.matchingBuildingsUses.map(
+                      (item) =>
+                        `${formatSurfaceArea(item.floorSurfaceArea)} de ${getLabelForBuildingsUse(item.buildingUse)}`,
+                    ),
+                  )}
+                  .
+                </>
+              )
             }
           />
         ) : null}
 
-        {"accessToLocalServices" in details && details.accessToLocalServices ? (
+        {indicators.accessToLocalServices.applies &&
+        indicators.accessToLocalServices.letterGrade ? (
           <MetricCard
             title="Accès aux services de proximité"
             emoji="🏪"
-            letterGrade={details.accessToLocalServices.letterGrade}
+            letterGrade={indicators.accessToLocalServices.letterGrade}
             description={
-              <>
-                Grâce à la création de{" "}
-                {listFormatter.format(
-                  details.accessToLocalServices.metrics.matchingBuildingsUses.map(
-                    (item) =>
-                      `${formatSurfaceArea(item.floorSurfaceArea)} de ${getLabelForBuildingsUse(item.buildingUse)}`,
-                  ),
-                )}
-                .
-              </>
+              indicators.accessToLocalServices.metrics && (
+                <>
+                  Grâce à la création de{" "}
+                  {listFormatter.format(
+                    indicators.accessToLocalServices.metrics.matchingBuildingsUses.map(
+                      (item) =>
+                        `${formatSurfaceArea(item.floorSurfaceArea)} de ${getLabelForBuildingsUse(item.buildingUse)}`,
+                    ),
+                  )}
+                  .
+                </>
+              )
             }
           />
         ) : null}

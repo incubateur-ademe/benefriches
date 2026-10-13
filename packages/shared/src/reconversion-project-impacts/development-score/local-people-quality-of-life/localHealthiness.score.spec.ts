@@ -94,7 +94,7 @@ const testCasesNoScore = [
     soilEvolutionDetails: { newGreenSoilSurfaces: 0 },
   },
   {
-    buildingsFloorAreaDistribution: undefined,
+    buildingsFloorAreaDistribution: {},
     siteReconversionType: "friche_agricole",
     soilEvolutionDetails: { newGreenSoilSurfaces: 0 },
   },
@@ -102,7 +102,7 @@ const testCasesNoScore = [
 
 type TestData = {
   siteReconversionType: SiteReconversionType;
-  buildingsFloorAreaDistribution: BuildingsUseDistribution | undefined;
+  buildingsFloorAreaDistribution: BuildingsUseDistribution;
   soilEvolutionDetails: Pick<SoilEvolutionDetails, "newGreenSoilSurfaces">;
 };
 
@@ -160,7 +160,7 @@ describe("localHealthiness score", () => {
 
     it(`returns undefined for ${dataDescList.join(", ")}`, () => {
       const result = getLocalHealthinessScore(testData);
-      assert.strictEqual(result, undefined);
+      assert.strictEqual(result.letterGrade, undefined);
     });
   }
 });

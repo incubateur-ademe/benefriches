@@ -231,7 +231,7 @@ export default function ProjectDevelopmentScore({ projectId, details, score }: P
         </div>
       </div>
 
-      {localAuthorityEconomicScore.details.localAuthorityFinances && (
+      {localAuthorityEconomicScore.indicators.localAuthorityFinances && (
         <ProjectDevelopmentLocalAuthorityFinancesScore {...localAuthorityEconomicScore} />
       )}
 

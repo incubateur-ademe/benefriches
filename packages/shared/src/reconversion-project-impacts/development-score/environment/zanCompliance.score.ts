@@ -2,8 +2,9 @@ import type {
   SiteReconversionType,
   LetterGrade,
   SoilEvolutionDetails,
-  ZanComplianceIndicator,
+  ZanComplianceIndicatorMetrics,
 } from "../developmentScore.types";
+import type { NullableIndicatorScore } from "../scoring.helpers";
 
 type Props = {
   siteReconversionType: SiteReconversionType;
@@ -37,12 +38,8 @@ const getZanComplianceLetterGrade = ({
 export const getZanComplianceScore = ({
   siteReconversionType,
   soilsEvolutionDetails,
-}: Props): ZanComplianceIndicator => {
+}: Props): NullableIndicatorScore<ZanComplianceIndicatorMetrics> => {
   const letterGrade = getZanComplianceLetterGrade({ siteReconversionType, soilsEvolutionDetails });
-
-  if (!letterGrade) {
-    return undefined;
-  }
 
   return {
     letterGrade,

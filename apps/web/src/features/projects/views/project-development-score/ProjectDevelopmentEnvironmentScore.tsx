@@ -32,37 +32,37 @@ const buildGradeDescription = (props: {
   return reasons && `À cause de ${reasons}.`;
 };
 
-type Details = Props["details"];
+type Indicators = Props["indicators"];
 
-const describeZanCompliance = ({ letterGrade, metrics }: NonNullable<Details["zanCompliance"]>) =>
+const describeZanCompliance = ({ letterGrade, metrics }: Indicators["zanCompliance"]) =>
   buildGradeDescription({
-    grade: letterGrade,
+    grade: letterGrade!,
     neutralText: "Pas ou peu de changement sur les surfaces perméables",
     positiveReasons: [
-      { text: "la création d'espaces de nature", when: metrics.newGreenSoilSurfaces > 0 },
+      { text: "la création d'espaces de nature", when: metrics!.newGreenSoilSurfaces > 0 },
       {
         text: "la dépollution des sols de la friche",
-        when: metrics.siteReconversionType === "friche",
+        when: metrics!.siteReconversionType === "friche",
       },
       {
         text: "la création de nouvelles surfaces perméables",
-        when: metrics.permeableSurfaceDifference.difference > 0,
+        when: metrics!.permeableSurfaceDifference.difference > 0,
       },
     ],
     negativeReasons: [
-      { text: "la destruction d'espaces de nature", when: metrics.newGreenSoilSurfaces < 0 },
+      { text: "la destruction d'espaces de nature", when: metrics!.newGreenSoilSurfaces < 0 },
       {
         text: "la consommation d'espaces naturels ou agricoles",
-        when: metrics.siteReconversionType !== "friche",
+        when: metrics!.siteReconversionType !== "friche",
       },
       {
         text: "la destruction de surfaces perméables",
-        when: metrics.permeableSurfaceDifference.difference < 0,
+        when: metrics!.permeableSurfaceDifference.difference < 0,
       },
     ],
   });
 
-const describeSoilsQuality = ({ letterGrade, metrics }: NonNullable<Details["soilsQuality"]>) =>
+const describeSoilsQuality = ({ letterGrade, metrics }: NonNullable<Indicators["soilsQuality"]>) =>
   buildGradeDescription({
     grade: letterGrade,
     neutralText: "Pas ou peu de changement sur les surfaces perméables et la pollution",
@@ -87,7 +87,7 @@ const describeSoilsQuality = ({ letterGrade, metrics }: NonNullable<Details["soi
     ],
   });
 
-const describeWaterQuality = ({ letterGrade, metrics }: NonNullable<Details["waterQuality"]>) =>
+const describeWaterQuality = ({ letterGrade, metrics }: NonNullable<Indicators["waterQuality"]>) =>
   buildGradeDescription({
     grade: letterGrade,
     neutralText:
@@ -139,9 +139,9 @@ const ZAN_BADGE_TEXT: Record<Props["score"]["letterGrade"], string> = {
 
 const CO2_CHART_TITLE = "☁️ CO2 eq stocké ou évité";
 
-export default function ProjectDevelopmentEnvironmentScore({ score, details }: Props) {
+export default function ProjectDevelopmentEnvironmentScore({ score, indicators }: Props) {
   const { co2eqEmissionsVariation, zanCompliance, soilsQuality, waterQuality, ecosystemServices } =
-    details;
+    indicators;
 
   const { avoidedCo2eqEmissions, siteStatuQuoStoredCo2Eq, newStoredCo2Eq } =
     co2eqEmissionsVariation?.metrics ?? {
@@ -167,19 +167,17 @@ export default function ProjectDevelopmentEnvironmentScore({ score, details }: P
       </div>
 
       <div className="md:col-span-2 grid md:grid-cols-2 gap-4">
-        {co2eqEmissionsVariation && (
-          <div className="md:col-span-2">
-            <ImpactChartCard
-              title={CO2_CHART_TITLE}
-              exportingOptions={{ colors, colorBySeries: true }}
-              containerProps={{ id: chartContainerId }}
-              options={options}
-              classes={{ title: "text-xl" }}
-            />
-          </div>
-        )}
+        <div className="md:col-span-2">
+          <ImpactChartCard
+            title={CO2_CHART_TITLE}
+            exportingOptions={{ colors, colorBySeries: true }}
+            containerProps={{ id: chartContainerId }}
+            options={options}
+            classes={{ title: "text-xl" }}
+          />
+        </div>
 
-        {zanCompliance && (
+        {zanCompliance.letterGrade ? (
           <MetricCard
             emoji="🌱"
             title="Objectif ZAN"
@@ -187,34 +185,40 @@ export default function ProjectDevelopmentEnvironmentScore({ score, details }: P
             letterGrade={zanCompliance.letterGrade}
             description={describeZanCompliance(zanCompliance)}
           />
+        ) : (
+          <div className="p-5 border border-border-grey rounded-2xl min-h-40 bg-grey-light">
+            <div className="flex justify-between items-start gap-2 mb-2">
+              <h5 className="text-xl min-w-0 mb-0">🌱 Objectif ZAN</h5>
+              <span className="font-bold rounded-lg text-xs py-1 px-2 shrink-0 whitespace-nowrap bg-grey-dark">
+                ?
+              </span>
+            </div>
+            <span className="text-sm">
+              Référentiel en cours de construction pour ce type de reconversion...
+            </span>
+          </div>
         )}
 
-        {soilsQuality && (
-          <MetricCard
-            emoji="🌾"
-            title="Qualité des sols"
-            letterGrade={soilsQuality.letterGrade}
-            description={describeSoilsQuality(soilsQuality)}
-          />
-        )}
+        <MetricCard
+          emoji="🌾"
+          title="Qualité des sols"
+          letterGrade={soilsQuality.letterGrade}
+          description={describeSoilsQuality(soilsQuality)}
+        />
 
-        {waterQuality && (
-          <MetricCard
-            emoji="🚰"
-            title="Qualité de l'eau"
-            letterGrade={waterQuality.letterGrade}
-            description={describeWaterQuality(waterQuality)}
-          />
-        )}
+        <MetricCard
+          emoji="🚰"
+          title="Qualité de l'eau"
+          letterGrade={waterQuality.letterGrade}
+          description={describeWaterQuality(waterQuality)}
+        />
 
-        {ecosystemServices && (
-          <MetricCard
-            emoji="🐸"
-            title="Services écosystémiques"
-            letterGrade={ecosystemServices.letterGrade}
-            description={describeEcosystemServices(ecosystemServices.letterGrade)}
-          />
-        )}
+        <MetricCard
+          emoji="🐸"
+          title="Services écosystémiques"
+          letterGrade={ecosystemServices.letterGrade}
+          description={describeEcosystemServices(ecosystemServices.letterGrade)}
+        />
       </div>
     </div>
   );

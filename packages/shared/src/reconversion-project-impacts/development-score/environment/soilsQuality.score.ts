@@ -1,9 +1,9 @@
 import type {
   LetterGrade,
   SoilEvolutionDetails,
-  SoilsQualityIndicator,
+  SoilsQualityIndicatorMetrics,
 } from "../developmentScore.types";
-import { convertLetterGradeToGradePoints } from "../scoring.helpers";
+import { convertLetterGradeToGradePoints, type RequiredIndicatorScore } from "../scoring.helpers";
 
 const getSoilsPermeableSurfaceLetterGrade = (variationPercent: number): LetterGrade => {
   if (variationPercent > 80) return "A";
@@ -25,7 +25,7 @@ const getWorstLetterGrade = (a: LetterGrade, b: LetterGrade): LetterGrade =>
 
 export const getSoilsQualityScore = (
   soilsEvolutionDetails: Pick<SoilEvolutionDetails, "contamination" | "permeableSurfaceDifference">,
-): SoilsQualityIndicator => {
+): RequiredIndicatorScore<SoilsQualityIndicatorMetrics> => {
   const permeableScore = getSoilsPermeableSurfaceLetterGrade(
     soilsEvolutionDetails.permeableSurfaceDifference.percentVariation,
   );

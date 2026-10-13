@@ -2,9 +2,10 @@ import type { BuildingsUseDistribution } from "../../../reconversion-projects";
 import type {
   LetterGrade,
   LivingEnvironmentContext,
-  LivingEnvironmentIndicator,
+  LivingEnvironmentIndicatorMetrics,
 } from "../developmentScore.types";
 import { filterBuildingsUses } from "../readFeatures.helpers";
+import type { RequiredIndicatorScore } from "../scoring.helpers";
 
 const PROXIMITY_AMENITY_BUILDINGS: Set<keyof BuildingsUseDistribution> = new Set([
   "RESIDENTIAL",
@@ -60,7 +61,7 @@ const getLivingEnvironmentLetterGrade = (ctx: LivingEnvironmentContext): LetterG
 
 export const getLivingEnvironmentScore = (
   ctx: LivingEnvironmentContext,
-): LivingEnvironmentIndicator => ({
+): RequiredIndicatorScore<LivingEnvironmentIndicatorMetrics> => ({
   letterGrade: getLivingEnvironmentLetterGrade(ctx),
   metrics: ctx,
 });

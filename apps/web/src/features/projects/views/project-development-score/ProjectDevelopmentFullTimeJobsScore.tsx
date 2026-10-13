@@ -22,8 +22,8 @@ const getLetterGradeBadgeText = (letterGrade: LetterGrade) => {
       return "En forte baisse";
   }
 };
-export default function ProjectDevelopmentFullTimeJobsScore({ score, details }: Props) {
-  const { fullTimeJobs } = details;
+export default function ProjectDevelopmentFullTimeJobsScore({ score, indicators }: Props) {
+  const { fullTimeJobs } = indicators;
   const { siteStatuQuoFullTimeJobs, difference } = fullTimeJobs?.metrics ?? {
     difference: 0,
     siteStatuQuoFullTimeJobs: 0,

@@ -21,19 +21,20 @@ Cette note est déterminé à partir des :
 
 Chaque critère obtient une note de A à E avec des gradations + et -, calculée à partir des notes des indicateurs qui lui sont liés.
 
-| Critère                                                        | Indicateurs                                                                                                                           |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **🏛️ Finances de la collectivité**                             | Finances de la collectivité locale                                                                                                    |
-| **🏘️ Qualité de vie des riverains**                            | Projet Urbain : Cadre de vie, Santé locale, Accès aux commerces et services, Accès aux soins, Sécurité routière, Accidents sur friche |
-| Projet PV et renaturation : Cadre de vie, Accidents sur friche |
-| **💼 Emplois**                                                 | Emplois à temps plein                                                                                                                 |
-| **🌿 Environnement**                                           | Émissions de CO₂eq, Conformité ZAN, Qualité des sols, Qualité de l'eau, Services écosystémiques                                       |
-| **🌍 Macroéconomie (hors barème)**                             | _en cours de construction_...                                                                                                         |
+| Critère                             | Indicateurs                                                                                                                                                                                                   |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **🏛️ Finances de la collectivité**  | Finances de la collectivité locale                                                                                                                                                                            |
+| **🏘️ Qualité de vie des riverains** | **Projet Urbain** : Cadre de vie, Santé locale, Accès aux commerces et services, Accès aux soins, Sécurité routière, Accidents sur friche. **Projet PV et renaturation** : Cadre de vie, Accidents sur friche |
+| **💼 Emplois**                      | Emplois à temps plein                                                                                                                                                                                         |
+| **🌿 Environnement**                | Émissions de CO₂eq, Conformité ZAN, Qualité des sols, Qualité de l'eau, Services écosystémiques                                                                                                               |
+| **🌍 Macroéconomie (hors barème)**  | _en cours de construction_...                                                                                                                                                                                 |
 
 ### Comment la note globale est-elle calculée ?
 
 1. Une section contient plusieurs indicateurs qui obtiennent chacun une note A, B, C, D ou E en fonction de leur valeur
 2. Chaque lettre est ensuite convertie en points
+
+Pour un indicateur "coeur" (toujours évalué) :
 
 | Lettre | A   | B   | C   | D   | E   |
 | ------ | --- | --- | --- | --- | --- |
@@ -41,7 +42,13 @@ Chaque critère obtient une note de A à E avec des gradations + et -, calculée
 
 > ℹ️ Un indicateur « non évalué » compte pour **0 point**.
 
-3. La section obtient une note à son tour : c'est la **moyenne des points de tous ses indicateurs**.
+Pour un indicateur "bonus :
+
+| Lettre | A    | B    | C   | D     | E     |
+| ------ | ---- | ---- | --- | ----- | ----- |
+| Points | 6.67 | 3.33 | 0   | -3.33 | -6.67 |
+
+3. La section obtient une note à son tour : c'est la **somme des points de tous ses indicateurs / nombre d'indicateurs coeur**.
 4. La note globale est la **moyenne des points des 5 sections**, arrondie à 2 décimales.
 
 Pour la présentation des résultats, la note globale est les notes de section sont converties en lettre avec + et -
@@ -68,11 +75,11 @@ Pour la présentation des résultats, la note globale est les notes de section s
 >
 > - Chaque indicateur de la section est converti en points (A = 90 … E = 10).
 > - **Un indicateur non évalué compte pour 0 point.**
-> - La note de la section est la moyenne de tous les indicateurs, arrondie à 2 décimales, puis convertie en lettre.
+> - La note de la section est la moyenne de tous les indicateurs coeurs + les indicateurs bonus, arrondie à 2 décimales, puis convertie en lettre.
 >
-> **Exemple** : la section « Qualité de vie des habitants » a 6 indicateurs.
+> **Exemple** : la section « Qualité de vie des habitants » a 2 indicateurs coeurs et 4 indicateurs bonus.
 >
-> Si seuls « Cadre de vie » (A = 90) et « Accidents sur friche » (A = 90) sont évalués, la moyenne est (90 + 90 + 0 + 0 + 0 + 0) ÷ 6 = 30, soit un **D**, alors que les deux indicateurs évalués sont excellents.
+> Si seuls « Cadre de vie » (A = 90) et « Accidents sur friche » (A = 90) sont évalués, la moyenne est (90 + 6.67 + 0 + 0 + 0 + 0) ÷ 2 = 48.33, soit un **C**.
 
 ### 🏛️ Finances de la collectivité locale
 
@@ -183,7 +190,7 @@ Il y a « `amélioration` » s'il y a des équipements sportifs **ou** de nouvea
 - Si projet photovoltaïque
 - Si le site n'est pas une friche et qu'il n'y a pas d'amélioration.
 
-#### 🏥 Accès aux soins (seulement pour les projets urbains)
+#### 🏥 Accès aux soins, indicateur `bonus` (seulement pour les projets urbains)
 
 Cet indicateur évalue si le projet apporte des services de santé aux habitants.
 
@@ -208,7 +215,7 @@ Cet indicateur évalue si le projet apporte des services de santé aux habitants
 
 Si aucun bâtiment de santé n'est prévu, ou si le projet n'est pas un projet urbain.
 
-#### 🏪 Accès aux commerces et services de proximité (seulement pour les projets urbains)
+#### 🏪 Accès aux commerces et services de proximité, indicateur `bonus` (seulement pour les projets urbains)
 
 Cet indicateur évalue si le projet apporte des commerces et services aux habitants.
 
@@ -232,7 +239,7 @@ Cet indicateur évalue si le projet apporte des commerces et services aux habita
 
 Si aucun de ces bâtiments n'est prévu, ou si le projet n'est pas un projet urbain.
 
-#### 🚙 Sécurité routière (seulement pour les projets urbains)
+#### 🚙 Sécurité routière, indicateur `bonus` (seulement pour les projets urbains)
 
 Cet indicateur évalue si le projet évite des accidents de la route.
 
@@ -250,7 +257,7 @@ Cet indicateur évalue si le projet évite des accidents de la route.
 
 Si aucun accident n'est évité.
 
-#### 💥 Accidents sur friche
+#### 💥 Accidents sur friche, indicateur `bonus` (seulement pour les projets sur friche)
 
 Cet indicateur évalue si la reconversion de la friche évite des accidents qui s'y produisaient.
 
@@ -340,6 +347,8 @@ Cet indicateur mesure si le projet respecte l'esprit du « Zéro Artificialisati
 | Autres cas                                                                     | **E** |
 
 Un projet sur un espace naturel ou agricole ne peut donc pas dépasser **D**.
+
+> ⚠️ Règles à compléter pour les projets sur site de type Zone Urbaine
 
 #### 🌾 Qualité des sols
 

@@ -70,7 +70,7 @@ describe("fricheAccidents score", () => {
 
     it(`returns undefined for ${dataDesc}`, () => {
       const result = getFricheAccidentsScore(testData.aggregatedReconversionImpactMetrics);
-      assert.strictEqual(result, undefined);
+      assert.strictEqual(result.letterGrade, undefined);
     });
   }
 });

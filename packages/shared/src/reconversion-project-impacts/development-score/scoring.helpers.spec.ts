@@ -5,7 +5,9 @@ import {
   convertLetterGradeToGradePoints,
   convertGradePointsToLetterGrade,
   LETTER_GRADE_THRESHOLDS,
-  computeSectionScore,
+  withFamilyScore,
+  withNullableIndicatorScore,
+  withRequiredIndicatorScore,
 } from "./scoring.helpers";
 
 describe("convertLetterGradeToGradePoints", () => {
@@ -74,25 +76,150 @@ describe("convertGradePointsToLetterGrade", () => {
   });
 });
 
-const grade = (letterGrade: "A" | "B" | "C" | "D" | "E") => ({
-  letterGrade,
-  metrics: {},
-});
-
-describe("computeSectionScore", () => {
+describe("withFamilyScore", () => {
   it("returns average score from indicators", () => {
-    const { score } = computeSectionScore({ indicator1: grade("A"), indicator2: grade("B") });
+    const { score } = withFamilyScore({
+      livingEnvironment: {
+        letterGrade: "B",
+        role: "core",
+        applies: true,
+        gradePoints: 70,
+        metrics: {
+          siteNature: "FRICHE",
+          projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+          siteReconversionType: "friche",
+          soilEvolutionDetails: { newGreenSoilSurfaces: 0 },
+          buildingsFloorAreaDistribution: undefined,
+        },
+      },
+      fricheAccidents: {
+        letterGrade: "A",
+        role: "core",
+        applies: true,
+        gradePoints: 90,
+
+        metrics: {
+          avoidedFricheAccidents: 2,
+        },
+      },
+    });
     assert.equal(score.gradePoints, 80);
   });
 
   it("counts an undefined indicator as 0 point", () => {
-    const { score } = computeSectionScore({ indicator1: grade("A"), indicator2: undefined });
+    const { score } = withFamilyScore({
+      livingEnvironment: {
+        letterGrade: "A",
+        role: "core",
+        applies: true,
+        gradePoints: 90,
+
+        metrics: {
+          siteNature: "FRICHE",
+          projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+          siteReconversionType: "friche",
+          soilEvolutionDetails: { newGreenSoilSurfaces: 0 },
+          buildingsFloorAreaDistribution: undefined,
+        },
+      },
+      fricheAccidents: {
+        role: "core",
+        applies: true,
+        gradePoints: 0,
+      },
+    });
     assert.equal(score.gradePoints, 45);
   });
 
   it("does not return NaN if there is no indicator defined", () => {
-    const { score } = computeSectionScore({});
+    const { score } = withFamilyScore({
+      fullTimeJobs: { applies: false, gradePoints: 0 },
+    });
     assert.equal(score.gradePoints, 0);
     assert.equal(score.letterGrade, "E");
+  });
+});
+
+describe("withNullableIndicatorScore", () => {
+  it("returns score object with core indicator gradePoints", () => {
+    const result = withNullableIndicatorScore({
+      applies: true,
+      role: "core",
+      getScore: () => ({
+        letterGrade: "B",
+        metrics: {
+          siteNature: "FRICHE",
+          projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+          siteReconversionType: "friche",
+          soilEvolutionDetails: { newGreenSoilSurfaces: 0 },
+          buildingsFloorAreaDistribution: undefined,
+        },
+      }),
+    });
+    assert.equal(result.gradePoints, 70);
+    assert.equal(result.applies, true);
+    assert.equal(result.role, "core");
+    assert.equal(result.metrics?.siteReconversionType, "friche");
+    assert.equal(result.letterGrade, "B");
+  });
+
+  it("returns score object with bonus indicator gradePoints", () => {
+    const result = withNullableIndicatorScore({
+      applies: true,
+      role: "bonus",
+      getScore: () => ({
+        letterGrade: "B",
+        metrics: {
+          matchingBuildingsUses: [{ buildingsUse: "HOSPITAL", surfaceArea: 10000 }],
+        },
+      }),
+    });
+    assert.equal(result.gradePoints, 3.33);
+    assert.equal(result.applies, true);
+    assert.equal(result.role, "bonus");
+    assert.equal(result.metrics?.matchingBuildingsUses[0]?.buildingsUse, "HOSPITAL");
+    assert.equal(result.letterGrade, "B");
+  });
+
+  it("returns score object with applicable boolean to false", () => {
+    const result = withNullableIndicatorScore({
+      applies: false,
+      role: "core",
+      getScore: () => ({
+        letterGrade: "B",
+        metrics: {
+          siteNature: "FRICHE",
+          projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+          siteReconversionType: "friche",
+          soilEvolutionDetails: { newGreenSoilSurfaces: 0 },
+          buildingsFloorAreaDistribution: undefined,
+        },
+      }),
+    });
+    assert.equal(result.gradePoints, 0);
+    assert.equal(result.applies, false);
+    assert.equal(result.role, "core");
+    assert.equal(result.metrics, undefined);
+    assert.equal(result.letterGrade, undefined);
+  });
+});
+
+describe("withRequiredIndicatorScore", () => {
+  it("returns required score object with gradePoints", () => {
+    const result = withRequiredIndicatorScore({
+      letterGrade: "B",
+      metrics: {
+        siteNature: "FRICHE",
+        projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+        siteReconversionType: "friche",
+        soilEvolutionDetails: { newGreenSoilSurfaces: 0 },
+        buildingsFloorAreaDistribution: undefined,
+      },
+    });
+    assert.equal(result.gradePoints, 70);
+    assert.equal(result.applies, true);
+    assert.equal(result.role, "core");
+    assert.equal(result.metrics.siteReconversionType, "friche");
+    assert.equal(result.letterGrade, "B");
   });
 });

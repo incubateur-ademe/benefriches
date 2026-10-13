@@ -5,18 +5,35 @@ import type { AggregatedReconversionProjectOnSiteImpactItemView } from "../proje
 
 export type LetterGrade = "A" | "B" | "C" | "D" | "E";
 export type LetterGradeWithModifier = LetterGrade | `${LetterGrade}+` | `${LetterGrade}-`;
-
-export type Score = {
+export type MainScore = {
   letterGrade: LetterGrade;
   letterGradeWithModifiers: LetterGradeWithModifier;
   gradePoints: number;
 };
 
-type ScoredWithModifiers<TDetails> = {
-  score: Score;
-  details: TDetails;
+type WithFamilyScore<TDetails> = {
+  score: MainScore;
+  indicators: TDetails;
 };
-export type ScoredIndicator<TMetrics> = { letterGrade: LetterGrade; metrics: TMetrics } | undefined;
+
+export type IndicatorRole = "core" | "bonus";
+export type WithRequiredIndicatorScore<TMetrics> = {
+  role: IndicatorRole;
+  applies: true;
+  letterGrade: LetterGrade;
+  gradePoints: number;
+  metrics: TMetrics;
+};
+
+export type WithNullableIndicatorScore<TMetrics> =
+  | {
+      applies: boolean;
+      role?: IndicatorRole;
+      letterGrade?: LetterGrade;
+      gradePoints: number;
+      metrics?: TMetrics;
+    }
+  | WithRequiredIndicatorScore<TMetrics>;
 
 /* Metrics type */
 export type SoilEvolutionDetails = {
@@ -44,96 +61,94 @@ export type LivingEnvironmentContext = {
   soilEvolutionDetails: Pick<SoilEvolutionDetails, "newGreenSoilSurfaces">;
 };
 
-/* Indicator type */
+/* Indicator metrics */
 
-export type FullTimeJobsIndicator = ScoredIndicator<{
+export type FullTimeJobsIndicatorMetrics = {
   fullTimeJobsDifferenceByHectare: number;
   siteStatuQuoFullTimeJobs: number;
   difference: number;
-}>;
+};
 
-export type LivingEnvironmentIndicator = ScoredIndicator<LivingEnvironmentContext>;
-export type LocalHealthinessIndicator = ScoredIndicator<{
+export type LivingEnvironmentIndicatorMetrics = LivingEnvironmentContext;
+export type LocalHealthinessIndicatorMetrics = {
   siteReconversionType: SiteReconversionType;
   sportsFacilitiesFloorSurface: number;
   newGreenSoilSurfaces: number;
-}>;
-export type AccessToLocalServicesIndicator = ScoredIndicator<{
+};
+export type AccessToLocalServicesIndicatorMetrics = {
   matchingBuildingsUses: BuildingUseSurface[];
-}>;
-export type AccessToHealthCareIndicator = ScoredIndicator<{
+};
+export type AccessToHealthCareIndicatorMetrics = {
   matchingBuildingsUses: BuildingUseSurface[];
-}>;
-export type TrafficSecurityIndicator = ScoredIndicator<{
+};
+export type TrafficSecurityIndicatorMetrics = {
   avoidedTrafficAccidents: number;
-}>;
-export type FricheAccidentsIndicator = ScoredIndicator<{
+};
+export type FricheAccidentsIndicatorMetrics = {
   avoidedFricheAccidents: number;
-}>;
+};
 
-export type LocalAuthorityFinancesIndicator = ScoredIndicator<{
+export type LocalAuthorityFinancesIndicatorMetrics = {
   projectLocalAuthorityIndirectEconomicImpactsTotal: number;
   municipalityCapitalExpendituresAmount: number;
   municipalityCapitalExpendituresReferenceYear: string;
   percentageComparison: number;
-}>;
+};
 
-export type Co2eqEmissionsVariationIndicator = ScoredIndicator<{
+export type Co2eqEmissionsVariationIndicatorMetrics = {
   avoidedCo2eqEmissions: number;
   newStoredCo2Eq: number;
   siteStatuQuoStoredCo2Eq: number;
   soilStoredPercentageVariation: number;
-}>;
-export type ZanComplianceIndicator = ScoredIndicator<
-  Pick<SoilEvolutionDetails, "newGreenSoilSurfaces" | "permeableSurfaceDifference"> & {
-    siteReconversionType: SiteReconversionType;
-  }
+};
+export type ZanComplianceIndicatorMetrics = Pick<
+  SoilEvolutionDetails,
+  "newGreenSoilSurfaces" | "permeableSurfaceDifference"
+> & {
+  siteReconversionType: SiteReconversionType;
+};
+export type SoilsQualityIndicatorMetrics = Pick<
+  SoilEvolutionDetails,
+  "permeableSurfaceDifference" | "contamination"
 >;
-export type SoilsQualityIndicator = ScoredIndicator<
-  Pick<SoilEvolutionDetails, "permeableSurfaceDifference" | "contamination">
->;
-export type WaterQualityIndicator = ScoredIndicator<
-  Pick<SoilEvolutionDetails, "contamination"> & {
-    prairieSurfaceDifference: number;
-    forestSurfaceDifference: number;
-    agriculturalSurfaceDifference: number;
-    wetLandSurfaceDifference: number;
-  }
->;
-export type EcosystemServicesIndicator = ScoredIndicator<{
+export type WaterQualityIndicatorMetrics = Pick<SoilEvolutionDetails, "contamination"> & {
+  prairieSurfaceDifference: number;
+  forestSurfaceDifference: number;
+  agriculturalSurfaceDifference: number;
+  wetLandSurfaceDifference: number;
+};
+export type EcosystemServicesIndicatorMetrics = {
   ecosystemicServices: AggregatedReconversionProjectOnSiteImpactItemView[];
-}>;
+};
 
 /* Main Type */
 export type ProjectDevelopmentScore = {
-  score: Score;
+  score: {
+    letterGrade: LetterGrade;
+    letterGradeWithModifiers: LetterGradeWithModifier;
+    gradePoints: number;
+  };
   details: {
-    fullTimeJobsScore: ScoredWithModifiers<{
-      fullTimeJobs: FullTimeJobsIndicator;
+    fullTimeJobsScore: WithFamilyScore<{
+      fullTimeJobs: WithRequiredIndicatorScore<FullTimeJobsIndicatorMetrics>;
     }>;
-    localPeopleQualityOfLifeScore: ScoredWithModifiers<
-      | {
-          livingEnvironment: LivingEnvironmentIndicator;
-          localHealthiness: LocalHealthinessIndicator;
-          accessToLocalServices: AccessToLocalServicesIndicator;
-          accessToHealthCare: AccessToHealthCareIndicator;
-          trafficSecurity: TrafficSecurityIndicator;
-          fricheAccidents: FricheAccidentsIndicator;
-        }
-      | {
-          livingEnvironment: LivingEnvironmentIndicator;
-          fricheAccidents: FricheAccidentsIndicator;
-        }
-    >;
-    localAuthorityEconomicScore: ScoredWithModifiers<{
-      localAuthorityFinances: LocalAuthorityFinancesIndicator;
+    localPeopleQualityOfLifeScore: WithFamilyScore<{
+      livingEnvironment: WithRequiredIndicatorScore<LivingEnvironmentIndicatorMetrics>;
+      localHealthiness: WithNullableIndicatorScore<LocalHealthinessIndicatorMetrics>;
+      trafficSecurity: WithNullableIndicatorScore<TrafficSecurityIndicatorMetrics>;
+      fricheAccidents: WithNullableIndicatorScore<FricheAccidentsIndicatorMetrics>;
+      accessToLocalServices: WithNullableIndicatorScore<AccessToLocalServicesIndicatorMetrics>;
+      accessToHealthCare: WithNullableIndicatorScore<AccessToHealthCareIndicatorMetrics>;
     }>;
-    environmentScore: ScoredWithModifiers<{
-      co2eqEmissionsVariation: Co2eqEmissionsVariationIndicator;
-      zanCompliance: ZanComplianceIndicator;
-      soilsQuality: SoilsQualityIndicator;
-      waterQuality: WaterQualityIndicator;
-      ecosystemServices: EcosystemServicesIndicator;
+    localAuthorityEconomicScore: WithFamilyScore<{
+      localAuthorityFinances: WithRequiredIndicatorScore<LocalAuthorityFinancesIndicatorMetrics>;
+    }>;
+    environmentScore: WithFamilyScore<{
+      co2eqEmissionsVariation: WithRequiredIndicatorScore<Co2eqEmissionsVariationIndicatorMetrics>;
+      zanCompliance: WithNullableIndicatorScore<ZanComplianceIndicatorMetrics>;
+      soilsQuality: WithRequiredIndicatorScore<SoilsQualityIndicatorMetrics>;
+      waterQuality: WithRequiredIndicatorScore<WaterQualityIndicatorMetrics>;
+      ecosystemServices: WithRequiredIndicatorScore<EcosystemServicesIndicatorMetrics>;
     }>;
   };
 };

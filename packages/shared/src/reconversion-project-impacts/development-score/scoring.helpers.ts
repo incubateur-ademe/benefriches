@@ -1,13 +1,16 @@
 import { filterByName } from "../../filter-by-name";
+import { typedObjectEntries } from "../../object-entries";
 import { roundTo2Digits, sumList, sumListWithKey } from "../../services";
 import type {
+  IndicatorRole,
   LetterGrade,
   LetterGradeWithModifier,
-  Score,
-  ScoredIndicator,
+  MainScore,
+  WithNullableIndicatorScore,
+  WithRequiredIndicatorScore,
 } from "./developmentScore.types";
 
-const LETTER_GRADE_NUMBER_VALUES: Record<LetterGrade, number> = {
+const CORE_LETTER_GRADE_POINTS: Record<LetterGrade, number> = {
   A: 90,
   B: 70,
   C: 50,
@@ -15,8 +18,16 @@ const LETTER_GRADE_NUMBER_VALUES: Record<LetterGrade, number> = {
   E: 10,
 };
 
+const BONUS_GRADE_POINTS: Record<LetterGrade, number> = {
+  A: 6.67,
+  B: 3.33,
+  C: 0,
+  D: -3.33,
+  E: -6.67,
+};
+
 export const convertLetterGradeToGradePoints = (grade: LetterGrade): number =>
-  LETTER_GRADE_NUMBER_VALUES[grade];
+  CORE_LETTER_GRADE_POINTS[grade];
 
 export const LETTER_GRADE_THRESHOLDS: { grade: LetterGradeWithModifier; minGradePoints: number }[] =
   [
@@ -62,7 +73,7 @@ const getLetterGradeFromLetterGradeWithModifiers = (letterGrade: LetterGradeWith
   }
 };
 
-export const computeScoreFromGradePoints = (gradePoints: number): Score => {
+export const computeScoreFromGradePoints = (gradePoints: number): MainScore => {
   const letterGradeWithModifiers = convertGradePointsToLetterGrade(gradePoints);
 
   return {
@@ -76,20 +87,84 @@ export const convertGradePointsToLetterGrade = (gradePoints: number): LetterGrad
   LETTER_GRADE_THRESHOLDS.find(({ minGradePoints }) => gradePoints >= minGradePoints)?.grade ??
   "E-";
 
-export const computeSectionScore = <TDetails extends Record<string, ScoredIndicator<unknown>>>(
-  details: TDetails,
+export type NullableIndicatorScore<TMetrics> = {
+  letterGrade: LetterGrade | undefined;
+  metrics: TMetrics;
+};
+export type RequiredIndicatorScore<TMetrics> = { letterGrade: LetterGrade; metrics: TMetrics };
+
+const getGradePointsFromRole = (letterGrade: LetterGrade, role: IndicatorRole) =>
+  role === "bonus" ? BONUS_GRADE_POINTS[letterGrade] : convertLetterGradeToGradePoints(letterGrade);
+
+export const withNullableIndicatorScore = <
+  TRegistry extends {
+    role: "core" | "bonus";
+    applies: boolean;
+    getScore: () => NullableIndicatorScore<unknown>;
+  },
+>(
+  registry: TRegistry,
+): WithNullableIndicatorScore<ReturnType<TRegistry["getScore"]>["metrics"]> => {
+  if (!registry.applies) {
+    return {
+      letterGrade: undefined,
+      applies: registry.applies,
+      gradePoints: 0,
+      role: registry.role,
+    };
+  }
+  const { metrics, letterGrade } = registry.getScore();
+
+  return {
+    role: registry.role,
+    applies: registry.applies,
+    metrics,
+    letterGrade,
+    gradePoints: letterGrade ? getGradePointsFromRole(letterGrade, registry.role) : 0,
+  };
+};
+
+export const withRequiredIndicatorScore = <S extends RequiredIndicatorScore<unknown>>(
+  score: S,
+): WithRequiredIndicatorScore<S["metrics"]> => {
+  const { metrics, letterGrade } = score;
+
+  return {
+    role: "core",
+    applies: true,
+    metrics,
+    letterGrade,
+    gradePoints: getGradePointsFromRole(letterGrade, "core"),
+  };
+};
+
+export const withFamilyScore = <
+  TRegistry extends Record<
+    keyof TRegistry,
+    ReturnType<typeof withRequiredIndicatorScore> | ReturnType<typeof withNullableIndicatorScore>
+  >,
+>(
+  registry: TRegistry,
 ) => {
-  const gradePointsList = Object.values(details).map((item) =>
-    item ? convertLetterGradeToGradePoints(item.letterGrade) : 0,
+  const entries = typedObjectEntries(registry);
+
+  const coreIndicatorList = entries.filter(([, item]) => item.applies && item.role === "core");
+  const bonusIndicatorsSum = sumList(
+    entries
+      .filter(([, item]) => item.applies && item.role === "bonus")
+      .map(([, item]) => item.gradePoints ?? 0),
   );
-  const gradePoints =
-    gradePointsList.length > 0
-      ? roundTo2Digits(sumList(gradePointsList) / gradePointsList.length)
-      : 0;
+  const coreIndicatorsSum = sumList(coreIndicatorList.map(([, item]) => item.gradePoints ?? 0));
+
+  const gradePoints = roundTo2Digits(
+    coreIndicatorList.length > 0
+      ? (coreIndicatorsSum + bonusIndicatorsSum) / coreIndicatorList.length
+      : 0,
+  );
 
   return {
     score: computeScoreFromGradePoints(gradePoints),
-    details,
+    indicators: registry,
   };
 };
 

@@ -2,8 +2,8 @@ import type { GetReconversionProjectImpactsResultDto } from "../../../api-dtos";
 import { roundTo2Digits } from "../../../services";
 import { convertSquareMetersToHectares } from "../../../surface-area";
 import type { AggregatedProjectImpactMetric } from "../../projectImpacts.types";
-import type { FullTimeJobsIndicator, LetterGrade } from "../developmentScore.types";
-import { sumMetricsTotalByName } from "../scoring.helpers";
+import type { FullTimeJobsIndicatorMetrics, LetterGrade } from "../developmentScore.types";
+import { type RequiredIndicatorScore, sumMetricsTotalByName } from "../scoring.helpers";
 
 const getJobsLetterGrade = (fullTimeJobsDifferenceByHectare: number): LetterGrade => {
   if (fullTimeJobsDifferenceByHectare > 50) {
@@ -21,7 +21,7 @@ const getJobsLetterGrade = (fullTimeJobsDifferenceByHectare: number): LetterGrad
 export const getFullTimeJobsScore = (props: {
   aggregatedReconversionImpactMetrics: AggregatedProjectImpactMetric[];
   siteSurfaceArea: GetReconversionProjectImpactsResultDto["contextData"]["siteSurfaceArea"];
-}): FullTimeJobsIndicator => {
+}): RequiredIndicatorScore<FullTimeJobsIndicatorMetrics> => {
   const fullTimeJobsDifference = sumMetricsTotalByName(
     props.aggregatedReconversionImpactMetrics,
     "conversionFullTimeJobs",

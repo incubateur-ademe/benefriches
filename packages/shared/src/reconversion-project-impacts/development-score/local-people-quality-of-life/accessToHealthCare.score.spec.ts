@@ -62,9 +62,6 @@ const testCasesGradeB = [
 
 const testCasesNoScore = [
   {
-    buildingsUseDistribution: undefined,
-  },
-  {
     buildingsUseDistribution: {},
   },
   {
@@ -73,7 +70,7 @@ const testCasesNoScore = [
 ] satisfies TestData[];
 
 type TestData = {
-  buildingsUseDistribution?: BuildingsUseDistribution;
+  buildingsUseDistribution: BuildingsUseDistribution;
   expectedMetrics?: { matchingBuildingsUses: BuildingUseSurface[] };
 };
 
@@ -112,7 +109,7 @@ describe("accessToHealthCare score", () => {
 
     it(`returns undefined for ${dataDesc}`, () => {
       const result = getAccessToHealthCareScore(testData.buildingsUseDistribution);
-      assert.strictEqual(result, undefined);
+      assert.strictEqual(result.letterGrade, undefined);
     });
   }
 });

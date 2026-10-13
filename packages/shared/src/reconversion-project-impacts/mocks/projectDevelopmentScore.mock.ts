@@ -13,9 +13,13 @@ export const urbanProjectDevelopmentScoreMock = {
         letterGrade: "C",
         gradePoints: 58,
       },
-      details: {
+      indicators: {
         co2eqEmissionsVariation: {
           letterGrade: "E",
+          role: "core",
+          applies: true,
+          gradePoints: 10,
+
           metrics: {
             avoidedCo2eqEmissions: 0,
             newStoredCo2Eq: -879.9999999999998,
@@ -25,6 +29,9 @@ export const urbanProjectDevelopmentScoreMock = {
         },
         zanCompliance: {
           letterGrade: "A",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
           metrics: {
             permeableSurfaceDifference: {
               difference: 67500,
@@ -36,6 +43,9 @@ export const urbanProjectDevelopmentScoreMock = {
         },
         soilsQuality: {
           letterGrade: "A",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
           metrics: {
             permeableSurfaceDifference: {
               difference: 67500,
@@ -50,6 +60,10 @@ export const urbanProjectDevelopmentScoreMock = {
         },
         waterQuality: {
           letterGrade: "C",
+          role: "core",
+          applies: true,
+          gradePoints: 50,
+
           metrics: {
             contamination: {
               siteContaminatedSurface: 0,
@@ -64,6 +78,10 @@ export const urbanProjectDevelopmentScoreMock = {
         },
         ecosystemServices: {
           letterGrade: "C",
+          role: "core",
+          applies: true,
+          gradePoints: 50,
+
           metrics: {
             ecosystemicServices: [
               {
@@ -89,9 +107,13 @@ export const urbanProjectDevelopmentScoreMock = {
         letterGrade: "C",
         gradePoints: 50,
       },
-      details: {
+      indicators: {
         fullTimeJobs: {
           letterGrade: "C",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
+
           metrics: {
             fullTimeJobsDifferenceByHectare: 0.02,
             siteStatuQuoFullTimeJobs: 0,
@@ -106,9 +128,13 @@ export const urbanProjectDevelopmentScoreMock = {
         letterGrade: "D",
         gradePoints: 30,
       },
-      details: {
+      indicators: {
         livingEnvironment: {
           letterGrade: "A",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
+
           metrics: {
             siteNature: "FRICHE",
             projectDevelopmentPlanType: "URBAN_PROJECT",
@@ -119,14 +145,18 @@ export const urbanProjectDevelopmentScoreMock = {
         },
         fricheAccidents: {
           letterGrade: "A",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
+
           metrics: {
             avoidedFricheAccidents: 11,
           },
         },
-        trafficSecurity: undefined,
-        accessToHealthCare: undefined,
-        accessToLocalServices: undefined,
-        localHealthiness: undefined,
+        trafficSecurity: { applies: true, gradePoints: 0, role: "bonus" },
+        accessToHealthCare: { applies: true, gradePoints: 0, role: "bonus" },
+        accessToLocalServices: { applies: true, gradePoints: 0, role: "bonus" },
+        localHealthiness: { applies: true, gradePoints: 0, role: "bonus" },
       },
     },
     localAuthorityEconomicScore: {
@@ -135,9 +165,13 @@ export const urbanProjectDevelopmentScoreMock = {
         letterGrade: "A",
         gradePoints: 90,
       },
-      details: {
+      indicators: {
         localAuthorityFinances: {
           letterGrade: "A",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
+
           metrics: {
             projectLocalAuthorityIndirectEconomicImpactsTotal: 3902899.054835231,
             percentageComparison: 2602,
@@ -163,9 +197,13 @@ export const photovoltaicProjectDevelopmentScoreMock = {
         letterGrade: "B",
         gradePoints: 78,
       },
-      details: {
+      indicators: {
         co2eqEmissionsVariation: {
           letterGrade: "A",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
+
           metrics: {
             avoidedCo2eqEmissions: 21596.039999999994,
             newStoredCo2Eq: 721.5999999999999,
@@ -175,6 +213,10 @@ export const photovoltaicProjectDevelopmentScoreMock = {
         },
         zanCompliance: {
           letterGrade: "A",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
+
           metrics: {
             permeableSurfaceDifference: {
               difference: 67200,
@@ -186,6 +228,10 @@ export const photovoltaicProjectDevelopmentScoreMock = {
         },
         soilsQuality: {
           letterGrade: "A",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
+
           metrics: {
             permeableSurfaceDifference: {
               difference: 67200,
@@ -200,6 +246,10 @@ export const photovoltaicProjectDevelopmentScoreMock = {
         },
         waterQuality: {
           letterGrade: "C",
+          role: "core",
+          applies: true,
+          gradePoints: 50,
+
           metrics: {
             contamination: {
               siteContaminatedSurface: 0,
@@ -214,6 +264,10 @@ export const photovoltaicProjectDevelopmentScoreMock = {
         },
         ecosystemServices: {
           letterGrade: "B",
+          role: "core",
+          applies: true,
+          gradePoints: 70,
+
           metrics: {
             ecosystemicServices: [
               {
@@ -239,9 +293,13 @@ export const photovoltaicProjectDevelopmentScoreMock = {
         letterGrade: "B",
         gradePoints: 70,
       },
-      details: {
+      indicators: {
         fullTimeJobs: {
           letterGrade: "B",
+          role: "core",
+          applies: true,
+          gradePoints: 70,
+
           metrics: {
             fullTimeJobsDifferenceByHectare: 0.33,
             siteStatuQuoFullTimeJobs: 0,
@@ -256,9 +314,13 @@ export const photovoltaicProjectDevelopmentScoreMock = {
         letterGrade: "A",
         gradePoints: 90,
       },
-      details: {
+      indicators: {
         livingEnvironment: {
           letterGrade: "A",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
+
           metrics: {
             siteNature: "FRICHE",
             projectDevelopmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
@@ -269,10 +331,18 @@ export const photovoltaicProjectDevelopmentScoreMock = {
         },
         fricheAccidents: {
           letterGrade: "A",
+          role: "bonus",
+          applies: true,
+          gradePoints: 90,
+
           metrics: {
             avoidedFricheAccidents: 11,
           },
         },
+        trafficSecurity: { applies: false, gradePoints: 0, role: "bonus" },
+        accessToHealthCare: { applies: false, gradePoints: 0, role: "bonus" },
+        accessToLocalServices: { applies: false, gradePoints: 0, role: "bonus" },
+        localHealthiness: { applies: false, gradePoints: 0, role: "bonus" },
       },
     },
     localAuthorityEconomicScore: {
@@ -281,9 +351,12 @@ export const photovoltaicProjectDevelopmentScoreMock = {
         letterGrade: "A",
         gradePoints: 90,
       },
-      details: {
+      indicators: {
         localAuthorityFinances: {
           letterGrade: "A",
+          role: "core",
+          applies: true,
+          gradePoints: 90,
           metrics: {
             projectLocalAuthorityIndirectEconomicImpactsTotal: 10201604.24463828,
             percentageComparison: 6801,
