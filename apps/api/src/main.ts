@@ -27,15 +27,13 @@ async function bootstrap() {
   // Swagger
   const config = new DocumentBuilder()
     .setTitle("API Bénéfriches")
-    .setDescription("Calcul des coûts d'inaction sur les friches")
+    .setDescription(
+      "Bénéfriches quantifie et monétarise les impacts environnementaux, sociaux et économiques d'un projet d'aménagement, sur friche ou en extension urbaine.",
+    )
     .setVersion("1.0")
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  const publicPaths = new Set([
-    "/api/friches/cout-inaction",
-    "/api/stats/average-impacts/search",
-    "/api/stats",
-  ]);
+  const publicPaths = new Set(["/api/friches/cout-inaction", "/api/stats"]);
   const publicDocument = {
     ...document,
     paths: Object.fromEntries(
