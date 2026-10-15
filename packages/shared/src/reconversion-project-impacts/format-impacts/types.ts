@@ -44,7 +44,7 @@ export type EconomicBalanceImpactResult = {
   };
 };
 
-export type Impact = {
+type Impact = {
   base: number;
   forecast: number;
   difference: number;
@@ -61,13 +61,13 @@ type EnvironmentalImpacts = {
   soilsCarbonStorage?: Impact;
 };
 
-export type AvoidedCo2EqEmissions = {
+type AvoidedCo2EqEmissions = {
   withAirConditioningDiminution?: number;
   withCarTrafficDiminution?: number;
   withRenewableEnergyProduction?: number;
 };
 
-export type SocialImpacts = {
+type SocialImpacts = {
   fullTimeJobs?: Impact & {
     operations: Impact;
     conversion: Impact;

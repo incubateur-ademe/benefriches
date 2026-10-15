@@ -20,6 +20,7 @@ export const photovoltaicPowerStationFeaturesSchema = z.object({
 
 export const urbanProjectsFeaturesSchema = z.object({
   buildingsFloorAreaDistribution: buildingsUseDistributionSchema,
+  buildingsFootprintToReuse: z.number().nonnegative().optional(),
 });
 
 const expenseSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });

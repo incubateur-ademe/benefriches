@@ -29,6 +29,7 @@ export type GetReconversionProjectImpactsResultDto = {
       | {
           type: "URBAN_PROJECT";
           buildingsFloorAreaDistribution: BuildingsUseDistribution;
+          buildingsFootprintToReuse?: number;
         };
     siteAddress: {
       lat: number;
