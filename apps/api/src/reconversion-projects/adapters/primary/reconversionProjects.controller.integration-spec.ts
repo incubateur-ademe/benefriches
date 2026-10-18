@@ -859,6 +859,20 @@ describe("ReconversionProjects controller", () => {
     });
   });
 
+  describe("GET /reconversion-projects/:reconversionProjectId/urban-sprawl-comparison", () => {
+    for (const evaluationPeriodInYears of ["0", "51", "1.5", "1000000000"]) {
+      it(`gets a 400 response when evaluationPeriodInYears is ${evaluationPeriodInYears}`, async () => {
+        const response = await supertest(app.getHttpServer())
+          .get(`/api/reconversion-projects/${uuid()}/urban-sprawl-comparison`)
+          .query({ comparisonSiteNature: "AGRICULTURAL_OPERATION", evaluationPeriodInYears });
+
+        assert.strictEqual(response.status, 400);
+        const errorPaths = (response.body as BadRequestResponseBody).errors.map(({ path }) => path);
+        assert.deepStrictEqual(errorPaths, [["evaluationPeriodInYears"]]);
+      });
+    }
+  });
+
   describe("GET /reconversion-projects/:reconversionProjectId/impacts", () => {
     it("gets a 401 when not authenticated", async () => {
       const response = await supertest(app.getHttpServer())
