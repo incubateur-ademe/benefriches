@@ -25,10 +25,7 @@ import { ComputeEvaluatedProjectStatsUseCase } from "src/stats/core/usecases/com
 import { ComputeStatsWithPeriodicityUseCase } from "src/stats/core/usecases/computeStatsWithPeriodicity.usecase";
 
 const getEvaluatedProjectStatsBodySchema = z.object({
-  // meta only documents the field in Swagger, it does not change validation
-  reconversionProjectIds: z
-    .array(z.string().meta({ format: "uuid" }))
-    .meta({ example: ["4db37f9b-ff75-41b4-9798-c17f5a5dd5ed"] }),
+  reconversionProjectIds: z.array(z.string()),
 });
 type GetEvaluatedProjectStatsBody = z.infer<typeof getEvaluatedProjectStatsBodySchema>;
 
