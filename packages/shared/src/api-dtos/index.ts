@@ -2,6 +2,8 @@
 export {
   registerUserRequestDtoSchema,
   type RegisterUserRequestDto,
+  sendAuthLinkRequestDtoSchema,
+  type SendAuthLinkRequestDto,
   getCurrentUserResponseDtoSchema,
   type GetCurrentUserResponseDto,
 } from "./auth";

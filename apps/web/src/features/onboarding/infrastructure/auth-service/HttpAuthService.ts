@@ -1,13 +1,16 @@
+import type { SendAuthLinkRequestDto } from "shared";
+
 import type { AuthenticationGateway } from "../../core/AuthenticationGateway";
 
 export class HttpAuthService implements AuthenticationGateway {
   async requestLink(email: string, postLoginRedirectTo: string | undefined): Promise<void> {
+    const body: SendAuthLinkRequestDto = { email, postLoginRedirectTo };
     const response = await fetch("/api/auth/send-auth-link", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, postLoginRedirectTo }),
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
