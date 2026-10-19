@@ -15,6 +15,9 @@
       "useDefineForClassFields": false
     },
     "keepClassNames": true,
+    "experimental": {
+      "keepImportAttributes": true
+    },
     "baseUrl": ".",
     "paths": {
       "src/*": ["./src/*"],
