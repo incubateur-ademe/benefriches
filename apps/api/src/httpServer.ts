@@ -1,6 +1,5 @@
 import { ConfigService } from "@nestjs/config";
 import { NestExpressApplication } from "@nestjs/platform-express";
-import cookieParser from "cookie-parser";
 import session from "express-session";
 
 export function configureServer(app: NestExpressApplication) {
@@ -8,7 +7,6 @@ export function configureServer(app: NestExpressApplication) {
 
   app.setGlobalPrefix("api");
   app.set("trust proxy", 1);
-  app.use(cookieParser());
   app.use(
     session({
       secret: configService.getOrThrow<string>("SESSION_SECRET"),
