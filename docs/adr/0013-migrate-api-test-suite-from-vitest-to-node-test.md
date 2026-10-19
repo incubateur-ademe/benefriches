@@ -10,6 +10,12 @@
 > [`package.json`](../../apps/api/package.json) for the current `test:unit` /
 > `test:integration` scripts.
 
+> **Update (2026-10-19)**: Re-checked against NestJS 12, whose starter now
+> defaults to Vitest for ESM projects. We keep `node:test`: `@nestjs/testing` is
+> test-runner agnostic and our setup works unchanged on Nest 12. Switching would
+> only pay off if Vitest emitted decorator metadata without a custom loader,
+> which is unproven.
+
 ## Context
 
 The `apps/api` test suite was running under Vitest across two scripts:
