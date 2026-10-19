@@ -22,8 +22,10 @@ import type { Request, Response } from "express";
 import { randomUUID } from "node:crypto";
 import {
   registerUserRequestDtoSchema,
+  sendAuthLinkRequestDtoSchema,
   type GetCurrentUserResponseDto,
   type RegisterUserRequestDto,
+  type SendAuthLinkRequestDto,
 } from "shared";
 
 import { CreateUserUseCase, type UserProps } from "src/auth/core/createUser.usecase";
@@ -285,7 +287,7 @@ export class AuthController {
   @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Post("send-auth-link")
   async sendAuthLink(
-    @Body() body: { email: string; postLoginRedirectTo: string | undefined },
+    @Body({ schema: sendAuthLinkRequestDtoSchema }) body: SendAuthLinkRequestDto,
     @Res() response: Response,
   ) {
     const result = await this.sendAuthLinkUseCase.execute({
