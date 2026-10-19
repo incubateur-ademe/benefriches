@@ -3,7 +3,7 @@
 ## Utilisation
 
 ```sh
-npx ts-node build-city-stats.ts
+npx tsx build-city-stats.ts
 ```
 
 ## Méthodologie

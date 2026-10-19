@@ -21,7 +21,7 @@
  * the `.ts`→`.js` build convention). In production that `./foo.js` exists in `dist/`;
  * tests run from un-built source where only `./foo.ts` exists, so the hook makes the
  * final `.js`→`.ts` hop — the standard "run TypeScript ESM from source" bridge (the
- * same thing tsx / ts-node ESM do).
+ * same thing tsx does).
  *
  * It is NOT `@swc-node/register/esm-register` (broken on Node 24, see ADR-0014):
  * that forces imported `.ts` to `commonjs`, causing `ERR_REQUIRE_CYCLE_MODULE` and

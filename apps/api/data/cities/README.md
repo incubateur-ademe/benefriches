@@ -14,7 +14,7 @@ Le résultat est `./sql-cities.csv`.
 
 ## Prérequis
 
-- Node.js avec support TypeScript (`tsx`, `ts-node`, ou équivalent)
+- Node.js avec support TypeScript (`tsx`)
 - Accès réseau sortant vers :
   - `data-interne.ademe.fr`
   - `tabular-api.data.gouv.fr`
@@ -23,7 +23,7 @@ Le résultat est `./sql-cities.csv`.
 ## Exécution
 
 ```bash
-npx ts-node build-cities-csv.ts
+npx tsx build-cities-csv.ts
 ```
 
 ## Règles de fusion

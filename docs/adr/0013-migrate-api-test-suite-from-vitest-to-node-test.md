@@ -86,6 +86,7 @@ The assertion API maps mechanically but has two notable differences:
 - `node:test`'s TAP output is verbose; filtering failures requires `grep` or a reporter plugin.
 - The integration test loader stack is non-trivial and will need attention when upgrading Node.js (it works around an `--import`/CJS-loader interaction and a Node 24.12.0 resolution change — see ADR-0012).
 - `ts-node` remains in devDependencies (used by the Knex CLI for migration files) and `tsx` remains (used by standalone utility scripts), even though neither is used by the test runner itself.
+  - _Update 2026-10-19:_ the Knex CLI now runs under `tsx` (`pnpm knex`), and `ts-node` has been removed from devDependencies.
 
 ## Links
 

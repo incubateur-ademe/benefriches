@@ -12,7 +12,7 @@ export async function down(knex: Knex): Promise<void> {
   });
 
   await knex("sites").update({
-    // ts-node run by knex doesn't seem to import the tableTypes.d.ts definitions and says ts-expect-error is not useful here
+    // ts-node (formerly run by knex, which now uses tsx) didn't seem to import the tableTypes.d.ts definitions and says ts-expect-error is not useful here
     // oxlint-disable-next-line typescript/prefer-ts-expect-error, typescript/ban-ts-comment
     // @ts-ignore is_friche has been dropped
     is_friche: knex.raw(`CASE WHEN nature = 'FRICHE' THEN true ELSE false END`),

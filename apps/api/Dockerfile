@@ -76,7 +76,7 @@ COPY --from=build /app/apps/api/package.json ./apps/api/
 COPY package.json pnpm-workspace.yaml ./
 
 # Entrypoint runs `pnpm knex:migrate-latest:js` (knex/pg/dotenv are prod deps;
-# the compiled knexfile.js is used, so no ts-node/tsx needed) then `node dist/src/main.js`.
+# the compiled knexfile.js is used, so no tsx needed) then `node dist/src/main.js`.
 COPY apps/api/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
