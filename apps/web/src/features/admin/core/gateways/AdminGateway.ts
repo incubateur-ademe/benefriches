@@ -12,6 +12,13 @@ export class AdminUserNotFoundError extends Error {
   }
 }
 
+export class AdminAccessForbiddenError extends Error {
+  constructor() {
+    super("Admin access forbidden");
+    this.name = "AdminAccessForbiddenError";
+  }
+}
+
 export interface AdminGateway {
   getDashboardStats(): Promise<AdminDashboardStats>;
   listUsers(params: ListAdminUsersParams): Promise<AdminUsersList>;

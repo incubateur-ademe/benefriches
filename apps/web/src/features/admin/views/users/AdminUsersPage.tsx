@@ -11,6 +11,7 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import type { AdminUsersViewData } from "../../core/admin.selectors";
+import AdminAccessDeniedAlert from "../AdminAccessDeniedAlert";
 import { formatAdminDate } from "../formatAdminDate";
 
 type Props = {
@@ -60,6 +61,8 @@ function AdminUsersPage({ viewData, onSearchSubmitted }: Props) {
       </form>
 
       {loadingState === "loading" && <LoadingSpinner />}
+
+      {loadingState === "forbidden" && <AdminAccessDeniedAlert />}
 
       {loadingState === "error" && (
         <Alert

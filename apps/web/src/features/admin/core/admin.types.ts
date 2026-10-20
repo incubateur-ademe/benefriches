@@ -12,3 +12,5 @@ export type {
 } from "shared";
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
+
+export type AdminLoadingState = LoadingState | "forbidden";

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
-import { fetchAdminUserActivity } from "../../core/actions/fetchAdminUserActivity.action";
+import { adminUserActivityRequested } from "../../core/actions/adminUserActivityRequested.action";
 import { selectAdminUserViewData } from "../../core/admin.selectors";
 import AdminUserPage from "./AdminUserPage";
 
@@ -12,10 +12,10 @@ type Props = {
 
 function AdminUserPageContainer({ userId }: Props) {
   const dispatch = useAppDispatch();
-  const viewData = useAppSelector(selectAdminUserViewData);
+  const viewData = useAppSelector((state) => selectAdminUserViewData(state, userId));
 
   useEffect(() => {
-    void dispatch(fetchAdminUserActivity(userId));
+    void dispatch(adminUserActivityRequested(userId));
   }, [dispatch, userId]);
 
   return <AdminUserPage viewData={viewData} />;

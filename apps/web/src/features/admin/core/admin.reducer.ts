@@ -1,84 +1,93 @@
 import { createReducer } from "@reduxjs/toolkit";
 
-import { fetchAdminDashboardStats } from "./actions/fetchAdminDashboardStats.action";
-import { fetchAdminUserActivity } from "./actions/fetchAdminUserActivity.action";
-import { fetchAdminUsers } from "./actions/fetchAdminUsers.action";
+import { adminDashboardStatsRequested } from "./actions/adminDashboardStatsRequested.action";
+import { adminUserActivityRequested } from "./actions/adminUserActivityRequested.action";
+import { adminUsersListRequested } from "./actions/adminUsersListRequested.action";
 import type {
   AdminDashboardStats,
+  AdminLoadingState,
   AdminUserActivity,
   AdminUserSummary,
-  LoadingState,
 } from "./admin.types";
+
+export type AdminUserEntry =
+  | { loadingState: "loading" }
+  | { loadingState: "success"; activity: AdminUserActivity }
+  | { loadingState: "not_found" | "forbidden" | "error" };
 
 export type AdminState = {
   dashboard: {
-    loadingState: LoadingState;
+    loadingState: AdminLoadingState;
     stats: AdminDashboardStats | null;
   };
   usersList: {
-    loadingState: LoadingState;
+    loadingState: AdminLoadingState;
+    latestRequestId: string | null;
     users: AdminUserSummary[];
     total: number;
     page: number;
     pageSize: number;
     search: string;
   };
-  selectedUser: {
-    loadingState: LoadingState | "not_found";
-    userId: string | null;
-    activity: AdminUserActivity | null;
-  };
+  usersById: Record<string, AdminUserEntry>;
 };
 
 export const initialState: AdminState = {
   dashboard: { loadingState: "idle", stats: null },
-  usersList: { loadingState: "idle", users: [], total: 0, page: 1, pageSize: 25, search: "" },
-  selectedUser: { loadingState: "idle", userId: null, activity: null },
+  usersList: {
+    loadingState: "idle",
+    latestRequestId: null,
+    users: [],
+    total: 0,
+    page: 1,
+    pageSize: 25,
+    search: "",
+  },
+  usersById: {},
 };
 
 export const adminReducer = createReducer(initialState, (builder) => {
-  builder.addCase(fetchAdminDashboardStats.pending, (state) => {
+  builder.addCase(adminDashboardStatsRequested.pending, (state) => {
     state.dashboard.loadingState = "loading";
   });
-  builder.addCase(fetchAdminDashboardStats.fulfilled, (state, action) => {
+  builder.addCase(adminDashboardStatsRequested.fulfilled, (state, action) => {
     state.dashboard.loadingState = "success";
     state.dashboard.stats = action.payload;
   });
-  builder.addCase(fetchAdminDashboardStats.rejected, (state) => {
-    state.dashboard.loadingState = "error";
+  builder.addCase(adminDashboardStatsRequested.rejected, (state, action) => {
+    state.dashboard.loadingState = action.payload ?? "error";
     state.dashboard.stats = null;
   });
 
-  builder.addCase(fetchAdminUsers.pending, (state, action) => {
+  builder.addCase(adminUsersListRequested.pending, (state, action) => {
     state.usersList.loadingState = "loading";
+    state.usersList.latestRequestId = action.meta.requestId;
     state.usersList.search = action.meta.arg.search ?? "";
     state.usersList.page = action.meta.arg.page ?? 1;
   });
-  builder.addCase(fetchAdminUsers.fulfilled, (state, action) => {
+  builder.addCase(adminUsersListRequested.fulfilled, (state, action) => {
+    if (action.meta.requestId !== state.usersList.latestRequestId) return;
     state.usersList.loadingState = "success";
     state.usersList.users = action.payload.users;
     state.usersList.total = action.payload.total;
     state.usersList.page = action.payload.page;
     state.usersList.pageSize = action.payload.pageSize;
   });
-  builder.addCase(fetchAdminUsers.rejected, (state) => {
-    state.usersList.loadingState = "error";
+  builder.addCase(adminUsersListRequested.rejected, (state, action) => {
+    if (action.meta.requestId !== state.usersList.latestRequestId) return;
+    state.usersList.loadingState = action.payload ?? "error";
     state.usersList.users = [];
     state.usersList.total = 0;
   });
 
-  builder.addCase(fetchAdminUserActivity.pending, (state, action) => {
-    state.selectedUser.loadingState = "loading";
-    state.selectedUser.userId = action.meta.arg;
-    state.selectedUser.activity = null;
+  builder.addCase(adminUserActivityRequested.pending, (state, action) => {
+    state.usersById[action.meta.arg] = { loadingState: "loading" };
   });
-  builder.addCase(fetchAdminUserActivity.fulfilled, (state, action) => {
-    state.selectedUser.loadingState = "success";
-    state.selectedUser.activity = action.payload;
+  builder.addCase(adminUserActivityRequested.fulfilled, (state, action) => {
+    state.usersById[action.meta.arg] = { loadingState: "success", activity: action.payload };
   });
-  builder.addCase(fetchAdminUserActivity.rejected, (state, action) => {
-    state.selectedUser.loadingState = action.payload === "not_found" ? "not_found" : "error";
-    state.selectedUser.activity = null;
+  builder.addCase(adminUserActivityRequested.rejected, (state, action) => {
+    state.usersById[action.meta.arg] = { loadingState: action.payload ?? "error" };
   });
 });
 

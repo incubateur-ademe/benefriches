@@ -4,13 +4,21 @@ import Table from "@codegouvfr/react-dsfr/Table";
 import type { ReactNode } from "react";
 
 import { routes } from "@/app/router";
+import { getSiteNatureLabel } from "@/shared/core/label-mapping/siteNatureLabelMapping";
+import {
+  getUserStructureActivityLabel,
+  getUserStructureTypeLabel,
+} from "@/shared/core/label-mapping/userStructureLabelMapping";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import type { AdminUserViewData } from "../../core/admin.selectors";
 import type { AdminUserActivity } from "../../core/admin.types";
+import AdminAccessDeniedAlert from "../AdminAccessDeniedAlert";
 import { formatAdminDate } from "../formatAdminDate";
 import AdminUserTimeline from "./AdminUserTimeline";
+import { getCompatibilityEvaluationStatusLabel } from "./compatibilityEvaluationStatusLabel";
+import { getProjectCreationModeLabel } from "./projectCreationModeLabel";
 
 type Props = {
   viewData: AdminUserViewData;
@@ -46,7 +54,7 @@ function UserInfo({ user }: { user: AdminUserActivity["user"] }) {
       <InfoItem label="Structure">
         {user.structureName ?? "-"}
         <span className="block text-sm font-normal text-(--text-mention-grey)">
-          {user.structureType} · {user.structureActivity}
+          {`${getUserStructureTypeLabel(user.structureType)} · ${getUserStructureActivityLabel(user.structureActivity)}`}
         </span>
       </InfoItem>
       <InfoItem label="Newsletter">
@@ -61,8 +69,6 @@ function UserInfo({ user }: { user: AdminUserActivity["user"] }) {
 }
 
 function AdminUserPage({ viewData }: Props) {
-  const { loadingState, activity } = viewData;
-
   return (
     <section className={fr.cx("fr-container", "fr-py-4w")}>
       <HtmlTitle>Utilisateur - Administration</HtmlTitle>
@@ -73,14 +79,21 @@ function AdminUserPage({ viewData }: Props) {
         Utilisateurs
       </a>
 
-      {loadingState === "loading" && (
+      {viewData.loadingState === "loading" && (
         <>
           <h1 className="mt-4">Utilisateur</h1>
           <LoadingSpinner />
         </>
       )}
 
-      {loadingState === "not_found" && (
+      {viewData.loadingState === "forbidden" && (
+        <>
+          <h1 className="mt-4">Utilisateur</h1>
+          <AdminAccessDeniedAlert />
+        </>
+      )}
+
+      {viewData.loadingState === "not_found" && (
         <>
           <h1 className="mt-4">Utilisateur</h1>
           <Alert
@@ -91,7 +104,7 @@ function AdminUserPage({ viewData }: Props) {
         </>
       )}
 
-      {loadingState === "error" && (
+      {viewData.loadingState === "error" && (
         <>
           <h1 className="mt-4">Utilisateur</h1>
           <Alert
@@ -102,30 +115,30 @@ function AdminUserPage({ viewData }: Props) {
         </>
       )}
 
-      {loadingState === "success" && activity && (
+      {viewData.loadingState === "success" && (
         <>
-          <h1 className="mt-4">{activity.user.email}</h1>
-          <UserInfo user={activity.user} />
+          <h1 className="mt-4">{viewData.activity.user.email}</h1>
+          <UserInfo user={viewData.activity.user} />
 
           <AdminUserTimeline
-            events={activity.timeline}
-            lifecycleEmailMaxAttempts={activity.lifecycleEmailMaxAttempts}
+            events={viewData.activity.timeline}
+            lifecycleEmailMaxAttempts={viewData.activity.lifecycleEmailMaxAttempts}
           />
 
           <h2 className="text-xl mt-10">Sites</h2>
-          {activity.sites.length === 0 ? (
+          {viewData.activity.sites.length === 0 ? (
             <p>Aucun site.</p>
           ) : (
             <Table
               caption="Sites de l'utilisateur"
               noCaption
               headers={SITES_HEADERS}
-              data={activity.sites.map((site) => [
+              data={viewData.activity.sites.map((site) => [
                 <a key={site.id} {...routes.siteFeatures({ siteId: site.id }).link}>
                   {site.name}
                 </a>,
                 site.id,
-                site.nature,
+                getSiteNatureLabel(site.nature),
                 site.creationMode,
                 site.status,
                 formatAdminDate(site.createdAt),
@@ -135,20 +148,20 @@ function AdminUserPage({ viewData }: Props) {
           )}
 
           <h2 className="text-xl mt-10">Projets</h2>
-          {activity.projects.length === 0 ? (
+          {viewData.activity.projects.length === 0 ? (
             <p>Aucun projet.</p>
           ) : (
             <Table
               caption="Projets de l'utilisateur"
               noCaption
               headers={PROJECTS_HEADERS}
-              data={activity.projects.map((project) => [
+              data={viewData.activity.projects.map((project) => [
                 <a key={project.id} {...routes.projectImpacts({ projectId: project.id }).link}>
                   {project.name}
                 </a>,
                 project.id,
                 project.siteId,
-                project.creationMode,
+                getProjectCreationModeLabel(project.creationMode),
                 project.status,
                 formatAdminDate(project.createdAt),
                 formatAdminDate(project.updatedAt),
@@ -157,17 +170,17 @@ function AdminUserPage({ viewData }: Props) {
           )}
 
           <h2 className="text-xl mt-10">Évaluations de compatibilité</h2>
-          {activity.compatibilityEvaluations.length === 0 ? (
+          {viewData.activity.compatibilityEvaluations.length === 0 ? (
             <p>Aucune évaluation de compatibilité.</p>
           ) : (
             <Table
               caption="Évaluations de compatibilité de l'utilisateur"
               noCaption
               headers={EVALUATIONS_HEADERS}
-              data={activity.compatibilityEvaluations.map((evaluation) => [
+              data={viewData.activity.compatibilityEvaluations.map((evaluation) => [
                 evaluation.id,
                 evaluation.siteId ?? "-",
-                evaluation.status ?? "-",
+                getCompatibilityEvaluationStatusLabel(evaluation.status),
                 formatAdminDate(evaluation.createdAt),
                 formatAdminDate(evaluation.completedAt),
               ])}
