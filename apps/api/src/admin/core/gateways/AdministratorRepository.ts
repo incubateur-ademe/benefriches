@@ -5,6 +5,7 @@ export interface AdministratorRepository {
   // case-insensitively.
   getUsersByEmail(normalizedEmail: string): Promise<AdministratorCandidate[]>;
   getUserById(userId: string): Promise<AdministratorCandidate | undefined>;
-  isAdministrator(userId: string): Promise<boolean>;
-  grant(userId: string, grantedAt: Date): Promise<void>;
+  // Inserts the administrators row unless one exists for this user. Reports whether a row was
+  // created, so concurrent grants never fail on the primary key.
+  grant(userId: string, grantedAt: Date): Promise<{ created: boolean }>;
 }

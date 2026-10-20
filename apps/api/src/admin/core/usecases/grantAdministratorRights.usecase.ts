@@ -28,8 +28,9 @@ type ResolveUserResult = TResult<
  * The email is trimmed and matched case-insensitively. users.email is not unique, so several
  * matches fail with AmbiguousEmail rather than granting rights to an arbitrary user.
  *
- * Idempotent: an existing administrator is left unchanged and no event is published.
- * Publishes administrator.granted on a real grant only.
+ * Idempotent: the insert ignores an existing row, so concurrent runs are safe. An existing
+ * administrator is left unchanged and no event is published. Publishes administrator.granted
+ * only when a row was created.
  */
 export class GrantAdministratorRightsUseCase implements UseCase<
   Request,
@@ -59,11 +60,11 @@ export class GrantAdministratorRightsUseCase implements UseCase<
     }
     const user = userResult.getData();
 
-    if (await this.administratorRepository.isAdministrator(user.id)) {
+    const { created } = await this.administratorRepository.grant(user.id, this.dateProvider.now());
+    if (!created) {
       return success({ outcome: "alreadyAdministrator", user });
     }
 
-    await this.administratorRepository.grant(user.id, this.dateProvider.now());
     await this.eventPublisher.publish(
       createAdministratorGrantedEvent(this.uidGenerator.generate(), {
         userId: user.id,
