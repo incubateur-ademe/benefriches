@@ -3,15 +3,15 @@ import Tag from "@codegouvfr/react-dsfr/Tag";
 import { useId, useState } from "react";
 
 import type { AdminUserTimelineEvent } from "../../core/admin.types";
+import { formatAdminDate } from "../formatAdminDate";
 import {
   getTimelineEventBadge,
   getTimelineEventCategory,
   getTimelineEventDetail,
   isTimelineEventInError,
   type TimelineEventCategory,
-} from "../../core/timelineEventDisplay";
-import { getTimelineEventLabel } from "../../core/timelineEventLabel";
-import { formatAdminDate } from "../formatAdminDate";
+} from "./timelineEventDisplay";
+import { getTimelineEventLabel } from "./timelineEventLabel";
 
 type Props = {
   events: AdminUserTimelineEvent[];
@@ -20,6 +20,8 @@ type Props = {
 
 type TimelineFilter = "all" | TimelineEventCategory;
 
+type KeyedTimelineEvent = { key: string; event: AdminUserTimelineEvent };
+
 const FILTERS: { value: TimelineFilter; label: string }[] = [
   { value: "all", label: "Tout" },
   { value: "activity", label: "Activité" },
@@ -27,6 +29,17 @@ const FILTERS: { value: TimelineFilter; label: string }[] = [
 ];
 
 const EMPTY_MESSAGE = "Aucune activité enregistrée.";
+
+function withTimelineKeys(events: AdminUserTimelineEvent[]): KeyedTimelineEvent[] {
+  const occurrencesByBaseKey = new Map<string, number>();
+
+  return events.map((event) => {
+    const baseKey = `${event.type}|${event.date}|${event.entityId ?? ""}|${event.emailType ?? ""}`;
+    const occurrences = occurrencesByBaseKey.get(baseKey) ?? 0;
+    occurrencesByBaseKey.set(baseKey, occurrences + 1);
+    return { key: occurrences === 0 ? baseKey : `${baseKey}#${occurrences}`, event };
+  });
+}
 
 function getMarkerLabel(event: AdminUserTimelineEvent): string {
   if (isTimelineEventInError(event)) return "Email en échec";
@@ -97,9 +110,9 @@ function AdminUserTimeline({ events, lifecycleEmailMaxAttempts }: Props) {
     );
   }
 
-  const visibleEvents = events
-    .filter((event) => filter === "all" || getTimelineEventCategory(event) === filter)
-    .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const visibleEvents = withTimelineKeys(events)
+    .filter(({ event }) => filter === "all" || getTimelineEventCategory(event) === filter)
+    .toSorted((a, b) => new Date(b.event.date).getTime() - new Date(a.event.date).getTime());
 
   return (
     <>
@@ -125,9 +138,9 @@ function AdminUserTimeline({ events, lifecycleEmailMaxAttempts }: Props) {
         <p>{EMPTY_MESSAGE}</p>
       ) : (
         <ol aria-labelledby={headingId} className="list-none p-0 m-0 border-l-2 border-border-grey">
-          {visibleEvents.map((event, index) => (
+          {visibleEvents.map(({ key, event }) => (
             <TimelineEvent
-              key={`${event.type}-${event.date}-${event.entityId ?? index}`}
+              key={key}
               event={event}
               lifecycleEmailMaxAttempts={lifecycleEmailMaxAttempts}
             />

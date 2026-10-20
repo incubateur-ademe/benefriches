@@ -366,6 +366,15 @@ describe("AdminUserTimeline", () => {
     });
   });
 
+  it("renders two identical events at the same instant", () => {
+    render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[LOGIN_EVENT, LOGIN_EVENT]} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Activité" }));
+    fireEvent.click(screen.getByRole("button", { name: "Tout" }));
+
+    expect(getTimelineItems()).toHaveLength(2);
+  });
+
   it("renders the empty message when the user has no event", () => {
     render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[]} />);
 

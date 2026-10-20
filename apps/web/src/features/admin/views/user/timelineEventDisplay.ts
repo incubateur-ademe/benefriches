@@ -1,4 +1,4 @@
-import type { AdminUserTimelineEvent } from "./admin.types";
+import type { AdminUserTimelineEvent } from "../../core/admin.types";
 
 export type TimelineEventCategory = "activity" | "email";
 
