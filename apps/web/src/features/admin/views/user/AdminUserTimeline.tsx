@@ -15,6 +15,7 @@ import { formatAdminDate } from "../formatAdminDate";
 
 type Props = {
   events: AdminUserTimelineEvent[];
+  lifecycleEmailMaxAttempts: number;
 };
 
 type TimelineFilter = "all" | TimelineEventCategory;
@@ -50,9 +51,15 @@ function TimelineMarker({ event }: { event: AdminUserTimelineEvent }) {
   );
 }
 
-function TimelineEvent({ event }: { event: AdminUserTimelineEvent }) {
+function TimelineEvent({
+  event,
+  lifecycleEmailMaxAttempts,
+}: {
+  event: AdminUserTimelineEvent;
+  lifecycleEmailMaxAttempts: number;
+}) {
   const badge = getTimelineEventBadge(event);
-  const detail = getTimelineEventDetail(event);
+  const detail = getTimelineEventDetail(event, lifecycleEmailMaxAttempts);
 
   return (
     <li className="relative pl-6 pb-4">
@@ -71,7 +78,7 @@ function TimelineEvent({ event }: { event: AdminUserTimelineEvent }) {
   );
 }
 
-function AdminUserTimeline({ events }: Props) {
+function AdminUserTimeline({ events, lifecycleEmailMaxAttempts }: Props) {
   const [filter, setFilter] = useState<TimelineFilter>("all");
   const headingId = useId();
 
@@ -122,6 +129,7 @@ function AdminUserTimeline({ events }: Props) {
             <TimelineEvent
               key={`${event.type}-${event.date}-${event.entityId ?? index}`}
               event={event}
+              lifecycleEmailMaxAttempts={lifecycleEmailMaxAttempts}
             />
           ))}
         </ol>
