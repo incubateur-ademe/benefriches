@@ -1,5 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { Knex } from "knex";
+import { lifecycleEmailDeliveryStatusSchema, lifecycleEmailTypeSchema } from "shared";
 
 import type {
   AdminUserActivityRecord,
@@ -19,6 +20,16 @@ type UserListRow = {
   structure_activity: string;
   created_at: Date;
   last_login_at: Date | null;
+};
+
+type LifecycleEmailDeliveryRow = {
+  email_type: string;
+  status: string;
+  related_entity_name: string | null;
+  sent_at: Date | null;
+  last_attempted_at: Date;
+  attempts: number;
+  error_message: string | null;
 };
 
 @Injectable()
@@ -101,6 +112,7 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
         "structure_type",
         "structure_activity",
         "subscribed_to_newsletter",
+        "lifecycle_emails_unsubscribed_at",
         "created_at",
       )
       .where("id", userId)
@@ -108,7 +120,7 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
 
     if (!user) return undefined;
 
-    const [loginRows, siteRows, projectRows, evaluationRows] = await Promise.all([
+    const [loginRows, siteRows, projectRows, evaluationRows, deliveryRows] = await Promise.all([
       this.sqlConnection("domain_events")
         .select("created_at")
         .where("name", LOGIN_SUCCEEDED)
@@ -134,6 +146,36 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
         .select("id", "related_site_id", "status", "created_at", "completed_at")
         .where("created_by", userId)
         .orderBy("created_at", "asc"),
+      this.sqlConnection("lifecycle_email_deliveries as d")
+        .select(
+          "d.email_type",
+          "d.status",
+          "d.sent_at",
+          "d.last_attempted_at",
+          "d.attempts",
+          "d.error_message",
+          this.sqlConnection.raw("COALESCE(s.name, p.name) AS related_entity_name"),
+        )
+        // email_type says what related_entity_id points to; a deleted entity leaves the name null.
+        .leftJoin("sites as s", (join) => {
+          join
+            .on("s.id", "d.related_entity_id")
+            .andOnVal("d.email_type", "=", lifecycleEmailTypeSchema.enum["first-project-reminder"]);
+        })
+        .leftJoin("reconversion_projects as p", (join) => {
+          join
+            .on("p.id", "d.related_entity_id")
+            .andOnVal(
+              "d.email_type",
+              "=",
+              lifecycleEmailTypeSchema.enum["project-impacts-summary"],
+            );
+        })
+        .where("d.user_id", userId)
+        // Only types the code knows, so a leftover row of a retired type can't make the
+        // parse below throw and break the page.
+        .whereIn("d.email_type", lifecycleEmailTypeSchema.options)
+        .orderBy("d.created_at", "asc") as Promise<LifecycleEmailDeliveryRow[]>,
     ]);
 
     return {
@@ -146,6 +188,7 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
         structureType: user.structure_type,
         structureActivity: user.structure_activity,
         subscribedToNewsletter: user.subscribed_to_newsletter,
+        lifecycleEmailsUnsubscribedAt: user.lifecycle_emails_unsubscribed_at,
         createdAt: user.created_at,
       },
       loginDates: loginRows.map((row) => row.created_at),
@@ -173,6 +216,15 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
         status: row.status,
         createdAt: row.created_at,
         completedAt: row.completed_at,
+      })),
+      lifecycleEmailDeliveries: deliveryRows.map((row) => ({
+        emailType: lifecycleEmailTypeSchema.parse(row.email_type),
+        status: lifecycleEmailDeliveryStatusSchema.parse(row.status),
+        relatedEntityName: row.related_entity_name,
+        sentAt: row.sent_at,
+        lastAttemptedAt: row.last_attempted_at,
+        attempts: row.attempts,
+        errorMessage: row.error_message,
       })),
     };
   }

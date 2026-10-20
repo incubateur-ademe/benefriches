@@ -1,3 +1,5 @@
+import type { LifecycleEmailDeliveryStatus, LifecycleEmailType } from "shared";
+
 export type AdminUserRecord = {
   id: string;
   email: string;
@@ -7,10 +9,14 @@ export type AdminUserRecord = {
   structureType: string;
   structureActivity: string;
   subscribedToNewsletter: boolean;
+  lifecycleEmailsUnsubscribedAt: Date | null;
   createdAt: Date;
 };
 
-export type AdminUserListItem = Omit<AdminUserRecord, "subscribedToNewsletter"> & {
+export type AdminUserListItem = Omit<
+  AdminUserRecord,
+  "subscribedToNewsletter" | "lifecycleEmailsUnsubscribedAt"
+> & {
   lastLoginAt: Date | null;
 };
 
@@ -42,12 +48,23 @@ export type AdminUserCompatibilityEvaluationRecord = {
   completedAt: Date | null;
 };
 
+export type AdminUserLifecycleEmailDeliveryRecord = {
+  emailType: LifecycleEmailType;
+  status: LifecycleEmailDeliveryStatus;
+  relatedEntityName: string | null;
+  sentAt: Date | null;
+  lastAttemptedAt: Date;
+  attempts: number;
+  errorMessage: string | null;
+};
+
 export type AdminUserActivityRecord = {
   user: AdminUserRecord;
   loginDates: Date[];
   sites: AdminUserSiteRecord[];
   projects: AdminUserProjectRecord[];
   compatibilityEvaluations: AdminUserCompatibilityEvaluationRecord[];
+  lifecycleEmailDeliveries: AdminUserLifecycleEmailDeliveryRecord[];
 };
 
 export interface AdminUsersQuery {
