@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
+import type { AdminMonthlyCounts, MonthlyCount } from "src/admin/core/gateways/AdminStatsQuery";
 import { LOGIN_SUCCEEDED } from "src/auth/core/events/loginSucceeded.event";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
@@ -125,17 +126,23 @@ describe("SqlAdminStatsQuery integration", () => {
     });
   });
 
-  describe("getMonthlyStats", () => {
-    it("returns an empty list when there is no activity since given date", async () => {
+  describe("getMonthlyCounts", () => {
+    it("returns no counts when there is no activity since given date", async () => {
       const user = await insertUser(sqlConnection, new Date("2025-06-15T10:00:00.000Z"));
       await insertLogin(sqlConnection, user, new Date("2025-06-16T10:00:00.000Z"));
 
-      const result = await query.getMonthlyStats(new Date("2026-01-01T00:00:00.000Z"));
+      const result = await query.getMonthlyCounts(new Date("2026-01-01T00:00:00.000Z"));
 
-      assert.deepStrictEqual(result, []);
+      assert.deepStrictEqual(result, {
+        usersCreated: [],
+        sitesCreated: [],
+        projectsCreated: [],
+        compatibilityEvaluationsCreated: [],
+        logins: [],
+      } satisfies AdminMonthlyCounts);
     });
 
-    it("groups activity per UTC month, oldest first, ignoring rows before given date and non-login events", async () => {
+    it("counts rows per metric and UTC month, ignoring rows before given date and non-login events", async () => {
       const user1 = await insertUser(sqlConnection, new Date("2025-12-31T23:30:00.000Z"));
       const user2 = await insertUser(sqlConnection, new Date("2026-01-01T00:30:00.000Z"));
       const user3 = await insertUser(sqlConnection, new Date("2026-01-20T10:00:00.000Z"));
@@ -160,26 +167,36 @@ describe("SqlAdminStatsQuery integration", () => {
         created_at: new Date("2026-03-09T10:00:00.000Z"),
       });
 
-      const result = await query.getMonthlyStats(new Date("2026-01-01T00:00:00.000Z"));
+      const result = await query.getMonthlyCounts(new Date("2026-01-01T00:00:00.000Z"));
 
-      assert.deepStrictEqual(result, [
+      // order is not part of the contract
+      const byMonth = (counts: MonthlyCount[]) =>
+        counts.toSorted((a, b) => a.month.localeCompare(b.month));
+      assert.deepStrictEqual(
         {
-          month: "2026-01",
-          usersCreated: 2,
-          sitesCreated: 1,
-          projectsCreated: 1,
-          compatibilityEvaluationsCreated: 0,
-          logins: 2,
+          usersCreated: byMonth(result.usersCreated),
+          sitesCreated: byMonth(result.sitesCreated),
+          projectsCreated: byMonth(result.projectsCreated),
+          compatibilityEvaluationsCreated: byMonth(result.compatibilityEvaluationsCreated),
+          logins: byMonth(result.logins),
         },
         {
-          month: "2026-03",
-          usersCreated: 0,
-          sitesCreated: 1,
-          projectsCreated: 2,
-          compatibilityEvaluationsCreated: 1,
-          logins: 1,
-        },
-      ]);
+          usersCreated: [{ month: "2026-01", count: 2 }],
+          sitesCreated: [
+            { month: "2026-01", count: 1 },
+            { month: "2026-03", count: 1 },
+          ],
+          projectsCreated: [
+            { month: "2026-01", count: 1 },
+            { month: "2026-03", count: 2 },
+          ],
+          compatibilityEvaluationsCreated: [{ month: "2026-03", count: 1 }],
+          logins: [
+            { month: "2026-01", count: 2 },
+            { month: "2026-03", count: 1 },
+          ],
+        } satisfies AdminMonthlyCounts,
+      );
     });
   });
 });
