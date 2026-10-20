@@ -238,6 +238,7 @@ type CityStats = {
 type SqlAdministrator = {
   user_id: string;
   created_at: Date;
+  granted_event_published_at: Date | null;
 };
 
 type SqlDomainEvent = {
