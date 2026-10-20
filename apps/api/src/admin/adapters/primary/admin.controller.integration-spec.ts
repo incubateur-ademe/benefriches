@@ -199,6 +199,16 @@ describe("Admin controller", () => {
       assert.strictEqual(response.status, 403);
     });
 
+    it("responds with 400 when userId is not a UUID", async () => {
+      const { accessToken } = await authenticateAdmin();
+
+      const response = await supertest(app.getHttpServer())
+        .get("/api/admin/users/not-a-uuid")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
+
+      assert.strictEqual(response.status, 400);
+    });
+
     it("responds with 404 when user does not exist", async () => {
       const { accessToken } = await authenticateAdmin();
 
