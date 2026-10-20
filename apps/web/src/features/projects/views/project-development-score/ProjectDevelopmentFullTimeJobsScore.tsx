@@ -1,4 +1,3 @@
-import type { LetterGrade } from "shared";
 import type { Link } from "type-route";
 
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
@@ -6,26 +5,13 @@ import ImpactChartCard from "../shared/charts/ImpactChartCard";
 import useImpactAreaChartProps from "../shared/charts/useImpactAreaChartProps";
 import ProjectDevelopmentScoreFamilyHeader from "./layout/ProjectDevelopmentScoreFamilyHeader";
 import GradeTextBadge from "./layout/ProjectDevelopmentScoreGradeTextBadge";
+import { getLetterGradeBadgeText } from "./layout/gradeLabels";
 
 type Props = DevelopmentScoreDataView["developmentScore"]["details"]["fullTimeJobsScore"] & {
   linkProps: Link;
   anchor: string;
 };
 
-const getLetterGradeBadgeText = (letterGrade: LetterGrade) => {
-  switch (letterGrade) {
-    case "A":
-      return "En forte hausse";
-    case "B":
-      return "En hausse significative";
-    case "C":
-      return "En légère hausse ou égal";
-    case "D":
-      return "En baisse";
-    case "E":
-      return "En forte baisse";
-  }
-};
 export default function ProjectDevelopmentFullTimeJobsScore({
   score,
   indicators,
@@ -63,7 +49,7 @@ export default function ProjectDevelopmentFullTimeJobsScore({
             element: (
               <GradeTextBadge
                 letterGrade={score.letterGrade}
-                badgeText={getLetterGradeBadgeText(score.letterGrade)}
+                badgeText={getLetterGradeBadgeText("evolution", score.letterGrade)}
               />
             ),
             preventClick: false,

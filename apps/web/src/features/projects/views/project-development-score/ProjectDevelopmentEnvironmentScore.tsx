@@ -6,6 +6,8 @@ import useImpactAreaChartProps from "../shared/charts/useImpactAreaChartProps";
 import useOpenDescriptionModalLink from "./details-modals/useOpenDescriptionModalLink";
 import MetricCard from "./layout/ProjectDevelopmentMetricCard";
 import ProjectDevelopmentScoreFamilyHeader from "./layout/ProjectDevelopmentScoreFamilyHeader";
+import GradeTextBadge from "./layout/ProjectDevelopmentScoreGradeTextBadge";
+import { getLetterGradeBadgeText } from "./layout/gradeLabels";
 
 type Props = DevelopmentScoreDataView["developmentScore"]["details"]["environmentScore"] & {
   anchor: string;
@@ -132,14 +134,6 @@ const describeEcosystemServices = (grade: LetterGrade) => {
   return "Le projet a des impacts négatifs sur les services écosystémiques.";
 };
 
-const ZAN_BADGE_TEXT: Record<Props["score"]["letterGrade"], string> = {
-  A: "Très favorable",
-  B: "Favorable",
-  C: "Neutre",
-  D: "Défavorable",
-  E: "Très défavorable",
-};
-
 const CO2_CHART_TITLE = "☁️ CO2 eq stocké ou évité";
 
 export default function ProjectDevelopmentEnvironmentScore({ score, indicators, anchor }: Props) {
@@ -182,6 +176,15 @@ export default function ProjectDevelopmentEnvironmentScore({ score, indicators, 
             options={options}
             classes={{ title: "text-xl" }}
             linkProps={getLink("environmentScore.co2eqEmissionsVariation")}
+            headerSlot={{
+              element: (
+                <GradeTextBadge
+                  letterGrade={score.letterGrade}
+                  badgeText={getLetterGradeBadgeText("evolution", score.letterGrade)}
+                />
+              ),
+              preventClick: false,
+            }}
           />
         </div>
 
@@ -189,7 +192,7 @@ export default function ProjectDevelopmentEnvironmentScore({ score, indicators, 
           <MetricCard
             emoji="🌱"
             title="Objectif ZAN"
-            badgeText={ZAN_BADGE_TEXT[zanCompliance.letterGrade]}
+            badgeText={getLetterGradeBadgeText("compliance", zanCompliance.letterGrade)}
             letterGrade={zanCompliance.letterGrade}
             description={describeZanCompliance(zanCompliance)}
             linkProps={getLink("environmentScore.zanCompliance")}

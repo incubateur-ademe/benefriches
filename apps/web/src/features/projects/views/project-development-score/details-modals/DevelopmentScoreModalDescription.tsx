@@ -16,6 +16,7 @@ import ModalGrid from "../../impact-description-modals/modal-layout/ModalGrid";
 import useToggleDescriptionModal from "../../impact-description-modals/useToggleDescriptionModal";
 import { developmentScoreMdxComponents } from "../../shared/impacts/documentation/mdxComponents";
 import GradeTextBadge from "../layout/ProjectDevelopmentScoreGradeTextBadge";
+import { getLetterGradeBadgeText } from "../layout/gradeLabels";
 import { DEVELOPMENT_SCORE_CONFIG_MODALS } from "./developmentScoreModalsConfig";
 import { parseContentState } from "./useOpenDescriptionModalLink";
 
@@ -94,6 +95,20 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
     [handleClose, impactsListModalsMatchedState, getImpactListModalContentLink],
   );
 
+  const badgeKind = (() => {
+    switch (detailsName) {
+      case "environmentScore.co2eqEmissionsVariation":
+      case "fullTimeJobsScore":
+        return "evolution";
+      case "localAuthorityEconomicScore":
+        return "impact";
+      case "environmentScore.zanCompliance":
+        return "compliance";
+      default:
+        return "qualitative";
+    }
+  })();
+
   return (
     <Dialog id={DIALOG_ID} open={isOpen} onClose={handleClose} aria-labelledby={DIALOG_TITLE_ID}>
       <div className={classNames(DIALOG_DSFR_CSS, isDark ? "highcharts-dark" : "highcharts-light")}>
@@ -143,7 +158,12 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
                                       {children}
                                     </h1>
 
-                                    {letterGrade && <GradeTextBadge letterGrade={letterGrade} />}
+                                    {letterGrade && (
+                                      <GradeTextBadge
+                                        letterGrade={letterGrade}
+                                        badgeText={getLetterGradeBadgeText(badgeKind, letterGrade)}
+                                      />
+                                    )}
                                   </div>
 
                                   {DataComponent ? (

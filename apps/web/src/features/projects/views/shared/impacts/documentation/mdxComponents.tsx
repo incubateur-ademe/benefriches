@@ -8,8 +8,11 @@ import type { LetterGradeWithModifier } from "shared";
 import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { getLetterGradeBadgeText } from "../../../project-development-score/layout/ProjectDevelopmentScoreGradeTextBadge";
 import { LETTER_GRADE_COLORS } from "../../../project-development-score/layout/colors";
+import {
+  getLetterGradeBadgeText,
+  type ScoreBadgeLabelKind,
+} from "../../../project-development-score/layout/gradeLabels";
 
 /**
  * Conventions utilisées dans les .mdx :
@@ -96,32 +99,51 @@ const GradeBadge = ({ letterGrade }: { letterGrade: LetterGradeWithModifier }) =
     </span>
   );
 };
-const LETTER_GRADE_REGEX = /^[ABCDE][+-]?$/;
+
+const LETTER_GRADE_CELL_REGEX = new RegExp(
+  `^([ABCDE])([+-]|_(qualitative|evolution|impact|compliance))?$`,
+);
+
+const parseLetterGradeCell = (text: string) => {
+  const match = LETTER_GRADE_CELL_REGEX.exec(text);
+  if (!match) return null;
+
+  const [, letter, suffix, labelKind] = match;
+  const hasModifier = suffix === "+" || suffix === "-";
+
+  return {
+    gradeWithModifier: (hasModifier ? `${letter}${suffix}` : letter) as LetterGradeWithModifier,
+    labelKind: labelKind ? (labelKind as ScoreBadgeLabelKind) : undefined,
+  };
+};
 
 const Td = ({ children, className }: ComponentProps<"td">) => (
   <td className={classNames("p-3 bg-none border-b border-border-grey", className)}>{children}</td>
 );
 
 const TdLetterGrade = ({ children, className }: ComponentProps<"td">) => {
-  const text = textOf(children).trim();
+  const parsed = parseLetterGradeCell(textOf(children).trim());
 
-  if (!LETTER_GRADE_REGEX.test(text)) {
-    return <Td>{children}</Td>;
+  if (!parsed) {
+    return <Td className={className}>{children}</Td>;
   }
 
-  const gradeWithModifier = text as LetterGradeWithModifier;
+  const { gradeWithModifier, labelKind } = parsed;
   const letterGrade = getLetterGradeFromLetterGradeWithModifiers(gradeWithModifier);
 
   return (
     <Td
       className={classNames(
-        "whitespace-nowrap w-[1%] min-w-1/3",
+        "whitespace-nowrap w-[1%]",
+        labelKind ? "min-w-1/3" : "text-center",
         LETTER_GRADE_COLORS[letterGrade].bgLightColor,
         className,
       )}
     >
       <GradeBadge letterGrade={gradeWithModifier} />
-      <span className="font-bold pl-3">{getLetterGradeBadgeText(letterGrade)}</span>
+      {labelKind && (
+        <span className="font-bold pl-3">{getLetterGradeBadgeText(labelKind, letterGrade)}</span>
+      )}
     </Td>
   );
 };
