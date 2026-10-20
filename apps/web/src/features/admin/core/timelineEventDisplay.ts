@@ -33,10 +33,13 @@ export const getTimelineEventBadge = (event: AdminUserTimelineEvent): TimelineEv
   }
 };
 
-export const getTimelineEventDetail = (event: AdminUserTimelineEvent): string | null => {
+export const getTimelineEventDetail = (
+  event: AdminUserTimelineEvent,
+  lifecycleEmailMaxAttempts: number,
+): string | null => {
   switch (event.type) {
     case "lifecycle_email_failed": {
-      const attempts = `Tentative ${event.deliveryAttempts} sur ${event.deliveryMaxAttempts}`;
+      const attempts = `Tentative ${event.deliveryAttempts} sur ${lifecycleEmailMaxAttempts}`;
       return event.deliveryErrorMessage ? `${attempts} · ${event.deliveryErrorMessage}` : attempts;
     }
     case "lifecycle_emails_unsubscribed":

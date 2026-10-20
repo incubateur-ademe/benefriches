@@ -13,7 +13,6 @@ const emailEvent = (
   emailType: null,
   deliveryStatus: null,
   deliveryAttempts: null,
-  deliveryMaxAttempts: null,
   deliveryErrorMessage: null,
   ...overrides,
 });
@@ -26,7 +25,6 @@ const LOGIN_EVENT: AdminUserTimelineEvent = {
   emailType: null,
   deliveryStatus: null,
   deliveryAttempts: null,
-  deliveryMaxAttempts: null,
   deliveryErrorMessage: null,
 };
 
@@ -40,7 +38,6 @@ const failedEvent = (deliveryStatus: "failed" | "abandoned") =>
     emailType: "first-site-reminder",
     deliveryStatus,
     deliveryAttempts: 2,
-    deliveryMaxAttempts: 5,
     deliveryErrorMessage: "Connection timeout",
   });
 
@@ -58,7 +55,6 @@ describe("AdminUserTimeline", () => {
         emailType: null,
         deliveryStatus: null,
         deliveryAttempts: null,
-        deliveryMaxAttempts: null,
         deliveryErrorMessage: null,
       },
       label: "Création du compte",
@@ -72,7 +68,6 @@ describe("AdminUserTimeline", () => {
         emailType: null,
         deliveryStatus: null,
         deliveryAttempts: null,
-        deliveryMaxAttempts: null,
         deliveryErrorMessage: null,
       },
       label: "Connexion",
@@ -86,7 +81,6 @@ describe("AdminUserTimeline", () => {
         emailType: null,
         deliveryStatus: null,
         deliveryAttempts: null,
-        deliveryMaxAttempts: null,
         deliveryErrorMessage: null,
       },
       label: "Création du site « Friche »",
@@ -100,7 +94,6 @@ describe("AdminUserTimeline", () => {
         emailType: null,
         deliveryStatus: null,
         deliveryAttempts: null,
-        deliveryMaxAttempts: null,
         deliveryErrorMessage: null,
       },
       label: "Modification du site « Friche »",
@@ -114,7 +107,6 @@ describe("AdminUserTimeline", () => {
         emailType: null,
         deliveryStatus: null,
         deliveryAttempts: null,
-        deliveryMaxAttempts: null,
         deliveryErrorMessage: null,
       },
       label: "Création du projet « Projet »",
@@ -128,7 +120,6 @@ describe("AdminUserTimeline", () => {
         emailType: null,
         deliveryStatus: null,
         deliveryAttempts: null,
-        deliveryMaxAttempts: null,
         deliveryErrorMessage: null,
       },
       label: "Modification du projet « Projet »",
@@ -142,7 +133,6 @@ describe("AdminUserTimeline", () => {
         emailType: null,
         deliveryStatus: null,
         deliveryAttempts: null,
-        deliveryMaxAttempts: null,
         deliveryErrorMessage: null,
       },
       label: "Évaluation de compatibilité lancée",
@@ -156,7 +146,6 @@ describe("AdminUserTimeline", () => {
         emailType: null,
         deliveryStatus: null,
         deliveryAttempts: null,
-        deliveryMaxAttempts: null,
         deliveryErrorMessage: null,
       },
       label: "Évaluation de compatibilité terminée",
@@ -185,7 +174,6 @@ describe("AdminUserTimeline", () => {
         entityName: "Parking Sud",
         deliveryStatus: "failed",
         deliveryAttempts: 1,
-        deliveryMaxAttempts: 5,
       }),
       label: "Récapitulatif des impacts du projet « Parking Sud »",
     },
@@ -198,7 +186,7 @@ describe("AdminUserTimeline", () => {
 
   for (const { event, label } of cases) {
     it(`renders "${label}" for a ${event.type} ${event.emailType ?? ""} event`, () => {
-      render(<AdminUserTimeline events={[event]} />);
+      render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[event]} />);
 
       expect(screen.getByText(label)).toBeInTheDocument();
     });
@@ -207,6 +195,7 @@ describe("AdminUserTimeline", () => {
   it("renders events from most recent to oldest", () => {
     render(
       <AdminUserTimeline
+        lifecycleEmailMaxAttempts={5}
         events={[
           {
             date: "2026-01-10T10:00:00.000Z",
@@ -216,7 +205,6 @@ describe("AdminUserTimeline", () => {
             emailType: null,
             deliveryStatus: null,
             deliveryAttempts: null,
-            deliveryMaxAttempts: null,
             deliveryErrorMessage: null,
           },
           {
@@ -227,7 +215,6 @@ describe("AdminUserTimeline", () => {
             emailType: null,
             deliveryStatus: null,
             deliveryAttempts: null,
-            deliveryMaxAttempts: null,
             deliveryErrorMessage: null,
           },
         ]}
@@ -255,14 +242,14 @@ describe("AdminUserTimeline", () => {
 
     for (const { name, event, badge } of badgeCases) {
       it(`renders the "${badge}" badge for a ${name} event`, () => {
-        render(<AdminUserTimeline events={[event]} />);
+        render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[event]} />);
 
         expect(screen.getByText(badge)).toBeInTheDocument();
       });
     }
 
     it("renders no badge for activity events", () => {
-      render(<AdminUserTimeline events={[LOGIN_EVENT]} />);
+      render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[LOGIN_EVENT]} />);
 
       const item = getTimelineItems()[0]!;
       expect(within(item).getByText("Connexion")).toBeInTheDocument();
@@ -273,14 +260,14 @@ describe("AdminUserTimeline", () => {
   describe("detail line", () => {
     for (const status of ["failed", "abandoned"] as const) {
       it(`renders the attempt count and error message for a ${status} email`, () => {
-        render(<AdminUserTimeline events={[failedEvent(status)]} />);
+        render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[failedEvent(status)]} />);
 
         expect(screen.getByText("Tentative 2 sur 5 · Connection timeout")).toBeInTheDocument();
       });
     }
 
     it("explains the unsubscribe event", () => {
-      render(<AdminUserTimeline events={[UNSUBSCRIBED_EVENT]} />);
+      render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[UNSUBSCRIBED_EVENT]} />);
 
       expect(
         screen.getByText("Plus aucun email de rappel ne sera envoyé à cet utilisateur."),
@@ -299,7 +286,7 @@ describe("AdminUserTimeline", () => {
 
     for (const { name, event, marker } of markerCases) {
       it(`renders the "${marker}" marker for a ${name} event`, () => {
-        render(<AdminUserTimeline events={[event]} />);
+        render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[event]} />);
 
         expect(
           within(getTimelineItems()[0]!).getByRole("img", { name: marker }),
@@ -310,14 +297,24 @@ describe("AdminUserTimeline", () => {
 
   describe("filter", () => {
     it("shows all events by default", () => {
-      render(<AdminUserTimeline events={[LOGIN_EVENT, SENT_WELCOME_EVENT]} />);
+      render(
+        <AdminUserTimeline
+          lifecycleEmailMaxAttempts={5}
+          events={[LOGIN_EVENT, SENT_WELCOME_EVENT]}
+        />,
+      );
 
       expect(screen.getByRole("button", { name: "Tout" })).toHaveAttribute("aria-pressed", "true");
       expect(getTimelineItems()).toHaveLength(2);
     });
 
     it("shows only activity events when Activité is selected", () => {
-      render(<AdminUserTimeline events={[LOGIN_EVENT, SENT_WELCOME_EVENT]} />);
+      render(
+        <AdminUserTimeline
+          lifecycleEmailMaxAttempts={5}
+          events={[LOGIN_EVENT, SENT_WELCOME_EVENT]}
+        />,
+      );
 
       fireEvent.click(screen.getByRole("button", { name: "Activité" }));
 
@@ -331,7 +328,12 @@ describe("AdminUserTimeline", () => {
     });
 
     it("shows only email events when Emails is selected", () => {
-      render(<AdminUserTimeline events={[LOGIN_EVENT, SENT_WELCOME_EVENT]} />);
+      render(
+        <AdminUserTimeline
+          lifecycleEmailMaxAttempts={5}
+          events={[LOGIN_EVENT, SENT_WELCOME_EVENT]}
+        />,
+      );
 
       fireEvent.click(screen.getByRole("button", { name: "Emails" }));
 
@@ -341,7 +343,12 @@ describe("AdminUserTimeline", () => {
     });
 
     it("shows all events again when Tout is selected after filtering", () => {
-      render(<AdminUserTimeline events={[LOGIN_EVENT, SENT_WELCOME_EVENT]} />);
+      render(
+        <AdminUserTimeline
+          lifecycleEmailMaxAttempts={5}
+          events={[LOGIN_EVENT, SENT_WELCOME_EVENT]}
+        />,
+      );
 
       fireEvent.click(screen.getByRole("button", { name: "Emails" }));
       fireEvent.click(screen.getByRole("button", { name: "Tout" }));
@@ -350,7 +357,7 @@ describe("AdminUserTimeline", () => {
     });
 
     it("renders the empty message when the filter leaves no event", () => {
-      render(<AdminUserTimeline events={[LOGIN_EVENT]} />);
+      render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[LOGIN_EVENT]} />);
 
       fireEvent.click(screen.getByRole("button", { name: "Emails" }));
 
@@ -360,7 +367,7 @@ describe("AdminUserTimeline", () => {
   });
 
   it("renders the empty message when the user has no event", () => {
-    render(<AdminUserTimeline events={[]} />);
+    render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[]} />);
 
     expect(screen.getByText("Aucune activité enregistrée.")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Tout" })).not.toBeInTheDocument();

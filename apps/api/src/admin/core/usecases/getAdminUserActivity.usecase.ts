@@ -13,7 +13,6 @@ const NO_EMAIL_FIELDS = {
   emailType: null,
   deliveryStatus: null,
   deliveryAttempts: null,
-  deliveryMaxAttempts: null,
   deliveryErrorMessage: null,
 } as const;
 
@@ -114,7 +113,6 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
             emailType: delivery.emailType,
             deliveryStatus: null,
             deliveryAttempts: null,
-            deliveryMaxAttempts: null,
             deliveryErrorMessage: null,
           },
         });
@@ -130,7 +128,6 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
             emailType: delivery.emailType,
             deliveryStatus: delivery.status,
             deliveryAttempts: delivery.attempts,
-            deliveryMaxAttempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS,
             deliveryErrorMessage: delivery.errorMessage,
           },
         });
@@ -162,7 +159,6 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
       emailType: event.emailType,
       deliveryStatus: event.deliveryStatus,
       deliveryAttempts: event.deliveryAttempts,
-      deliveryMaxAttempts: event.deliveryMaxAttempts,
       deliveryErrorMessage: event.deliveryErrorMessage,
     }));
 };
@@ -227,6 +223,7 @@ export class GetAdminUserActivityUseCase implements UseCase<
         createdAt: evaluation.createdAt.toISOString(),
         completedAt: evaluation.completedAt?.toISOString() ?? null,
       })),
+      lifecycleEmailMaxAttempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS,
     });
   }
 }

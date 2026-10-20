@@ -13,6 +13,7 @@ import { v4 as uuid } from "uuid";
 
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
 import type { User } from "src/auth/core/user";
+import { LIFECYCLE_EMAIL_MAX_ATTEMPTS } from "src/notifications/core/models/lifecycleEmail";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
@@ -274,7 +275,6 @@ describe("Admin controller", () => {
             emailType: null,
             deliveryStatus: null,
             deliveryAttempts: null,
-            deliveryMaxAttempts: null,
             deliveryErrorMessage: null,
           },
           {
@@ -285,7 +285,6 @@ describe("Admin controller", () => {
             emailType: null,
             deliveryStatus: null,
             deliveryAttempts: null,
-            deliveryMaxAttempts: null,
             deliveryErrorMessage: null,
           },
         ],
@@ -302,6 +301,7 @@ describe("Admin controller", () => {
         ],
         projects: [],
         compatibilityEvaluations: [],
+        lifecycleEmailMaxAttempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS,
       });
     });
   });

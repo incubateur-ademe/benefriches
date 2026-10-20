@@ -107,7 +107,10 @@ function AdminUserPage({ viewData }: Props) {
           <h1 className="mt-4">{activity.user.email}</h1>
           <UserInfo user={activity.user} />
 
-          <AdminUserTimeline events={activity.timeline} />
+          <AdminUserTimeline
+            events={activity.timeline}
+            lifecycleEmailMaxAttempts={activity.lifecycleEmailMaxAttempts}
+          />
 
           <h2 className="text-xl mt-10">Sites</h2>
           {activity.sites.length === 0 ? (

@@ -87,7 +87,6 @@ export const adminUserTimelineEventSchema = z.object({
   emailType: lifecycleEmailTypeSchema.nullable(),
   deliveryStatus: lifecycleEmailDeliveryStatusSchema.extract(["failed", "abandoned"]).nullable(),
   deliveryAttempts: z.number().nullable(),
-  deliveryMaxAttempts: z.number().nullable(),
   deliveryErrorMessage: z.string().nullable(),
 });
 export type AdminUserTimelineEvent = z.infer<typeof adminUserTimelineEventSchema>;
@@ -134,5 +133,6 @@ export const getAdminUserResponseDtoSchema = z.object({
   sites: z.array(adminUserSiteSchema),
   projects: z.array(adminUserProjectSchema),
   compatibilityEvaluations: z.array(adminUserCompatibilityEvaluationSchema),
+  lifecycleEmailMaxAttempts: z.number(),
 });
 export type GetAdminUserResponseDto = z.infer<typeof getAdminUserResponseDtoSchema>;
