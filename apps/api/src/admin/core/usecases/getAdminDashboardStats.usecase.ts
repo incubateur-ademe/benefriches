@@ -4,7 +4,7 @@ import type { DateProvider } from "src/shared-kernel/dateProvider";
 import { success, type TResult } from "src/shared-kernel/result";
 import type { UseCase } from "src/shared-kernel/usecase";
 
-import type { AdminStatsQuery } from "../gateways/AdminStatsQuery";
+import type { AdminMonthlyMetric, AdminStatsQuery } from "../gateways/AdminStatsQuery";
 
 const MONTHS_OF_HISTORY = 12;
 
@@ -17,7 +17,7 @@ const emptyMonth = (month: string): AdminMonthlyStats => ({
   logins: 0,
 });
 
-export const formatMonth = (date: Date): string =>
+const formatMonth = (date: Date): string =>
   `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
 
 // first day (UTC) of the month `monthsAgo` months before `date`
@@ -40,18 +40,26 @@ export class GetAdminDashboardStatsUseCase implements UseCase<
     const now = this.dateProvider.now();
     const since = startOfUtcMonth(now, MONTHS_OF_HISTORY - 1);
 
-    const [totals, monthlyFromQuery] = await Promise.all([
+    const [totals, monthlyCounts] = await Promise.all([
       this.adminStatsQuery.getTotals(),
-      this.adminStatsQuery.getMonthlyStats(since),
+      this.adminStatsQuery.getMonthlyCounts(since),
     ]);
 
-    // make sure every month is present, even with no activity
-    const monthly: AdminMonthlyStats[] = [];
+    // every month of the period, oldest first, even with no activity
+    const monthsOfPeriod = new Map<string, AdminMonthlyStats>();
     for (let i = MONTHS_OF_HISTORY - 1; i >= 0; i--) {
       const month = formatMonth(startOfUtcMonth(now, i));
-      monthly.push(monthlyFromQuery.find((m) => m.month === month) ?? emptyMonth(month));
+      monthsOfPeriod.set(month, emptyMonth(month));
     }
 
+    for (const metric of Object.keys(monthlyCounts) as AdminMonthlyMetric[]) {
+      for (const { month, count } of monthlyCounts[metric]) {
+        const entry = monthsOfPeriod.get(month);
+        if (entry) entry[metric] = count;
+      }
+    }
+
+    const monthly = Array.from(monthsOfPeriod.values());
     const currentMonth = monthly[monthly.length - 1] ?? emptyMonth(formatMonth(now));
 
     return success({ totals, currentMonth, monthly });
