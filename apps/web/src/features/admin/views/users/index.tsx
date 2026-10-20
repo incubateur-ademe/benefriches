@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
 
-import { fetchAdminUsers } from "../../core/actions/fetchAdminUsers.action";
+import { adminUsersListRequested } from "../../core/actions/adminUsersListRequested.action";
 import { selectAdminUsersViewData } from "../../core/admin.selectors";
 import AdminUsersPage from "./AdminUsersPage";
 
@@ -17,7 +17,7 @@ function AdminUsersPageContainer({ search, page }: Props) {
   const viewData = useAppSelector(selectAdminUsersViewData);
 
   useEffect(() => {
-    void dispatch(fetchAdminUsers({ search, page }));
+    void dispatch(adminUsersListRequested({ search, page }));
   }, [dispatch, search, page]);
 
   return (

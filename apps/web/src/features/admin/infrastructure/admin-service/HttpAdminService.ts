@@ -10,6 +10,7 @@ import type {
   AdminUsersList,
 } from "../../core/admin.types";
 import {
+  AdminAccessForbiddenError,
   type AdminGateway,
   AdminUserNotFoundError,
   type ListAdminUsersParams,
@@ -19,6 +20,7 @@ export class HttpAdminService implements AdminGateway {
   async getDashboardStats(): Promise<AdminDashboardStats> {
     const response = await fetch("/api/admin/stats");
 
+    if (response.status === 403) throw new AdminAccessForbiddenError();
     if (!response.ok) throw new Error("Error while fetching admin dashboard stats");
 
     const jsonResponse: unknown = await response.json();
@@ -37,6 +39,7 @@ export class HttpAdminService implements AdminGateway {
 
     const response = await fetch(`/api/admin/users${query ? `?${query}` : ""}`);
 
+    if (response.status === 403) throw new AdminAccessForbiddenError();
     if (!response.ok) throw new Error("Error while fetching admin users list");
 
     const jsonResponse: unknown = await response.json();
@@ -50,6 +53,7 @@ export class HttpAdminService implements AdminGateway {
   async getUserActivity(userId: string): Promise<AdminUserActivity> {
     const response = await fetch(`/api/admin/users/${encodeURIComponent(userId)}`);
 
+    if (response.status === 403) throw new AdminAccessForbiddenError();
     if (response.status === 404) throw new AdminUserNotFoundError(userId);
     if (!response.ok) throw new Error("Error while fetching admin user activity");
 

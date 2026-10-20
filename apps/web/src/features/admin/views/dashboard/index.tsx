@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
-import { fetchAdminDashboardStats } from "../../core/actions/fetchAdminDashboardStats.action";
+import { adminDashboardStatsRequested } from "../../core/actions/adminDashboardStatsRequested.action";
 import { selectAdminDashboardViewData } from "../../core/admin.selectors";
 import AdminDashboardPage from "./AdminDashboardPage";
 
@@ -11,7 +11,7 @@ function AdminDashboardPageContainer() {
   const { loadingState, stats } = useAppSelector(selectAdminDashboardViewData);
 
   useEffect(() => {
-    void dispatch(fetchAdminDashboardStats());
+    void dispatch(adminDashboardStatsRequested());
   }, [dispatch]);
 
   return <AdminDashboardPage loadingState={loadingState} stats={stats} />;

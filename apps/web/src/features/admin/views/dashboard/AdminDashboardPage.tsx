@@ -7,11 +7,12 @@ import { routes } from "@/app/router";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import type { AdminDashboardStats, LoadingState } from "../../core/admin.types";
+import type { AdminDashboardStats, AdminLoadingState } from "../../core/admin.types";
+import AdminAccessDeniedAlert from "../AdminAccessDeniedAlert";
 import { formatAdminMonth } from "../formatAdminDate";
 
 type Props = {
-  loadingState: LoadingState;
+  loadingState: AdminLoadingState;
   stats: AdminDashboardStats | null;
 };
 
@@ -47,6 +48,8 @@ function AdminDashboardPage({ loadingState, stats }: Props) {
       </div>
 
       {loadingState === "loading" && <LoadingSpinner />}
+
+      {loadingState === "forbidden" && <AdminAccessDeniedAlert />}
 
       {loadingState === "error" && (
         <Alert

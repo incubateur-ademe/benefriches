@@ -2,9 +2,9 @@ import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { InMemoryAdminService } from "../../infrastructure/admin-service/InMemoryAdminService";
-import { fetchAdminDashboardStats } from "../actions/fetchAdminDashboardStats.action";
-import { fetchAdminUserActivity } from "../actions/fetchAdminUserActivity.action";
-import { fetchAdminUsers } from "../actions/fetchAdminUsers.action";
+import { adminDashboardStatsRequested } from "../actions/adminDashboardStatsRequested.action";
+import { adminUserActivityRequested } from "../actions/adminUserActivityRequested.action";
+import { adminUsersListRequested } from "../actions/adminUsersListRequested.action";
 import {
   selectAdminDashboardViewData,
   selectAdminUsersViewData,
@@ -105,8 +105,42 @@ const USER_ACTIVITY: AdminUserActivity = {
   lifecycleEmailMaxAttempts: 5,
 };
 
+const USER_B_ACTIVITY: AdminUserActivity = {
+  ...USER_ACTIVITY,
+  user: { ...USER_ACTIVITY.user, id: "user-2", email: "john@example.com" },
+};
+
+const JANE_LIST: AdminUsersList = {
+  users: [USERS_LIST.users[0]!],
+  total: 1,
+  page: 1,
+  pageSize: 25,
+};
+
+const JOHN_LIST: AdminUsersList = {
+  users: [
+    {
+      id: "user-2",
+      email: "john@example.com",
+      firstName: "John",
+      lastName: "Smith",
+      structureName: "Aménageur SA",
+      structureType: "company",
+      structureActivity: "urban_planner",
+      createdAt: "2026-02-10T10:00:00.000Z",
+      lastLoginAt: null,
+    },
+  ],
+  total: 1,
+  page: 1,
+  pageSize: 25,
+};
+
+const createTestStore = (options: ConstructorParameters<typeof InMemoryAdminService>[0] = {}) =>
+  createStore(getTestAppDependencies({ adminService: new InMemoryAdminService(options) }));
+
 describe("admin reducer", () => {
-  describe("fetchAdminDashboardStats", () => {
+  describe("adminDashboardStatsRequested", () => {
     it("exposes the dashboard stats when fetch succeeds", async () => {
       const store = createStore(
         getTestAppDependencies({
@@ -114,7 +148,7 @@ describe("admin reducer", () => {
         }),
       );
 
-      await store.dispatch(fetchAdminDashboardStats());
+      await store.dispatch(adminDashboardStatsRequested());
 
       expect(selectAdminDashboardViewData(store.getState())).toEqual({
         loadingState: "success",
@@ -129,16 +163,27 @@ describe("admin reducer", () => {
         }),
       );
 
-      await store.dispatch(fetchAdminDashboardStats());
+      await store.dispatch(adminDashboardStatsRequested());
 
       expect(selectAdminDashboardViewData(store.getState())).toEqual({
         loadingState: "error",
         stats: null,
       });
     });
+
+    it("exposes a forbidden state when admin access is denied", async () => {
+      const store = createTestStore({ shouldDenyAccess: true });
+
+      await store.dispatch(adminDashboardStatsRequested());
+
+      expect(selectAdminDashboardViewData(store.getState())).toEqual({
+        loadingState: "forbidden",
+        stats: null,
+      });
+    });
   });
 
-  describe("fetchAdminUsers", () => {
+  describe("adminUsersListRequested", () => {
     it("exposes the paginated users list with the requested search", async () => {
       const store = createStore(
         getTestAppDependencies({
@@ -146,7 +191,7 @@ describe("admin reducer", () => {
         }),
       );
 
-      await store.dispatch(fetchAdminUsers({ search: "jane", page: 2 }));
+      await store.dispatch(adminUsersListRequested({ search: "jane", page: 2 }));
 
       expect(selectAdminUsersViewData(store.getState())).toEqual({
         loadingState: "success",
@@ -166,7 +211,7 @@ describe("admin reducer", () => {
         }),
       );
 
-      await store.dispatch(fetchAdminUsers({ search: "jane", page: 2 }));
+      await store.dispatch(adminUsersListRequested({ search: "jane", page: 2 }));
 
       expect(selectAdminUsersViewData(store.getState())).toEqual({
         loadingState: "error",
@@ -178,9 +223,65 @@ describe("admin reducer", () => {
         search: "jane",
       });
     });
+
+    it("exposes a forbidden state when admin access is denied", async () => {
+      const store = createTestStore({ shouldDenyAccess: true });
+
+      await store.dispatch(adminUsersListRequested({ search: "jane", page: 2 }));
+
+      expect(selectAdminUsersViewData(store.getState())).toEqual({
+        loadingState: "forbidden",
+        users: [],
+        total: 0,
+        page: 2,
+        pageSize: 25,
+        pageCount: 1,
+        search: "jane",
+      });
+    });
+
+    it("shows the latest search when responses arrive in reverse order", () => {
+      const store = createTestStore();
+
+      store.dispatch(adminUsersListRequested.pending("req-jane", { search: "jane" }));
+      store.dispatch(adminUsersListRequested.pending("req-john", { search: "john" }));
+      store.dispatch(adminUsersListRequested.fulfilled(JOHN_LIST, "req-john", { search: "john" }));
+      store.dispatch(adminUsersListRequested.fulfilled(JANE_LIST, "req-jane", { search: "jane" }));
+
+      expect(selectAdminUsersViewData(store.getState())).toEqual({
+        loadingState: "success",
+        users: JOHN_LIST.users,
+        total: 1,
+        page: 1,
+        pageSize: 25,
+        pageCount: 1,
+        search: "john",
+      });
+    });
+
+    it("ignores a late failure of an earlier request", () => {
+      const store = createTestStore();
+
+      store.dispatch(adminUsersListRequested.pending("req-old", { page: 1 }));
+      store.dispatch(adminUsersListRequested.pending("req-new", { page: 2 }));
+      store.dispatch(adminUsersListRequested.fulfilled(USERS_LIST, "req-new", { page: 2 }));
+      store.dispatch(
+        adminUsersListRequested.rejected(new Error("x"), "req-old", { page: 1 }, "error"),
+      );
+
+      expect(selectAdminUsersViewData(store.getState())).toEqual({
+        loadingState: "success",
+        users: USERS_LIST.users,
+        total: 51,
+        page: 2,
+        pageSize: 25,
+        pageCount: 3,
+        search: "",
+      });
+    });
   });
 
-  describe("fetchAdminUserActivity", () => {
+  describe("adminUserActivityRequested", () => {
     it("exposes the user activity when fetch succeeds", async () => {
       const store = createStore(
         getTestAppDependencies({
@@ -188,11 +289,10 @@ describe("admin reducer", () => {
         }),
       );
 
-      await store.dispatch(fetchAdminUserActivity("user-1"));
+      await store.dispatch(adminUserActivityRequested("user-1"));
 
-      expect(selectAdminUserViewData(store.getState())).toEqual({
+      expect(selectAdminUserViewData(store.getState(), "user-1")).toEqual({
         loadingState: "success",
-        userId: "user-1",
         activity: USER_ACTIVITY,
       });
     });
@@ -204,12 +304,10 @@ describe("admin reducer", () => {
         }),
       );
 
-      await store.dispatch(fetchAdminUserActivity("unknown-user"));
+      await store.dispatch(adminUserActivityRequested("unknown-user"));
 
-      expect(selectAdminUserViewData(store.getState())).toEqual({
+      expect(selectAdminUserViewData(store.getState(), "unknown-user")).toEqual({
         loadingState: "not_found",
-        userId: "unknown-user",
-        activity: null,
       });
     });
 
@@ -220,12 +318,47 @@ describe("admin reducer", () => {
         }),
       );
 
-      await store.dispatch(fetchAdminUserActivity("user-1"));
+      await store.dispatch(adminUserActivityRequested("user-1"));
 
-      expect(selectAdminUserViewData(store.getState())).toEqual({
+      expect(selectAdminUserViewData(store.getState(), "user-1")).toEqual({
         loadingState: "error",
-        userId: "user-1",
-        activity: null,
+      });
+    });
+
+    it("exposes a forbidden state when admin access is denied", async () => {
+      const store = createTestStore({ shouldDenyAccess: true });
+
+      await store.dispatch(adminUserActivityRequested("user-1"));
+
+      expect(selectAdminUserViewData(store.getState(), "user-1")).toEqual({
+        loadingState: "forbidden",
+      });
+    });
+
+    it("exposes a loading state for a user not loaded yet", async () => {
+      const store = createTestStore({ userActivities: { "user-1": USER_ACTIVITY } });
+      await store.dispatch(adminUserActivityRequested("user-1"));
+
+      expect(selectAdminUserViewData(store.getState(), "user-2")).toEqual({
+        loadingState: "loading",
+      });
+    });
+
+    it("leaves user B's state unchanged when a late response for user A arrives", () => {
+      const store = createTestStore({
+        userActivities: { "user-1": USER_ACTIVITY, "user-2": USER_B_ACTIVITY },
+      });
+
+      store.dispatch(adminUserActivityRequested.pending("req-a", "user-1"));
+      store.dispatch(adminUserActivityRequested.pending("req-b", "user-2"));
+      store.dispatch(adminUserActivityRequested.fulfilled(USER_ACTIVITY, "req-a", "user-1"));
+
+      expect(selectAdminUserViewData(store.getState(), "user-2")).toEqual({
+        loadingState: "loading",
+      });
+      expect(selectAdminUserViewData(store.getState(), "user-1")).toEqual({
+        loadingState: "success",
+        activity: USER_ACTIVITY,
       });
     });
   });
