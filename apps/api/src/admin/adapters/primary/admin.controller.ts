@@ -44,9 +44,7 @@ export class AdminController {
     const result = await this.getAdminDashboardStatsUseCase.execute();
 
     if (result.isFailure()) {
-      throw new InternalServerErrorException({
-        message: "Unexpected Internal Error",
-      });
+      throw new InternalServerErrorException({ message: "Unexpected Internal Error" });
     }
 
     return result.getData();
@@ -60,9 +58,7 @@ export class AdminController {
     const result = await this.listAdminUsersUseCase.execute(query);
 
     if (result.isFailure()) {
-      throw new InternalServerErrorException({
-        message: "Unexpected Internal Error",
-      });
+      throw new InternalServerErrorException({ message: "Unexpected Internal Error" });
     }
 
     return result.getData();
@@ -70,18 +66,14 @@ export class AdminController {
 
   @Get("users/:userId")
   async getUser(
-    @Param("userId", { schema: adminUserIdParamSchema })
-    userId: AdminUserIdParam,
+    @Param("userId", { schema: adminUserIdParamSchema }) userId: AdminUserIdParam,
   ): Promise<GetAdminUserResponseDto> {
     const result = await this.getAdminUserActivityUseCase.execute({ userId });
 
     if (result.isFailure()) {
       switch (result.getError()) {
         case "UserNotFound":
-          throw new NotFoundException({
-            code: "UserNotFound",
-            message: "User not found",
-          });
+          throw new NotFoundException({ code: "UserNotFound", message: "User not found" });
       }
     }
 
