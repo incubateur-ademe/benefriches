@@ -1,8 +1,8 @@
+import type { AdminUsersQuery } from "src/admin/core/gateways/AdminUsersQuery";
 import type {
   AdminUserActivityRecord,
   AdminUserListItem,
-  AdminUsersQuery,
-} from "src/admin/core/gateways/AdminUsersQuery";
+} from "src/admin/core/models/adminUserReadModel";
 
 export class InMemoryAdminUsersQuery implements AdminUsersQuery {
   private activities = new Map<string, AdminUserActivityRecord>();
@@ -28,7 +28,11 @@ export class InMemoryAdminUsersQuery implements AdminUsersQuery {
           value?.toLowerCase().includes(normalizedSearch),
         );
       })
-      .toSorted((a, b) => b.user.createdAt.getTime() - a.user.createdAt.getTime());
+      .toSorted(
+        (a, b) =>
+          b.user.createdAt.getTime() - a.user.createdAt.getTime() ||
+          b.user.id.localeCompare(a.user.id),
+      );
 
     const users = matching.slice((page - 1) * pageSize, page * pageSize).map((activity) => ({
       id: activity.user.id,

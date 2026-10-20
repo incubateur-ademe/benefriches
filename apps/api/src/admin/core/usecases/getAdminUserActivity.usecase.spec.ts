@@ -6,7 +6,8 @@ import { InMemoryAdminUsersQuery } from "src/admin/adapters/secondary/InMemoryAd
 import type {
   AdminUserActivityRecord,
   AdminUserLifecycleEmailDeliveryRecord,
-} from "src/admin/core/gateways/AdminUsersQuery";
+} from "src/admin/core/models/adminUserReadModel";
+import { LIFECYCLE_EMAIL_MAX_ATTEMPTS } from "src/notifications/core/models/lifecycleEmail";
 import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
 
 import { GetAdminUserActivityUseCase } from "./getAdminUserActivity.usecase";
@@ -49,6 +50,7 @@ const ACCOUNT_CREATED_EVENT = {
   emailType: null,
   deliveryStatus: null,
   deliveryAttempts: null,
+  deliveryMaxAttempts: null,
   deliveryErrorMessage: null,
 } as const satisfies AdminUserTimelineEvent;
 
@@ -176,6 +178,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -186,6 +189,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -196,6 +200,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -206,6 +211,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -216,6 +222,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -226,6 +233,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -236,6 +244,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -246,6 +255,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -256,6 +266,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -266,6 +277,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -276,6 +288,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -286,6 +299,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
       ],
@@ -399,6 +413,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
       ],
@@ -431,6 +446,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: "welcome",
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         ACCOUNT_CREATED_EVENT,
@@ -460,6 +476,7 @@ describe("GetAdminUserActivity UseCase", () => {
             emailType: "first-site-reminder",
             deliveryStatus: status,
             deliveryAttempts: 2,
+            deliveryMaxAttempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS,
             deliveryErrorMessage: "Connection timeout",
           },
           ACCOUNT_CREATED_EVENT,
@@ -497,6 +514,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         ACCOUNT_CREATED_EVENT,
@@ -538,6 +556,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: "project-impacts-summary",
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -548,6 +567,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: "first-project-reminder",
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         ACCOUNT_CREATED_EVENT,
@@ -576,6 +596,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: "project-impacts-summary",
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         ACCOUNT_CREATED_EVENT,
@@ -630,6 +651,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -640,6 +662,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: "first-project-reminder",
           deliveryStatus: "failed",
           deliveryAttempts: 1,
+          deliveryMaxAttempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS,
           deliveryErrorMessage: "Connection timeout",
         },
         {
@@ -650,6 +673,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -660,6 +684,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: null,
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         {
@@ -670,6 +695,7 @@ describe("GetAdminUserActivity UseCase", () => {
           emailType: "welcome",
           deliveryStatus: null,
           deliveryAttempts: null,
+          deliveryMaxAttempts: null,
           deliveryErrorMessage: null,
         },
         ACCOUNT_CREATED_EVENT,

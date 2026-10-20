@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 import type {
   AdminUserLifecycleEmailDeliveryRecord,
   AdminUserRecord,
-} from "src/admin/core/gateways/AdminUsersQuery";
+} from "src/admin/core/models/adminUserReadModel";
 import { LOGIN_SUCCEEDED } from "src/auth/core/events/loginSucceeded.event";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
@@ -155,6 +155,35 @@ describe("SqlAdminUsersQuery integration", () => {
       assert.deepStrictEqual(
         result.users.map((user) => user.id),
         [user1],
+      );
+    });
+
+    it("returns each user exactly once across pages when users share a creation date", async () => {
+      const firstUserId = "00000000-0000-4000-8000-000000000001";
+      const secondUserId = "00000000-0000-4000-8000-000000000002";
+      await insertUser(sqlConnection, {
+        id: firstUserId,
+        email: "u1@test.fr",
+        created_at: new Date("2026-01-10T10:00:00.000Z"),
+      });
+      await insertUser(sqlConnection, {
+        id: secondUserId,
+        email: "u2@test.fr",
+        created_at: new Date("2026-01-10T10:00:00.000Z"),
+      });
+
+      const firstPage = await query.list({ page: 1, pageSize: 1 });
+      const secondPage = await query.list({ page: 2, pageSize: 1 });
+
+      assert.deepStrictEqual(
+        {
+          firstPage: { total: firstPage.total, userIds: firstPage.users.map((user) => user.id) },
+          secondPage: { total: secondPage.total, userIds: secondPage.users.map((user) => user.id) },
+        },
+        {
+          firstPage: { total: 2, userIds: [secondUserId] },
+          secondPage: { total: 2, userIds: [firstUserId] },
+        },
       );
     });
 
@@ -492,6 +521,46 @@ describe("SqlAdminUsersQuery integration", () => {
           relatedEntityName: null,
           sentAt: new Date("2026-01-05T10:01:00.000Z"),
           lastAttemptedAt: new Date("2026-01-05T10:00:30.000Z"),
+          attempts: 1,
+          errorMessage: null,
+        },
+      ] satisfies AdminUserLifecycleEmailDeliveryRecord[]);
+    });
+
+    it("ignores lifecycle email deliveries with an unknown status", async () => {
+      const userId = uuid();
+      await insertUser(sqlConnection, {
+        id: userId,
+        email: "jane@collectivite.fr",
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+      });
+      await insertLifecycleEmailDelivery(sqlConnection, {
+        user_id: userId,
+        email_type: "welcome",
+        status: "sent",
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+        sent_at: new Date("2026-01-01T08:01:00.000Z"),
+        attempts: 1,
+        last_attempted_at: new Date("2026-01-01T08:00:30.000Z"),
+      });
+      await insertLifecycleEmailDelivery(sqlConnection, {
+        user_id: userId,
+        email_type: "first-site-reminder",
+        status: "bounced",
+        created_at: new Date("2026-01-02T08:00:00.000Z"),
+        attempts: 1,
+        last_attempted_at: new Date("2026-01-02T08:00:30.000Z"),
+      });
+
+      const result = await query.getUserActivity(userId);
+
+      assert.deepStrictEqual(result?.lifecycleEmailDeliveries, [
+        {
+          emailType: "welcome",
+          status: "sent",
+          relatedEntityName: null,
+          sentAt: new Date("2026-01-01T08:01:00.000Z"),
+          lastAttemptedAt: new Date("2026-01-01T08:00:30.000Z"),
           attempts: 1,
           errorMessage: null,
         },

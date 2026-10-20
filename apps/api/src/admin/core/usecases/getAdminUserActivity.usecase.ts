@@ -1,9 +1,11 @@
 import type { AdminUserTimelineEvent, GetAdminUserResponseDto } from "shared";
 
+import { LIFECYCLE_EMAIL_MAX_ATTEMPTS } from "src/notifications/core/models/lifecycleEmail";
 import { fail, success, type TResult } from "src/shared-kernel/result";
 import type { UseCase } from "src/shared-kernel/usecase";
 
-import type { AdminUserActivityRecord, AdminUsersQuery } from "../gateways/AdminUsersQuery";
+import type { AdminUsersQuery } from "../gateways/AdminUsersQuery";
+import type { AdminUserActivityRecord } from "../models/adminUserReadModel";
 
 type Request = { userId: string };
 
@@ -11,6 +13,7 @@ const NO_EMAIL_FIELDS = {
   emailType: null,
   deliveryStatus: null,
   deliveryAttempts: null,
+  deliveryMaxAttempts: null,
   deliveryErrorMessage: null,
 } as const;
 
@@ -111,6 +114,7 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
             emailType: delivery.emailType,
             deliveryStatus: null,
             deliveryAttempts: null,
+            deliveryMaxAttempts: null,
             deliveryErrorMessage: null,
           },
         });
@@ -126,6 +130,7 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
             emailType: delivery.emailType,
             deliveryStatus: delivery.status,
             deliveryAttempts: delivery.attempts,
+            deliveryMaxAttempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS,
             deliveryErrorMessage: delivery.errorMessage,
           },
         });
@@ -157,6 +162,7 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
       emailType: event.emailType,
       deliveryStatus: event.deliveryStatus,
       deliveryAttempts: event.deliveryAttempts,
+      deliveryMaxAttempts: event.deliveryMaxAttempts,
       deliveryErrorMessage: event.deliveryErrorMessage,
     }));
 };

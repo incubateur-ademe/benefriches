@@ -1,12 +1,18 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { Knex } from "knex";
-import { lifecycleEmailDeliveryStatusSchema, lifecycleEmailTypeSchema } from "shared";
+import {
+  lifecycleEmailDeliveryStatusSchema,
+  lifecycleEmailTypeSchema,
+  type ReconversionCompatibilityEvaluationStatus,
+  type ReconversionProjectCreationMode,
+  type SiteNature,
+} from "shared";
 
+import type { AdminUsersQuery } from "src/admin/core/gateways/AdminUsersQuery";
 import type {
   AdminUserActivityRecord,
   AdminUserListItem,
-  AdminUsersQuery,
-} from "src/admin/core/gateways/AdminUsersQuery";
+} from "src/admin/core/models/adminUserReadModel";
 import { LOGIN_SUCCEEDED } from "src/auth/core/events/loginSucceeded.event";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
@@ -81,6 +87,8 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
         ),
       )
         .orderBy("users.created_at", "desc")
+        // Tiebreaker so users sharing a creation date keep a stable order across pages.
+        .orderBy("users.id", "desc")
         .limit(pageSize)
         .offset((page - 1) * pageSize) as Promise<UserListRow[]>,
     ]);
@@ -172,9 +180,10 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
             );
         })
         .where("d.user_id", userId)
-        // Only types the code knows, so a leftover row of a retired type can't make the
-        // parse below throw and break the page.
+        // Only types and statuses the code knows, so a leftover row of a retired type or an
+        // unexpected status can't make the parse below throw and break the page.
         .whereIn("d.email_type", lifecycleEmailTypeSchema.options)
+        .whereIn("d.status", lifecycleEmailDeliveryStatusSchema.options)
         .orderBy("d.created_at", "asc") as Promise<LifecycleEmailDeliveryRow[]>,
     ]);
 
@@ -195,7 +204,8 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
       sites: siteRows.map((row) => ({
         id: row.id,
         name: row.name,
-        nature: row.nature,
+        // Written only by domain code with SiteNature values.
+        nature: row.nature as SiteNature,
         creationMode: row.creation_mode,
         status: row.status,
         createdAt: row.created_at,
@@ -205,7 +215,7 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
         id: row.id,
         name: row.name,
         siteId: row.related_site_id,
-        creationMode: row.creation_mode,
+        creationMode: row.creation_mode as ReconversionProjectCreationMode,
         status: row.status,
         createdAt: row.created_at,
         updatedAt: row.updated_at,
@@ -213,7 +223,7 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
       compatibilityEvaluations: evaluationRows.map((row) => ({
         id: row.id,
         siteId: row.related_site_id,
-        status: row.status,
+        status: row.status as ReconversionCompatibilityEvaluationStatus | null,
         createdAt: row.created_at,
         completedAt: row.completed_at,
       })),

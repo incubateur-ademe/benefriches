@@ -76,6 +76,7 @@ const USER_ACTIVITY: AdminUserActivity = {
       emailType: null,
       deliveryStatus: null,
       deliveryAttempts: null,
+      deliveryMaxAttempts: null,
       deliveryErrorMessage: null,
     },
     {
@@ -86,6 +87,7 @@ const USER_ACTIVITY: AdminUserActivity = {
       emailType: null,
       deliveryStatus: null,
       deliveryAttempts: null,
+      deliveryMaxAttempts: null,
       deliveryErrorMessage: null,
     },
   ],
