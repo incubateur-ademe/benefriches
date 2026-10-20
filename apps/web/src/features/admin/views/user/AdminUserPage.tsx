@@ -107,7 +107,6 @@ function AdminUserPage({ viewData }: Props) {
           <h1 className="mt-4">{activity.user.email}</h1>
           <UserInfo user={activity.user} />
 
-          <h2 className="text-xl">Activité</h2>
           <AdminUserTimeline events={activity.timeline} />
 
           <h2 className="text-xl mt-10">Sites</h2>
