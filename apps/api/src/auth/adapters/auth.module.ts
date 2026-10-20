@@ -3,8 +3,6 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { JwtModule, JwtService, JwtSignOptions } from "@nestjs/jwt";
 
-import { SqlAdministratorQuery } from "src/admin/adapters/secondary/SqlAdministratorQuery";
-import { ADMINISTRATOR_QUERY_INJECTION_TOKEN } from "src/admin/core/gateways/AdministratorQuery";
 import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
@@ -19,6 +17,7 @@ import { UidGenerator, UUID_GENERATOR_INJECTION_TOKEN } from "src/shared-kernel/
 import { SqlUserFeatureAlertRepository } from "src/users/adapters/secondary/user-feature-alert-repository/SqlUserFeatureAlertRepository";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
+import { ADMINISTRATOR_QUERY_INJECTION_TOKEN } from "../core/gateways/AdministratorQuery";
 import { TokenAuthenticationAttemptRepository } from "../core/gateways/TokenAuthenticationAttemptRepository";
 import {
   AUTH_USER_REPOSITORY_INJECTION_TOKEN,
@@ -26,7 +25,10 @@ import {
 } from "../core/gateways/UsersRepository";
 import { RevokeUnusedAuthTokensUseCase } from "../core/revokeUnusedAuthTokens.usecase";
 import { SendAuthLinkUseCase, TokenGenerator, AuthLinkMailer } from "../core/sendAuthLink.usecase";
+import { AdminGuard } from "./AdminGuard";
+import { JwtAuthGuard } from "./JwtAuthGuard";
 import { ACCESS_TOKEN_SERVICE_INJECTION_TOKEN } from "./access-token/AccessTokenService";
+import { SqlAdministratorQuery } from "./administrator-query/SqlAdministratorQuery";
 import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
 import { SqlTokenAuthenticationAttemptRepository } from "./auth-token-repository/SqlTokenAuthenticationAttemptRepository";
 import { AUTH_CONTROLLER_LOGGER_TOKEN, AuthController } from "./auth.controller";
@@ -193,13 +195,22 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
     RealDateProvider,
     RandomTokenGenerator,
     RandomUuidGenerator,
+    JwtAuthGuard,
+    AdminGuard,
     {
       provide: AUTH_CONTROLLER_LOGGER_TOKEN,
       useValue: new NestJsAppLogger(AuthController.name),
     },
   ],
-  // Guards are not providers and cannot be exported as is, they need all their dependencies to be exported to be used in other modules
+  // A guard used in @UseGuards is instantiated in the module declaring the controller, not taken from providers:
+  // exporting AdminGuard is not enough, the dependencies of JwtAuthGuard and AdminGuard are exported too
   // see https://github.com/nestjs/nest/issues/3856
-  exports: [ACCESS_TOKEN_SERVICE_INJECTION_TOKEN, RevokeUnusedAuthTokensUseCase],
+  exports: [
+    ACCESS_TOKEN_SERVICE_INJECTION_TOKEN,
+    ADMINISTRATOR_QUERY_INJECTION_TOKEN,
+    JwtAuthGuard,
+    AdminGuard,
+    RevokeUnusedAuthTokensUseCase,
+  ],
 })
 export class AuthModule {}

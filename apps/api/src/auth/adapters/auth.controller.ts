@@ -26,10 +26,6 @@ import {
   type RegisterUserRequestDto,
 } from "shared";
 
-import {
-  ADMINISTRATOR_QUERY_INJECTION_TOKEN,
-  type AdministratorQuery,
-} from "src/admin/core/gateways/AdministratorQuery";
 import { CreateUserUseCase, type UserProps } from "src/auth/core/createUser.usecase";
 import {
   DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
@@ -41,6 +37,10 @@ import { type UidGenerator, UUID_GENERATOR_INJECTION_TOKEN } from "src/shared-ke
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
 import { createLoginAttemptedEvent } from "../core/events/loginAttempted.event";
 import { createLoginSucceededEvent } from "../core/events/loginSucceeded.event";
+import {
+  ADMINISTRATOR_QUERY_INJECTION_TOKEN,
+  type AdministratorQuery,
+} from "../core/gateways/AdministratorQuery";
 import {
   AUTH_USER_REPOSITORY_INJECTION_TOKEN,
   type UserRepository,
