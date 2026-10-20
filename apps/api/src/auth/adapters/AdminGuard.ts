@@ -9,8 +9,8 @@ import {
 import {
   ADMINISTRATOR_QUERY_INJECTION_TOKEN,
   type AdministratorQuery,
-} from "src/admin/core/gateways/AdministratorQuery";
-import { JwtAuthGuard, type RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
+} from "../core/gateways/AdministratorQuery";
+import { JwtAuthGuard, type RequestWithAuthenticatedUser } from "./JwtAuthGuard";
 
 @Injectable()
 export class AdminGuard implements CanActivate {

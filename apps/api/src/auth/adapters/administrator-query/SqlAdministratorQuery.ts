@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { Knex } from "knex";
 
-import type { AdministratorQuery } from "src/admin/core/gateways/AdministratorQuery";
+import type { AdministratorQuery } from "src/auth/core/gateways/AdministratorQuery";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 @Injectable()

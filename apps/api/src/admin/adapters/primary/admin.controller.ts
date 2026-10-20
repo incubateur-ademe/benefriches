@@ -18,10 +18,10 @@ import {
 import { GetAdminDashboardStatsUseCase } from "src/admin/core/usecases/getAdminDashboardStats.usecase";
 import { GetAdminUserActivityUseCase } from "src/admin/core/usecases/getAdminUserActivity.usecase";
 import { ListAdminUsersUseCase } from "src/admin/core/usecases/listAdminUsers.usecase";
-
-import { AdminGuard } from "./AdminGuard";
+import { AdminGuard } from "src/auth/adapters/AdminGuard";
 
 @Controller("admin")
+@UseGuards(AdminGuard)
 export class AdminController {
   private readonly getAdminDashboardStatsUseCase: GetAdminDashboardStatsUseCase;
   private readonly listAdminUsersUseCase: ListAdminUsersUseCase;
@@ -37,7 +37,6 @@ export class AdminController {
     this.getAdminUserActivityUseCase = getAdminUserActivityUseCase;
   }
 
-  @UseGuards(AdminGuard)
   @Get("stats")
   async getStats(): Promise<GetAdminDashboardStatsResponseDto> {
     const result = await this.getAdminDashboardStatsUseCase.execute();
@@ -49,7 +48,6 @@ export class AdminController {
     return result.getData();
   }
 
-  @UseGuards(AdminGuard)
   @Get("users")
   async listUsers(
     @Query({ schema: listAdminUsersRequestDtoSchema })
@@ -64,7 +62,6 @@ export class AdminController {
     return result.getData();
   }
 
-  @UseGuards(AdminGuard)
   @Get("users/:userId")
   async getUser(@Param("userId") userId: string): Promise<GetAdminUserResponseDto> {
     const result = await this.getAdminUserActivityUseCase.execute({ userId });
