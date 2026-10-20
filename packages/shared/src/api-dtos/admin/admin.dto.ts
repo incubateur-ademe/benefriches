@@ -37,6 +37,9 @@ export const listAdminUsersRequestDtoSchema = z.object({
 });
 export type ListAdminUsersRequestDto = z.infer<typeof listAdminUsersRequestDtoSchema>;
 
+export const adminUserIdParamSchema = z.uuid();
+export type AdminUserIdParam = z.infer<typeof adminUserIdParamSchema>;
+
 export const adminUserSummarySchema = z.object({
   id: z.string(),
   email: z.string(),

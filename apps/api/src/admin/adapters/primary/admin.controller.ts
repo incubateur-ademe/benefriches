@@ -8,6 +8,8 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import {
+  type AdminUserIdParam,
+  adminUserIdParamSchema,
   type GetAdminDashboardStatsResponseDto,
   type GetAdminUserResponseDto,
   type ListAdminUsersRequestDto,
@@ -63,7 +65,9 @@ export class AdminController {
   }
 
   @Get("users/:userId")
-  async getUser(@Param("userId") userId: string): Promise<GetAdminUserResponseDto> {
+  async getUser(
+    @Param("userId", { schema: adminUserIdParamSchema }) userId: AdminUserIdParam,
+  ): Promise<GetAdminUserResponseDto> {
     const result = await this.getAdminUserActivityUseCase.execute({ userId });
 
     if (result.isFailure()) {
