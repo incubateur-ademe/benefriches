@@ -83,10 +83,3 @@ export const selectCurrentUserFullName = createSelector(
     return user ? `${user.firstName} ${user.lastName}` : undefined;
   },
 );
-
-export const selectCurrentUserIsAdmin = createSelector(
-  [(state: RootState) => state.currentUser],
-  (state): boolean => {
-    return state.currentUser?.isAdmin ?? false;
-  },
-);

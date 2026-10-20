@@ -11,9 +11,8 @@ import type { Link } from "type-route";
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
 // oxlint-disable-next-line architecture-boundaries/no-cross-layer-import
-import { selectCurrentUserIsAdmin } from "@/features/onboarding/core/user.reducer";
-// oxlint-disable-next-line architecture-boundaries/no-cross-layer-import
 import AboutImpactsContent from "@/features/projects/views/shared/impacts/AboutImpactsContent";
+import { selectCurrentUserIsAdmin } from "@/shared/core/current-user/currentUser.selectors";
 
 import classNames from "../../clsx";
 import DsfrA11yDialog from "../../components/Dialog/DsfrA11yDialog";
