@@ -10,9 +10,9 @@ import type {
   AdminUsersList,
 } from "../../core/admin.types";
 import {
-  AdminGateway,
+  type AdminGateway,
   AdminUserNotFoundError,
-  ListAdminUsersParams,
+  type ListAdminUsersParams,
 } from "../../core/gateways/AdminGateway";
 
 export class HttpAdminService implements AdminGateway {
