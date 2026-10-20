@@ -3,6 +3,10 @@ import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
+import type {
+  AdminUserLifecycleEmailDeliveryRecord,
+  AdminUserRecord,
+} from "src/admin/core/gateways/AdminUsersQuery";
 import { LOGIN_SUCCEEDED } from "src/auth/core/events/loginSucceeded.event";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
@@ -17,6 +21,7 @@ type UserInsert = {
   structure_type?: string;
   structure_activity?: string;
   subscribed_to_newsletter?: boolean;
+  lifecycle_emails_unsubscribed_at?: Date;
   created_at: Date;
 };
 
@@ -36,6 +41,25 @@ const insertLogin = async (sqlConnection: Knex, userId: string, createdAt: Date)
     payload: { userId, userEmail: `${userId}@test.fr`, method: "email-link" },
     created_at: createdAt,
   });
+};
+
+type LifecycleEmailDeliveryInsert = {
+  user_id: string;
+  email_type: string;
+  related_entity_id?: string;
+  status: string;
+  created_at: Date;
+  sent_at?: Date;
+  error_message?: string;
+  attempts: number;
+  last_attempted_at: Date;
+};
+
+const insertLifecycleEmailDelivery = async (
+  sqlConnection: Knex,
+  row: LifecycleEmailDeliveryInsert,
+): Promise<void> => {
+  await sqlConnection("lifecycle_email_deliveries").insert({ id: uuid(), ...row });
 };
 
 describe("SqlAdminUsersQuery integration", () => {
@@ -280,6 +304,7 @@ describe("SqlAdminUsersQuery integration", () => {
           structureType: "municipality",
           structureActivity: "local_authority",
           subscribedToNewsletter: true,
+          lifecycleEmailsUnsubscribedAt: null,
           createdAt: new Date("2026-01-01T08:00:00.000Z"),
         },
         loginDates: [new Date("2026-01-02T09:00:00.000Z"), new Date("2026-01-20T09:00:00.000Z")],
@@ -314,7 +339,194 @@ describe("SqlAdminUsersQuery integration", () => {
             completedAt: new Date("2026-01-08T10:00:00.000Z"),
           },
         ],
+        lifecycleEmailDeliveries: [],
       });
+    });
+
+    it("returns the user's lifecycle email deliveries with the related site or project name", async () => {
+      const userId = uuid();
+      const otherUserId = uuid();
+      await insertUser(sqlConnection, {
+        id: userId,
+        email: "jane@collectivite.fr",
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+      });
+      await insertUser(sqlConnection, {
+        id: otherUserId,
+        email: "john@company.fr",
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+      });
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: userId,
+        name: "Friche Duval",
+        nature: "FRICHE",
+        surface_area: 1000,
+        owner_structure_type: "company",
+        creation_mode: "custom",
+        created_at: new Date("2026-01-02T10:00:00.000Z"),
+      });
+      const projectId = uuid();
+      await sqlConnection("reconversion_projects").insert({
+        id: projectId,
+        created_by: userId,
+        name: "Parking Sud",
+        related_site_id: siteId,
+        creation_mode: "express",
+        created_at: new Date("2026-01-03T10:00:00.000Z"),
+      });
+      await insertLifecycleEmailDelivery(sqlConnection, {
+        user_id: userId,
+        email_type: "welcome",
+        status: "sent",
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+        sent_at: new Date("2026-01-01T08:01:00.000Z"),
+        attempts: 1,
+        last_attempted_at: new Date("2026-01-01T08:00:30.000Z"),
+      });
+      await insertLifecycleEmailDelivery(sqlConnection, {
+        user_id: userId,
+        email_type: "first-project-reminder",
+        related_entity_id: siteId,
+        status: "sent",
+        created_at: new Date("2026-01-04T10:00:00.000Z"),
+        sent_at: new Date("2026-01-04T10:01:00.000Z"),
+        attempts: 1,
+        last_attempted_at: new Date("2026-01-04T10:00:30.000Z"),
+      });
+      await insertLifecycleEmailDelivery(sqlConnection, {
+        user_id: userId,
+        email_type: "project-impacts-summary",
+        related_entity_id: projectId,
+        status: "failed",
+        created_at: new Date("2026-01-05T10:00:00.000Z"),
+        error_message: "Connection timeout",
+        attempts: 2,
+        last_attempted_at: new Date("2026-01-05T11:00:00.000Z"),
+      });
+      await insertLifecycleEmailDelivery(sqlConnection, {
+        user_id: userId,
+        email_type: "first-site-reminder",
+        status: "pending",
+        created_at: new Date("2026-01-06T10:00:00.000Z"),
+        attempts: 0,
+        last_attempted_at: new Date("2026-01-06T10:00:00.000Z"),
+      });
+      await insertLifecycleEmailDelivery(sqlConnection, {
+        user_id: otherUserId,
+        email_type: "welcome",
+        status: "sent",
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+        sent_at: new Date("2026-01-01T08:01:00.000Z"),
+        attempts: 1,
+        last_attempted_at: new Date("2026-01-01T08:00:30.000Z"),
+      });
+
+      const result = await query.getUserActivity(userId);
+
+      assert.deepStrictEqual(result?.lifecycleEmailDeliveries, [
+        {
+          emailType: "welcome",
+          status: "sent",
+          relatedEntityName: null,
+          sentAt: new Date("2026-01-01T08:01:00.000Z"),
+          lastAttemptedAt: new Date("2026-01-01T08:00:30.000Z"),
+          attempts: 1,
+          errorMessage: null,
+        },
+        {
+          emailType: "first-project-reminder",
+          status: "sent",
+          relatedEntityName: "Friche Duval",
+          sentAt: new Date("2026-01-04T10:01:00.000Z"),
+          lastAttemptedAt: new Date("2026-01-04T10:00:30.000Z"),
+          attempts: 1,
+          errorMessage: null,
+        },
+        {
+          emailType: "project-impacts-summary",
+          status: "failed",
+          relatedEntityName: "Parking Sud",
+          sentAt: null,
+          lastAttemptedAt: new Date("2026-01-05T11:00:00.000Z"),
+          attempts: 2,
+          errorMessage: "Connection timeout",
+        },
+        {
+          emailType: "first-site-reminder",
+          status: "pending",
+          relatedEntityName: null,
+          sentAt: null,
+          lastAttemptedAt: new Date("2026-01-06T10:00:00.000Z"),
+          attempts: 0,
+          errorMessage: null,
+        },
+      ] satisfies AdminUserLifecycleEmailDeliveryRecord[]);
+    });
+
+    it("returns a null related entity name when the site or project no longer exists", async () => {
+      const userId = uuid();
+      await insertUser(sqlConnection, {
+        id: userId,
+        email: "jane@collectivite.fr",
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+      });
+      await insertLifecycleEmailDelivery(sqlConnection, {
+        user_id: userId,
+        email_type: "project-impacts-summary",
+        related_entity_id: uuid(),
+        status: "sent",
+        created_at: new Date("2026-01-05T10:00:00.000Z"),
+        sent_at: new Date("2026-01-05T10:01:00.000Z"),
+        attempts: 1,
+        last_attempted_at: new Date("2026-01-05T10:00:30.000Z"),
+      });
+
+      const result = await query.getUserActivity(userId);
+
+      assert.deepStrictEqual(result?.lifecycleEmailDeliveries, [
+        {
+          emailType: "project-impacts-summary",
+          status: "sent",
+          relatedEntityName: null,
+          sentAt: new Date("2026-01-05T10:01:00.000Z"),
+          lastAttemptedAt: new Date("2026-01-05T10:00:30.000Z"),
+          attempts: 1,
+          errorMessage: null,
+        },
+      ] satisfies AdminUserLifecycleEmailDeliveryRecord[]);
+    });
+
+    it("returns the user's lifecycle emails unsubscribe date", async () => {
+      const userId = uuid();
+      await insertUser(sqlConnection, {
+        id: userId,
+        email: "jane@collectivite.fr",
+        firstname: "Jane",
+        lastname: "Doe",
+        structure_name: "Mairie de Blajan",
+        structure_type: "municipality",
+        structure_activity: "local_authority",
+        subscribed_to_newsletter: false,
+        lifecycle_emails_unsubscribed_at: new Date("2026-02-01T12:00:00.000Z"),
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+      });
+
+      const result = await query.getUserActivity(userId);
+
+      assert.deepStrictEqual(result?.user, {
+        id: userId,
+        email: "jane@collectivite.fr",
+        firstName: "Jane",
+        lastName: "Doe",
+        structureName: "Mairie de Blajan",
+        structureType: "municipality",
+        structureActivity: "local_authority",
+        subscribedToNewsletter: false,
+        lifecycleEmailsUnsubscribedAt: new Date("2026-02-01T12:00:00.000Z"),
+        createdAt: new Date("2026-01-01T08:00:00.000Z"),
+      } satisfies AdminUserRecord);
     });
   });
 });

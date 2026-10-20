@@ -7,27 +7,47 @@ import type { AdminUserActivityRecord, AdminUsersQuery } from "../gateways/Admin
 
 type Request = { userId: string };
 
+const NO_EMAIL_FIELDS = {
+  emailType: null,
+  deliveryStatus: null,
+  deliveryAttempts: null,
+  deliveryErrorMessage: null,
+} as const;
+
 export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserTimelineEvent[] => {
   const events: { date: Date; event: Omit<AdminUserTimelineEvent, "date"> }[] = [];
 
   events.push({
     date: activity.user.createdAt,
-    event: { type: "account_created", entityId: activity.user.id, entityName: null },
+    event: {
+      type: "account_created",
+      entityId: activity.user.id,
+      entityName: null,
+      ...NO_EMAIL_FIELDS,
+    },
   });
 
   activity.loginDates.forEach((date) => {
-    events.push({ date, event: { type: "login", entityId: null, entityName: null } });
+    events.push({
+      date,
+      event: { type: "login", entityId: null, entityName: null, ...NO_EMAIL_FIELDS },
+    });
   });
 
   activity.sites.forEach((site) => {
     events.push({
       date: site.createdAt,
-      event: { type: "site_created", entityId: site.id, entityName: site.name },
+      event: { type: "site_created", entityId: site.id, entityName: site.name, ...NO_EMAIL_FIELDS },
     });
     if (site.updatedAt) {
       events.push({
         date: site.updatedAt,
-        event: { type: "site_updated", entityId: site.id, entityName: site.name },
+        event: {
+          type: "site_updated",
+          entityId: site.id,
+          entityName: site.name,
+          ...NO_EMAIL_FIELDS,
+        },
       });
     }
   });
@@ -35,12 +55,22 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
   activity.projects.forEach((project) => {
     events.push({
       date: project.createdAt,
-      event: { type: "project_created", entityId: project.id, entityName: project.name },
+      event: {
+        type: "project_created",
+        entityId: project.id,
+        entityName: project.name,
+        ...NO_EMAIL_FIELDS,
+      },
     });
     if (project.updatedAt) {
       events.push({
         date: project.updatedAt,
-        event: { type: "project_updated", entityId: project.id, entityName: project.name },
+        event: {
+          type: "project_updated",
+          entityId: project.id,
+          entityName: project.name,
+          ...NO_EMAIL_FIELDS,
+        },
       });
     }
   });
@@ -52,6 +82,7 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
         type: "compatibility_evaluation_created",
         entityId: evaluation.id,
         entityName: null,
+        ...NO_EMAIL_FIELDS,
       },
     });
     if (evaluation.completedAt) {
@@ -61,10 +92,60 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
           type: "compatibility_evaluation_completed",
           entityId: evaluation.id,
           entityName: null,
+          ...NO_EMAIL_FIELDS,
         },
       });
     }
   });
+
+  activity.lifecycleEmailDeliveries.forEach((delivery) => {
+    switch (delivery.status) {
+      case "sent":
+        events.push({
+          // sent_at is always set on a sent delivery; the fallback only satisfies the type.
+          date: delivery.sentAt ?? delivery.lastAttemptedAt,
+          event: {
+            type: "lifecycle_email_sent",
+            entityId: null,
+            entityName: delivery.relatedEntityName,
+            emailType: delivery.emailType,
+            deliveryStatus: null,
+            deliveryAttempts: null,
+            deliveryErrorMessage: null,
+          },
+        });
+        break;
+      case "failed":
+      case "abandoned":
+        events.push({
+          date: delivery.lastAttemptedAt,
+          event: {
+            type: "lifecycle_email_failed",
+            entityId: null,
+            entityName: delivery.relatedEntityName,
+            emailType: delivery.emailType,
+            deliveryStatus: delivery.status,
+            deliveryAttempts: delivery.attempts,
+            deliveryErrorMessage: delivery.errorMessage,
+          },
+        });
+        break;
+      case "pending":
+        break;
+    }
+  });
+
+  if (activity.user.lifecycleEmailsUnsubscribedAt) {
+    events.push({
+      date: activity.user.lifecycleEmailsUnsubscribedAt,
+      event: {
+        type: "lifecycle_emails_unsubscribed",
+        entityId: null,
+        entityName: null,
+        ...NO_EMAIL_FIELDS,
+      },
+    });
+  }
 
   return events
     .toSorted((a, b) => b.date.getTime() - a.date.getTime())
@@ -73,6 +154,10 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
       type: event.type,
       entityId: event.entityId,
       entityName: event.entityName,
+      emailType: event.emailType,
+      deliveryStatus: event.deliveryStatus,
+      deliveryAttempts: event.deliveryAttempts,
+      deliveryErrorMessage: event.deliveryErrorMessage,
     }));
 };
 
