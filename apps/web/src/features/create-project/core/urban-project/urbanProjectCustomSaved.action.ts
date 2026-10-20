@@ -1,13 +1,15 @@
 import { createReconversionProjectRequestDtoSchema } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
+import { projectCreated } from "@/features/analytics/core/analyticsEvents";
+import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
 
 import { makeUrbanProjectCreationActionType } from "./urbanProject.actions";
 
 export const customUrbanProjectSaved = createAppAsyncThunk(
   makeUrbanProjectCreationActionType("customProjectSaved"),
-  async (_, { getState, extra }) => {
+  async (_, { getState, extra, dispatch }) => {
     const { projectCreation } = getState();
     const { urbanProject, siteData, projectId, useCaseSelection } = projectCreation;
 
@@ -23,5 +25,6 @@ export const customUrbanProjectSaved = createAppAsyncThunk(
     const projectToSave = createReconversionProjectRequestDtoSchema.parse(mappedProjectData);
 
     await extra.saveReconversionProjectService.save(projectToSave);
+    void dispatch(eventTracked(projectCreated("custom")));
   },
 );

@@ -2,6 +2,8 @@ import type { CreateExpressSiteDto } from "shared";
 import { createExpressSiteDtoSchema } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
+import { siteCreated } from "@/features/analytics/core/analyticsEvents";
+import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import {
   customSiteSchema,
   type CustomSitePayload,
@@ -10,7 +12,7 @@ import { deriveSiteDataFromCustomSteps } from "@/features/create-site/core/custo
 
 export const customSiteSaved = createAppAsyncThunk(
   "siteCreation/customSiteSaved",
-  async (_, { getState, extra }) => {
+  async (_, { getState, extra, dispatch }) => {
     const { siteCreation } = getState();
     const siteData = deriveSiteDataFromCustomSteps(
       {
@@ -27,12 +29,13 @@ export const customSiteSaved = createAppAsyncThunk(
     });
 
     await extra.createSiteService.saveCustom(siteToCreate);
+    void dispatch(eventTracked(siteCreated("custom")));
   },
 );
 
 export const expressSiteSaved = createAppAsyncThunk(
   "siteCreation/expressSiteSaved",
-  async (_, { getState, extra }) => {
+  async (_, { getState, extra, dispatch }) => {
     const { siteCreation, currentUser } = getState();
     const siteData = deriveSiteDataFromCustomSteps(
       {
@@ -54,5 +57,6 @@ export const expressSiteSaved = createAppAsyncThunk(
     });
 
     await extra.createSiteService.saveExpress(siteToCreate);
+    void dispatch(eventTracked(siteCreated("express")));
   },
 );

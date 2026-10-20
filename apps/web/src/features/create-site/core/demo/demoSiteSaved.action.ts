@@ -2,10 +2,12 @@ import type { CreateExpressSiteDto } from "shared";
 import { createExpressSiteDtoSchema } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
+import { siteCreated } from "@/features/analytics/core/analyticsEvents";
+import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 
 export const demoSiteSaved = createAppAsyncThunk(
   "siteCreation/demo/siteSaved",
-  async (_, { getState, extra }) => {
+  async (_, { getState, extra, dispatch }) => {
     const { siteCreation, currentUser } = getState();
     const {
       DEMO_SITE_ACTIVITY_SELECTION,
@@ -40,5 +42,6 @@ export const demoSiteSaved = createAppAsyncThunk(
     });
 
     await extra.createSiteService.saveExpress(siteToCreate);
+    void dispatch(eventTracked(siteCreated("express")));
   },
 );

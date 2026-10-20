@@ -5,6 +5,8 @@ import { reconversionProjectTemplateSchema } from "shared";
 import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
+import { projectCreated } from "@/features/analytics/core/analyticsEvents";
+import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 
 import { makeProjectCreationActionType } from "../actions/actionsUtils";
 import { stepCompletionRequested } from "./demoProject.reducer";
@@ -33,7 +35,7 @@ export interface CreateExpressReconversionProjectGateway {
 
 export const demoProjectSaved = createAppAsyncThunk(
   makeDemoProjectCreationActionType("projectSaved"),
-  async (_, { getState, extra }) => {
+  async (_, { getState, extra, dispatch }) => {
     const { projectCreation } = getState();
     const expressProjectPayload = await saveExpressProjectSchema.parseAsync({
       reconversionProjectId: projectCreation.projectId,
@@ -43,6 +45,7 @@ export const demoProjectSaved = createAppAsyncThunk(
     });
 
     await extra.createExpressReconversionProjectService.save(expressProjectPayload);
+    void dispatch(eventTracked(projectCreated("express")));
   },
 );
 
