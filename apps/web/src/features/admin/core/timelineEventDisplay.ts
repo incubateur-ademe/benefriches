@@ -1,5 +1,3 @@
-import { LIFECYCLE_EMAIL_MAX_ATTEMPTS } from "shared";
-
 import type { AdminUserTimelineEvent } from "./admin.types";
 
 export type TimelineEventCategory = "activity" | "email";
@@ -38,7 +36,7 @@ export const getTimelineEventBadge = (event: AdminUserTimelineEvent): TimelineEv
 export const getTimelineEventDetail = (event: AdminUserTimelineEvent): string | null => {
   switch (event.type) {
     case "lifecycle_email_failed": {
-      const attempts = `Tentative ${event.deliveryAttempts} sur ${LIFECYCLE_EMAIL_MAX_ATTEMPTS}`;
+      const attempts = `Tentative ${event.deliveryAttempts} sur ${event.deliveryMaxAttempts}`;
       return event.deliveryErrorMessage ? `${attempts} · ${event.deliveryErrorMessage}` : attempts;
     }
     case "lifecycle_emails_unsubscribed":

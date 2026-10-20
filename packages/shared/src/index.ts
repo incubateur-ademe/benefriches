@@ -18,6 +18,9 @@ export {
   type LifecycleEmailType,
   lifecycleEmailDeliveryStatusSchema,
   type LifecycleEmailDeliveryStatus,
-  LIFECYCLE_EMAIL_MAX_ATTEMPTS,
 } from "./lifecycle-emails";
+export {
+  reconversionCompatibilityEvaluationStatusSchema,
+  type ReconversionCompatibilityEvaluationStatus,
+} from "./reconversion-compatibility";
 export { type IDateProvider } from "./adapters/IDateProvider";

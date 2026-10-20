@@ -4,6 +4,9 @@ import {
   lifecycleEmailDeliveryStatusSchema,
   lifecycleEmailTypeSchema,
 } from "../../lifecycle-emails";
+import { reconversionCompatibilityEvaluationStatusSchema } from "../../reconversion-compatibility";
+import { reconversionProjectCreationModeSchema } from "../../reconversion-projects/_common/creationMode";
+import { siteNatureSchema } from "../../site";
 
 const isoDateSchema = z.string();
 
@@ -84,6 +87,7 @@ export const adminUserTimelineEventSchema = z.object({
   emailType: lifecycleEmailTypeSchema.nullable(),
   deliveryStatus: lifecycleEmailDeliveryStatusSchema.extract(["failed", "abandoned"]).nullable(),
   deliveryAttempts: z.number().nullable(),
+  deliveryMaxAttempts: z.number().nullable(),
   deliveryErrorMessage: z.string().nullable(),
 });
 export type AdminUserTimelineEvent = z.infer<typeof adminUserTimelineEventSchema>;
@@ -91,7 +95,7 @@ export type AdminUserTimelineEvent = z.infer<typeof adminUserTimelineEventSchema
 export const adminUserSiteSchema = z.object({
   id: z.string(),
   name: z.string(),
-  nature: z.string(),
+  nature: siteNatureSchema,
   creationMode: z.string(),
   status: z.string(),
   createdAt: isoDateSchema,
@@ -103,7 +107,7 @@ export const adminUserProjectSchema = z.object({
   id: z.string(),
   name: z.string(),
   siteId: z.string(),
-  creationMode: z.string(),
+  creationMode: reconversionProjectCreationModeSchema,
   status: z.string(),
   createdAt: isoDateSchema,
   updatedAt: isoDateSchema.nullable(),
@@ -113,7 +117,7 @@ export type AdminUserProject = z.infer<typeof adminUserProjectSchema>;
 export const adminUserCompatibilityEvaluationSchema = z.object({
   id: z.string(),
   siteId: z.string().nullable(),
-  status: z.string().nullable(),
+  status: reconversionCompatibilityEvaluationStatusSchema.nullable(),
   createdAt: isoDateSchema,
   completedAt: isoDateSchema.nullable(),
 });

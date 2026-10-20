@@ -12,8 +12,8 @@ export const lifecycleEmailTypeSchema = z.enum([
 ]);
 export type LifecycleEmailType = z.infer<typeof lifecycleEmailTypeSchema>;
 
-// "failed" means "will be retried" by the sweeper; "abandoned" is terminal: the delivery
-// used up LIFECYCLE_EMAIL_MAX_ATTEMPTS and is never retried again.
+// "failed" means "will be retried" by the sweeper; "abandoned" is terminal after the
+// notifications module's max attempts: the delivery is never retried again.
 export const lifecycleEmailDeliveryStatusSchema = z.enum([
   "pending",
   "sent",
@@ -21,5 +21,3 @@ export const lifecycleEmailDeliveryStatusSchema = z.enum([
   "abandoned",
 ]);
 export type LifecycleEmailDeliveryStatus = z.infer<typeof lifecycleEmailDeliveryStatusSchema>;
-
-export const LIFECYCLE_EMAIL_MAX_ATTEMPTS = 5;

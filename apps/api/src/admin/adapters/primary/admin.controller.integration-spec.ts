@@ -274,6 +274,7 @@ describe("Admin controller", () => {
             emailType: null,
             deliveryStatus: null,
             deliveryAttempts: null,
+            deliveryMaxAttempts: null,
             deliveryErrorMessage: null,
           },
           {
@@ -284,6 +285,7 @@ describe("Admin controller", () => {
             emailType: null,
             deliveryStatus: null,
             deliveryAttempts: null,
+            deliveryMaxAttempts: null,
             deliveryErrorMessage: null,
           },
         ],
