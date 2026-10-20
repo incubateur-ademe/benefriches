@@ -11,21 +11,67 @@ describe("InMemoryAdministratorRepository", () => {
 
     const result = await repository.grant("user-1", grantedAt);
 
-    assert.deepStrictEqual(result, { created: true });
-    assert.deepStrictEqual(repository._getAdministrators(), [{ userId: "user-1", grantedAt }]);
+    assert.deepStrictEqual(result, { created: true, grantedEventPublished: false });
+    assert.deepStrictEqual(repository._getAdministrators(), [
+      { userId: "user-1", grantedAt, grantedEventPublishedAt: null },
+    ]);
   });
 
   it("grant refuses a duplicate and keeps the existing row", async () => {
     const earlier = new Date("2026-01-01T08:00:00.000Z");
     const later = new Date("2026-10-20T10:00:00.000Z");
     const repository = new InMemoryAdministratorRepository();
-    repository._setAdministrators([{ userId: "user-1", grantedAt: earlier }]);
+    repository._setAdministrators([
+      { userId: "user-1", grantedAt: earlier, grantedEventPublishedAt: earlier },
+    ]);
 
     const result = await repository.grant("user-1", later);
 
-    assert.deepStrictEqual(result, { created: false });
+    assert.deepStrictEqual(result, { created: false, grantedEventPublished: true });
     assert.deepStrictEqual(repository._getAdministrators(), [
-      { userId: "user-1", grantedAt: earlier },
+      { userId: "user-1", grantedAt: earlier, grantedEventPublishedAt: earlier },
+    ]);
+  });
+
+  it("grant reports an existing administrator whose event is unpublished", async () => {
+    const grantedAt = new Date("2026-01-01T08:00:00.000Z");
+    const later = new Date("2026-10-20T10:00:00.000Z");
+    const repository = new InMemoryAdministratorRepository();
+    repository._setAdministrators([{ userId: "user-1", grantedAt, grantedEventPublishedAt: null }]);
+
+    const result = await repository.grant("user-1", later);
+
+    assert.deepStrictEqual(result, { created: false, grantedEventPublished: false });
+    assert.deepStrictEqual(repository._getAdministrators(), [
+      { userId: "user-1", grantedAt, grantedEventPublishedAt: null },
+    ]);
+  });
+
+  it("markGrantedEventPublished sets the date on an unpublished grant", async () => {
+    const grantedAt = new Date("2026-01-01T08:00:00.000Z");
+    const publishedAt = new Date("2026-10-20T10:00:00.000Z");
+    const repository = new InMemoryAdministratorRepository();
+    repository._setAdministrators([{ userId: "user-1", grantedAt, grantedEventPublishedAt: null }]);
+
+    await repository.markGrantedEventPublished("user-1", publishedAt);
+
+    assert.deepStrictEqual(repository._getAdministrators(), [
+      { userId: "user-1", grantedAt, grantedEventPublishedAt: publishedAt },
+    ]);
+  });
+
+  it("markGrantedEventPublished keeps the first publish date", async () => {
+    const earlier = new Date("2026-01-01T08:00:00.000Z");
+    const later = new Date("2026-10-20T10:00:00.000Z");
+    const repository = new InMemoryAdministratorRepository();
+    repository._setAdministrators([
+      { userId: "user-1", grantedAt: earlier, grantedEventPublishedAt: earlier },
+    ]);
+
+    await repository.markGrantedEventPublished("user-1", later);
+
+    assert.deepStrictEqual(repository._getAdministrators(), [
+      { userId: "user-1", grantedAt: earlier, grantedEventPublishedAt: earlier },
     ]);
   });
 });

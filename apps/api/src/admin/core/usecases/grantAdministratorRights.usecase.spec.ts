@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { describe, it } from "node:test";
+import { describe, it, mock } from "node:test";
 
 import { InMemoryAdministratorRepository } from "src/admin/adapters/secondary/InMemoryAdministratorRepository";
 import {
@@ -37,7 +37,7 @@ describe("GrantAdministratorRights UseCase", () => {
       user: { id: "user-1", email: "Jane.Doe@ademe.fr" },
     });
     assert.deepStrictEqual(repository._getAdministrators(), [
-      { userId: "user-1", grantedAt: fakeNow },
+      { userId: "user-1", grantedAt: fakeNow, grantedEventPublishedAt: fakeNow },
     ]);
   });
 
@@ -87,11 +87,13 @@ describe("GrantAdministratorRights UseCase", () => {
     });
   });
 
-  it("leaves an existing administrator unchanged and publishes nothing", async () => {
+  it("leaves an existing administrator whose event was published unchanged and publishes nothing", async () => {
     const earlier = new Date("2026-01-01T08:00:00.000Z");
     const repository = new InMemoryAdministratorRepository();
     repository._setUsers([user]);
-    repository._setAdministrators([{ userId: "user-1", grantedAt: earlier }]);
+    repository._setAdministrators([
+      { userId: "user-1", grantedAt: earlier, grantedEventPublishedAt: earlier },
+    ]);
     const eventPublisher = new InMemoryEventPublisher();
     const usecase = new GrantAdministratorRightsUseCase(
       repository,
@@ -108,7 +110,7 @@ describe("GrantAdministratorRights UseCase", () => {
       user: { id: "user-1", email: "Jane.Doe@ademe.fr" },
     });
     assert.deepStrictEqual(repository._getAdministrators(), [
-      { userId: "user-1", grantedAt: earlier },
+      { userId: "user-1", grantedAt: earlier, grantedEventPublishedAt: earlier },
     ]);
     assert.strictEqual(eventPublisher.events.length, 0);
   });
@@ -136,7 +138,7 @@ describe("GrantAdministratorRights UseCase", () => {
       user: { id: "user-1", email: "Jane.Doe@ademe.fr" },
     });
     assert.deepStrictEqual(repository._getAdministrators(), [
-      { userId: "user-1", grantedAt: fakeNow },
+      { userId: "user-1", grantedAt: fakeNow, grantedEventPublishedAt: fakeNow },
     ]);
     assert.deepStrictEqual(eventPublisher.events, [
       {
@@ -144,6 +146,67 @@ describe("GrantAdministratorRights UseCase", () => {
         name: ADMINISTRATOR_GRANTED,
         payload: { userId: "user-1", userEmail: "Jane.Doe@ademe.fr" },
       } satisfies AdministratorGrantedEvent,
+    ]);
+  });
+
+  it("keeps the grant unpublished when publishing administrator.granted fails", async () => {
+    const repository = new InMemoryAdministratorRepository();
+    repository._setUsers([user]);
+    repository._setAdministrators([]);
+    const uidGenerator = new DeterministicUuidGenerator();
+    uidGenerator.nextUuids("event-id");
+    const eventPublisher = new InMemoryEventPublisher();
+    mock.method(eventPublisher, "publish", () => Promise.reject(new Error("publish failed")));
+    const usecase = new GrantAdministratorRightsUseCase(
+      repository,
+      new DeterministicDateProvider(fakeNow),
+      uidGenerator,
+      eventPublisher,
+    );
+
+    await assert.rejects(
+      usecase.execute({ identifiedBy: "userId", userId: "user-1" }),
+      /publish failed/,
+    );
+
+    assert.deepStrictEqual(repository._getAdministrators(), [
+      { userId: "user-1", grantedAt: fakeNow, grantedEventPublishedAt: null },
+    ]);
+  });
+
+  it("publishes the missing administrator.granted event when rerun after a failed publish", async () => {
+    const earlier = new Date("2026-01-01T08:00:00.000Z");
+    const repository = new InMemoryAdministratorRepository();
+    repository._setUsers([user]);
+    repository._setAdministrators([
+      { userId: "user-1", grantedAt: earlier, grantedEventPublishedAt: null },
+    ]);
+    const uidGenerator = new DeterministicUuidGenerator();
+    uidGenerator.nextUuids("event-id");
+    const eventPublisher = new InMemoryEventPublisher();
+    const usecase = new GrantAdministratorRightsUseCase(
+      repository,
+      new DeterministicDateProvider(fakeNow),
+      uidGenerator,
+      eventPublisher,
+    );
+
+    const result = await usecase.execute({ identifiedBy: "userId", userId: "user-1" });
+
+    assert.ok(result.isSuccess());
+    assert.deepStrictEqual(result.getData(), {
+      outcome: "alreadyAdministrator",
+      user: { id: "user-1", email: "Jane.Doe@ademe.fr" },
+    });
+    assert.deepStrictEqual(eventPublisher.events, [
+      {
+        id: "event-id",
+        name: ADMINISTRATOR_GRANTED,
+        payload: { userId: "user-1", userEmail: "Jane.Doe@ademe.fr" },
+      } satisfies AdministratorGrantedEvent,
+    ]);
+    assert.deepStrictEqual(repository._getAdministrators(), [
+      { userId: "user-1", grantedAt: earlier, grantedEventPublishedAt: fakeNow },
     ]);
   });
 

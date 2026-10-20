@@ -1,5 +1,7 @@
 // Makes an existing user an administrator of the back office. Exactly one of --email (trimmed,
 // case-insensitive) or --user-id. Idempotent: an existing administrator is left unchanged.
+// If a run fails after granting the rights (e.g. publishing administrator.granted failed),
+// rerun it: the rerun publishes the missing event.
 // Exit codes: 0 granted or no change, 1 usage error, unknown user or ambiguous email.
 import { NestFactory } from "@nestjs/core";
 import { parseArgs } from "node:util";

@@ -1,7 +1,7 @@
 import type { AdministratorRepository } from "src/admin/core/gateways/AdministratorRepository";
 import type { AdministratorCandidate } from "src/admin/core/models/administratorCandidate";
 
-type AdministratorRow = { userId: string; grantedAt: Date };
+type AdministratorRow = { userId: string; grantedAt: Date; grantedEventPublishedAt: Date | null };
 
 export class InMemoryAdministratorRepository implements AdministratorRepository {
   private users: AdministratorCandidate[] = [];
@@ -30,11 +30,31 @@ export class InMemoryAdministratorRepository implements AdministratorRepository 
   }
 
   // Mirrors the SQL primary key on user_id: an existing row is kept and nothing is inserted.
-  grant(userId: string, grantedAt: Date): Promise<{ created: boolean }> {
-    if (this.administrators.some((row) => row.userId === userId)) {
-      return Promise.resolve({ created: false });
+  grant(
+    userId: string,
+    grantedAt: Date,
+  ): Promise<{ created: boolean; grantedEventPublished: boolean }> {
+    const existing = this.administrators.find((row) => row.userId === userId);
+    if (existing) {
+      return Promise.resolve({
+        created: false,
+        grantedEventPublished: existing.grantedEventPublishedAt !== null,
+      });
     }
-    this.administrators = [...this.administrators, { userId, grantedAt }];
-    return Promise.resolve({ created: true });
+    this.administrators = [
+      ...this.administrators,
+      { userId, grantedAt, grantedEventPublishedAt: null },
+    ];
+    return Promise.resolve({ created: true, grantedEventPublished: false });
+  }
+
+  // Mirrors the SQL update guarded by "granted_event_published_at is null".
+  markGrantedEventPublished(userId: string, publishedAt: Date): Promise<void> {
+    this.administrators = this.administrators.map((row) =>
+      row.userId === userId && row.grantedEventPublishedAt === null
+        ? { ...row, grantedEventPublishedAt: publishedAt }
+        : row,
+    );
+    return Promise.resolve();
   }
 }

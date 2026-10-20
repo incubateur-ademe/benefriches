@@ -28,9 +28,18 @@ type ResolveUserResult = TResult<
  * The email is trimmed and matched case-insensitively. users.email is not unique, so several
  * matches fail with AmbiguousEmail rather than granting rights to an arbitrary user.
  *
- * Idempotent: the insert ignores an existing row, so concurrent runs are safe. An existing
- * administrator is left unchanged and no event is published. Publishes administrator.granted
- * only when a row was created.
+ * Idempotent: the insert ignores an existing row, so concurrent runs are safe, and an existing
+ * administrator is left unchanged.
+ *
+ * administrator.granted is published once per grant, tracked by a "granted event published"
+ * marker on the administrators row: the row is inserted unmarked, the event is published, then
+ * the row is marked. If publishing (or marking) fails, the error propagates and the script exits
+ * 1; rerunning it finds the grant unmarked, publishes the missing event and marks it.
+ *
+ * Delivery is at-least-once: two concurrent first runs, or a crash between publishing and
+ * marking, publish the event twice with different event ids, so subscribers must be idempotent
+ * on payload.userId. Marking before publishing was rejected: a crash after the mark would lose
+ * the event again.
  */
 export class GrantAdministratorRightsUseCase implements UseCase<
   Request,
@@ -60,19 +69,22 @@ export class GrantAdministratorRightsUseCase implements UseCase<
     }
     const user = userResult.getData();
 
-    const { created } = await this.administratorRepository.grant(user.id, this.dateProvider.now());
-    if (!created) {
-      return success({ outcome: "alreadyAdministrator", user });
+    const now = this.dateProvider.now();
+    const { created, grantedEventPublished } = await this.administratorRepository.grant(
+      user.id,
+      now,
+    );
+    if (!grantedEventPublished) {
+      await this.eventPublisher.publish(
+        createAdministratorGrantedEvent(this.uidGenerator.generate(), {
+          userId: user.id,
+          userEmail: user.email,
+        }),
+      );
+      await this.administratorRepository.markGrantedEventPublished(user.id, now);
     }
 
-    await this.eventPublisher.publish(
-      createAdministratorGrantedEvent(this.uidGenerator.generate(), {
-        userId: user.id,
-        userEmail: user.email,
-      }),
-    );
-
-    return success({ outcome: "granted", user });
+    return success({ outcome: created ? "granted" : "alreadyAdministrator", user });
   }
 
   private async resolveUser(request: Request): Promise<ResolveUserResult> {
