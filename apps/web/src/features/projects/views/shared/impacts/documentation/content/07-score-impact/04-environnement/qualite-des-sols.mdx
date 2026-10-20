@@ -1,0 +1,47 @@
+# 🌾 Qualité des sols
+
+## Qu’est-ce que c’est ?
+
+Tout projet d’aménagement d’un site implique généralement une modification de l’usage des sols, que ce soit de manière bénéfique du point de vue environnemental (ex : désimperméabilisation), sanitaire (ex : dépollution) ou des écosystèmes (ex : restauration écologique des sols et végétalisation).
+
+Cet indicateur se base sur les volutions de surfaces perméables d’une part et des surfaces polluées d’autre part, entre le site et le projet.
+
+## Données utilisées dans le calcul
+
+### Données liées au site
+
+- Surface perméable du site (exprimée en m²)
+- Surface polluée du site (exprimée en m²)
+
+### Données liées au projet
+
+- Surface perméable du projet (exprimée en m²)
+- Surface polluée résiduelle après remise en état (exprimée en m²)
+
+## Mode de calcul du score
+
+**Étape 1 : score de perméabilité**
+
+| Score | Variation de la perméabilité des sols |
+| ----- | ------------------------------------- |
+| A     | Plus de 80 %                          |
+| B     | Plus de 30 %                          |
+| C     | De -10 % à 30 %                       |
+| D     | De -50 % à -10 %                      |
+| E     | Moins de -50 %                        |
+
+**Étape 2 : score de dépollution si le site est pollué**
+
+| Score | Réduction de la contamination |
+| ----- | ----------------------------- |
+| A     | Plus de 99 %                  |
+| B     | Plus de 75 %                  |
+| C     | Plus de 50 %                  |
+| D     | De 0 à 50 %                   |
+
+**Étape 3 : note finale**
+
+- **Site non contaminé** : la note finale est la note de perméabilité.
+- **Site contaminé** : la note finale est la **plus basse** des deux notes (perméabilité et dépollution).
+
+_Exemple : perméabilité en forte hausse (A) mais dépollution de 90 % (B) → note finale **B**._

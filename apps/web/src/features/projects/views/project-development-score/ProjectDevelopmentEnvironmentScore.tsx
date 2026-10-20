@@ -3,10 +3,13 @@ import type { LetterGrade } from "shared";
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
 import ImpactChartCard from "../shared/charts/ImpactChartCard";
 import useImpactAreaChartProps from "../shared/charts/useImpactAreaChartProps";
-import ProjectDevelopmentGrade from "./layout/ProjectDevelopmentGrade";
+import useOpenDescriptionModalLink from "./details-modals/useOpenDescriptionModalLink";
 import MetricCard from "./layout/ProjectDevelopmentMetricCard";
+import ProjectDevelopmentScoreFamilyHeader from "./layout/ProjectDevelopmentScoreFamilyHeader";
 
-type Props = DevelopmentScoreDataView["details"]["environmentScore"];
+type Props = DevelopmentScoreDataView["developmentScore"]["details"]["environmentScore"] & {
+  anchor: string;
+};
 
 const listFormatter = new Intl.ListFormat("fr", { style: "long", type: "conjunction" });
 
@@ -139,7 +142,7 @@ const ZAN_BADGE_TEXT: Record<Props["score"]["letterGrade"], string> = {
 
 const CO2_CHART_TITLE = "☁️ CO2 eq stocké ou évité";
 
-export default function ProjectDevelopmentEnvironmentScore({ score, indicators }: Props) {
+export default function ProjectDevelopmentEnvironmentScore({ score, indicators, anchor }: Props) {
   const { co2eqEmissionsVariation, zanCompliance, soilsQuality, waterQuality, ecosystemServices } =
     indicators;
 
@@ -159,12 +162,16 @@ export default function ProjectDevelopmentEnvironmentScore({ score, indicators }
     difference: avoidedCo2eqEmissions + newStoredCo2Eq,
   });
 
+  const getLink = useOpenDescriptionModalLink();
+
   return (
     <div className="grid md:grid-cols-3 gap-6">
-      <div>
-        <h4>Environnement</h4>
-        <ProjectDevelopmentGrade score={score} />
-      </div>
+      <ProjectDevelopmentScoreFamilyHeader
+        anchor={anchor}
+        title="Environnement"
+        score={score}
+        linkProps={getLink("environmentScore")}
+      />
 
       <div className="md:col-span-2 grid md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
@@ -174,6 +181,7 @@ export default function ProjectDevelopmentEnvironmentScore({ score, indicators }
             containerProps={{ id: chartContainerId }}
             options={options}
             classes={{ title: "text-xl" }}
+            linkProps={getLink("environmentScore.co2eqEmissionsVariation")}
           />
         </div>
 
@@ -184,6 +192,7 @@ export default function ProjectDevelopmentEnvironmentScore({ score, indicators }
             badgeText={ZAN_BADGE_TEXT[zanCompliance.letterGrade]}
             letterGrade={zanCompliance.letterGrade}
             description={describeZanCompliance(zanCompliance)}
+            linkProps={getLink("environmentScore.zanCompliance")}
           />
         ) : (
           <div className="p-5 border border-border-grey rounded-2xl min-h-40 bg-grey-light">
@@ -204,6 +213,7 @@ export default function ProjectDevelopmentEnvironmentScore({ score, indicators }
           title="Qualité des sols"
           letterGrade={soilsQuality.letterGrade}
           description={describeSoilsQuality(soilsQuality)}
+          linkProps={getLink("environmentScore.soilsQuality")}
         />
 
         <MetricCard
@@ -211,6 +221,7 @@ export default function ProjectDevelopmentEnvironmentScore({ score, indicators }
           title="Qualité de l'eau"
           letterGrade={waterQuality.letterGrade}
           description={describeWaterQuality(waterQuality)}
+          linkProps={getLink("environmentScore.waterQuality")}
         />
 
         <MetricCard
@@ -218,6 +229,7 @@ export default function ProjectDevelopmentEnvironmentScore({ score, indicators }
           title="Services écosystémiques"
           letterGrade={ecosystemServices.letterGrade}
           description={describeEcosystemServices(ecosystemServices.letterGrade)}
+          linkProps={getLink("environmentScore.ecosystemServices")}
         />
       </div>
     </div>

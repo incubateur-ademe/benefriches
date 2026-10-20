@@ -1,7 +1,7 @@
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import type { ReactNode } from "react";
-import { Suspense, useCallback, useLayoutEffect, useMemo } from "react";
+import { Suspense, useLayoutEffect, useMemo } from "react";
 import { getKeyImpactIndicatorsList } from "shared";
 import type { Link, Route } from "type-route";
 
@@ -11,17 +11,11 @@ import type { ModalDataProps } from "@/features/projects/application/project-imp
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { ImpactModalContentWizard, MODAL_CONFIG_GROUPS } from "./ImpactModalContentWizard";
-import type { UpdateModalContentArgs } from "./ImpactModalDescriptionContext";
-import {
-  ImpactModalDescriptionContext,
-  INITIAL_CONTENT_STATE,
-  parseContentState,
-  serializeContentState,
-} from "./ImpactModalDescriptionContext";
+import { ImpactModalContentWizard } from "./ImpactModalContentWizard";
+import { ImpactModalDescriptionContext } from "./ImpactModalDescriptionContext";
 import CostBenefitAnalysisDescription from "./body-component/CostBenefitAnalysisDescription";
 import { SummaryModalWizard } from "./body-component/summary/SummaryModalWizard";
-import type { DetailsCode, SectionCode } from "./impactModalUrlCodes";
+import useToggleDescriptionModal from "./useToggleDescriptionModal";
 
 const DIALOG_ID = "impact-modal-description";
 const DIALOG_TITLE_ID = "impact-modal-description-title";
@@ -34,29 +28,16 @@ const DIALOG_DSFR_CSS = [
   "bg-[var(--grey-50-1000)]/[0.64] dark:bg-[var(--grey-1000-100)]/[0.64]",
 ];
 
-function hasModalConfigFor(args: UpdateModalContentArgs): boolean {
-  if (!args.sectionName) {
-    return false;
-  }
-  const group = MODAL_CONFIG_GROUPS.find((group) => group.sections.includes(args.sectionName));
-  if (!group) return true;
-
-  const key =
-    ("impactDetailsName" in args ? args.impactDetailsName : undefined) ?? args.sectionName;
-  return group.modals[key] !== undefined;
-}
-
 type SupportedRoute =
   | Route<typeof routes.projectImpactsBreakEvenLevel>
   | Route<typeof routes.projectImpacts>
   | Route<typeof embedRoutes.routes.quickImpactsUrbanProject>;
 
 function ImpactModalDescriptionProvider<TRoute extends SupportedRoute>({
-  contextData,
-  impactsData,
   children,
   route,
   getRouteFn,
+  ...props
 }: ModalDataProps & {
   children: ReactNode;
   route: TRoute;
@@ -64,31 +45,10 @@ function ImpactModalDescriptionProvider<TRoute extends SupportedRoute>({
 }) {
   const isOpen = Boolean(route.params.details);
 
-  const contentState = useMemo(
-    () =>
-      (isOpen
-        ? parseContentState(route.params.details as `${SectionCode}_${DetailsCode}`)
-        : undefined) ?? INITIAL_CONTENT_STATE,
-    [isOpen, route.params.details],
-  );
-
-  const getDetailsLink = useCallback(
-    (args: UpdateModalContentArgs) => {
-      if (!hasModalConfigFor(args)) {
-        return undefined;
-      }
-
-      return getRouteFn({
-        ...route.params,
-        details: serializeContentState(args),
-      }).link;
-    },
-    [route, getRouteFn],
-  );
-
-  const handleClose = useCallback(() => {
-    getRouteFn({ ...route.params, details: undefined }).push();
-  }, [route, getRouteFn]);
+  const { contentState, handleClose, getDetailsLink } = useToggleDescriptionModal({
+    route,
+    getRouteFn,
+  });
 
   const impactModalDescriptionContextValue = useMemo(
     () => ({
@@ -137,23 +97,20 @@ function ImpactModalDescriptionProvider<TRoute extends SupportedRoute>({
                   case "environmental":
                   case "environmental.co2eq":
                   case "environmental.soils": {
-                    return (
-                      <ImpactModalContentWizard
-                        contextData={contextData}
-                        impactsData={impactsData}
-                        contentState={contentState}
-                      />
-                    );
+                    return <ImpactModalContentWizard {...props} contentState={contentState} />;
                   }
                   case "summary":
                     return contentState.impactDetailsName ? (
                       <SummaryModalWizard
-                        impactsData={getKeyImpactIndicatorsList(impactsData, contextData)}
+                        impactsData={getKeyImpactIndicatorsList(
+                          props.impactsData,
+                          props.contextData,
+                        )}
                         contentState={contentState}
                       />
                     ) : undefined;
                   case "breakEvenLevel":
-                    return <CostBenefitAnalysisDescription impactsData={impactsData} />;
+                    return <CostBenefitAnalysisDescription impactsData={props.impactsData} />;
                   default:
                     return undefined;
                 }

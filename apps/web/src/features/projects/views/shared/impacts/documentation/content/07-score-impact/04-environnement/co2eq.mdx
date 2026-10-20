@@ -1,0 +1,53 @@
+# ☁️ Émissions de CO₂eq
+
+## Qu’est-ce que c’est ?
+
+La réalisation du projet a des conséquences sur les émissions de CO2 pour plusieurs raisons, le cas échéant du fait :
+
+- du changement d’affectation des sols (ces derniers ayant une pouvoir de stockage de carbone variable selon leur type et le type de climat), par exemple via la désimperméabilisation puis renaturation,
+- de la réduction du besoin en déplacements, notamment en véhicule individuel, par exemple par la création de fonctions urbaines en cœur de ville et non en périphérie, facilement accessible via des modes doux,
+- de la création de capacités de production d’énergies renouvelables,
+- de la création d’îlot de fraîcheur urbaine, réduisant ainsi les besoin en rafraîchissement et/ou climatisation,
+- de la réhabilitation de bâtiment, évitant ainsi la production de produits de construction.
+
+## Données utilisées dans le calcul
+
+### Données liées au site
+
+- Localisation (commune)
+- Surface occupée par chaque type de sol du site (exprimée en hectare)
+
+### Données liées au projet
+
+- Surface occupée par chaque type de sol du projet (exprimée en hectare)
+- Surface de bâtiments réhabilités (en m² surface de plancher - SDP-)
+- Nouvelle surface d’espace de nature crée par le projet le cas échéant (exprimée en m²)
+- Surface de nouveaux logements créés par le projet le cas échéant (exprimé en m² SDP)
+- Surface de nouveaux locaux d’activités économiques, d’équipements et de services créés par le projet le cas échéant (exprimé en m² SDP)
+- Pour les projets photovoltaïques : surface au sol occupée par les panneaux (exprimée en m²) et puissance installée (exprimée en kWc)
+
+### Données liées à la commune
+
+- Pouvoir de stockage de carbone dans les sols (Corinne Land Cover)
+
+## Mode de calcul du score
+
+### Projets photovoltaïques
+
+| Score | Critère à remplir                                                                                                         |
+| ----- | ------------------------------------------------------------------------------------------------------------------------- |
+| **A** | CO₂eq évité ≥ 500 et stockage > 0 %                                                                                       |
+| **B** | CO₂eq évité ≥ 5 000 et stockage ≥ -5 %, ou CO₂eq évité ≥ 500 et stockage ≥ -10 %                                          |
+| **C** | CO₂eq évité ≥ 5 000 et stockage ≥ -10 %, ou CO₂eq évité ≥ 500 et stockage ≥ -20 %, ou CO₂eq évité ≥ 0 et stockage > -10 % |
+| **D** | Autres cas (bilan total ≥ 0)                                                                                              |
+| **E** | Bilan total négatif                                                                                                       |
+
+### Projets urbains
+
+| Score | Critère à remplir                     |
+| ----- | ------------------------------------- |
+| **A** | Bilan total > 0 et stockage ≥ +50 %   |
+| **B** | Bilan total > 0 et stockage ≥ 0 %     |
+| **C** | Bilan total > 0 et stockage ≥ -10 %   |
+| **D** | Autres cas                            |
+| **E** | Bilan total < 0 et stockage en baisse |

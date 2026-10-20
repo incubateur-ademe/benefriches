@@ -1,7 +1,8 @@
-import type { ReactNode } from "react";
 import { Fragment, useState } from "react";
-import type { LetterGrade } from "shared";
+import { typedObjectEntries, type LetterGrade } from "shared";
+import type { Link, Route } from "type-route";
 
+import { type routes, useRoute } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
@@ -10,38 +11,93 @@ import ProjectDevelopmentEnvironmentScore from "./ProjectDevelopmentEnvironmentS
 import ProjectDevelopmentFullTimeJobsScore from "./ProjectDevelopmentFullTimeJobsScore";
 import ProjectDevelopmentLocalAuthorityFinancesScore from "./ProjectDevelopmentLocalAuthorityFinancesScore";
 import ProjectDevelopmentLocalPeopleAndCompanyScore from "./ProjectDevelopmentLocalPeopleAndCompanyScore";
+import DevelopmentScoreModalDescription from "./details-modals/DevelopmentScoreModalDescription";
+import useOpenDescriptionModalLink from "./details-modals/useOpenDescriptionModalLink";
 import ProjectDevelopmentGrade from "./layout/ProjectDevelopmentGrade";
 import GradeScale from "./layout/ProjectDevelopmentScoreGradeScale";
 import { LETTER_GRADE_COLORS } from "./layout/colors";
 
-const getLetterGradeText = (letterGrade: LetterGrade) => {
-  switch (letterGrade) {
-    case "A":
-      return "Projet à impact très positif";
-    case "B":
-      return "Projet à impact positif";
-    case "C":
-      return "Projet à impact insuffisant";
-    case "D":
-      return "Projet à impact négatif";
-    case "E":
-      return "Projet à impact très négatif";
-  }
+const GRADE_TEXT: Record<LetterGrade, string> = {
+  A: "Projet à impact très positif",
+  B: "Projet à impact positif",
+  C: "Projet à impact insuffisant",
+  D: "Projet à impact négatif",
+  E: "Projet à impact très négatif",
 };
 
-const isPositiveGrade = (grade: LetterGrade) => grade === "A" || grade === "B";
+const isPositive = (grade: LetterGrade) => grade === "A" || grade === "B";
+
+const FAMILY_CONFIG = {
+  localAuthorityEconomicScore: {
+    order: 1,
+    title: "Finances de la collectivité locale",
+    anchor: "finances-publiques",
+    highlightLabel: (
+      <>
+        les <strong>finances publiques</strong>
+      </>
+    ),
+    getDescription: (grade: LetterGrade) => {
+      if (isPositive(grade)) return "Le projet a un impact économique positif pour la collectivité";
+      if (grade === "C") return "Le projet a un impact économique neutre pour la collectivité";
+      return "Le projet a un impact économique négatif pour la collectivité";
+    },
+  },
+  fullTimeJobsScore: {
+    order: 2,
+    anchor: "emploi",
+    title: "Emploi",
+    highlightLabel: (
+      <>
+        l'<strong>emploi</strong>
+      </>
+    ),
+    getDescription: (grade: LetterGrade) => {
+      if (grade === "D") return "Le projet supprime des emplois";
+      if (grade === "C") return "Le projet ne crée pas ou peu d'emplois";
+      return "Le projet crée des emplois";
+    },
+  },
+  localPeopleQualityOfLifeScore: {
+    order: 3,
+
+    anchor: "qualite-de-vie",
+    title: "Qualité de vie des riverains",
+    highlightLabel: (
+      <>
+        la <strong>qualité de vie des riverains</strong>
+      </>
+    ),
+    getDescription: (grade: LetterGrade) => {
+      if (isPositive(grade)) return "Le projet améliore le quotidien de nombreuses personnes";
+      if (grade === "C") return "Le projet n'a pas d'impact positif sur le quotidien des riverains";
+      return "Le projet a un impact négatif sur le quotidien des riverains";
+    },
+  },
+  environmentScore: {
+    order: 4,
+
+    anchor: "environnement",
+    title: "Environnement",
+    highlightLabel: (
+      <>
+        l'<strong>environnement</strong>
+      </>
+    ),
+    getDescription: (grade: LetterGrade) => {
+      if (isPositive(grade)) return "Le projet préserve ou améliore l'environnement";
+      if (grade === "C") return "Le projet n'a pas d'impact significatif sur l'environnement";
+      return "Le projet a un impact néfaste sur l'environnement";
+    },
+  },
+} as const;
 
 function buildHighlightSentence(
-  grade: LetterGrade,
-  items: {
-    letterGrade: LetterGrade;
-    highlightLabel: ReactNode;
-  }[],
+  developmentScore: Props["developmentScore"],
 ): React.ReactNode | null {
-  const isPositive = isPositiveGrade(grade);
-  const labels = items
-    .filter((item) => isPositiveGrade(item.letterGrade) === isPositive)
-    .map((item) => item.highlightLabel);
+  const labels = typedObjectEntries(developmentScore.details)
+    .filter(([, item]) => item.score.gradePoints > 50)
+    .map(([key]) => FAMILY_CONFIG[key].highlightLabel);
 
   if (labels.length === 0) return null;
 
@@ -63,8 +119,43 @@ type Props = DevelopmentScoreDataView & {
   projectId: string;
 };
 
-export default function ProjectDevelopmentScore({ projectId, details, score }: Props) {
+const FamilyScore = (props: {
+  linkProps: Link;
+  anchor: string;
+  title: string;
+  description: string;
+  score: DevelopmentScoreDataView["developmentScore"]["score"];
+}) => {
+  return (
+    <a
+      href={`#${props.anchor}`}
+      className={classNames(
+        "group",
+        "bg-none text-left",
+        "rounded-lg hover:bg-grey-light focus:bg-grey-light",
+        "px-1 py-2",
+        "flex justify-between items-center",
+      )}
+    >
+      <span className="flex flex-col">
+        <strong className="text-lg">{props.title}</strong>
+        <span>{props.description}</span>
+      </span>
+      <ProjectDevelopmentGrade score={props.score} />
+    </a>
+  );
+};
+
+export default function ProjectDevelopmentScore({
+  projectId,
+  developmentScore,
+  modalsData,
+}: Props) {
   const [isTitleInViewport, setIsTitleInViewPort] = useState(false);
+
+  const route = useRoute() as Route<typeof routes.projectImpactsDevelopmentScore>;
+
+  const { details, score } = developmentScore;
 
   const titleRef = (node: HTMLHeadingElement) => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -86,45 +177,18 @@ export default function ProjectDevelopmentScore({ projectId, details, score }: P
   } = details;
 
   const { bgColor, textColor } = LETTER_GRADE_COLORS[score.letterGrade];
+  const highlightSentence = buildHighlightSentence(developmentScore);
 
-  const highlightSentence = buildHighlightSentence(score.letterGrade, [
-    {
-      highlightLabel: (
-        <>
-          les <strong>finances publiques</strong>
-        </>
-      ),
-      letterGrade: localAuthorityEconomicScore.score.letterGrade,
-    },
-    {
-      highlightLabel: (
-        <>
-          l'<strong>emploi</strong>
-        </>
-      ),
-      letterGrade: fullTimeJobsScore.score.letterGrade,
-    },
-    {
-      highlightLabel: (
-        <>
-          la <strong>qualité de vie des riverains</strong>
-        </>
-      ),
-      letterGrade: localPeopleQualityOfLifeScore.score.letterGrade,
-    },
-    {
-      highlightLabel: (
-        <>
-          l'<strong>environnement</strong>
-        </>
-      ),
-      letterGrade: environmentScore.score.letterGrade,
-    },
-  ]);
+  const getLink = useOpenDescriptionModalLink();
 
   return (
     <div className="flex flex-col gap-14">
       <div className="flex items-center justify-between">
+        <DevelopmentScoreModalDescription
+          route={route}
+          developmentScore={developmentScore}
+          modalsData={modalsData}
+        />
         <h3 className="text-2xl mb-0" ref={titleRef}>
           Score d'impact
         </h3>
@@ -160,86 +224,54 @@ export default function ProjectDevelopmentScore({ projectId, details, score }: P
           >
             {score.letterGrade}
           </span>
-          <h4 className="mb-0">{getLetterGradeText(score.letterGrade)}</h4>
+          <h4 className="mb-0">{GRADE_TEXT[score.letterGrade]}</h4>
           {highlightSentence && <p className="mt-1 opacity-90">{highlightSentence}</p>}
         </div>
 
         <div className="md:col-span-2 highcharts-no-xaxis flex flex-col gap-6">
           <GradeScale projectScore={score} />
 
-          <ul className="list-none flex flex-col gap-6 pl-0">
-            <li className="flex justify-between items-center">
-              <span className="flex flex-col">
-                <strong className="text-lg">Finances de la collectivité locale</strong>
-                <span>
-                  Le projet a un impact économique{" "}
-                  {localAuthorityEconomicScore.score.letterGrade === "A" ||
-                  localAuthorityEconomicScore.score.letterGrade === "B"
-                    ? "positif"
-                    : localAuthorityEconomicScore.score.letterGrade === "C"
-                      ? "neutre"
-                      : "négatif"}{" "}
-                  pour la collectivité`
-                </span>
-              </span>
-              <ProjectDevelopmentGrade score={localAuthorityEconomicScore.score} />
-            </li>
-            <li className="flex justify-between items-center">
-              <span className="flex flex-col">
-                <strong className="text-lg">Emploi</strong>
-                <span>
-                  {fullTimeJobsScore.score.letterGrade === "D"
-                    ? "Le projet supprime des emplois"
-                    : fullTimeJobsScore.score.letterGrade === "C"
-                      ? "Le projet ne créé pas ou peu d'emplois"
-                      : "Le projet créé des emplois"}
-                </span>
-              </span>
-              <ProjectDevelopmentGrade score={fullTimeJobsScore.score} />
-            </li>
-            <li className="flex justify-between items-center">
-              <span className="flex flex-col">
-                <strong className="text-lg">Qualité de vie des riverains</strong>
-                <span>
-                  {localPeopleQualityOfLifeScore.score.letterGrade === "A" ||
-                  localPeopleQualityOfLifeScore.score.letterGrade === "B"
-                    ? "Le projet améliore le quotidien de nombreuses personnes"
-                    : localPeopleQualityOfLifeScore.score.letterGrade === "C"
-                      ? "Le projet n'a pas d'impact positif sur le quotidien des riverains"
-                      : "Le projet a pas un impact négatif sur le quotidien des riverains"}
-                </span>
-              </span>
-              <ProjectDevelopmentGrade score={localPeopleQualityOfLifeScore.score} />
-            </li>
-            <li className="flex justify-between items-center">
-              <span className="flex flex-col">
-                <strong className="text-lg">Environnement</strong>
-                <span>
-                  Le projet{" "}
-                  {environmentScore.score.letterGrade === "A" ||
-                  environmentScore.score.letterGrade === "B"
-                    ? "préserve ou améliore"
-                    : environmentScore.score.letterGrade === "C"
-                      ? "n'a pas d'impact significatif sur"
-                      : "a un impact néfaste sur"}{" "}
-                  l'environnement
-                </span>
-              </span>
-              <ProjectDevelopmentGrade score={environmentScore.score} />
-            </li>
+          <ul className="list-none flex flex-col gap-2 pl-0">
+            {typedObjectEntries(details)
+              .toSorted((a, b) => FAMILY_CONFIG[a[0]].order - FAMILY_CONFIG[b[0]].order)
+              .map(([key, item]) => (
+                <li key={key}>
+                  <FamilyScore
+                    linkProps={getLink(key)}
+                    description={FAMILY_CONFIG[key].getDescription(item.score.letterGrade)}
+                    score={item.score}
+                    anchor={FAMILY_CONFIG[key].anchor}
+                    title={FAMILY_CONFIG[key].title}
+                  />
+                </li>
+              ))}
           </ul>
         </div>
       </div>
 
       {localAuthorityEconomicScore.indicators.localAuthorityFinances && (
-        <ProjectDevelopmentLocalAuthorityFinancesScore {...localAuthorityEconomicScore} />
+        <ProjectDevelopmentLocalAuthorityFinancesScore
+          anchor={FAMILY_CONFIG.localAuthorityEconomicScore.anchor}
+          linkProps={getLink("localAuthorityEconomicScore")}
+          {...localAuthorityEconomicScore}
+        />
       )}
 
-      <ProjectDevelopmentFullTimeJobsScore {...fullTimeJobsScore} />
+      <ProjectDevelopmentFullTimeJobsScore
+        anchor={FAMILY_CONFIG.fullTimeJobsScore.anchor}
+        linkProps={getLink("fullTimeJobsScore")}
+        {...fullTimeJobsScore}
+      />
 
-      <ProjectDevelopmentLocalPeopleAndCompanyScore {...localPeopleQualityOfLifeScore} />
+      <ProjectDevelopmentLocalPeopleAndCompanyScore
+        anchor={FAMILY_CONFIG.localPeopleQualityOfLifeScore.anchor}
+        {...localPeopleQualityOfLifeScore}
+      />
 
-      <ProjectDevelopmentEnvironmentScore {...environmentScore} />
+      <ProjectDevelopmentEnvironmentScore
+        anchor={FAMILY_CONFIG.environmentScore.anchor}
+        {...environmentScore}
+      />
 
       {/* <div className="grid md:grid-cols-12 gap-12">
         <div className="md:col-span-4">

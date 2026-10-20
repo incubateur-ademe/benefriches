@@ -64,6 +64,7 @@ export type LivingEnvironmentContext = {
 /* Indicator metrics */
 
 export type FullTimeJobsIndicatorMetrics = {
+  siteSurfaceArea: number;
   fullTimeJobsDifferenceByHectare: number;
   siteStatuQuoFullTimeJobs: number;
   difference: number;

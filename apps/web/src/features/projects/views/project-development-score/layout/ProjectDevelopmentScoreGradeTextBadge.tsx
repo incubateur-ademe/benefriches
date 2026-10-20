@@ -9,7 +9,7 @@ type MetricCardProps = {
   badgeText?: string;
 };
 
-const getLetterGradeBadgeText = (letterGrade: LetterGrade) => {
+export const getLetterGradeBadgeText = (letterGrade: LetterGrade) => {
   switch (letterGrade) {
     case "A":
       return "Nettement amélioré";

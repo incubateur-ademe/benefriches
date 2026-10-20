@@ -26,8 +26,7 @@ export default function ProjectBreakEvenLevelTabContainer({ projectId }: Props) 
     <ImpactModalDescriptionProvider
       route={route}
       getRouteFn={routes[route.name]}
-      contextData={breakEvenLevelView.contextData}
-      impactsData={breakEvenLevelView.impacts}
+      {...breakEvenLevelView.modalsProps}
     >
       <ProjectBreakEvenLevelTab
         projectId={projectId}

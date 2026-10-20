@@ -94,6 +94,7 @@ describe("projectImpacts ViewData selectors", () => {
         displayImpactsAccuracyDisclaimer: false,
         contextData: MOCK_STATES.projectImpacts.contextData,
         impactsData: MOCK_STATES.projectImpacts.impacts,
+        modalsData: expect.any(Object),
       });
     });
 

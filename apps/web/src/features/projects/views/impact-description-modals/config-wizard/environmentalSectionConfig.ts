@@ -14,19 +14,22 @@ const ENVIRONMENTAL_METRICS_MODALS = {
   environmental: {
     title: "Impacts environnementaux",
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/environmental_section.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/environmental_section.mdx"),
     ),
   },
   "environmental.co2eq": {
     title: "Impacts sur le CO2-eq",
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/environmental_co2_section.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/environmental_co2_section.mdx"),
     ),
   },
   "environmental.soils": {
     title: "Impacts sur les sols",
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/environmental_soils_section.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/environmental_soils_section.mdx"),
     ),
   },
 
@@ -36,7 +39,8 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     formatFn: formatCO2Impact,
 
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/avoided-co2eq-emissions/avoided_co2eq_emissions.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/avoided-co2eq-emissions/avoided_co2eq_emissions.mdx"),
     ),
   },
   "avoidedCo2eqEmissions.avoidedAirConditioningCo2eqEmissions": {
@@ -46,7 +50,7 @@ const ENVIRONMENTAL_METRICS_MODALS = {
 
     ContentComponent: lazy<ContentComponentType>(
       () =>
-        import("../mdx-component/avoided-co2eq-emissions/avoided_co2eq_emissions__avoided_air_conditioning_co2eq_emissions.mdx"),
+        import("@/features/projects/views/impact-description-modals/mdx-component/avoided-co2eq-emissions/avoided_co2eq_emissions__avoided_air_conditioning_co2eq_emissions.mdx"),
     ),
   },
   "avoidedCo2eqEmissions.avoidedCO2TonsWithEnergyProduction": {
@@ -56,7 +60,7 @@ const ENVIRONMENTAL_METRICS_MODALS = {
 
     ContentComponent: lazy<ContentComponentType>(
       () =>
-        import("../mdx-component/avoided-co2eq-emissions/avoided_co2eq_emissions__avoided_co2eq_with_energy_production.mdx"),
+        import("@/features/projects/views/impact-description-modals/mdx-component/avoided-co2eq-emissions/avoided_co2eq_emissions__avoided_co2eq_with_energy_production.mdx"),
     ),
   },
   "avoidedCo2eqEmissions.avoidedTrafficCo2EqEmissions": {
@@ -66,7 +70,7 @@ const ENVIRONMENTAL_METRICS_MODALS = {
 
     ContentComponent: lazy<ContentComponentType>(
       () =>
-        import("../mdx-component/avoided-co2eq-emissions/avoided_co2eq_emissions__avoided_traffic_co2_eq_emissions.mdx"),
+        import("@/features/projects/views/impact-description-modals/mdx-component/avoided-co2eq-emissions/avoided_co2eq_emissions__avoided_traffic_co2_eq_emissions.mdx"),
     ),
   },
   "avoidedCo2eqEmissions.newStoredCo2Eq": {
@@ -74,7 +78,8 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     type: "co2",
     formatFn: formatCO2Impact,
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/ecosystem-services/ecosystem_services__new_stored_co2_eq.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/ecosystem-services/ecosystem_services__new_stored_co2_eq.mdx"),
     ),
   },
   newPermeableSurface: {
@@ -83,7 +88,8 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     formatFn: formatSurfaceAreaImpact,
 
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/new_permeable_surface.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/new_permeable_surface.mdx"),
     ),
   },
   "newPermeableSurface.newPermeableGreenSurface": {
@@ -91,7 +97,8 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     type: "surface_area",
     formatFn: formatSurfaceAreaImpact,
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/new_permeable_surface__green_surface.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/new_permeable_surface__green_surface.mdx"),
     ),
   },
   "newPermeableSurface.newPermeableMineralSurface": {
@@ -101,7 +108,8 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     type: "surface_area",
 
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/new_permeable_surface__mineral_surface.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/new_permeable_surface__mineral_surface.mdx"),
     ),
   },
   nonContaminatedSurfaceArea: {
@@ -110,7 +118,8 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     formatFn: formatSurfaceAreaImpact,
 
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/non_contaminated_surface.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/non_contaminated_surface.mdx"),
     ),
   },
 } as const satisfies Record<

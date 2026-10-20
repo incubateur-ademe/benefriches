@@ -44,6 +44,7 @@ export const getFullTimeJobsScore = (props: {
   return {
     letterGrade: getJobsLetterGrade(fullTimeJobsDifferenceByHectare),
     metrics: {
+      siteSurfaceArea: props.siteSurfaceArea,
       fullTimeJobsDifferenceByHectare,
       siteStatuQuoFullTimeJobs:
         oldOperationsFullTimeJobsLoss === 0

@@ -116,6 +116,7 @@ export const urbanProjectDevelopmentScoreMock = {
 
           metrics: {
             fullTimeJobsDifferenceByHectare: 0.02,
+            siteSurfaceArea: 14500,
             siteStatuQuoFullTimeJobs: 0,
             difference: 0.238560832,
           },
@@ -302,6 +303,7 @@ export const photovoltaicProjectDevelopmentScoreMock = {
 
           metrics: {
             fullTimeJobsDifferenceByHectare: 0.33,
+            siteSurfaceArea: 14500,
             siteStatuQuoFullTimeJobs: 0,
             difference: 5.019054,
           },
