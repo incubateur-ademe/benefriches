@@ -2,6 +2,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
 import type { SiteNature } from "shared";
 
+import { getSiteNatureLabel } from "@/shared/core/label-mapping/siteNatureLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
@@ -28,21 +29,21 @@ type Option = {
 const options: Option[] = [
   {
     value: "FRICHE",
-    title: "Friche",
+    title: getSiteNatureLabel("FRICHE"),
     description: "Industrielle, militaire, ferroviaire...",
     imgSrc: "/img/pictograms/site-nature/friche.svg",
     disabled: false,
   },
   {
     value: "AGRICULTURAL_OPERATION",
-    title: "Exploitation agricole",
+    title: getSiteNatureLabel("AGRICULTURAL_OPERATION"),
     description: "Culture, élevage...",
     imgSrc: "/img/pictograms/site-nature/agricultural-operation.svg",
     disabled: false,
   },
   {
     value: "NATURAL_AREA",
-    title: "Espace naturel",
+    title: getSiteNatureLabel("NATURAL_AREA"),
     description: "Forêt, prairie, zone humide...",
     imgSrc: "/img/pictograms/site-nature/natural-area.svg",
     disabled: false,

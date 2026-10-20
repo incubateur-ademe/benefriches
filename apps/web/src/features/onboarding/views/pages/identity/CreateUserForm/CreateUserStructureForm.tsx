@@ -7,6 +7,10 @@ import type { UseFormReturn } from "react-hook-form";
 import type { LocalAuthority as LocalAuthorityType } from "shared";
 import { formatLocalAuthorityName, typedObjectEntries } from "shared";
 
+import {
+  getUserStructureActivityLabel,
+  getUserStructureTypeLabel,
+} from "@/shared/core/label-mapping/userStructureLabelMapping";
 import Autocomplete from "@/shared/views/components/Autocomplete/Autocomplete";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 
@@ -44,37 +48,33 @@ type Props = {
   administrativeDivisionService: AdministrativeDivisionService;
 };
 
-const structureActivityLabelMap = new Map<StructureCategory, string>([
-  ["local_authority", "Collectivité"],
-  ["local_authority_landlord", "Bailleur social"],
-  ["real_estate_developer", "Promoteur"],
-  ["photovoltaic_plants_developer", "Développeur photovoltaïque"],
-  ["industrialist", "Industriel"],
-  ["other", "Autre"],
-]);
-
-const DEFAULT_LOCAL_AUTHORITIES = [
-  {
-    type: "municipality",
-    name: "Mairie",
-  },
-  {
-    type: "epci",
-    name: "Établissement public de coopération intercommunale",
-  },
-  {
-    type: "department",
-    name: "Département",
-  },
-  {
-    type: "region",
-    name: "Région",
-  },
+const STRUCTURE_CATEGORIES: StructureCategory[] = [
+  "local_authority",
+  "local_authority_landlord",
+  "real_estate_developer",
+  "photovoltaic_plants_developer",
+  "industrialist",
+  "other",
 ];
 
-const structureActivityOptions = Array.from(structureActivityLabelMap).map(([value, label]) => ({
+const LOCAL_AUTHORITY_TYPES: LocalAuthorityType[] = [
+  "municipality",
+  "epci",
+  "department",
+  "region",
+];
+
+const DEFAULT_LOCAL_AUTHORITIES = LOCAL_AUTHORITY_TYPES.map((type) => ({
+  type,
+  name: getUserStructureActivityLabel(type),
+}));
+
+const structureActivityOptions = STRUCTURE_CATEGORIES.map((value) => ({
   value,
-  label,
+  label:
+    value === "local_authority"
+      ? getUserStructureTypeLabel(value)
+      : getUserStructureActivityLabel(value),
 }));
 
 function UserStructureForm({ administrativeDivisionService, formContext }: Props) {
