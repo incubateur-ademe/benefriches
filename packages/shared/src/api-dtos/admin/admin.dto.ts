@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+import {
+  lifecycleEmailDeliveryStatusSchema,
+  lifecycleEmailTypeSchema,
+} from "../../lifecycle-emails";
+
 const isoDateSchema = z.string();
 
 export const adminMonthlyStatsSchema = z.object({
@@ -62,6 +67,9 @@ export const adminUserTimelineEventTypeSchema = z.enum([
   "project_updated",
   "compatibility_evaluation_created",
   "compatibility_evaluation_completed",
+  "lifecycle_email_sent",
+  "lifecycle_email_failed",
+  "lifecycle_emails_unsubscribed",
 ]);
 export type AdminUserTimelineEventType = z.infer<typeof adminUserTimelineEventTypeSchema>;
 
@@ -70,6 +78,10 @@ export const adminUserTimelineEventSchema = z.object({
   type: adminUserTimelineEventTypeSchema,
   entityId: z.string().nullable(),
   entityName: z.string().nullable(),
+  emailType: lifecycleEmailTypeSchema.nullable(),
+  deliveryStatus: lifecycleEmailDeliveryStatusSchema.extract(["failed", "abandoned"]).nullable(),
+  deliveryAttempts: z.number().nullable(),
+  deliveryErrorMessage: z.string().nullable(),
 });
 export type AdminUserTimelineEvent = z.infer<typeof adminUserTimelineEventSchema>;
 
