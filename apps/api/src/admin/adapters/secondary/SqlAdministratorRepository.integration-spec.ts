@@ -91,9 +91,9 @@ describe("SqlAdministratorRepository integration", () => {
 
     const result = await repository.grant(userId, grantedAt);
 
-    assert.deepStrictEqual(result, { created: true });
+    assert.deepStrictEqual(result, { created: true, grantedEventPublished: false });
     assert.deepStrictEqual(await sqlConnection("administrators").select(), [
-      { user_id: userId, created_at: grantedAt },
+      { user_id: userId, created_at: grantedAt, granted_event_published_at: null },
     ]);
   });
 
@@ -102,13 +102,17 @@ describe("SqlAdministratorRepository integration", () => {
     await insertUser(sqlConnection, userId, "jane.doe@ademe.fr");
     const earlier = new Date("2026-01-02T00:00:00.000Z");
     const later = new Date("2026-10-20T10:00:00.000Z");
-    await sqlConnection("administrators").insert({ user_id: userId, created_at: earlier });
+    await sqlConnection("administrators").insert({
+      user_id: userId,
+      created_at: earlier,
+      granted_event_published_at: earlier,
+    });
 
     const result = await repository.grant(userId, later);
 
-    assert.deepStrictEqual(result, { created: false });
+    assert.deepStrictEqual(result, { created: false, grantedEventPublished: true });
     assert.deepStrictEqual(await sqlConnection("administrators").select(), [
-      { user_id: userId, created_at: earlier },
+      { user_id: userId, created_at: earlier, granted_event_published_at: earlier },
     ]);
   });
 
@@ -127,7 +131,62 @@ describe("SqlAdministratorRepository integration", () => {
       [false, true],
     );
     assert.deepStrictEqual(await sqlConnection("administrators").select(), [
-      { user_id: userId, created_at: grantedAt },
+      { user_id: userId, created_at: grantedAt, granted_event_published_at: null },
+    ]);
+  });
+
+  it("grant reports an existing administrator whose event is unpublished", async () => {
+    const userId = uuid();
+    await insertUser(sqlConnection, userId, "jane.doe@ademe.fr");
+    const grantedAt = new Date("2026-01-02T00:00:00.000Z");
+    const later = new Date("2026-10-20T10:00:00.000Z");
+    await sqlConnection("administrators").insert({
+      user_id: userId,
+      created_at: grantedAt,
+      granted_event_published_at: null,
+    });
+
+    const result = await repository.grant(userId, later);
+
+    assert.deepStrictEqual(result, { created: false, grantedEventPublished: false });
+    assert.deepStrictEqual(await sqlConnection("administrators").select(), [
+      { user_id: userId, created_at: grantedAt, granted_event_published_at: null },
+    ]);
+  });
+
+  it("markGrantedEventPublished sets granted_event_published_at on an unpublished grant", async () => {
+    const userId = uuid();
+    await insertUser(sqlConnection, userId, "jane.doe@ademe.fr");
+    const grantedAt = new Date("2026-01-02T00:00:00.000Z");
+    const publishedAt = new Date("2026-10-20T10:00:00.000Z");
+    await sqlConnection("administrators").insert({
+      user_id: userId,
+      created_at: grantedAt,
+      granted_event_published_at: null,
+    });
+
+    await repository.markGrantedEventPublished(userId, publishedAt);
+
+    assert.deepStrictEqual(await sqlConnection("administrators").select(), [
+      { user_id: userId, created_at: grantedAt, granted_event_published_at: publishedAt },
+    ]);
+  });
+
+  it("markGrantedEventPublished keeps the first publish date", async () => {
+    const userId = uuid();
+    await insertUser(sqlConnection, userId, "jane.doe@ademe.fr");
+    const earlier = new Date("2026-01-02T00:00:00.000Z");
+    const later = new Date("2026-10-20T10:00:00.000Z");
+    await sqlConnection("administrators").insert({
+      user_id: userId,
+      created_at: earlier,
+      granted_event_published_at: earlier,
+    });
+
+    await repository.markGrantedEventPublished(userId, later);
+
+    assert.deepStrictEqual(await sqlConnection("administrators").select(), [
+      { user_id: userId, created_at: earlier, granted_event_published_at: earlier },
     ]);
   });
 });

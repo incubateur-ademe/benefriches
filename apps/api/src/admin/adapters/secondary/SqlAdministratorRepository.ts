@@ -28,13 +28,31 @@ export class SqlAdministratorRepository implements AdministratorRepository {
     return row ? { id: row.id, email: row.email } : undefined;
   }
 
-  async grant(userId: string, grantedAt: Date): Promise<{ created: boolean }> {
+  async grant(
+    userId: string,
+    grantedAt: Date,
+  ): Promise<{ created: boolean; grantedEventPublished: boolean }> {
     const inserted = await this.sqlConnection("administrators")
-      .insert({ user_id: userId, created_at: grantedAt })
+      .insert({ user_id: userId, created_at: grantedAt, granted_event_published_at: null })
       .onConflict("user_id")
       .ignore()
       .returning("user_id");
+    if (inserted.length > 0) {
+      return { created: true, grantedEventPublished: false };
+    }
 
-    return { created: inserted.length > 0 };
+    const row = await this.sqlConnection("administrators")
+      .select("granted_event_published_at")
+      .where("user_id", userId)
+      .first();
+
+    return { created: false, grantedEventPublished: row?.granted_event_published_at != null };
+  }
+
+  async markGrantedEventPublished(userId: string, publishedAt: Date): Promise<void> {
+    await this.sqlConnection("administrators")
+      .update({ granted_event_published_at: publishedAt })
+      .where("user_id", userId)
+      .whereNull("granted_event_published_at");
   }
 }
