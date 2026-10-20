@@ -29,12 +29,12 @@ export class InMemoryAdministratorRepository implements AdministratorRepository 
     return Promise.resolve(this.users.find(({ id }) => id === userId));
   }
 
-  isAdministrator(userId: string): Promise<boolean> {
-    return Promise.resolve(this.administrators.some((row) => row.userId === userId));
-  }
-
-  grant(userId: string, grantedAt: Date): Promise<void> {
+  // Mirrors the SQL primary key on user_id: an existing row is kept and nothing is inserted.
+  grant(userId: string, grantedAt: Date): Promise<{ created: boolean }> {
+    if (this.administrators.some((row) => row.userId === userId)) {
+      return Promise.resolve({ created: false });
+    }
     this.administrators = [...this.administrators, { userId, grantedAt }];
-    return Promise.resolve();
+    return Promise.resolve({ created: true });
   }
 }

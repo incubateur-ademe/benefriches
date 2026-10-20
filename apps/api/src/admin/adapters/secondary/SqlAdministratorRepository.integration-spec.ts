@@ -84,27 +84,48 @@ describe("SqlAdministratorRepository integration", () => {
     assert.strictEqual(result, undefined);
   });
 
-  it("isAdministrator reflects the administrators table", async () => {
-    const administratorId = uuid();
-    const plainUserId = uuid();
-    await insertUser(sqlConnection, administratorId, "admin@ademe.fr");
-    await insertUser(sqlConnection, plainUserId, "user@ademe.fr");
-    await sqlConnection("administrators").insert({
-      user_id: administratorId,
-      created_at: new Date("2026-01-02T00:00:00.000Z"),
-    });
-
-    assert.strictEqual(await repository.isAdministrator(administratorId), true);
-    assert.strictEqual(await repository.isAdministrator(plainUserId), false);
-  });
-
   it("grant inserts an administrators row with the given date", async () => {
     const userId = uuid();
     await insertUser(sqlConnection, userId, "jane.doe@ademe.fr");
     const grantedAt = new Date("2026-10-20T10:00:00.000Z");
 
-    await repository.grant(userId, grantedAt);
+    const result = await repository.grant(userId, grantedAt);
 
+    assert.deepStrictEqual(result, { created: true });
+    assert.deepStrictEqual(await sqlConnection("administrators").select(), [
+      { user_id: userId, created_at: grantedAt },
+    ]);
+  });
+
+  it("grant does not throw and reports nothing inserted when the user is already an administrator", async () => {
+    const userId = uuid();
+    await insertUser(sqlConnection, userId, "jane.doe@ademe.fr");
+    const earlier = new Date("2026-01-02T00:00:00.000Z");
+    const later = new Date("2026-10-20T10:00:00.000Z");
+    await sqlConnection("administrators").insert({ user_id: userId, created_at: earlier });
+
+    const result = await repository.grant(userId, later);
+
+    assert.deepStrictEqual(result, { created: false });
+    assert.deepStrictEqual(await sqlConnection("administrators").select(), [
+      { user_id: userId, created_at: earlier },
+    ]);
+  });
+
+  it("concurrent grants for the same user create a single row", async () => {
+    const userId = uuid();
+    await insertUser(sqlConnection, userId, "jane.doe@ademe.fr");
+    const grantedAt = new Date("2026-10-20T10:00:00.000Z");
+
+    const results = await Promise.all([
+      repository.grant(userId, grantedAt),
+      repository.grant(userId, grantedAt),
+    ]);
+
+    assert.deepStrictEqual(
+      results.map(({ created }) => created).toSorted((a, b) => Number(a) - Number(b)),
+      [false, true],
+    );
     assert.deepStrictEqual(await sqlConnection("administrators").select(), [
       { user_id: userId, created_at: grantedAt },
     ]);

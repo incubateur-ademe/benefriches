@@ -28,16 +28,13 @@ export class SqlAdministratorRepository implements AdministratorRepository {
     return row ? { id: row.id, email: row.email } : undefined;
   }
 
-  async isAdministrator(userId: string): Promise<boolean> {
-    const row = await this.sqlConnection("administrators")
-      .select("user_id")
-      .where("user_id", userId)
-      .first();
+  async grant(userId: string, grantedAt: Date): Promise<{ created: boolean }> {
+    const inserted = await this.sqlConnection("administrators")
+      .insert({ user_id: userId, created_at: grantedAt })
+      .onConflict("user_id")
+      .ignore()
+      .returning("user_id");
 
-    return row !== undefined;
-  }
-
-  async grant(userId: string, grantedAt: Date): Promise<void> {
-    await this.sqlConnection("administrators").insert({ user_id: userId, created_at: grantedAt });
+    return { created: inserted.length > 0 };
   }
 }
