@@ -64,12 +64,12 @@ export default function ProjectSummaryTab({
           <div>
             <span
               className={classNames(
-                "text-4xl w-16 h-16 p-3 mb-4 inline-block rounded-full text-center shrink-0 font-bold",
+                "text-4xl w-16 h-16 p-3 mb-4 inline-block rounded-full text-center shrink-0 whitespace-nowrap  font-bold",
                 LETTER_GRADE_COLORS[developmentScore.score.letterGrade].bgColor,
                 LETTER_GRADE_COLORS[developmentScore.score.letterGrade].textColor,
               )}
             >
-              {developmentScore.score.letterGrade}
+              {developmentScore.score.letterGradeWithModifiers}
             </span>
             <h4 className="text-[32px] mb-4">
               {MAIN_GRADE_TEXT[developmentScore.score.letterGrade]}

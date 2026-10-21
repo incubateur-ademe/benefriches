@@ -166,12 +166,12 @@ export default function ProjectDevelopmentScore({
         <div className="group flex flex-col gap-4 items-start">
           <span
             className={classNames(
-              "text-5xl w-20 h-20 p-4 inline-block rounded-full text-center shrink-0 font-bold",
+              "text-5xl whitespace-nowrap w-20 h-20 p-4 inline-block rounded-full text-center shrink-0 font-bold",
               bgColor,
               textColor,
             )}
           >
-            {score.letterGrade}
+            {score.letterGradeWithModifiers}
           </span>
           <h4 className="mb-0">{MAIN_GRADE_TEXT[score.letterGrade]}</h4>
           <ProjectDevelopmentMainScoreHighlightText
