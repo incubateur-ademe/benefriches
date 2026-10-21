@@ -6,6 +6,7 @@ import { RouteProvider } from "@/app/router";
 import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
+import { ABOUT_IMPACTS_DIALOG_ID } from "../header/headerItems";
 import AppHeader from "./AppHeader";
 
 const DESKTOP_WIDTH = 1280;
@@ -75,6 +76,19 @@ describe("AppHeader", () => {
 
         expect(screen.getByRole("link", { name: "Mes évaluations" })).toBeDefined();
         expect(screen.queryByRole("link", { name: "Administration" })).toBeNull();
+      });
+
+      it("shows a Questions fréquentes button opening the FAQ dialog", () => {
+        renderHeader({
+          windowWidth,
+          preloadedState: buildAuthenticatedUserState({ isAdmin: false }),
+        });
+
+        expect(
+          screen
+            .getByRole("button", { name: "Questions fréquentes" })
+            .getAttribute("aria-controls"),
+        ).toBe(ABOUT_IMPACTS_DIALOG_ID);
       });
     });
   }

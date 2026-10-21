@@ -16,11 +16,10 @@ import classNames from "../../clsx";
 import MenuItemButton from "../../components/Menu/MenuItemButton";
 import AboutImpactsHeaderDialog from "../header/AboutImpactsHeaderDialog";
 import {
-  buildNavigationHeaderItems,
-  CURRENT_HEADER_ITEM_CLASSES,
-  FAQ_HEADER_ITEM,
+  buildLoggedInHeaderItems,
   LOGIN_HEADER_ITEM,
-  LOGOUT_HEADER_ITEM,
+  toHeaderButtonProps,
+  toHeaderQuickAccessItem,
 } from "../header/headerItems";
 // oxlint-disable-next-line no-unassigned-import
 import "./BenefrichesHeader.css";
@@ -56,42 +55,33 @@ function BenefrichesHeader({
 
   const quickAccessItems = useMemo((): HeaderProps["quickAccessItems"] => {
     if (!isUserLoggedIn) {
-      return [LOGIN_HEADER_ITEM];
+      return [toHeaderQuickAccessItem(LOGIN_HEADER_ITEM)];
     }
 
-    const navigationItems = buildNavigationHeaderItems({
+    const { inlineItems, menuItems } = buildLoggedInHeaderItems({
       isAdmin,
       myEvaluationsLink,
       isMyEvaluationsCurrent: route.link.href === myEvaluationsLink.href,
+      isLargeScreen: isLg,
     });
 
     if (!isLg) {
-      return [
-        ...navigationItems.map(({ isCurrent: _isCurrent, ...item }) => item),
-        LOGOUT_HEADER_ITEM,
-      ];
+      // DSFR lists quick access items in its own mobile menu
+      return menuItems.map(toHeaderQuickAccessItem);
     }
 
-    const { text: faqText, ...faqButtonProps } = FAQ_HEADER_ITEM;
-    const { text: logoutText, ...logoutButtonProps } = LOGOUT_HEADER_ITEM;
-
     return [
-      ...navigationItems.map(({ text, isCurrent, ...buttonProps }) => (
-        <Button
-          className={classNames(
-            "text-(--text-default-grey)",
-            isCurrent && CURRENT_HEADER_ITEM_CLASSES,
-          )}
-          key={text}
-          priority="tertiary no outline"
-          {...buttonProps}
-        >
-          {text}
-        </Button>
-      )),
-      <Button key={faqText} className="text-(--text-default-grey)" {...faqButtonProps}>
-        {faqText}
-      </Button>,
+      ...inlineItems.map((item) => {
+        const { className, ...buttonProps } = toHeaderButtonProps(item);
+        return (
+          <Button
+            key={item.text}
+            className={classNames("text-(--text-default-grey)", className)}
+            priority="tertiary no outline"
+            {...buttonProps}
+          />
+        );
+      }),
 
       <Menu key="user-menu-item" as="div">
         <MenuButton as={Fragment}>
@@ -106,9 +96,16 @@ function BenefrichesHeader({
           )}
         </MenuButton>
         <MenuItems anchor="bottom end" transition className={MENU_ITEMS_CLASSES}>
-          <MenuItemButton className="text-(--text-default-grey)" {...logoutButtonProps}>
-            {logoutText}
-          </MenuItemButton>
+          {menuItems.map((item) => {
+            const { className, ...buttonProps } = toHeaderButtonProps(item);
+            return (
+              <MenuItemButton
+                key={item.text}
+                className={classNames("text-(--text-default-grey)", className)}
+                {...buttonProps}
+              />
+            );
+          })}
         </MenuItems>
       </Menu>,
     ];

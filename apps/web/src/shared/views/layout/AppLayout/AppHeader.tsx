@@ -1,10 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
 import type { Link } from "type-route";
 
@@ -14,31 +12,13 @@ import { selectCurrentUserIsAdmin } from "@/shared/core/current-user/currentUser
 
 import classNames from "../../clsx";
 import AboutImpactsHeaderDialog from "../header/AboutImpactsHeaderDialog";
-import type { HeaderLinkItem } from "../header/headerItems";
 import {
-  buildNavigationHeaderItems,
-  CURRENT_HEADER_ITEM_CLASSES,
-  FAQ_HEADER_ITEM,
+  buildLoggedInHeaderItems,
   LOGIN_HEADER_ITEM,
-  LOGOUT_HEADER_ITEM,
+  toHeaderButtonProps,
 } from "../header/headerItems";
 
-function toButtonProps({ iconId, text, linkProps, isCurrent }: HeaderLinkItem): ButtonProps {
-  return {
-    iconId,
-    linkProps,
-    children: text,
-    className: isCurrent ? CURRENT_HEADER_ITEM_CLASSES : undefined,
-  };
-}
-
-const LOGIN_BTN = toButtonProps(LOGIN_HEADER_ITEM);
-const LOGOUT_BTN = toButtonProps(LOGOUT_HEADER_ITEM);
-const ABOUT_DIALOG_BTN: ButtonProps = {
-  iconId: FAQ_HEADER_ITEM.iconId,
-  nativeButtonProps: FAQ_HEADER_ITEM.nativeButtonProps,
-  children: FAQ_HEADER_ITEM.text,
-};
+const LOGIN_BTN = toHeaderButtonProps(LOGIN_HEADER_ITEM);
 
 export type AppLayoutHeaderProps = {
   myEvaluationsConfig?: { link: Link; isCurrent: boolean };
@@ -65,17 +45,12 @@ function AppHeader({
 
   const isLg = windowInnerWidth >= breakpointsValues.lg;
 
-  const menuButtons: ButtonProps[] = useMemo(
-    () => [
-      ...buildNavigationHeaderItems({
-        isAdmin,
-        myEvaluationsLink: myEvaluationsConfig.link,
-        isMyEvaluationsCurrent: myEvaluationsConfig.isCurrent,
-      }).map(toButtonProps),
-      ABOUT_DIALOG_BTN,
-    ],
-    [myEvaluationsConfig, isAdmin],
-  );
+  const { inlineItems, menuItems } = buildLoggedInHeaderItems({
+    isAdmin,
+    myEvaluationsLink: myEvaluationsConfig.link,
+    isMyEvaluationsCurrent: myEvaluationsConfig.isCurrent,
+    isLargeScreen: isLg,
+  });
 
   return (
     <>
@@ -105,18 +80,19 @@ function AppHeader({
                 </li>
               ) : (
                 <>
-                  {isLg
-                    ? menuButtons.map((menuBtn, index) => (
-                        <li key={`menuBtn_lg_${index}`}>
-                          <Button
-                            size="small"
-                            priority="tertiary no outline"
-                            {...menuBtn}
-                            className={classNames("text-(--text-default-grey)", menuBtn.className)}
-                          />
-                        </li>
-                      ))
-                    : null}
+                  {inlineItems.map((item) => {
+                    const { className, ...buttonProps } = toHeaderButtonProps(item);
+                    return (
+                      <li key={item.text}>
+                        <Button
+                          size="small"
+                          priority="tertiary no outline"
+                          {...buttonProps}
+                          className={classNames("text-(--text-default-grey)", className)}
+                        />
+                      </li>
+                    );
+                  })}
                   <li>
                     <Popover className="relative">
                       <PopoverButton as={Fragment}>
@@ -147,33 +123,24 @@ function AppHeader({
                           "py-1",
                         )}
                       >
-                        {!isLg &&
-                          menuButtons?.map((item, index) => (
+                        {menuItems.map((item) => {
+                          const { className, ...buttonProps } = toHeaderButtonProps(item);
+                          return (
                             <Button
-                              key={`menuBtn_sm_${index}`}
+                              key={item.text}
+                              size={isLg ? "small" : "medium"}
                               priority="tertiary no outline"
-                              {...item}
+                              {...buttonProps}
                               className={classNames(
                                 "w-full",
                                 "font-normal",
                                 "py-2",
                                 "text-(--text-default-grey)",
-                                item.className,
+                                className,
                               )}
                             />
-                          ))}
-                        <Button
-                          size={isLg ? "small" : "medium"}
-                          priority="tertiary no outline"
-                          {...LOGOUT_BTN}
-                          className={classNames(
-                            "w-full",
-                            "font-normal",
-                            "py-2",
-                            "text-(--text-default-grey)",
-                            LOGOUT_BTN.className,
-                          )}
-                        />
+                          );
+                        })}
                       </PopoverPanel>
                     </Popover>
                   </li>

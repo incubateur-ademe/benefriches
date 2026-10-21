@@ -6,6 +6,7 @@ import { RouteProvider } from "@/app/router";
 import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
+import { ABOUT_IMPACTS_DIALOG_ID } from "../header/headerItems";
 import BenefrichesHeader from "./BenefrichesHeader";
 
 const DESKTOP_WIDTH = 1280;
@@ -71,6 +72,20 @@ describe("BenefrichesHeader", () => {
 
         expect(screen.getAllByRole("link", { name: "Mes évaluations" }).length).toBeGreaterThan(0);
         expect(screen.queryByRole("link", { name: "Administration" })).toBeNull();
+      });
+
+      it("shows a Questions fréquentes button opening the FAQ dialog when the user is logged in", () => {
+        renderHeader({
+          windowWidth,
+          preloadedState: buildAuthenticatedUserState({ isAdmin: false }),
+        });
+
+        // DSFR renders quick-access items both in the header tools and in its mobile menu modal
+        const faqButtons = screen.getAllByRole("button", { name: "Questions fréquentes" });
+        expect(faqButtons.map((button) => button.getAttribute("aria-controls"))).toEqual([
+          ABOUT_IMPACTS_DIALOG_ID,
+          ABOUT_IMPACTS_DIALOG_ID,
+        ]);
       });
 
       it("does not show an Administration link when the visitor is not logged in", () => {
