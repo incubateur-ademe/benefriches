@@ -62,15 +62,6 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
 
   const config = detailsName ? DEVELOPMENT_SCORE_CONFIG_MODALS[detailsName] : undefined;
 
-  useLayoutEffect(() => {
-    const domModalBody = document.querySelector(`#${DIALOG_ID} .fr-modal__body`);
-
-    if (domModalBody) {
-      domModalBody.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [detailsName]);
-
   const {
     contentState: impactsListModalsMatchedState,
     getDetailsLink: getImpactListModalContentLink,
@@ -93,6 +84,15 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
     }),
     [handleClose, impactsListModalsMatchedState, getImpactListModalContentLink],
   );
+
+  useLayoutEffect(() => {
+    const domModalBody = document.querySelector(`#${DIALOG_ID} .fr-modal__body`);
+
+    if (domModalBody) {
+      domModalBody.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [detailsName, isImpactListDetailsContent]);
 
   return (
     <Dialog id={DIALOG_ID} open={isOpen} onClose={handleClose} aria-labelledby={DIALOG_TITLE_ID}>

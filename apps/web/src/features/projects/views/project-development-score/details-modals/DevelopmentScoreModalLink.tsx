@@ -10,6 +10,8 @@ import { LETTER_GRADE_COLORS } from "../layout/colors";
 import { DEVELOPMENT_SCORE_CONFIG_MODALS } from "./developmentScoreModalsConfig";
 import { type DetailsName, serializeDetails } from "./useOpenDescriptionModalLink";
 
+const CORRESPONDANCE_TABLE_ANCHOR = "#table-de-correspondance-point-lettre";
+
 const getDetailsNameFromAnchor = (anchor: string): DetailsName | undefined => {
   switch (anchor) {
     case "#cadre-de-vie":
@@ -35,7 +37,8 @@ const getDetailsNameFromAnchor = (anchor: string): DetailsName | undefined => {
       return "environmentScore.soilsQuality";
     case "#services-ecosystemiques":
       return "environmentScore.ecosystemServices";
-    case "#table-de-correspondance-point-lettre":
+
+    case CORRESPONDANCE_TABLE_ANCHOR:
       return "global";
 
     case "#finances-de-la-collectivite-locale":
@@ -93,16 +96,21 @@ export default ({
 
   return (
     <>
-      <span
-        className={classNames(
-          "mr-4 text-sm w-6 h-6 p-0.5 inline-block text-center rounded-full shrink-0 font-bold",
-          letterGrade
-            ? [LETTER_GRADE_COLORS[letterGrade].bgColor, LETTER_GRADE_COLORS[letterGrade].textColor]
-            : ["bg-grey-disabled"],
-        )}
-      >
-        {letterGradeText ?? letterGrade ?? "-"}
-      </span>
+      {href !== CORRESPONDANCE_TABLE_ANCHOR && (
+        <span
+          className={classNames(
+            "mr-4 text-sm w-6 h-6 p-0.5 inline-block text-center rounded-full shrink-0 font-bold",
+            letterGrade
+              ? [
+                  LETTER_GRADE_COLORS[letterGrade].bgColor,
+                  LETTER_GRADE_COLORS[letterGrade].textColor,
+                ]
+              : ["bg-grey-disabled"],
+          )}
+        >
+          {letterGradeText ?? letterGrade ?? "-"}
+        </span>
+      )}
       <a {...getUpdateDetailsLink(serializeDetails(detailsNameMatch))}>{children}</a>
     </>
   );
