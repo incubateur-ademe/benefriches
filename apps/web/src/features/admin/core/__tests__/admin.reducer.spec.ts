@@ -361,5 +361,57 @@ describe("admin reducer", () => {
         activity: USER_ACTIVITY,
       });
     });
+
+    it("ignores a late failure of an earlier request for the same user", () => {
+      const store = createTestStore();
+      const latestActivity: AdminUserActivity = {
+        ...USER_ACTIVITY,
+        user: { ...USER_ACTIVITY.user, loginCount: 8 },
+      };
+
+      store.dispatch(adminUserActivityRequested.pending("req-a1", "user-1"));
+      store.dispatch(adminUserActivityRequested.pending("req-b", "user-2"));
+      store.dispatch(adminUserActivityRequested.pending("req-a2", "user-1"));
+      store.dispatch(adminUserActivityRequested.fulfilled(latestActivity, "req-a2", "user-1"));
+      store.dispatch(
+        adminUserActivityRequested.rejected(new Error("x"), "req-a1", "user-1", "error"),
+      );
+
+      expect(selectAdminUserViewData(store.getState(), "user-1")).toEqual({
+        loadingState: "success",
+        activity: latestActivity,
+      });
+    });
+
+    it("ignores a late success of an earlier request for the same user", () => {
+      const store = createTestStore();
+
+      store.dispatch(adminUserActivityRequested.pending("req-a1", "user-1"));
+      store.dispatch(adminUserActivityRequested.pending("req-a2", "user-1"));
+      store.dispatch(
+        adminUserActivityRequested.rejected(new Error("x"), "req-a2", "user-1", "error"),
+      );
+      store.dispatch(adminUserActivityRequested.fulfilled(USER_ACTIVITY, "req-a1", "user-1"));
+
+      expect(selectAdminUserViewData(store.getState(), "user-1")).toEqual({
+        loadingState: "error",
+      });
+    });
+
+    it("leaves user A's state unchanged when a request for user B completes", () => {
+      const store = createTestStore();
+
+      store.dispatch(adminUserActivityRequested.pending("req-a", "user-1"));
+      store.dispatch(adminUserActivityRequested.fulfilled(USER_ACTIVITY, "req-a", "user-1"));
+      store.dispatch(adminUserActivityRequested.pending("req-b", "user-2"));
+      store.dispatch(
+        adminUserActivityRequested.rejected(new Error("x"), "req-b", "user-2", "error"),
+      );
+
+      expect(selectAdminUserViewData(store.getState(), "user-1")).toEqual({
+        loadingState: "success",
+        activity: USER_ACTIVITY,
+      });
+    });
   });
 });

@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
 
-import type { AdminState, AdminUserEntry } from "./admin.reducer";
+import type { AdminState, AdminUserLoad } from "./admin.reducer";
 import type { AdminDashboardStats, AdminLoadingState, AdminUserSummary } from "./admin.types";
 
 const selectAdmin = (state: RootState): AdminState => state.admin;
@@ -43,11 +43,16 @@ export const selectAdminUsersViewData = createSelector(
   }),
 );
 
-export type AdminUserViewData = AdminUserEntry;
+export type AdminUserViewData = AdminUserLoad;
 
 const USER_NOT_LOADED_YET: AdminUserViewData = { loadingState: "loading" };
 
 export const selectAdminUserViewData = createSelector(
   [selectAdmin, (_state: RootState, userId: string) => userId],
-  (admin, userId): AdminUserViewData => admin.usersById[userId] ?? USER_NOT_LOADED_YET,
+  (admin, userId): AdminUserViewData => {
+    const entry = admin.usersById[userId];
+    if (!entry) return USER_NOT_LOADED_YET;
+    const { latestRequestId: _latestRequestId, ...viewData } = entry;
+    return viewData;
+  },
 );

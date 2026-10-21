@@ -10,10 +10,12 @@ import type {
   AdminUserSummary,
 } from "./admin.types";
 
-export type AdminUserEntry =
+export type AdminUserLoad =
   | { loadingState: "loading" }
   | { loadingState: "success"; activity: AdminUserActivity }
   | { loadingState: "not_found" | "forbidden" | "error" };
+
+export type AdminUserEntry = AdminUserLoad & { latestRequestId: string };
 
 export type AdminState = {
   dashboard: {
@@ -81,13 +83,27 @@ export const adminReducer = createReducer(initialState, (builder) => {
   });
 
   builder.addCase(adminUserActivityRequested.pending, (state, action) => {
-    state.usersById[action.meta.arg] = { loadingState: "loading" };
+    state.usersById[action.meta.arg] = {
+      loadingState: "loading",
+      latestRequestId: action.meta.requestId,
+    };
   });
   builder.addCase(adminUserActivityRequested.fulfilled, (state, action) => {
-    state.usersById[action.meta.arg] = { loadingState: "success", activity: action.payload };
+    const { arg: userId, requestId } = action.meta;
+    if (requestId !== state.usersById[userId]?.latestRequestId) return;
+    state.usersById[userId] = {
+      loadingState: "success",
+      activity: action.payload,
+      latestRequestId: requestId,
+    };
   });
   builder.addCase(adminUserActivityRequested.rejected, (state, action) => {
-    state.usersById[action.meta.arg] = { loadingState: action.payload ?? "error" };
+    const { arg: userId, requestId } = action.meta;
+    if (requestId !== state.usersById[userId]?.latestRequestId) return;
+    state.usersById[userId] = {
+      loadingState: action.payload ?? "error",
+      latestRequestId: requestId,
+    };
   });
 });
 
