@@ -1,6 +1,8 @@
 import {
+  photovoltaicProjectDevelopmentScoreMock,
   photovoltaicProjectImpactMockMeta,
   photovoltaicProjectImpactsResultDto,
+  urbanProjectDevelopmentScoreMock,
   urbanProjectImpactMockMeta,
   urbanProjectImpactsResultDto,
 } from "shared";
@@ -41,6 +43,7 @@ describe("selectProjectSummaryDataView", () => {
         dataLoadingState: { impacts: "success", urbanSprawlSimulation: "idle" },
         evaluationPeriod: photovoltaicProjectImpactsResultDto.projectionYears.length,
         currentViewMode: "summary",
+        developmentScore: photovoltaicProjectDevelopmentScoreMock,
         impacts: photovoltaicProjectImpactsResultDto,
         contextData: photovoltaicProjectImpactMockMeta,
       },
@@ -52,15 +55,7 @@ describe("selectProjectSummaryDataView", () => {
     expect(viewData).toEqual({
       breakEvenYear: undefined,
       projectionYears: buildProjectionYears(2024, 20),
-      zanCompliance: {
-        name: "zanCompliance",
-        isSuccess: true,
-        value: {
-          isAgriculturalFriche: false,
-          permeableSurfaceAreaDifference: -10000,
-          artificializedSurfaceArea: 10000,
-        },
-      },
+      developmentScore: photovoltaicProjectDevelopmentScoreMock,
       mainImpactIndicator: {
         name: "avoidedFricheCostsForLocalAuthority",
         isSuccess: false,
@@ -90,6 +85,7 @@ describe("selectProjectSummaryDataView", () => {
         currentViewMode: "summary",
         impacts: urbanImpactsWithLocalAuthorityTenant,
         contextData: urbanProjectImpactMockMeta,
+        developmentScore: urbanProjectDevelopmentScoreMock,
       },
       appSettings: DEFAULT_APP_SETTINGS,
     });
@@ -99,15 +95,7 @@ describe("selectProjectSummaryDataView", () => {
     expect(viewData).toEqual({
       breakEvenYear: "2040",
       projectionYears: buildProjectionYears(2026, 50),
-      zanCompliance: {
-        name: "zanCompliance",
-        isSuccess: true,
-        value: {
-          isAgriculturalFriche: false,
-          permeableSurfaceAreaDifference: 50000,
-          artificializedSurfaceArea: 0,
-        },
-      },
+      developmentScore: urbanProjectDevelopmentScoreMock,
       mainImpactIndicator: {
         name: "avoidedFricheCostsForLocalAuthority",
         isSuccess: true,
@@ -142,6 +130,7 @@ describe("selectProjectSummaryDataView", () => {
         currentViewMode: "summary",
         impacts: urbanImpactsWithLocalAuthorityTenant,
         contextData: urbanProjectImpactMockMeta,
+        developmentScore: urbanProjectDevelopmentScoreMock,
       },
       appSettings: DEFAULT_APP_SETTINGS,
     });
@@ -151,15 +140,8 @@ describe("selectProjectSummaryDataView", () => {
     expect(viewData).toEqual({
       breakEvenYear: "2040",
       projectionYears: buildProjectionYears(2026, 10),
-      zanCompliance: {
-        name: "zanCompliance",
-        isSuccess: true,
-        value: {
-          isAgriculturalFriche: false,
-          permeableSurfaceAreaDifference: 50000,
-          artificializedSurfaceArea: 0,
-        },
-      },
+      developmentScore: urbanProjectDevelopmentScoreMock,
+
       mainImpactIndicator: {
         name: "avoidedFricheCostsForLocalAuthority",
         isSuccess: true,
