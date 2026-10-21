@@ -10,33 +10,34 @@ import type { Link } from "type-route";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
-// oxlint-disable-next-line architecture-boundaries/no-cross-layer-import
-import AboutImpactsContent from "@/features/projects/views/shared/impacts/AboutImpactsContent";
 import { selectCurrentUserIsAdmin } from "@/shared/core/current-user/currentUser.selectors";
 
 import classNames from "../../clsx";
-import DsfrA11yDialog from "../../components/Dialog/DsfrA11yDialog";
+import AboutImpactsHeaderDialog from "../header/AboutImpactsHeaderDialog";
+import type { HeaderLinkItem } from "../header/headerItems";
+import {
+  buildNavigationHeaderItems,
+  CURRENT_HEADER_ITEM_CLASSES,
+  FAQ_HEADER_ITEM,
+  LOGIN_HEADER_ITEM,
+  LOGOUT_HEADER_ITEM,
+} from "../header/headerItems";
 
-const LOGIN_BTN: ButtonProps = {
-  iconId: "fr-icon-logout-box-r-line",
-  linkProps: routes.accessBenefriches().link,
-  children: "Accéder à Bénéfriches",
-};
+function toButtonProps({ iconId, text, linkProps, isCurrent }: HeaderLinkItem): ButtonProps {
+  return {
+    iconId,
+    linkProps,
+    children: text,
+    className: isCurrent ? CURRENT_HEADER_ITEM_CLASSES : undefined,
+  };
+}
 
-const LOGOUT_BTN: ButtonProps = {
-  iconId: "fr-icon-logout-box-r-line",
-  children: "Se déconnecter",
-  linkProps: { href: "/api/auth/logout" },
-};
-
-const DIALOG_ID = "fr-dialog-about-impacts-header";
+const LOGIN_BTN = toButtonProps(LOGIN_HEADER_ITEM);
+const LOGOUT_BTN = toButtonProps(LOGOUT_HEADER_ITEM);
 const ABOUT_DIALOG_BTN: ButtonProps = {
-  iconId: "fr-icon-questionnaire-line",
-  children: "Questions fréquentes",
-  nativeButtonProps: {
-    "aria-controls": DIALOG_ID,
-    "data-fr-opened": false,
-  },
+  iconId: FAQ_HEADER_ITEM.iconId,
+  nativeButtonProps: FAQ_HEADER_ITEM.nativeButtonProps,
+  children: FAQ_HEADER_ITEM.text,
 };
 
 export type AppLayoutHeaderProps = {
@@ -45,7 +46,7 @@ export type AppLayoutHeaderProps = {
   title?: string;
 };
 
-function BenefrichesHeader({
+function AppHeader({
   homeLinkProps = routes.home().link,
   myEvaluationsConfig = {
     link: routes.myEvaluations().link,
@@ -64,28 +65,17 @@ function BenefrichesHeader({
 
   const isLg = windowInnerWidth >= breakpointsValues.lg;
 
-  const menuButtons: ButtonProps[] = useMemo(() => {
-    return [
-      {
-        iconId: "fr-icon-bar-chart-box-line",
-        children: "Mes évaluations",
-        linkProps: myEvaluationsConfig.link,
-        className: myEvaluationsConfig.isCurrent
-          ? "bg-blue-ultralight text-blue-ultradark"
-          : undefined,
-      },
-      ...(isAdmin
-        ? [
-            {
-              iconId: "fr-icon-settings-5-line",
-              children: "Administration",
-              linkProps: routes.admin().link,
-            } satisfies ButtonProps,
-          ]
-        : []),
+  const menuButtons: ButtonProps[] = useMemo(
+    () => [
+      ...buildNavigationHeaderItems({
+        isAdmin,
+        myEvaluationsLink: myEvaluationsConfig.link,
+        isMyEvaluationsCurrent: myEvaluationsConfig.isCurrent,
+      }).map(toButtonProps),
       ABOUT_DIALOG_BTN,
-    ];
-  }, [myEvaluationsConfig, isAdmin]);
+    ],
+    [myEvaluationsConfig, isAdmin],
+  );
 
   return (
     <>
@@ -193,11 +183,9 @@ function BenefrichesHeader({
           </div>
         </div>
       </header>
-      <DsfrA11yDialog dialogId={DIALOG_ID} title="Questions fréquentes" size="large">
-        <AboutImpactsContent />
-      </DsfrA11yDialog>
+      <AboutImpactsHeaderDialog />
     </>
   );
 }
 
-export default BenefrichesHeader;
+export default AppHeader;
