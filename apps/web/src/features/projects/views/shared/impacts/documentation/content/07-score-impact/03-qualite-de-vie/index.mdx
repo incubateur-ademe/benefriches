@@ -1,1 +1,37 @@
 # Qualité de vie des riverains
+
+Le score de qualité de vie des riverains est calculé à partir des scores des sous-indicateurs suivants :
+
+- [🌳 Cadre de vie](#cadre-de-vie)
+- [🫀 Santé](#sante)
+- [🏥 Accès aux soins (bonus)](#acces-aux-soins)
+- [🏪 Accès aux services de proximité (bonus)](#acces-aux-services-de-proximite)
+- [🚙 Sécurité routière (bonus)](#securite-routiere)
+- [💥 Accidents sur friche (bonus)](#accidents-sur-friche)
+
+## Comment le score de qualité de vie des riverains est-il calculé ?
+
+Les scores de chacun de ces indicateurs sont convertis en points en suivant ce tableau de correspondance
+
+Pour un indicateur "coeur" (toujours évalué) :
+
+| Score | Points |
+| ----- | ------ |
+| A     | 90     |
+| B     | 70     |
+| C     | 50     |
+| D     | 30     |
+| E     | 10     |
+
+Pour un indicateur "bonus" :
+
+| Score | Points |
+| ----- | ------ |
+| A     | 6.67   |
+| B     | 3.33   |
+| C     | 0      |
+| D     | -3.33  |
+| E     | -6.67  |
+
+Le score de qualité de vie des riverains est la **moyenne des points des 2 sections coeur**, arrondie à 2 décimales, à laquelle on ajoute les points bonus des autres indicateurs.
+Cette moyenne est ensuite reconvertie en lettre pour l'affichage en suivant [la table de correspondance point-lettre](#table-de-correspondance-point-lettre).

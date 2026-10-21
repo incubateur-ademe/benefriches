@@ -1,7 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { type ReactNode, Suspense, useLayoutEffect, useMemo } from "react";
+import { Suspense, useLayoutEffect, useMemo } from "react";
 import type { Route } from "type-route";
 
 import { routes } from "@/app/router";
@@ -15,13 +15,12 @@ import ModalBody from "../../impact-description-modals/modal-layout/ModalBody";
 import ModalGrid from "../../impact-description-modals/modal-layout/ModalGrid";
 import useToggleDescriptionModal from "../../impact-description-modals/useToggleDescriptionModal";
 import { developmentScoreMdxComponents } from "../../shared/impacts/documentation/mdxComponents";
-import GradeTextBadge from "../layout/ProjectDevelopmentScoreGradeTextBadge";
-import { getLetterGradeBadgeText } from "../layout/gradeLabels";
+import DevelopmentScoreModalHeader, { DIALOG_TITLE_ID } from "./DevelopmentScoreModalHeader";
+import DevelopmentScoreModalLink from "./DevelopmentScoreModalLink";
 import { DEVELOPMENT_SCORE_CONFIG_MODALS } from "./developmentScoreModalsConfig";
 import { parseContentState } from "./useOpenDescriptionModalLink";
 
 const DIALOG_ID = "developmentScore-modal-description";
-const DIALOG_TITLE_ID = "developmentScore-modal-description-title";
 const DIALOG_DSFR_CSS = [
   "fixed inset-0",
   "w-screen",
@@ -95,20 +94,6 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
     [handleClose, impactsListModalsMatchedState, getImpactListModalContentLink],
   );
 
-  const badgeKind = (() => {
-    switch (detailsName) {
-      case "environmentScore.co2eqEmissionsVariation":
-      case "fullTimeJobsScore":
-        return "evolution";
-      case "localAuthorityEconomicScore":
-        return "impact";
-      case "environmentScore.zanCompliance":
-        return "compliance";
-      default:
-        return "qualitative";
-    }
-  })();
-
   return (
     <Dialog id={DIALOG_ID} open={isOpen} onClose={handleClose} aria-labelledby={DIALOG_TITLE_ID}>
       <div className={classNames(DIALOG_DSFR_CSS, isDark ? "highcharts-dark" : "highcharts-light")}>
@@ -123,6 +108,7 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
                 />
               </ImpactModalDescriptionContext.Provider>
             ) : (
+              detailsName &&
               config && (
                 <ModalBody size="large">
                   <ModalGrid>
@@ -136,35 +122,14 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
                           <config.ContentComponent
                             components={{
                               ...developmentScoreMdxComponents,
-                              h1: ({ children }: { children?: ReactNode }) => (
-                                <div>
-                                  <div className="flex justify-around items-start w-full">
-                                    <a
-                                      className={fr.cx("fr-btn--close", "fr-btn")}
-                                      {...routes[route.name]({
-                                        ...route.params,
-                                        details: undefined,
-                                      }).link}
-                                      type="button"
-                                    >
-                                      Fermer
-                                    </a>
-                                  </div>
-                                  <div className="inline-flex justify-between items-center gap-4 mb-7">
-                                    <h1
-                                      id={`${DIALOG_ID}_title`}
-                                      className={classNames(fr.cx("fr-modal__title"), "mb-0")}
-                                    >
-                                      {children}
-                                    </h1>
-
-                                    {letterGrade && (
-                                      <GradeTextBadge
-                                        letterGrade={letterGrade}
-                                        badgeText={getLetterGradeBadgeText(badgeKind, letterGrade)}
-                                      />
-                                    )}
-                                  </div>
+                              h1: (props) => (
+                                <>
+                                  <DevelopmentScoreModalHeader
+                                    letterGrade={letterGrade}
+                                    detailsName={detailsName}
+                                    onCloseLink={getUpdateDetailsLink(undefined)}
+                                    {...props}
+                                  />
 
                                   {DataComponent ? (
                                     <DataComponent
@@ -173,8 +138,16 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
                                       getUpdateDetailsLink={getUpdateDetailsLink}
                                     />
                                   ) : null}
-                                </div>
+                                </>
                               ),
+                              a: (props) => (
+                                <DevelopmentScoreModalLink
+                                  developmentScore={developmentScore}
+                                  getUpdateDetailsLink={getUpdateDetailsLink}
+                                  {...props}
+                                />
+                              ),
+
                               Metrics: () =>
                                 MetricsComponent ? (
                                   <MetricsComponent developmentScore={developmentScore} />

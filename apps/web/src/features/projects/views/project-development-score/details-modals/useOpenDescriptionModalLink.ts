@@ -4,6 +4,8 @@ import type { Route } from "type-route";
 import { routes, useRoute } from "@/app/router";
 
 const DETAILS_CODES_BY_SECTION = {
+  global: "score",
+
   fullTimeJobsScore: "score.emplois",
 
   localPeopleQualityOfLifeScore: "score.qualite-de-vie",

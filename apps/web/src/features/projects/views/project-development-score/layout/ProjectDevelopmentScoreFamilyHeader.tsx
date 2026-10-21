@@ -20,11 +20,8 @@ export default ({
       <h4>{title}</h4>
       <ProjectDevelopmentGrade score={score} />
 
-      <a
-        {...linkProps}
-        className="hidden text-sm mx-6 invisible group-hover:visible group-focus:visible"
-      >
-        Comment la note est-elle calculée ?
+      <a {...linkProps} className="text-sm mx-6 invisible group-hover:visible group-focus:visible">
+        Comment le score est-il calculé ?
       </a>
     </div>
   );

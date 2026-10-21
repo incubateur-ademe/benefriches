@@ -15,6 +15,16 @@ const LocalAuthorityFinancesData = lazy(() => import("./data/LocalAuthorityFinan
 const FullTimeJobsData = lazy(() => import("./data/FullTimeJobsData"));
 
 export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
+  global: {
+    ContentComponent: lazy<ContentComponentType>(
+      () =>
+        import("@/features/projects/views/shared/impacts/documentation/content/07-score-impact/00-intro.mdx"),
+    ),
+    letterGrade: () => undefined,
+    DataComponent: null,
+    MetricsComponent: null,
+  },
+
   fullTimeJobsScore: {
     ContentComponent: lazy<ContentComponentType>(
       () =>

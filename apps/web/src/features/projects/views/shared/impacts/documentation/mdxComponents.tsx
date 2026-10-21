@@ -223,22 +223,6 @@ export const documentationMdxComponents: MDXComponents = {
   h4: heading("h6", "text-base font-bold mt-2 mb-2"),
   h5: heading("span", "text-base font-semibold mt-2 mb-2"),
 
-  th: ({ children }: ComponentProps<"th">) => {
-    const text = textOf(children).trim();
-
-    if (text.match(/^[ABCDE][+-]?$/)) {
-      return (
-        <th className="p-3 uppercase bg-(--background-contrast-grey) border-b-text-light">
-          <GradeBadge letterGrade={text as LetterGradeWithModifier} />
-        </th>
-      );
-    }
-    return (
-      <th className="p-3 uppercase bg-(--background-contrast-grey) border-b-text-light">
-        {children}
-      </th>
-    );
-  },
   td: ({ children }: ComponentProps<"td">) => {
     const text = textOf(children).trim();
     const sign = SIGN_STYLES.find(([prefix]) => text.startsWith(prefix));

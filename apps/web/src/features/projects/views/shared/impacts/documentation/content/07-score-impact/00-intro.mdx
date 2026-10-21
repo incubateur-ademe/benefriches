@@ -1,57 +1,33 @@
 # 🏆 Calcul du score d'impact
 
-Une note synthétique de A à E résumant la performance du projet sur 5 critères.
+Un score synthétique de A à E résumant la performance du projet sur 5 critères.
 
-Cette note est déterminé à partir des :
+Ce score est déterminé à partir des :
 
-- Données des formulaires : Ce que l'utilisateur a renseigné lors de la saisie du site et du projet (nature du site, type de projet, surfaces, bâtiments prévus, dépenses d'investissement de la commune…).
-- Calculs des impacts **sur 50 ans** : Les résultats calculés par l'outil à partir des formulaires (emplois créés, CO₂eq évité, évolution des sols, impacts économiques…), détaillés précedemment.
+- **Données des formulaires** : ce que l'utilisateur a renseigné lors de la saisie du site et du projet (nature du site, type de projet, surfaces, bâtiments prévus, dépenses d'investissement de la commune…).
+- **Calculs des impacts sur 50 ans** : les résultats calculés par Bénéfriches à partir des formulaires (emplois créés, CO₂eq évité, évolution des sols, impacts économiques…).
 
 > ⚠️ Ce référentiel de notation des projets est en cours de construction, il s'agit ici d'une première version amenée à évoluer prochainement.
 
-## Définitions
-
-- **Friche** : site délaissé (ancienne activité industrielle, commerciale, agricole…).
-- **ENAF** : espaces naturels, agricoles et forestiers.
-- **ZAN** : « Zéro Artificialisation Nette », objectif de limiter la consommation de nouveaux espaces naturels.
-- **Sols perméables** : sols qui laissent passer l'eau (pelouse, forêt, sol minéral perméable…).
-- **Statu quo** : situation du site si rien n'est fait (« avant projet »).
-
 ## Les 5 critères et leurs indicateurs
 
-Chaque critère obtient une note de A à E avec des gradations + et -, calculée à partir des notes des indicateurs qui lui sont liés.
+Chaque critère obtient un score de A à E avec des gradations + et -, calculé à partir des scores des indicateurs qui lui sont liés.
 
-| Critère                             | Indicateurs                                                                                                                                                                                                   |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **🏛️ Finances de la collectivité**  | Finances de la collectivité locale                                                                                                                                                                            |
-| **🏘️ Qualité de vie des riverains** | **Projet Urbain** : Cadre de vie, Santé locale, Accès aux commerces et services, Accès aux soins, Sécurité routière, Accidents sur friche. **Projet PV et renaturation** : Cadre de vie, Accidents sur friche |
-| **💼 Emplois**                      | Emplois à temps plein                                                                                                                                                                                         |
-| **🌿 Environnement**                | Émissions de CO₂eq, Conformité ZAN, Qualité des sols, Qualité de l'eau, Services écosystémiques                                                                                                               |
-| **🌍 Macroéconomie (hors barème)**  | _en cours de construction_...                                                                                                                                                                                 |
+| Critère                             | Indicateurs                                   |
+| ----------------------------------- | --------------------------------------------- |
+| **🏛️ Finances de la collectivité**  | [Voir +](#finances-de-la-collectivite-locale) |
+| **🏘️ Qualité de vie des riverains** | [Voir +](#qualite-de-vie-des-riverains)       |
+| **💼 Emplois**                      | [Voir +](#emplois)                            |
+| **🌿 Environnement**                | [Voir +](#environnement)                      |
+| **🌍 Macroéconomie (hors barème)**  | _en cours de construction_...                 |
 
-### Comment la note globale est-elle calculée ?
+## Comment le score global est-il calculé ?
 
-1. Une section contient plusieurs indicateurs qui obtiennent chacun une note A, B, C, D ou E en fonction de leur valeur
-2. Chaque lettre est ensuite convertie en points
+Le score global du projet est la moyenne des scores de chacune des familles d'indicateurs.
 
-Pour un indicateur "coeur" (toujours évalué) :
+Chaque famille a un score calculé en nombre de points, converti en lettre en suivant le tableau de correspondance ci-contre :
 
-| Lettre | A   | B   | C   | D   | E   |
-| ------ | --- | --- | --- | --- | --- |
-| Points | 90  | 70  | 50  | 30  | 10  |
-
-> ℹ️ Un indicateur « non évalué » compte pour **0 point**.
-
-Pour un indicateur "bonus :
-
-| Lettre | A    | B    | C   | D     | E     |
-| ------ | ---- | ---- | --- | ----- | ----- |
-| Points | 6.67 | 3.33 | 0   | -3.33 | -6.67 |
-
-3. La section obtient une note à son tour : c'est la **somme des points de tous ses indicateurs / nombre d'indicateurs coeur**.
-4. La note globale est la **moyenne des points des 5 sections**, arrondie à 2 décimales.
-
-Pour la présentation des résultats, la note globale est les notes de section sont converties en lettre avec + et -
+### Table de correspondance point-lettre
 
 | Score | Points        |
 | ----- | ------------- |
@@ -70,13 +46,3 @@ Pour la présentation des résultats, la note globale est les notes de section s
 | E+    | 13,34 à 19,99 |
 | E     | 6,67 à 13,33  |
 | E-    | Moins de 6,67 |
-
-> 📌 **À retenir**
->
-> - Chaque indicateur de la section est converti en points (A = 90 … E = 10).
-> - **Un indicateur non évalué compte pour 0 point.**
-> - La note de la section est la moyenne de tous les indicateurs coeurs + les indicateurs bonus, arrondie à 2 décimales, puis convertie en lettre.
->
-> **Exemple** : la section « Qualité de vie des habitants » a 2 indicateurs coeurs et 4 indicateurs bonus.
->
-> Si seuls « Cadre de vie » (A = 90) et « Accidents sur friche » (A = 90) sont évalués, la moyenne est (90 + 6.67 + 0 + 0 + 0 + 0) ÷ 2 = 48.33, soit un **C**.

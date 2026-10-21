@@ -214,7 +214,7 @@ export default function ProjectDevelopmentScore({
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="flex flex-col gap-4 items-start">
+        <div className="group flex flex-col gap-4 items-start">
           <span
             className={classNames(
               "text-5xl w-20 h-20 p-4 inline-block rounded-full text-center shrink-0 font-bold",
@@ -226,6 +226,12 @@ export default function ProjectDevelopmentScore({
           </span>
           <h4 className="mb-0">{GRADE_TEXT[score.letterGrade]}</h4>
           {highlightSentence && <p className="mt-1 opacity-90">{highlightSentence}</p>}
+          <a
+            {...getLink("global")}
+            className="text-sm invisible group-hover:visible group-focus:visible"
+          >
+            Comment le score est-il calculé ?
+          </a>
         </div>
 
         <div className="md:col-span-2 highcharts-no-xaxis flex flex-col gap-6">
