@@ -12,6 +12,7 @@ import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
 // oxlint-disable-next-line architecture-boundaries/no-cross-layer-import
 import AboutImpactsContent from "@/features/projects/views/shared/impacts/AboutImpactsContent";
+import { selectCurrentUserIsAdmin } from "@/shared/core/current-user/currentUser.selectors";
 
 import classNames from "../../clsx";
 import DsfrA11yDialog from "../../components/Dialog/DsfrA11yDialog";
@@ -23,6 +24,10 @@ const QUICK_ACCESS_ITEMS_PROPS = {
   myEvaluations: {
     iconId: "fr-icon-bar-chart-box-line",
     text: "Mes évaluations",
+  },
+  administration: {
+    iconId: "fr-icon-settings-5-line",
+    text: "Administration",
   },
   menuItems: [
     {
@@ -55,6 +60,8 @@ function BenefrichesHeader({
     (state) => state.currentUser.currentUserState === "authenticated",
   );
 
+  const isAdmin = useAppSelector(selectCurrentUserIsAdmin);
+
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
@@ -79,6 +86,19 @@ function BenefrichesHeader({
           >
             {QUICK_ACCESS_ITEMS_PROPS.myEvaluations.text}
           </Button>,
+          ...(isAdmin
+            ? [
+                <Button
+                  className="text-(--text-default-grey)"
+                  key="administration-item"
+                  priority="tertiary no outline"
+                  {...QUICK_ACCESS_ITEMS_PROPS.administration}
+                  linkProps={routes.admin().link}
+                >
+                  {QUICK_ACCESS_ITEMS_PROPS.administration.text}
+                </Button>,
+              ]
+            : []),
           <Button
             key="faq-item"
             className="text-(--text-default-grey)"
@@ -115,6 +135,9 @@ function BenefrichesHeader({
       }
       return [
         { ...QUICK_ACCESS_ITEMS_PROPS.myEvaluations, linkProps: myEvaluationsLink },
+        ...(isAdmin
+          ? [{ ...QUICK_ACCESS_ITEMS_PROPS.administration, linkProps: routes.admin().link }]
+          : []),
         ...QUICK_ACCESS_ITEMS_PROPS.menuItems,
       ];
     }
@@ -126,7 +149,7 @@ function BenefrichesHeader({
         text: "Accéder à Bénéfriches",
       },
     ];
-  }, [isUserLoggedIn, isLg, myEvaluationsLink, route]);
+  }, [isUserLoggedIn, isAdmin, isLg, myEvaluationsLink, route]);
 
   return (
     <>
