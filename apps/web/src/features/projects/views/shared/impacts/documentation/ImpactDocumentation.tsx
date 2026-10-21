@@ -62,7 +62,7 @@ const MdxSection = ({ id }: { id: keyof typeof SECTIONS }) => {
   );
 };
 
-const Sidebar = ({ displayDevelopmentScore }: { displayDevelopmentScore: boolean }) => {
+const Sidebar = () => {
   const [activeId, setActiveId] = useState<string>("");
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -107,9 +107,6 @@ const Sidebar = ({ displayDevelopmentScore }: { displayDevelopmentScore: boolean
             <div className="flex flex-col gap-0.5">
               {items.map(({ id, emoji, label: itemLabel }) => {
                 const isActive = activeId === id;
-                if (id === "score-impacts" && !displayDevelopmentScore) {
-                  return null;
-                }
                 return (
                   <a
                     key={id}
@@ -157,11 +154,7 @@ const PageTitle = ({
   );
 };
 
-export default function ImpactsComputationMethodology({
-  displayDevelopmentScore = true,
-}: {
-  displayDevelopmentScore?: boolean;
-}) {
+export default function ImpactsComputationMethodology() {
   const [isHeaderInViewport, setIsHeaderInViewPort] = useState(false);
 
   const inlineHeaderRef = (node: HTMLDivElement) => {
@@ -205,7 +198,7 @@ export default function ImpactsComputationMethodology({
         </div>
 
         <div className="flex gap-12 items-start">
-          <Sidebar displayDevelopmentScore={displayDevelopmentScore} />
+          <Sidebar />
 
           <div className="flex-1 min-w-0 space-y-14">
             <h2 className="text-3xl uppercase mb-3">Calculs</h2>
@@ -218,7 +211,7 @@ export default function ImpactsComputationMethodology({
             <MdxSection id="analyse-cout-benefice" />
             <MdxSection id="beneficiaires" />
             <MdxSection id="analyse-couts-evites" />
-            {displayDevelopmentScore && <MdxSection id="score-impacts" />}
+            <MdxSection id="score-impacts" />
           </div>
         </div>
       </div>

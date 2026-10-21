@@ -8,7 +8,6 @@ export type AppSettings = {
   askForConfirmationOnStepRevert: boolean;
   impactsOnboardingLastSeenAt: string | null;
   urbanSprawlComparisonOnboardingLastSeenAt: string | null;
-  useBetaAmenageScoreView: boolean;
 };
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
@@ -17,7 +16,6 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
   askForConfirmationOnStepRevert: true,
   impactsOnboardingLastSeenAt: null,
   urbanSprawlComparisonOnboardingLastSeenAt: null,
-  useBetaAmenageScoreView: false,
 };
 
 export const selectAppSettings = (state: RootState) => state.appSettings;
