@@ -10,33 +10,20 @@ import type { Link } from "type-route";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
-// oxlint-disable-next-line architecture-boundaries/no-cross-layer-import
-import AboutImpactsContent from "@/features/projects/views/shared/impacts/AboutImpactsContent";
 import { selectCurrentUserIsAdmin } from "@/shared/core/current-user/currentUser.selectors";
 
 import classNames from "../../clsx";
-import DsfrA11yDialog from "../../components/Dialog/DsfrA11yDialog";
 import MenuItemButton from "../../components/Menu/MenuItemButton";
+import AboutImpactsHeaderDialog from "../header/AboutImpactsHeaderDialog";
+import {
+  buildNavigationHeaderItems,
+  CURRENT_HEADER_ITEM_CLASSES,
+  FAQ_HEADER_ITEM,
+  LOGIN_HEADER_ITEM,
+  LOGOUT_HEADER_ITEM,
+} from "../header/headerItems";
 // oxlint-disable-next-line no-unassigned-import
 import "./BenefrichesHeader.css";
-
-const QUICK_ACCESS_ITEMS_PROPS = {
-  myEvaluations: {
-    iconId: "fr-icon-bar-chart-box-line",
-    text: "Mes évaluations",
-  },
-  administration: {
-    iconId: "fr-icon-settings-5-line",
-    text: "Administration",
-  },
-  menuItems: [
-    {
-      iconId: "fr-icon-logout-box-r-line",
-      text: "Se déconnecter",
-      linkProps: { href: "/api/auth/logout" },
-    },
-  ],
-} as const;
 
 const MENU_ITEMS_CLASSES = classNames(
   "z-800",
@@ -48,8 +35,6 @@ const MENU_ITEMS_CLASSES = classNames(
   "ring-1 ring-black/5",
   "py-1",
 );
-
-const DIALOG_ID = "fr-dialog-about-impacts-header";
 
 function BenefrichesHeader({
   homeLinkPropsHref = routes.home().href,
@@ -70,84 +55,62 @@ function BenefrichesHeader({
   const route = useRoute();
 
   const quickAccessItems = useMemo((): HeaderProps["quickAccessItems"] => {
-    if (isUserLoggedIn) {
-      if (isLg) {
-        return [
-          <Button
-            className={classNames(
-              "text-(--text-default-grey)",
-              route.link.href === myEvaluationsLink.href &&
-                "bg-blue-ultralight text-blue-ultradark",
-            )}
-            key="mes-evaluations-item"
-            priority="tertiary no outline"
-            {...QUICK_ACCESS_ITEMS_PROPS.myEvaluations}
-            linkProps={myEvaluationsLink}
-          >
-            {QUICK_ACCESS_ITEMS_PROPS.myEvaluations.text}
-          </Button>,
-          ...(isAdmin
-            ? [
-                <Button
-                  className="text-(--text-default-grey)"
-                  key="administration-item"
-                  priority="tertiary no outline"
-                  {...QUICK_ACCESS_ITEMS_PROPS.administration}
-                  linkProps={routes.admin().link}
-                >
-                  {QUICK_ACCESS_ITEMS_PROPS.administration.text}
-                </Button>,
-              ]
-            : []),
-          <Button
-            key="faq-item"
-            className="text-(--text-default-grey)"
-            iconId="fr-icon-questionnaire-line"
-            nativeButtonProps={{
-              "aria-controls": DIALOG_ID,
-              "data-fr-opened": false,
-            }}
-          >
-            Questions fréquentes
-          </Button>,
+    if (!isUserLoggedIn) {
+      return [LOGIN_HEADER_ITEM];
+    }
 
-          <Menu key="user-menu-item" as="div">
-            <MenuButton as={Fragment}>
-              {({ active }) => (
-                <Button
-                  priority={active ? "tertiary" : "tertiary no outline"}
-                  iconId="fr-icon-menu-fill"
-                  className="text-(--text-default-grey)"
-                >
-                  Menu
-                </Button>
-              )}
-            </MenuButton>
-            <MenuItems anchor="bottom end" transition className={MENU_ITEMS_CLASSES}>
-              {QUICK_ACCESS_ITEMS_PROPS.menuItems.map((item) => (
-                <MenuItemButton key={item.text} className="text-(--text-default-grey)" {...item}>
-                  {item.text}
-                </MenuItemButton>
-              ))}
-            </MenuItems>
-          </Menu>,
-        ];
-      }
+    const navigationItems = buildNavigationHeaderItems({
+      isAdmin,
+      myEvaluationsLink,
+      isMyEvaluationsCurrent: route.link.href === myEvaluationsLink.href,
+    });
+
+    if (!isLg) {
       return [
-        { ...QUICK_ACCESS_ITEMS_PROPS.myEvaluations, linkProps: myEvaluationsLink },
-        ...(isAdmin
-          ? [{ ...QUICK_ACCESS_ITEMS_PROPS.administration, linkProps: routes.admin().link }]
-          : []),
-        ...QUICK_ACCESS_ITEMS_PROPS.menuItems,
+        ...navigationItems.map(({ isCurrent: _isCurrent, ...item }) => item),
+        LOGOUT_HEADER_ITEM,
       ];
     }
 
+    const { text: faqText, ...faqButtonProps } = FAQ_HEADER_ITEM;
+    const { text: logoutText, ...logoutButtonProps } = LOGOUT_HEADER_ITEM;
+
     return [
-      {
-        iconId: "fr-icon-logout-box-r-line",
-        linkProps: routes.accessBenefriches().link,
-        text: "Accéder à Bénéfriches",
-      },
+      ...navigationItems.map(({ text, isCurrent, ...buttonProps }) => (
+        <Button
+          className={classNames(
+            "text-(--text-default-grey)",
+            isCurrent && CURRENT_HEADER_ITEM_CLASSES,
+          )}
+          key={text}
+          priority="tertiary no outline"
+          {...buttonProps}
+        >
+          {text}
+        </Button>
+      )),
+      <Button key={faqText} className="text-(--text-default-grey)" {...faqButtonProps}>
+        {faqText}
+      </Button>,
+
+      <Menu key="user-menu-item" as="div">
+        <MenuButton as={Fragment}>
+          {({ active }) => (
+            <Button
+              priority={active ? "tertiary" : "tertiary no outline"}
+              iconId="fr-icon-menu-fill"
+              className="text-(--text-default-grey)"
+            >
+              Menu
+            </Button>
+          )}
+        </MenuButton>
+        <MenuItems anchor="bottom end" transition className={MENU_ITEMS_CLASSES}>
+          <MenuItemButton className="text-(--text-default-grey)" {...logoutButtonProps}>
+            {logoutText}
+          </MenuItemButton>
+        </MenuItems>
+      </Menu>,
     ];
   }, [isUserLoggedIn, isAdmin, isLg, myEvaluationsLink, route]);
 
@@ -174,9 +137,7 @@ function BenefrichesHeader({
         quickAccessItems={quickAccessItems}
         {...props}
       />
-      <DsfrA11yDialog dialogId={DIALOG_ID} title="Questions fréquentes" size="large">
-        <AboutImpactsContent />
-      </DsfrA11yDialog>
+      <AboutImpactsHeaderDialog />
     </>
   );
 }
