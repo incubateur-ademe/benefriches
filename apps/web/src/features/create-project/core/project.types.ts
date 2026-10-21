@@ -12,8 +12,8 @@ import type {
   SiteStakeholderStructureType,
 } from "shared";
 
-import type { UserStructureType } from "@/features/onboarding/core/user";
 import type { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
+import type { UserStructureType } from "@/shared/core/userStructure";
 
 import type { ProjectSiteView } from "./project-form/projectSite.types";
 
