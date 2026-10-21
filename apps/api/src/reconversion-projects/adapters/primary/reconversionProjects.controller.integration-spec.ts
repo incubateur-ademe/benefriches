@@ -1017,6 +1017,7 @@ describe("ReconversionProjects controller", () => {
         assert.deepStrictEqual(result.contextData.municipalityCapitalExpenditures, {
           amount: 8_000_000,
           referenceYear: "2025",
+          accuracy: "city",
         });
         assert.strictEqual(httpGet.mock.callCount(), 0);
       });
@@ -1047,6 +1048,7 @@ describe("ReconversionProjects controller", () => {
         assert.deepStrictEqual(result.contextData.municipalityCapitalExpenditures, {
           amount: 1_234_567,
           referenceYear: "2023",
+          accuracy: "city",
         });
         assert.deepStrictEqual(
           httpGet.mock.calls.map((call) => call.arguments[0]),

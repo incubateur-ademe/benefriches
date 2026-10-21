@@ -301,7 +301,7 @@ export const photovoltaicProjectImpactMockMeta = {
     installationElectricalPowerKWc: 1000,
     installationSurfaceArea: 2300,
   },
-  municipalityCapitalExpenditures: { amount: 1000000, referenceYear: "2025" },
+  municipalityCapitalExpenditures: { amount: 1000000, referenceYear: "2025", accuracy: "city" },
 } satisfies GetReconversionProjectImpactsResultDto["contextData"];
 
 const urbanYears = 50;
@@ -492,5 +492,5 @@ export const urbanProjectImpactMockMeta = {
       RESIDENTIAL: 70000,
     },
   },
-  municipalityCapitalExpenditures: { amount: 1500000, referenceYear: "2025" },
+  municipalityCapitalExpenditures: { amount: 1500000, referenceYear: "2025", accuracy: "city" },
 } satisfies GetReconversionProjectImpactsResultDto["contextData"];

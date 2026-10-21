@@ -62,7 +62,11 @@ const buildContext = (overrides: Partial<Context> = {}): Context => ({
   siteNature: "FRICHE",
   siteSurfaceArea: 10000,
   fricheActivity: "INDUSTRY",
-  municipalityCapitalExpenditures: { amount: 1000000, referenceYear: "2025" },
+  municipalityCapitalExpenditures: {
+    amount: 1000000,
+    referenceYear: "2025",
+    accuracy: "city",
+  },
   ...overrides,
 });
 

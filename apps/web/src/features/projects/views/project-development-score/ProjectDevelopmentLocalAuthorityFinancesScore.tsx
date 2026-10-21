@@ -11,8 +11,8 @@ import ProjectDevelopmentScoreFamilyHeader from "./layout/ProjectDevelopmentScor
 import GradeTextBadge from "./layout/ProjectDevelopmentScoreGradeTextBadge";
 import { getLetterGradeBadgeText } from "./layout/gradeLabels";
 
-const icon = `<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M38.8281 36.6406V16.5625H32.8125V26.3281H28.5938L24.8438 22.5781H20.4688V36.6406H13.6789V10.7031H15V9.38984H27.5V13.2031H29.8438V9.38984H35.7133L28.6898 2.34375H15V1.01562H5.3125V2.34375H0.46875V9.38984H5.3125V10.7031H6.63359V36.6406H0V38.9844H40V36.6406H38.8281ZM27.7334 4.70516L27.7336 4.70547L30.068 7.04609H25.3924L27.7334 4.70516ZM24.4365 4.6875L22.1484 6.97555L19.8604 4.6875H24.4365ZM15 4.6875H16.5459L18.9045 7.04609H15V4.6875ZM5.3125 7.04609H2.8125V4.6875H5.3125V7.04609ZM11.3352 36.6406H8.97734V31.25H11.3352V36.6406ZM11.3352 28.9062H8.97734V23.5938H11.3352V28.9062ZM11.3352 21.25H8.97734V15.9375H11.3352V21.25ZM11.3352 13.5938H8.97734V10.7031H11.3352V13.5938ZM27.6562 34.375H25.3125V30.7031H27.6562V34.375ZM34.8438 34.375H32.5V30.7031H34.8438V34.375Z" fill="#757575" />
+const icon = `<svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M38.8281 36.6406V16.5625H32.8125V26.3281H28.5938L24.8438 22.5781H20.4688V36.6406H13.6789V10.7031H15V9.38984H27.5V13.2031H29.8438V9.38984H35.7133L28.6898 2.34375H15V1.01562H5.3125V2.34375H0.46875V9.38984H5.3125V10.7031H6.63359V36.6406H0V38.9844H40V36.6406H38.8281ZM27.7334 4.70516L27.7336 4.70547L30.068 7.04609H25.3924L27.7334 4.70516ZM24.4365 4.6875L22.1484 6.97555L19.8604 4.6875H24.4365ZM15 4.6875H16.5459L18.9045 7.04609H15V4.6875ZM5.3125 7.04609H2.8125V4.6875H5.3125V7.04609ZM11.3352 36.6406H8.97734V31.25H11.3352V36.6406ZM11.3352 28.9062H8.97734V23.5938H11.3352V28.9062ZM11.3352 21.25H8.97734V15.9375H11.3352V21.25ZM11.3352 13.5938H8.97734V10.7031H11.3352V13.5938ZM27.6562 34.375H25.3125V30.7031H27.6562V34.375ZM34.8438 34.375H32.5V30.7031H34.8438V34.375Z" fill="#757575" />
 </svg>`;
 
 type Props =
@@ -38,15 +38,6 @@ const barChartOptions: Options = withDefaultBarChartOptions({
     },
     column: {
       stacking: "normal",
-
-      dataLabels: {
-        enabled: true,
-        useHTML: true,
-        formatter: function () {
-          return `<img src='url(data:image/svg+xml;charset=UTF-8,${encodeURIComponent(icon)})'>`;
-        },
-        y: 0,
-      },
       colorByPoint: true,
     },
   },
@@ -54,6 +45,17 @@ const barChartOptions: Options = withDefaultBarChartOptions({
     enabled: false,
   },
 });
+
+const MUNICIPALITY_COL_DATA_LABELS = {
+  enabled: true,
+  useHTML: true,
+  inside: true,
+  verticalAlign: "middle",
+  align: "center",
+  formatter() {
+    return icon;
+  },
+};
 
 export default function ProjectDevelopmentLocalAuthorityFinancesScore({
   anchor,
@@ -67,6 +69,7 @@ export default function ProjectDevelopmentLocalAuthorityFinancesScore({
     projectLocalAuthorityIndirectEconomicImpactsTotal,
     municipalityCapitalExpendituresAmount,
     municipalityCapitalExpendituresReferenceYear,
+    municipalityCapitalExpendituresAccuracy,
     percentageComparison,
   } = indicators.localAuthorityFinances.metrics;
 
@@ -77,21 +80,13 @@ export default function ProjectDevelopmentLocalAuthorityFinancesScore({
       color: "#86bc2f",
     },
     {
-      name: `Dépenses d’équipement de la collectivité (${municipalityCapitalExpendituresReferenceYear})`,
+      name:
+        municipalityCapitalExpendituresAccuracy === "city"
+          ? `Dépenses d’équipement de la collectivité (${municipalityCapitalExpendituresReferenceYear})`
+          : `Dépenses moyennes d’équipement pour une collectivité de cette taille`,
       y: municipalityCapitalExpendituresAmount,
       color: "#eeeeee",
-      dataLabels: {
-        enabled: true,
-        useHTML: true,
-        inside: true,
-        verticalAlign: "middle",
-        align: "center",
-        formatter() {
-          return `<svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M38.8281 36.6406V16.5625H32.8125V26.3281H28.5938L24.8438 22.5781H20.4688V36.6406H13.6789V10.7031H15V9.38984H27.5V13.2031H29.8438V9.38984H35.7133L28.6898 2.34375H15V1.01562H5.3125V2.34375H0.46875V9.38984H5.3125V10.7031H6.63359V36.6406H0V38.9844H40V36.6406H38.8281ZM27.7334 4.70516L27.7336 4.70547L30.068 7.04609H25.3924L27.7334 4.70516ZM24.4365 4.6875L22.1484 6.97555L19.8604 4.6875H24.4365ZM15 4.6875H16.5459L18.9045 7.04609H15V4.6875ZM5.3125 7.04609H2.8125V4.6875H5.3125V7.04609ZM11.3352 36.6406H8.97734V31.25H11.3352V36.6406ZM11.3352 28.9062H8.97734V23.5938H11.3352V28.9062ZM11.3352 21.25H8.97734V15.9375H11.3352V21.25ZM11.3352 13.5938H8.97734V10.7031H11.3352V13.5938ZM27.6562 34.375H25.3125V30.7031H27.6562V34.375ZM34.8438 34.375H32.5V30.7031H34.8438V34.375Z" fill="#757575" />
-</svg>`;
-        },
-      },
+      dataLabels: MUNICIPALITY_COL_DATA_LABELS,
     },
   ];
   const colors = data.map(({ color }) => color);

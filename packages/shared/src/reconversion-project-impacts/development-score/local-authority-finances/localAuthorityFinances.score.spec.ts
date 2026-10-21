@@ -22,6 +22,7 @@ const assertPositiveTestData = (
       municipalityCapitalExpenditures: {
         amount: municipalityCapitalExpendituresAmount,
         referenceYear: "2025",
+        accuracy: "city",
       },
     });
     assert.ok(result?.metrics.percentageComparison);
@@ -50,6 +51,7 @@ const assertNegativeTestData = (
       municipalityCapitalExpenditures: {
         amount: municipalityCapitalExpendituresAmount,
         referenceYear: "2025",
+        accuracy: "city",
       },
     });
     assert.strictEqual(

@@ -93,6 +93,7 @@ export type LocalAuthorityFinancesIndicatorMetrics = {
   projectLocalAuthorityIndirectEconomicImpactsTotal: number;
   municipalityCapitalExpendituresAmount: number;
   municipalityCapitalExpendituresReferenceYear: string;
+  municipalityCapitalExpendituresAccuracy: "average" | "city";
   percentageComparison: number;
 };
 
