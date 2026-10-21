@@ -1,4 +1,4 @@
-import type { LetterGrade } from "shared";
+import { type LetterGrade } from "shared";
 
 export type ScoreBadgeLabelKind = "qualitative" | "evolution" | "impact" | "compliance";
 
@@ -35,3 +35,11 @@ export const LETTER_GRADE_BADGE_TEXT = {
 
 export const getLetterGradeBadgeText = (kind: ScoreBadgeLabelKind, letterGrade: LetterGrade) =>
   LETTER_GRADE_BADGE_TEXT[kind][letterGrade];
+
+export const MAIN_GRADE_TEXT: Record<LetterGrade, string> = {
+  A: "Projet à impact très positif",
+  B: "Projet à impact positif",
+  C: "Projet à impact insuffisant",
+  D: "Projet à impact négatif",
+  E: "Projet à impact très négatif",
+};

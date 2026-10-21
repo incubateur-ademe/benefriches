@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { typedObjectEntries, type LetterGrade } from "shared";
 import type { Link, Route } from "type-route";
 
@@ -11,19 +11,13 @@ import ProjectDevelopmentEnvironmentScore from "./ProjectDevelopmentEnvironmentS
 import ProjectDevelopmentFullTimeJobsScore from "./ProjectDevelopmentFullTimeJobsScore";
 import ProjectDevelopmentLocalAuthorityFinancesScore from "./ProjectDevelopmentLocalAuthorityFinancesScore";
 import ProjectDevelopmentLocalPeopleAndCompanyScore from "./ProjectDevelopmentLocalPeopleAndCompanyScore";
+import ProjectDevelopmentMainScoreHighlightText from "./ProjectDevelopmentMainScoreHighlightText";
 import DevelopmentScoreModalDescription from "./details-modals/DevelopmentScoreModalDescription";
 import useOpenDescriptionModalLink from "./details-modals/useOpenDescriptionModalLink";
 import ProjectDevelopmentGrade from "./layout/ProjectDevelopmentGrade";
 import GradeScale from "./layout/ProjectDevelopmentScoreGradeScale";
 import { LETTER_GRADE_COLORS } from "./layout/colors";
-
-const GRADE_TEXT: Record<LetterGrade, string> = {
-  A: "Projet à impact très positif",
-  B: "Projet à impact positif",
-  C: "Projet à impact insuffisant",
-  D: "Projet à impact négatif",
-  E: "Projet à impact très négatif",
-};
+import { MAIN_GRADE_TEXT } from "./layout/gradeLabels";
 
 const isPositive = (grade: LetterGrade) => grade === "A" || grade === "B";
 
@@ -32,11 +26,6 @@ const FAMILY_CONFIG = {
     order: 1,
     title: "Finances de la collectivité locale",
     anchor: "finances-publiques",
-    highlightLabel: (
-      <>
-        les <strong>finances publiques</strong>
-      </>
-    ),
     getDescription: (grade: LetterGrade) => {
       if (isPositive(grade)) return "Le projet a un impact économique positif pour la collectivité";
       if (grade === "C") return "Le projet a un impact économique neutre pour la collectivité";
@@ -47,11 +36,6 @@ const FAMILY_CONFIG = {
     order: 2,
     anchor: "emploi",
     title: "Emploi",
-    highlightLabel: (
-      <>
-        l'<strong>emploi</strong>
-      </>
-    ),
     getDescription: (grade: LetterGrade) => {
       if (grade === "D") return "Le projet supprime des emplois";
       if (grade === "C") return "Le projet ne crée pas ou peu d'emplois";
@@ -63,11 +47,6 @@ const FAMILY_CONFIG = {
 
     anchor: "qualite-de-vie",
     title: "Qualité de vie des riverains",
-    highlightLabel: (
-      <>
-        la <strong>qualité de vie des riverains</strong>
-      </>
-    ),
     getDescription: (grade: LetterGrade) => {
       if (isPositive(grade)) return "Le projet améliore le quotidien de nombreuses personnes";
       if (grade === "C") return "Le projet n'a pas d'impact positif sur le quotidien des riverains";
@@ -76,14 +55,8 @@ const FAMILY_CONFIG = {
   },
   environmentScore: {
     order: 4,
-
     anchor: "environnement",
     title: "Environnement",
-    highlightLabel: (
-      <>
-        l'<strong>environnement</strong>
-      </>
-    ),
     getDescription: (grade: LetterGrade) => {
       if (isPositive(grade)) return "Le projet préserve ou améliore l'environnement";
       if (grade === "C") return "Le projet n'a pas d'impact significatif sur l'environnement";
@@ -91,29 +64,6 @@ const FAMILY_CONFIG = {
     },
   },
 } as const;
-
-function buildHighlightSentence(
-  developmentScore: Props["developmentScore"],
-): React.ReactNode | null {
-  const labels = typedObjectEntries(developmentScore.details)
-    .filter(([, item]) => item.score.gradePoints > 50)
-    .map(([key]) => FAMILY_CONFIG[key].highlightLabel);
-
-  if (labels.length === 0) return null;
-
-  return (
-    <>
-      Notamment sur{" "}
-      {labels.map((label, i) => (
-        <Fragment key={i}>
-          {i > 0 && (i === labels.length - 1 ? " et " : ", ")}
-          {label}
-        </Fragment>
-      ))}
-      .
-    </>
-  );
-}
 
 type Props = DevelopmentScoreDataView & {
   projectId: string;
@@ -177,7 +127,6 @@ export default function ProjectDevelopmentScore({
   } = details;
 
   const { bgColor, textColor } = LETTER_GRADE_COLORS[score.letterGrade];
-  const highlightSentence = buildHighlightSentence(developmentScore);
 
   const getLink = useOpenDescriptionModalLink();
 
@@ -224,8 +173,11 @@ export default function ProjectDevelopmentScore({
           >
             {score.letterGrade}
           </span>
-          <h4 className="mb-0">{GRADE_TEXT[score.letterGrade]}</h4>
-          {highlightSentence && <p className="mt-1 opacity-90">{highlightSentence}</p>}
+          <h4 className="mb-0">{MAIN_GRADE_TEXT[score.letterGrade]}</h4>
+          <ProjectDevelopmentMainScoreHighlightText
+            className="mt-1 opacity-90"
+            developmentScore={developmentScore}
+          />
           <a
             {...getLink("global")}
             className="text-sm invisible group-hover:visible group-focus:visible"
