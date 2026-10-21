@@ -11,11 +11,11 @@ import {
   getUserStructureActivityLabel,
   getUserStructureTypeLabel,
 } from "@/shared/core/label-mapping/userStructureLabelMapping";
+import type { UserStructureActivity } from "@/shared/core/userStructure";
 import Autocomplete from "@/shared/views/components/Autocomplete/Autocomplete";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 
 import type { AdministrativeDivision, AdministrativeDivisionService } from ".";
-import type { UserStructureActivity } from "../../../../core/user";
 import type { FormValues } from "./CreateUserForm";
 
 type StructureCategory = Exclude<UserStructureActivity, LocalAuthorityType> | "local_authority";
