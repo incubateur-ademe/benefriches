@@ -93,17 +93,16 @@ export default ({
 
   return (
     <>
-      {letterGrade && (
-        <span
-          className={classNames(
-            "mr-4 text-sm w-6 h-6 p-0.5 inline-block text-center rounded-full shrink-0 font-bold",
-            LETTER_GRADE_COLORS[letterGrade].bgColor,
-            LETTER_GRADE_COLORS[letterGrade].textColor,
-          )}
-        >
-          {letterGradeText ?? letterGrade}
-        </span>
-      )}
+      <span
+        className={classNames(
+          "mr-4 text-sm w-6 h-6 p-0.5 inline-block text-center rounded-full shrink-0 font-bold",
+          letterGrade
+            ? [LETTER_GRADE_COLORS[letterGrade].bgColor, LETTER_GRADE_COLORS[letterGrade].textColor]
+            : ["bg-grey-disabled"],
+        )}
+      >
+        {letterGradeText ?? letterGrade ?? "-"}
+      </span>
       <a {...getUpdateDetailsLink(serializeDetails(detailsNameMatch))}>{children}</a>
     </>
   );
