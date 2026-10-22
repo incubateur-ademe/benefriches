@@ -1,5 +1,6 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
+import { useState } from "react";
 import type { Route } from "type-route";
 
 import { routes, useRoute } from "@/app/router";
@@ -7,72 +8,89 @@ import type { ImpactsPageViewData } from "@/features/projects/application/projec
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import type {
-  ProjectImpactsState,
-  ViewMode,
-} from "../../application/project-impacts/projectImpacts.reducer";
+import type { ProjectImpactsState } from "../../application/project-impacts/projectImpacts.reducer";
 import ImpactModalDescriptionProvider from "../impact-description-modals/ImpactModalDescription";
 import ProjectImpactFooter from "../project-page/footer/ProjectImpactFooter";
 import ProjectPageHeader from "../project-page/header";
-import ProjectImpactsActionBar from "../shared/actions/ProjectImpactsActionBar";
+import ImpactEvaluationPeriodSelect from "../shared/actions/ImpactEvaluationPeriodSelect";
+import ProjectImpactsStickyActionBar from "../shared/actions/StickyActionBar";
 import AboutImpactsModalButton from "./about-impacts-modal/AboutImpactsModalButton";
 import ExportImpactsModal from "./export-impacts/ExportModal";
 import { exportImpactsModal } from "./export-impacts/createExportModal";
 import ImpactsAccuracyDisclaimer from "./impacts-accuracy-disclaimer/ImpactsAccuracyDisclaimer";
 import ImpactsListViewContainer from "./list-view";
-import ImpactsSummaryViewContainer from "./summary-view";
 
 type Props = {
-  currentViewMode: ViewMode;
   projectId: string;
   dataLoadingState: ProjectImpactsState["dataLoadingState"];
   contextData: ImpactsPageViewData["contextData"];
   modalsData: ImpactsPageViewData["modalsData"];
   onEvaluationPeriodChange: (n: number) => void;
   evaluationPeriod: number | undefined;
-  onCurrentViewModeChange: (n: ViewMode) => void;
   onExportModalOpened: () => void;
   displayImpactsAccuracyDisclaimer: boolean;
 };
 
 const ProjectImpactsView = ({
-  currentViewMode,
   displayImpactsAccuracyDisclaimer,
   projectId,
   contextData,
   dataLoadingState,
   onEvaluationPeriodChange,
   evaluationPeriod,
-  onCurrentViewModeChange,
   onExportModalOpened,
   modalsData,
 }: Props) => {
   const route = useRoute() as Route<typeof routes.projectImpacts>;
+  const [isActionBarInViewport, setIsActionBarInViewPort] = useState(false);
+
+  const inlineActionBarRef = (node: HTMLDivElement) => {
+    const observer = new IntersectionObserver(([entry]) => {
+      const entryIntersecting = entry?.isIntersecting ?? false;
+      setIsActionBarInViewPort(entryIntersecting);
+    });
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  };
+
   return (
     <>
       <div className="flex justify-between items-center flex-wrap mb-10 gap-2">
         <h3 className="text-2xl mb-0">Évaluation des impacts</h3>
-        <Button
-          priority="primary"
-          iconId="fr-icon-file-download-line"
-          onClick={() => {
-            onExportModalOpened();
-            exportImpactsModal.open();
-          }}
-        >
-          Télécharger les impacts
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            priority="primary"
+            iconId="fr-icon-file-download-line"
+            onClick={() => {
+              onExportModalOpened();
+              exportImpactsModal.open();
+            }}
+          >
+            Télécharger les impacts
+          </Button>
+          {!isActionBarInViewport && (
+            <ProjectImpactsStickyActionBar
+              header={<ProjectPageHeader projectId={projectId} />}
+              evaluationPeriod={evaluationPeriod}
+              onEvaluationPeriodChange={onEvaluationPeriodChange}
+            />
+          )}
+          {evaluationPeriod && (
+            <div ref={inlineActionBarRef}>
+              {" "}
+              <ImpactEvaluationPeriodSelect
+                onChange={onEvaluationPeriodChange}
+                value={evaluationPeriod}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       {displayImpactsAccuracyDisclaimer && <ImpactsAccuracyDisclaimer />}
-
-      <ProjectImpactsActionBar
-        selectedViewMode={currentViewMode}
-        evaluationPeriod={evaluationPeriod}
-        onViewModeClick={onCurrentViewModeChange}
-        onEvaluationPeriodChange={onEvaluationPeriodChange}
-        header={<ProjectPageHeader projectId={projectId} />}
-      />
 
       {dataLoadingState.impacts === "error" && (
         <Alert
@@ -89,18 +107,10 @@ const ProjectImpactsView = ({
           getRouteFn={routes[route.name]}
           {...modalsData!}
         >
-          {currentViewMode === "summary" && (
-            <>
-              <HtmlTitle>{`Synthèse - ${contextData?.projectName} - Impacts`}</HtmlTitle>
-              <ImpactsSummaryViewContainer />
-            </>
-          )}
-          {currentViewMode === "list" && (
-            <>
-              <HtmlTitle>{`Liste - ${contextData?.projectName} - Impacts`}</HtmlTitle>
-              <ImpactsListViewContainer />
-            </>
-          )}
+          <>
+            <HtmlTitle>{`Liste - ${contextData?.projectName} - Impacts`}</HtmlTitle>
+            <ImpactsListViewContainer />
+          </>
           <ProjectImpactFooter
             siteId={contextData?.relatedSiteId ?? ""}
             projectId={projectId}

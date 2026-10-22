@@ -6,11 +6,7 @@ import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import { selectImpactsPageViewData } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { loadFeatureAlerts } from "@/features/user-feature-alerts/core/loadFeatureAlerts.action";
 
-import {
-  evaluationPeriodUpdated,
-  viewModeUpdated,
-} from "../../application/project-impacts/actions";
-import type { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
+import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
 import ProjectImpactsView from "./ProjectImpactsView";
 
 type Props = {
@@ -23,7 +19,6 @@ function ProjectPageContainer({ projectId }: Props) {
   const {
     dataLoadingState,
     evaluationPeriod,
-    currentViewMode,
     displayImpactsAccuracyDisclaimer,
     contextData,
     modalsData,
@@ -40,12 +35,10 @@ function ProjectPageContainer({ projectId }: Props) {
       modalsData={modalsData}
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}
-      currentViewMode={currentViewMode}
       displayImpactsAccuracyDisclaimer={displayImpactsAccuracyDisclaimer}
       onEvaluationPeriodChange={(evaluationPeriodInYears: number) =>
         dispatch(evaluationPeriodUpdated(evaluationPeriodInYears))
       }
-      onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(viewModeUpdated(viewMode))}
       onExportModalOpened={() => void dispatch(eventTracked(impactsExportModalOpened()))}
     />
   );
