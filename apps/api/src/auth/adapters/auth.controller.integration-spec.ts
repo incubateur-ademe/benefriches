@@ -344,6 +344,35 @@ describe("Auth integration tests", () => {
   });
 
   describe("POST /auth/send-auth-link", () => {
+    for (const { invalidCase, requestBody, invalidField } of [
+      {
+        invalidCase: "email is missing",
+        requestBody: { postLoginRedirectTo: "/mes-projets" },
+        invalidField: "email",
+      },
+      { invalidCase: "email is a number", requestBody: { email: 42 }, invalidField: "email" },
+      { invalidCase: "email is null", requestBody: { email: null }, invalidField: "email" },
+      {
+        invalidCase: "postLoginRedirectTo is a number",
+        requestBody: { email: "magic.john@example.fr", postLoginRedirectTo: 42 },
+        invalidField: "postLoginRedirectTo",
+      },
+    ]) {
+      it(`responds with 400 and creates no auth token when ${invalidCase}`, async () => {
+        const response = await request(app.getHttpServer())
+          .post("/api/auth/send-auth-link")
+          .send(requestBody);
+
+        assert.strictEqual(response.status, 400);
+        assert.deepStrictEqual(
+          (response.body as BadRequestResponseBody).errors.map(({ path }) => path),
+          [[invalidField]],
+        );
+        const authTokens = await sqlConnection("token_authentication_attempts").select("*");
+        assert.strictEqual(authTokens.length, 0);
+      });
+    }
+
     it("sends a time-limited auth link to given user email when user exists", async () => {
       const userEmail = "magic.john@example.fr";
 
