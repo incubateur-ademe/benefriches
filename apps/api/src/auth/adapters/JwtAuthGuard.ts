@@ -12,7 +12,7 @@ import {
   ACCESS_TOKEN_SERVICE_INJECTION_TOKEN,
   type AccessTokenService,
 } from "./access-token/AccessTokenService";
-import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
+import { readAccessTokenCookie } from "./access-token/accessTokenCookie";
 
 export type AccessTokenPayload = {
   sub: string;
@@ -44,9 +44,7 @@ export class JwtAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest();
-    const token = (request.cookies as { [ACCESS_TOKEN_COOKIE_KEY]?: string })[
-      ACCESS_TOKEN_COOKIE_KEY
-    ];
+    const token = readAccessTokenCookie(request);
 
     if (!token) throw new UnauthorizedException();
 
