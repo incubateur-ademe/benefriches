@@ -382,6 +382,7 @@ describe("GetProjectImpactAnalysisUseCase", () => {
         municipalityCapitalExpenditures: {
           amount: 8000000,
           referenceYear: "2025",
+          accuracy: "city",
         },
       });
     });
@@ -613,6 +614,39 @@ describe("GetProjectImpactAnalysisUseCase", () => {
       assert.deepEqual(developmentScore.score.letterGrade, "C");
       assert.deepEqual(developmentScore.score.letterGradeWithModifiers, "C");
       assert.deepEqual(developmentScore.score.gradePoints, 50.67);
+    });
+
+    it("compute project developmentScore with MunicipalityCapitalExpenditures fallback", async () => {
+      const projectQuery = new InMemoryReconversionProjectImpactsQuery();
+      projectQuery._setData(fricheProjectData);
+      const siteQuery = new InMemorySiteImpactsQuery();
+      siteQuery._setData(fricheSite);
+
+      const municipalityExpendituresService = new FakeMunicipalityCapitalExpendituresProvider();
+
+      municipalityExpendituresService.simulateServiceFailure();
+
+      const usecase = new GetProjectImpactAnalysisUseCase(
+        projectQuery,
+        siteQuery,
+        new FakeGetSoilsCarbonStorageService(),
+        new InMemoryCityImpactsQuery(),
+        municipalityExpendituresService,
+        dateProvider,
+      );
+      const result = await usecase.execute({
+        reconversionProjectId: fricheProjectData.id,
+      });
+
+      const { developmentScore, contextData } = (
+        result as SuccessResult<GetReconversionProjectImpactsResultDto>
+      ).getData();
+
+      assert.ok(developmentScore);
+      assert.ok(developmentScore.details);
+      assert.ok(developmentScore.score.letterGrade);
+      assert.deepEqual(contextData.municipalityCapitalExpenditures.accuracy, "average");
+      assert.ok(contextData.municipalityCapitalExpenditures.amount);
     });
   });
 });

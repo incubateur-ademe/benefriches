@@ -11,13 +11,15 @@ const SOCIAL_METRICS_MODALS = {
   social: {
     title: "Impacts sociaux",
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/social_section.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/social_section.mdx"),
     ),
   },
   "social.jobs": {
     title: "Impacts sur l'emploi",
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/social_jobs_section.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/social_jobs_section.mdx"),
     ),
   },
   "social.localPeopleOrCompany": undefined,
@@ -31,7 +33,8 @@ const SOCIAL_METRICS_MODALS = {
     title: "🚘 Personnes préservées des accidents de la route",
     subtitle: "Grâce aux déplacements évités",
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/avoided-accidents/avoided_traffic_accidents.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/avoided-accidents/avoided_traffic_accidents.mdx"),
     ),
   },
   "avoidedTrafficAccidents.avoidedTrafficAccidentsDeaths": {
@@ -39,7 +42,7 @@ const SOCIAL_METRICS_MODALS = {
     subtitle: "Grâce aux déplacements évités",
     ContentComponent: lazy<ContentComponentType>(
       () =>
-        import("../mdx-component/avoided-accidents/avoided_traffic_accidents__avoided_accidents_deaths.mdx"),
+        import("@/features/projects/views/impact-description-modals/mdx-component/avoided-accidents/avoided_traffic_accidents__avoided_accidents_deaths.mdx"),
     ),
   },
   "avoidedTrafficAccidents.avoidedTrafficAccidentsMinorInjuries": {
@@ -47,7 +50,7 @@ const SOCIAL_METRICS_MODALS = {
     subtitle: "Grâce aux déplacements évités",
     ContentComponent: lazy<ContentComponentType>(
       () =>
-        import("../mdx-component/avoided-accidents/avoided_traffic_accidents__avoided_accidents_minor_injuries.mdx"),
+        import("@/features/projects/views/impact-description-modals/mdx-component/avoided-accidents/avoided_traffic_accidents__avoided_accidents_minor_injuries.mdx"),
     ),
   },
   "avoidedTrafficAccidents.avoidedTrafficAccidentsSevereInjuries": {
@@ -55,7 +58,7 @@ const SOCIAL_METRICS_MODALS = {
     subtitle: "Grâce aux déplacements évités",
     ContentComponent: lazy<ContentComponentType>(
       () =>
-        import("../mdx-component/avoided-accidents/avoided_traffic_accidents__avoided_accidents_severe_injuries.mdx"),
+        import("@/features/projects/views/impact-description-modals/mdx-component/avoided-accidents/avoided_traffic_accidents__avoided_accidents_severe_injuries.mdx"),
     ),
   },
   avoidedVehiculeKilometers: {
@@ -63,7 +66,8 @@ const SOCIAL_METRICS_MODALS = {
     description: "pour la population locale",
     unit: "kms",
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/avoided_vehicule_kilometers.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/avoided_vehicule_kilometers.mdx"),
     ),
   },
   fullTimeJobs: {
@@ -71,7 +75,8 @@ const SOCIAL_METRICS_MODALS = {
     type: "etp",
     formatFn: formatETPImpact,
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/full-time-jobs/full_time_jobs.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/full-time-jobs/full_time_jobs.mdx"),
     ),
   },
   "fullTimeJobs.conversionFullTimeJobs": {
@@ -79,7 +84,8 @@ const SOCIAL_METRICS_MODALS = {
     type: "etp",
     formatFn: formatETPImpact,
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/full-time-jobs/full_time_jobs__reconversion.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/full-time-jobs/full_time_jobs__reconversion.mdx"),
     ),
   },
   "fullTimeJobs.photovoltaicOperationsFullTimeJobs": {
@@ -87,19 +93,22 @@ const SOCIAL_METRICS_MODALS = {
     type: "etp",
     formatFn: formatETPImpact,
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/full-time-jobs/full_time_jobs__operations_pv.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/full-time-jobs/full_time_jobs__operations_pv.mdx"),
     ),
   },
   "fullTimeJobs.urbanOperationsFullTimeJobs": {
     title: "🧑‍🔧 Exploitation du site",
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/full-time-jobs/full_time_jobs__operations_urban.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/full-time-jobs/full_time_jobs__operations_urban.mdx"),
     ),
   },
   householdsPoweredByRenewableEnergy: {
     title: "🏠 Foyers alimentés par les EnR",
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/households_powered_by_enr.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/households_powered_by_enr.mdx"),
     ),
   },
   timeTravelSavedInHours: {
@@ -107,7 +116,8 @@ const SOCIAL_METRICS_MODALS = {
     unit: "h",
     description: "pour la population locale",
     ContentComponent: lazy<ContentComponentType>(
-      () => import("../mdx-component/travel_time_saved.mdx"),
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/travel_time_saved.mdx"),
     ),
   },
 } as const satisfies Record<SocialImpactMetricKeyName | SocialSectionName, ModalImpactConfig>;

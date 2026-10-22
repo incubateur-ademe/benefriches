@@ -5,7 +5,7 @@ import {
   type TenantStructureType,
 } from "shared";
 
-import type { UserStructureActivity, UserStructureType } from "@/features/onboarding/core/user";
+import type { UserStructureActivity, UserStructureType } from "@/shared/core/userStructure";
 
 import type { ProjectStakeholder, ProjectStakeholderStructure } from "../project.types";
 import type { SiteRelatedLocalAuthorities } from "./projectSite.types";

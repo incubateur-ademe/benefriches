@@ -1,31 +1,19 @@
 import { z } from "zod";
 
-const structureActivitySchema = z.enum([
-  "urban_planner",
-  "real_estate_developer",
-  "local_authority_landlord",
-  "photovoltaic_plants_developer",
-  "industrialist",
-  "other",
-  "municipality",
-  "epci",
-  "department",
-  "region",
-]);
-
-export type UserStructureActivity = z.infer<typeof structureActivitySchema>;
-
-const structureTypeSchema = z.enum(["local_authority", "company"]);
-
-export type UserStructureType = z.infer<typeof structureTypeSchema>;
+import {
+  type UserStructureActivity,
+  userStructureActivitySchema,
+  type UserStructureType,
+  userStructureTypeSchema,
+} from "@/shared/core/userStructure";
 
 export const userSchema = z.object({
   id: z.uuid(),
   email: z.email(),
   firstName: z.string(),
   lastName: z.string(),
-  structureType: structureTypeSchema,
-  structureActivity: structureActivitySchema,
+  structureType: userStructureTypeSchema,
+  structureActivity: userStructureActivitySchema,
   structureName: z.string().optional(),
   personalDataStorageConsented: z.boolean(),
   personalDataAnalyticsUseConsented: z.boolean(),
@@ -49,4 +37,5 @@ export type AuthenticatedUser = {
   structureType: UserStructureType;
   structureActivity: UserStructureActivity;
   structureName?: string;
+  isAdmin: boolean;
 };

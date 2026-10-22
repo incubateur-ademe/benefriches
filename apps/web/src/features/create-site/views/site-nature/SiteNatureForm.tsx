@@ -3,6 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import type { SiteNature } from "shared";
 
 import { BENEFRICHES_ENV } from "@/app/envVars";
+import { getSiteNatureLabel } from "@/shared/core/label-mapping/siteNatureLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
@@ -29,21 +30,21 @@ type Option = {
 const options: Option[] = [
   {
     value: "AGRICULTURAL_OPERATION",
-    title: "Exploitation agricole",
+    title: getSiteNatureLabel("AGRICULTURAL_OPERATION"),
     description: "Culture, élevage...",
     imgSrc: "/img/pictograms/site-nature/agricultural-operation.svg",
     disabled: false,
   },
   {
     value: "NATURAL_AREA",
-    title: "Espace naturel",
+    title: getSiteNatureLabel("NATURAL_AREA"),
     description: "Forêt, prairie, zone humide...",
     imgSrc: "/img/pictograms/site-nature/natural-area.svg",
     disabled: false,
   },
   {
     value: "URBAN_ZONE",
-    title: "Zone urbaine",
+    title: getSiteNatureLabel("URBAN_ZONE"),
     description: "Zone d'activités économiques, d'habitation, espace public ou mixte",
     imgSrc: "/img/pictograms/site-nature/urban-zone.svg",
     disabled: !BENEFRICHES_ENV.featureFlags.urbanZoneEnabled,

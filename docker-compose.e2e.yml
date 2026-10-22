@@ -1,5 +1,6 @@
-name: benefriches-e2e
-
+# No project name or named volume: each stack is named by COMPOSE_PROJECT_NAME (default in
+# .env.e2e, per port slot in the .e2e-stack file written by `node adws/env.ts up <slot>`) and
+# keeps its database in an anonymous volume that `down -v` removes.
 services:
   postgres:
     image: postgres:17-alpine
@@ -10,8 +11,6 @@ services:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_DB_NAME}
-    volumes:
-      - benefriches_pg_e2e_data:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER}']
       interval: 5s
@@ -110,6 +109,3 @@ services:
         condition: service_healthy
       mailcatcher:
         condition: service_started
-
-volumes:
-  benefriches_pg_e2e_data:

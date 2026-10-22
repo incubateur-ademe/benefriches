@@ -64,6 +64,7 @@ export type LivingEnvironmentContext = {
 /* Indicator metrics */
 
 export type FullTimeJobsIndicatorMetrics = {
+  siteSurfaceArea: number;
   fullTimeJobsDifferenceByHectare: number;
   siteStatuQuoFullTimeJobs: number;
   difference: number;
@@ -92,6 +93,7 @@ export type LocalAuthorityFinancesIndicatorMetrics = {
   projectLocalAuthorityIndirectEconomicImpactsTotal: number;
   municipalityCapitalExpendituresAmount: number;
   municipalityCapitalExpendituresReferenceYear: string;
+  municipalityCapitalExpendituresAccuracy: "average" | "city";
   percentageComparison: number;
 };
 

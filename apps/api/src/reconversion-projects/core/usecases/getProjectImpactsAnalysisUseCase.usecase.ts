@@ -65,6 +65,21 @@ const extractProjectDevelopmentPlan = (developmentPlan: DevelopmentPlanFeatures)
   };
 };
 
+// Calculés grâce à https://data.ofgl.fr/explore/dataset/ofgl-base-communes-consolidee/analyze/?&refine.agregat=D%C3%A9penses+d%27%C3%A9quipement&refine.exer=2025
+const FALLBACK_AVERAGE_CAPITAL_EXPENDITURES_AMOUNT_PER_POPULATION = [
+  { minPopulation: 0, averageCapitalExpenditures2025: 50_000 },
+  { minPopulation: 100, averageCapitalExpenditures2025: 100_000 },
+  { minPopulation: 200, averageCapitalExpenditures2025: 150_000 },
+  { minPopulation: 500, averageCapitalExpenditures2025: 400_000 },
+  { minPopulation: 2000, averageCapitalExpenditures2025: 1_100_000 },
+  { minPopulation: 3500, averageCapitalExpenditures2025: 2_000_000 },
+  { minPopulation: 5000, averageCapitalExpenditures2025: 3_200_000 },
+  { minPopulation: 10000, averageCapitalExpenditures2025: 6_000_000 },
+  { minPopulation: 20000, averageCapitalExpenditures2025: 12_800_000 },
+  { minPopulation: 50000, averageCapitalExpenditures2025: 31_200_000 },
+  { minPopulation: 100000, averageCapitalExpenditures2025: 94_000_000 },
+];
+
 export class GetProjectImpactAnalysisUseCase implements UseCase<
   Request,
   GetProjectImpactAnalysisResult
@@ -134,10 +149,27 @@ export class GetProjectImpactAnalysisUseCase implements UseCase<
       city: cityData,
     });
 
-    const municipalityCapitalExpenditures =
-      await this.municipalityCapitalExpendituresQuery.getLastReferenceYear(
-        relatedSite.address.cityCode,
-      );
+    const municipalityCapitalExpenditures: GetReconversionProjectImpactsResultDto["contextData"]["municipalityCapitalExpenditures"] =
+      await (async () => {
+        try {
+          const queryResult = await this.municipalityCapitalExpendituresQuery.getLastReferenceYear(
+            relatedSite.address.cityCode,
+          );
+          return {
+            ...queryResult,
+            accuracy: "city",
+          };
+        } catch {
+          return {
+            amount:
+              FALLBACK_AVERAGE_CAPITAL_EXPENDITURES_AMOUNT_PER_POPULATION.findLast(
+                (s) => cityData.stats.population >= s.minPopulation,
+              )?.averageCapitalExpenditures2025 ?? 1_100_000,
+            referenceYear: "2025",
+            accuracy: "average",
+          };
+        }
+      })();
 
     const contextData = {
       projectId: reconversionProject.id,

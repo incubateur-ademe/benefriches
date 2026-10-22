@@ -1,4 +1,5 @@
 import { BENEFRICHES_ENV } from "@/app/envVars";
+import { HttpAdminService } from "@/features/admin/infrastructure/admin-service/HttpAdminService";
 import { MatomoAnalytics } from "@/features/analytics/infrastructure/MatomoAnalytics";
 import { NoopAnalytics } from "@/features/analytics/infrastructure/NoopAnalytics";
 import { LocalStorageAppSettings } from "@/features/app-settings/infrastructure/LocalStorageAppSettings";
@@ -30,6 +31,7 @@ import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-stor
 import type { AppDependencies } from "./store";
 
 export const appDependencies: AppDependencies = {
+  adminService: new HttpAdminService(),
   appSettingsService: new LocalStorageAppSettings(),
   authService: new HttpAuthService(),
   soilsCarbonStorageService: new SoilsCarbonStorageApi(),

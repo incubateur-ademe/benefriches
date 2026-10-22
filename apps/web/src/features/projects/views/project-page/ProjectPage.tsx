@@ -1,10 +1,7 @@
 import type { Route } from "type-route";
 
-import { useAppSelector } from "@/app/hooks/store.hooks";
 import { type routes, useRoute } from "@/app/router";
-import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import classNames from "@/shared/views/clsx";
-import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 
 import ProjectAvoidedCostsAnalysis from "../project-avoided-costs-analysis";
 import ProjectBreakEvenLevelTabContainer from "../project-break-even-level";
@@ -29,7 +26,6 @@ export type ProjectRoute =
 
 function ProjectPage({ projectId }: Props) {
   const route = useRoute() as ProjectRoute;
-  const { useBetaAmenageScoreView } = useAppSelector(selectAppSettings);
 
   return (
     <div id="project-impacts-page" className={classNames("h-full")}>
@@ -37,7 +33,7 @@ function ProjectPage({ projectId }: Props) {
         <div className="py-8">
           <ProjectPageHeader projectId={projectId} />
         </div>
-        <ProjectPageTabs useBetaAmenageScoreView={useBetaAmenageScoreView} />
+        <ProjectPageTabs />
       </div>
 
       <div className="fr-container pb-14">
@@ -52,11 +48,7 @@ function ProjectPage({ projectId }: Props) {
             case "projectImpactsSummary":
               return <ProjectSummaryTab projectId={projectId} />;
             case "projectImpactsDevelopmentScore":
-              return useBetaAmenageScoreView ? (
-                <ProjectDevelopmentScore projectId={projectId} />
-              ) : (
-                <NotFoundScreen />
-              );
+              return <ProjectDevelopmentScore projectId={projectId} />;
             case "projectAvoidedCostsAnalysis":
               return <ProjectAvoidedCostsAnalysis projectId={projectId} />;
           }

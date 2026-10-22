@@ -31,3 +31,10 @@ coverage/
 .claude/worktrees/
 .agents/tasks
 .agents/runs
+
+# e2e stack of a port slot (adws/env.ts)
+.e2e-stack
+.e2e-stack.log
+
+# Playwright MCP output (screenshots, console logs) of the ADW QA step
+.playwright-mcp/

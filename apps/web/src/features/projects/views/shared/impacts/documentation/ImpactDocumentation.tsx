@@ -13,9 +13,9 @@ import Agregation from "./content/03-agregation.mdx";
 import AnalyseCoutBenefice from "./content/04-analyse-cout-benefice.mdx";
 import Beneficiaires from "./content/05-beneficiaires.mdx";
 import AnalyseCoutsEvites from "./content/06-analyse-couts-evites.mdx";
-import ScoreImpact from "./content/07-score-d-impact.mdx";
+import ScoreImpact from "./content/07-score-impact";
 import Methodologie from "./content/08-methodologie.mdx";
-import { mdxComponents } from "./mdxComponents";
+import { documentationMdxComponents } from "./mdxComponents";
 
 // L'ordre des sections : ids utilisés par le sommaire ET par les liens `#id` des .mdx
 const SECTIONS: Record<string, ComponentType<MDXProps>> = {
@@ -36,6 +36,7 @@ const TOC_GROUPS = [
       { id: "statuquo", emoji: "⏸️", label: "Impacts statu quo" },
       { id: "projet", emoji: "🌐", label: "Impacts du projet" },
       { id: "agregation", emoji: "🔀", label: "Agrégation différentielle" },
+      { id: "methodologie", emoji: "📐", label: "Note méthodologique" },
     ],
   },
   {
@@ -47,10 +48,6 @@ const TOC_GROUPS = [
       { id: "score-impacts", emoji: "🏆", label: "Score d'impacts" },
     ],
   },
-  {
-    label: "Référence",
-    items: [{ id: "methodologie", emoji: "📐", label: "Note méthodologique" }],
-  },
 ];
 
 const ALL_SECTION_IDS = TOC_GROUPS.flatMap(({ items }) => items.map(({ id }) => id));
@@ -60,12 +57,12 @@ const MdxSection = ({ id }: { id: keyof typeof SECTIONS }) => {
   if (!Content) return null;
   return (
     <section id={id} className="scroll-mt-20 border p-6 rounded-lg">
-      <Content components={mdxComponents} />
+      <Content components={documentationMdxComponents} />
     </section>
   );
 };
 
-const Sidebar = ({ displayDevelopmentScore }: { displayDevelopmentScore: boolean }) => {
+const Sidebar = () => {
   const [activeId, setActiveId] = useState<string>("");
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -110,9 +107,6 @@ const Sidebar = ({ displayDevelopmentScore }: { displayDevelopmentScore: boolean
             <div className="flex flex-col gap-0.5">
               {items.map(({ id, emoji, label: itemLabel }) => {
                 const isActive = activeId === id;
-                if (id === "amenagescore" && !displayDevelopmentScore) {
-                  return null;
-                }
                 return (
                   <a
                     key={id}
@@ -160,11 +154,7 @@ const PageTitle = ({
   );
 };
 
-export default function ImpactsComputationMethodology({
-  displayDevelopmentScore = true,
-}: {
-  displayDevelopmentScore?: boolean;
-}) {
+export default function ImpactsComputationMethodology() {
   const [isHeaderInViewport, setIsHeaderInViewPort] = useState(false);
 
   const inlineHeaderRef = (node: HTMLDivElement) => {
@@ -203,27 +193,25 @@ export default function ImpactsComputationMethodology({
         <div className="my-10">
           <PageTitle ref={inlineHeaderRef} />
           <div className="mt-3">
-            <Intro components={mdxComponents} />
+            <Intro components={documentationMdxComponents} />
           </div>
         </div>
 
         <div className="flex gap-12 items-start">
-          <Sidebar displayDevelopmentScore={displayDevelopmentScore} />
+          <Sidebar />
 
           <div className="flex-1 min-w-0 space-y-14">
             <h2 className="text-3xl uppercase mb-3">Calculs</h2>
             <MdxSection id="statuquo" />
             <MdxSection id="projet" />
             <MdxSection id="agregation" />
+            <MdxSection id="methodologie" />
 
             <h2 className="uppercase mb-8">Présentation des résultats</h2>
             <MdxSection id="analyse-cout-benefice" />
             <MdxSection id="beneficiaires" />
             <MdxSection id="analyse-couts-evites" />
-
-            {displayDevelopmentScore && <MdxSection id="score-impacts" />}
-
-            <MdxSection id="methodologie" />
+            <MdxSection id="score-impacts" />
           </div>
         </div>
       </div>

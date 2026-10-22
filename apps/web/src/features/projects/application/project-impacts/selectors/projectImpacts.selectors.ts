@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type {
-  GetReconversionProjectImpactsResultDto,
   KeyImpactIndicatorData,
   ReconversionStakeholders,
+  GetReconversionProjectImpactsResultDto,
 } from "shared";
 import { cropImpactsByEvaluationPeriod, getKeyImpactIndicatorsList } from "shared";
 
@@ -20,16 +20,13 @@ import {
   groupSocialMetricsByListViewCategory,
   type SocialImpactMetricsByListViewCategory,
 } from "@/features/projects/core/projectImpactsSocial";
-import type { SocioEconomicImpactsByBearerListView } from "@/features/projects/core/projectImpactsSocioEconomic";
-import { getSocioEconomicProjectImpactsGroupedByCategory } from "@/features/projects/core/projectImpactsSocioEconomic";
+import {
+  getSocioEconomicProjectImpactsGroupedByCategory,
+  type SocioEconomicImpactsByBearerListView,
+} from "@/features/projects/core/projectImpactsSocioEconomic";
 import type { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 
 import { type ProjectImpactsState, type ViewMode } from "../projectImpacts.reducer";
-
-export type ModalDataProps = {
-  contextData: GetReconversionProjectImpactsResultDto["contextData"];
-  impactsData: GetReconversionProjectImpactsResultDto["impacts"];
-};
 
 // List View
 type ImpactsListViewData = {
@@ -142,6 +139,45 @@ const selectDisplayImpactsAccuracyDisclaimer = createSelector(
   },
 );
 
+type ImpactsDescriptionModalsDataView = {
+  contextData: GetReconversionProjectImpactsResultDto["contextData"];
+  impactsData: GetReconversionProjectImpactsResultDto["impacts"];
+  projectEconomicBalance: EconomicBalanceByCategory;
+  economicImpactsByBearerAndCategory: SocioEconomicImpactsByBearerListView;
+  environmentalMetricsByCategory: EnvironmentalImpactMetricsByListViewCategory;
+  socialMetricsByCategory: SocialImpactMetricsByListViewCategory;
+};
+
+export const selectImpactsDescriptionModalsDataView = createSelector(
+  [
+    selectImpactsContextData,
+    selectImpactsCroppedByEvaluationPeriod,
+    selectEconomicBalanceProjectImpacts,
+    selectEnvironmentalProjectImpacts,
+    selectSocialProjectImpacts,
+    selectSocioEconomicProjectImpactsListView,
+  ],
+  (
+    contextData,
+    impactsData,
+    projectEconomicBalance,
+    impactEnvironmentalMetricsByCategory,
+    impactSocialMetricsByCategory,
+    indirectEconomicImpactsByBearerAndCategory,
+  ): ImpactsDescriptionModalsDataView | undefined =>
+    contextData && impactsData
+      ? {
+          contextData,
+          impactsData,
+          projectEconomicBalance,
+          environmentalMetricsByCategory: impactEnvironmentalMetricsByCategory,
+          socialMetricsByCategory: impactSocialMetricsByCategory,
+          economicImpactsByBearerAndCategory: indirectEconomicImpactsByBearerAndCategory,
+        }
+      : undefined,
+);
+export type ModalDataProps = ImpactsDescriptionModalsDataView;
+
 // Page View
 export type ImpactsPageViewData = {
   dataLoadingState: ProjectImpactsState["dataLoadingState"];
@@ -150,6 +186,7 @@ export type ImpactsPageViewData = {
   impactsData: ProjectImpactsState["impacts"];
   contextData: ProjectImpactsState["contextData"];
   displayImpactsAccuracyDisclaimer: boolean;
+  modalsData?: ImpactsDescriptionModalsDataView;
 };
 
 export const selectImpactsPageViewData = createSelector(
@@ -158,12 +195,14 @@ export const selectImpactsPageViewData = createSelector(
     selectDisplayImpactsAccuracyDisclaimer,
     selectImpactsCroppedByEvaluationPeriod,
     selectImpactsContextData,
+    selectImpactsDescriptionModalsDataView,
   ],
   (
     projectImpactsState,
     displayImpactsAccuracyDisclaimer,
     impactsData,
     contextData,
+    modalsData,
   ): ImpactsPageViewData => ({
     dataLoadingState: projectImpactsState.dataLoadingState,
     evaluationPeriod: projectImpactsState.evaluationPeriod,
@@ -171,5 +210,6 @@ export const selectImpactsPageViewData = createSelector(
     displayImpactsAccuracyDisclaimer: displayImpactsAccuracyDisclaimer,
     impactsData,
     contextData,
+    modalsData,
   }),
 );

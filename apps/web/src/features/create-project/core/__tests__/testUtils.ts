@@ -1,7 +1,7 @@
 import type { AppDependencies, RootState } from "@/app/store/store";
 import { createStore } from "@/app/store/store";
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
-import type { User } from "@/features/onboarding/core/user";
+import type { AuthenticatedUser } from "@/features/onboarding/core/user";
 import { initialState } from "@/features/onboarding/core/user.reducer";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
@@ -16,7 +16,7 @@ export class StoreBuilder {
   };
   _appDependencies: AppDependencies = getTestAppDependencies();
 
-  withCurrentUser(user: User): this {
+  withCurrentUser(user: AuthenticatedUser): this {
     this.preloadedRootState.currentUser = {
       ...this.preloadedRootState.currentUser,
       currentUser: user,

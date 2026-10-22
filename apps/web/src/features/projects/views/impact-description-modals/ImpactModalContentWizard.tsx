@@ -2,13 +2,9 @@ import { Suspense, useContext, useMemo } from "react";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import type { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
-import { groupEconomicBalanceByListViewCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
-import { groupEnvironmentalMetricsByListViewCategory } from "@/features/projects/core/projectImpactsEnvironmental";
 import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
-import { groupSocialMetricsByListViewCategory } from "@/features/projects/core/projectImpactsSocial";
 import type { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/projectImpactsSocioEconomic";
-import { getSocioEconomicProjectImpactsGroupedByCategory } from "@/features/projects/core/projectImpactsSocioEconomic";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import {
@@ -47,7 +43,7 @@ import ModalGrid from "./modal-layout/ModalGrid";
 import ModalHeader from "./modal-layout/ModalHeader";
 import ModalTable from "./modal-table/ModalTable";
 
-type Props = {
+type Props = ModalDataProps & {
   contentState: Extract<
     ContentState,
     {
@@ -55,8 +51,7 @@ type Props = {
         SocioEconomicSectionName | "economicBalance" | EnvironmentalSectionName | SocialSectionName;
     }
   >;
-  impactsData: ModalDataProps["impactsData"];
-  contextData: ModalDataProps["contextData"];
+  noBreadcrumb?: boolean;
 };
 
 export const MODAL_CONFIG_GROUPS: {
@@ -71,30 +66,16 @@ export const MODAL_CONFIG_GROUPS: {
   ENVIRONMENTAL_METRICS_MODAL_CONFIG,
 ];
 
-export function ImpactModalContentWizard({ contentState, impactsData, contextData }: Props) {
-  const { stakeholders, aggregatedReconversionImpacts } = impactsData;
-
-  const indirectEconomicImpactsByBearerAndCategory =
-    getSocioEconomicProjectImpactsGroupedByCategory(
-      aggregatedReconversionImpacts.indirectEconomicImpacts,
-      stakeholders,
-    );
-
-  const impactSocialMetricsByCategory = groupSocialMetricsByListViewCategory(
-    aggregatedReconversionImpacts.impactsMetrics,
-    contextData.projectDevelopmentPlan.type,
-  );
-
-  const impactEnvironmentalMetricsByCategory = groupEnvironmentalMetricsByListViewCategory(
-    impactsData,
-    contextData.siteSurfaceArea,
-  );
-
-  const projectEconomicBalance = groupEconomicBalanceByListViewCategory(
-    contextData.projectDevelopmentPlan.type,
-    impactsData.projectEconomicBalance.details,
-  );
-
+export function ImpactModalContentWizard({
+  contentState,
+  impactsData,
+  projectEconomicBalance,
+  economicImpactsByBearerAndCategory,
+  environmentalMetricsByCategory,
+  socialMetricsByCategory,
+  contextData,
+  noBreadcrumb = false,
+}: Props) {
   const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
 
   const breadcrumbProps = useMemo(() => getBreadcrumbProps(contentState), [contentState]);
@@ -123,7 +104,7 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
         const [_, subSection] = splitImpactKey(contentState.sectionName);
         return subSection && contentState.impactDetailsName
           ? getImpactModalData<SocioEconomicImpactImpactKeyName>(
-              indirectEconomicImpactsByBearerAndCategory[subSection].impacts,
+              economicImpactsByBearerAndCategory[subSection].impacts,
               contentState.impactDetailsName,
               {
                 getLabel: getSocioEconomicImpactLabel,
@@ -141,7 +122,7 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
         const [_, subSection] = splitImpactKey(contentState.sectionName);
         return subSection && contentState.impactDetailsName
           ? getImpactModalData<SocialImpactMetricKeyName>(
-              impactSocialMetricsByCategory[subSection],
+              socialMetricsByCategory[subSection],
               contentState.impactDetailsName,
               {
                 getLabel: getSocialImpactLabel,
@@ -154,7 +135,7 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
       case "economicBalance":
         return contentState.impactDetailsName
           ? getImpactModalData<EconomicBalanceImpactKeyName>(
-              projectEconomicBalance,
+              projectEconomicBalance.economicBalance,
               contentState.impactDetailsName,
               {
                 getLabel: getEconomicBalanceImpactLabel,
@@ -170,7 +151,7 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
 
         return subSection && contentState.impactDetailsName
           ? getImpactModalData<EnvironmentalImpactMetricKeyName>(
-              impactEnvironmentalMetricsByCategory[subSection],
+              environmentalMetricsByCategory[subSection],
               contentState.impactDetailsName,
               {
                 getLabel: getEnvironmentalImpactLabel,
@@ -183,9 +164,9 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
     }
   }, [
     contentState,
-    indirectEconomicImpactsByBearerAndCategory,
-    impactSocialMetricsByCategory,
-    impactEnvironmentalMetricsByCategory,
+    economicImpactsByBearerAndCategory,
+    socialMetricsByCategory,
+    environmentalMetricsByCategory,
     projectEconomicBalance,
     getDetailsLink,
   ]);
@@ -218,6 +199,7 @@ export function ImpactModalContentWizard({ contentState, impactsData, contextDat
                 }
               : undefined
           }
+          noBreadcrumb={noBreadcrumb}
           breadcrumbSegments={[breadcrumbProps.section, ...breadcrumbProps.segments]}
         />
         <ModalGrid>

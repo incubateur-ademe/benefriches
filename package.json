@@ -15,6 +15,9 @@
     "format:check": "pnpm run -r format:check",
     "typecheck": "pnpm run -r typecheck",
     "build": "pnpm run -r build",
+    "verify": "pnpm verify:static && pnpm verify:test",
+    "verify:static": "pnpm agent-skills:check && pnpm agent-config:check && pnpm env-files:check && pnpm --filter shared build && pnpm typecheck && pnpm lint && pnpm format:check",
+    "verify:test": "pnpm test:scripts && pnpm --filter shared build && pnpm test",
     "agent-skills:sync": "node scripts/sync-agent-skills.mjs",
     "agent-skills:check": "node scripts/sync-agent-skills.mjs --check",
     "agent-config:sync": "node scripts/sync-agent-config.mjs",
@@ -23,6 +26,7 @@
     "test:scripts": "node --test \"scripts/**/*.spec.mjs\" \".tooling/**/*.spec.mjs\" \".claude/hooks/**/*.spec.mjs\""
   },
   "devDependencies": {
+    "@playwright/mcp": "~0.0.82",
     "@upstash/context7-mcp": "4.0.7",
     "@vitest/coverage-v8": "catalog:",
     "husky": "^9.1.7",

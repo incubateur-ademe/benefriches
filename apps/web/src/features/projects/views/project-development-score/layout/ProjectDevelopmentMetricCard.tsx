@@ -1,4 +1,5 @@
 import type { LetterGrade } from "shared";
+import type { Link } from "type-route";
 
 import classNames from "@/shared/views/clsx";
 
@@ -11,13 +12,25 @@ type MetricCardProps = {
   letterGrade: LetterGrade;
   description: React.ReactNode;
   badgeText?: string;
+  linkProps: Link;
 };
 
-function MetricCard({ emoji, title, letterGrade, description, badgeText }: MetricCardProps) {
+function MetricCard({
+  emoji,
+  title,
+  letterGrade,
+  description,
+  badgeText,
+  linkProps,
+}: MetricCardProps) {
   return (
-    <div
+    <a
+      {...linkProps}
       className={classNames(
-        "p-5 border border-border-grey rounded-2xl min-h-40",
+        "p-5 border border-border-grey hover:border-grey-dark rounded-2xl min-h-40 text-left bg-none",
+        "hover:border-current focus:border-current",
+        "transition ease-in-out duration-500",
+        "flex flex-col group",
         LETTER_GRADE_COLORS[letterGrade].bgLightColor,
       )}
     >
@@ -27,8 +40,11 @@ function MetricCard({ emoji, title, letterGrade, description, badgeText }: Metri
         </h5>
         <GradeTextBadge letterGrade={letterGrade} badgeText={badgeText} />
       </div>
-      <span className="text-sm">{description}</span>
-    </div>
+      <span className="text-sm grow">{description}</span>
+      <div className="transition ease-in-out duration-500 fr-link underline text-sm invisible group-hover:visible group-focus:visible">
+        En savoir plus
+      </div>
+    </a>
   );
 }
 

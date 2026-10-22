@@ -235,6 +235,12 @@ type CityStats = {
   updated_at: Date;
 };
 
+type SqlAdministrator = {
+  user_id: string;
+  created_at: Date;
+  granted_event_published_at: Date | null;
+};
+
 type SqlDomainEvent = {
   id: string;
   name: string;
@@ -317,6 +323,7 @@ declare module "knex/types/tables" {
     // users
     users: SqlUser;
     users_feature_alerts: SqlUserFeatureAlert;
+    administrators: SqlAdministrator;
 
     cities: SqlCity;
     carbon_storage: CarbonStorage;

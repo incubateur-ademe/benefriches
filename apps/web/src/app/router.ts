@@ -175,6 +175,16 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
       { mutafrichesId: param.query.string },
       () => `/evaluer-compatibilite-friche/resultats`,
     ),
+    // ADMINISTRATION
+    admin: defineRoute("/admin"),
+    adminUsers: defineRoute(
+      { search: param.query.optional.string, page: param.query.optional.number },
+      () => "/admin/utilisateurs",
+    ),
+    adminUser: defineRoute(
+      { userId: param.path.string },
+      (params) => `/admin/utilisateurs/${params.userId}`,
+    ),
     // PAGES
     budget: defineRoute("/budget"),
     stats: defineRoute("/statistiques"),

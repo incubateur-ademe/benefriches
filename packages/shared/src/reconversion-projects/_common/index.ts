@@ -11,4 +11,7 @@ export {
   reconversionProjectTemplateSchema,
 } from "./project-generator/projectGenerationTemplates";
 
-export { type ReconversionProjectCreationMode } from "./creationMode";
+export {
+  reconversionProjectCreationModeSchema,
+  type ReconversionProjectCreationMode,
+} from "./creationMode";

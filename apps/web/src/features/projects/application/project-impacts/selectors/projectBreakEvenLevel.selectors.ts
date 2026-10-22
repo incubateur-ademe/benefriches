@@ -1,17 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { GetReconversionProjectImpactsResultDto } from "shared";
 
-import type { RootState } from "@/app/store/store";
 import type { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 
 import type { IndirectEconomicImpactsByBearerAndGroupCategory } from "../../../core/groupIndirectImpactsByBearer";
 import { groupIndirectEconomicImpactsByBearerAndCategory } from "../../../core/groupIndirectImpactsByBearer";
 import {
+  type ModalDataProps,
   selectEconomicBalanceProjectImpacts,
   selectImpactsCroppedByEvaluationPeriod,
+  selectImpactsDescriptionModalsDataView,
 } from "./projectImpacts.selectors";
-
-const selectContextData = (state: RootState) => state.projectImpacts.contextData;
 
 export const selectIndirectEconomicImpactsByBearerAndCategory = createSelector(
   selectImpactsCroppedByEvaluationPeriod,
@@ -30,30 +29,31 @@ export type BreakEvenLevelTabDataView =
       indirectEconomicImpactsByBearer: IndirectEconomicImpactsByBearerAndGroupCategory;
       projectEconomicBalanceByCategory: EconomicBalanceByCategory;
       impacts: GetReconversionProjectImpactsResultDto["impacts"];
-      contextData: GetReconversionProjectImpactsResultDto["contextData"];
+      modalsProps: ModalDataProps;
     }
   | undefined;
+
 export const selectBreakEvenLevelTabDataView = createSelector(
   [
     selectImpactsCroppedByEvaluationPeriod,
     selectEconomicBalanceProjectImpacts,
     selectIndirectEconomicImpactsByBearerAndCategory,
-    selectContextData,
+    selectImpactsDescriptionModalsDataView,
   ],
   (
     impactsForEvaluationPeriod,
     projectEconomicBalanceByCategory,
     indirectEconomicImpactsByBearer,
-    contextData,
+    modalsProps,
   ): BreakEvenLevelTabDataView => {
-    if (!impactsForEvaluationPeriod || !contextData) {
+    if (!impactsForEvaluationPeriod || !modalsProps) {
       return undefined;
     }
     return {
       impacts: impactsForEvaluationPeriod,
       projectEconomicBalanceByCategory,
       indirectEconomicImpactsByBearer,
-      contextData,
+      modalsProps,
     };
   },
 );

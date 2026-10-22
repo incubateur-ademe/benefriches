@@ -13,4 +13,14 @@ export * from "./co2eq";
 export * from "./format-number";
 export * from "./api-dtos";
 export * from "./siteActions";
+export {
+  lifecycleEmailTypeSchema,
+  type LifecycleEmailType,
+  lifecycleEmailDeliveryStatusSchema,
+  type LifecycleEmailDeliveryStatus,
+} from "./lifecycle-emails";
+export {
+  reconversionCompatibilityEvaluationStatusSchema,
+  type ReconversionCompatibilityEvaluationStatus,
+} from "./reconversion-compatibility";
 export { type IDateProvider } from "./adapters/IDateProvider";

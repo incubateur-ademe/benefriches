@@ -63,6 +63,7 @@ Schedules use **UTC** unless the `TZ` environment variable is set on the Scaling
 | --------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Revoke unused auth tokens  | `cd apps/api && node ./dist/src/auth/adapters/primary/revokeUnusedAuthTokens.script.js`  | Revokes every outstanding (unused, not-yet-revoked) magic-link authentication attempt, stamping its `revoked_at`. Run on demand, e.g. to invalidate all pending login links as a security precaution. |
 | Lifecycle email preview | `cd apps/api && node ./dist/src/notifications/adapters/primary/sendLifecycleEmailPreview.script.js --type=welcome --to=prenom.nom@ademe.fr` | Sends one lifecycle email type (`--type=welcome`, `--type=first-site-reminder`, `--type=first-project-reminder` or `--type=project-impacts-summary`), rendered with sample data, to one or more explicitly given addresses so the team can review it in a real mail client. `--type=first-project-reminder` sends two samples to each address, a friche and an agricultural site (the first paragraph depends on the nature); their `Renseigner mon projet` link points at a sample site id that does not exist, so it leads to an error page. `--type=project-impacts-summary` sends two samples to each address, a favourable and an unfavourable evaluation of a sample project (their card links lead to an error page too); with `--project-id=<id>` (only with that type, at most once) it sends one email rendered from that real project instead: its name and results (a real user's data on production, so use team addresses only), still with the sample user's unsubscribe link. Ignores `LIFECYCLE_EMAILS_ENABLED`, bypasses the unsubscribe and suppression checks, and writes no `lifecycle_email_deliveries` row. Its unsubscribe link is signed for a fixed sample user id that matches no account, so clicking it shows the real confirmation page without unsubscribing anyone. Recipients are always explicit — there is no cohort mode. |
+| Grant administrator rights | `cd apps/api && node ./dist/src/admin/adapters/primary/grantAdministratorRights.script.js --email prenom.nom@ademe.fr` | Makes an existing user an administrator of the back office (inserts an `administrators` row). Takes exactly one of `--email <email>` (trimmed, matched case-insensitively) or `--user-id <uuid>`. Prints the user's email and id. Idempotent and safe to run concurrently: an existing administrator is left unchanged ("No change" message). Publishes `administrator.granted` once per grant; if a run fails after granting the rights, a rerun publishes the missing event (at-least-once delivery, so a duplicate is possible). Never creates a user. When several users share the email case-insensitively, it lists them and grants nothing: rerun with `--user-id`. Exit codes: `0` granted or no change; `1` usage error, unknown user or ambiguous email. |
 
 ## Running a script manually (incl. dry-run)
 
@@ -85,6 +86,15 @@ scalingo --region <region> run --app <app-name> "cd apps/api && node ./dist/src/
 ```
 
 Without `--dry-run`, the same command performs the real run. Not every script supports `--dry-run` — check the script's source.
+
+To grant administrator rights on staging or production, prefer `--user-id` (emails are not unique), or `--email` when it matches a single user:
+
+```bash
+scalingo --region <region> run --app <app-name> "cd apps/api && node ./dist/src/admin/adapters/primary/grantAdministratorRights.script.js --user-id <uuid>"
+scalingo --region <region> run --app <app-name> "cd apps/api && node ./dist/src/admin/adapters/primary/grantAdministratorRights.script.js --email prenom.nom@ademe.fr"
+```
+
+The script exits `0` when the user was granted or already an administrator, and `1` on a usage error, an unknown user or an ambiguous email.
 
 ## Observability
 

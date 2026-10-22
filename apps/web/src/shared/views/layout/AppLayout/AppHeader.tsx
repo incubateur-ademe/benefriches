@@ -1,42 +1,24 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
 import type { Link } from "type-route";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
-// oxlint-disable-next-line architecture-boundaries/no-cross-layer-import
-import AboutImpactsContent from "@/features/projects/views/shared/impacts/AboutImpactsContent";
+import { selectCurrentUserIsAdmin } from "@/shared/core/current-user/currentUser.selectors";
 
 import classNames from "../../clsx";
-import DsfrA11yDialog from "../../components/Dialog/DsfrA11yDialog";
+import AboutImpactsHeaderDialog from "../header/AboutImpactsHeaderDialog";
+import {
+  buildLoggedInHeaderItems,
+  LOGIN_HEADER_ITEM,
+  toHeaderButtonProps,
+} from "../header/headerItems";
 
-const LOGIN_BTN: ButtonProps = {
-  iconId: "fr-icon-logout-box-r-line",
-  linkProps: routes.accessBenefriches().link,
-  children: "Accéder à Bénéfriches",
-};
-
-const LOGOUT_BTN: ButtonProps = {
-  iconId: "fr-icon-logout-box-r-line",
-  children: "Se déconnecter",
-  linkProps: { href: "/api/auth/logout" },
-};
-
-const DIALOG_ID = "fr-dialog-about-impacts-header";
-const ABOUT_DIALOG_BTN: ButtonProps = {
-  iconId: "fr-icon-questionnaire-line",
-  children: "Questions fréquentes",
-  nativeButtonProps: {
-    "aria-controls": DIALOG_ID,
-    "data-fr-opened": false,
-  },
-};
+const LOGIN_BTN = toHeaderButtonProps(LOGIN_HEADER_ITEM);
 
 export type AppLayoutHeaderProps = {
   myEvaluationsConfig?: { link: Link; isCurrent: boolean };
@@ -44,7 +26,7 @@ export type AppLayoutHeaderProps = {
   title?: string;
 };
 
-function BenefrichesHeader({
+function AppHeader({
   homeLinkProps = routes.home().link,
   myEvaluationsConfig = {
     link: routes.myEvaluations().link,
@@ -56,24 +38,19 @@ function BenefrichesHeader({
     (state) => state.currentUser.currentUserState === "authenticated",
   );
 
+  const isAdmin = useAppSelector(selectCurrentUserIsAdmin);
+
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
   const isLg = windowInnerWidth >= breakpointsValues.lg;
 
-  const menuButtons: ButtonProps[] = useMemo(() => {
-    return [
-      {
-        iconId: "fr-icon-bar-chart-box-line",
-        children: "Mes évaluations",
-        linkProps: myEvaluationsConfig.link,
-        className: myEvaluationsConfig.isCurrent
-          ? "bg-blue-ultralight text-blue-ultradark"
-          : undefined,
-      },
-      ABOUT_DIALOG_BTN,
-    ];
-  }, [myEvaluationsConfig]);
+  const { inlineItems, menuItems } = buildLoggedInHeaderItems({
+    isAdmin,
+    myEvaluationsLink: myEvaluationsConfig.link,
+    isMyEvaluationsCurrent: myEvaluationsConfig.isCurrent,
+    isLargeScreen: isLg,
+  });
 
   return (
     <>
@@ -103,18 +80,19 @@ function BenefrichesHeader({
                 </li>
               ) : (
                 <>
-                  {isLg
-                    ? menuButtons.map((menuBtn, index) => (
-                        <li key={`menuBtn_lg_${index}`}>
-                          <Button
-                            size="small"
-                            priority="tertiary no outline"
-                            {...menuBtn}
-                            className={classNames("text-(--text-default-grey)", menuBtn.className)}
-                          />
-                        </li>
-                      ))
-                    : null}
+                  {inlineItems.map((item) => {
+                    const { className, ...buttonProps } = toHeaderButtonProps(item);
+                    return (
+                      <li key={item.text}>
+                        <Button
+                          size="small"
+                          priority="tertiary no outline"
+                          {...buttonProps}
+                          className={classNames("text-(--text-default-grey)", className)}
+                        />
+                      </li>
+                    );
+                  })}
                   <li>
                     <Popover className="relative">
                       <PopoverButton as={Fragment}>
@@ -145,33 +123,24 @@ function BenefrichesHeader({
                           "py-1",
                         )}
                       >
-                        {!isLg &&
-                          menuButtons?.map((item, index) => (
+                        {menuItems.map((item) => {
+                          const { className, ...buttonProps } = toHeaderButtonProps(item);
+                          return (
                             <Button
-                              key={`menuBtn_sm_${index}`}
+                              key={item.text}
+                              size={isLg ? "small" : "medium"}
                               priority="tertiary no outline"
-                              {...item}
+                              {...buttonProps}
                               className={classNames(
                                 "w-full",
                                 "font-normal",
                                 "py-2",
                                 "text-(--text-default-grey)",
-                                item.className,
+                                className,
                               )}
                             />
-                          ))}
-                        <Button
-                          size={isLg ? "small" : "medium"}
-                          priority="tertiary no outline"
-                          {...LOGOUT_BTN}
-                          className={classNames(
-                            "w-full",
-                            "font-normal",
-                            "py-2",
-                            "text-(--text-default-grey)",
-                            LOGOUT_BTN.className,
-                          )}
-                        />
+                          );
+                        })}
                       </PopoverPanel>
                     </Popover>
                   </li>
@@ -181,11 +150,9 @@ function BenefrichesHeader({
           </div>
         </div>
       </header>
-      <DsfrA11yDialog dialogId={DIALOG_ID} title="Questions fréquentes" size="large">
-        <AboutImpactsContent />
-      </DsfrA11yDialog>
+      <AboutImpactsHeaderDialog />
     </>
   );
 }
 
-export default BenefrichesHeader;
+export default AppHeader;

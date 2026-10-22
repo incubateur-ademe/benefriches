@@ -29,3 +29,23 @@ export const fricheFromCompatibilityEvaluationSaved = (): AnalyticsEvent => ({
   action: "save-friche-clicked",
   name: "save-friche-from-compatibility-evaluation-clicked",
 });
+
+export const userAccountCreated = (): AnalyticsEvent => ({
+  category: "user-account",
+  action: "created",
+  name: "user-account-created",
+});
+
+export const siteCreated = (
+  creationMode: "express" | "custom" | "from-compatibility-evaluation",
+): AnalyticsEvent => ({
+  category: "site-creation",
+  action: "created",
+  name: "site-created-" + creationMode,
+});
+
+export const projectCreated = (creationMode: "express" | "custom"): AnalyticsEvent => ({
+  category: "project-creation",
+  action: "created",
+  name: "project-created-" + creationMode,
+});

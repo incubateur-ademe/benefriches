@@ -3,28 +3,14 @@ import type { LetterGrade } from "shared";
 import classNames from "@/shared/views/clsx";
 
 import { LETTER_GRADE_COLORS } from "./colors";
+import { getLetterGradeBadgeText } from "./gradeLabels";
 
 type MetricCardProps = {
   letterGrade: LetterGrade;
   badgeText?: string;
 };
 
-const getLetterGradeBadgeText = (letterGrade: LetterGrade) => {
-  switch (letterGrade) {
-    case "A":
-      return "Nettement amélioré";
-    case "B":
-      return "Amélioré";
-    case "C":
-      return "Neutre";
-    case "D":
-      return "Dégradé";
-    case "E":
-      return "Nettement dégradé";
-  }
-};
 function GradeTextBadge({ letterGrade, badgeText }: MetricCardProps) {
-  const label = getLetterGradeBadgeText(letterGrade);
   const { textColor: badgeTextColor, bgColor: bgBagdeColor } = LETTER_GRADE_COLORS[letterGrade];
 
   return (
@@ -35,7 +21,7 @@ function GradeTextBadge({ letterGrade, badgeText }: MetricCardProps) {
         badgeTextColor,
       )}
     >
-      {badgeText ?? label}
+      {badgeText ?? getLetterGradeBadgeText("qualitative", letterGrade)}
     </span>
   );
 }

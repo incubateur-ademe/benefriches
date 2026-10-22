@@ -20,22 +20,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-pnpm
-      - run: pnpm agent-skills:check
-      - run: pnpm agent-config:check
-      - run: pnpm env-files:check
-      - run: pnpm --filter shared build
-      - run: pnpm typecheck
-      - run: pnpm lint
-      - run: pnpm format:check
+      # `pnpm verify` = verify:static + verify:test, split here to run in parallel
+      - run: pnpm verify:static
 
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-pnpm
-      - run: pnpm test:scripts
-      - run: pnpm --filter shared build
-      - run: pnpm test
+      - run: pnpm verify:test
 
   build:
     runs-on: ubuntu-latest

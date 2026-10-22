@@ -39,7 +39,11 @@ export type GetReconversionProjectImpactsResultDto = {
     siteNature: SiteNature;
     siteSurfaceArea: number;
     fricheActivity?: FricheActivity;
-    municipalityCapitalExpenditures: { amount: number; referenceYear: string };
+    municipalityCapitalExpenditures: {
+      amount: number;
+      referenceYear: string;
+      accuracy: "average" | "city";
+    };
   };
   developmentScore: ProjectDevelopmentScore;
   impacts: {

@@ -12,6 +12,7 @@ type Props = {
   title: ReactNode;
   subtitle?: ReactNode;
   breadcrumbSegments: BreadcrumbProps["segments"];
+  noBreadcrumb?: boolean;
   value?: {
     state: "success" | "error";
     text: string;
@@ -19,7 +20,7 @@ type Props = {
   };
 };
 
-const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
+const ModalHeader = ({ title, subtitle, breadcrumbSegments, value, noBreadcrumb }: Props) => {
   const { onClose, dialogTitleId } = useContext(ImpactModalDescriptionContext);
   return (
     <div
@@ -34,7 +35,7 @@ const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
       )}
     >
       <div className="flex justify-around items-start w-full">
-        <ModalBreadcrumb segments={breadcrumbSegments} />
+        {!noBreadcrumb && <ModalBreadcrumb segments={breadcrumbSegments} />}
         <button className={fr.cx("fr-btn--close", "fr-btn")} onClick={onClose} type="button">
           Fermer
         </button>

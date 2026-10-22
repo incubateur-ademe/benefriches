@@ -1,6 +1,7 @@
 import type { Address } from "shared";
 import { v4 as uuid } from "uuid";
 
+import { InMemoryAnalytics } from "@/features/analytics/infrastructure/InMemoryAnalytics";
 import { buildUser } from "@/features/onboarding/core/user.mock";
 
 import { InMemoryCreateSiteService } from "../../../../infrastructure/create-site-service/inMemoryCreateSiteApi";
@@ -51,6 +52,34 @@ describe("Save created site", () => {
 
       expectCurrentStep(store, "CREATION_RESULT");
       expect(store.getState().siteCreation.saveLoadingState).toEqual("error");
+    });
+
+    it("should track site creation once saved", async () => {
+      const analyticsService = new InMemoryAnalytics();
+      const store = new StoreBuilder()
+        .withCreationData(siteWithMinimalData)
+        .withCurrentUser(buildUser())
+        .withAppDependencies({ analyticsService })
+        .build();
+      await store.dispatch(customSiteSaved());
+
+      expect(analyticsService._events).toEqual([
+        { category: "site-creation", action: "created", name: "site-created-custom" },
+      ]);
+    });
+
+    it("should not track site creation when saving fails", async () => {
+      const failingCreateService = new InMemoryCreateSiteService();
+      failingCreateService.shouldFailOnCall();
+      const analyticsService = new InMemoryAnalytics();
+      const store = new StoreBuilder()
+        .withCreationData(siteWithMinimalData)
+        .withCurrentUser(buildUser())
+        .withAppDependencies({ createSiteService: failingCreateService, analyticsService })
+        .build();
+      await store.dispatch(customSiteSaved());
+
+      expect(analyticsService._events).toEqual([]);
     });
 
     it.each([

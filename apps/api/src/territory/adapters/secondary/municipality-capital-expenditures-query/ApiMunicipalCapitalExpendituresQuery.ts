@@ -1,5 +1,5 @@
 import { HttpService } from "@nestjs/axios";
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { AxiosError } from "axios";
 import { catchError, lastValueFrom, map } from "rxjs";
 
@@ -21,6 +21,8 @@ interface ApiResult {
 @Injectable()
 export class OFGLApi implements MunicipalityCapitalExpendituresProvider {
   private readonly httpService: HttpService;
+  private readonly logger = new Logger("OFGLApi");
+
   constructor(httpService: HttpService) {
     this.httpService = httpService;
   }
@@ -52,6 +54,7 @@ export class OFGLApi implements MunicipalityCapitalExpendituresProvider {
             if (axiosError.response?.data) {
               err.message.concat(` - ${axiosError.response.data as string}`);
             }
+            this.logger.warn(String(err));
             throw err;
           }),
         ),

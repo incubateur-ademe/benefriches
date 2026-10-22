@@ -1,0 +1,241 @@
+import { Inject, Injectable } from "@nestjs/common";
+import type { Knex } from "knex";
+import {
+  lifecycleEmailDeliveryStatusSchema,
+  lifecycleEmailTypeSchema,
+  type ReconversionCompatibilityEvaluationStatus,
+  type ReconversionProjectCreationMode,
+  type SiteNature,
+} from "shared";
+
+import type { AdminUsersQuery } from "src/admin/core/gateways/AdminUsersQuery";
+import type {
+  AdminUserActivityRecord,
+  AdminUserListItem,
+} from "src/admin/core/models/adminUserReadModel";
+import { LOGIN_SUCCEEDED } from "src/auth/core/events/loginSucceeded.event";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+
+type UserListRow = {
+  id: string;
+  email: string;
+  firstname: string | null;
+  lastname: string | null;
+  structure_name: string | null;
+  structure_type: string;
+  structure_activity: string;
+  created_at: Date;
+  last_login_at: Date | null;
+};
+
+type LifecycleEmailDeliveryRow = {
+  email_type: string;
+  status: string;
+  related_entity_name: string | null;
+  sent_at: Date | null;
+  last_attempted_at: Date;
+  attempts: number;
+  error_message: string | null;
+};
+
+@Injectable()
+export class SqlAdminUsersQuery implements AdminUsersQuery {
+  private readonly sqlConnection: Knex;
+
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
+
+  async list({
+    search,
+    page,
+    pageSize,
+  }: {
+    search?: string;
+    page: number;
+    pageSize: number;
+  }): Promise<{ users: AdminUserListItem[]; total: number }> {
+    const applySearch = (qb: Knex.QueryBuilder): Knex.QueryBuilder => {
+      if (!search) return qb;
+      const pattern = `%${search}%`;
+      return qb.where((builder) => {
+        builder
+          .whereILike("users.email", pattern)
+          .orWhereILike("users.firstname", pattern)
+          .orWhereILike("users.lastname", pattern)
+          .orWhereILike("users.structure_name", pattern);
+      });
+    };
+
+    const [countRow, rows] = await Promise.all([
+      applySearch(this.sqlConnection("users")).count<{ count: string | number }[]>("* as count"),
+      applySearch(
+        this.sqlConnection("users").select(
+          "users.id",
+          "users.email",
+          "users.firstname",
+          "users.lastname",
+          "users.structure_name",
+          "users.structure_type",
+          "users.structure_activity",
+          "users.created_at",
+          this.sqlConnection.raw(
+            `(SELECT MAX(created_at) FROM domain_events
+              WHERE name = ? AND payload->>'userId' = users.id::text) AS last_login_at`,
+            [LOGIN_SUCCEEDED],
+          ),
+        ),
+      )
+        .orderBy("users.created_at", "desc")
+        // Tiebreaker so users sharing a creation date keep a stable order across pages.
+        .orderBy("users.id", "desc")
+        .limit(pageSize)
+        .offset((page - 1) * pageSize) as Promise<UserListRow[]>,
+    ]);
+
+    return {
+      users: rows.map((row) => ({
+        id: row.id,
+        email: row.email,
+        firstName: row.firstname,
+        lastName: row.lastname,
+        structureName: row.structure_name,
+        structureType: row.structure_type,
+        structureActivity: row.structure_activity,
+        createdAt: row.created_at,
+        lastLoginAt: row.last_login_at,
+      })),
+      total: Number(countRow[0]?.count ?? 0),
+    };
+  }
+
+  async getUserActivity(userId: string): Promise<AdminUserActivityRecord | undefined> {
+    const user = await this.sqlConnection("users")
+      .select(
+        "id",
+        "email",
+        "firstname",
+        "lastname",
+        "structure_name",
+        "structure_type",
+        "structure_activity",
+        "subscribed_to_newsletter",
+        "lifecycle_emails_unsubscribed_at",
+        "created_at",
+      )
+      .where("id", userId)
+      .first();
+
+    if (!user) return undefined;
+
+    const [loginRows, siteRows, projectRows, evaluationRows, deliveryRows] = await Promise.all([
+      this.sqlConnection("domain_events")
+        .select("created_at")
+        .where("name", LOGIN_SUCCEEDED)
+        .whereRaw("payload->>'userId' = ?", [userId])
+        .orderBy("created_at", "asc"),
+      this.sqlConnection("sites")
+        .select("id", "name", "nature", "creation_mode", "status", "created_at", "updated_at")
+        .where("created_by", userId)
+        .orderBy("created_at", "asc"),
+      this.sqlConnection("reconversion_projects")
+        .select(
+          "id",
+          "name",
+          "related_site_id",
+          "creation_mode",
+          "status",
+          "created_at",
+          "updated_at",
+        )
+        .where("created_by", userId)
+        .orderBy("created_at", "asc"),
+      this.sqlConnection("reconversion_compatibility_evaluations")
+        .select("id", "related_site_id", "status", "created_at", "completed_at")
+        .where("created_by", userId)
+        .orderBy("created_at", "asc"),
+      this.sqlConnection("lifecycle_email_deliveries as d")
+        .select(
+          "d.email_type",
+          "d.status",
+          "d.sent_at",
+          "d.last_attempted_at",
+          "d.attempts",
+          "d.error_message",
+          this.sqlConnection.raw("COALESCE(s.name, p.name) AS related_entity_name"),
+        )
+        // email_type says what related_entity_id points to; a deleted entity leaves the name null.
+        .leftJoin("sites as s", (join) => {
+          join
+            .on("s.id", "d.related_entity_id")
+            .andOnVal("d.email_type", "=", lifecycleEmailTypeSchema.enum["first-project-reminder"]);
+        })
+        .leftJoin("reconversion_projects as p", (join) => {
+          join
+            .on("p.id", "d.related_entity_id")
+            .andOnVal(
+              "d.email_type",
+              "=",
+              lifecycleEmailTypeSchema.enum["project-impacts-summary"],
+            );
+        })
+        .where("d.user_id", userId)
+        // Only types and statuses the code knows, so a leftover row of a retired type or an
+        // unexpected status can't make the parse below throw and break the page.
+        .whereIn("d.email_type", lifecycleEmailTypeSchema.options)
+        .whereIn("d.status", lifecycleEmailDeliveryStatusSchema.options)
+        .orderBy("d.created_at", "asc") as Promise<LifecycleEmailDeliveryRow[]>,
+    ]);
+
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstname,
+        lastName: user.lastname,
+        structureName: user.structure_name,
+        structureType: user.structure_type,
+        structureActivity: user.structure_activity,
+        subscribedToNewsletter: user.subscribed_to_newsletter,
+        lifecycleEmailsUnsubscribedAt: user.lifecycle_emails_unsubscribed_at,
+        createdAt: user.created_at,
+      },
+      loginDates: loginRows.map((row) => row.created_at),
+      sites: siteRows.map((row) => ({
+        id: row.id,
+        name: row.name,
+        // Written only by domain code with SiteNature values.
+        nature: row.nature as SiteNature,
+        creationMode: row.creation_mode,
+        status: row.status,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+      })),
+      projects: projectRows.map((row) => ({
+        id: row.id,
+        name: row.name,
+        siteId: row.related_site_id,
+        creationMode: row.creation_mode as ReconversionProjectCreationMode,
+        status: row.status,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+      })),
+      compatibilityEvaluations: evaluationRows.map((row) => ({
+        id: row.id,
+        siteId: row.related_site_id,
+        status: row.status as ReconversionCompatibilityEvaluationStatus | null,
+        createdAt: row.created_at,
+        completedAt: row.completed_at,
+      })),
+      lifecycleEmailDeliveries: deliveryRows.map((row) => ({
+        emailType: lifecycleEmailTypeSchema.parse(row.email_type),
+        status: lifecycleEmailDeliveryStatusSchema.parse(row.status),
+        relatedEntityName: row.related_entity_name,
+        sentAt: row.sent_at,
+        lastAttemptedAt: row.last_attempted_at,
+        attempts: row.attempts,
+        errorMessage: row.error_message,
+      })),
+    };
+  }
+}

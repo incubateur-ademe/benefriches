@@ -27,7 +27,7 @@ type Props = {
   projectId: string;
   dataLoadingState: ProjectImpactsState["dataLoadingState"];
   contextData: ImpactsPageViewData["contextData"];
-  impactsData: ImpactsPageViewData["impactsData"];
+  modalsData: ImpactsPageViewData["modalsData"];
   onEvaluationPeriodChange: (n: number) => void;
   evaluationPeriod: number | undefined;
   onCurrentViewModeChange: (n: ViewMode) => void;
@@ -40,12 +40,12 @@ const ProjectImpactsView = ({
   displayImpactsAccuracyDisclaimer,
   projectId,
   contextData,
-  impactsData,
   dataLoadingState,
   onEvaluationPeriodChange,
   evaluationPeriod,
   onCurrentViewModeChange,
   onExportModalOpened,
+  modalsData,
 }: Props) => {
   const route = useRoute() as Route<typeof routes.projectImpacts>;
   return (
@@ -87,8 +87,7 @@ const ProjectImpactsView = ({
         <ImpactModalDescriptionProvider
           route={route}
           getRouteFn={routes[route.name]}
-          impactsData={impactsData!}
-          contextData={contextData!}
+          {...modalsData!}
         >
           {currentViewMode === "summary" && (
             <>

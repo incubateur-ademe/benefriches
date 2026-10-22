@@ -1,7 +1,9 @@
+import type { ReconversionCompatibilityEvaluationStatus } from "shared";
+
 export type ReconversionCompatibilityEvaluation = {
   id: string;
   createdBy: string;
-  status: "started" | "completed" | "related_site_created";
+  status: ReconversionCompatibilityEvaluationStatus;
   mutafrichesEvaluationId: string | null;
   createdAt: Date;
   completedAt: Date | null;

@@ -1,28 +1,23 @@
-import type { LetterGrade } from "shared";
+import type { Link } from "type-route";
 
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
 import ImpactChartCard from "../shared/charts/ImpactChartCard";
 import useImpactAreaChartProps from "../shared/charts/useImpactAreaChartProps";
-import ProjectDevelopmentGrade from "./layout/ProjectDevelopmentGrade";
+import ProjectDevelopmentScoreFamilyHeader from "./layout/ProjectDevelopmentScoreFamilyHeader";
 import GradeTextBadge from "./layout/ProjectDevelopmentScoreGradeTextBadge";
+import { getLetterGradeBadgeText } from "./layout/gradeLabels";
 
-type Props = DevelopmentScoreDataView["details"]["fullTimeJobsScore"];
-
-const getLetterGradeBadgeText = (letterGrade: LetterGrade) => {
-  switch (letterGrade) {
-    case "A":
-      return "En forte hausse";
-    case "B":
-      return "En hausse significative";
-    case "C":
-      return "En légère hausse ou égal";
-    case "D":
-      return "En baisse";
-    case "E":
-      return "En forte baisse";
-  }
+type Props = DevelopmentScoreDataView["developmentScore"]["details"]["fullTimeJobsScore"] & {
+  linkProps: Link;
+  anchor: string;
 };
-export default function ProjectDevelopmentFullTimeJobsScore({ score, indicators }: Props) {
+
+export default function ProjectDevelopmentFullTimeJobsScore({
+  score,
+  indicators,
+  linkProps,
+  anchor,
+}: Props) {
   const { fullTimeJobs } = indicators;
   const { siteStatuQuoFullTimeJobs, difference } = fullTimeJobs?.metrics ?? {
     difference: 0,
@@ -40,18 +35,21 @@ export default function ProjectDevelopmentFullTimeJobsScore({ score, indicators 
 
   return (
     <div className="grid md:grid-cols-3 gap-6">
-      <div>
-        <h4>Emploi</h4>
-        <ProjectDevelopmentGrade score={score} />
-      </div>
+      <ProjectDevelopmentScoreFamilyHeader
+        anchor={anchor}
+        title="Emploi"
+        score={score}
+        linkProps={linkProps}
+      />
 
       <div className="md:col-span-2">
         <ImpactChartCard
+          linkProps={linkProps}
           headerSlot={{
             element: (
               <GradeTextBadge
                 letterGrade={score.letterGrade}
-                badgeText={getLetterGradeBadgeText(score.letterGrade)}
+                badgeText={getLetterGradeBadgeText("evolution", score.letterGrade)}
               />
             ),
             preventClick: false,

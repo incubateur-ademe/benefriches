@@ -1,6 +1,8 @@
 import { v4 as uuid } from "uuid";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
+import { userAccountCreated } from "@/features/analytics/core/analyticsEvents";
+import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 
 import { initCurrentUser } from "./initCurrentUser.action";
 import type { User } from "./user";
@@ -18,6 +20,7 @@ export const createUser = createAppAsyncThunk<User, CreateUserProps>(
     const user = userSchema.parse({ ...createUserProps, id: uuid() });
 
     await extra.createUserService.save(user);
+    void dispatch(eventTracked(userAccountCreated()));
 
     await dispatch(initCurrentUser());
     return user;

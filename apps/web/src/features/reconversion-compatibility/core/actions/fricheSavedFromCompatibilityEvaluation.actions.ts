@@ -4,6 +4,8 @@ import { v4 as uuid } from "uuid";
 
 import { routes } from "@/app/router";
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
+import { siteCreated } from "@/features/analytics/core/analyticsEvents";
+import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import type { ProjectSuggestion } from "@/features/create-project/core/project.types";
 
 import { ACTION_PREFIX } from ".";
@@ -33,7 +35,7 @@ const actionType = `${ACTION_PREFIX}/fricheSaved`;
 
 export const fricheSavedFromCompatibilityEvaluation = createAppAsyncThunk(
   actionType,
-  async (_, { extra, getState }) => {
+  async (_, { extra, getState, dispatch }) => {
     const {
       currentUser: currentUserState,
       reconversionCompatibilityEvaluation: compatibilityState,
@@ -63,6 +65,7 @@ export const fricheSavedFromCompatibilityEvaluation = createAppAsyncThunk(
     };
 
     await extra.createSiteService.saveExpress(siteToCreate);
+    void dispatch(eventTracked(siteCreated("from-compatibility-evaluation")));
 
     await extra.reconversionCompatibilityEvaluationService.addRelatedSite({
       evaluationId: currentEvaluationId,

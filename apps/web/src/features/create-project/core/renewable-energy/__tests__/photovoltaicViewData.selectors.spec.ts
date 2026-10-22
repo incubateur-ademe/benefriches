@@ -66,6 +66,7 @@ const MOCK_STATE: RootState = {
       structureName: "My company",
       structureType: "company" as const,
       structureActivity: "other" as const,
+      isAdmin: false,
     },
     currentUserState: "authenticated" as const,
     createUserState: "success" as const,

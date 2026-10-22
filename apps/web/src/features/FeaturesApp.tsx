@@ -3,6 +3,7 @@ import { createGroup } from "type-route";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
+import RequireAdminUser from "@/features/admin/views/RequireAdminUser";
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 import RequireAuthenticatedUser from "@/shared/views/components/RequireAuthenticatedUser/RequireAuthenticatedUser";
@@ -43,6 +44,9 @@ const ProjectCreationOnboardingPage = lazy(
     import("@/features/create-project/views/onboarding-from-compatibility-evaluation/ProjectCreationFromCompatibilityEvaluationOnboarding"),
 );
 const UpdateSitePage = lazy(() => import("@/features/update-site/views"));
+const AdminDashboardPage = lazy(() => import("@/features/admin/views/dashboard"));
+const AdminUsersPage = lazy(() => import("@/features/admin/views/users"));
+const AdminUserPage = lazy(() => import("@/features/admin/views/user"));
 
 const formsLayoutGroup = createGroup([
   routes.createSite,
@@ -152,6 +156,25 @@ function FeaturesApp() {
                 return <EvaluateReconversionCompatibilityPage />;
               case routes.reconversionCompatibilityResults.name:
                 return <ReconversionCompatibilityResultsPage />;
+              // admin pages
+              case routes.admin.name:
+                return (
+                  <RequireAdminUser>
+                    <AdminDashboardPage />
+                  </RequireAdminUser>
+                );
+              case routes.adminUsers.name:
+                return (
+                  <RequireAdminUser>
+                    <AdminUsersPage search={route.params.search} page={route.params.page} />
+                  </RequireAdminUser>
+                );
+              case routes.adminUser.name:
+                return (
+                  <RequireAdminUser>
+                    <AdminUserPage userId={route.params.userId} />
+                  </RequireAdminUser>
+                );
               // 404
               default:
                 return <NotFoundScreen />;

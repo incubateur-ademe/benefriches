@@ -2,26 +2,38 @@ import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
 
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
-import ProjectDevelopmentGrade from "./layout/ProjectDevelopmentGrade";
+import useOpenDescriptionModalLink from "./details-modals/useOpenDescriptionModalLink";
 import MetricCard from "./layout/ProjectDevelopmentMetricCard";
+import ProjectDevelopmentScoreFamilyHeader from "./layout/ProjectDevelopmentScoreFamilyHeader";
 
-type Props = DevelopmentScoreDataView["details"]["localPeopleQualityOfLifeScore"];
+type Props =
+  DevelopmentScoreDataView["developmentScore"]["details"]["localPeopleQualityOfLifeScore"] & {
+    anchor: string;
+  };
 
 const listFormatter = new Intl.ListFormat("fr", {
   style: "long",
   type: "conjunction",
 });
 
-export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, indicators }: Props) {
+export default function ProjectDevelopmentLocalPeopleAndCompanyScore({
+  score,
+  indicators,
+  anchor,
+}: Props) {
+  const getLink = useOpenDescriptionModalLink();
+
   if (score.gradePoints === 0) {
     return null;
   }
   return (
-    <div className="grid md:grid-cols-3 gap-6">
-      <div>
-        <h4>Qualité de vie des riverains</h4>
-        <ProjectDevelopmentGrade score={score} />
-      </div>
+    <div className="grid md:grid-cols-3 gap-6 relative">
+      <ProjectDevelopmentScoreFamilyHeader
+        anchor={anchor}
+        title="Qualité de vie des riverains"
+        score={score}
+        linkProps={getLink("localPeopleQualityOfLifeScore")}
+      />
 
       <div className=" md:col-span-2 grid md:grid-cols-2 gap-4">
         {indicators.livingEnvironment ? (
@@ -30,6 +42,7 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, in
             emoji="🌳"
             description="Grâce à la reconversion de la friche."
             letterGrade={indicators.livingEnvironment.letterGrade}
+            linkProps={getLink("localPeopleQualityOfLifeScore.livingEnvironment")}
           />
         ) : null}
 
@@ -38,6 +51,8 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, in
             title="Santé"
             emoji="🫀"
             letterGrade={indicators.localHealthiness.letterGrade}
+            linkProps={getLink("localPeopleQualityOfLifeScore.localHealthiness")}
+
             description={
               indicators.localHealthiness.metrics && (
                 <>
@@ -75,6 +90,7 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, in
             emoji="🚙"
             letterGrade={indicators.trafficSecurity.letterGrade}
             description="Grâce à la réduction de la distance entre les habitations et l’établissement éducatif."
+            linkProps={getLink("localPeopleQualityOfLifeScore.trafficSecurity")}
           />
         ) : null}
 
@@ -84,6 +100,7 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, in
             emoji="💥"
             letterGrade={indicators.fricheAccidents.letterGrade}
             description="Grâce à la reconversion et la sécurisation de la friche."
+            linkProps={getLink("localPeopleQualityOfLifeScore.frichesAccidents")}
           />
         ) : null}
 
@@ -92,6 +109,8 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, in
             title="Accès aux soins"
             emoji="🏥"
             letterGrade={indicators.accessToHealthCare.letterGrade}
+            linkProps={getLink("localPeopleQualityOfLifeScore.accessToHealthCare")}
+
             description={
               indicators.accessToHealthCare.metrics && (
                 <>
@@ -115,6 +134,8 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({ score, in
             title="Accès aux services de proximité"
             emoji="🏪"
             letterGrade={indicators.accessToLocalServices.letterGrade}
+            linkProps={getLink("localPeopleQualityOfLifeScore.accessToLocalServices")}
+
             description={
               indicators.accessToLocalServices.metrics && (
                 <>

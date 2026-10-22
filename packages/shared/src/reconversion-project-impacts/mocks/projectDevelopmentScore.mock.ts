@@ -116,6 +116,7 @@ export const urbanProjectDevelopmentScoreMock = {
 
           metrics: {
             fullTimeJobsDifferenceByHectare: 0.02,
+            siteSurfaceArea: 14500,
             siteStatuQuoFullTimeJobs: 0,
             difference: 0.238560832,
           },
@@ -177,6 +178,7 @@ export const urbanProjectDevelopmentScoreMock = {
             percentageComparison: 2602,
             municipalityCapitalExpendituresAmount: 150000,
             municipalityCapitalExpendituresReferenceYear: "2025",
+            municipalityCapitalExpendituresAccuracy: "city",
           },
         },
       },
@@ -302,6 +304,7 @@ export const photovoltaicProjectDevelopmentScoreMock = {
 
           metrics: {
             fullTimeJobsDifferenceByHectare: 0.33,
+            siteSurfaceArea: 14500,
             siteStatuQuoFullTimeJobs: 0,
             difference: 5.019054,
           },
@@ -362,6 +365,7 @@ export const photovoltaicProjectDevelopmentScoreMock = {
             percentageComparison: 6801,
             municipalityCapitalExpendituresReferenceYear: "2025",
             municipalityCapitalExpendituresAmount: 150000,
+            municipalityCapitalExpendituresAccuracy: "city",
           },
         },
       },

@@ -24,7 +24,7 @@ type Props = {
 const DEFAULT_EVALUATION_PERIOD = 30;
 
 export default function EmbedImpactsViewContainer({ siteCityCode, siteSurfaceArea }: Props) {
-  const { dataLoadingState, currentViewMode, evaluationPeriod, contextData, impactsData } =
+  const { dataLoadingState, currentViewMode, evaluationPeriod, contextData, modalsData } =
     useAppSelector(selectImpactsPageViewData);
 
   const dispatch = useAppDispatch();
@@ -43,8 +43,7 @@ export default function EmbedImpactsViewContainer({ siteCityCode, siteSurfaceAre
     return (
       <ImpactModalDescriptionProvider
         route={route}
-        contextData={contextData}
-        impactsData={impactsData!}
+        {...modalsData!}
         getRouteFn={embedRoutes.routes.quickImpactsUrbanProject}
       >
         <EmbedImpactsView

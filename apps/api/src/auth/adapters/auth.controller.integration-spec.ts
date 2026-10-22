@@ -7,7 +7,7 @@ import { after, before, describe, it, mock } from "node:test";
 import { RegisterUserRequestDto } from "shared";
 import request from "supertest";
 import { assertShapeEquals, isDate } from "test/assertShapeEquals";
-import { authenticateUser, createTestApp } from "test/testApp";
+import { authenticateUser, createTestApp, saveUser } from "test/testApp";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import type { AppLogger } from "src/shared-kernel/logger";
@@ -167,6 +167,106 @@ describe("Auth integration tests", () => {
       assert.strictEqual(jwtPayload.sub, registerUserPayload.id);
       assert.strictEqual(jwtPayload.email, registerUserPayload.email);
       assert.strictEqual(jwtPayload.authProvider, "benefriches");
+    });
+  });
+
+  describe("GET /auth/me", () => {
+    it("responds with 401 if not authenticated", async () => {
+      const response = await request(app.getHttpServer()).get("/api/auth/me");
+
+      assert.strictEqual(response.status, 401);
+    });
+
+    it("returns current user with isAdmin false when user is not an administrator", async () => {
+      const user = new UserBuilder()
+        .withId("5a8c9b1e-3e4f-4c2a-9d6b-1f2e3d4c5b6a")
+        .withEmail("jane@collectivite.fr")
+        .withFirstName("Jane")
+        .withLastName("Doe")
+        .asLocalAuthority()
+        .build();
+      await saveUser(app)(user);
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await request(app.getHttpServer())
+        .get("/api/auth/me")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
+
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
+        id: "5a8c9b1e-3e4f-4c2a-9d6b-1f2e3d4c5b6a",
+        email: "jane@collectivite.fr",
+        firstName: "Jane",
+        lastName: "Doe",
+        structureType: "municipality",
+        structureActivity: "local_authority",
+        structureName: "Mairie de Blajan",
+        isAdmin: false,
+      });
+    });
+
+    it("returns isAdmin true when user is an administrator", async () => {
+      const user = new UserBuilder().withEmail("admin@benefriches.fr").build();
+      await saveUser(app)(user);
+      await sqlConnection("administrators").insert({
+        user_id: user.id,
+        created_at: new Date("2026-01-01T00:00:00.000Z"),
+      });
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await request(app.getHttpServer())
+        .get("/api/auth/me")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual((response.body as { isAdmin: boolean }).isAdmin, true);
+    });
+
+    it("responds with 401 when no access token cookie is sent", async () => {
+      const response = await request(app.getHttpServer())
+        .get("/api/auth/me")
+        .set("Cookie", "connect.sid=some-session-id");
+
+      assert.strictEqual(response.status, 401);
+    });
+
+    it("responds with 401 when access token cookie is not a valid token", async () => {
+      const response = await request(app.getHttpServer())
+        .get("/api/auth/me")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=not-a-jwt`);
+
+      assert.strictEqual(response.status, 401);
+    });
+
+    it("returns the authenticated user when access token cookie is sent among other cookies", async () => {
+      const user = new UserBuilder()
+        .asUrbanPlanner()
+        .withId("7e4d2a5c-2f0b-4d8e-9a39-0c3f0a1b2c3d")
+        .withEmail("cookie.john@example.fr")
+        .withFirstName("John")
+        .withLastName("Cookie")
+        .build();
+      await saveUser(app)(user);
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await request(app.getHttpServer())
+        .get("/api/auth/me")
+        .set(
+          "Cookie",
+          `connect.sid=some-session-id; ${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}; theme=dark`,
+        );
+
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
+        id: "7e4d2a5c-2f0b-4d8e-9a39-0c3f0a1b2c3d",
+        email: "cookie.john@example.fr",
+        firstName: "John",
+        lastName: "Cookie",
+        structureType: "company",
+        structureActivity: "urban_planner",
+        structureName: "UrbanPlanning Inc.",
+        isAdmin: false,
+      });
     });
   });
 
@@ -559,54 +659,6 @@ describe("Auth integration tests", () => {
       );
       assert.strictEqual(response.status, 401);
       assert.strictEqual((response.body as { code: string }).code, "TOKEN_ALREADY_USED");
-    });
-  });
-
-  describe("GET /auth/me", () => {
-    it("responds with 401 when no access token cookie is sent", async () => {
-      const response = await request(app.getHttpServer())
-        .get("/api/auth/me")
-        .set("Cookie", "connect.sid=some-session-id");
-
-      assert.strictEqual(response.status, 401);
-    });
-
-    it("responds with 401 when access token cookie is not a valid token", async () => {
-      const response = await request(app.getHttpServer())
-        .get("/api/auth/me")
-        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=not-a-jwt`);
-
-      assert.strictEqual(response.status, 401);
-    });
-
-    it("returns the authenticated user when access token cookie is sent among other cookies", async () => {
-      const user = new UserBuilder()
-        .asUrbanPlanner()
-        .withId("7e4d2a5c-2f0b-4d8e-9a39-0c3f0a1b2c3d")
-        .withEmail("cookie.john@example.fr")
-        .withFirstName("John")
-        .withLastName("Cookie")
-        .build();
-      await sqlConnection("users").insert(mapUserToSqlRow(user));
-      const { accessToken } = await authenticateUser(app)(user);
-
-      const response = await request(app.getHttpServer())
-        .get("/api/auth/me")
-        .set(
-          "Cookie",
-          `connect.sid=some-session-id; ${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}; theme=dark`,
-        );
-
-      assert.strictEqual(response.status, 200);
-      assert.deepStrictEqual(response.body, {
-        id: "7e4d2a5c-2f0b-4d8e-9a39-0c3f0a1b2c3d",
-        email: "cookie.john@example.fr",
-        firstName: "John",
-        lastName: "Cookie",
-        structureType: "company",
-        structureActivity: "urban_planner",
-        structureName: "UrbanPlanning Inc.",
-      });
     });
   });
 });

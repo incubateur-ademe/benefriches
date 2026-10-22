@@ -1,10 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
-import type { KeyImpactIndicatorData, ZanComplianceIndicator } from "shared";
+import type { KeyImpactIndicatorData, ProjectDevelopmentScore } from "shared";
 import { getSummaryHeadlineIndicators } from "shared";
 
 import type { RootState } from "@/app/store/store";
 
-import type { ProjectImpactsState } from "../projectImpacts.reducer";
 import {
   selectImpactsCroppedByEvaluationPeriod,
   selectKeyImpactIndicatorsList,
@@ -12,7 +11,7 @@ import {
 
 export type ProjectSummaryDataView = {
   mainImpactIndicator?: KeyImpactIndicatorData;
-  zanCompliance?: ZanComplianceIndicator;
+  developmentScore: ProjectDevelopmentScore;
   breakEvenYear?: string;
   projectionYears: string[];
   siteAddress: {
@@ -30,31 +29,25 @@ export type ProjectSummaryDataView = {
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 
-const selectContextData = createSelector(
-  selectSelf,
-  (state): ProjectImpactsState["contextData"] => state.contextData,
-);
-
 export const selectProjectSummaryDataView = createSelector(
-  [selectContextData, selectKeyImpactIndicatorsList, selectImpactsCroppedByEvaluationPeriod],
-  (contextData, keyImpactIndicatorList, breakEvenLevel): ProjectSummaryDataView | undefined => {
-    if (!breakEvenLevel || !contextData) {
+  [selectSelf, selectKeyImpactIndicatorsList, selectImpactsCroppedByEvaluationPeriod],
+  (state, keyImpactIndicatorList, breakEvenLevel): ProjectSummaryDataView | undefined => {
+    if (!breakEvenLevel || !state.contextData || !state.developmentScore) {
       return undefined;
     }
-    const { zanCompliance, mainImpactIndicator } =
-      getSummaryHeadlineIndicators(keyImpactIndicatorList);
+    const { mainImpactIndicator } = getSummaryHeadlineIndicators(keyImpactIndicatorList);
 
     return {
       breakEvenYear: breakEvenLevel.aggregatedReconversionImpacts.breakEvenYear,
       projectionYears: breakEvenLevel.projectionYears,
-      zanCompliance,
+      developmentScore: state.developmentScore,
       mainImpactIndicator,
-      siteId: contextData.relatedSiteId,
-      siteName: contextData.relatedSiteName,
-      siteAddress: contextData.siteAddress,
+      siteId: state.contextData.relatedSiteId,
+      siteName: state.contextData.relatedSiteName,
+      siteAddress: state.contextData.siteAddress,
       projectContext: {
-        isDemo: contextData?.isExpressProject ?? false,
-        isUrban: contextData?.projectDevelopmentPlan.type === "URBAN_PROJECT",
+        isDemo: state.contextData?.isExpressProject ?? false,
+        isUrban: state.contextData?.projectDevelopmentPlan.type === "URBAN_PROJECT",
       },
     };
   },

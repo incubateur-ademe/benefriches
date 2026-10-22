@@ -28,7 +28,7 @@ const getLetterGrade = (percentage: number): LetterGrade => {
 export const getLocalAuthorityFinancesScore = (props: {
   aggregatedReconversionEconomicImpacts: AggregatedReconversionIndirectEconomicImpactsDataView["details"];
   stakeholders: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
-  municipalityCapitalExpenditures: { amount: number; referenceYear: string };
+  municipalityCapitalExpenditures: GetReconversionProjectImpactsResultDto["contextData"]["municipalityCapitalExpenditures"];
 }): RequiredIndicatorScore<LocalAuthorityFinancesIndicatorMetrics> => {
   const impactsByBearer = groupIndirectEconomicImpactsByBearer(
     props.aggregatedReconversionEconomicImpacts,
@@ -46,6 +46,7 @@ export const getLocalAuthorityFinancesScore = (props: {
     metrics: {
       projectLocalAuthorityIndirectEconomicImpactsTotal: localAuthorityTotal,
       percentageComparison: percentage,
+      municipalityCapitalExpendituresAccuracy: props.municipalityCapitalExpenditures.accuracy,
       municipalityCapitalExpendituresReferenceYear:
         props.municipalityCapitalExpenditures.referenceYear,
       municipalityCapitalExpendituresAmount: props.municipalityCapitalExpenditures.amount,

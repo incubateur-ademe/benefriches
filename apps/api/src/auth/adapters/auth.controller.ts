@@ -38,6 +38,10 @@ import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usec
 import { createLoginAttemptedEvent } from "../core/events/loginAttempted.event";
 import { createLoginSucceededEvent } from "../core/events/loginSucceeded.event";
 import {
+  ADMINISTRATOR_QUERY_INJECTION_TOKEN,
+  type AdministratorQuery,
+} from "../core/gateways/AdministratorQuery";
+import {
   AUTH_USER_REPOSITORY_INJECTION_TOKEN,
   type UserRepository,
 } from "../core/gateways/UsersRepository";
@@ -85,6 +89,7 @@ export class AuthController {
   private readonly eventPublisher: DomainEventPublisher;
   private readonly uidGenerator: UidGenerator;
   private readonly logger: AppLogger;
+  private readonly administratorQuery: AdministratorQuery;
   constructor(
     createUserUseCase: CreateUserUseCase,
     sendAuthLinkUseCase: SendAuthLinkUseCase,
@@ -100,6 +105,7 @@ export class AuthController {
     @Inject(DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN) eventPublisher: DomainEventPublisher,
     @Inject(UUID_GENERATOR_INJECTION_TOKEN) uidGenerator: UidGenerator,
     @Inject(AUTH_CONTROLLER_LOGGER_TOKEN) logger: AppLogger,
+    @Inject(ADMINISTRATOR_QUERY_INJECTION_TOKEN) administratorQuery: AdministratorQuery,
   ) {
     this.createUserUseCase = createUserUseCase;
     this.sendAuthLinkUseCase = sendAuthLinkUseCase;
@@ -113,6 +119,7 @@ export class AuthController {
     this.eventPublisher = eventPublisher;
     this.uidGenerator = uidGenerator;
     this.logger = logger;
+    this.administratorQuery = administratorQuery;
   }
 
   @Post("/register")
@@ -365,6 +372,8 @@ export class AuthController {
 
     if (!authenticatedUser) throw new UnauthorizedException();
 
+    const isAdmin = await this.administratorQuery.isAdministrator(authenticatedUser.id);
+
     res.json({
       id: authenticatedUser.id,
       email: authenticatedUser.email,
@@ -373,6 +382,7 @@ export class AuthController {
       structureType: authenticatedUser.structureType,
       structureActivity: authenticatedUser.structureActivity,
       structureName: authenticatedUser.structureName,
+      isAdmin,
     });
   }
 

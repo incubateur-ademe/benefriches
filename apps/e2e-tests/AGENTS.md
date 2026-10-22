@@ -1,6 +1,6 @@
 # E2E tests
 
-Playwright tests of full user flows, run against the e2e docker-compose stack (web on `http://localhost:3001`, see [playwright.config.ts](playwright.config.ts)). To start the stack and run tests, use the `run-e2e-tests` skill. To write a test (page object, fixtures, spec), use the `create-e2e-test` skill.
+Playwright tests of full user flows, run against the e2e docker-compose stack described by `.e2e-stack` at the repository root (written by `node adws/env.ts up <slot>`), else the default stack on `http://localhost:3001` (see [playwright.config.ts](playwright.config.ts)). To start the stack and run tests, use the `run-e2e-tests` skill. To write a test (page object, fixtures, spec), use the `create-e2e-test` skill.
 
 ## Checks
 

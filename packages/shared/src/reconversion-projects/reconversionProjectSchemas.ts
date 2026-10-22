@@ -3,7 +3,11 @@ import z from "zod";
 import type { DevelopmentPlanInstallationExpenses } from "../reconversion-project-impacts";
 import { soilTypeSchema } from "../soils";
 import { surfaceAreaSchema } from "../surface-area";
-import type { FinancialAssistanceRevenue, ReinstatementExpense } from "./_common";
+import {
+  reconversionProjectCreationModeSchema,
+  type FinancialAssistanceRevenue,
+  type ReinstatementExpense,
+} from "./_common";
 import type { RecurringExpense, RecurringRevenue } from "./renewable-energy";
 import type { BuildingsConstructionExpense, BuildingsUseDistribution } from "./urban-project";
 import {
@@ -67,7 +71,7 @@ export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSche
     createdBy: z.uuid(),
     createdAt: dateSchema,
     updatedAt: dateSchema.optional(),
-    creationMode: z.enum(["express", "custom", "duplicated", "csv-import"]),
+    creationMode: reconversionProjectCreationModeSchema,
     name: z.string(),
     description: z.string().optional(),
     relatedSiteId: z.uuid(),
