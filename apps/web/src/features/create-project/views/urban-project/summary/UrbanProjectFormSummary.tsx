@@ -302,27 +302,6 @@ function UrbanProjectFormSummary({
           </Section>
         )}
 
-        {/* 🔑 Cession foncière */}
-        <Section
-          title="🔑 Cession foncière"
-          {...getSectionProps(stepsGroupedBySections.SITE_RESALE)}
-        >
-          <DataLine
-            label={<strong>Cession foncière</strong>}
-            value={projectSummary.futureSiteOwner.value ? "Oui" : "Non"}
-          />
-          <DataLine
-            label={<strong>Revente des bâtiments</strong>}
-            value={
-              projectSummary.futureOperator.shouldDisplay
-                ? projectSummary.futureOperator.value
-                  ? "Oui"
-                  : "Non"
-                : "Non"
-            }
-          />
-        </Section>
-
         {/* 👥 Acteurs */}
         <Section
           title="👥 Acteurs"
@@ -342,6 +321,27 @@ function UrbanProjectFormSummary({
               value={buildingsContractorName.value ?? "Non renseigné"}
             />
           )}
+        </Section>
+
+        {/* 🔑 Cession foncière */}
+        <Section
+          title="🔑 Cession foncière"
+          {...getSectionProps(stepsGroupedBySections.SITE_RESALE)}
+        >
+          <DataLine
+            label={<strong>Cession foncière</strong>}
+            value={projectSummary.futureSiteOwner.value ? "Oui" : "Non"}
+          />
+          <DataLine
+            label={<strong>Revente des bâtiments</strong>}
+            value={
+              projectSummary.futureOperator.shouldDisplay
+                ? projectSummary.futureOperator.value
+                  ? "Oui"
+                  : "Non"
+                : "Non"
+            }
+          />
         </Section>
 
         {/* 💸 Dépenses */}
