@@ -9,8 +9,8 @@ import { creationProjectFormUrbanActions } from "@/features/create-project/core/
 
 describe("Urban project buildings sequencing - buildings on site, no buildings planned in project", () => {
   describe("forward navigation", () => {
-    it("goes through reuse with zero footprint then demolition to site resale (non-contaminated)", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> SITE_RESALE_INTRO
+    it("goes through reuse with zero footprint then demolition to the stakeholders introduction (non-contaminated)", () => {
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> STAKEHOLDERS_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -111,10 +111,10 @@ describe("Urban project buildings sequencing - buildings on site, no buildings p
   });
 
   describe("backward navigation", () => {
-    it("goes back from site resale to the soils carbon summary (involvesReinstatement=false)", () => {
-      // SITE_RESALE_INTRO -> INVOLVES_REINSTATEMENT -> DEMOLITION_INFO -> SOILS_CARBON_SUMMARY
+    it("goes back from the stakeholders introduction to the soils carbon summary (involvesReinstatement=false)", () => {
+      // STAKEHOLDERS_INTRO -> INVOLVES_REINSTATEMENT -> DEMOLITION_INFO -> SOILS_CARBON_SUMMARY
       const store = new StoreBuilder()
-        .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+        .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
         .withSiteData({
           soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 2000 },
           hasContaminatedSoils: false,

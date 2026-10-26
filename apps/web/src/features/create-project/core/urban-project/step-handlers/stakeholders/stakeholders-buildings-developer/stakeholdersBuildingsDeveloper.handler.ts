@@ -18,7 +18,7 @@ export const StakeholdersBuildingsDeveloperHandler: AnswerStepHandler<typeof STE
     if (involvesReinstatement !== false && context.siteData?.nature === "FRICHE") {
       return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
     }
-    return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
+    return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
   },
   getDependencyRules({ answers }) {
     if (!answers.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION) {

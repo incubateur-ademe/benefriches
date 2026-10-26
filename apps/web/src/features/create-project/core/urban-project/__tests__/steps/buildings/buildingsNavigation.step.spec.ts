@@ -49,7 +49,7 @@ describe("Urban project creation - Steps - Buildings navigation", () => {
   });
 
   describe("Buildings chapter exit routing", () => {
-    it("routes from the last buildings step to site resale when the site is not a FRICHE and has no contaminated soils", () => {
+    it("routes from the last buildings step to the stakeholders introduction when the site is not a FRICHE and has no contaminated soils", () => {
       const store = new StoreBuilder()
         .withSiteData({
           nature: "AGRICULTURAL_OPERATION",
@@ -88,7 +88,7 @@ describe("Urban project creation - Steps - Buildings navigation", () => {
         }),
       );
 
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
     });
 
     it("routes from the last buildings step to decontamination when the site is not a FRICHE but has contaminated soils", () => {

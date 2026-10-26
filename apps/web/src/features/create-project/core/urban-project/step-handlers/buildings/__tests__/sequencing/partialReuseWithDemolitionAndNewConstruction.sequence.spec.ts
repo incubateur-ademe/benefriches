@@ -10,8 +10,8 @@ import { creationProjectFormUrbanActions } from "@/features/create-project/core/
 
 describe("Urban project buildings sequencing - partial reuse with demolition and new construction", () => {
   describe("forward navigation", () => {
-    it("goes through demolition, existing uses, and new buildings uses before exiting to site resale", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> EXISTING_USES -> NEW_CONSTRUCTION_INFO -> NEW_USES -> SITE_RESALE_INTRO
+    it("goes through demolition, existing uses, and new buildings uses before exiting to the stakeholders introduction", () => {
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> EXISTING_USES -> NEW_CONSTRUCTION_INFO -> NEW_USES -> STAKEHOLDERS_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -86,7 +86,7 @@ describe("Urban project buildings sequencing - partial reuse with demolition and
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
-    it("exits to decontamination instead of resale when the site is contaminated", () => {
+    it("exits to decontamination instead of the stakeholders introduction when the site is contaminated", () => {
       // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> EXISTING_USES -> NEW_CONSTRUCTION_INFO -> NEW_USES -> SOILS_DECONTAMINATION_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
@@ -160,10 +160,10 @@ describe("Urban project buildings sequencing - partial reuse with demolition and
   });
 
   describe("backward navigation", () => {
-    it("goes back from site resale to introduction", () => {
-      // SITE_RESALE_INTRO -> INVOLVES_REINSTATEMENT -> NEW_USES -> NEW_CONSTRUCTION_INFO -> EXISTING_USES -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
+    it("goes back from the stakeholders introduction to introduction", () => {
+      // STAKEHOLDERS_INTRO -> INVOLVES_REINSTATEMENT -> NEW_USES -> NEW_CONSTRUCTION_INFO -> EXISTING_USES -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
-        .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+        .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
         .withSiteData({
           soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 2000 },
           hasContaminatedSoils: false,

@@ -5,7 +5,8 @@ import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import type { UrbanProjectStepsState } from "../../../urbanProject.state";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
-const { stepCompletionRequested, stepCompletionConfirmed } = creationProjectFormUrbanActions;
+const { stepCompletionRequested, stepCompletionConfirmed, previousStepRequested } =
+  creationProjectFormUrbanActions;
 
 const INITIAL_STEPS: UrbanProjectStepsState = {
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
@@ -26,7 +27,7 @@ const getData = (store: ReturnType<StoreBuilder["build"]>) =>
   getProjectData(store.getState().projectCreation.urbanProject.form.steps);
 
 describe("Urban project creation - Steps - buildings resale selection", () => {
-  it("assigns the default future operator and routes to stakeholders when resale is planned", () => {
+  it("assigns the default future operator and routes to the expenses introduction when resale is planned", () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
@@ -40,10 +41,10 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
       name: "Futur exploitant inconnu",
       structureType: "unknown",
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 
-  it("keeps the developer as future operator and routes to stakeholders when resale is not planned", () => {
+  it("keeps the developer as future operator and routes to the expenses introduction when resale is not planned", () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
@@ -57,7 +58,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
       structureType: "municipality",
       name: "Mairie d'angers",
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 
   it("discards buildings resale revenue when switching to resale not planned", () => {
@@ -87,6 +88,20 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
     store.dispatch(stepCompletionConfirmed());
 
     expect(getData(store).buildingsResaleExpectedSellingPrice).toBeUndefined();
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
+  });
+
+  it("goes back to the site resale selection", () => {
+    // Arrange
+    const store = new StoreBuilder()
+      .withSteps(INITIAL_STEPS)
+      .withCurrentStep("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION")
+      .build();
+
+    // Act
+    store.dispatch(previousStepRequested());
+
+    // Assert
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
   });
 });

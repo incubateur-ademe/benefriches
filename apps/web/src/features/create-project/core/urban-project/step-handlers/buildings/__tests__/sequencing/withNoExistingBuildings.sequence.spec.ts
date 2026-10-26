@@ -9,8 +9,8 @@ import { creationProjectFormUrbanActions } from "@/features/create-project/core/
 
 describe("Urban project buildings sequencing - without buildings", () => {
   describe("forward navigation", () => {
-    it("skips reuse steps and goes directly to new construction then site resale (non-contaminated)", () => {
-      // INTRO -> FLOOR_AREA -> NEW_CONSTRUCTION_INTRO -> SITE_RESALE_INTRO
+    it("skips reuse steps and goes directly to new construction then the stakeholders introduction (non-contaminated)", () => {
+      // INTRO -> FLOOR_AREA -> NEW_CONSTRUCTION_INTRO -> STAKEHOLDERS_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -46,7 +46,7 @@ describe("Urban project buildings sequencing - without buildings", () => {
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
-    it("exits to decontamination instead of resale when site has contaminated soils", () => {
+    it("exits to decontamination instead of the stakeholders introduction when site has contaminated soils", () => {
       // INTRO -> FLOOR_AREA -> NEW_CONSTRUCTION_INTRO -> SOILS_DECONTAMINATION_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
@@ -85,10 +85,10 @@ describe("Urban project buildings sequencing - without buildings", () => {
   });
 
   describe("backward navigation", () => {
-    it("goes back from site resale to introduction (non-contaminated)", () => {
-      // SITE_RESALE_INTRO -> INVOLVES_REINSTATEMENT -> NEW_CONSTRUCTION_INTRO -> FLOOR_AREA -> INTRO
+    it("goes back from the stakeholders introduction to introduction (non-contaminated)", () => {
+      // STAKEHOLDERS_INTRO -> INVOLVES_REINSTATEMENT -> NEW_CONSTRUCTION_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
-        .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+        .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
         .withSiteData({
           soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 0 },
           hasContaminatedSoils: false,

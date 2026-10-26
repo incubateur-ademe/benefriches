@@ -12,31 +12,36 @@ describe("ExpensesIntroductionHandler", () => {
   });
 
   describe("getPreviousStepId", () => {
-    it("should return URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER when site is a friche", () => {
+    it("should return URBAN_PROJECT_BUILDINGS_RESALE_SELECTION when the project has a buildings use and footprint", () => {
       const previousStep = ExpensesIntroductionHandler.getPreviousStepId({
-        answers: {},
-        context: { siteData: { nature: "FRICHE" } as never },
-      });
-
-      expect(previousStep).toBe("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
-    });
-
-    it("should return URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER when site is not a friche", () => {
-      const previousStep = ExpensesIntroductionHandler.getPreviousStepId({
-        answers: {},
-        context: { siteData: { nature: "AGRICULTURAL" } as never },
-      });
-
-      expect(previousStep).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
-    });
-
-    it("should return URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER when no site data", () => {
-      const previousStep = ExpensesIntroductionHandler.getPreviousStepId({
-        answers: {},
+        answers: {
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 3000 } },
+          },
+        },
         context: { siteData: undefined },
       });
 
-      expect(previousStep).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
+      expect(previousStep).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+    });
+
+    it("should return URBAN_PROJECT_SITE_RESALE_SELECTION when the project has no buildings use", () => {
+      const previousStep = ExpensesIntroductionHandler.getPreviousStepId({
+        answers: {
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
+          },
+        },
+        context: { siteData: undefined },
+      });
+
+      expect(previousStep).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
     });
   });
 });

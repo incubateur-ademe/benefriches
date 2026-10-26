@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import { getProjectData } from "../helpers/readers/projectDataReaders";
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
+import { creationProjectFormSelectors } from "../urbanProject.selectors";
+import { mockSiteData } from "./_siteData.mock";
 import { getCurrentStep, StoreBuilder } from "./_testStoreHelpers";
 
 const {
@@ -150,25 +152,6 @@ describe("Urban project creation flow (behaviour-net)", () => {
       }),
     );
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
-    dispatch(nextStepRequested());
-
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
-    dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
-        answers: { siteResaleSelection: "yes" },
-      }),
-    );
-
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
-    dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-        answers: { buildingsResalePlannedAfterDevelopment: true },
-      }),
-    );
-
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
     dispatch(nextStepRequested());
 
@@ -190,6 +173,25 @@ describe("Urban project creation flow (behaviour-net)", () => {
             structureType: "company",
           },
         },
+      }),
+    );
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+    dispatch(nextStepRequested());
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
+        answers: { siteResaleSelection: "yes" },
+      }),
+    );
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
+        answers: { buildingsResalePlannedAfterDevelopment: true },
       }),
     );
 
@@ -364,6 +366,17 @@ describe("Urban project creation flow (behaviour-net)", () => {
         answers: { decontaminationPlan: "none" },
       }),
     );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+
+    dispatch(nextStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
+
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
+        answers: { projectDeveloper: { name: "Promoteur Test", structureType: "company" } },
+      }),
+    );
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
 
     dispatch(nextStepRequested());
@@ -376,6 +389,14 @@ describe("Urban project creation flow (behaviour-net)", () => {
       }),
     );
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
+        answers: { buildingsResalePlannedAfterDevelopment: false },
+      }),
+    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
 
     const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
     expect(projectData.involvesReinstatement).toBe(false);
@@ -396,7 +417,7 @@ describe("Urban project creation flow (behaviour-net)", () => {
         }),
       );
 
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
       const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
       expect(projectData.decontaminatedSoilSurface).toBe(0);
     });
@@ -413,7 +434,7 @@ describe("Urban project creation flow (behaviour-net)", () => {
         }),
       );
 
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
       const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
       expect(projectData.decontaminatedSoilSurface).toBe(500);
     });
@@ -430,7 +451,7 @@ describe("Urban project creation flow (behaviour-net)", () => {
         }),
       );
 
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
       const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
       expect(projectData.decontaminatedSoilSurface).toBe(1200);
     });
@@ -522,5 +543,147 @@ describe("Urban project creation flow (behaviour-net)", () => {
     const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
     expect(projectData.yearlyProjectedCosts).toEqual([]);
     expect(projectData.yearlyProjectedRevenues).toEqual([]);
+  });
+
+  it("walks back from the expenses introduction through Cession foncière then Acteurs to the decontamination step", () => {
+    // Arrange — mockSiteData: contaminated FRICHE with 2000 m2 of buildings, all reused
+    const store = new StoreBuilder()
+      .withSiteData(mockSiteData)
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 2000, IMPERMEABLE_SOILS: 8000 } },
+        },
+        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+          completed: true,
+          payload: { buildingsFootprintToReuse: 2000 },
+        },
+        URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
+          completed: true,
+          payload: { involvesReinstatement: true },
+        },
+        URBAN_PROJECT_SOILS_DECONTAMINATION: {
+          completed: true,
+          payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+          completed: true,
+          payload: { projectDeveloper: { name: "Promoteur Test", structureType: "company" } },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: {
+          completed: true,
+          payload: {
+            reinstatementContractOwner: { name: "Entreprise Test", structureType: "company" },
+          },
+        },
+        URBAN_PROJECT_SITE_RESALE_SELECTION: {
+          completed: true,
+          payload: { siteResaleSelection: "no" },
+        },
+        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+          completed: true,
+          payload: { buildingsResalePlannedAfterDevelopment: false },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_EXPENSES_INTRODUCTION")
+      .build();
+
+    // Act / Assert
+    store.dispatch(previousStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+
+    store.dispatch(previousStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
+
+    store.dispatch(previousStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+
+    store.dispatch(previousStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
+
+    store.dispatch(previousStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
+
+    store.dispatch(previousStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+
+    store.dispatch(previousStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION");
+  });
+
+  it("shows Acteurs before Cession foncière in the stepper", () => {
+    // Arrange
+    const store = new StoreBuilder()
+      .withSiteData(mockSiteData)
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 2000, IMPERMEABLE_SOILS: 8000 } },
+        },
+        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+          completed: true,
+          payload: { buildingsFootprintToReuse: 2000 },
+        },
+        URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
+          completed: true,
+          payload: { involvesReinstatement: true },
+        },
+        URBAN_PROJECT_SOILS_DECONTAMINATION: {
+          completed: true,
+          payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+          completed: true,
+          payload: { projectDeveloper: { name: "Promoteur Test", structureType: "company" } },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: {
+          completed: true,
+          payload: {
+            reinstatementContractOwner: { name: "Entreprise Test", structureType: "company" },
+          },
+        },
+        URBAN_PROJECT_SITE_RESALE_SELECTION: {
+          completed: true,
+          payload: { siteResaleSelection: "no" },
+        },
+        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+          completed: true,
+          payload: { buildingsResalePlannedAfterDevelopment: false },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION")
+      .build();
+
+    // Act — completing a step recomputes the steps sequence the stepper is built from
+    store.dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
+        answers: { buildingsResalePlannedAfterDevelopment: false },
+      }),
+    );
+    const stepGroups = creationProjectFormSelectors.selectStepsGroupedBySections(store.getState());
+
+    // Assert
+    expect(Object.keys(stepGroups)).toEqual([
+      "USES",
+      "SPACES",
+      "BUILDINGS",
+      "SOILS_DECONTAMINATION",
+      "STAKEHOLDERS",
+      "SITE_RESALE",
+      "EXPENSES",
+      "REVENUE",
+      "SCHEDULE",
+      "NAMING",
+      "SUMMARY",
+    ]);
   });
 });

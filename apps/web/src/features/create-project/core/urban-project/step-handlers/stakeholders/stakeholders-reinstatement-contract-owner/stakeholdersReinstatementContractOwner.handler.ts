@@ -13,6 +13,6 @@ export const StakeholdersReinstatementContractOwnerHandler = {
   },
 
   getNextStepId() {
-    return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
+    return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
   },
 } satisfies AnswerStepHandler<"URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER">;

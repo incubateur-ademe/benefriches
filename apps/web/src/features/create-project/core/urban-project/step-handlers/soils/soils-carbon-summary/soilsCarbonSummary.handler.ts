@@ -26,6 +26,6 @@ export const SoilsCarbonSummaryHandler = {
       return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
     }
 
-    return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
+    return "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
   },
 } satisfies InfoStepHandler;

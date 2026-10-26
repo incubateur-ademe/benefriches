@@ -6,7 +6,7 @@ export const BuildingsResaleSelectionHandler = {
   stepId: STEP_ID,
 
   getNextStepId() {
-    return "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
+    return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
   },
 
   getPreviousStepId() {

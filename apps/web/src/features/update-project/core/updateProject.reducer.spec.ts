@@ -1,16 +1,19 @@
 import { describe, expect, it } from "vitest";
 
+import { createStore } from "@/app/store/store";
 import { mockSiteData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
 import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
 import { stepHandlerRegistry } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
 import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import {
   reconversionProjectUpdateInitiated,
   updateProjectFormUrbanActions,
 } from "./updateProject.actions";
 import updateProjectReducer from "./updateProject.reducer";
+import { updateUrbanProjectFormSelectors } from "./updateProject.selectors";
 import type { UpdateProjectView } from "./updateProject.types";
 
 describe("update project reducer", () => {
@@ -360,5 +363,79 @@ describe("update project reducer", () => {
     const dataToSave = getProjectData(state.urbanProject.form.steps);
     expect(dataToSave.yearlyProjectedCosts).toEqual([]);
     expect(dataToSave.yearlyProjectedRevenues).toEqual([]);
+  });
+
+  it("orders Acteurs before Cession foncière in the edit stepper", () => {
+    // Arrange
+    const projectData: UpdateProjectView["projectData"] = {
+      id: "project-1",
+      createdBy: "user-1",
+      createdAt: "2026-01-01",
+      creationMode: "custom",
+      name: "Projet de test",
+      relatedSiteId: "site-1",
+      involvesReinstatement: false,
+      projectPhase: "planning",
+      developmentPlan: {
+        type: "URBAN_PROJECT",
+        developer: { name: "Dev Corp", structureType: "company" },
+        costs: [],
+        features: { buildingsFloorAreaDistribution: { RESIDENTIAL: 1000 } },
+      },
+      soilsDistribution: [
+        { soilType: "BUILDINGS", spaceCategory: "LIVING_AND_ACTIVITY_SPACE", surfaceArea: 1000 },
+      ],
+      yearlyProjectedCosts: [],
+      yearlyProjectedRevenues: [],
+    };
+    const siteData: UpdateProjectView["siteData"] = {
+      id: "site-1",
+      name: "Friche test",
+      nature: "FRICHE",
+      isExpressSite: false,
+      owner: { structureType: "company", name: "Owner" },
+      hasContaminatedSoils: false,
+      soilsDistribution: {},
+      surfaceArea: 5000,
+      address: {
+        banId: "addr-1",
+        city: "Paris",
+        cityCode: "75056",
+        postCode: "75001",
+        streetName: "Rue",
+        streetNumber: "1",
+        value: "1 Rue, 75001 Paris",
+        long: 2.35,
+        lat: 48.85,
+      },
+    };
+    const store = createStore(getTestAppDependencies());
+    store.dispatch(
+      reconversionProjectUpdateInitiated.fulfilled(
+        { projectData, siteData },
+        "request-1",
+        "project-1",
+      ),
+    );
+
+    // Act
+    const stepGroups = updateUrbanProjectFormSelectors.selectStepsGroupedBySections(
+      store.getState(),
+    );
+
+    // Assert
+    expect(Object.keys(stepGroups)).toEqual([
+      "USES",
+      "SPACES",
+      "BUILDINGS",
+      "SOILS_DECONTAMINATION",
+      "STAKEHOLDERS",
+      "SITE_RESALE",
+      "EXPENSES",
+      "REVENUE",
+      "SCHEDULE",
+      "NAMING",
+      "SUMMARY",
+    ]);
   });
 });

@@ -78,7 +78,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
     store.dispatch(stepCompletionConfirmed());
 
     expect(getData(store).siteResaleExpectedSellingPrice).toBeUndefined();
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 
   it("removes a previously entered site resale revenue when switching to 'no'", () => {
@@ -105,7 +105,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
 
     expect(getData(store).siteResaleExpectedSellingPrice).toBeUndefined();
     expect(getData(store).futureSiteOwner).toBeUndefined();
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 
   it("marks the resale estimation as failed when the valuation service errors on 'unknown'", async () => {
@@ -173,6 +173,6 @@ describe("Urban project creation - Steps - site resale selection", () => {
     );
 
     // Without a buildings footprint there are no buildings to resell.
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 });

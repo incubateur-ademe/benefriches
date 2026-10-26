@@ -19,7 +19,7 @@ const CONTAMINATED_SITE = { hasContaminatedSoils: true, contaminatedSoilSurface:
 
 describe("Urban project creation - Steps - Soils decontamination", () => {
   describe("resolved decontaminated surface", () => {
-    it("stores 0 m2 and goes to the site resale introduction for 'none'", () => {
+    it("stores 0 m2 and goes to the stakeholders introduction for 'none'", () => {
       const store = new StoreBuilder()
         .withSiteData(CONTAMINATED_SITE)
         .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION")
@@ -33,10 +33,10 @@ describe("Urban project creation - Steps - Soils decontamination", () => {
       );
 
       expect(getData(store).decontaminatedSoilSurface).toBe(0);
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
     });
 
-    it("stores the 25% default and goes to the site resale introduction for 'unknown'", () => {
+    it("stores the 25% default and goes to the stakeholders introduction for 'unknown'", () => {
       const store = new StoreBuilder()
         .withSiteData(CONTAMINATED_SITE)
         .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION")
@@ -50,10 +50,10 @@ describe("Urban project creation - Steps - Soils decontamination", () => {
       );
 
       expect(getData(store).decontaminatedSoilSurface).toBe(500);
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
     });
 
-    it("stores the entered surface and goes to the site resale introduction for 'partial'", () => {
+    it("stores the entered surface and goes to the stakeholders introduction for 'partial'", () => {
       const store = new StoreBuilder()
         .withSiteData(CONTAMINATED_SITE)
         .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION")
@@ -67,7 +67,7 @@ describe("Urban project creation - Steps - Soils decontamination", () => {
       );
 
       expect(getData(store).decontaminatedSoilSurface).toBe(1200);
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
     });
 
     it("replaces a previously entered surface with 0 m2 when switching 'partial' to 'none'", () => {
@@ -163,7 +163,7 @@ describe("Urban project creation - Steps - Soils decontamination", () => {
       expect(
         store.getState().projectCreation.urbanProject.form.pendingStepCompletion,
       ).toBeUndefined();
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
       expect(getRemediationAmount(store)).toBe(100000);
     });
 

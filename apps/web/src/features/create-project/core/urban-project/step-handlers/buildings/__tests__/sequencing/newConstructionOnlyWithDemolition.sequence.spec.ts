@@ -9,8 +9,8 @@ import { creationProjectFormUrbanActions } from "@/features/create-project/core/
 
 describe("Urban project buildings sequencing - new construction only with demolition", () => {
   describe("forward navigation", () => {
-    it("demolishes all existing buildings then shows new construction info before site resale (non-contaminated)", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT(0) -> DEMOLITION_INFO -> NEW_CONSTRUCTION_INFO -> SITE_RESALE_INTRO
+    it("demolishes all existing buildings then shows new construction info before the stakeholders introduction (non-contaminated)", () => {
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT(0) -> DEMOLITION_INFO -> NEW_CONSTRUCTION_INFO -> STAKEHOLDERS_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -62,7 +62,7 @@ describe("Urban project buildings sequencing - new construction only with demoli
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
-    it("exits to decontamination instead of resale when site has contaminated soils", () => {
+    it("exits to decontamination instead of the stakeholders introduction when site has contaminated soils", () => {
       // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT(0) -> DEMOLITION_INFO -> NEW_CONSTRUCTION_INFO -> SOILS_DECONTAMINATION_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
@@ -116,10 +116,10 @@ describe("Urban project buildings sequencing - new construction only with demoli
   });
 
   describe("backward navigation", () => {
-    it("goes back from site resale to introduction (non-contaminated)", () => {
-      // SITE_RESALE_INTRO -> INVOLVES_REINSTATEMENT -> NEW_CONSTRUCTION_INFO -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
+    it("goes back from the stakeholders introduction to introduction (non-contaminated)", () => {
+      // STAKEHOLDERS_INTRO -> INVOLVES_REINSTATEMENT -> NEW_CONSTRUCTION_INFO -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
-        .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+        .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
         .withSiteData({
           soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 2500 },
           hasContaminatedSoils: false,
