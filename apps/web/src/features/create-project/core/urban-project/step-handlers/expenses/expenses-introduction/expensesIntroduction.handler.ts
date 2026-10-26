@@ -1,6 +1,5 @@
-import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
+import { willHaveBuildings } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
 
-import { willConstructNewBuildings } from "../../buildings/buildingsReaders";
 import type { InfoStepHandler } from "../../stepHandler.type";
 
 export const ExpensesIntroductionHandler = {
@@ -10,18 +9,10 @@ export const ExpensesIntroductionHandler = {
     return "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS";
   },
 
-  getPreviousStepId({ answers, context }) {
-    const involvesReinstatement = ReadStateHelper.getStepAnswers(
-      answers,
-      "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
-    )?.involvesReinstatement;
-
-    if (involvesReinstatement !== false && context.siteData?.nature === "FRICHE") {
-      return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
+  getPreviousStepId({ answers }) {
+    if (willHaveBuildings(answers)) {
+      return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
-    if (willConstructNewBuildings(answers)) {
-      return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
-    }
-    return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";
+    return "URBAN_PROJECT_SITE_RESALE_SELECTION";
   },
 } satisfies InfoStepHandler;

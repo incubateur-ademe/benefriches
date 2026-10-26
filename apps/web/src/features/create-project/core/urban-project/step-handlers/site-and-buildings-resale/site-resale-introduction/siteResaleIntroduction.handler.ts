@@ -1,34 +1,24 @@
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
-import {
-  getLastBuildingsChapterStep,
-  shouldEnterBuildingsChapter,
-} from "../../buildings/buildingsReaders";
+import { willConstructNewBuildings } from "../../buildings/buildingsReaders";
 import type { InfoStepHandler } from "../../stepHandler.type";
 
 export const SiteResaleIntroductionHandler = {
   stepId: "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
 
-  getPreviousStepId(params) {
-    const { answers, context } = params;
-    const decontaminationPlan = ReadStateHelper.getStepAnswers(
+  getPreviousStepId({ answers, context }) {
+    const involvesReinstatement = ReadStateHelper.getStepAnswers(
       answers,
-      "URBAN_PROJECT_SOILS_DECONTAMINATION",
-    )?.decontaminationPlan;
+      "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+    )?.involvesReinstatement;
 
-    if (context.siteData?.hasContaminatedSoils || decontaminationPlan !== undefined) {
-      return "URBAN_PROJECT_SOILS_DECONTAMINATION";
+    if (involvesReinstatement !== false && context.siteData?.nature === "FRICHE") {
+      return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
     }
-
-    if (context.siteData?.nature === "FRICHE") {
-      return "URBAN_PROJECT_INVOLVES_REINSTATEMENT";
+    if (willConstructNewBuildings(answers)) {
+      return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
     }
-
-    if (shouldEnterBuildingsChapter(params)) {
-      return getLastBuildingsChapterStep(params);
-    }
-
-    return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
+    return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";
   },
 
   getNextStepId() {

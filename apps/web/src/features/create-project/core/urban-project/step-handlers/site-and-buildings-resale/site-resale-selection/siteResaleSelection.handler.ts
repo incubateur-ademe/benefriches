@@ -12,7 +12,7 @@ export const SiteResaleSelectionHandler = {
       return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
 
-    return "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
+    return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
   },
 
   getPreviousStepId() {

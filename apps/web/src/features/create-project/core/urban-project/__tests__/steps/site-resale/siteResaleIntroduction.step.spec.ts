@@ -6,23 +6,39 @@ import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const { previousStepRequested } = creationProjectFormUrbanActions;
 
-const testScenarios = {
-  withBuildingsAndContamination: mockSiteData,
-  withoutContamination: {
-    ...mockSiteData,
-    hasContaminatedSoils: false,
-  },
-};
-
 describe("Urban project creation - Steps - Site resale introduction navigation", () => {
-  it("should go back from site resale introduction to involves reinstatement step when involvesReinstatement is false", () => {
-    // Arrange — non-contaminated friche, reinstatement declined, multiple building use steps completed
+  it("goes back to the reinstatement contract owner on a friche involving reinstatement", () => {
+    // Arrange
     const store = new StoreBuilder()
-      .withSiteData(testScenarios.withoutContamination)
+      .withSiteData({ ...mockSiteData, nature: "FRICHE" })
       .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
+          completed: true,
+          payload: { involvesReinstatement: true },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+      .build();
+
+    // Act
+    store.dispatch(previousStepRequested());
+
+    // Assert
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
+  });
+
+  it("goes back to the buildings developer on a non-friche site with new construction", () => {
+    // Arrange
+    const store = new StoreBuilder()
+      .withSiteData({ nature: "AGRICULTURAL_OPERATION" })
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
         },
         URBAN_PROJECT_SPACES_SURFACE_AREA: {
           completed: true,
@@ -32,19 +48,47 @@ describe("Urban project creation - Steps - Site resale introduction navigation",
         },
         URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
           completed: true,
-          payload: { buildingsFootprintToReuse: 2000 },
+          payload: { buildingsFootprintToReuse: 1000 },
         },
-        URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+      })
+      .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+      .build();
+
+    // Act
+    store.dispatch(previousStepRequested());
+
+    // Assert
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
+  });
+
+  it("goes back to the project developer on a non-friche site without new construction", () => {
+    // Arrange
+    const store = new StoreBuilder()
+      .withSiteData({ nature: "AGRICULTURAL_OPERATION" })
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: {
-            existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1600, OFFICES: 400 },
-          },
+          payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
         },
-        URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+      })
+      .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+      .build();
+
+    // Act
+    store.dispatch(previousStepRequested());
+
+    // Assert
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
+  });
+
+  it("goes back to the project developer on a friche not involving reinstatement", () => {
+    // Arrange — no new construction
+    const store = new StoreBuilder()
+      .withSiteData({ ...mockSiteData, nature: "FRICHE" })
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: {
-            newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 800, OFFICES: 200 },
-          },
+          payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
         },
         URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
           completed: true,
@@ -58,34 +102,6 @@ describe("Urban project creation - Steps - Site resale introduction navigation",
     store.dispatch(previousStepRequested());
 
     // Assert
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
-  });
-
-  it("should go back from site resale introduction to the decontamination step on a contaminated friche even when involvesReinstatement is false", () => {
-    // Arrange — contaminated friche, reinstatement declined but decontamination steps completed
-    const store = new StoreBuilder()
-      .withSiteData(testScenarios.withBuildingsAndContamination)
-      .withSteps({
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-        URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
-          completed: true,
-          payload: { involvesReinstatement: false },
-        },
-        URBAN_PROJECT_SOILS_DECONTAMINATION: {
-          completed: true,
-          payload: { decontaminationPlan: "partial", decontaminatedSurfaceArea: 1500 },
-        },
-      })
-      .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
-      .build();
-
-    // Act
-    store.dispatch(previousStepRequested());
-
-    // Assert — decontamination overrides reinstatement as back target when contamination exists
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
   });
 });

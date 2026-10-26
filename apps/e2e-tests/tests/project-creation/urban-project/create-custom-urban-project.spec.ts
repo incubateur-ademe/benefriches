@@ -145,6 +145,14 @@ test.describe("urban project creation - custom mode", () => {
       );
       await urbanProjectCreationPage.goToNextStep(); // new construction introduction
 
+      // --- acteurs ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
+      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
+      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
+      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
+      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
+      await urbanProjectCreationPage.selectBuildingsDeveloper(true);
+
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
       await urbanProjectCreationPage.goToNextStep(); // site resale introduction
@@ -154,14 +162,6 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.selectSiteResale(false);
       await urbanProjectCreationPage.expectStepTitle("les bâtiments seront-ils revendus");
       await urbanProjectCreationPage.selectBuildingsResale(false);
-
-      // --- acteurs ---
-      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
-      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
-      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
-      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
-      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
-      await urbanProjectCreationPage.selectBuildingsDeveloper(true);
 
       // --- dépenses ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
@@ -236,6 +236,12 @@ test.describe("urban project creation - custom mode", () => {
       );
       await urbanProjectCreationPage.goToNextStep(); // carbon storage
 
+      // --- acteurs ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
+      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
+      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
+      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
+
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
       await urbanProjectCreationPage.goToNextStep(); // site resale introduction
@@ -243,12 +249,6 @@ test.describe("urban project creation - custom mode", () => {
         "Y aura-t-il une cession foncière suite à l'aménagement du site",
       );
       await urbanProjectCreationPage.selectSiteResale(false);
-
-      // --- acteurs ---
-      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
-      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
-      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
-      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
 
       // --- dépenses ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
@@ -336,6 +336,12 @@ test.describe("urban project creation - custom mode", () => {
 
       // --- dépollution des sols : ignorée car le site n'est pas pollué ---
 
+      // --- acteurs ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
+      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
+      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
+      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
+
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
       await urbanProjectCreationPage.goToNextStep(); // site resale introduction
@@ -343,12 +349,6 @@ test.describe("urban project creation - custom mode", () => {
         "Y aura-t-il une cession foncière suite à l'aménagement du site",
       );
       await urbanProjectCreationPage.selectSiteResale(false);
-
-      // --- acteurs ---
-      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
-      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
-      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
-      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
 
       // --- dépenses ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
@@ -461,6 +461,14 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.expectStepTitle("Est-il nécessaire de dépolluer les sols");
       await urbanProjectCreationPage.submitOrSkipStep(); // decontamination (skip: "Ne sait pas")
 
+      // --- acteurs ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
+      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
+      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
+      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
+      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
+      await urbanProjectCreationPage.selectBuildingsDeveloper(true);
+
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
       await urbanProjectCreationPage.goToNextStep(); // site resale introduction
@@ -470,14 +478,6 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.selectSiteResale(false);
       await urbanProjectCreationPage.expectStepTitle("les bâtiments seront-ils revendus");
       await urbanProjectCreationPage.selectBuildingsResale(true);
-
-      // --- acteurs ---
-      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
-      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
-      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
-      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
-      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
-      await urbanProjectCreationPage.selectBuildingsDeveloper(true);
 
       // --- dépenses ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
@@ -584,6 +584,14 @@ test.describe("urban project creation - custom mode", () => {
 
       // --- dépollution des sols : ignorée car le site n'est pas pollué ---
 
+      // --- acteurs ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
+      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
+      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
+      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
+      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
+      await urbanProjectCreationPage.selectBuildingsDeveloper(true);
+
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
       await urbanProjectCreationPage.goToNextStep(); // site resale introduction
@@ -593,14 +601,6 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.selectSiteResale(false);
       await urbanProjectCreationPage.expectStepTitle("les bâtiments seront-ils revendus");
       await urbanProjectCreationPage.selectBuildingsResale(true);
-
-      // --- acteurs ---
-      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
-      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
-      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
-      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
-      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
-      await urbanProjectCreationPage.selectBuildingsDeveloper(true);
 
       // --- dépenses ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");

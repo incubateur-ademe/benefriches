@@ -37,7 +37,7 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
   });
 
-  it("should navigate to SITE_RESALE_INTRODUCTION when involvesReinstatement is true on a non-contaminated friche", () => {
+  it("should navigate to STAKEHOLDERS_INTRODUCTION when involvesReinstatement is true on a non-contaminated friche", () => {
     const store = new StoreBuilder()
       .withSiteData({ hasContaminatedSoils: false, contaminatedSoilSurface: 0 })
       .build();
@@ -49,10 +49,10 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
       }),
     );
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
   });
 
-  it("should navigate to SITE_RESALE_INTRODUCTION when involvesReinstatement is false on a non-contaminated friche", () => {
+  it("should navigate to STAKEHOLDERS_INTRODUCTION when involvesReinstatement is false on a non-contaminated friche", () => {
     const store = new StoreBuilder()
       .withSiteData({ hasContaminatedSoils: false, contaminatedSoilSurface: 0 })
       .build();
@@ -64,7 +64,7 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
       }),
     );
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
   });
 
   it("should drop reinstatement-specific answers from the project data when switching from true to false", () => {

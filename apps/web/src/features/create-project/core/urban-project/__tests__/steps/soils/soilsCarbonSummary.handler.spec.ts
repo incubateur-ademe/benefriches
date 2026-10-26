@@ -106,7 +106,7 @@ describe("SoilsCarbonSummaryHandler", () => {
       expect(nextStep).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
     });
 
-    it("skips buildings chapter and routes to SITE_RESALE_INTRODUCTION when site has no buildings and willHaveBuildings is false on non-contaminated site", () => {
+    it("skips buildings chapter and routes to STAKEHOLDERS_INTRODUCTION when site has no buildings and willHaveBuildings is false on non-contaminated site", () => {
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
         answers: {
           URBAN_PROJECT_USES_SELECTION: {
@@ -122,7 +122,7 @@ describe("SoilsCarbonSummaryHandler", () => {
         } as never,
       });
 
-      expect(nextStep).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(nextStep).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
     });
   });
 });

@@ -10,7 +10,7 @@ import { creationProjectFormUrbanActions } from "@/features/create-project/core/
 describe("Urban project buildings sequencing - building use planned but no buildings surface area", () => {
   describe("forward navigation", () => {
     it("skips the buildings chapter entirely when the buildings footprint is 0 and the site has no buildings", () => {
-      // SOILS_CARBON_SUMMARY -> SITE_RESALE_INTRODUCTION (skips the whole buildings chapter)
+      // SOILS_CARBON_SUMMARY -> STAKEHOLDERS_INTRODUCTION (skips the whole buildings chapter)
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SOILS_CARBON_SUMMARY")
         .withSiteData({
@@ -34,7 +34,7 @@ describe("Urban project buildings sequencing - building use planned but no build
 
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
 
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
     });
 
     it("still routes to the demolition info when the buildings footprint is 0 but the site has existing buildings", () => {
@@ -67,10 +67,10 @@ describe("Urban project buildings sequencing - building use planned but no build
   });
 
   describe("previous navigation", () => {
-    it("goes back from the site resale introduction to the soils carbon summary, never into the buildings chapter", () => {
-      // SITE_RESALE_INTRODUCTION -> SOILS_CARBON_SUMMARY
+    it("goes back from the stakeholders introduction to the soils carbon summary, never into the buildings chapter", () => {
+      // STAKEHOLDERS_INTRODUCTION -> SOILS_CARBON_SUMMARY
       const store = new StoreBuilder()
-        .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+        .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
         .withSiteData({
           soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 0 },
           nature: "AGRICULTURAL_OPERATION",

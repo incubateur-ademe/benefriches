@@ -1,4 +1,3 @@
-import type { SiteNature } from "shared";
 import { describe, expect, it } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
@@ -8,31 +7,20 @@ import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 const { previousStepRequested } = creationProjectFormUrbanActions;
 
 describe("Urban project creation - Steps - Expenses introduction navigation", () => {
-  it("should go back from expenses introduction to buildings developer on non-friche site with new construction", () => {
+  it("goes back to the buildings resale selection when the project has buildings", () => {
     // Arrange
     const store = new StoreBuilder()
-      .withSiteData({
-        ...mockSiteData,
-        nature: "AGRICULTURAL_OPERATION" as SiteNature,
-      })
+      .withSiteData(mockSiteData)
       .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
         URBAN_PROJECT_SPACES_SURFACE_AREA: {
           completed: true,
           payload: {
-            spacesSurfaceAreaDistribution: { BUILDINGS: 3000 },
+            spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
           },
-        },
-        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
-          completed: true,
-          payload: { buildingsFootprintToReuse: 1000 },
-        },
-        URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
-          completed: true,
-          payload: { projectDeveloper: { name: "Test", structureType: "company" } },
-        },
-        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
-          completed: true,
-          payload: { developerWillBeBuildingsConstructor: true },
         },
       })
       .withCurrentStep("URBAN_PROJECT_EXPENSES_INTRODUCTION")
@@ -42,6 +30,30 @@ describe("Urban project creation - Steps - Expenses introduction navigation", ()
     store.dispatch(previousStepRequested());
 
     // Assert
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+  });
+
+  it("goes back to the site resale selection when the buildings footprint is 0", () => {
+    // Arrange
+    const store = new StoreBuilder()
+      .withSiteData(mockSiteData)
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 0, IMPERMEABLE_SOILS: 10000 } },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_EXPENSES_INTRODUCTION")
+      .build();
+
+    // Act
+    store.dispatch(previousStepRequested());
+
+    // Assert
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
   });
 });
