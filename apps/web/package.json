@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": "24"
+    "node": ">=24.22.1 <25"
   },
   "scripts": {
     "setup-env-vars": "export $(cat .env | grep 'WEBAPP_' | xargs) && chmod +x scripts/generateEnvVarsJsFile.sh && bash scripts/generateEnvVarsJsFile.sh public/js/env-vars.js",

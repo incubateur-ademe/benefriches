@@ -13,7 +13,7 @@
 # root package.json `packageManager` field, matching CI/local
 
 # Base stage with Node.js and pnpm (via corepack, version from packageManager)
-FROM node:24-slim AS base
+FROM node:24.22.1-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 # Enable corepack; the pnpm version is resolved from package.json `packageManager`
