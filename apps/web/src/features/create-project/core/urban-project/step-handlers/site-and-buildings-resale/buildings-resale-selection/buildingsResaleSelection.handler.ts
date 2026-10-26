@@ -24,19 +24,6 @@ export const BuildingsResaleSelectionHandler = {
       });
     }
 
-    if (answers.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES) {
-      rules.push({
-        stepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
-        action: hasBuildingResale ? "delete" : "invalidate",
-      });
-    }
-    if (answers.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES) {
-      rules.push({
-        stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
-        action: hasBuildingResale ? "delete" : "invalidate",
-      });
-    }
-
     return rules;
   },
 } satisfies AnswerStepHandler<typeof STEP_ID>;

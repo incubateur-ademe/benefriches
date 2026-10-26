@@ -11,12 +11,10 @@ import { NewBuildingsUsesFloorSurfaceAreaHandler } from "./buildings/new-buildin
 import { ExpensesBuildingsConstructionAndRehabilitationHandler } from "./expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.handler";
 import { UrbanProjectInstallationExpensesHandler } from "./expenses/expenses-installation/expensesInstallation.handler";
 import { ExpensesIntroductionHandler } from "./expenses/expenses-introduction/expensesIntroduction.handler";
-import { ExpensesProjectedBuildingsOperatingExpensesHandler } from "./expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.handler";
 import { UrbanProjectReinstatementExpensesHandler } from "./expenses/expenses-reinstatement/expensesReinstatement.handler";
 import { ExpensesSitePurchaseAmountsHandler } from "./expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.handler";
 import { UrbanProjectNamingHandler } from "./naming/naming/naming.handler";
 import { CreationResultHandler } from "./result/creation-result/creationResult.handler";
-import { RevenueBuildingsOperationsYearlyRevenuesHandler } from "./revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.handler";
 import { RevenueBuildingsResaleHandler } from "./revenues/revenue-buildings-resale/revenueBuildingsResale.handler";
 import { RevenueExpectedSiteResaleHandler } from "./revenues/revenue-expected-site-resale/revenueExpectedSiteResale.handler";
 import { RevenueFinancialAssistanceHandler } from "./revenues/revenue-financial-assistance/revenueFinancialAssistance.handler";
@@ -84,13 +82,9 @@ export const answerStepHandlers: AnswerStepHandlerMap = {
   URBAN_PROJECT_EXPENSES_INSTALLATION: UrbanProjectInstallationExpensesHandler,
   URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION:
     ExpensesBuildingsConstructionAndRehabilitationHandler,
-  URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES:
-    ExpensesProjectedBuildingsOperatingExpensesHandler,
   // revenues
   URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: RevenueExpectedSiteResaleHandler,
   URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: RevenueBuildingsResaleHandler,
-  URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES:
-    RevenueBuildingsOperationsYearlyRevenuesHandler,
   URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: RevenueFinancialAssistanceHandler,
   // schedule, phase and naming
   URBAN_PROJECT_SCHEDULE_PROJECTION: UrbanProjectScheduleProjectionHandler,

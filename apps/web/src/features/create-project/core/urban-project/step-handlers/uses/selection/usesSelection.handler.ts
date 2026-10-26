@@ -1,5 +1,6 @@
 import { doesUseIncludeBuildings } from "shared";
 
+import { hasSelectedUseWithBuildings } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import { getDeleteBuildingsRules } from "../../spaces/getCommonRules";
@@ -50,8 +51,8 @@ export const UsesSelectionHandler = {
     const previousUses =
       ReadStateHelper.getStepAnswers(params.answers, STEP_ID)?.usesSelection ?? [];
     const newUses = newAnswers.usesSelection ?? [];
-    const hadBuildings = previousUses.some(doesUseIncludeBuildings);
-    const willHaveBuildings = newUses.some(doesUseIncludeBuildings);
+    const hadBuildings = hasSelectedUseWithBuildings(params.answers);
+    const willHaveUseWithBuildings = newUses.some(doesUseIncludeBuildings);
 
     const noChanges =
       previousUses.length === newUses.length &&
@@ -95,7 +96,7 @@ export const UsesSelectionHandler = {
       });
     }
 
-    if (hadBuildings && !willHaveBuildings) {
+    if (hadBuildings && !willHaveUseWithBuildings) {
       getDeleteBuildingsRules(params).forEach((rule) => {
         if (!rules.some((existingRule) => existingRule.stepId === rule.stepId)) {
           rules.push(rule);

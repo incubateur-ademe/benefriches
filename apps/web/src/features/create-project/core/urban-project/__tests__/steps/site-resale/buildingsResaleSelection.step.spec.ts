@@ -60,42 +60,6 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
   });
 
-  it("discards buildings operations data when switching to resale planned", () => {
-    const store = new StoreBuilder()
-      .withSteps({
-        ...INITIAL_STEPS,
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-          completed: true,
-          payload: { buildingsResalePlannedAfterDevelopment: false },
-        },
-        URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: {
-          completed: true,
-          payload: {
-            yearlyProjectedBuildingsOperationsExpenses: [{ purpose: "maintenance", amount: 5000 }],
-          },
-        },
-        URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: {
-          completed: true,
-          payload: {
-            yearlyProjectedRevenues: [{ source: "rent", amount: 5000 }],
-          },
-        },
-      })
-      .build();
-
-    store.dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-        answers: { buildingsResalePlannedAfterDevelopment: true },
-      }),
-    );
-    store.dispatch(stepCompletionConfirmed());
-
-    expect(getData(store).yearlyProjectedCosts).toEqual([]);
-    expect(getData(store).yearlyProjectedRevenues).toEqual([]);
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
-  });
-
   it("discards buildings resale revenue when switching to resale not planned", () => {
     const store = new StoreBuilder()
       .withSteps({

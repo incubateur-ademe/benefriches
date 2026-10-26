@@ -10,11 +10,8 @@ export const RevenueFinancialAssistanceHandler = {
   stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
 
   getPreviousStepId({ answers }) {
-    if (willHaveBuildings(answers)) {
-      if (hasBuildingsResalePlannedAfterDevelopment(answers)) {
-        return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
-      }
-      return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";
+    if (willHaveBuildings(answers) && hasBuildingsResalePlannedAfterDevelopment(answers)) {
+      return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
     }
 
     if (isSiteResalePlannedAfterDevelopment(answers)) {

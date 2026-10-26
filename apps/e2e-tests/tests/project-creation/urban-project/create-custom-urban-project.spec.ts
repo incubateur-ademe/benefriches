@@ -153,7 +153,7 @@ test.describe("urban project creation - custom mode", () => {
       );
       await urbanProjectCreationPage.selectSiteResale(false);
       await urbanProjectCreationPage.expectStepTitle("les bâtiments seront-ils revendus");
-      await urbanProjectCreationPage.selectBuildingsResale(true);
+      await urbanProjectCreationPage.selectBuildingsResale(false);
 
       // --- acteurs ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
@@ -166,15 +166,14 @@ test.describe("urban project creation - custom mode", () => {
       // --- dépenses ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
       await urbanProjectCreationPage.goToNextStep(); // expenses introduction
-      await urbanProjectCreationPage.submitOrSkipStep();
-      await urbanProjectCreationPage.submitOrSkipStep();
-      await urbanProjectCreationPage.submitOrSkipStep();
+      await urbanProjectCreationPage.submitOrSkipStep(); // site purchase
+      await urbanProjectCreationPage.submitOrSkipStep(); // installation
+      await urbanProjectCreationPage.submitOrSkipStep(); // buildings construction
 
       // --- recettes ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Recettes");
       await urbanProjectCreationPage.goToNextStep(); // revenue introduction
-      await urbanProjectCreationPage.submitOrSkipStep();
-      await urbanProjectCreationPage.submitOrSkipStep();
+      await urbanProjectCreationPage.submitOrSkipStep(); // financial assistance
 
       // --- calendrier ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Calendrier");

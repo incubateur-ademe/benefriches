@@ -1,6 +1,7 @@
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
+import { getDeleteBuildingsRules } from "../getCommonRules";
 
 const STEP_ID = "URBAN_PROJECT_SPACES_SURFACE_AREA";
 
@@ -23,6 +24,12 @@ export const SpacesSurfaceAreaHandler = {
 
     if (previousBuildingsFootprint === newBuildingsFootprint) {
       return [];
+    }
+
+    // The project no longer has buildings: every persisted buildings answer becomes meaningless,
+    // including the buildings developer and the buildings resale ones.
+    if (newBuildingsFootprint === 0) {
+      return getDeleteBuildingsRules(params);
     }
 
     const buildingsFootprintToReuseStep = ReadStateHelper.getStep(

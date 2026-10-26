@@ -108,4 +108,28 @@ describe("Urban project creation - Steps - Stakeholders navigation", () => {
     // Assert
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
   });
+
+  it("should go back from the stakeholders introduction to the site resale selection when the buildings footprint is 0", () => {
+    // Arrange
+    const store = new StoreBuilder()
+      .withSiteData(testScenarios.withBuildingsAndContamination)
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { spacesSurfaceAreaDistribution: { IMPERMEABLE_SOILS: 10000 } },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
+      .build();
+
+    // Act
+    store.dispatch(previousStepRequested());
+
+    // Assert — the buildings resale selection is never asked, so we land on the site resale one
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
+  });
 });

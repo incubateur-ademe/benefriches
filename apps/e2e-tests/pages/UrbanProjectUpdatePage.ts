@@ -41,16 +41,16 @@ export class UrbanProjectUpdatePage {
     await this.submit();
   }
 
-  // --- Buildings operating expenses ---
+  // --- Installation expenses ---
 
-  async fillBuildingsOperatingExpenseAmount(
-    field: "maintenance" | "taxes" | "other",
+  async fillInstallationExpenseAmount(
+    field: "works" | "technicalStudies" | "other",
     amount: number,
   ): Promise<void> {
     const labels: Record<typeof field, string> = {
-      maintenance: "Entretien et maintenance",
-      taxes: "Taxes et impôts",
-      other: "Autres charges d'exploitation",
+      works: "Travaux d'aménagement",
+      technicalStudies: "Études et honoraires techniques",
+      other: "Autres dépenses d'aménagement",
     };
     await this.fillExpenseAmount(labels[field], amount);
   }

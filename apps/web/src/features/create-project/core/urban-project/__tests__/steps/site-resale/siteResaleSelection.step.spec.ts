@@ -15,6 +15,12 @@ const INITIAL_STEPS: UrbanProjectStepsState = {
     completed: true,
     payload: { usesSelection: ["RESIDENTIAL"] },
   },
+  URBAN_PROJECT_SPACES_SURFACE_AREA: {
+    completed: true,
+    payload: {
+      spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+    },
+  },
 };
 
 const getData = (store: ReturnType<StoreBuilder["build"]>) =>
@@ -142,5 +148,31 @@ describe("Urban project creation - Steps - site resale selection", () => {
     );
     expect(getData(store).futureSiteOwner).toEqual(DEFAULT_FUTURE_SITE_OWNER);
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+  });
+
+  it("skips the buildings resale step when the buildings footprint is 0", () => {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SITE_RESALE_SELECTION")
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { spacesSurfaceAreaDistribution: { IMPERMEABLE_SOILS: 10000 } },
+        },
+      })
+      .build();
+
+    store.dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
+        answers: { siteResaleSelection: "no" },
+      }),
+    );
+
+    // Without a buildings footprint there are no buildings to resell.
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
   });
 });

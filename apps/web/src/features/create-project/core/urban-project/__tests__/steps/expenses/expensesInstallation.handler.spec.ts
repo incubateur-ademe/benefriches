@@ -73,28 +73,6 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION");
     });
 
-    it("should return URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES when project has buildings but no buildings resale planned", () => {
-      const answers: UrbanProjectStepsState = {
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-          completed: true,
-          payload: {
-            buildingsResalePlannedAfterDevelopment: false,
-          },
-        },
-      };
-
-      const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
-        answers,
-        context: { siteData: undefined },
-      });
-
-      expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES");
-    });
-
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when project has buildings and buildings resale is planned", () => {
       const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {

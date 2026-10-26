@@ -1,9 +1,5 @@
 import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "shared";
 
-import {
-  hasBuildingsResalePlannedAfterDevelopment,
-  willHaveBuildings,
-} from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
 import { willReuseExistingBuildings } from "@/features/create-project/core/urban-project/step-handlers/buildings/buildingsReaders";
 import { isDeveloperBuildingsConstructor } from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholdersReaders";
 
@@ -17,9 +13,6 @@ export const UrbanProjectInstallationExpensesHandler = {
       return "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION";
     }
 
-    if (willHaveBuildings(answers) && !hasBuildingsResalePlannedAfterDevelopment(answers)) {
-      return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
-    }
     return "URBAN_PROJECT_REVENUE_INTRODUCTION";
   },
 

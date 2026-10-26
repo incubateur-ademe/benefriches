@@ -3,7 +3,7 @@ import { expect, test } from "./fixtures";
 
 const ORIGINAL_RESIDENTIAL_FLOOR_AREA = 250;
 const UPDATED_RESIDENTIAL_FLOOR_AREA = 800;
-const UPDATED_MAINTENANCE_EXPENSE_AMOUNT = 5000;
+const UPDATED_DEVELOPMENT_WORKS_EXPENSE_AMOUNT = 175000;
 
 test.describe("urban project editing", () => {
   test("allows a user to reach urban-project update from Mes évaluations, edit a parameter via a summary section link, then edit an expense via the sidebar, and save in place", async ({
@@ -57,17 +57,15 @@ test.describe("urban project editing", () => {
 
     // --- Edit an expense via the sidebar navigation ---
     await urbanProjectUpdatePage.selectSidebarGroup("Dépenses");
-    await urbanProjectUpdatePage.selectSidebarSubStep("Exploitation des bâtiments");
+    await urbanProjectUpdatePage.selectSidebarSubStep("Aménagement du site");
 
     await expect(
-      authenticatedPage.getByRole("heading", {
-        name: "Dépenses annuelles d'exploitation des bâtiments",
-      }),
+      authenticatedPage.getByRole("heading", { name: "Dépenses d'aménagement du site" }),
     ).toBeVisible();
 
-    await urbanProjectUpdatePage.fillBuildingsOperatingExpenseAmount(
-      "maintenance",
-      UPDATED_MAINTENANCE_EXPENSE_AMOUNT,
+    await urbanProjectUpdatePage.fillInstallationExpenseAmount(
+      "works",
+      UPDATED_DEVELOPMENT_WORKS_EXPENSE_AMOUNT,
     );
 
     // --- Both edits (different navigation paths) survived ---
@@ -77,8 +75,8 @@ test.describe("urban project editing", () => {
       asSquareMeters(UPDATED_RESIDENTIAL_FLOOR_AREA),
     );
     await urbanProjectUpdatePage.expectSummaryLineValue(
-      "Maintenance",
-      asEuroAmount(UPDATED_MAINTENANCE_EXPENSE_AMOUNT),
+      "Travaux d'aménagement",
+      asEuroAmount(UPDATED_DEVELOPMENT_WORKS_EXPENSE_AMOUNT),
     );
 
     // --- Save in place ---
@@ -93,8 +91,8 @@ test.describe("urban project editing", () => {
       asSquareMeters(UPDATED_RESIDENTIAL_FLOOR_AREA),
     );
     await urbanProjectUpdatePage.expectSummaryLineValue(
-      "Maintenance",
-      asEuroAmount(UPDATED_MAINTENANCE_EXPENSE_AMOUNT),
+      "Travaux d'aménagement",
+      asEuroAmount(UPDATED_DEVELOPMENT_WORKS_EXPENSE_AMOUNT),
     );
   });
 });

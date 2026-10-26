@@ -48,10 +48,6 @@ const ReinstatementExpensesForm = lazy(
 const SitePurchaseAmounts = lazy(
   () => import("@/features/create-project/views/urban-project/expenses/site-purchase-amounts"),
 );
-const YearlyProjectedExpensesForm = lazy(
-  () =>
-    import("@/features/create-project/views/urban-project/expenses/projected-buildings-operating-expenses"),
-);
 const ProjectNameAndDescriptionForm = lazy(
   () => import("@/features/create-project/views/urban-project/naming"),
 );
@@ -66,10 +62,6 @@ const ProjectRevenueIntroduction = lazy(
 );
 const SiteResaleRevenueForm = lazy(
   () => import("@/features/create-project/views/urban-project/revenues/expected-site-resale"),
-);
-const YearlyProjectedRevenueForm = lazy(
-  () =>
-    import("@/features/create-project/views/urban-project/revenues/buildings-operations-yearly-revenues"),
 );
 
 const ScheduleProjectionForm = lazy(
@@ -398,13 +390,6 @@ export const getUrbanProjectStepView = (
           <InstallationExpensesForm />
         </>
       );
-    case "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES":
-      return (
-        <>
-          <HtmlTitle>{`Exploitation des bâtiments - Dépenses - ${mainTitle}`}</HtmlTitle>
-          <YearlyProjectedExpensesForm />
-        </>
-      );
     case "URBAN_PROJECT_EXPENSES_REINSTATEMENT":
       return (
         <>
@@ -424,13 +409,6 @@ export const getUrbanProjectStepView = (
         <>
           <HtmlTitle>{`Aides financières - Recettes - ${mainTitle}`}</HtmlTitle>
           <ProjectFinancialAssistanceRevenueForm />
-        </>
-      );
-    case "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES":
-      return (
-        <>
-          <HtmlTitle>{`Exploitation des bâtiments - Recettes - ${mainTitle}`}</HtmlTitle>
-          <YearlyProjectedRevenueForm />
         </>
       );
     case "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE":

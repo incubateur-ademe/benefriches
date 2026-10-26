@@ -7,11 +7,9 @@ import { buildingsExistingBuildingsUsesFloorSurfaceAreaSchema } from "./step-han
 import { buildingsNewBuildingsUsesFloorSurfaceAreaSchema } from "./step-handlers/buildings/new-buildings-uses-floor-surface-area/newBuildingsUsesFloorSurfaceArea.schema";
 import { expensesBuildingsConstructionAndRehabilitationSchema } from "./step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
 import { expensesInstallationSchema } from "./step-handlers/expenses/expenses-installation/expensesInstallation.schema";
-import { expensesProjectedBuildingsOperatingExpensesSchema } from "./step-handlers/expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.schema";
 import { expensesReinstatementSchema } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.schema";
 import { expensesSitePurchaseAmountsSchema } from "./step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.schema";
 import { namingSchema } from "./step-handlers/naming/naming/naming.schema";
-import { revenueBuildingsOperationsYearlyRevenuesSchema } from "./step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.schema";
 import { revenueBuildingsResaleSchema } from "./step-handlers/revenues/revenue-buildings-resale/revenueBuildingsResale.schema";
 import { revenueExpectedSiteResaleSchema } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.schema";
 import { revenueFinancialAssistanceSchema } from "./step-handlers/revenues/revenue-financial-assistance/revenueFinancialAssistance.schema";
@@ -120,16 +118,10 @@ export const answersByStepSchemas = {
   URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION:
     expensesBuildingsConstructionAndRehabilitationSchema,
 
-  URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES:
-    expensesProjectedBuildingsOperatingExpensesSchema,
-
   // custom - revenues
   URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: revenueExpectedSiteResaleSchema,
 
   URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: revenueBuildingsResaleSchema,
-
-  URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES:
-    revenueBuildingsOperationsYearlyRevenuesSchema,
 
   URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: revenueFinancialAssistanceSchema,
 
@@ -158,8 +150,6 @@ export const BUILDINGS_STEPS = [
   "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
   "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
   "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-  "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
-  "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
   "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
 ] as const;
 

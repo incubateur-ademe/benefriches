@@ -22,6 +22,12 @@ describe("Urban project buildings sequencing - without buildings", () => {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL"] },
           },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
+          },
         })
         .build();
 
@@ -52,6 +58,12 @@ describe("Urban project buildings sequencing - without buildings", () => {
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
           },
         })
         .build();
@@ -86,6 +98,12 @@ describe("Urban project buildings sequencing - without buildings", () => {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL"] },
           },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
+          },
         })
         .build();
 
@@ -114,6 +132,12 @@ describe("Urban project buildings sequencing - without buildings", () => {
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
           },
         })
         .build();

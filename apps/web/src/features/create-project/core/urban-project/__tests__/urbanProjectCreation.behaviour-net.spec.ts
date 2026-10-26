@@ -457,4 +457,70 @@ describe("Urban project creation flow (behaviour-net)", () => {
         ?.usesSelection;
     expect(answers).toEqual(["RESIDENTIAL"]);
   });
+
+  it("skips building operation steps and submits empty yearly costs and revenues when the developer keeps the buildings", () => {
+    const store = new StoreBuilder()
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 2000, IMPERMEABLE_SOILS: 8000 } },
+        },
+        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+          completed: true,
+          payload: { buildingsResalePlannedAfterDevelopment: false },
+        },
+        URBAN_PROJECT_SITE_RESALE_SELECTION: {
+          completed: true,
+          payload: { siteResaleSelection: "no" },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+          completed: true,
+          payload: { projectDeveloper: { name: "Promoteur Test", structureType: "company" } },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+          completed: true,
+          payload: { developerWillBeBuildingsConstructor: true },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_EXPENSES_INSTALLATION")
+      .build();
+    const dispatch = store.dispatch;
+
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
+        answers: { installationExpenses: [{ purpose: "development_works", amount: 800000 }] },
+      }),
+    );
+    expect(getCurrentStep(store)).toBe(
+      "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
+    );
+
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
+        answers: { buildingsConstructionWorks: 400000 },
+      }),
+    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
+
+    dispatch(nextStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
+
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
+        answers: { financialAssistanceRevenues: [{ source: "public_subsidies", amount: 200000 }] },
+      }),
+    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SCHEDULE_PROJECTION");
+
+    const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
+    expect(projectData.yearlyProjectedCosts).toEqual([]);
+    expect(projectData.yearlyProjectedRevenues).toEqual([]);
+  });
 });

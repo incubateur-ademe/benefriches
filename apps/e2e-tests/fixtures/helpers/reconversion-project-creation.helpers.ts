@@ -165,9 +165,6 @@ export const createCustomUrbanProjectViaApi =
       ],
       sitePurchaseSellingPrice: 150000,
       sitePurchasePropertyTransferDuties: 12000,
-      // Neither the site nor the buildings are resold after development (developer keeps
-      // operating them), so the "Exploitation des bâtiments" operating-expenses step stays part
-      // of the step sequence instead of being skipped in favor of a resale flow.
       financialAssistanceRevenues: [
         { amount: 14000, source: "public_subsidies" },
         { amount: 999.99, source: "other" },
@@ -179,11 +176,8 @@ export const createCustomUrbanProjectViaApi =
       operationsFirstYear: 2029,
       projectPhase: "design",
       decontaminatedSoilSurface: 3000,
-      // Purposes/sources must match the wizard's own Zod enums (yearlyBuildingsOperationsExpensePurposeSchema
-      // and yearlyBuildingsOperationsRevenuePurposeSchema in shared), not the API's generic string schema,
-      // otherwise the corresponding step fails client-side validation and the final summary can't be saved.
-      yearlyProjectedCosts: [{ purpose: "maintenance", amount: 12000 }],
-      yearlyProjectedRevenues: [{ source: "rent", amount: 13000 }],
+      yearlyProjectedCosts: [],
+      yearlyProjectedRevenues: [],
     };
 
     const response = await apiClient.post("/api/reconversion-projects", body);
