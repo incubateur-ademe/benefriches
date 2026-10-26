@@ -1,5 +1,4 @@
-import { doesUseIncludeBuildings } from "shared";
-
+import { hasSelectedUseWithBuildings } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
@@ -27,12 +26,8 @@ export const SpacesSelectionHandler = {
   },
 
   getDefaultAnswers(params) {
-    const selectedUses =
-      ReadStateHelper.getStepAnswers(params.answers, "URBAN_PROJECT_USES_SELECTION")
-        ?.usesSelection ?? [];
-
     return {
-      spacesSelection: selectedUses.some(doesUseIncludeBuildings) ? ["BUILDINGS"] : undefined,
+      spacesSelection: hasSelectedUseWithBuildings(params.answers) ? ["BUILDINGS"] : undefined,
     };
   },
 

@@ -11,6 +11,12 @@ describe("SoilsCarbonSummaryHandler", () => {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL"] },
           },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
+          },
         },
         context: {
           siteData: {

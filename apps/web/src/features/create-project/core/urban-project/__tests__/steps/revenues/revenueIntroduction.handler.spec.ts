@@ -35,6 +35,12 @@ describe("RevenueIntroductionHandler", () => {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
         },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: {
+            spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+          },
+        },
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,
           payload: {
@@ -63,6 +69,12 @@ describe("RevenueIntroductionHandler", () => {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: {
+            spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+          },
         },
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,

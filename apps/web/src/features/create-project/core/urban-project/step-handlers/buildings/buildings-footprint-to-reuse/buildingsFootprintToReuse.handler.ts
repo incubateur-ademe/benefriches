@@ -1,11 +1,8 @@
+import { getProjectBuildingsFootprint } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
-import {
-  getNextStepAfterBuildings,
-  getProjectBuildingsFootprint,
-  getSiteBuildingsFootprint,
-} from "../buildingsReaders";
+import { getNextStepAfterBuildings, getSiteBuildingsFootprint } from "../buildingsReaders";
 
 const STEP_ID = "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE";
 

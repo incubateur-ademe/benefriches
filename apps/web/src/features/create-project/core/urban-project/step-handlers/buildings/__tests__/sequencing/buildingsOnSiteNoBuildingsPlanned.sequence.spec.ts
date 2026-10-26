@@ -111,8 +111,8 @@ describe("Urban project buildings sequencing - buildings on site, no buildings p
   });
 
   describe("backward navigation", () => {
-    it("goes back from site resale to introduction (involvesReinstatement=false)", () => {
-      // SITE_RESALE_INTRO -> INVOLVES_REINSTATEMENT -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
+    it("goes back from site resale to the soils carbon summary (involvesReinstatement=false)", () => {
+      // SITE_RESALE_INTRO -> INVOLVES_REINSTATEMENT -> DEMOLITION_INFO -> SOILS_CARBON_SUMMARY
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
         .withSiteData({
@@ -147,17 +147,10 @@ describe("Urban project buildings sequencing - buildings on site, no buildings p
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
 
+      // The project plans no buildings footprint, so the buildings chapter is not part of the
+      // sequence: the demolition info of the existing buildings is the only buildings step asked.
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE");
-
-      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
-
-      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
-
-      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_CARBON_SUMMARY");
     });
 
     it("goes back from decontamination to involves reinstatement step", () => {

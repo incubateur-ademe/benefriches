@@ -1,5 +1,8 @@
 import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
-import { willHaveBuildings } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
+import {
+  getProjectBuildingsFootprint,
+  willHaveBuildings,
+} from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
 import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
@@ -15,13 +18,6 @@ export function siteHasBuildings(siteData: SiteData): boolean {
 
 export function getSiteBuildingsFootprint(siteData: SiteData): number {
   return siteData.soilsDistribution.BUILDINGS ?? 0;
-}
-
-export function getProjectBuildingsFootprint(stepsState: StepsState): number {
-  return (
-    ReadStateHelper.getStepAnswers(stepsState, "URBAN_PROJECT_SPACES_SURFACE_AREA")
-      ?.spacesSurfaceAreaDistribution?.BUILDINGS ?? 0
-  );
 }
 
 export function getBuildingsFootprintToReuse(stepsState: StepsState): number | undefined {

@@ -7,7 +7,6 @@ import {
   getBuildingsFootprintToConstruct,
   getBuildingsFootprintToDemolish,
   getBuildingsFootprintToReuse,
-  getProjectBuildingsFootprint,
   getSiteBuildingsFootprint,
   hasBothReuseAndNewConstruction,
   siteHasBuildings,
@@ -49,28 +48,6 @@ describe("getSiteBuildingsFootprint", () => {
   it("returns 0 when site has no BUILDINGS", () => {
     const siteData = makeSiteData({ IMPERMEABLE_SOILS: 1000 });
     expect(getSiteBuildingsFootprint(siteData)).toBe(0);
-  });
-});
-
-describe("getProjectBuildingsFootprint", () => {
-  it("returns BUILDINGS from spaces step", () => {
-    const stepsState: StepsState = {
-      URBAN_PROJECT_SPACES_SURFACE_AREA: {
-        completed: true,
-        payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 3000 } },
-      },
-    };
-    expect(getProjectBuildingsFootprint(stepsState)).toBe(3000);
-  });
-
-  it("returns 0 when spaces step has no BUILDINGS", () => {
-    const stepsState: StepsState = {
-      URBAN_PROJECT_SPACES_SURFACE_AREA: {
-        completed: true,
-        payload: { spacesSurfaceAreaDistribution: { IMPERMEABLE_SOILS: 1000 } },
-      },
-    };
-    expect(getProjectBuildingsFootprint(stepsState)).toBe(0);
   });
 });
 
