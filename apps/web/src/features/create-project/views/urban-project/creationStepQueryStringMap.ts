@@ -41,13 +41,9 @@ export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_EXPENSES_INSTALLATION: "depenses-amenagement",
   URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION:
     "depenses-construction-rehabilitation-batiments",
-  URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES:
-    "depenses-annuelles-exploitation-batiments",
   URBAN_PROJECT_REVENUE_INTRODUCTION: "introduction-recettes",
   URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: "recettes-cession-site",
   URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: "recettes-cession-batiments",
-  URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES:
-    "recettes-annuelles-exploitation-batiments",
   URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: "aides-financieres",
   URBAN_PROJECT_SCHEDULE_PROJECTION: "calendrier",
   URBAN_PROJECT_NAMING: "denomination",

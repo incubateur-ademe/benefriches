@@ -120,26 +120,6 @@ export const getProjectSummary = (
         steps.URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE?.defaultValues
           ?.financialAssistanceRevenues,
     },
-    yearlyProjectedCosts: {
-      value:
-        steps.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES?.payload
-          ?.yearlyProjectedBuildingsOperationsExpenses ?? [],
-      isAuto:
-        steps.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES?.payload
-          ?.yearlyProjectedBuildingsOperationsExpenses ===
-        steps.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES?.defaultValues
-          ?.yearlyProjectedBuildingsOperationsExpenses,
-    },
-    yearlyProjectedRevenues: {
-      value:
-        steps.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES?.payload
-          ?.yearlyProjectedRevenues ?? [],
-      isAuto:
-        steps.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES?.payload
-          ?.yearlyProjectedRevenues ===
-        steps.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES?.defaultValues
-          ?.yearlyProjectedRevenues,
-    },
     reinstatementSchedule: {
       value: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.reinstatementSchedule,
       isAuto:

@@ -3,10 +3,7 @@ import { roundToInteger, sumListWithKey } from "shared";
 
 import type { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
-import {
-  getLabelForFinancialAssistanceRevenueSource,
-  getLabelForRecurringRevenueSource,
-} from "@/shared/core/reconversionProject";
+import { getLabelForFinancialAssistanceRevenueSource } from "@/shared/core/reconversionProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 
@@ -17,7 +14,6 @@ type Props = {
   warning?: string;
   siteResaleExpectedSellingPrice: ProjectSummary["siteResaleExpectedSellingPrice"];
   buildingsResaleExpectedSellingPrice: ProjectSummary["buildingsResaleExpectedSellingPrice"];
-  yearlyProjectedRevenues: ProjectSummary["yearlyProjectedRevenues"];
   financialAssistanceRevenues: ProjectSummary["financialAssistanceRevenues"];
   buildingsFloorSurfaceArea: ProjectSummary["buildingsFloorSurfaceArea"];
   developerName: string | undefined;
@@ -28,7 +24,6 @@ export default function UrbanProjectRevenuesSection({
   warning,
   siteResaleExpectedSellingPrice,
   buildingsResaleExpectedSellingPrice,
-  yearlyProjectedRevenues,
   financialAssistanceRevenues,
   buildingsFloorSurfaceArea,
   developerName,
@@ -38,7 +33,6 @@ export default function UrbanProjectRevenuesSection({
       siteResaleExpectedSellingPrice.value !== undefined) ||
     (buildingsResaleExpectedSellingPrice.shouldDisplay &&
       buildingsResaleExpectedSellingPrice.value !== undefined) ||
-    yearlyProjectedRevenues.value.length > 0 ||
     financialAssistanceRevenues.value !== undefined;
 
   if (!hasRevenues) {
@@ -97,28 +91,6 @@ export default function UrbanProjectRevenuesSection({
               isDetails
             />
           )}
-        </>
-      )}
-
-      {yearlyProjectedRevenues.value.length > 0 && (
-        <>
-          <DataLine
-            noBorder
-            label={<strong>Recettes annuelles d'exploitation des bâtiments</strong>}
-            value={
-              <strong>
-                {formatMoney(sumListWithKey(yearlyProjectedRevenues.value, "amount"))}
-              </strong>
-            }
-          />
-          {yearlyProjectedRevenues.value.map(({ amount, source }) => (
-            <DataLine
-              label={getLabelForRecurringRevenueSource(source)}
-              value={formatMoney(amount)}
-              isDetails
-              key={source}
-            />
-          ))}
         </>
       )}
 

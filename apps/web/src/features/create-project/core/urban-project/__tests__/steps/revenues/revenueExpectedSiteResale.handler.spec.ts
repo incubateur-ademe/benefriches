@@ -27,28 +27,6 @@ describe("RevenueExpectedSiteResaleHandler", () => {
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
     });
 
-    it("should return URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES when project has buildings but no buildings resale planned", () => {
-      const answers: UrbanProjectStepsState = {
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-          completed: true,
-          payload: {
-            buildingsResalePlannedAfterDevelopment: false,
-          },
-        },
-      };
-
-      const nextStep = RevenueExpectedSiteResaleHandler.getNextStepId({
-        answers,
-        context: { siteData: undefined },
-      });
-
-      expect(nextStep).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES");
-    });
-
     it("should return URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE when project has no buildings", () => {
       const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {

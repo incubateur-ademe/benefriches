@@ -303,4 +303,62 @@ describe("update project reducer", () => {
       getProjectData(confirmedState.urbanProject.form.steps).reinstatementContractOwner,
     ).toBeUndefined();
   });
+
+  it("drops the saved building operation expenses and revenues of an urban project from the data to save", () => {
+    const projectData: UpdateProjectView["projectData"] = {
+      id: "project-1",
+      createdBy: "user-1",
+      createdAt: "2026-01-01",
+      creationMode: "custom",
+      name: "Projet de test",
+      relatedSiteId: "site-1",
+      involvesReinstatement: false,
+      projectPhase: "planning",
+      developmentPlan: {
+        type: "URBAN_PROJECT",
+        developer: { name: "Dev Corp", structureType: "company" },
+        costs: [],
+        features: { buildingsFloorAreaDistribution: { RESIDENTIAL: 1000 } },
+      },
+      soilsDistribution: [
+        { soilType: "BUILDINGS", spaceCategory: "LIVING_AND_ACTIVITY_SPACE", surfaceArea: 1000 },
+      ],
+      yearlyProjectedCosts: [{ purpose: "maintenance", amount: 12000 }],
+      yearlyProjectedRevenues: [{ source: "rent", amount: 13000 }],
+    };
+    const siteData: UpdateProjectView["siteData"] = {
+      id: "site-1",
+      name: "Friche test",
+      nature: "FRICHE",
+      isExpressSite: false,
+      owner: { structureType: "company", name: "Owner" },
+      hasContaminatedSoils: false,
+      soilsDistribution: {},
+      surfaceArea: 5000,
+      address: {
+        banId: "addr-1",
+        city: "Paris",
+        cityCode: "75056",
+        postCode: "75001",
+        streetName: "Rue",
+        streetNumber: "1",
+        value: "1 Rue, 75001 Paris",
+        long: 2.35,
+        lat: 48.85,
+      },
+    };
+
+    const state = updateProjectReducer(
+      updateProjectReducer(undefined, { type: "@@INIT" }),
+      reconversionProjectUpdateInitiated.fulfilled(
+        { projectData, siteData },
+        "request-1",
+        "project-1",
+      ),
+    );
+
+    const dataToSave = getProjectData(state.urbanProject.form.steps);
+    expect(dataToSave.yearlyProjectedCosts).toEqual([]);
+    expect(dataToSave.yearlyProjectedRevenues).toEqual([]);
+  });
 });

@@ -353,7 +353,6 @@ function UrbanProjectFormSummary({
             projectSummary.buildingsConstructionAndRehabilitationCosts
           }
           installationCosts={projectSummary.installationCosts}
-          yearlyProjectedCosts={projectSummary.yearlyProjectedCosts}
           developerName={developerName}
           reinstatementContractOwnerName={reinstatementContractOwnerName}
           buildingsContractorName={buildingsContractorName.value}
@@ -364,7 +363,6 @@ function UrbanProjectFormSummary({
         <UrbanProjectRevenuesSection
           siteResaleExpectedSellingPrice={projectSummary.siteResaleExpectedSellingPrice}
           buildingsResaleExpectedSellingPrice={projectSummary.buildingsResaleExpectedSellingPrice}
-          yearlyProjectedRevenues={projectSummary.yearlyProjectedRevenues}
           financialAssistanceRevenues={projectSummary.financialAssistanceRevenues}
           buildingsFloorSurfaceArea={projectSummary.buildingsFloorSurfaceArea}
           developerName={developerName}

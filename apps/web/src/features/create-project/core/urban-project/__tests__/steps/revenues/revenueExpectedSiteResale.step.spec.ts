@@ -6,13 +6,17 @@ import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 const { previousStepRequested, stepCompletionRequested } = creationProjectFormUrbanActions;
 
 describe("Urban project creation - Steps - Revenue expected site resale navigation", () => {
-  it("should handle revenue navigation based on building and site resale decisions", () => {
+  it("goes to financial assistance when the buildings are kept, and back from it returns to site resale revenue", () => {
     // Arrange
     const store = new StoreBuilder()
       .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 2000, IMPERMEABLE_SOILS: 8000 } },
         },
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           payload: { siteResaleSelection: "yes" },
@@ -34,10 +38,8 @@ describe("Urban project creation - Steps - Revenue expected site resale navigati
       }),
     );
 
-    // Assert — advances to buildings operations yearly revenues
-    expect(getCurrentStep(store)).toBe(
-      "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
-    );
+    // Assert — advances to financial assistance
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
 
     // Act — go back
     store.dispatch(previousStepRequested());

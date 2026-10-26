@@ -52,12 +52,8 @@ export function getProjectData(steps: Steps): Partial<UrbanProjectFormData> {
         ?.siteResaleExpectedPropertyTransferDuties,
     financialAssistanceRevenues:
       steps.URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE?.payload?.financialAssistanceRevenues,
-    yearlyProjectedCosts:
-      steps.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES?.payload
-        ?.yearlyProjectedBuildingsOperationsExpenses ?? [],
-    yearlyProjectedRevenues:
-      steps.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES?.payload
-        ?.yearlyProjectedRevenues ?? [],
+    yearlyProjectedCosts: [],
+    yearlyProjectedRevenues: [],
     soilsDistribution: getProjectSoilDistribution(steps),
     reinstatementSchedule: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.reinstatementSchedule,
     operationsFirstYear: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.firstYearOfOperation,

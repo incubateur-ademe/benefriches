@@ -13,11 +13,11 @@ export const RevenueExpectedSiteResaleHandler = {
   },
 
   getNextStepId(params) {
-    if (willHaveBuildings(params.answers)) {
-      if (hasBuildingsResalePlannedAfterDevelopment(params.answers)) {
-        return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
-      }
-      return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";
+    if (
+      willHaveBuildings(params.answers) &&
+      hasBuildingsResalePlannedAfterDevelopment(params.answers)
+    ) {
+      return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
     }
 
     return "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE";

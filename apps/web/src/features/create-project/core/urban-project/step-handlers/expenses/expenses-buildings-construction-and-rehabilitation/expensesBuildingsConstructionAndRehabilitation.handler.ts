@@ -1,8 +1,3 @@
-import {
-  hasBuildingsResalePlannedAfterDevelopment,
-  willHaveBuildings,
-} from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
-
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION";
@@ -14,13 +9,7 @@ export const ExpensesBuildingsConstructionAndRehabilitationHandler: AnswerStepHa
   getPreviousStepId() {
     return "URBAN_PROJECT_EXPENSES_INSTALLATION";
   },
-  getNextStepId(params) {
-    if (
-      willHaveBuildings(params.answers) &&
-      !hasBuildingsResalePlannedAfterDevelopment(params.answers)
-    ) {
-      return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
-    }
+  getNextStepId() {
     return "URBAN_PROJECT_REVENUE_INTRODUCTION";
   },
 };

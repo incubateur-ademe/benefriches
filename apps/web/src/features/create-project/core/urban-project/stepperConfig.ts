@@ -10,12 +10,10 @@ import { buildingsNewBuildingsUsesFloorSurfaceAreaStepperConfig } from "@/featur
 import { expensesBuildingsConstructionAndRehabilitationStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.stepperConfig";
 import { expensesInstallationStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-installation/expensesInstallation.stepperConfig";
 import { expensesIntroductionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-introduction/expensesIntroduction.stepperConfig";
-import { expensesProjectedBuildingsOperatingExpensesStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.stepperConfig";
 import { expensesReinstatementStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.stepperConfig";
 import { expensesSitePurchaseAmountsStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.stepperConfig";
 import { namingStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/naming/naming/naming.stepperConfig";
 import { creationResultStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/result/creation-result/creationResult.stepperConfig";
-import { revenueBuildingsOperationsYearlyRevenuesStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.stepperConfig";
 import { revenueBuildingsResaleStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-buildings-resale/revenueBuildingsResale.stepperConfig";
 import { revenueExpectedSiteResaleStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.stepperConfig";
 import { revenueFinancialAssistanceStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-financial-assistance/revenueFinancialAssistance.stepperConfig";
@@ -100,10 +98,8 @@ export const STEP_GROUP_LABELS: Record<InternalStepGroupId | InternalStepSubGrou
   EXPENSES_SITE_REINSTATEMENT: "Remise en état du site",
   EXPENSES_SITE_INSTALLATION: "Aménagement du site",
   EXPENSES_BUILDINGS_CONSTRUCTION: "Construction et réhabilitation",
-  EXPENSES_BUILDINGS_OPERATION: "Exploitation des bâtiments",
 
   REVENUE: "Recettes",
-  REVENUE_BUILDINGS_OPERATION: "Exploitation des bâtiments",
   REVENUE_FINANCIAL_ASSISTANCE: "Aides financières",
   REVENUE_SITE_RESALE: "Cession foncière",
   REVENUE_BUILDINGS_RESALE: "Vente des bâtiments",
@@ -169,15 +165,11 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_EXPENSES_INSTALLATION: expensesInstallationStepperConfig,
   URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION:
     expensesBuildingsConstructionAndRehabilitationStepperConfig,
-  URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES:
-    expensesProjectedBuildingsOperatingExpensesStepperConfig,
 
   // Recettes
   URBAN_PROJECT_REVENUE_INTRODUCTION: revenueIntroductionStepperConfig,
   URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: revenueExpectedSiteResaleStepperConfig,
   URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: revenueBuildingsResaleStepperConfig,
-  URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES:
-    revenueBuildingsOperationsYearlyRevenuesStepperConfig,
   URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: revenueFinancialAssistanceStepperConfig,
 
   // Calendrier et avancement

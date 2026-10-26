@@ -28,7 +28,6 @@ describe("UrbanProjectExpensesSection", () => {
           },
         }}
         installationCosts={{ value: [], isAuto: false, autoValues: undefined }}
-        yearlyProjectedCosts={{ value: [], isAuto: false }}
         developerName="La SPL"
         reinstatementContractOwnerName={undefined}
         buildingsContractorName="Le Constructeur"
@@ -74,7 +73,6 @@ describe("UrbanProjectExpensesSection", () => {
           },
         }}
         installationCosts={{ value: [], isAuto: false, autoValues: undefined }}
-        yearlyProjectedCosts={{ value: [], isAuto: false }}
         developerName="La SPL"
         reinstatementContractOwnerName={undefined}
         buildingsContractorName="Mon Entreprise BTP"

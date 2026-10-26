@@ -13,10 +13,7 @@ import {
 
 import type { getProjectSummary } from "@/features/create-project/core/urban-project/helpers/projectSummary";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
-import {
-  getLabelForRecurringExpense,
-  getLabelForReinstatementExpensePurpose,
-} from "@/shared/core/reconversionProject";
+import { getLabelForReinstatementExpensePurpose } from "@/shared/core/reconversionProject";
 import {
   getLabelForBuildingsConstructionExpense,
   getLabelForUrbanProjectDevelopmentExpense,
@@ -34,7 +31,6 @@ type Props = {
   reinstatementCosts: ProjectSummary["reinstatementCosts"];
   buildingsConstructionAndRehabilitationCosts: ProjectSummary["buildingsConstructionAndRehabilitationCosts"];
   installationCosts: ProjectSummary["installationCosts"];
-  yearlyProjectedCosts: ProjectSummary["yearlyProjectedCosts"];
   developerName: string | undefined;
   reinstatementContractOwnerName: string | undefined;
   buildingsContractorName: string | undefined;
@@ -48,7 +44,6 @@ export default function UrbanProjectExpensesSection({
   reinstatementCosts,
   buildingsConstructionAndRehabilitationCosts,
   installationCosts,
-  yearlyProjectedCosts,
   developerName,
   reinstatementContractOwnerName,
   buildingsContractorName,
@@ -58,8 +53,7 @@ export default function UrbanProjectExpensesSection({
     (reinstatementCosts.shouldDisplay && reinstatementCosts.value !== undefined) ||
     (buildingsConstructionAndRehabilitationCosts.shouldDisplay &&
       buildingsConstructionAndRehabilitationCosts.value !== undefined) ||
-    installationCosts.value.length > 0 ||
-    yearlyProjectedCosts.value.length > 0;
+    installationCosts.value.length > 0;
 
   if (!hasExpenses) {
     return (
@@ -218,31 +212,6 @@ export default function UrbanProjectExpensesSection({
                     })()
                   : undefined
               }
-            />
-          ))}
-        </>
-      )}
-
-      {yearlyProjectedCosts.value.length > 0 && (
-        <>
-          <DataLine
-            noBorder
-            label={
-              <>
-                <strong>Dépenses annuelles d'exploitation des bâtiments</strong> (à la charge de{" "}
-                {developerName})
-              </>
-            }
-            value={
-              <strong>{formatMoney(sumListWithKey(yearlyProjectedCosts.value, "amount"))}</strong>
-            }
-          />
-          {yearlyProjectedCosts.value.map(({ amount, purpose }) => (
-            <DataLine
-              label={getLabelForRecurringExpense(purpose)}
-              value={formatMoney(amount)}
-              isDetails
-              key={purpose}
             />
           ))}
         </>

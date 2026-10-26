@@ -4,8 +4,6 @@ import type {
   FinancialAssistanceRevenue,
   ReinstatementExpense,
   UrbanProjectDevelopmentExpense,
-  YearlyBuildingsOperationsRevenues,
-  YearlyBuildingsOperationsExpenses,
 } from "shared";
 
 import { inferDecontaminationPlan } from "@/features/create-project/core/project-form/soilsDecontamination";
@@ -214,15 +212,6 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
           completed: true,
         };
         break;
-      case "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES":
-        steps["URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"] = {
-          payload: {
-            yearlyProjectedBuildingsOperationsExpenses:
-              projectData.yearlyProjectedCosts as YearlyBuildingsOperationsExpenses[],
-          },
-          completed: true,
-        };
-        break;
       case "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE":
         steps["URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"] = {
           payload: {
@@ -239,15 +228,6 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
             buildingsResalePropertyTransferDuties:
               projectData.buildingsResaleExpectedPropertyTransferDuties,
             buildingsResaleSellingPrice: projectData.buildingsResaleExpectedSellingPrice,
-          },
-          completed: true,
-        };
-        break;
-      case "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES":
-        steps["URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES"] = {
-          payload: {
-            yearlyProjectedRevenues:
-              projectData.yearlyProjectedRevenues as YearlyBuildingsOperationsRevenues[],
           },
           completed: true,
         };
