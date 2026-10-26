@@ -119,4 +119,71 @@ describe("Urban project creation - Steps - Spaces surface area", () => {
     const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
     expect(projectData.buildingsFootprintToReuse).toBeUndefined();
   });
+
+  it("should delete every persisted buildings answer when the project building footprint drops to 0", () => {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_SURFACE_AREA")
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+          completed: true,
+          payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 3000 } },
+        },
+        URBAN_PROJECT_SPACES_SELECTION: {
+          completed: true,
+          payload: { spacesSelection: ["BUILDINGS", "IMPERMEABLE_SOILS"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: {
+            spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+          },
+        },
+        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+          completed: true,
+          payload: { buildingsFootprintToReuse: 1000 },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+          completed: true,
+          payload: { developerWillBeBuildingsConstructor: true },
+        },
+        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+          completed: true,
+          payload: { buildingsResalePlannedAfterDevelopment: true },
+        },
+        URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: {
+          completed: true,
+          payload: { buildingsResaleSellingPrice: 500000 },
+        },
+        URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION: {
+          completed: true,
+          payload: { buildingsConstructionWorks: 90000 },
+        },
+      })
+      .build();
+
+    store.dispatch(
+      creationProjectFormUrbanActions.stepCompletionRequested({
+        stepId: "URBAN_PROJECT_SPACES_SURFACE_AREA",
+        answers: {
+          spacesSurfaceAreaDistribution: { IMPERMEABLE_SOILS: 10000 },
+        },
+      }),
+    );
+    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
+
+    // Without a buildings footprint the project no longer has buildings: every buildings answer,
+    // including the developer and resale ones, is cascaded away.
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SOILS_SUMMARY");
+    const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
+    expect(projectData.developmentPlan?.features.buildingsFloorAreaDistribution).toEqual({});
+    expect(projectData.buildingsFootprintToReuse).toBeUndefined();
+    expect(projectData.developerWillBeBuildingsConstructor).toBeUndefined();
+    expect(projectData.futureOperator).toBeUndefined();
+    expect(projectData.buildingsResaleExpectedSellingPrice).toBeUndefined();
+    expect(projectData.buildingsConstructionAndRehabilitationExpenses).toBeUndefined();
+  });
 });
