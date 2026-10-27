@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
 
+import { getProjectData } from "@/features/create-project/core/urban-project/helpers/readers/projectDataReaders";
+import { stepHandlerRegistry } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
+import { computeStepsSequence } from "@/shared/core/wizard-form/helpers/stepsSequence";
+
 import type { UpdateProjectView } from "../updateProject.types";
 import { convertProjectDataToSteps } from "./convertProjectDataToSteps";
 
@@ -183,6 +187,76 @@ describe("convertProjectDataToSteps - buildings reuse and construction", () => {
   });
 });
 
+describe("convertProjectDataToSteps - buildings construction expenses left empty", () => {
+  it("hydrates the step as completed with an empty payload when the developer constructs the buildings and no expenses were saved", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, developerWillBeBuildingsConstructor: true },
+      siteData: BASE_SITE_DATA,
+    });
+
+    expect(steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION).toEqual({
+      payload: {},
+      completed: true,
+    });
+  });
+
+  it("hydrates the step as completed with an empty payload when existing buildings are reused and no expenses were saved", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, buildingsFootprintToReuse: 500 },
+      siteData: BASE_SITE_DATA,
+    });
+
+    expect(steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION).toEqual({
+      payload: {},
+      completed: true,
+    });
+  });
+
+  it("still hydrates saved expenses when the step is not part of the sequence", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: {
+        ...BASE_PROJECT_DATA,
+        developerWillBeBuildingsConstructor: false,
+        buildingsConstructionAndRehabilitationExpenses: [
+          { purpose: "technical_studies_and_fees", amount: 1000 },
+        ],
+      },
+      siteData: BASE_SITE_DATA,
+    });
+
+    expect(steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION?.completed).toBe(
+      true,
+    );
+  });
+
+  it("does not hydrate the step when it is not part of the sequence", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, developerWillBeBuildingsConstructor: false },
+      siteData: BASE_SITE_DATA,
+    });
+
+    expect(steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION).toBeUndefined();
+  });
+
+  it("keeps the hydrated step in the computed sequence and completed, without leaking empty expenses into the project data", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, developerWillBeBuildingsConstructor: true },
+      siteData: BASE_SITE_DATA,
+    });
+    const sequence = computeStepsSequence(
+      { context: { siteData: BASE_SITE_DATA }, answers: steps },
+      "URBAN_PROJECT_USES_INTRODUCTION",
+      stepHandlerRegistry,
+    );
+
+    expect(sequence).toContain("URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION");
+    expect(steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION?.completed).toBe(
+      true,
+    );
+    expect(getProjectData(steps).buildingsConstructionAndRehabilitationExpenses).toBeUndefined();
+  });
+});
+
 describe("convertProjectDataToSteps - soils decontamination", () => {
   it("omits the decontamination step on a friche without contaminated soils", () => {
     const steps = convertProjectDataToSteps({
@@ -247,5 +321,29 @@ describe("convertProjectDataToSteps - soils decontamination", () => {
       payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
       completed: true,
     });
+  });
+});
+
+describe("convertProjectDataToSteps - involves reinstatement", () => {
+  it.each([true, false])("maps involvesReinstatement: %s to a completed step", (value) => {
+    const steps = convertProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, involvesReinstatement: value },
+      siteData: BASE_SITE_DATA,
+    });
+
+    expect(steps.URBAN_PROJECT_INVOLVES_REINSTATEMENT).toEqual({
+      payload: { involvesReinstatement: value },
+      completed: true,
+    });
+  });
+
+  it("does not hydrate the reinstatement-only steps when the project has no reinstatement", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: { ...BASE_PROJECT_DATA, involvesReinstatement: false },
+      siteData: BASE_SITE_DATA,
+    });
+
+    expect(steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT).toBeUndefined();
+    expect(steps.URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER).toBeUndefined();
   });
 });

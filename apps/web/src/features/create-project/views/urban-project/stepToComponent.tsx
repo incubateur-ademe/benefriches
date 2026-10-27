@@ -245,9 +245,6 @@ export const getUrbanProjectStepView = (
         </>
       );
     case "URBAN_PROJECT_INVOLVES_REINSTATEMENT":
-      if (mode === "update") {
-        return null;
-      }
       return (
         <>
           <HtmlTitle>{`Remise en état - Travaux - ${mainTitle}`}</HtmlTitle>

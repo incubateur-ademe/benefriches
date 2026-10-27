@@ -247,4 +247,60 @@ describe("update project reducer", () => {
       { purpose: "remediation", amount: 33000 },
     ]);
   });
+
+  it("asks for the reinstatement contract owner and expenses when a project without reinstatement is switched to reinstatement", () => {
+    const projectData: UpdateProjectView["projectData"] = {
+      id: "project-1",
+      createdBy: "user-1",
+      createdAt: "2026-01-01",
+      creationMode: "custom",
+      name: "Projet de test",
+      relatedSiteId: "site-1",
+      involvesReinstatement: false,
+      projectPhase: "planning",
+      developmentPlan: {
+        type: "URBAN_PROJECT",
+        developer: { name: "Dev Corp", structureType: "company" },
+        costs: [],
+        features: { buildingsFloorAreaDistribution: {} },
+      },
+      soilsDistribution: [
+        { soilType: "IMPERMEABLE_SOILS", spaceCategory: "PUBLIC_SPACE", surfaceArea: 5000 },
+      ],
+      yearlyProjectedCosts: [],
+      yearlyProjectedRevenues: [],
+    };
+    const siteData: UpdateProjectView["siteData"] = {
+      ...mockSiteData,
+      hasContaminatedSoils: false,
+    };
+    const hydratedState = updateProjectReducer(
+      updateProjectReducer(undefined, { type: "@@INIT" }),
+      reconversionProjectUpdateInitiated.fulfilled(
+        { projectData, siteData },
+        "request-1",
+        "project-1",
+      ),
+    );
+
+    const pendingState = updateProjectReducer(
+      hydratedState,
+      updateProjectFormUrbanActions.stepCompletionRequested({
+        stepId: "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+        answers: { involvesReinstatement: true },
+      }),
+    );
+    const confirmedState = updateProjectReducer(
+      pendingState,
+      updateProjectFormUrbanActions.stepCompletionConfirmed(),
+    );
+
+    // the user is asked for the reinstatement answers instead of silently keeping empty ones
+    expect(confirmedState.urbanProject.form.currentStep).toBe(
+      "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
+    );
+    expect(
+      getProjectData(confirmedState.urbanProject.form.steps).reinstatementContractOwner,
+    ).toBeUndefined();
+  });
 });

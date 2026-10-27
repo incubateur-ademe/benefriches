@@ -10,8 +10,10 @@ import type {
 
 import { inferDecontaminationPlan } from "@/features/create-project/core/project-form/soilsDecontamination";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
+import { willReuseExistingBuildings } from "@/features/create-project/core/urban-project/step-handlers/buildings/buildingsReaders";
 import { EXPENSE_PURPOSE_TO_FIELD } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
 import { UrbanProjectReinstatementExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
+import { isDeveloperBuildingsConstructor } from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholdersReaders";
 import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import {
   ANSWER_STEPS,
@@ -120,6 +122,12 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
           };
         }
         break;
+      case "URBAN_PROJECT_INVOLVES_REINSTATEMENT":
+        steps["URBAN_PROJECT_INVOLVES_REINSTATEMENT"] = {
+          payload: { involvesReinstatement: projectData.involvesReinstatement },
+          completed: true,
+        };
+        break;
       case "URBAN_PROJECT_SOILS_DECONTAMINATION":
         if (siteData.hasContaminatedSoils) {
           const decontaminatedSurfaceArea = projectData.decontaminatedSoilSurface ?? 0;
@@ -148,7 +156,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         break;
       }
       case "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER": {
-        if (siteData.nature === "FRICHE") {
+        if (siteData.nature === "FRICHE" && projectData.involvesReinstatement) {
           steps["URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"] = {
             payload: {
               reinstatementContractOwner:
@@ -187,12 +195,16 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         };
         break;
       case "URBAN_PROJECT_EXPENSES_REINSTATEMENT":
-        steps["URBAN_PROJECT_EXPENSES_REINSTATEMENT"] = {
-          payload: {
-            reinstatementExpenses: projectData.reinstatementCosts as ReinstatementExpense[],
-          },
-          completed: true,
-        };
+        // Without reinstatement the step is out of the sequence (and deleted by the creation flow):
+        // keeping a completed empty one would be skipped if the user later switches to true.
+        if (projectData.involvesReinstatement) {
+          steps["URBAN_PROJECT_EXPENSES_REINSTATEMENT"] = {
+            payload: {
+              reinstatementExpenses: projectData.reinstatementCosts as ReinstatementExpense[],
+            },
+            completed: true,
+          };
+        }
         break;
       case "URBAN_PROJECT_EXPENSES_INSTALLATION":
         steps["URBAN_PROJECT_EXPENSES_INSTALLATION"] = {
@@ -308,12 +320,16 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         }
         break;
       case "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION": {
-        if (projectData.buildingsConstructionAndRehabilitationExpenses?.length) {
+        // All fields are optional: no saved expense means the user went through the step without
+        // entering amounts. Hydrate it (empty) whenever it is part of the sequence, otherwise it
+        // would stay incomplete.
+        // Reads `steps` mid-loop: relies on ANSWER_STEPS hydrating the developer and footprint steps first.
+        const isInSequence =
+          isDeveloperBuildingsConstructor(steps) || willReuseExistingBuildings(steps);
+        const expenses = projectData.buildingsConstructionAndRehabilitationExpenses ?? [];
+        if (expenses.length > 0 || isInSequence) {
           const expensesPayload: Record<string, number> = {};
-          for (const {
-            purpose,
-            amount,
-          } of projectData.buildingsConstructionAndRehabilitationExpenses) {
+          for (const { purpose, amount } of expenses) {
             const field = EXPENSE_PURPOSE_TO_FIELD[purpose];
             if (field) {
               expensesPayload[field] = amount;

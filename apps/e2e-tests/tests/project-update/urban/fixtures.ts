@@ -44,7 +44,32 @@ const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id"> = {
   tenant: { structureType: "company", name: "Société agricole" },
 };
 
+type FricheCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "FRICHE" }>;
+
+const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id"> = {
+  nature: "FRICHE",
+  name: "Friche industrielle de Meylan",
+  address: {
+    banId: "38229",
+    value: "Meylan",
+    city: "Meylan",
+    cityCode: "38229",
+    postCode: "38240",
+    long: 5.7826,
+    lat: 45.2116,
+  },
+  soilsDistribution: {
+    IMPERMEABLE_SOILS: 2500,
+    MINERAL_SOIL: 2500,
+    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 2500,
+  },
+  yearlyExpenses: [],
+  yearlyIncomes: [],
+  owner: { structureType: "municipality", name: "Mairie de Meylan" },
+};
+
 const URBAN_PROJECT_NAME = "Projet urbain de Meylan";
+const FRICHE_URBAN_PROJECT_NAME = "Projet urbain sur friche de Meylan";
 
 const BUILDINGS_FLOOR_AREA_DISTRIBUTION = {
   RESIDENTIAL: 250,
@@ -56,6 +81,8 @@ const BUILDINGS_FLOOR_AREA_DISTRIBUTION = {
 type UrbanProjectUpdateFixtures = {
   agriculturalSite: TestSite;
   urbanProject: TestUrbanProject;
+  fricheSite: TestSite;
+  fricheUrbanProject: TestUrbanProject;
   urbanProjectUpdatePage: UrbanProjectUpdatePage;
   myEvaluationsPage: MyEvaluationsPage;
 };
@@ -73,6 +100,21 @@ export const test = authTest.extend<UrbanProjectUpdateFixtures>({
       id: crypto.randomUUID(),
       relatedSiteId: agriculturalSite.id,
       name: URBAN_PROJECT_NAME,
+      buildingsFloorAreaDistribution: BUILDINGS_FLOOR_AREA_DISTRIBUTION,
+    });
+    await use(project);
+  },
+
+  fricheSite: async ({ authenticatedApiClient }, use) => {
+    const site = await createCustomSiteViaApi(authenticatedApiClient)({ ...FRICHE_SITE_DATA });
+    await use(site);
+  },
+
+  fricheUrbanProject: async ({ authenticatedApiClient, fricheSite }, use) => {
+    const project = await createCustomUrbanProjectViaApi(authenticatedApiClient)({
+      id: crypto.randomUUID(),
+      relatedSiteId: fricheSite.id,
+      name: FRICHE_URBAN_PROJECT_NAME,
       buildingsFloorAreaDistribution: BUILDINGS_FLOOR_AREA_DISTRIBUTION,
     });
     await use(project);

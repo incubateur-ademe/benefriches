@@ -52,7 +52,17 @@ export class UrbanProjectUpdatePage {
       taxes: "Taxes et impôts",
       other: "Autres charges d'exploitation",
     };
-    await this.page.getByLabel(labels[field]).fill(String(amount));
+    await this.fillExpenseAmount(labels[field], amount);
+  }
+
+  // --- Reinstatement expenses ---
+
+  async fillReinstatementExpenseAmount(label: string, amount: number): Promise<void> {
+    await this.fillExpenseAmount(label, amount);
+  }
+
+  private async fillExpenseAmount(label: string, amount: number): Promise<void> {
+    await this.page.getByLabel(label).fill(String(amount));
     await this.submitOrSkipStep();
   }
 
