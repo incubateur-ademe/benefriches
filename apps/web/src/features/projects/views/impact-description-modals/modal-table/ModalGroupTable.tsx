@@ -8,7 +8,7 @@ import { BagdeLabel, Value } from "./ModalTable";
 // oxlint-disable-next-line no-unassigned-import
 import "./ModalTable.css";
 
-type Props = {
+export type ModalGroupTableProps = {
   caption: string;
   data: {
     label: string;
@@ -25,7 +25,11 @@ type Props = {
   formatFn?: (value: number) => string;
 };
 
-const ModalGroupTable = ({ data, caption, formatFn = formatMonetaryImpact }: Props) => {
+const ModalGroupTable = ({
+  data,
+  caption,
+  formatFn = formatMonetaryImpact,
+}: ModalGroupTableProps) => {
   return (
     <div
       className={classNames(

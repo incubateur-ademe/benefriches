@@ -1,4 +1,4 @@
-import type { HighchartsReact } from "highcharts-react-official";
+import { type HighchartsReact, type HighchartsReactProps } from "highcharts-react-official";
 import type { HTMLAttributes } from "react";
 import { useId, useRef } from "react";
 
@@ -12,7 +12,7 @@ import type { ValueFormat } from "./modalBarChartValueFormat";
 import { formatModalBarChartValue } from "./modalBarChartValueFormat";
 import { useBarChartCustomTooltip } from "./useBarChartCustomTooltip";
 
-type Props = {
+export type ModalColumnPointChartProps = {
   format: ValueFormat;
   data: {
     label: string;
@@ -21,9 +21,17 @@ type Props = {
   }[];
   exportTitle: string;
   exportSubtitle?: string;
+  chartProps?: HighchartsReactProps & { ref?: React.RefObject<HighchartsReact.RefObject | null> };
 } & HTMLAttributes<HTMLDivElement>;
 
-const ModalColumnPointChart = ({ data, format, exportTitle, exportSubtitle, ...props }: Props) => {
+const ModalColumnPointChart = ({
+  data,
+  format,
+  exportTitle,
+  exportSubtitle,
+  chartProps,
+  ...props
+}: ModalColumnPointChartProps) => {
   const chartContainerId = useId();
 
   useChartCustomPointColors(
@@ -31,7 +39,8 @@ const ModalColumnPointChart = ({ data, format, exportTitle, exportSubtitle, ...p
     data.map(({ color }) => color),
   );
 
-  const chartRef = useRef<HighchartsReact.RefObject>(null);
+  const innerRef = useRef<HighchartsReact.RefObject>(null);
+  const chartRef = chartProps?.ref ?? innerRef;
 
   const { onMouseLeave, onMouseMove, onChartReady, isChartReady, position, colIndex } =
     useBarChartCustomTooltip(chartRef);
@@ -55,7 +64,14 @@ const ModalColumnPointChart = ({ data, format, exportTitle, exportSubtitle, ...p
           title: exportTitle,
           subtitle: exportSubtitle,
           colors: data.map(({ color }) => color),
-          chartOptions: { xAxis: { lineWidth: 0 } },
+          chartOptions: {
+            xAxis: { lineWidth: 0 },
+            plotOptions: {
+              column: {
+                colorByPoint: false,
+              },
+            },
+          },
         }}
         containerProps={{
           id: chartContainerId,
@@ -73,9 +89,10 @@ const ModalColumnPointChart = ({ data, format, exportTitle, exportSubtitle, ...p
           series: [
             {
               type: "column",
-              data: data.map(({ value, label }) => ({
+              data: data.map(({ value, label, color }) => ({
                 name: label,
                 y: value,
+                color,
               })),
             },
           ],

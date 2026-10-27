@@ -115,30 +115,28 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
                     <div className={classNames("p-10 pt-4", "mb-0", fr.cx("fr-modal__content"))}>
                       {(() => {
                         const letterGrade = config.letterGrade?.(developmentScore.details);
-                        const DataComponent = config?.DataComponent;
                         const MetricsComponent = config?.MetricsComponent;
+                        const dataProps =
+                          config.dataProps?.({
+                            developmentScore,
+                            getUpdateDetailsLink,
+                            modalsData,
+                          }) ?? undefined;
 
                         return (
                           <config.ContentComponent
                             components={{
                               ...developmentScoreMdxComponents,
                               h1: (props) => (
-                                <>
-                                  <DevelopmentScoreModalHeader
-                                    letterGrade={letterGrade}
-                                    detailsName={detailsName}
-                                    onCloseLink={getUpdateDetailsLink(undefined)}
-                                    {...props}
-                                  />
-
-                                  {DataComponent ? (
-                                    <DataComponent
-                                      developmentScore={developmentScore}
-                                      modalsData={modalsData}
-                                      getUpdateDetailsLink={getUpdateDetailsLink}
-                                    />
-                                  ) : null}
-                                </>
+                                <DevelopmentScoreModalHeader
+                                  letterGrade={letterGrade}
+                                  detailsName={detailsName}
+                                  onCloseLink={getUpdateDetailsLink(undefined)}
+                                  ContentComponent={config.ContentComponent}
+                                  dataProps={dataProps}
+                                  projectName={modalsData.contextData.projectName}
+                                  {...props}
+                                />
                               ),
                               a: (props) => (
                                 <DevelopmentScoreModalLink

@@ -10,7 +10,7 @@ import classNames from "@/shared/views/clsx";
 // oxlint-disable-next-line no-unassigned-import
 import "./ModalTable.css";
 
-type Props = {
+export type ModalTableProps = {
   caption: string;
   data: {
     color?: string;
@@ -48,7 +48,7 @@ export const Value = ({
 );
 
 const mapDataToTableRow = (
-  { label, value, color, linkProps, actor }: Props["data"][number],
+  { label, value, color, linkProps, actor }: ModalTableProps["data"][number],
   index: number,
   formatFn: (value: number) => string,
   { hasActors, hasLinks }: { hasActors: boolean; hasLinks: boolean },
@@ -89,7 +89,7 @@ const mapDataToTableRow = (
   return row;
 };
 
-const ModalTable = ({ data, caption, formatFn = formatMonetaryImpact }: Props) => {
+const ModalTable = ({ data, caption, formatFn = formatMonetaryImpact }: ModalTableProps) => {
   const hasActors = data.some(({ actor }) => actor);
   const hasLinks = data.some(({ linkProps }) => linkProps);
 

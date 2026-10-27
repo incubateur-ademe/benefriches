@@ -48,7 +48,9 @@ export const LETTER_GRADE_THRESHOLDS: { grade: LetterGradeWithModifier; minGrade
     { grade: "E-", minGradePoints: 0 },
   ];
 
-const getLetterGradeFromLetterGradeWithModifiers = (letterGrade: LetterGradeWithModifier) => {
+export const getLetterGradeFromLetterGradeWithModifiers = (
+  letterGrade: LetterGradeWithModifier,
+) => {
   switch (letterGrade) {
     case "A":
     case "A+":

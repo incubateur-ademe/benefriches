@@ -12,7 +12,7 @@ import { getBarChartOptions } from "./modalBarChartOptions";
 import { formatModalBarChartValue } from "./modalBarChartValueFormat";
 import { useBarChartCustomTooltip } from "./useBarChartCustomTooltip";
 
-type Props = {
+export type ModalColumnSeriesChartProps = {
   data: {
     label: string;
     values: { label: string; color?: string; value: number }[];
@@ -20,13 +20,22 @@ type Props = {
   format: "monetary" | "default" | "co2";
   exportTitle: string;
   exportSubtitle?: string;
+  ref?: React.RefObject<HighchartsReact.RefObject | null>;
 } & HighchartsReactProps;
 
-const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...props }: Props) => {
+const ModalColumnSeriesChart = ({
+  data,
+  format,
+  exportTitle,
+  exportSubtitle,
+  ref,
+  ...props
+}: ModalColumnSeriesChartProps) => {
   const id = useId();
   const chartContainerId = `chart-${id}`;
 
-  const chartRef = useRef<HighchartsReact.RefObject>(null);
+  const innerRef = useRef<HighchartsReact.RefObject>(null);
+  const chartRef = ref ?? innerRef;
 
   useChartCustomPointColors(
     chartContainerId,

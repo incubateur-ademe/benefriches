@@ -1,13 +1,16 @@
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
+import type { HighchartsReact, HighchartsReactProps } from "highcharts-react-official";
 
 import type { ImpactAreaChartProps } from "@/features/projects/views/shared/charts/useImpactAreaChartProps";
 import useImpactAreaChartProps from "@/features/projects/views/shared/charts/useImpactAreaChartProps";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 import ExportableChart from "@/shared/views/components/Charts/ExportableChart";
 
-type Props = ImpactAreaChartProps;
+type Props = ImpactAreaChartProps & {
+  chartProps?: HighchartsReactProps & { ref?: React.RefObject<HighchartsReact.RefObject | null> };
+};
 
-const ModalAreaChart = (props: Props) => {
+const ModalAreaChart = ({ chartProps, ...props }: Props) => {
   const { options, data, formatFn, chartContainerId } = useImpactAreaChartProps({
     height: 300,
     ...props,
@@ -44,6 +47,7 @@ const ModalAreaChart = (props: Props) => {
           colorBySeries: true,
         }}
         options={options}
+        ref={chartProps?.ref}
       />
     </Tooltip>
   );

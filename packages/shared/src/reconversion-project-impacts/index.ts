@@ -9,6 +9,7 @@ export * from "../site/statu-quo-impacts/siteImpactsDataView.types";
 export * from "./computeImpactsWithBreakEvenLevel";
 export {
   computeProjectDevelopmentScore,
+  getLetterGradeFromLetterGradeWithModifiers,
   type ProjectDevelopmentScore,
   type LetterGrade,
   type LetterGradeWithModifier,

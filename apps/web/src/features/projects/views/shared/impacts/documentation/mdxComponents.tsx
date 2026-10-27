@@ -2,30 +2,21 @@ import { fr } from "@codegouvfr/react-dsfr";
 import CallOut, { type CallOutProps } from "@codegouvfr/react-dsfr/CallOut";
 import type { MDXComponents } from "mdx/types";
 import type { ComponentProps, ElementType, ReactNode } from "react";
-import { isValidElement } from "react";
 import type { LetterGradeWithModifier } from "shared";
+import { getLetterGradeFromLetterGradeWithModifiers } from "shared";
 
 import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { LETTER_GRADE_COLORS } from "../../../project-development-score/layout/colors";
-import {
-  getLetterGradeBadgeText,
-  type ScoreBadgeLabelKind,
-} from "../../../project-development-score/layout/gradeLabels";
+import { getLetterGradeBadgeText } from "../../../project-development-score/layout/gradeLabels";
+import { parseLetterGradeCell, textOf } from "./mdxHelpers";
 
 /**
  * Conventions utilisées dans les .mdx :
  * - `> ℹ️ ...` `> ⚠️ ...` `> ✅ ...` `> 📌 ...` `> ❌ ...`  → CallOut (info / warning / success / neutral / error)
  * - cellule de tableau commençant par `➕` / `➖` / `±`     → badge Bénéfice / Coût / Variable
  */
-
-const textOf = (node: ReactNode): string => {
-  if (typeof node === "string" || typeof node === "number") return String(node);
-  if (Array.isArray(node)) return node.map(textOf).join("");
-  if (isValidElement<{ children?: ReactNode }>(node)) return textOf(node.props.children);
-  return "";
-};
 
 /** "🏗️ Bilan d'exploitation" → "bilan-d-exploitation" (sert d'ancre pour les liens `#...`) */
 export const slugify = (text: string) =>
@@ -58,31 +49,6 @@ export const heading =
     </Tag>
   );
 
-const getLetterGradeFromLetterGradeWithModifiers = (letterGrade: LetterGradeWithModifier) => {
-  switch (letterGrade) {
-    case "A":
-    case "A+":
-    case "A-":
-      return "A";
-    case "B":
-    case "B+":
-    case "B-":
-      return "B";
-    case "C":
-    case "C+":
-    case "C-":
-      return "C";
-    case "D":
-    case "D+":
-    case "D-":
-      return "D";
-    case "E":
-    case "E+":
-    case "E-":
-      return "E";
-  }
-};
-
 const GradeBadge = ({ letterGrade }: { letterGrade: LetterGradeWithModifier }) => {
   const { textColor, bgColor } =
     LETTER_GRADE_COLORS[getLetterGradeFromLetterGradeWithModifiers(letterGrade)];
@@ -98,23 +64,6 @@ const GradeBadge = ({ letterGrade }: { letterGrade: LetterGradeWithModifier }) =
       {letterGrade}
     </span>
   );
-};
-
-const LETTER_GRADE_CELL_REGEX = new RegExp(
-  `^([ABCDE])([+-]|_(qualitative|evolution|impact|compliance))?$`,
-);
-
-const parseLetterGradeCell = (text: string) => {
-  const match = LETTER_GRADE_CELL_REGEX.exec(text);
-  if (!match) return null;
-
-  const [, letter, suffix, labelKind] = match;
-  const hasModifier = suffix === "+" || suffix === "-";
-
-  return {
-    gradeWithModifier: (hasModifier ? `${letter}${suffix}` : letter) as LetterGradeWithModifier,
-    labelKind: labelKind ? (labelKind as ScoreBadgeLabelKind) : undefined,
-  };
 };
 
 const Td = ({ children, className }: ComponentProps<"td">) => (

@@ -27,18 +27,16 @@ const labelFormatter = ({
 
   const emoji = extractEmoji(label);
 
-  if (nbColumns < 7) {
-    const spanLabel = emoji
-      ? `<span class="text-xl">${emoji}</span>`
-      : `<strong class="line-clamp-1">${label}</strong>`;
+  const value = formatModalBarChartValue(total, valueFormat, {
+    notation: "compact",
+    compactDisplay: "short",
+  });
 
-    return `${spanLabel}<br>${formatModalBarChartValue(total, valueFormat, {
-      notation: "compact",
-      compactDisplay: "short",
-    })}`;
-  }
+  const spanLabel = emoji
+    ? `<span class="text-xl" style="font-size:20px;">${emoji}</span>`
+    : `<strong class="line-clamp-1">${label}</strong>`;
 
-  return `<span class="text-xl">${emoji}</span>`;
+  return `${spanLabel}<br><br>${value}`;
 };
 
 export const getBarChartOptions = ({

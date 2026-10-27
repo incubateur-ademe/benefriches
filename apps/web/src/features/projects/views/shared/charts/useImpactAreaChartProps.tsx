@@ -101,9 +101,10 @@ const useImpactAreaChartProps = ({
           },
         },
       },
-      series: data.map(({ label, base, forecast }) => ({
+      series: data.map(({ label, base, forecast, color }) => ({
         name: label,
         type: "area",
+        color,
         data: [base, forecast],
       })),
     }),
