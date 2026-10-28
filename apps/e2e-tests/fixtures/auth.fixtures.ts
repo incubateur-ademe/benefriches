@@ -26,13 +26,14 @@ type AuthFixtures = {
 };
 
 /**
- * Creates test user data with a unique email based on prefix and timestamp.
+ * Creates test user data. Tests that read the user's emails pass an address created by
+ * their `mailInbox`; others get a unique address built from the prefix.
  */
-export function createTestUserData(prefix: string): TestUser {
+export function createTestUserData(prefix: string, email?: string): TestUser {
   const uniqueId = crypto.randomUUID();
   return {
     id: uniqueId,
-    email: `e2e-tests-${prefix}-${uniqueId}@mail.com`,
+    email: email ?? `e2e-tests-${prefix}-${uniqueId}@mail.com`,
     firstName: "Jean",
     lastName: "Dupont",
     // structureCategory is the UI form field ("Type de structure" dropdown).

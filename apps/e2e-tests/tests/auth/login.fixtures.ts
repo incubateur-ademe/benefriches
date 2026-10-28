@@ -1,13 +1,14 @@
 /**
  * Login test fixtures.
- * Composes page objects and provides a pre-registered test user.
+ * Composes page objects and provides a pre-registered test user whose emails the
+ * `mailInbox` can read.
  */
 
-import { test as base } from "@playwright/test";
 import { AccessBenefrichesPage } from "../../pages/AccessBenefrichesPage";
 import { HomePage } from "../../pages/HomePage";
 import { LoginModal } from "../../pages/LoginPage";
 import { createTestUserData, createTestUserViaApi, TestUser } from "../../fixtures/auth.fixtures";
+import { test as base } from "../../fixtures/mail-inbox.fixtures";
 
 type LoginFixtures = {
   testUser: TestUser;
@@ -30,20 +31,17 @@ export const test = base.extend<LoginFixtures>({
     await use(accessBenefrichesPage);
   },
 
-  testUser: async ({ baseURL }, use) => {
+  testUser: async ({ baseURL, mailInbox }, use) => {
     if (!baseURL) {
       throw new Error("baseURL is required for login fixture");
     }
 
-    const user = createTestUserData("login");
+    const user = createTestUserData("login", await mailInbox.create("login"));
     const { apiContext } = await createTestUserViaApi(baseURL, user);
 
     await use(user);
     await apiContext.dispose();
   },
 });
-
-// Re-export MailCatcher utilities for use in login tests
-export { waitForEmail, getMessagePlainText } from "../../fixtures/helpers/mail-catcher";
 
 export { expect } from "@playwright/test";

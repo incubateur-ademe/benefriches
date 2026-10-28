@@ -1,4 +1,4 @@
-import { test, expect, waitForEmail, getMessagePlainText } from "./login.fixtures";
+import { test, expect } from "./login.fixtures";
 
 test.describe("login with email", () => {
   test("shows error when user enters unknown email", async ({
@@ -37,6 +37,7 @@ test.describe("login with email", () => {
     accessBenefrichesPage,
     loginModal,
     testUser,
+    mailInbox,
   }) => {
     // Navigate to homepage and click "Commencer"
     await homePage.goto();
@@ -60,13 +61,13 @@ test.describe("login with email", () => {
     // Check that success message is displayed
     await loginModal.expectSuccessMessage();
 
-    // Wait for the login email to arrive in MailCatcher
+    // Wait for the login email and extract the login link from it
     // (registration also sends a welcome email to the same recipient, so the subject
     // is required to pick the right message)
-    const loginEmail = await waitForEmail(testUser.email, "Connexion à Bénéfriches");
-
-    // Fetch email plain text to extract login link
-    const loginEmailPlainText = await getMessagePlainText(loginEmail.id);
+    const loginEmailPlainText = await mailInbox.waitForEmail(
+      testUser.email,
+      "Connexion à Bénéfriches",
+    );
     const urlMatch = loginEmailPlainText.match(/https?:\/\/[^\s]+/);
     const authLink = urlMatch?.[0];
 

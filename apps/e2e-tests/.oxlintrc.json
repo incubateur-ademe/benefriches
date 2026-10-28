@@ -76,7 +76,7 @@
     "playwright/no-nested-step": "error",
     "playwright/no-networkidle": "error",
     "playwright/no-page-pause": "warn",
-    "playwright/no-skipped-test": "error",
+    "playwright/no-skipped-test": ["error", { "allowConditional": true }],
     "playwright/no-useless-await": "error",
     "playwright/no-wait-for-selector": "error",
     "playwright/no-wait-for-timeout": "warn",

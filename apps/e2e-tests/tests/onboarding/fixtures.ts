@@ -1,10 +1,11 @@
 /**
  * Onboarding test fixtures.
- * `test` creates a fresh, unregistered user for flows that go through signup.
+ * `test` creates a fresh, unregistered user for flows that go through signup, with an
+ * address the `mailInbox` can read.
  */
 
-import { test as base } from "@playwright/test";
 import { createTestUserData, TestUser } from "../../fixtures/auth.fixtures";
+import { test as base } from "../../fixtures/mail-inbox.fixtures";
 import { SignupPage } from "../../pages/SignupPage";
 import { HomePage } from "../../pages/HomePage";
 import { AccessBenefrichesPage } from "../../pages/AccessBenefrichesPage";
@@ -40,12 +41,10 @@ export const test = base.extend<OnboardingFixtures>({
     await use(new OnboardingLegacyFlowPage(page));
   },
 
-  // @ts-expect-error Playwright requires destructuring even if 'page' is unused
-  // oxlint-disable-next-line no-unused-vars
-  testUser: async ({ page }, use) => {
+  testUser: async ({ mailInbox }, use) => {
     // Create user data only - not registered via API
     // The onboarding tests will register the user through the UI
-    const user = createTestUserData("onboarding");
+    const user = createTestUserData("onboarding", await mailInbox.create("onboarding"));
     await use(user);
   },
 });

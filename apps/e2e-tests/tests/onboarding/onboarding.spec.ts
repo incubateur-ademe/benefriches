@@ -1,7 +1,38 @@
 import { test, expect } from "./fixtures";
-import { waitForEmail, getMessagePlainText } from "../../fixtures/helpers/mail-catcher";
 
 test.describe("onboarding", () => {
+  test.describe("welcome email", () => {
+    test.skip(
+      ({ targetEnv }) => !targetEnv.capabilities.lifecycleEmails,
+      "The target environment does not send lifecycle emails",
+    );
+
+    test("sends a welcome email with the login identifier on account creation", async ({
+      homePage,
+      accessBenefrichesPage,
+      signupPage,
+      testUser,
+      mailInbox,
+    }) => {
+      // Create an account from the homepage hero CTA
+      await homePage.goto();
+      await homePage.clickGetStarted();
+      await accessBenefrichesPage.expectCurrentPage();
+      await accessBenefrichesPage.clickCreateAccount();
+      await signupPage.expectCurrentPage();
+      await signupPage.completeSignup(testUser);
+
+      // A welcome email is sent on account creation
+      const welcomeEmailPlainText = await mailInbox.waitForEmail(
+        testUser.email,
+        "Bienvenue chez Bénéfriches",
+      );
+      expect(welcomeEmailPlainText).toContain(
+        `Votre identifiant de connexion est ${testUser.email}`,
+      );
+    });
+  });
+
   test.describe("from the homepage hero CTA", () => {
     test("allows new user to create account, complete onboarding, and land on evaluations", async ({
       page,
@@ -22,13 +53,6 @@ test.describe("onboarding", () => {
       // Create account
       await signupPage.expectCurrentPage();
       await signupPage.completeSignup(testUser);
-
-      // A welcome email is sent on account creation
-      const welcomeEmail = await waitForEmail(testUser.email, "Bienvenue chez Bénéfriches");
-      const welcomeEmailPlainText = await getMessagePlainText(welcomeEmail.id);
-      expect(welcomeEmailPlainText).toContain(
-        `Votre identifiant de connexion est ${testUser.email}`,
-      );
 
       // Complete onboarding steps
       const welcomeHeading = `Bonjour, ${testUser.firstName} ${testUser.lastName} !`;
