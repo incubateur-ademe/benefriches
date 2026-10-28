@@ -10,8 +10,8 @@ export type TargetEnvName = (typeof TARGET_ENV_NAMES)[number];
 export type MailStrategy =
   // The docker e2e stack catches every email sent by the API.
   | { kind: "mail-catcher"; url: string }
-  // No email can be read on this target yet.
-  | { kind: "unavailable" };
+  // A hosted testmail.app namespace receives the emails sent to its addresses.
+  | { kind: "testmail"; namespace: string; apiKey: string };
 
 export type TargetCapabilities = {
   // The API sends lifecycle emails (e.g. the welcome email on account creation).
@@ -52,7 +52,12 @@ export function resolveTargetEnv(env: NodeJS.ProcessEnv = process.env): TargetEn
     case "production-like":
       return {
         name,
-        mail: { kind: "unavailable" },
+        mail: {
+          kind: "testmail",
+          // Checked by global-setup.ts before any test runs.
+          namespace: env.E2E_TESTMAIL_NAMESPACE ?? "",
+          apiKey: env.E2E_TESTMAIL_API_KEY ?? "",
+        },
         capabilities: { lifecycleEmails: false },
       };
   }

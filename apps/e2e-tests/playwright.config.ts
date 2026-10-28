@@ -41,8 +41,12 @@ function readWorkersEnv(): number | string | undefined {
  */
 export default defineConfig({
   testDir: "./tests",
+  globalSetup: "./global-setup.ts",
   fullyParallel: true,
-  timeout: readIntegerEnv("E2E_TIMEOUT_MS") ?? 30 * 1000,
+  // production-like waits up to 45 s for a real email (testmail-inbox.ts): the test
+  // timeout must leave room for that wait to report its own error.
+  timeout:
+    readIntegerEnv("E2E_TIMEOUT_MS") ?? (TARGET_ENV.name === "production-like" ? 90 : 30) * 1000,
   forbidOnly: IS_CI,
   retries: readIntegerEnv("E2E_RETRIES") ?? (IS_CI ? 2 : 0),
   workers: readWorkersEnv() ?? (IS_CI ? 1 : undefined),
@@ -59,4 +63,4 @@ export default defineConfig({
   ],
 });
 
-export { TARGET_ENV };
+export { BASE_URL, TARGET_ENV };

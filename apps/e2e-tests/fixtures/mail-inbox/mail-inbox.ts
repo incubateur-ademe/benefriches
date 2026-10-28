@@ -4,7 +4,7 @@
 
 import type { MailStrategy } from "../../target-environment";
 import { MailCatcherInbox } from "./mail-catcher-inbox";
-import { UnavailableMailInbox } from "./unavailable-mail-inbox";
+import { TestmailInbox } from "./testmail-inbox";
 
 export interface MailInbox {
   /** Returns a new recipient address, unique to this call, that the inbox can read. */
@@ -17,7 +17,7 @@ export function createMailInbox(mail: MailStrategy): MailInbox {
   switch (mail.kind) {
     case "mail-catcher":
       return new MailCatcherInbox(mail.url);
-    case "unavailable":
-      return new UnavailableMailInbox();
+    case "testmail":
+      return new TestmailInbox(mail.namespace, mail.apiKey);
   }
 }

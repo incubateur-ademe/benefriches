@@ -2,6 +2,15 @@
 
 Playwright tests of full user flows, run against the e2e docker-compose stack described by `.e2e-stack` at the repository root (written by `node adws/env.ts up <slot>`), else the default stack on `http://localhost:3001` (see [playwright.config.ts](playwright.config.ts)). To start the stack and run tests, use the `run-e2e-tests` skill. To write a test (page object, fixtures, spec), use the `create-e2e-test` skill.
 
+## Targets
+
+`E2E_TARGET_ENV` selects the target ([target-environment.ts](target-environment.ts)):
+
+- `local-stack` (default): the docker e2e stack. Emails are read from its MailCatcher. `lifecycleEmails` is on: the API sends lifecycle emails such as the welcome email.
+- `production-like`: a deployed app at `BASE_URL`, e.g. staging. Emails go through Brevo and are read from a [testmail.app](https://testmail.app/docs/) namespace (`<namespace>.<tag>@inbox.testmail.app`), which needs `E2E_TESTMAIL_NAMESPACE` and `E2E_TESTMAIL_API_KEY`. An email can take up to 45 s to arrive, so the default test timeout is 90 s instead of 30 s. `lifecycleEmails` is off, so the welcome-email test skips. [global-setup.ts](global-setup.ts) fails the run before any test if a variable is missing or `BASE_URL` is unreachable.
+
+The [nightly workflow](../../.github/workflows/e2e-tests-staging.yml) runs the suite as `production-like` against staging every night and on manual trigger (`gh workflow run e2e-tests-staging.yml`). It runs in the `staging` GitHub environment (`WEBAPP_BASE_URL` variable, passed as `BASE_URL`), reads the testmail.app repository secrets, uploads the HTML report and fails red with no notification.
+
 ## Checks
 
 Run `pnpm --filter e2e-tests typecheck && pnpm --filter e2e-tests lint && pnpm --filter e2e-tests format:check`. They don't need the stack.
@@ -11,7 +20,7 @@ Run `pnpm --filter e2e-tests typecheck && pnpm --filter e2e-tests lint && pnpm -
 - `pages/`: page objects, one per page or wizard. Specs hold no selectors.
 - [fixtures/auth.fixtures.ts](fixtures/auth.fixtures.ts): `authenticatedPage` registers a fresh user (unique email) through the API for each test, so tests share no data and run in parallel; `authenticatedApiClient` is an API client logged in as that user.
 - `fixtures/helpers/`: API seeding ([site-creation.helpers.ts](fixtures/helpers/site-creation.helpers.ts), [reconversion-project-creation.helpers.ts](fixtures/helpers/reconversion-project-creation.helpers.ts)), fr-FR formats ([format.helpers.ts](fixtures/helpers/format.helpers.ts)).
-- [target-environment.ts](target-environment.ts): `E2E_TARGET_ENV` (`local-stack` by default, or `production-like`) selects the target, its mail strategy and capabilities (`lifecycleEmails`). `E2E_WORKERS`, `E2E_RETRIES` and `E2E_TIMEOUT_MS` override the Playwright defaults.
+- [target-environment.ts](target-environment.ts): `E2E_TARGET_ENV` selects the target, its mail strategy and capabilities (see Targets). `E2E_WORKERS`, `E2E_RETRIES` and `E2E_TIMEOUT_MS` override the Playwright defaults.
 - [fixtures/mail-inbox.fixtures.ts](fixtures/mail-inbox.fixtures.ts): `mailInbox` reads emails on the target (`create()` returns a unique recipient address, `waitForEmail(address, subject)` the plain-text body); `targetEnv` exposes the target. Never import a `MailInbox` implementation from `fixtures/mail-inbox/` in a spec or feature fixture. A test that needs a capability skips with a reason: `test.skip(({ targetEnv }) => !targetEnv.capabilities.lifecycleEmails, "…")`.
 - `tests/<feature>/`: a single-flow feature has `<feature>.fixtures.ts` and `<feature>.spec.ts`. A feature with several site natures or project types has one `fixtures.ts` and a folder per type holding `<mode>-<type>.spec.ts`, e.g. [tests/site-creation/](tests/site-creation/) with `friche/create-custom-friche.spec.ts`.
 
