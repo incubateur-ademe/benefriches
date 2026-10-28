@@ -10,7 +10,8 @@ import type { MailInbox } from "./mail-inbox";
 
 type TestmailEmail = {
   subject: string;
-  text: string;
+  // null when the email has no plain-text part (HTML-only)
+  text: string | null;
   tag: string;
   timestamp: number;
 };
@@ -57,6 +58,11 @@ export class TestmailInbox implements MailInbox {
         const newest = matches.reduce((acc, email) =>
           email.timestamp > acc.timestamp ? email : acc,
         );
+        if (newest.text === null) {
+          throw new Error(
+            `Email to ${address} with subject "${subject}" has no plain-text body: the template must include a text part`,
+          );
+        }
         return newest.text;
       }
 
