@@ -3,6 +3,8 @@
  * Claude Code configurations built from them.
  */
 
+import { createSeed, MAX_SEED } from "./run-plan";
+
 const DEFAULT_MAX_TURNS = 60;
 const DEFAULT_TIMEOUT_MINUTES = 20;
 
@@ -22,6 +24,7 @@ export type MonkeyConfig = {
   maxTurns: number;
   timeoutMs: number;
   headed: boolean;
+  seed: number;
 };
 
 function readPositiveInteger(env: NodeJS.ProcessEnv, name: string, fallback: number): number {
@@ -30,6 +33,16 @@ function readPositiveInteger(env: NodeJS.ProcessEnv, name: string, fallback: num
   const value = Number(raw);
   if (!Number.isInteger(value) || value <= 0) {
     throw new Error(`Invalid ${name} "${raw}": expected a positive integer`);
+  }
+  return value;
+}
+
+function readSeed(env: NodeJS.ProcessEnv): number {
+  const raw = env.MONKEY_SEED;
+  if (raw === undefined || raw === "") return createSeed();
+  const value = Number(raw);
+  if (!Number.isInteger(value) || value < 0 || value > MAX_SEED) {
+    throw new Error(`Invalid MONKEY_SEED "${raw}": expected an integer from 0 to ${MAX_SEED}`);
   }
   return value;
 }
@@ -51,6 +64,7 @@ export function readMonkeyConfig(env: NodeJS.ProcessEnv = process.env): MonkeyCo
     maxTurns: readPositiveInteger(env, "MONKEY_MAX_TURNS", DEFAULT_MAX_TURNS),
     timeoutMs: readPositiveInteger(env, "MONKEY_TIMEOUT_MINUTES", DEFAULT_TIMEOUT_MINUTES) * 60_000,
     headed: env.MONKEY_HEADED === "true",
+    seed: readSeed(env),
   };
 }
 
