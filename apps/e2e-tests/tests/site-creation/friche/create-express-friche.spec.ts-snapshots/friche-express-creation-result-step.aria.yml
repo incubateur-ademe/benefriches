@@ -68,8 +68,6 @@
   - definition:
     - strong: Sécurisation du site
   - term
-  - definition: Gardiennage
-  - term: /\d+\s\d+ €/
   - definition: Débarras de dépôt sauvage
   - term: /\d+ €/
   - heading "✍ Dénomination" [level=3]
