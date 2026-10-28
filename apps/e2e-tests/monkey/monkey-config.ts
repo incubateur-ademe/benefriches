@@ -6,9 +6,11 @@
 const DEFAULT_MAX_TURNS = 60;
 const DEFAULT_TIMEOUT_MINUTES = 20;
 
-// The browser may only reach the target webapp and testmail.app: anything else is
-// blocked by the browser context (net::ERR_BLOCKED_BY_CLIENT).
+// The browser may only reach the target webapp, testmail.app and the address search API the
+// site wizard depends on: anything else is blocked by the browser context
+// (net::ERR_BLOCKED_BY_CLIENT).
 const TESTMAIL_ORIGINS = ["https://testmail.app", "https://api.testmail.app"];
+const ADDRESS_SEARCH_ORIGINS = ["https://data.geopf.fr"];
 
 // Runs Playwright code in Node, outside the browser context: it would bypass the origin
 // allowlist.
@@ -19,6 +21,7 @@ export type MonkeyConfig = {
   testmail: { namespace: string; apiKey: string };
   maxTurns: number;
   timeoutMs: number;
+  headed: boolean;
 };
 
 function readPositiveInteger(env: NodeJS.ProcessEnv, name: string, fallback: number): number {
@@ -47,11 +50,12 @@ export function readMonkeyConfig(env: NodeJS.ProcessEnv = process.env): MonkeyCo
     },
     maxTurns: readPositiveInteger(env, "MONKEY_MAX_TURNS", DEFAULT_MAX_TURNS),
     timeoutMs: readPositiveInteger(env, "MONKEY_TIMEOUT_MINUTES", DEFAULT_TIMEOUT_MINUTES) * 60_000,
+    headed: env.MONKEY_HEADED === "true",
   };
 }
 
 export function allowedOrigins(baseUrl: string): string[] {
-  return [new URL(baseUrl).origin, ...TESTMAIL_ORIGINS];
+  return [new URL(baseUrl).origin, ...TESTMAIL_ORIGINS, ...ADDRESS_SEARCH_ORIGINS];
 }
 
 type RunPaths = {
@@ -61,12 +65,12 @@ type RunPaths = {
 };
 
 /** Playwright MCP configuration file (see @playwright/mcp config.d.ts). */
-export function buildPlaywrightMcpConfig(baseUrl: string, paths: RunPaths) {
+export function buildPlaywrightMcpConfig(baseUrl: string, paths: RunPaths, headed = false) {
   return {
     browser: {
       // No browserName: Playwright MCP drives the installed Google Chrome, as the ADW QA step does.
       isolated: true,
-      launchOptions: { headless: true },
+      launchOptions: { headless: !headed },
       contextOptions: {
         storageState: paths.storageStatePath,
         viewport: { width: 1440, height: 900 },
