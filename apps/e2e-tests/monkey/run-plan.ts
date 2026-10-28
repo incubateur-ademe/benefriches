@@ -86,17 +86,17 @@ export function drawRunPlan(seed: number): RunPlan {
 
 const PERSONA_DESCRIPTIONS: Record<Persona, string> = {
   novice:
-    'a first-time user who doesn\'t know the vocabulary: reads every help text, hesitates, picks "Je ne sais pas" when it is offered and goes back to change answers',
+    'a first-time user who doesn\'t know the vocabulary: reads every help text, hesitates, picks "Ne sait pas" when it is offered and goes back to change answers',
   expert:
     "an experienced land-development project manager in a hurry: fills in precise, realistic figures, skips help texts and moves fast",
   saboteur:
     "a user who tries to break the app: empty or huge values, special characters and very long names, unusual orders of actions",
   "returning-user":
-    'a user coming back to existing work: before creating anything, looks at what is already in "Mes évaluations", then resumes, edits or deletes it, and checks that what was saved is what is shown',
+    'a user who works in several sittings: leaves a site or project half-done or finished, goes elsewhere in the app, comes back to it from "Mes évaluations" to resume, edit or delete it, and checks that what was saved is what is shown',
 };
 
 const SITE_NATURE_LABELS: Record<SiteNature, string> = {
-  FRICHE: 'a friche (answer "Oui" to "Le site est-il une friche ?")',
+  FRICHE: 'a friche (answer "Oui" to "Votre site est-il une friche ?")',
   AGRICULTURAL_OPERATION: 'an agricultural operation ("Exploitation agricole")',
   NATURAL_AREA: 'a natural area ("Espace naturel")',
   URBAN_ZONE: 'an urban zone ("Zone urbaine")',
@@ -125,7 +125,7 @@ const QUIRK_DESCRIPTIONS: Record<Quirk, string> = {
   "duplicate-project":
     'duplicate a project you created ("Évaluer une variante du projet") and compare the copy with the original',
   "edit-after-creation":
-    'after creating a site or a project, edit it ("Modifier les caractéristiques…") and check the new values are saved and shown everywhere, impacts included',
+    'after creating a site or a project, edit it ("Modifier le site" or "Modifier les caractéristiques du projet" in the page menu) and check the new values are saved and shown everywhere, impacts included',
 };
 
 /** The plan as a Markdown section of the prompt. */
