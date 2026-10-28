@@ -23,6 +23,7 @@ Run `pnpm --filter e2e-tests typecheck && pnpm --filter e2e-tests lint && pnpm -
 - [target-environment.ts](target-environment.ts): `E2E_TARGET_ENV` selects the target, its mail strategy and capabilities (see Targets). `E2E_WORKERS`, `E2E_RETRIES` and `E2E_TIMEOUT_MS` override the Playwright defaults.
 - [fixtures/mail-inbox.fixtures.ts](fixtures/mail-inbox.fixtures.ts): `mailInbox` reads emails on the target (`create()` returns a unique recipient address, `waitForEmail(address, subject)` the plain-text body); `targetEnv` exposes the target. Never import a `MailInbox` implementation from `fixtures/mail-inbox/` in a spec or feature fixture. A test that needs a capability skips with a reason: `test.skip(({ targetEnv }) => !targetEnv.capabilities.lifecycleEmails, "…")`.
 - `tests/<feature>/`: a single-flow feature has `<feature>.fixtures.ts` and `<feature>.spec.ts`. A feature with several site natures or project types has one `fixtures.ts` and a folder per type holding `<mode>-<type>.spec.ts`, e.g. [tests/site-creation/](tests/site-creation/) with `friche/create-custom-friche.spec.ts`.
+- [monkey/](monkey/README.md): not a test suite. `pnpm --filter e2e-tests monkey` lets a Claude Code agent explore a deployed webapp through Playwright MCP and write its runs to `monkey-runs/`.
 
 ## Seed preconditions through the API, not the flow under test
 
