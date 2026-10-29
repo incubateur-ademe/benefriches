@@ -70,10 +70,12 @@ export type HardErrorCandidate = { type: HardErrorType; message: string };
 export const HARD_ERRORS_FILE_NAME = "hard-errors.jsonl";
 const SCAN_INTERVAL_MS = 1_500;
 const EXCERPT_LENGTH = 15;
-// Consecutive scans a page must stay blank, or on an admin page, before it is a hard error:
-// a page is briefly blank while it loads.
-const BLANK_PAGE_SCANS = 3;
-const ADMIN_PAGE_SCANS = 2;
+// Consecutive scans that must find a candidate before it is a hard error: a page is briefly
+// blank while it loads. A candidate found by every scan is reported once, when it appears.
+const CONFIRMATION_SCANS: Partial<Record<HardErrorType, number>> = {
+  "blank-page": 3,
+  "admin-access": 2,
+};
 // Shown to a regular user who opens /admin: the access control works.
 const ADMIN_ACCESS_DENIED_TEXT = "Accès réservé aux administrateurs";
 
@@ -220,7 +222,8 @@ export function createHardErrorDetector(options: DetectorOptions) {
   return function attachToPage({ page }: { page: Page }): Promise<void> {
     const consoleBuffer: string[] = [];
     const networkBuffer: string[] = [];
-    const streaks = { blank: 0, admin: 0 };
+    // How many scans in a row found each candidate, by type, message and page URL.
+    let streaks = new Map<string, number>();
 
     async function report(candidate: HardErrorCandidate) {
       const url = page.url();
@@ -295,8 +298,7 @@ export function createHardErrorDetector(options: DetectorOptions) {
       if (scanning || page.isClosed()) return;
       const url = page.url();
       if (!isOnOrigin(url, targetOrigin)) {
-        streaks.blank = 0;
-        streaks.admin = 0;
+        streaks = new Map();
         return;
       }
       scanning = true;
@@ -306,14 +308,13 @@ export function createHardErrorDetector(options: DetectorOptions) {
           "document.readyState === 'complete' ? (document.body ? document.body.innerText : '') : null",
         );
         if (typeof text !== "string" || page.url() !== url) return;
-        const candidates = inspectPageText(url, text);
-        const types = new Set(candidates.map((candidate) => candidate.type));
-        streaks.blank = types.has("blank-page") ? streaks.blank + 1 : 0;
-        streaks.admin = types.has("admin-access") ? streaks.admin + 1 : 0;
-        for (const candidate of candidates) {
-          if (candidate.type === "blank-page" && streaks.blank < BLANK_PAGE_SCANS) continue;
-          if (candidate.type === "admin-access" && streaks.admin < ADMIN_PAGE_SCANS) continue;
-          await report(candidate);
+        const previousStreaks = streaks;
+        streaks = new Map();
+        for (const candidate of inspectPageText(url, text)) {
+          const key = `${candidate.type}\n${candidate.message}\n${url}`;
+          const streak = (previousStreaks.get(key) ?? 0) + 1;
+          streaks.set(key, streak);
+          if (streak === (CONFIRMATION_SCANS[candidate.type] ?? 1)) await report(candidate);
         }
       } catch {
         // The page navigated or closed during the scan: the next scan sees the new page.

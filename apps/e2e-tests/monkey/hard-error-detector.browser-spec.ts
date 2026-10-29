@@ -151,6 +151,16 @@ describe("hard-error detector in a browser", () => {
     assertScreenshotAndExcerpts(hardErrors[0]!, "/nan");
   });
 
+  it("reports a NaN that stays on the page once, not at every scan", async () => {
+    await visit("/nan", 800);
+
+    const records = readFileSync(join(outputDir, HARD_ERRORS_FILE_NAME), "utf8")
+      .split("\n")
+      .filter((line) => line !== "")
+      .map((line) => (JSON.parse(line) as HardErrorRecord).kind);
+    assert.deepStrictEqual(records, ["hard-error"]);
+  });
+
   it("reports nothing on a healthy page", async () => {
     const hardErrors = await visit("/healthy", 800);
 
