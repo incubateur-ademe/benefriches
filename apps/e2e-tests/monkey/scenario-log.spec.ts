@@ -12,6 +12,7 @@ import {
   exitCodeOf,
   parseHardErrorRecords,
   parseSuspicion,
+  resolveStopReason,
   writeFileAtomically,
   type AgentEvent,
   type ScenarioLog,
@@ -65,6 +66,7 @@ function log(overrides: Partial<Parameters<typeof buildScenarioLog>[0]> = {}): S
   return buildScenarioLog({
     runId: "run",
     baseUrl: "https://staging.example.org",
+    userEmail: "monkey@inbox.testmail.app",
     plan: PLAN,
     budgets: BUDGETS,
     startedAt: at(0),
@@ -338,4 +340,37 @@ describe("writeFileAtomically", () => {
     assert.equal(readFileSync(path, "utf8"), "second");
     assert.deepStrictEqual(readdirSync(dir), ["scenarios.json"]);
   });
+});
+
+describe("resolveStopReason", () => {
+  const cases = [
+    { forcedStop: "time-limit", resultSubtype: undefined, exitCode: null, expected: "time-limit" },
+    {
+      forcedStop: "hard-error-limit",
+      resultSubtype: undefined,
+      exitCode: null,
+      expected: "hard-error-limit",
+    },
+    {
+      forcedStop: "interrupted",
+      resultSubtype: undefined,
+      exitCode: null,
+      expected: "interrupted",
+    },
+    { forcedStop: null, resultSubtype: "error_max_turns", exitCode: 1, expected: "turn-limit" },
+    {
+      forcedStop: null,
+      resultSubtype: "error_max_budget_usd",
+      exitCode: 1,
+      expected: "cost-limit",
+    },
+    { forcedStop: null, resultSubtype: "success", exitCode: 0, expected: "completed" },
+    { forcedStop: null, resultSubtype: "error_during_execution", exitCode: 1, expected: "error" },
+    { forcedStop: null, resultSubtype: undefined, exitCode: 1, expected: "error" },
+  ] as const;
+  for (const { expected, ...options } of cases) {
+    it(`is ${expected} for ${JSON.stringify(options)}`, () => {
+      assert.equal(resolveStopReason(options), expected);
+    });
+  }
 });

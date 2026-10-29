@@ -19,6 +19,7 @@ function log(overrides: Partial<Parameters<typeof buildScenarioLog>[0]> = {}): S
   return buildScenarioLog({
     runId: "2026-10-29T10-00-00.000Z",
     baseUrl: "https://staging.example.org",
+    userEmail: "monkey@inbox.testmail.app",
     plan: PLAN,
     budgets: { maxTurns: 150, timeoutMs: 30 * 60_000, maxCostUsd: 5, maxHardErrors: 5 },
     startedAt: at(0),
