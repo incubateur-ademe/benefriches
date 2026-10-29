@@ -90,13 +90,13 @@
   },
   "overrides": [
     {
-      "files": ["*.spec.ts"],
+      "files": ["*.spec.ts", "*.browser-spec.ts"],
       "rules": {
         "typescript/no-non-null-assertion": "off"
       }
     },
     {
-      "files": ["monkey/**/*.spec.ts"],
+      "files": ["monkey/**/*.spec.ts", "monkey/**/*.browser-spec.ts"],
       "rules": {
         "typescript/no-floating-promises": "off"
       }

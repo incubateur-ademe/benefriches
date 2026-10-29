@@ -27,6 +27,9 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm --filter e2e-tests exec playwright install --with-deps chromium
 
+      - name: Test the monkey agent hard-error detector
+        run: pnpm --filter e2e-tests test:monkey-browser
+
       # docker/bake-action (below) needs a buildx builder. Being an official Docker
       # action it also exposes the GitHub Actions cache runtime to BuildKit
       # automatically, so type=gha caching works without a third-party helper —
