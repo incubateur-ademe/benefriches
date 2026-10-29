@@ -1,0 +1,62 @@
+name: Monkey agent on staging
+
+permissions:
+  contents: read
+
+# Manual trigger only for now: a weekly schedule is added once a few runs have proved useful
+# (see apps/e2e-tests/monkey/README.md). Keep it away from the nightly e2e run at 03:00 UTC.
+on:
+  workflow_dispatch:
+    inputs:
+      seed:
+        description: "Seed of the run plan, to replay a run (random when empty)"
+        required: false
+        type: string
+
+concurrency:
+  group: monkey-agent-staging
+  cancel-in-progress: false
+
+jobs:
+  explore:
+    timeout-minutes: 45
+    runs-on: ubuntu-latest
+    # WEBAPP_BASE_URL is a variable of the staging environment.
+    environment: staging
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm
+
+      - name: Build shared package
+        run: pnpm --filter shared build
+
+      # Playwright MCP drives Google Chrome, preinstalled on GitHub's Ubuntu runners.
+      - name: Check Google Chrome
+        run: google-chrome --version
+
+      - name: Install Claude Code
+        run: npm install --global @anthropic-ai/claude-code@2.1.312
+
+      # Exit code 1 on a hard error, 2 when the agent or the runner fails, 0 otherwise:
+      # suspicions and exhausted budgets keep the job green. The step timeout stops the run
+      # with a signal before the job timeout, so it still writes its summary.
+      - name: Run the monkey agent
+        timeout-minutes: 35
+        run: pnpm --filter e2e-tests monkey
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BASE_URL: ${{ vars.WEBAPP_BASE_URL }}
+          E2E_TESTMAIL_API_KEY: ${{ secrets.E2E_TESTMAIL_API_KEY }}
+          E2E_TESTMAIL_NAMESPACE: ${{ secrets.E2E_TESTMAIL_NAMESPACE }}
+          MONKEY_SEED: ${{ inputs.seed }}
+
+      # storage-state.json holds the session cookies of the run's user: not uploaded.
+      - uses: actions/upload-artifact@v6
+        if: ${{ always() }}
+        with:
+          name: monkey-run
+          path: |
+            apps/e2e-tests/monkey-runs/
+            !apps/e2e-tests/monkey-runs/*/storage-state.json
+          if-no-files-found: warn
+          retention-days: 14
