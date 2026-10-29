@@ -25,6 +25,23 @@ pnpm --filter e2e-tests monkey
 
 Exit code: 1 when the run found at least one hard error, 2 when the agent or the runner failed (e.g. `claude` not logged in, registration refused), 0 otherwise. Suspicions alone never fail the run, and neither does a budget.
 
+## Run it in CI
+
+The [Monkey agent on staging workflow](../../../.github/workflows/monkey-agent-staging.yml) runs the same command against staging, on manual trigger only: `gh workflow run monkey-agent-staging.yml`, or `gh workflow run monkey-agent-staging.yml -f seed=<seed>` to replay a run.
+
+- It runs in the `staging` GitHub environment: `WEBAPP_BASE_URL` (passed as `BASE_URL`), the testmail.app secrets of the nightly e2e run and the `ANTHROPIC_API_KEY` secret, which Claude Code uses instead of a login. It installs a pinned Claude Code and uses the Google Chrome of the runner.
+- The budgets are the defaults above. The monkey step times out after 35 minutes, which stops the run with a signal so it still writes its summary, and the job after 45 minutes. Its concurrency group `monkey-agent-staging` queues a second run instead of running both.
+- The job is red when the run exits with 1 (a hard error) or 2 (the agent or the runner failed), green otherwise.
+- The job summary is the run's `summary.md`. The `monkey-run` artifact (14 days) is the run folder, without `storage-state.json` (the session cookies of the run's user).
+- No schedule yet: a weekly one is added once a few manual runs have found at least one real bug with fewer than about half of their findings being noise. It must stay away from the nightly e2e run at 03:00 UTC.
+
+## Read a report
+
+1. Start with the job summary (or `summary.md`): how the run stopped, its budgets, the scenario table and the findings of each scenario.
+2. Hard errors are facts recorded by the browser, not by the agent: open their screenshot and excerpts in `hard-errors/`, and check whether they come from the app or from the run (e.g. a 4xx caused by a made-up URL the agent typed).
+3. Suspicions are the agent's opinion, with a confidence: reproduce one by hand before filing it. `narrative.md` says what the agent did and saw around it, `playwright/session-*/session.md` shows every tool call and the page it got back.
+4. Replay a run with its seed (first line of the log, and `seed` in `scenarios.json`) to draw the same plan. The agent won't take exactly the same steps.
+
 ## Run plan
 
 Each run draws a plan from its seed ([run-plan.ts](run-plan.ts)): a persona (novice, expert, saboteur, returning user), a site nature, a project type, a creation mode (express or custom) and 2 or 3 quirks (browser back button or reload mid-wizard, extreme values, double submit, project duplication, edit after creation). The same seed always draws the same plan. The plan is a nudge: the agent may deviate and writes a `Deviation:` line when it does.

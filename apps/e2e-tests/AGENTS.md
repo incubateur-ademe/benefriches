@@ -11,6 +11,10 @@ Playwright tests of full user flows, run against the e2e docker-compose stack de
 
 The [nightly workflow](../../.github/workflows/e2e-tests-staging.yml) runs the suite as `production-like` against staging every night and on manual trigger (`gh workflow run e2e-tests-staging.yml`). It runs in the `staging` GitHub environment (`WEBAPP_BASE_URL` variable, passed as `BASE_URL`), reads the testmail.app repository secrets, uploads the HTML report and fails red with no notification.
 
+## Monkey agent
+
+`pnpm --filter e2e-tests monkey` lets a Claude Code agent explore a deployed webapp through Playwright MCP, needs `BASE_URL` and the testmail.app variables, and writes each run to `monkey-runs/<timestamp>/`. It stops at the first budget it exhausts: 150 turns, 30 minutes, $5 or 5 distinct hard errors (`MONKEY_MAX_TURNS`, `MONKEY_TIMEOUT_MINUTES`, `MONKEY_MAX_COST_USD`, `MONKEY_MAX_HARD_ERRORS`). It exits with 1 on a hard error, 2 when it fails, 0 otherwise. The [Monkey agent on staging workflow](../../.github/workflows/monkey-agent-staging.yml) runs it against staging on manual trigger (`gh workflow run monkey-agent-staging.yml`), writes the run's summary to the job summary and uploads the run folder as the `monkey-run` artifact. [monkey/README.md](monkey/README.md) describes the run, the workflow and how to read a report.
+
 ## Checks
 
 Run `pnpm --filter e2e-tests typecheck && pnpm --filter e2e-tests lint && pnpm --filter e2e-tests format:check`, and `pnpm --filter e2e-tests test` for the unit tests of `monkey/`. They don't need the stack. `pnpm --filter e2e-tests test:monkey-browser` tests the monkey hard-error detector in Playwright's Chromium.
@@ -23,7 +27,7 @@ Run `pnpm --filter e2e-tests typecheck && pnpm --filter e2e-tests lint && pnpm -
 - [target-environment.ts](target-environment.ts): `E2E_TARGET_ENV` selects the target, its mail strategy and capabilities (see Targets). `E2E_WORKERS`, `E2E_RETRIES` and `E2E_TIMEOUT_MS` override the Playwright defaults.
 - [fixtures/mail-inbox.fixtures.ts](fixtures/mail-inbox.fixtures.ts): `mailInbox` reads emails on the target (`create()` returns a unique recipient address, `waitForEmail(address, subject)` the plain-text body); `targetEnv` exposes the target. Never import a `MailInbox` implementation from `fixtures/mail-inbox/` in a spec or feature fixture. A test that needs a capability skips with a reason: `test.skip(({ targetEnv }) => !targetEnv.capabilities.lifecycleEmails, "…")`.
 - `tests/<feature>/`: a single-flow feature has `<feature>.fixtures.ts` and `<feature>.spec.ts`. A feature with several site natures or project types has one `fixtures.ts` and a folder per type holding `<mode>-<type>.spec.ts`, e.g. [tests/site-creation/](tests/site-creation/) with `friche/create-custom-friche.spec.ts`.
-- [monkey/](monkey/README.md): not a test suite. `pnpm --filter e2e-tests monkey` lets a Claude Code agent explore a deployed webapp through Playwright MCP and write its runs to `monkey-runs/`.
+- [monkey/](monkey/README.md): not a test suite (see Monkey agent).
 
 ## Seed preconditions through the API, not the flow under test
 
