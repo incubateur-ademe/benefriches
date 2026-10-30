@@ -19,6 +19,7 @@ pnpm monorepo; each workspace has its own AGENTS.md:
 - `apps/web`: React SPA, Vite + Redux, Clean Architecture — [apps/web/AGENTS.md](apps/web/AGENTS.md)
 - `apps/e2e-tests`: Playwright end-to-end tests — [apps/e2e-tests/AGENTS.md](apps/e2e-tests/AGENTS.md)
 - `packages/shared`: framework-free TypeScript used by api and web — [packages/shared/AGENTS.md](packages/shared/AGENTS.md)
+- `packages/release-notes`: posts the French release note to Teams after a production deploy (`notify-release` job in `.github/workflows/deploy-production.yml`); run directly by Node (type stripping, no build step) — [packages/release-notes/AGENTS.md](packages/release-notes/AGENTS.md)
 
 Full-stack feature walkthrough: [docs/feature-example.md](docs/feature-example.md).
 
@@ -37,7 +38,7 @@ Path-scoped rules live in `.claude/rules/`; Claude loads them automatically when
 - [api/api-db-migrations.md](.claude/rules/api/api-db-migrations.md): `apps/api/src/shared-kernel/adapters/sql-knex/migrations/*.ts`, `apps/api/src/shared-kernel/adapters/sql-knex/tableTypes.d.ts`
 - [api/api-testing.md](.claude/rules/api/api-testing.md): `apps/api/src/**/*.spec.ts`, `apps/api/src/**/*.integration-spec.ts`, `apps/api/test/**/*.ts`
 
-Also read each nested `AGENTS.md` on the path to the file: the four workspace ones listed above, and `apps/web/src/shared/core/wizard-form/AGENTS.md`. For e2e work, also read `.agents/skills/run-e2e-tests/SKILL.md` and `.agents/skills/create-e2e-test/SKILL.md`.
+Also read each nested `AGENTS.md` on the path to the file: the five workspace ones listed above, and `apps/web/src/shared/core/wizard-form/AGENTS.md`. For e2e work, also read `.agents/skills/run-e2e-tests/SKILL.md` and `.agents/skills/create-e2e-test/SKILL.md`.
 
 ## Conventions
 
@@ -87,4 +88,4 @@ Single file (paths are relative to the app directory):
 
 ## Git
 
-Trunk-based: every push to `main` runs CI and deploys to staging; production deploy is manual. Don't bypass the pre-commit hook with `--no-verify`: a hook blocks it in Claude and trusted Codex sessions, not in other agents or untrusted Codex sessions.
+Trunk-based: every push to `main` runs CI and deploys to staging; production deploy is manual, and a successful production deploy posts a release note to Teams. Don't bypass the pre-commit hook with `--no-verify`: a hook blocks it in Claude and trusted Codex sessions, not in other agents or untrusted Codex sessions.
