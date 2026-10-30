@@ -8,6 +8,7 @@ Core flow: describe a **site** → describe a **reconversion project** on it →
 - Project types (`developmentPlanTypeSchema`): `URBAN_PROJECT`, `PHOTOVOLTAIC_POWER_PLANT`
 - Creation modes: `express` (generated from defaults) or `custom` (step-by-step wizard); sites can also come from `csv-import`, projects can be `duplicated`
 - `soilsDistribution`: surface area per soil type, the input to most impact calculations
+- Domain glossary: [CONTEXT.md](CONTEXT.md). Entries are named after the code terms and give the French UI wording; use these terms when naming things or talking about the domain, and update it with the `domain-modeling` skill when a term changes.
 - Economic impact formulas (in French): [documentation-calculs-impacts.md](packages/shared/src/reconversion-project-impacts/documentation-calculs-impacts.md)
 
 ## Workspaces
