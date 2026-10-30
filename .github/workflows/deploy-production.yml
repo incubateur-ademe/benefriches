@@ -82,6 +82,6 @@ jobs:
           CURRENT_COMMIT: ${{ github.sha }}
           RUN_NUMBER: ${{ github.run_number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RELEASE_NOTES_ANTHROPIC_API_KEY: ${{ secrets.RELEASE_NOTES_ANTHROPIC_API_KEY }}
           TEAMS_RELEASES_WEBHOOK_URL: ${{ secrets.TEAMS_RELEASES_WEBHOOK_URL }}
         run: node src/main.ts

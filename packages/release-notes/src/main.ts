@@ -54,7 +54,7 @@ const main = async () => {
       const summary = await summariseCommits(
         commits,
         readGlossary(),
-        requireEnv("ANTHROPIC_API_KEY"),
+        requireEnv("RELEASE_NOTES_ANTHROPIC_API_KEY"),
       );
       if (summary.unclassifiedCommitIds.length > 0) {
         warn(
