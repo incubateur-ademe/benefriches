@@ -2,7 +2,18 @@ import { buildCard, buildReleaseCard } from "./card.ts";
 import { isKnownCommit, listNonMergeCommits } from "./commits.ts";
 import { readGlossary, summariseCommits } from "./llm.ts";
 
-const warn = (message: string) => process.stderr.write(`warning: ${message}\n`);
+// On GitHub Actions, emit a workflow command so the warning shows on the run summary page
+// (the job never fails, so a plain stderr line would leave the run looking green and silent).
+const escapeWorkflowCommand = (message: string) =>
+  message.replaceAll("%", "%25").replaceAll("\r", "%0D").replaceAll("\n", "%0A");
+
+const warn = (message: string) => {
+  if (process.env["GITHUB_ACTIONS"] === "true") {
+    process.stdout.write(`::warning::${escapeWorkflowCommand(message)}\n`);
+  } else {
+    process.stderr.write(`warning: ${message}\n`);
+  }
+};
 
 const requireEnv = (name: string): string => {
   const value = process.env[name];
@@ -12,6 +23,8 @@ const requireEnv = (name: string): string => {
 
 const main = async () => {
   const dryRun = process.argv.includes("--dry-run");
+  // Fail fast, before the LLM call, so a missing webhook costs no API spend.
+  const webhookUrl = dryRun ? undefined : requireEnv("TEAMS_RELEASES_WEBHOOK_URL");
   const runNumber = requireEnv("RUN_NUMBER");
   const currentCommit = requireEnv("CURRENT_COMMIT");
   const repository = requireEnv("GITHUB_REPOSITORY");
@@ -57,12 +70,11 @@ const main = async () => {
     }
   })();
 
-  if (dryRun) {
+  if (webhookUrl === undefined) {
     process.stdout.write(`${JSON.stringify(card, null, 2)}\n`);
     return;
   }
 
-  const webhookUrl = requireEnv("TEAMS_RELEASES_WEBHOOK_URL");
   try {
     const response = await fetch(webhookUrl, {
       method: "POST",
