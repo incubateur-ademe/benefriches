@@ -40,3 +40,48 @@ jobs:
       environment: production
     secrets:
       SCALINGO_API_TOKEN: ${{ secrets.SCALINGO_API_TOKEN }}
+
+  notify-release:
+    name: Notify release
+    # only runs when the production deploy succeeded
+    needs: [deploy-production]
+    runs-on: ubuntu-latest
+    # release notes must never fail the workflow
+    continue-on-error: true
+    environment: production
+    permissions:
+      contents: read
+      actions: read # gh run list
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+      - name: Find previous successful deploy
+        id: previous
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          previous_commit=$(gh run list \
+            --workflow "Deploy production" \
+            --status success \
+            --limit 1 \
+            --json headSha \
+            --jq '.[0].headSha // empty')
+          if [ -z "$previous_commit" ]; then
+            echo "::warning::No previous successful run of Deploy production: no release note posted"
+          fi
+          echo "commit=$previous_commit" >> "$GITHUB_OUTPUT"
+      - name: Post release note
+        if: steps.previous.outputs.commit != ''
+        working-directory: packages/release-notes
+        env:
+          PREVIOUS_COMMIT: ${{ steps.previous.outputs.commit }}
+          CURRENT_COMMIT: ${{ github.sha }}
+          RUN_NUMBER: ${{ github.run_number }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TEAMS_RELEASES_WEBHOOK_URL: ${{ secrets.TEAMS_RELEASES_WEBHOOK_URL }}
+        run: node src/main.ts
