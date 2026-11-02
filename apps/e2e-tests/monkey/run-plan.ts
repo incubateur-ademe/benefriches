@@ -8,16 +8,29 @@ import { randomInt } from "node:crypto";
 
 import { siteNatureSchema, type SiteNature } from "shared";
 
-export const PERSONAS = ["novice", "expert", "saboteur", "returning-user"] as const;
+export const PERSONAS = [
+  "novice",
+  "expert",
+  "saboteur",
+  "returning-user",
+  "keyboard-only",
+  "mobile",
+] as const;
 export const PROJECT_TYPES = ["URBAN_PROJECT", "PHOTOVOLTAIC_POWER_PLANT"] as const;
 export const CREATION_MODES = ["express", "custom"] as const;
 export const QUIRKS = [
-  "back-button-mid-wizard",
-  "refresh-mid-wizard",
   "extreme-values",
   "double-submit",
   "duplicate-project",
   "edit-after-creation",
+  "change-earlier-answer",
+  "cross-page-figures",
+  "url-tampering",
+  "impacts-exploration",
+  "input-formats",
+  "invalid-dates",
+  "address-search-edge-cases",
+  "delete-cascades",
 ] as const;
 
 export type Persona = (typeof PERSONAS)[number];
@@ -86,13 +99,17 @@ export function drawRunPlan(seed: number): RunPlan {
 
 const PERSONA_DESCRIPTIONS: Record<Persona, string> = {
   novice:
-    'a first-time user who doesn\'t know the vocabulary: reads every help text, hesitates, picks "Ne sait pas" when it is offered and goes back to change answers',
+    "a first-time user who doesn't know the vocabulary: reads every help text, hesitates, picks \"Ne sait pas\" when it is offered and goes back to change answers. Opens every informational modal it meets and checks that each one opens, closes with its close button (X) and with Escape, shows non-empty French text, has links that stay on the app's domain, and gives the focus back to the element that opened it",
   expert:
     "an experienced land-development project manager in a hurry: fills in precise, realistic figures, skips help texts and moves fast",
   saboteur:
-    "a user who tries to break the app: empty or huge values, special characters and very long names, unusual orders of actions",
+    'a user who tries to break the app: empty or huge values, special characters and very long names, unusual orders of actions. Also a mad clicker, going further than double-submit: clicks "Retour" and "Suivant" many times in a row, toggles radio buttons back and forth quickly, and presses buttons while a page is still loading, especially the impacts page',
   "returning-user":
     'a user who works in several sittings: leaves a site or project half-done or finished, goes elsewhere in the app, comes back to it from "Mes évaluations" to resume, edit or delete it, and checks that what was saved is what is shown',
+  "keyboard-only":
+    "a user who never touches the mouse: completes wizards and uses modals with Tab, Shift+Tab, Enter, Space and Escape only, no clicks, and checks that the focus order is logical and the focus is always visible",
+  mobile:
+    "a user on a phone: the browser is a narrow phone-sized window. Looks for layout and usability bugs: horizontal scrolling, overlapping or cut-off text, buttons out of reach, tables or charts that can't be used, menus that don't open",
 };
 
 const SITE_NATURE_LABELS: Record<SiteNature, string> = {
@@ -114,10 +131,6 @@ const CREATION_MODE_LABELS: Record<CreationMode, string> = {
 };
 
 const QUIRK_DESCRIPTIONS: Record<Quirk, string> = {
-  "back-button-mid-wizard":
-    'in the middle of a wizard, use the browser back button (not the "Retour" button), then go forward again and check your answers are still there',
-  "refresh-mid-wizard":
-    "in the middle of a wizard, reload the page and check what is kept and what is lost",
   "extreme-values":
     "enter extreme values: 0, negative numbers, decimals, huge surfaces (1 000 000 000 m²), more than the site surface, very long texts",
   "double-submit":
@@ -126,6 +139,22 @@ const QUIRK_DESCRIPTIONS: Record<Quirk, string> = {
     'duplicate a project you created ("Évaluer une variante du projet") and compare the copy with the original',
   "edit-after-creation":
     'after creating a site or a project, edit it ("Modifier le site" or "Modifier les caractéristiques du projet" in the page menu) and check the new values are saved and shown everywhere, impacts included',
+  "change-earlier-answer":
+    'late in a wizard, go back several steps with "Retour", change an earlier answer (the site surface, the soils, the project type or the buildings), then go forward again and check the later steps and the summary reflect the change: no stale value, no total that no longer adds up',
+  "cross-page-figures":
+    "check that the same figure (site surface, soils, costs, revenues, buildings) is the same on every page that shows it: the wizard summary, the site page, the project page, the impacts page and the exports or comparisons",
+  "url-tampering":
+    'from "Mes évaluations", open a site (/sites/<id>/caracteristiques) and a project (/mes-projets/<id>/...), then edit the URL: a malformed id, an unknown id, a later wizard step opened directly (/creer-site-foncier/... or /creer-projet with a later "etape"), and the URL of a site or project you deleted. Expect a clean "not found" page, never a crash or a server error',
+  "impacts-exploration":
+    "on the impacts page, open every tab, section, chart and detail modal, switch every option the page offers (views, time period), and check every figure is shown, consistent from one view to the other and explained",
+  "input-formats":
+    'type numbers in different formats: "1 000", "1000,5", "1000.5", "1e3", leading zeros, pasted text with spaces, then check what is saved and shown, and that soils still add up to the site surface',
+  "invalid-dates":
+    "in the project schedule (MM/YYYY), enter invalid or odd dates: month 00 or 13, an end before the start, a date far in the past or the future, a partial date, and check the wizard refuses them or handles them sensibly",
+  "address-search-edge-cases":
+    "in the site address search, try an address with accents, a postcode only, a town that exists in several departments, a typo, an overseas address, an empty search and a very long text, and check the chosen address is the one saved",
+  "delete-cascades":
+    'delete a site that has projects ("Supprimer le site") and a project ("Supprimer le projet"), then check "Mes évaluations", the site page and the old URLs: nothing deleted is still shown or reachable, and nothing else is gone',
 };
 
 /** The plan as a Markdown section of the prompt. */

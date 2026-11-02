@@ -15,11 +15,11 @@ describe("drawRunPlan", () => {
   it("draws a plan from a seed", () => {
     assert.deepStrictEqual(drawRunPlan(42), {
       seed: 42,
-      persona: "saboteur",
+      persona: "returning-user",
       siteNature: "AGRICULTURAL_OPERATION",
       projectType: "PHOTOVOLTAIC_POWER_PLANT",
       creationMode: "custom",
-      quirks: ["refresh-mid-wizard", "double-submit"],
+      quirks: ["edit-after-creation", "url-tampering"],
     });
   });
 

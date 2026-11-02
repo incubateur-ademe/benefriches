@@ -1,7 +1,14 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { buildClaudeArgs, buildPlaywrightMcpConfig, readMonkeyConfig } from "./monkey-config";
+import {
+  buildClaudeArgs,
+  buildPlaywrightMcpConfig,
+  DESKTOP_VIEWPORT,
+  readMonkeyConfig,
+  viewportOf,
+} from "./monkey-config";
+import { PERSONAS } from "./run-plan";
 
 const REQUIRED_ENV = {
   BASE_URL: "https://staging.example.org",
@@ -78,13 +85,47 @@ describe("buildClaudeArgs", () => {
 
 describe("buildPlaywrightMcpConfig", () => {
   it("loads the hard-error detector on every page", () => {
-    const config = buildPlaywrightMcpConfig("https://staging.example.org", {
-      runDir: "run",
-      storageStatePath: "run/storage-state.json",
-      playwrightOutputDir: "run/playwright",
-      hardErrorDetectorPath: "/monkey/hard-error-detector.ts",
-    });
+    const config = buildPlaywrightMcpConfig(
+      "https://staging.example.org",
+      {
+        runDir: "run",
+        storageStatePath: "run/storage-state.json",
+        playwrightOutputDir: "run/playwright",
+        hardErrorDetectorPath: "/monkey/hard-error-detector.ts",
+      },
+      DESKTOP_VIEWPORT,
+    );
 
     assert.deepStrictEqual(config.browser.initPage, ["/monkey/hard-error-detector.ts"]);
   });
+
+  it("opens the browser in the given viewport", () => {
+    const config = buildPlaywrightMcpConfig(
+      "https://staging.example.org",
+      {
+        runDir: "run",
+        storageStatePath: "run/storage-state.json",
+        playwrightOutputDir: "run/playwright",
+        hardErrorDetectorPath: "/monkey/hard-error-detector.ts",
+      },
+      viewportOf("mobile"),
+    );
+
+    assert.deepStrictEqual(config.browser.contextOptions, {
+      storageState: "run/storage-state.json",
+      viewport: { width: 390, height: 844 },
+    });
+  });
+});
+
+describe("viewportOf", () => {
+  it("opens a 390×844 viewport for the mobile persona", () => {
+    assert.deepStrictEqual(viewportOf("mobile"), { width: 390, height: 844 });
+  });
+
+  for (const persona of PERSONAS.filter((p) => p !== "mobile")) {
+    it(`keeps 1440×900 for the ${persona} persona`, () => {
+      assert.deepStrictEqual(viewportOf(persona), { width: 1440, height: 900 });
+    });
+  }
 });

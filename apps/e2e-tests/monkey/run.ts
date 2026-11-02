@@ -23,6 +23,7 @@ import {
   buildPlaywrightMcpConfig,
   readMonkeyConfig,
   type MonkeyConfig,
+  viewportOf,
 } from "./monkey-config";
 import { drawRunPlan, formatRunPlan } from "./run-plan";
 import { buildRunSummary } from "./run-summary";
@@ -231,7 +232,11 @@ async function main() {
   const playwrightConfigPath = join(runDir, "playwright-mcp.config.json");
   await writeFile(
     playwrightConfigPath,
-    JSON.stringify(buildPlaywrightMcpConfig(config.baseUrl, paths, config.headed), null, 2),
+    JSON.stringify(
+      buildPlaywrightMcpConfig(config.baseUrl, paths, viewportOf(plan.persona), config.headed),
+      null,
+      2,
+    ),
   );
   const mcpConfigPath = join(runDir, "mcp.json");
   await writeFile(

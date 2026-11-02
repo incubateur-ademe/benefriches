@@ -3,7 +3,7 @@
  * Claude Code configurations built from them.
  */
 
-import { createSeed, MAX_SEED } from "./run-plan";
+import { createSeed, MAX_SEED, type Persona } from "./run-plan";
 import type { Budgets } from "./scenario-log";
 
 // The run stops at the first budget it exhausts.
@@ -21,6 +21,17 @@ const ADDRESS_SEARCH_ORIGINS = ["https://data.geopf.fr"];
 // Runs Playwright code in Node, outside the browser context: it would bypass the origin
 // allowlist.
 const DISALLOWED_MCP_TOOLS = ["mcp__playwright__browser_run_code_unsafe"];
+
+type Viewport = { width: number; height: number };
+
+export const DESKTOP_VIEWPORT: Viewport = { width: 1440, height: 900 };
+// A common phone size, below the DSFR sm breakpoint (576 px): the app shows its mobile layout.
+// Only the viewport changes: no touch or mobile emulation, so Playwright MCP clicks as usual.
+export const MOBILE_VIEWPORT: Viewport = { width: 390, height: 844 };
+
+export function viewportOf(persona: Persona): Viewport {
+  return persona === "mobile" ? MOBILE_VIEWPORT : DESKTOP_VIEWPORT;
+}
 
 export type MonkeyConfig = {
   baseUrl: string;
@@ -99,7 +110,12 @@ type RunPaths = {
 };
 
 /** Playwright MCP configuration file (see @playwright/mcp config.d.ts). */
-export function buildPlaywrightMcpConfig(baseUrl: string, paths: RunPaths, headed = false) {
+export function buildPlaywrightMcpConfig(
+  baseUrl: string,
+  paths: RunPaths,
+  viewport: Viewport,
+  headed = false,
+) {
   return {
     browser: {
       // No browserName: Playwright MCP drives the installed Google Chrome, as the ADW QA step does.
@@ -107,7 +123,7 @@ export function buildPlaywrightMcpConfig(baseUrl: string, paths: RunPaths, heade
       launchOptions: { headless: !headed },
       contextOptions: {
         storageState: paths.storageStatePath,
-        viewport: { width: 1440, height: 900 },
+        viewport,
       },
       initPage: [paths.hardErrorDetectorPath],
     },

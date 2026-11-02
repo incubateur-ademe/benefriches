@@ -33,7 +33,7 @@ The browser is watched for you: uncaught JavaScript exceptions, `console.error` 
 - **major**: an error page or message on a valid action, an HTTP 5xx response, an unexpected 4xx response, wrong or inconsistent figures (a surface, an amount or an impact that differs between two pages, or doesn't match what you entered), a value not saved, a wizard that blocks you or loses your answers, invalid input accepted and saved (negative surface, soils larger than the site), valid input rejected.
 - **minor**: an uncaught error in the browser console, a broken layout, a typo, a misleading label or help text, a button that does nothing.
 
-Not a bug: requests blocked by `net::ERR_BLOCKED_BY_CLIENT`, slow pages that eventually load, values computed by Bénéfriches that you merely disagree with without evidence of inconsistency.
+Not a bug: requests blocked by `net::ERR_BLOCKED_BY_CLIENT`, slow pages that eventually load, the answers of a wizard in progress lost after the browser back or forward button or a page reload (a known limitation), values computed by Bénéfriches that you merely disagree with without evidence of inconsistency.
 
 # Reporting protocol
 

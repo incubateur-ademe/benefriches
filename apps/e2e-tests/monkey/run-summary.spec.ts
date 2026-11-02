@@ -67,7 +67,7 @@ describe("buildRunSummary", () => {
       summary,
       `## Monkey run 2026-10-29T10-00-00.000Z: 1 hard error
 
-Target https://staging.example.org, seed \`42\` (replay with \`MONKEY_SEED=42\`), persona saboteur, AGRICULTURAL_OPERATION, PHOTOVOLTAIC_POWER_PLANT, custom.
+Target https://staging.example.org, seed \`42\` (replay with \`MONKEY_SEED=42\`), persona returning-user, AGRICULTURAL_OPERATION, PHOTOVOLTAIC_POWER_PLANT, custom.
 
 | Run | Turns | Cost | Duration | Hard errors | Suspicions |
 | --- | --- | --- | --- | --- | --- |
