@@ -9,3 +9,6 @@ export const getFormattedDuration = (startDate: Date, endDate: Date) => {
     delimiter: " et ",
   });
 };
+
+// Dates are always shown in French (dd/mm/yyyy), whatever the browser locale.
+export const formatDateFr = (date: Date) => date.toLocaleDateString("fr-FR");

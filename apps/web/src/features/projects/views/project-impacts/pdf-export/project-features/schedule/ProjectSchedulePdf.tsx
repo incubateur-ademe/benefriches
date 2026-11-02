@@ -1,4 +1,4 @@
-import { getFormattedDuration } from "@/shared/core/dates";
+import { formatDateFr, getFormattedDuration } from "@/shared/core/dates";
 
 import DataLine from "../../components/DataLine";
 import FeaturesSection from "../../components/FeaturesSection";
@@ -38,14 +38,14 @@ export default function ProjectSchedulePdf({
       {reinstatementStartDate && reinstatementEndDate && (
         <DataLine
           label="Travaux de remise en état de la friche"
-          value={`${reinstatementStartDate.toLocaleDateString()} - ${reinstatementEndDate.toLocaleDateString()} (${getFormattedDuration(reinstatementStartDate, reinstatementEndDate)})`}
+          value={`${formatDateFr(reinstatementStartDate)} - ${formatDateFr(reinstatementEndDate)} (${getFormattedDuration(reinstatementStartDate, reinstatementEndDate)})`}
           bold
         />
       )}
       {installationStartDate && installationEndDate && (
         <DataLine
           label="Aménagement du site"
-          value={`${installationStartDate.toLocaleDateString()} - ${installationEndDate.toLocaleDateString()} (${getFormattedDuration(installationStartDate, installationEndDate)})`}
+          value={`${formatDateFr(installationStartDate)} - ${formatDateFr(installationEndDate)} (${getFormattedDuration(installationStartDate, installationEndDate)})`}
           bold
         />
       )}

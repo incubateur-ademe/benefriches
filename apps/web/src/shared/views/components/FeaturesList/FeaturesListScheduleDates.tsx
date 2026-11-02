@@ -1,4 +1,4 @@
-import { getFormattedDuration } from "@/shared/core/dates";
+import { formatDateFr, getFormattedDuration } from "@/shared/core/dates";
 
 type ScheduleDatesProps = {
   startDateString: string;
@@ -11,7 +11,7 @@ export default function ScheduleDates({ startDateString, endDateString }: Schedu
   return (
     <span>
       <strong>
-        {startDate.toLocaleDateString()} ➔ {endDate.toLocaleDateString()}
+        {formatDateFr(startDate)} ➔ {formatDateFr(endDate)}
       </strong>{" "}
       <span className="text-nowrap">({getFormattedDuration(startDate, endDate)})</span>
     </span>
