@@ -37,7 +37,6 @@ export type StepSubGroupId =
   | "BUILDINGS_NEW_USES"
   | "STAKEHOLDERS_BUILDINGS_DEVELOPER"
   | "EXPENSES_BUILDINGS_CONSTRUCTION"
-  | "SITE_CESSION"
-  | "BUILDINGS_CESSION";
+  | "SITE_CESSION";
 
 export type StepStepperConfig = { groupId: StepGroupId; subGroupId?: StepSubGroupId };

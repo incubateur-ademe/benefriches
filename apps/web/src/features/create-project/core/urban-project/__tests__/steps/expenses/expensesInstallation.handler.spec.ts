@@ -23,11 +23,8 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
         },
         URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
-          payload: { developerWillBeBuildingsConstructor: true },
-        },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-          completed: true,
           payload: {
+            developerWillBeBuildingsConstructor: true,
             buildingsResalePlannedAfterDevelopment: false,
           },
         },
@@ -57,9 +54,10 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
           completed: true,
           payload: { buildingsFootprintToReuse: 2500 },
         },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
           payload: {
+            developerWillBeBuildingsConstructor: true,
             buildingsResalePlannedAfterDevelopment: true,
           },
         },
@@ -73,17 +71,15 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION");
     });
 
-    it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when project has buildings and buildings resale is planned", () => {
+    it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when project has buildings but the developer does not build them", () => {
       const answers: UrbanProjectStepsState = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
         },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
-          payload: {
-            buildingsResalePlannedAfterDevelopment: true,
-          },
+          payload: { developerWillBeBuildingsConstructor: false },
         },
       };
 

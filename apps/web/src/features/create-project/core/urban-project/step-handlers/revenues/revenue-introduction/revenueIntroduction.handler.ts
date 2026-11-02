@@ -1,10 +1,8 @@
-import {
-  willHaveBuildings,
-  hasBuildingsResalePlannedAfterDevelopment,
-} from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
 import { isSiteResalePlannedAfterDevelopment } from "@/features/create-project/core/urban-project/helpers/readers/siteResaleReaders";
-import { willReuseExistingBuildings } from "@/features/create-project/core/urban-project/step-handlers/buildings/buildingsReaders";
-import { isDeveloperBuildingsConstructor } from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholdersReaders";
+import {
+  isDeveloperBuildingsConstructor,
+  willDeveloperResellBuildings,
+} from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholdersReaders";
 
 import type { InfoStepHandler } from "../../stepHandler.type";
 
@@ -12,7 +10,7 @@ export const RevenueIntroductionHandler = {
   stepId: "URBAN_PROJECT_REVENUE_INTRODUCTION",
 
   getPreviousStepId({ answers }) {
-    if (isDeveloperBuildingsConstructor(answers) || willReuseExistingBuildings(answers)) {
+    if (isDeveloperBuildingsConstructor(answers)) {
       return "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION";
     }
 
@@ -24,7 +22,7 @@ export const RevenueIntroductionHandler = {
       return "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
     }
 
-    if (willHaveBuildings(answers) && hasBuildingsResalePlannedAfterDevelopment(answers)) {
+    if (willDeveloperResellBuildings(answers)) {
       return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
     }
 

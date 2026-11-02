@@ -1,6 +1,6 @@
+import { willHaveBuildings } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
-import { willConstructNewBuildings } from "../../buildings/buildingsReaders";
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const StakeholdersProjectDeveloperHandler = {
@@ -11,7 +11,7 @@ export const StakeholdersProjectDeveloperHandler = {
   },
 
   getNextStepId({ answers, context }) {
-    if (willConstructNewBuildings(answers)) {
+    if (willHaveBuildings(answers)) {
       return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
     }
 

@@ -85,16 +85,6 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
       });
     }
 
-    if (
-      newConstruction === 0 &&
-      ReadStateHelper.getStep(params.answers, "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER")
-    ) {
-      rules.push({
-        stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
-        action: "delete",
-      });
-    }
-
     return rules;
   },
 };

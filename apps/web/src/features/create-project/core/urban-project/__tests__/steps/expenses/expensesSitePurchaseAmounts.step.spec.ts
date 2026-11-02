@@ -33,9 +33,12 @@ describe("Urban project creation - Steps - Expenses site purchase amounts naviga
           completed: true,
           payload: { siteResaleSelection: "yes" },
         },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
-          payload: { buildingsResalePlannedAfterDevelopment: false },
+          payload: {
+            developerWillBeBuildingsConstructor: true,
+            buildingsResalePlannedAfterDevelopment: false,
+          },
         },
       })
       .withCurrentStep("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS")

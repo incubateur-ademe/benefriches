@@ -6,11 +6,13 @@ import type {
 } from "shared";
 import { sumObjectValues } from "shared";
 
-import {
-  DEFAULT_FUTURE_SITE_OWNER,
-  getFutureOperator,
-} from "@/features/create-project/core/project-form/stakeholders";
+import { DEFAULT_FUTURE_SITE_OWNER } from "@/features/create-project/core/project-form/stakeholders";
 
+import {
+  hasBuildingsResalePlannedAfterDevelopment,
+  isDeveloperBuildingsConstructor,
+  readFutureOperator,
+} from "../step-handlers/stakeholders/stakeholdersReaders";
 import type { UrbanProjectStepsState } from "../urbanProject.state";
 import type { UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { isSiteResalePlannedAfterDevelopment } from "./readers/siteResaleReaders";
@@ -134,17 +136,15 @@ export const getProjectSummary = (
         steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.defaultValues?.firstYearOfOperation,
     },
     futureOperator: {
-      value:
-        steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION?.payload
-          ?.buildingsResalePlannedAfterDevelopment !== undefined
-          ? getFutureOperator(
-              steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION.payload
-                .buildingsResalePlannedAfterDevelopment,
-              steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload?.projectDeveloper,
-            )
-          : undefined,
-      isAuto: true, // Always auto-derived from resale selection + project developer
-      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION"),
+      value: readFutureOperator(steps),
+      isAuto: true, // Always auto-derived from the buildings developer answers + project developer
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER"),
+    },
+    buildingsResalePlanned: {
+      value: hasBuildingsResalePlannedAfterDevelopment(steps),
+      shouldDisplay:
+        stepsSequence.includes("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER") &&
+        isDeveloperBuildingsConstructor(steps),
     },
     futureSiteOwner: {
       // when resale is planned, future owner is unknown

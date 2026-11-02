@@ -1,11 +1,12 @@
-import { willConstructNewBuildings } from "../../buildings/buildingsReaders";
+import { willHaveBuildings } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
+
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const StakeholdersReinstatementContractOwnerHandler = {
   stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
 
   getPreviousStepId(params) {
-    if (willConstructNewBuildings(params.answers)) {
+    if (willHaveBuildings(params.answers)) {
       return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
     }
 

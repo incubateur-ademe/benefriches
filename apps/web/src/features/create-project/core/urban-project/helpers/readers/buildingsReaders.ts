@@ -22,8 +22,3 @@ export function getProjectBuildingsFootprint(steps: Steps): number {
 export function willHaveBuildings(steps: Steps): boolean {
   return hasSelectedUseWithBuildings(steps) && getProjectBuildingsFootprint(steps) > 0;
 }
-
-export function hasBuildingsResalePlannedAfterDevelopment(steps: Steps): boolean | undefined {
-  return ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION")
-    ?.buildingsResalePlannedAfterDevelopment;
-}

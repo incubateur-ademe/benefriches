@@ -31,7 +31,7 @@ describe("Urban project creation - Steps - Site resale introduction navigation",
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
   });
 
-  it("goes back to the buildings developer on a non-friche site with new construction", () => {
+  it("goes back to the buildings developer on a non-friche site when the project has buildings", () => {
     // Arrange
     const store = new StoreBuilder()
       .withSiteData({ nature: "AGRICULTURAL_OPERATION" })

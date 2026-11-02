@@ -22,9 +22,12 @@ describe("Urban project creation - Steps - Revenue expected site resale navigati
           payload: { siteResaleSelection: "yes" },
           completed: true,
         },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-          payload: { buildingsResalePlannedAfterDevelopment: false },
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
+          payload: {
+            developerWillBeBuildingsConstructor: true,
+            buildingsResalePlannedAfterDevelopment: false,
+          },
         },
       })
       .withCurrentStep("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE")
@@ -46,5 +49,79 @@ describe("Urban project creation - Steps - Revenue expected site resale navigati
 
     // Assert — returns to site resale revenue step
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
+  });
+  it("goes to the buildings sale when the developer builds and resells the buildings", () => {
+    const store = new StoreBuilder()
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 2000, IMPERMEABLE_SOILS: 8000 } },
+        },
+        URBAN_PROJECT_SITE_RESALE_SELECTION: {
+          completed: true,
+          payload: { siteResaleSelection: "yes" },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+          completed: true,
+          payload: {
+            developerWillBeBuildingsConstructor: true,
+            buildingsResalePlannedAfterDevelopment: true,
+          },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE")
+      .build();
+
+    store.dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
+        answers: {
+          siteResaleExpectedSellingPrice: 500000,
+          siteResaleExpectedPropertyTransferDuties: 40000,
+        },
+      }),
+    );
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
+  });
+
+  it("goes to financial assistance when the developer does not build", () => {
+    const store = new StoreBuilder()
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 2000, IMPERMEABLE_SOILS: 8000 } },
+        },
+        URBAN_PROJECT_SITE_RESALE_SELECTION: {
+          completed: true,
+          payload: { siteResaleSelection: "yes" },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+          completed: true,
+          payload: { developerWillBeBuildingsConstructor: false },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE")
+      .build();
+
+    store.dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
+        answers: {
+          siteResaleExpectedSellingPrice: 500000,
+          siteResaleExpectedPropertyTransferDuties: 40000,
+        },
+      }),
+    );
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
   });
 });

@@ -8,13 +8,17 @@ const { previousStepRequested, stepCompletionRequested } = creationProjectFormUr
 
 describe("Urban project creation - Steps - Buildings navigation", () => {
   describe("Stakeholders → buildings developer routing", () => {
-    it("routes from project developer to buildings developer when new buildings will be constructed", () => {
+    it("routes from project developer to buildings developer when the project has buildings", () => {
       const store = new StoreBuilder()
         .withSiteData({
           nature: "AGRICULTURAL_OPERATION",
         } as never)
         .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER")
         .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL"] },
+          },
           URBAN_PROJECT_SPACES_SURFACE_AREA: {
             completed: true,
             payload: {

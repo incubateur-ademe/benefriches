@@ -176,15 +176,6 @@ export class UrbanProjectCreationPage {
   }
 
   // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
-  async selectBuildingsResale(willBeResold: boolean): Promise<void> {
-    const label = willBeResold
-      ? "Oui, les bâtiments seront revendus"
-      : "Non, les bâtiments resteront exclusivement la propriété de l'aménageur";
-    await this.page.getByRole("radio", { name: label }).check({ force: true });
-    await this.submit();
-  }
-
-  // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
   async selectStakeholder(label: string | RegExp): Promise<void> {
     await this.page.getByRole("radio", { name: label }).check({ force: true });
     await this.submit();
@@ -200,10 +191,23 @@ export class UrbanProjectCreationPage {
   }
 
   // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
-  async selectBuildingsDeveloper(developerBuilds: boolean): Promise<void> {
+  async answerBuildingsDeveloper({
+    developerBuilds,
+    buildingsResold,
+  }: {
+    developerBuilds: boolean;
+    buildingsResold?: boolean;
+  }): Promise<void> {
+    // exact: once the resale question shows, "Oui, les bâtiments seront revendus" also matches "Oui"
     await this.page
-      .getByRole("radio", { name: developerBuilds ? "Oui" : "Non" })
+      .getByRole("radio", { name: developerBuilds ? "Oui" : "Non", exact: true })
       .check({ force: true });
+    if (buildingsResold !== undefined) {
+      const label = buildingsResold
+        ? "Oui, les bâtiments seront revendus"
+        : "Non, les bâtiments resteront exclusivement la propriété de l'aménageur";
+      await this.page.getByRole("radio", { name: label }).check({ force: true });
+    }
     await this.submit();
   }
 

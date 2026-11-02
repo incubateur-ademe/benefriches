@@ -321,6 +321,18 @@ function UrbanProjectFormSummary({
               value={buildingsContractorName.value ?? "Non renseigné"}
             />
           )}
+          {projectSummary.buildingsResalePlanned.shouldDisplay && (
+            <DataLine
+              label={<strong>Revente des bâtiments</strong>}
+              value={projectSummary.buildingsResalePlanned.value ? "Oui" : "Non"}
+            />
+          )}
+          {projectSummary.futureOperator.shouldDisplay && (
+            <DataLine
+              label={<strong>Futur exploitant</strong>}
+              value={projectSummary.futureOperator.value?.name}
+            />
+          )}
         </Section>
 
         {/* 🔑 Cession foncière */}
@@ -331,16 +343,6 @@ function UrbanProjectFormSummary({
           <DataLine
             label={<strong>Cession foncière</strong>}
             value={projectSummary.futureSiteOwner.value ? "Oui" : "Non"}
-          />
-          <DataLine
-            label={<strong>Revente des bâtiments</strong>}
-            value={
-              projectSummary.futureOperator.shouldDisplay
-                ? projectSummary.futureOperator.value
-                  ? "Oui"
-                  : "Non"
-                : "Non"
-            }
           />
         </Section>
 

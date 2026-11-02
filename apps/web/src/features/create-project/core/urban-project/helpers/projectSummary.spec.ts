@@ -134,6 +134,59 @@ describe("getProjectSummary", () => {
     });
   });
 
+  describe("buildingsResalePlanned", () => {
+    it("is displayed when the developer builds the buildings", () => {
+      const steps = makeSteps({
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+          completed: true,
+          payload: {
+            developerWillBeBuildingsConstructor: true,
+            buildingsResalePlannedAfterDevelopment: false,
+          },
+        },
+      });
+
+      const result = getProjectSummary(steps, ["URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER"]);
+
+      expect(result.buildingsResalePlanned).toEqual({ value: false, shouldDisplay: true });
+    });
+
+    it("is not displayed when the developer does not build the buildings", () => {
+      const steps = makeSteps({
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+          completed: true,
+          payload: { developerWillBeBuildingsConstructor: false },
+        },
+      });
+
+      const result = getProjectSummary(steps, ["URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER"]);
+
+      expect(result.buildingsResalePlanned).toEqual({ value: undefined, shouldDisplay: false });
+    });
+  });
+
+  describe("futureOperator", () => {
+    it("is the developer when the developer builds and keeps the buildings", () => {
+      const steps = makeSteps({
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+          completed: true,
+          payload: {
+            developerWillBeBuildingsConstructor: true,
+            buildingsResalePlannedAfterDevelopment: false,
+          },
+        },
+      });
+
+      const result = getProjectSummary(steps, ["URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER"]);
+
+      expect(result.futureOperator).toEqual({
+        value: DEVELOPER,
+        isAuto: true,
+        shouldDisplay: true,
+      });
+    });
+  });
+
   describe("projectPhase", () => {
     it("should include the project phase when provided", () => {
       const result = getProjectSummary({}, [], "construction");

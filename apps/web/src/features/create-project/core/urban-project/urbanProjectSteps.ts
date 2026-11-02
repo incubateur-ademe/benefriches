@@ -14,7 +14,6 @@ import { revenueBuildingsResaleSchema } from "./step-handlers/revenues/revenue-b
 import { revenueExpectedSiteResaleSchema } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.schema";
 import { revenueFinancialAssistanceSchema } from "./step-handlers/revenues/revenue-financial-assistance/revenueFinancialAssistance.schema";
 import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-projection/scheduleProjection.schema";
-import { buildingsResaleSelectionSchema } from "./step-handlers/site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.schema";
 import { siteResaleSelectionSchema } from "./step-handlers/site-and-buildings-resale/site-resale-selection/siteResaleSelection.schema";
 import { involvesReinstatementSchema } from "./step-handlers/soils/involves-reinstatement/involvesReinstatement.schema";
 import { soilsDecontaminationSchema } from "./step-handlers/soils/soils-decontamination/soilsDecontamination.schema";
@@ -106,8 +105,6 @@ export const answersByStepSchemas = {
 
   URBAN_PROJECT_SITE_RESALE_SELECTION: siteResaleSelectionSchema,
 
-  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: buildingsResaleSelectionSchema,
-
   // Custom - expenses
   URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: expensesSitePurchaseAmountsSchema,
 
@@ -149,7 +146,6 @@ export const BUILDINGS_STEPS = [
   "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
   "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
   "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
-  "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
   "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
 ] as const;
 

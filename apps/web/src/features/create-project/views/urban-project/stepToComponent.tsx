@@ -67,10 +67,6 @@ const SiteResaleRevenueForm = lazy(
 const ScheduleProjectionForm = lazy(
   () => import("@/features/create-project/views/urban-project/schedule/projection"),
 );
-const BuildingsResaleForm = lazy(
-  () =>
-    import("@/features/create-project/views/urban-project/site-and-buildings-resale/buildings-resale"),
-);
 const SiteResaleIntroduction = lazy(
   () =>
     import("@/features/create-project/views/urban-project/site-and-buildings-resale/introduction"),
@@ -360,13 +356,6 @@ export const getUrbanProjectStepView = (
         <>
           <HtmlTitle>{`Cession du site aménagé - Cession foncière - ${mainTitle}`}</HtmlTitle>
           <SiteResaleForm />
-        </>
-      );
-    case "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION":
-      return (
-        <>
-          <HtmlTitle>{`Revente des bâtiments - Cession foncière - ${mainTitle}`}</HtmlTitle>
-          <BuildingsResaleForm />
         </>
       );
     case "URBAN_PROJECT_EXPENSES_INTRODUCTION":

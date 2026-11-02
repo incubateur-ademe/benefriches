@@ -1,12 +1,10 @@
 import type { BuildingsConstructionExpense } from "shared";
 import { typedObjectEntries } from "shared";
 
-import {
-  DEFAULT_FUTURE_SITE_OWNER,
-  getFutureOperator,
-} from "@/features/create-project/core/project-form/stakeholders";
+import { DEFAULT_FUTURE_SITE_OWNER } from "@/features/create-project/core/project-form/stakeholders";
 
 import { EXPENSE_FIELD_TO_PURPOSE } from "../../step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
+import { readFutureOperator } from "../../step-handlers/stakeholders/stakeholdersReaders";
 import type { UrbanProjectStepsState } from "../../urbanProject.state";
 import type { UrbanProjectFormData } from "../../urbanProjectSteps";
 import { isSiteResalePlannedAfterDevelopment } from "./siteResaleReaders";
@@ -57,15 +55,7 @@ export function getProjectData(steps: Steps): Partial<UrbanProjectFormData> {
     soilsDistribution: getProjectSoilDistribution(steps),
     reinstatementSchedule: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.reinstatementSchedule,
     operationsFirstYear: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.firstYearOfOperation,
-    futureOperator:
-      steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION?.payload
-        ?.buildingsResalePlannedAfterDevelopment !== undefined
-        ? getFutureOperator(
-            steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION.payload
-              .buildingsResalePlannedAfterDevelopment,
-            steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload?.projectDeveloper,
-          )
-        : undefined,
+    futureOperator: readFutureOperator(steps),
     // When site resale is planned, future owner is unknown (will be determined at sale)
     futureSiteOwner: isSiteResalePlannedAfterDevelopment(steps)
       ? DEFAULT_FUTURE_SITE_OWNER

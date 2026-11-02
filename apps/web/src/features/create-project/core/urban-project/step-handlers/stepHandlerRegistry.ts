@@ -20,7 +20,6 @@ import { RevenueExpectedSiteResaleHandler } from "./revenues/revenue-expected-si
 import { RevenueFinancialAssistanceHandler } from "./revenues/revenue-financial-assistance/revenueFinancialAssistance.handler";
 import { RevenueIntroductionHandler } from "./revenues/revenue-introduction/revenueIntroduction.handler";
 import { UrbanProjectScheduleProjectionHandler } from "./schedule/schedule-projection/scheduleProjection.handler";
-import { BuildingsResaleSelectionHandler } from "./site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.handler";
 import { SiteResaleIntroductionHandler } from "./site-and-buildings-resale/site-resale-introduction/siteResaleIntroduction.handler";
 import { SiteResaleSelectionHandler } from "./site-and-buildings-resale/site-resale-selection/siteResaleSelection.handler";
 import { InvolvesReinstatementHandler } from "./soils/involves-reinstatement/involvesReinstatement.handler";
@@ -75,7 +74,6 @@ export const answerStepHandlers: AnswerStepHandlerMap = {
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
     StakeholdersReinstatementContractOwnerHandler,
   URBAN_PROJECT_SITE_RESALE_SELECTION: SiteResaleSelectionHandler,
-  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: BuildingsResaleSelectionHandler,
   // expenses
   URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: ExpensesSitePurchaseAmountsHandler,
   URBAN_PROJECT_EXPENSES_REINSTATEMENT: UrbanProjectReinstatementExpensesHandler,

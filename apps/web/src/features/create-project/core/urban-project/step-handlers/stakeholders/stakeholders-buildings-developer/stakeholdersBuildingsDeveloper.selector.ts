@@ -7,14 +7,19 @@ import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 type BuildingsDeveloperViewData = {
   developerWillBeBuildingsConstructor: boolean | undefined;
+  buildingsResalePlannedAfterDevelopment: boolean | undefined;
 };
 
 export const createSelectBuildingsDeveloperViewData = (
   selectStepState: Selector<RootState, UrbanProjectStepsState>,
 ) =>
-  createSelector([selectStepState], (steps): BuildingsDeveloperViewData => ({
-    developerWillBeBuildingsConstructor: ReadStateHelper.getStepAnswers(
+  createSelector([selectStepState], (steps): BuildingsDeveloperViewData => {
+    const answers = ReadStateHelper.getStepAnswers(
       steps,
       "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
-    )?.developerWillBeBuildingsConstructor,
-  }));
+    );
+    return {
+      developerWillBeBuildingsConstructor: answers?.developerWillBeBuildingsConstructor,
+      buildingsResalePlannedAfterDevelopment: answers?.buildingsResalePlannedAfterDevelopment,
+    };
+  });

@@ -201,7 +201,7 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
       );
     });
 
-    it("discards existing/new buildings uses and stakeholder builder answers when new construction becomes 0", () => {
+    it("discards existing/new buildings uses but keeps the buildings developer answer when new construction becomes 0", () => {
       // site=2000, project=2000, reuse=2000 → new=0
       // Previously had uses steps completed
       const steps: UrbanProjectStepsState = {
@@ -220,7 +220,10 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
         },
         URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
-          payload: { developerWillBeBuildingsConstructor: true },
+          payload: {
+            developerWillBeBuildingsConstructor: true,
+            buildingsResalePlannedAfterDevelopment: true,
+          },
         },
         URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION: {
           completed: true,
@@ -244,10 +247,11 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
 
       const projectData = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
 
-      // Dependent buildings answers are discarded now that there is no new construction
+      // Dependent buildings answers are discarded now that there is no new construction, but the
+      // buildings developer still rehabilitates the reused buildings
       expect(projectData.existingBuildingsUsesFloorSurfaceArea).toBeUndefined();
       expect(projectData.newBuildingsUsesFloorSurfaceArea).toBeUndefined();
-      expect(projectData.developerWillBeBuildingsConstructor).toBeUndefined();
+      expect(projectData.developerWillBeBuildingsConstructor).toBe(true);
     });
   });
 });

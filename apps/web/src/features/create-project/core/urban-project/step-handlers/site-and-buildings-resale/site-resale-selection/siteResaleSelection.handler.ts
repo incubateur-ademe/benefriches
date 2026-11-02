@@ -1,5 +1,3 @@
-import { willHaveBuildings } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
-
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_SITE_RESALE_SELECTION";
@@ -7,11 +5,7 @@ const STEP_ID = "URBAN_PROJECT_SITE_RESALE_SELECTION";
 export const SiteResaleSelectionHandler = {
   stepId: STEP_ID,
 
-  getNextStepId({ answers }) {
-    if (willHaveBuildings(answers)) {
-      return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
-    }
-
+  getNextStepId() {
     return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
   },
 

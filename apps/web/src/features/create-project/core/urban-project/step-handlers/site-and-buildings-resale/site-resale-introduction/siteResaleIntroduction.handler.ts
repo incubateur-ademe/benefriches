@@ -1,6 +1,6 @@
+import { willHaveBuildings } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
-import { willConstructNewBuildings } from "../../buildings/buildingsReaders";
 import type { InfoStepHandler } from "../../stepHandler.type";
 
 export const SiteResaleIntroductionHandler = {
@@ -15,7 +15,7 @@ export const SiteResaleIntroductionHandler = {
     if (involvesReinstatement !== false && context.siteData?.nature === "FRICHE") {
       return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
     }
-    if (willConstructNewBuildings(answers)) {
+    if (willHaveBuildings(answers)) {
       return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
     }
     return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";

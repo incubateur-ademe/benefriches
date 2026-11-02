@@ -1,8 +1,5 @@
-import {
-  willHaveBuildings,
-  hasBuildingsResalePlannedAfterDevelopment,
-} from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
 import { isSiteResalePlannedAfterDevelopment } from "@/features/create-project/core/urban-project/helpers/readers/siteResaleReaders";
+import { willDeveloperResellBuildings } from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholdersReaders";
 
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
@@ -10,7 +7,7 @@ export const RevenueFinancialAssistanceHandler = {
   stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
 
   getPreviousStepId({ answers }) {
-    if (willHaveBuildings(answers) && hasBuildingsResalePlannedAfterDevelopment(answers)) {
+    if (willDeveloperResellBuildings(answers)) {
       return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
     }
 

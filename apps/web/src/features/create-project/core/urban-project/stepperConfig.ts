@@ -19,7 +19,6 @@ import { revenueExpectedSiteResaleStepperConfig } from "@/features/create-projec
 import { revenueFinancialAssistanceStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-financial-assistance/revenueFinancialAssistance.stepperConfig";
 import { revenueIntroductionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/revenues/revenue-introduction/revenueIntroduction.stepperConfig";
 import { scheduleProjectionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/schedule/schedule-projection/scheduleProjection.stepperConfig";
-import { buildingsResaleSelectionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.stepperConfig";
 import { siteResaleIntroductionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/site-and-buildings-resale/site-resale-introduction/siteResaleIntroduction.stepperConfig";
 import { siteResaleSelectionStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/site-and-buildings-resale/site-resale-selection/siteResaleSelection.stepperConfig";
 import { involvesReinstatementStepperConfig } from "@/features/create-project/core/urban-project/step-handlers/soils/involves-reinstatement/involvesReinstatement.stepperConfig";
@@ -91,7 +90,6 @@ export const STEP_GROUP_LABELS: Record<InternalStepGroupId | InternalStepSubGrou
 
   SITE_RESALE: "Cession foncière",
   SITE_CESSION: "Cession du site aménagé",
-  BUILDINGS_CESSION: "Revente des bâtiments",
 
   EXPENSES: "Dépenses",
   EXPENSES_SITE_PURCHASE: "Acquisition foncière",
@@ -156,7 +154,6 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   // Cession foncière
   URBAN_PROJECT_SITE_RESALE_INTRODUCTION: siteResaleIntroductionStepperConfig,
   URBAN_PROJECT_SITE_RESALE_SELECTION: siteResaleSelectionStepperConfig,
-  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: buildingsResaleSelectionStepperConfig,
 
   // Dépenses
   URBAN_PROJECT_EXPENSES_INTRODUCTION: expensesIntroductionStepperConfig,

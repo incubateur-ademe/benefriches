@@ -27,7 +27,7 @@ const getData = (store: ReturnType<StoreBuilder["build"]>) =>
   getProjectData(store.getState().projectCreation.urbanProject.form.steps);
 
 describe("Urban project creation - Steps - site resale selection", () => {
-  it("plans site resale and routes to buildings resale when 'yes' is selected", () => {
+  it("plans site resale and routes to the expenses introduction when 'yes' is selected", () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
@@ -37,11 +37,11 @@ describe("Urban project creation - Steps - site resale selection", () => {
       }),
     );
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
     expect(getData(store).futureSiteOwner).toEqual(DEFAULT_FUTURE_SITE_OWNER);
   });
 
-  it("does not plan site resale and routes to buildings resale when 'no' is selected", () => {
+  it("does not plan site resale and routes to the expenses introduction when 'no' is selected", () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
@@ -51,7 +51,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
       }),
     );
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
     expect(getData(store).futureSiteOwner).toBeUndefined();
   });
 
@@ -127,10 +127,10 @@ describe("Urban project creation - Steps - site resale selection", () => {
     expect(store.getState().projectCreation.urbanProject.siteResaleEstimationLoadingState).toBe(
       "error",
     );
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 
-  it("resolves the resale estimation and routes to buildings resale when 'unknown' is selected", async () => {
+  it("resolves the resale estimation and routes to the expenses introduction when 'unknown' is selected", async () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
@@ -147,32 +147,6 @@ describe("Urban project creation - Steps - site resale selection", () => {
       "success",
     );
     expect(getData(store).futureSiteOwner).toEqual(DEFAULT_FUTURE_SITE_OWNER);
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
-  });
-
-  it("skips the buildings resale step when the buildings footprint is 0", () => {
-    const store = new StoreBuilder()
-      .withCurrentStep("URBAN_PROJECT_SITE_RESALE_SELECTION")
-      .withSteps({
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-        URBAN_PROJECT_SPACES_SURFACE_AREA: {
-          completed: true,
-          payload: { spacesSurfaceAreaDistribution: { IMPERMEABLE_SOILS: 10000 } },
-        },
-      })
-      .build();
-
-    store.dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
-        answers: { siteResaleSelection: "no" },
-      }),
-    );
-
-    // Without a buildings footprint there are no buildings to resell.
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 });

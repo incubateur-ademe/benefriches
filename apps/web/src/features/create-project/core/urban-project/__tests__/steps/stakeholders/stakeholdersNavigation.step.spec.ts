@@ -71,7 +71,7 @@ describe("Urban project creation - Steps - Stakeholders navigation", () => {
     expect(getCurrentStep(storeNonFriche)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
   });
 
-  it("should go back from reinstatement contract owner to buildings developer when new construction exists", () => {
+  it("should go back from reinstatement contract owner to buildings developer when the project has buildings", () => {
     // Arrange
     const store = new StoreBuilder()
       .withSiteData(testScenarios.withBuildingsAndContamination)
@@ -97,6 +97,40 @@ describe("Urban project creation - Steps - Stakeholders navigation", () => {
         URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
           payload: { developerWillBeBuildingsConstructor: true },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER")
+      .build();
+
+    // Act
+    store.dispatch(previousStepRequested());
+
+    // Assert
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
+  });
+
+  it("goes back from the reinstatement contract owner to the buildings developer on a reuse-only project", () => {
+    // Arrange
+    const store = new StoreBuilder()
+      .withSiteData({
+        ...mockSiteData,
+        nature: "FRICHE",
+        soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 2000 },
+      })
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: {
+            spacesSurfaceAreaDistribution: { BUILDINGS: 2000, IMPERMEABLE_SOILS: 8000 },
+          },
+        },
+        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+          completed: true,
+          payload: { buildingsFootprintToReuse: 2000 },
         },
       })
       .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER")

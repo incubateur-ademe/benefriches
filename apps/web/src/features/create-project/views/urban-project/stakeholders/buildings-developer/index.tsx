@@ -1,24 +1,35 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 
-import StakeholdersBuildingsDeveloper from "./StakeholdersBuildingsDeveloper";
+import StakeholdersBuildingsDeveloper, { type FormValues } from "./StakeholdersBuildingsDeveloper";
+
+const toYesNo = (value: boolean): "yes" | "no" => (value ? "yes" : "no");
 
 function getInitialValues(
   developerWillBeBuildingsConstructor: boolean | undefined,
-): { developerWillBeBuildingsConstructor: "yes" | "no" } | undefined {
+  buildingsResalePlannedAfterDevelopment: boolean | undefined,
+): FormValues | undefined {
   if (developerWillBeBuildingsConstructor === undefined) {
     return undefined;
   }
 
   return {
-    developerWillBeBuildingsConstructor: developerWillBeBuildingsConstructor ? "yes" : "no",
+    developerWillBeBuildingsConstructor: toYesNo(developerWillBeBuildingsConstructor),
+    buildingsResalePlanned:
+      buildingsResalePlannedAfterDevelopment === undefined
+        ? undefined
+        : toYesNo(buildingsResalePlannedAfterDevelopment),
   };
 }
 
 export default function StakeholdersBuildingsDeveloperContainer() {
   const { onBack, onRequestStepCompletion, selectBuildingsDeveloperViewData } = useProjectForm();
-  const { developerWillBeBuildingsConstructor } = useAppSelector(selectBuildingsDeveloperViewData);
-  const initialValues = getInitialValues(developerWillBeBuildingsConstructor);
+  const { developerWillBeBuildingsConstructor, buildingsResalePlannedAfterDevelopment } =
+    useAppSelector(selectBuildingsDeveloperViewData);
+  const initialValues = getInitialValues(
+    developerWillBeBuildingsConstructor,
+    buildingsResalePlannedAfterDevelopment,
+  );
 
   return (
     <StakeholdersBuildingsDeveloper
@@ -27,10 +38,13 @@ export default function StakeholdersBuildingsDeveloperContainer() {
       onSubmit={(formData) => {
         onRequestStepCompletion({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
-          answers: {
-            developerWillBeBuildingsConstructor:
-              formData.developerWillBeBuildingsConstructor === "yes",
-          },
+          answers:
+            formData.developerWillBeBuildingsConstructor === "yes"
+              ? {
+                  developerWillBeBuildingsConstructor: true,
+                  buildingsResalePlannedAfterDevelopment: formData.buildingsResalePlanned === "yes",
+                }
+              : { developerWillBeBuildingsConstructor: false },
         });
       }}
     />

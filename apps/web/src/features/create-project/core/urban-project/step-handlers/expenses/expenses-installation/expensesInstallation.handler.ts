@@ -1,6 +1,5 @@
 import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "shared";
 
-import { willReuseExistingBuildings } from "@/features/create-project/core/urban-project/step-handlers/buildings/buildingsReaders";
 import { isDeveloperBuildingsConstructor } from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholdersReaders";
 
 import type { AnswerStepHandler } from "../../stepHandler.type";
@@ -9,7 +8,7 @@ export const UrbanProjectInstallationExpensesHandler = {
   stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
 
   getNextStepId({ answers }) {
-    if (isDeveloperBuildingsConstructor(answers) || willReuseExistingBuildings(answers)) {
+    if (isDeveloperBuildingsConstructor(answers)) {
       return "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION";
     }
 

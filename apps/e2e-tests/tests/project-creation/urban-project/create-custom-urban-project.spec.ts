@@ -150,8 +150,11 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
       await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
       await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
-      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
-      await urbanProjectCreationPage.selectBuildingsDeveloper(true);
+      await urbanProjectCreationPage.expectStepTitle("construira-t-il ou réhabilitera-t-il");
+      await urbanProjectCreationPage.answerBuildingsDeveloper({
+        developerBuilds: true,
+        buildingsResold: false,
+      });
 
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
@@ -160,8 +163,6 @@ test.describe("urban project creation - custom mode", () => {
         "Y aura-t-il une cession foncière suite à l'aménagement du site",
       );
       await urbanProjectCreationPage.selectSiteResale(false);
-      await urbanProjectCreationPage.expectStepTitle("les bâtiments seront-ils revendus");
-      await urbanProjectCreationPage.selectBuildingsResale(false);
 
       // --- dépenses ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
@@ -466,8 +467,11 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
       await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
       await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
-      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
-      await urbanProjectCreationPage.selectBuildingsDeveloper(true);
+      await urbanProjectCreationPage.expectStepTitle("construira-t-il ou réhabilitera-t-il");
+      await urbanProjectCreationPage.answerBuildingsDeveloper({
+        developerBuilds: true,
+        buildingsResold: true,
+      });
 
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
@@ -476,8 +480,6 @@ test.describe("urban project creation - custom mode", () => {
         "Y aura-t-il une cession foncière suite à l'aménagement du site",
       );
       await urbanProjectCreationPage.selectSiteResale(false);
-      await urbanProjectCreationPage.expectStepTitle("les bâtiments seront-ils revendus");
-      await urbanProjectCreationPage.selectBuildingsResale(true);
 
       // --- dépenses ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
@@ -589,8 +591,8 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
       await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
       await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
-      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
-      await urbanProjectCreationPage.selectBuildingsDeveloper(true);
+      await urbanProjectCreationPage.expectStepTitle("construira-t-il ou réhabilitera-t-il");
+      await urbanProjectCreationPage.answerBuildingsDeveloper({ developerBuilds: false });
 
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
@@ -599,21 +601,19 @@ test.describe("urban project creation - custom mode", () => {
         "Y aura-t-il une cession foncière suite à l'aménagement du site",
       );
       await urbanProjectCreationPage.selectSiteResale(false);
-      await urbanProjectCreationPage.expectStepTitle("les bâtiments seront-ils revendus");
-      await urbanProjectCreationPage.selectBuildingsResale(true);
 
       // --- dépenses ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
       await urbanProjectCreationPage.goToNextStep(); // expenses introduction
       await urbanProjectCreationPage.submitOrSkipStep(); // site purchase amounts
       await urbanProjectCreationPage.submitOrSkipStep(); // installation
-      await urbanProjectCreationPage.submitOrSkipStep(); // buildings construction and rehabilitation
+      // buildings construction and rehabilitation expenses: skipped, the developer does not build
 
       // --- recettes ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Recettes");
       await urbanProjectCreationPage.goToNextStep(); // revenue introduction
-      await urbanProjectCreationPage.submitOrSkipStep();
-      await urbanProjectCreationPage.submitOrSkipStep();
+      // buildings sale: skipped, the developer does not build
+      await urbanProjectCreationPage.submitOrSkipStep(); // financial assistance
 
       // --- calendrier ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Calendrier");

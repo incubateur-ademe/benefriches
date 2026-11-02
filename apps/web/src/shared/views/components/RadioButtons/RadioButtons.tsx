@@ -3,6 +3,7 @@ import type { ChangeEventHandler, ReactNode } from "react";
 
 type Props = {
   options: { value: string; label: string; hintText?: ReactNode }[];
+  legend?: ReactNode;
   name: string;
   onChange: ChangeEventHandler;
   onBlur?: ChangeEventHandler;
@@ -10,7 +11,7 @@ type Props = {
   ref: React.Ref<HTMLInputElement>;
 };
 
-function RadioButtons({ name, onChange, onBlur, options, error, ref }: Props) {
+function RadioButtons({ name, onChange, onBlur, options, legend, error, ref }: Props) {
   const mappedOptions = options.map(({ value, label, hintText }) => ({
     label,
     hintText,
@@ -25,6 +26,7 @@ function RadioButtons({ name, onChange, onBlur, options, error, ref }: Props) {
 
   return (
     <DsfrRadioButtons
+      legend={legend}
       options={mappedOptions}
       state={error ? "error" : "default"}
       stateRelatedMessage={error ? error.message : undefined}

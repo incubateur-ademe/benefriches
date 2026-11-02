@@ -103,7 +103,26 @@ describe("convertProjectDataToSteps - buildings reuse and construction", () => {
     });
   });
 
-  it("should map developerWillBeBuildingsConstructor: true to step payload", () => {
+  it("should map developerWillBeBuildingsConstructor: true with a buildings sale price to a resold answer", () => {
+    const steps = convertProjectDataToSteps({
+      projectData: {
+        ...BASE_PROJECT_DATA,
+        developerWillBeBuildingsConstructor: true,
+        buildingsResaleExpectedSellingPrice: 500000,
+      },
+      siteData: BASE_SITE_DATA,
+    });
+
+    expect(steps.URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER).toEqual({
+      payload: {
+        developerWillBeBuildingsConstructor: true,
+        buildingsResalePlannedAfterDevelopment: true,
+      },
+      completed: true,
+    });
+  });
+
+  it("should map developerWillBeBuildingsConstructor: true without a buildings sale price to a kept answer", () => {
     const steps = convertProjectDataToSteps({
       projectData: {
         ...BASE_PROJECT_DATA,
@@ -113,16 +132,20 @@ describe("convertProjectDataToSteps - buildings reuse and construction", () => {
     });
 
     expect(steps.URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER).toEqual({
-      payload: { developerWillBeBuildingsConstructor: true },
+      payload: {
+        developerWillBeBuildingsConstructor: true,
+        buildingsResalePlannedAfterDevelopment: false,
+      },
       completed: true,
     });
   });
 
-  it("should map developerWillBeBuildingsConstructor: false to step payload", () => {
+  it("should map developerWillBeBuildingsConstructor: false to a payload without buildings resale, leaving the saved buildings resale revenue as is", () => {
     const steps = convertProjectDataToSteps({
       projectData: {
         ...BASE_PROJECT_DATA,
         developerWillBeBuildingsConstructor: false,
+        buildingsResaleExpectedSellingPrice: 500000,
       },
       siteData: BASE_SITE_DATA,
     });
@@ -131,6 +154,7 @@ describe("convertProjectDataToSteps - buildings reuse and construction", () => {
       payload: { developerWillBeBuildingsConstructor: false },
       completed: true,
     });
+    expect(steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.completed).toBe(true);
   });
 
   it("should not map stakeholders buildings developer when developerWillBeBuildingsConstructor is absent", () => {
@@ -200,16 +224,17 @@ describe("convertProjectDataToSteps - buildings construction expenses left empty
     });
   });
 
-  it("hydrates the step as completed with an empty payload when existing buildings are reused and no expenses were saved", () => {
+  it("does not hydrate the step when existing buildings are reused but the developer does not build", () => {
     const steps = convertProjectDataToSteps({
-      projectData: { ...BASE_PROJECT_DATA, buildingsFootprintToReuse: 500 },
+      projectData: {
+        ...BASE_PROJECT_DATA,
+        buildingsFootprintToReuse: 500,
+        developerWillBeBuildingsConstructor: false,
+      },
       siteData: BASE_SITE_DATA,
     });
 
-    expect(steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION).toEqual({
-      payload: {},
-      completed: true,
-    });
+    expect(steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION).toBeUndefined();
   });
 
   it("still hydrates saved expenses when the step is not part of the sequence", () => {

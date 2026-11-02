@@ -20,13 +20,27 @@ const DEFAULT_FUTURE_OPERATOR = {
   structureType: "unknown",
 } as const satisfies ProjectStakeholder;
 
+type BuildingsDeveloperAnswers = {
+  developerWillBeBuildingsConstructor: boolean;
+  buildingsResalePlannedAfterDevelopment?: boolean;
+};
+
 export const getFutureOperator = (
-  buildingsResalePlannedAfterDevelopment: boolean,
+  {
+    developerWillBeBuildingsConstructor,
+    buildingsResalePlannedAfterDevelopment,
+  }: BuildingsDeveloperAnswers,
   projectDeveloper: ProjectStakeholder | undefined,
 ): ProjectStakeholder => {
-  if (buildingsResalePlannedAfterDevelopment || !projectDeveloper) return DEFAULT_FUTURE_OPERATOR;
+  if (
+    developerWillBeBuildingsConstructor &&
+    buildingsResalePlannedAfterDevelopment === false &&
+    projectDeveloper
+  ) {
+    return projectDeveloper;
+  }
 
-  return projectDeveloper;
+  return DEFAULT_FUTURE_OPERATOR;
 };
 
 export type AvailableProjectStakeholder = {

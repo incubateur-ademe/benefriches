@@ -8,7 +8,6 @@ import type {
 
 import { inferDecontaminationPlan } from "@/features/create-project/core/project-form/soilsDecontamination";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
-import { willReuseExistingBuildings } from "@/features/create-project/core/urban-project/step-handlers/buildings/buildingsReaders";
 import { EXPENSE_PURPOSE_TO_FIELD } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
 import { UrbanProjectReinstatementExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
 import { isDeveloperBuildingsConstructor } from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholdersReaders";
@@ -173,16 +172,6 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
           completed: true,
         };
         break;
-      case "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION":
-        steps["URBAN_PROJECT_BUILDINGS_RESALE_SELECTION"] = {
-          payload: {
-            buildingsResalePlannedAfterDevelopment: Boolean(
-              projectData.buildingsResaleExpectedSellingPrice,
-            ),
-          },
-          completed: true,
-        };
-        break;
       case "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS":
         steps["URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS"] = {
           payload: {
@@ -292,9 +281,14 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER":
         if (projectData.developerWillBeBuildingsConstructor !== undefined) {
           steps["URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER"] = {
-            payload: {
-              developerWillBeBuildingsConstructor: projectData.developerWillBeBuildingsConstructor,
-            },
+            payload: projectData.developerWillBeBuildingsConstructor
+              ? {
+                  developerWillBeBuildingsConstructor: true,
+                  buildingsResalePlannedAfterDevelopment: Boolean(
+                    projectData.buildingsResaleExpectedSellingPrice,
+                  ),
+                }
+              : { developerWillBeBuildingsConstructor: false },
             completed: true,
           };
         }
@@ -304,8 +298,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         // entering amounts. Hydrate it (empty) whenever it is part of the sequence, otherwise it
         // would stay incomplete.
         // Reads `steps` mid-loop: relies on ANSWER_STEPS hydrating the developer and footprint steps first.
-        const isInSequence =
-          isDeveloperBuildingsConstructor(steps) || willReuseExistingBuildings(steps);
+        const isInSequence = isDeveloperBuildingsConstructor(steps);
         const expenses = projectData.buildingsConstructionAndRehabilitationExpenses ?? [];
         if (expenses.length > 0 || isInSequence) {
           const expensesPayload: Record<string, number> = {};

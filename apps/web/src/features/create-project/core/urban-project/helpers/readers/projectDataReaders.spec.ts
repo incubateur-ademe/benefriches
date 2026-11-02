@@ -129,11 +129,14 @@ describe("projectDataReaders", () => {
     });
 
     describe("futureOperator", () => {
-      it("should return project developer as future operator when buildings resale is not planned", () => {
+      it("should return project developer as future operator when the developer builds and keeps the buildings", () => {
         const steps: UrbanProjectStepsState = {
-          URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+          URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
             completed: true,
-            payload: { buildingsResalePlannedAfterDevelopment: false },
+            payload: {
+              developerWillBeBuildingsConstructor: true,
+              buildingsResalePlannedAfterDevelopment: false,
+            },
           },
           URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
             completed: true,
@@ -148,11 +151,14 @@ describe("projectDataReaders", () => {
         expect(result.futureOperator).toEqual({ structureType: "company", name: "Dev Corp" });
       });
 
-      it("should return default unknown operator when buildings resale is planned", () => {
+      it("should return default unknown operator when the developer builds and resells the buildings", () => {
         const steps: UrbanProjectStepsState = {
-          URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+          URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
             completed: true,
-            payload: { buildingsResalePlannedAfterDevelopment: true },
+            payload: {
+              developerWillBeBuildingsConstructor: true,
+              buildingsResalePlannedAfterDevelopment: true,
+            },
           },
           URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
             completed: true,
@@ -170,7 +176,29 @@ describe("projectDataReaders", () => {
         });
       });
 
-      it("should return undefined when buildings resale selection step is not completed", () => {
+      it("should return default unknown operator when the developer does not build the buildings", () => {
+        const steps: UrbanProjectStepsState = {
+          URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+            completed: true,
+            payload: { developerWillBeBuildingsConstructor: false },
+          },
+          URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+            completed: true,
+            payload: {
+              projectDeveloper: { structureType: "company", name: "Dev Corp" },
+            },
+          },
+        };
+
+        const result = getProjectData(steps);
+
+        expect(result.futureOperator).toEqual({
+          name: "Futur exploitant inconnu",
+          structureType: "unknown",
+        });
+      });
+
+      it("should return undefined when the buildings developer step is not answered", () => {
         const steps: UrbanProjectStepsState = {};
 
         const result = getProjectData(steps);

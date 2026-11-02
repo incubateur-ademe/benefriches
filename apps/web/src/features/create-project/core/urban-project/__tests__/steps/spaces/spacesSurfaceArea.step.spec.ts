@@ -148,11 +148,10 @@ describe("Urban project creation - Steps - Spaces surface area", () => {
         },
         URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
-          payload: { developerWillBeBuildingsConstructor: true },
-        },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-          completed: true,
-          payload: { buildingsResalePlannedAfterDevelopment: true },
+          payload: {
+            developerWillBeBuildingsConstructor: true,
+            buildingsResalePlannedAfterDevelopment: true,
+          },
         },
         URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: {
           completed: true,

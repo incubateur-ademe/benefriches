@@ -41,9 +41,10 @@ describe("RevenueIntroductionHandler", () => {
             spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
           },
         },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
           payload: {
+            developerWillBeBuildingsConstructor: true,
             buildingsResalePlannedAfterDevelopment: true,
           },
         },
@@ -76,9 +77,10 @@ describe("RevenueIntroductionHandler", () => {
             spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
           },
         },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
           payload: {
+            developerWillBeBuildingsConstructor: true,
             buildingsResalePlannedAfterDevelopment: true,
           },
         },
@@ -128,9 +130,10 @@ describe("RevenueIntroductionHandler", () => {
             buildingsFootprintToReuse: 1200,
           },
         },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
           payload: {
+            developerWillBeBuildingsConstructor: true,
             buildingsResalePlannedAfterDevelopment: true,
           },
         },

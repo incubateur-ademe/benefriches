@@ -163,6 +163,17 @@ describe("Urban project creation flow (behaviour-net)", () => {
       }),
     );
 
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
+        answers: {
+          developerWillBeBuildingsConstructor: true,
+          buildingsResalePlannedAfterDevelopment: true,
+        },
+      }),
+    );
+
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
     dispatch(
       stepCompletionRequested({
@@ -184,14 +195,6 @@ describe("Urban project creation flow (behaviour-net)", () => {
       stepCompletionRequested({
         stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
         answers: { siteResaleSelection: "yes" },
-      }),
-    );
-
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
-    dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-        answers: { buildingsResalePlannedAfterDevelopment: true },
       }),
     );
 
@@ -377,6 +380,17 @@ describe("Urban project creation flow (behaviour-net)", () => {
         answers: { projectDeveloper: { name: "Promoteur Test", structureType: "company" } },
       }),
     );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
+
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
+        answers: {
+          developerWillBeBuildingsConstructor: true,
+          buildingsResalePlannedAfterDevelopment: false,
+        },
+      }),
+    );
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
 
     dispatch(nextStepRequested());
@@ -386,14 +400,6 @@ describe("Urban project creation flow (behaviour-net)", () => {
       stepCompletionRequested({
         stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
         answers: { siteResaleSelection: "no" },
-      }),
-    );
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
-
-    dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-        answers: { buildingsResalePlannedAfterDevelopment: false },
       }),
     );
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
@@ -490,10 +496,6 @@ describe("Urban project creation flow (behaviour-net)", () => {
           completed: true,
           payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 2000, IMPERMEABLE_SOILS: 8000 } },
         },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-          completed: true,
-          payload: { buildingsResalePlannedAfterDevelopment: false },
-        },
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "no" },
@@ -504,7 +506,10 @@ describe("Urban project creation flow (behaviour-net)", () => {
         },
         URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
-          payload: { developerWillBeBuildingsConstructor: true },
+          payload: {
+            developerWillBeBuildingsConstructor: true,
+            buildingsResalePlannedAfterDevelopment: false,
+          },
         },
       })
       .withCurrentStep("URBAN_PROJECT_EXPENSES_INSTALLATION")
@@ -584,18 +589,18 @@ describe("Urban project creation flow (behaviour-net)", () => {
           completed: true,
           payload: { siteResaleSelection: "no" },
         },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
-          payload: { buildingsResalePlannedAfterDevelopment: false },
+          payload: {
+            developerWillBeBuildingsConstructor: true,
+            buildingsResalePlannedAfterDevelopment: false,
+          },
         },
       })
       .withCurrentStep("URBAN_PROJECT_EXPENSES_INTRODUCTION")
       .build();
 
     // Act / Assert
-    store.dispatch(previousStepRequested());
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
-
     store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
 
@@ -604,6 +609,10 @@ describe("Urban project creation flow (behaviour-net)", () => {
 
     store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
+
+    // The reused buildings make the project one with buildings: the buildings developer is asked
+    store.dispatch(previousStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
 
     store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
@@ -654,19 +663,25 @@ describe("Urban project creation flow (behaviour-net)", () => {
           completed: true,
           payload: { siteResaleSelection: "no" },
         },
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
           completed: true,
-          payload: { buildingsResalePlannedAfterDevelopment: false },
+          payload: {
+            developerWillBeBuildingsConstructor: true,
+            buildingsResalePlannedAfterDevelopment: false,
+          },
         },
       })
-      .withCurrentStep("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION")
+      .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER")
       .build();
 
     // Act — completing a step recomputes the steps sequence the stepper is built from
     store.dispatch(
       stepCompletionRequested({
-        stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-        answers: { buildingsResalePlannedAfterDevelopment: false },
+        stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
+        answers: {
+          developerWillBeBuildingsConstructor: true,
+          buildingsResalePlannedAfterDevelopment: false,
+        },
       }),
     );
     const stepGroups = creationProjectFormSelectors.selectStepsGroupedBySections(store.getState());
@@ -685,5 +700,96 @@ describe("Urban project creation flow (behaviour-net)", () => {
       "NAMING",
       "SUMMARY",
     ]);
+  });
+
+  it("answers the Constructeur des bâtiments screen with Non and skips construction expenses and buildings sale, submitting the unknown future operator", () => {
+    // Arrange
+    const store = new StoreBuilder()
+      .withSiteData({ nature: "AGRICULTURAL_OPERATION" })
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 2000, IMPERMEABLE_SOILS: 8000 } },
+        },
+        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+          completed: true,
+          payload: { buildingsFootprintToReuse: 2000 },
+        },
+      })
+      .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER")
+      .build();
+    const dispatch = store.dispatch;
+
+    // Act / Assert
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
+        answers: { projectDeveloper: { name: "Promoteur Test", structureType: "company" } },
+      }),
+    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
+
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
+        answers: { developerWillBeBuildingsConstructor: false },
+      }),
+    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+
+    dispatch(nextStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
+
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
+        answers: { siteResaleSelection: "no" },
+      }),
+    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
+
+    dispatch(nextStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS");
+
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
+        answers: { sitePurchaseSellingPrice: 500000, sitePurchasePropertyTransferDuties: 50000 },
+      }),
+    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
+
+    dispatch(
+      stepCompletionRequested({
+        stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
+        answers: { installationExpenses: [{ purpose: "development_works", amount: 800000 }] },
+      }),
+    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
+
+    dispatch(nextStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
+
+    const {
+      developerWillBeBuildingsConstructor,
+      futureOperator,
+      buildingsResaleExpectedSellingPrice,
+      buildingsConstructionAndRehabilitationExpenses,
+    } = getProjectData(store.getState().projectCreation.urbanProject.form.steps);
+    expect({
+      developerWillBeBuildingsConstructor,
+      futureOperator,
+      buildingsResaleExpectedSellingPrice,
+      buildingsConstructionAndRehabilitationExpenses,
+    }).toEqual({
+      developerWillBeBuildingsConstructor: false,
+      futureOperator: { name: "Futur exploitant inconnu", structureType: "unknown" },
+      buildingsResaleExpectedSellingPrice: undefined,
+      buildingsConstructionAndRehabilitationExpenses: undefined,
+    });
   });
 });

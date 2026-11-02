@@ -3,7 +3,6 @@ import { describe, it, expect } from "vitest";
 import type { UrbanProjectStepsState } from "../../urbanProject.state";
 import {
   getProjectBuildingsFootprint,
-  hasBuildingsResalePlannedAfterDevelopment,
   hasSelectedUseWithBuildings,
   willHaveBuildings,
 } from "./buildingsReaders";
@@ -105,42 +104,6 @@ describe("buildingsReaders", () => {
         },
       };
       expect(getProjectBuildingsFootprint(stepsState)).toBe(0);
-    });
-  });
-
-  describe("hasBuildingsResalePlannedAfterDevelopment", () => {
-    it("should return true when buildings resale is planned", () => {
-      const steps: UrbanProjectStepsState = {
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-          completed: true,
-          payload: {
-            buildingsResalePlannedAfterDevelopment: true,
-          },
-        },
-      };
-
-      const result = hasBuildingsResalePlannedAfterDevelopment(steps);
-
-      expect(result).toBe(true);
-    });
-
-    it("should return false when buildings resale is not planned", () => {
-      const steps: UrbanProjectStepsState = {
-        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-          completed: true,
-          payload: {
-            buildingsResalePlannedAfterDevelopment: false,
-          },
-        },
-      };
-
-      const result = hasBuildingsResalePlannedAfterDevelopment(steps);
-
-      expect(result).toBe(false);
-    });
-
-    it("should return undefined if no answers exists for URBAN_PROJECT_BUILDINGS_RESALE_SELECTION", () => {
-      expect(hasBuildingsResalePlannedAfterDevelopment({})).toBe(undefined);
     });
   });
 });

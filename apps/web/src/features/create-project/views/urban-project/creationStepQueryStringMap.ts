@@ -34,7 +34,6 @@ export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: "acteurs-maitre-ouvrage-remise-en-etat",
   URBAN_PROJECT_SITE_RESALE_INTRODUCTION: "introduction-cession-fonciere",
   URBAN_PROJECT_SITE_RESALE_SELECTION: "cession-fonciere-prevue",
-  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: "cession-batiments-prevue",
   URBAN_PROJECT_EXPENSES_INTRODUCTION: "introduction-depenses",
   URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: "montant-acquisition-site",
   URBAN_PROJECT_EXPENSES_REINSTATEMENT: "depenses-remise-en-etat",
