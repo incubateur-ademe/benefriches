@@ -273,11 +273,21 @@ export class UrbanProjectCreationPage {
     const startInputs = this.page.getByLabel("Début des travaux");
     const endInputs = this.page.getByLabel("Fin des travaux");
 
-    // Blur through the first schedule section (reinstatement if present, otherwise installation)
-    // so React Hook Form considers those fields validated and enables the submit button.
-    await startInputs.first().click();
-    await startInputs.first().press("Tab");
-    await endInputs.first().press("Tab");
+    if ((await startInputs.count()) > 1) {
+      // Reinstatement section: its pre-filled default ends 36 months from today, which can be
+      // after the given first year of operation, and the form refuses operations starting before
+      // the works end. Make it end when the installation starts.
+      await startInputs.first().click({ clickCount: 3 });
+      await startInputs.first().pressSequentially(startDate.replace("/", ""), { delay: 50 });
+      await endInputs.first().click({ clickCount: 3 });
+      await endInputs.first().pressSequentially(startDate.replace("/", ""), { delay: 50 });
+    } else {
+      // Blur through the installation section so React Hook Form considers those fields
+      // validated and enables the submit button.
+      await startInputs.first().click();
+      await startInputs.first().press("Tab");
+      await endInputs.first().press("Tab");
+    }
 
     // Fill the last schedule section (always the installation schedule).
     // Triple-click selects all existing text (clears pre-filled defaults) before typing.

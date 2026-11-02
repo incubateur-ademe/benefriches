@@ -116,4 +116,17 @@ describe("MonthYearInput", () => {
     expect(onChange).toHaveBeenCalledWith("");
     expect(input).toHaveValue("");
   });
+  it("tells the user why a month above 12 was rejected", () => {
+    const { input } = renderInput("");
+    fireEvent.change(input, { target: { value: "13/2026" } });
+    expect(input).toHaveValue("1");
+    expect(screen.getByText("Le mois doit être compris entre 01 et 12")).toBeInTheDocument();
+  });
+
+  it("removes the invalid month message once a valid month is typed", () => {
+    const { input } = renderInput("");
+    fireEvent.change(input, { target: { value: "13/2026" } });
+    fireEvent.change(input, { target: { value: "12" } });
+    expect(screen.queryByText("Le mois doit être compris entre 01 et 12")).not.toBeInTheDocument();
+  });
 });
