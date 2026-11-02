@@ -57,6 +57,13 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
         "friche_decontaminated_soil_surface_area",
       )
       .where({ id: reconversionProjectId })
+      // A deleted project (or a project of a deleted site) is archived, not removed: it must
+      // read as not found.
+      .where("status", "active")
+      .whereIn(
+        "related_site_id",
+        this.sqlConnection("sites").select("id").where("status", "active"),
+      )
       .first();
 
     if (!reconversionProject) return undefined;
