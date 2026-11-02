@@ -8,15 +8,49 @@ import {
   SiteNature,
   SiteYearlyExpense,
   SiteYearlyIncome,
+  SoilsDistribution,
+  UrbanZoneLandParcel,
 } from "shared";
 
 import { SiteImpactsQuery } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { aggregateSoilsFromParcels } from "src/sites/core/models/site";
 
 export class SqlSiteImpactsQuery implements SiteImpactsQuery {
   private readonly sqlConnection: Knex;
   constructor(@Inject(SqlConnection) sqlConnection: Knex) {
     this.sqlConnection = sqlConnection;
+  }
+
+  // Urban zone soils are stored per land parcel in site_urban_zone_features, not in
+  // site_soils_distributions: the site's soils are the sum of its parcels' soils.
+  private async getSoilsDistribution(
+    siteId: string,
+    nature: SiteNature,
+  ): Promise<SoilsDistribution> {
+    if (nature === "URBAN_ZONE") {
+      const urbanZoneFeatures = await this.sqlConnection("site_urban_zone_features")
+        .select("land_parcels")
+        .where("site_id", siteId)
+        .first();
+      const landParcels = urbanZoneFeatures?.land_parcels ?? [];
+      return aggregateSoilsFromParcels(
+        (typeof landParcels === "string"
+          ? JSON.parse(landParcels)
+          : landParcels) as UrbanZoneLandParcel[],
+      ).toJSON();
+    }
+
+    const sqlSoilDistributions = await this.sqlConnection("site_soils_distributions")
+      .select("soil_type", "surface_area")
+      .where("site_id", siteId);
+
+    return sqlSoilDistributions.reduce((acc, { soil_type, surface_area }) => {
+      return {
+        ...acc,
+        [soil_type]: surface_area,
+      };
+    }, {});
   }
 
   async getById(siteId: string): Promise<SiteImpactsDataView | undefined> {
@@ -48,9 +82,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
 
     if (!sqlSite) return undefined;
 
-    const sqlSoilDistributions = await this.sqlConnection("site_soils_distributions")
-      .select("soil_type", "surface_area")
-      .where("site_id", siteId);
+    const soilsDistribution = await this.getSoilsDistribution(siteId, sqlSite.nature as SiteNature);
 
     const sqlYearlyExpenses = await this.sqlConnection("site_expenses")
       .select("amount", "purpose", "bearer")
@@ -86,12 +118,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
       },
       surfaceArea: sqlSite.surface_area,
       contaminatedSoilSurface: sqlSite.friche_contaminated_soil_surface_area ?? undefined,
-      soilsDistribution: sqlSoilDistributions.reduce((acc, { soil_type, surface_area }) => {
-        return {
-          ...acc,
-          [soil_type]: surface_area,
-        };
-      }, {}),
+      soilsDistribution,
       accidentsDeaths: sqlSite.friche_accidents_deaths ?? undefined,
       accidentsSevereInjuries: sqlSite.friche_accidents_severe_injuries ?? undefined,
       accidentsMinorInjuries: sqlSite.friche_accidents_minor_injuries ?? undefined,
