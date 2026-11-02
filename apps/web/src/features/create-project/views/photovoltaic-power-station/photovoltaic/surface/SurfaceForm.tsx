@@ -42,7 +42,7 @@ function PhotovoltaicSurfaceForm({ initialValues, onSubmit, siteSurfaceArea, onB
       title="Quelle superficie du site occuperont les panneaux photovoltaïques&nbsp;?"
       instructions={
         <FormInfo emoji="auto">
-          <span className="title">D’où vient la surface pré-remplie ?</span>
+          <span className="title">Quel est le ratio superficie / puissance ?</span>
 
           <p>
             Le ratio superficie / puissance d'installation considéré est de{" "}

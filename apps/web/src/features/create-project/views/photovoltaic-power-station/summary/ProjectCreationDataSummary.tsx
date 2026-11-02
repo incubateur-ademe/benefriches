@@ -280,7 +280,7 @@ function ProjectCreationDataSummary({
               value={<strong>{formatMoney(projectData.sitePurchaseTotalCost)}</strong>}
             />
           ) : undefined}
-          {!!projectData.reinstatementExpenses && (
+          {projectData.reinstatementExpenses && projectData.reinstatementExpenses.length > 0 && (
             <>
               <DataLine
                 noBorder

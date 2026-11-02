@@ -289,6 +289,25 @@ describe("Project Stakeholders selector", () => {
         }),
       );
     });
+
+    it("should not offer the unknown site owner placeholder as a stakeholder", () => {
+      // A site saved without owner comes back from the API as this placeholder
+      // (structureType "unknown" is not part of the shared owner type).
+      const unknownSiteOwner = {
+        name: "Propriétaire inconnu",
+        structureType: "unknown",
+      } as unknown as typeof siteData.owner;
+
+      const availableProjectStakeholder = getProjectAvailableStakeholders({
+        siteOwner: unknownSiteOwner,
+        siteTenant: undefined,
+        currentUser: USER,
+      });
+
+      expect(availableProjectStakeholder).toEqual([
+        { name: USER.structureName, role: "user_structure", structureType: USER.structureType },
+      ]);
+    });
   });
 
   describe("getAvailableLocalAuthoritiesStakeholders", () => {

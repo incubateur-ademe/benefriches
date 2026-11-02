@@ -32,7 +32,7 @@ function PhotovoltaicPowerFromSurfaceForm({
     defaultValues: initialValues,
   });
 
-  const hintText = `Maximum conseillé : ${formatNumberFr(recommendedElectricalPowerKWc)} kWh`;
+  const hintText = `Maximum conseillé : ${formatNumberFr(recommendedElectricalPowerKWc)} kWc`;
 
   return (
     <WizardFormLayout
