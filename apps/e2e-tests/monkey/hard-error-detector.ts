@@ -74,10 +74,7 @@ const EXCERPT_LENGTH = 15;
 // blank while it loads. A candidate found by every scan is reported once, when it appears.
 const CONFIRMATION_SCANS: Partial<Record<HardErrorType, number>> = {
   "blank-page": 3,
-  "admin-access": 2,
 };
-// Shown to a regular user who opens /admin: the access control works.
-const ADMIN_ACCESS_DENIED_TEXT = "Accès réservé aux administrateurs";
 
 const UUID_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
 const BROKEN_TEXT_PATTERN = /(?<![\p{L}\p{N}_])(NaN|undefined)(?![\p{L}\p{N}_])/u;
@@ -176,20 +173,17 @@ export function findBrokenText(text: string): HardErrorCandidate | null {
   return { type: "broken-text", message: `"${match[0]}" shown on the page: …${context}…` };
 }
 
-export function isAdminPage(url: string): boolean {
-  const { pathname } = new URL(url);
-  return pathname === "/admin" || pathname.startsWith("/admin/");
-}
-
-/** What a scan of a page of the target origin finds, before any confirmation over scans. */
-export function inspectPageText(url: string, text: string): HardErrorCandidate[] {
+/**
+ * What a scan of a page of the target origin finds, before any confirmation over scans. An
+ * admin page shown to a regular user is not detected from its text (which would couple the
+ * detector to the wording of the access-denied alert): its /api/admin calls answering 2xx are
+ * reported by classifyResponse.
+ */
+export function inspectPageText(text: string): HardErrorCandidate[] {
   const trimmed = text.trim();
   if (trimmed === "") return [{ type: "blank-page", message: "Blank page: no text on the page" }];
 
   const candidates: HardErrorCandidate[] = [];
-  if (isAdminPage(url) && !trimmed.includes(ADMIN_ACCESS_DENIED_TEXT)) {
-    candidates.push({ type: "admin-access", message: "Admin page shown to a regular user" });
-  }
   const brokenText = findBrokenText(trimmed);
   if (brokenText) candidates.push(brokenText);
   return candidates;
@@ -310,7 +304,7 @@ export function createHardErrorDetector(options: DetectorOptions) {
         if (typeof text !== "string" || page.url() !== url) return;
         const previousStreaks = streaks;
         streaks = new Map();
-        for (const candidate of inspectPageText(url, text)) {
+        for (const candidate of inspectPageText(text)) {
           const key = `${candidate.type}\n${candidate.message}\n${url}`;
           const streak = (previousStreaks.get(key) ?? 0) + 1;
           streaks.set(key, streak);

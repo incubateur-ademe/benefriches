@@ -98,6 +98,35 @@ describe("parseSuspicion", () => {
     assert.equal(parseSuspicion("Suspicion: [minor] [0.3] Typo", at(1))?.confidence, 0.3);
   });
 
+  it("keeps a malformed Suspicion: line with a null confidence", () => {
+    assert.deepStrictEqual(parseSuspicion("Suspicion: [major] [80%] Total is wrong", at(1)), {
+      kind: "suspicion",
+      severity: "major",
+      confidence: null,
+      evidence: "[major] [80%] Total is wrong",
+      timestamp: at(1),
+    });
+  });
+
+  it("ignores a Suspicion: or Bug: line saying nothing was found", () => {
+    for (const line of [
+      "Suspicion: none",
+      "Suspicion: None.",
+      "Bug: n/a",
+      "Suspicion: no issues found",
+    ]) {
+      assert.equal(parseSuspicion(line, at(1)), null, line);
+    }
+    assert.notEqual(parseSuspicion("Suspicion: No confirmation shown after save", at(1)), null);
+  });
+
+  it("keeps an old-format Bug: line, minor when it has no severity", () => {
+    assert.equal(parseSuspicion("Bug: [critical] Crash on save", at(1))?.severity, "critical");
+    const bug = parseSuspicion("Bug: button does nothing", at(1));
+    assert.equal(bug?.severity, "minor");
+    assert.equal(bug?.confidence, null);
+  });
+
   it("ignores other lines", () => {
     assert.equal(parseSuspicion("Outcome: all good", at(1)), null);
   });
@@ -263,6 +292,15 @@ describe("buildScenarios", () => {
 });
 
 describe("buildScenarioLog", () => {
+  it("counts a malformed suspicion line", () => {
+    const result = log({
+      agentEvents: [text(1, "## Scenario: One\nSuspicion: [major] 80% Amount differs")],
+    });
+
+    assert.equal(result.suspicionCount, 1);
+    assert.equal(result.scenarios[0]?.findings[0]?.kind, "suspicion");
+  });
+
   it("counts hard errors and suspicions", () => {
     const result = log({
       agentEvents: [text(1, "## Scenario: One\nSuspicion: [minor] [0.4] Typo")],

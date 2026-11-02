@@ -4,16 +4,39 @@ import type { ChildProcess } from "node:child_process";
 export const AGENT_STOP_GRACE_MS = 10_000;
 
 /**
+ * Signals the process group of a process spawned with `detached: true` (claude, its Playwright
+ * MCP server and Chrome), else only the process: a SIGKILLed claude cannot pass the signal on.
+ */
+function signalTree(child: ChildProcess, signal: NodeJS.Signals): void {
+  if (child.pid === undefined) return;
+  try {
+    process.kill(-child.pid, signal);
+  } catch {
+    // The group is gone (ESRCH) or the process was not spawned detached: signal the process.
+    try {
+      child.kill(signal);
+    } catch {
+      // Already gone.
+    }
+  }
+}
+
+/**
  * Sends SIGTERM, then SIGKILL when the process has not exited after `graceMs`: an agent that
- * ignores or stalls on SIGTERM cannot keep the run past its budget.
+ * ignores or stalls on SIGTERM cannot keep the run past its budget. Both go to the whole
+ * process group.
  */
 export function stopProcess(child: ChildProcess, graceMs: number): void {
   if (child.exitCode !== null || child.signalCode !== null) return;
-  const killTimer = setTimeout(() => child.kill("SIGKILL"), graceMs);
+  const killTimer = setTimeout(() => {
+    signalTree(child, "SIGKILL");
+  }, graceMs);
+  // Once claude has exited, kill what it left in the group (MCP server, Chrome) right away.
   child.once("exit", () => {
     clearTimeout(killTimer);
+    signalTree(child, "SIGKILL");
   });
-  child.kill("SIGTERM");
+  signalTree(child, "SIGTERM");
 }
 
 /**

@@ -48,8 +48,8 @@ export type HardErrorFinding = {
 export type SuspicionFinding = {
   kind: "suspicion";
   severity: Severity;
-  /** From 0 to 1, as given by the agent. */
-  confidence: number;
+  /** From 0 to 1, as given by the agent; null when the line didn't follow the format. */
+  confidence: number | null;
   evidence: string;
   timestamp: string;
 };
@@ -103,18 +103,42 @@ const OUTCOME_PATTERN = /^Outcome:\s*(.+)$/i;
 const DEVIATION_PATTERN = /^Deviation:\s*(.+)$/i;
 const SUSPICION_PATTERN =
   /^Suspicion:\s*\[(critical|major|minor)\]\s*\[(?:confidence\s*:?\s*)?(\d(?:\.\d+)?)\]\s*(.+)$/i;
+// A Suspicion: or Bug: line that SUSPICION_PATTERN rejects (e.g. "80%", no confidence, old format).
+const MALFORMED_SUSPICION_PATTERN = /^(?:Suspicion|Bug):\s*(.+)$/i;
+// "Suspicion: none" and the like: the agent reporting that it found nothing.
+const NO_SUSPICION_PATTERN =
+  /^(?:none|n\/a|nothing|rien|aucune?|no (?:bugs?|suspicions?|issues?)(?: found)?|none found|-+)\.?$/i;
+const SEVERITY_PATTERN = /\[(critical|major|minor)\]/i;
 const MCP_TOOL_PREFIX = "mcp__playwright__";
 
-/** The agent's suspected bug on a `Suspicion: [severity] [confidence] evidence` line. */
+/**
+ * The agent's suspected bug on a `Suspicion: [severity] [confidence] evidence` line. A
+ * `Suspicion:` or `Bug:` line in another format is kept with a null confidence (and a minor
+ * severity if none is readable) and its whole text as evidence, so it is never lost.
+ */
 export function parseSuspicion(line: string, timestamp: string): SuspicionFinding | null {
-  const match = SUSPICION_PATTERN.exec(line.trim());
-  if (!match) return null;
-  const [, severity = "", confidence = "", evidence = ""] = match;
+  const trimmed = line.trim();
+  const match = SUSPICION_PATTERN.exec(trimmed);
+  if (match) {
+    const [, severity = "", confidence = "", evidence = ""] = match;
+    return {
+      kind: "suspicion",
+      severity: severity.toLowerCase() as Severity,
+      confidence: Math.min(1, Number(confidence)),
+      evidence: evidence.trim(),
+      timestamp,
+    };
+  }
+  const malformed = MALFORMED_SUSPICION_PATTERN.exec(trimmed);
+  if (!malformed) return null;
+  const text = (malformed[1] ?? "").trim();
+  if (text === "" || NO_SUSPICION_PATTERN.test(text)) return null;
+  const severity = SEVERITY_PATTERN.exec(text)?.[1]?.toLowerCase();
   return {
     kind: "suspicion",
-    severity: severity.toLowerCase() as Severity,
-    confidence: Math.min(1, Number(confidence)),
-    evidence: evidence.trim(),
+    severity: (severity ?? "minor") as Severity,
+    confidence: null,
+    evidence: text,
     timestamp,
   };
 }

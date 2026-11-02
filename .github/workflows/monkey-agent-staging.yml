@@ -38,8 +38,9 @@ jobs:
         run: npm install --global @anthropic-ai/claude-code@2.1.312
 
       # Exit code 1 on a hard error, 2 when the agent or the runner fails, 0 otherwise:
-      # suspicions and exhausted budgets keep the job green. The step timeout stops the run
-      # with a signal before the job timeout, so it still writes its summary.
+      # suspicions and exhausted budgets keep the job green. The in-process budget (30 min)
+      # fires before the step timeout, which is only a backstop: the runner may force-kill the
+      # run before it writes its summary (see the summary step below).
       - name: Run the monkey agent
         timeout-minutes: 35
         run: pnpm --filter e2e-tests monkey
@@ -49,6 +50,16 @@ jobs:
           E2E_TESTMAIL_API_KEY: ${{ secrets.E2E_TESTMAIL_API_KEY }}
           E2E_TESTMAIL_NAMESPACE: ${{ secrets.E2E_TESTMAIL_NAMESPACE }}
           MONKEY_SEED: ${{ inputs.seed }}
+
+      # run.ts appends the summary itself and leaves a marker; this covers a run killed before.
+      - name: Append the run summary to the job summary
+        if: ${{ always() }}
+        run: |
+          for dir in apps/e2e-tests/monkey-runs/*/; do
+            if [ -f "$dir/summary.md" ] && [ ! -f "$dir/summary-appended" ]; then
+              cat "$dir/summary.md" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
 
       # storage-state.json holds the session cookies of the run's user: not uploaded.
       - uses: actions/upload-artifact@v6

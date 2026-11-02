@@ -126,29 +126,22 @@ describe("findBrokenText", () => {
 
 describe("inspectPageText", () => {
   it("finds nothing on a regular page", () => {
-    assert.deepStrictEqual(inspectPageText(PAGE_URL, "Mes évaluations"), []);
+    assert.deepStrictEqual(inspectPageText("Mes évaluations"), []);
   });
 
   it("reports a page without text as blank", () => {
-    assert.deepStrictEqual(inspectPageText(PAGE_URL, " \n "), [
+    assert.deepStrictEqual(inspectPageText(" \n "), [
       { type: "blank-page", message: "Blank page: no text on the page" },
     ]);
   });
 
-  it("reports an admin page shown to a regular user", () => {
-    assert.deepStrictEqual(inspectPageText(`${ORIGIN}/admin/utilisateurs`, "Utilisateurs"), [
-      { type: "admin-access", message: "Admin page shown to a regular user" },
-    ]);
-  });
-
-  it("ignores an admin page that denies access", () => {
-    const text = "Accès réservé aux administrateurs\nVous n'avez pas les droits nécessaires";
-
-    assert.deepStrictEqual(inspectPageText(`${ORIGIN}/admin`, text), []);
+  it("doesn't depend on the wording of the admin access-denied alert", () => {
+    assert.deepStrictEqual(inspectPageText("Utilisateurs"), []);
+    assert.deepStrictEqual(inspectPageText("Accès réservé"), []);
   });
 
   it("doesn't take a page whose path starts with admin for an admin page", () => {
-    assert.deepStrictEqual(inspectPageText(`${ORIGIN}/administration-locale`, "Texte"), []);
+    assert.deepStrictEqual(inspectPageText("Texte"), []);
   });
 });
 

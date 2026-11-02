@@ -33,7 +33,7 @@ function formatStatus(log: ScenarioLog): string {
 function formatFinding(finding: Finding): string[] {
   if (finding.kind === "suspicion") {
     return [
-      `- Suspicion [${finding.severity}, confidence ${finding.confidence}]: ${cell(finding.evidence)}`,
+      `- Suspicion [${finding.severity}, confidence ${finding.confidence ?? "unparsed"}]: ${cell(finding.evidence)}`,
     ];
   }
   const occurrences = finding.occurrences > 1 ? ` (×${finding.occurrences})` : "";

@@ -31,7 +31,7 @@ Exit code: 1 when the run found at least one hard error, 2 when the agent or the
 The [Monkey agent on staging workflow](../../../.github/workflows/monkey-agent-staging.yml) runs the same command against staging, on manual trigger only: `gh workflow run monkey-agent-staging.yml`, or `gh workflow run monkey-agent-staging.yml -f seed=<seed>` to replay a run.
 
 - It runs in the `staging` GitHub environment: `WEBAPP_BASE_URL` (passed as `BASE_URL`), the testmail.app secrets of the nightly e2e run and the dedicated `MONKEY_TESTING_ANTHROPIC_API_KEY` secret, which the workflow passes to Claude Code as `ANTHROPIC_API_KEY` instead of a login. It installs a pinned Claude Code and uses the Google Chrome of the runner.
-- The budgets are the defaults above. The monkey step times out after 35 minutes, which stops the run with a signal so it still writes its summary, and the job after 45 minutes. Its concurrency group `monkey-agent-staging` queues a second run instead of running both.
+- The budgets are the defaults above. The monkey step times out after 35 minutes and the job after 45. The in-process 30-minute budget fires first; the step timeout is only a backstop, and the runner may force-kill the run before it writes its summary, in which case a final `if: always()` step appends `summary.md` to the job summary. Its concurrency group `monkey-agent-staging` queues a second run instead of running both.
 - The job is red when the run exits with 1 (a hard error) or 2 (the agent or the runner failed), green otherwise.
 - The job summary is the run's `summary.md`. The `monkey-run` artifact (14 days) is the run folder, without `storage-state.json` (the session cookies of the run's user).
 - No schedule yet: a weekly one is added once a few manual runs have found at least one real bug with fewer than about half of their findings being noise. It must stay away from the nightly e2e run at 03:00 UTC.
@@ -62,7 +62,7 @@ Playwright MCP only shows console messages and network requests when the agent a
 
 | Type            | Severity | When                                                                                                                                                                 |
 | --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `admin-access`  | critical | a 2xx response of `/api/admin/*`, or a page under `/admin` that shows something else than "Accès réservé aux administrateurs" for 2 scans in a row                   |
+| `admin-access`  | critical | a 2xx response of `/api/admin/*`                                                                                                                                     |
 | `blank-page`    | critical | a page without any text for 3 scans in a row                                                                                                                         |
 | `server-error`  | major    | an HTTP 5xx response                                                                                                                                                 |
 | `client-error`  | major    | an HTTP 4xx response, except 429 (rate limit), 401 and 403 of `/api/admin/*` (not an admin) and a 404 on a GET of an id the page URL names (a made-up or deleted id) |

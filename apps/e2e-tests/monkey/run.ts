@@ -9,7 +9,13 @@
  */
 
 import { spawn } from "node:child_process";
-import { appendFileSync, createWriteStream, existsSync, readFileSync } from "node:fs";
+import {
+  appendFileSync,
+  createWriteStream,
+  existsSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
 import { createInterface } from "node:readline";
@@ -124,6 +130,8 @@ function startClaude(options: {
     cwd: options.cwd,
     env,
     stdio: ["ignore", "pipe", "pipe"],
+    // Its own process group, so that stopProcess signals claude and its children together.
+    detached: true,
   });
 
   const transcript = createWriteStream(options.transcriptPath);
@@ -327,6 +335,8 @@ async function main() {
   await writeFile(join(runDir, "narrative.md"), buildNarrative(scenarioLog, agentEvents));
   if (process.env.GITHUB_STEP_SUMMARY) {
     appendFileSync(process.env.GITHUB_STEP_SUMMARY, buildRunSummary(scenarioLog));
+    // Tells the workflow's fallback step that the summary is already in the job summary.
+    writeFileSync(join(runDir, "summary-appended"), "");
   }
 
   log(

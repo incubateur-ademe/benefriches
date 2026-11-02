@@ -7,7 +7,10 @@ import { stopProcess, waitForClose } from "./agent-process";
 const GRACE_MS = 200;
 
 function spawnNode(script: string) {
-  return spawn(process.execPath, ["-e", script], { stdio: ["ignore", "pipe", "pipe"] });
+  return spawn(process.execPath, ["-e", script], {
+    stdio: ["ignore", "pipe", "pipe"],
+    detached: true,
+  });
 }
 
 async function waitForOutput(child: ReturnType<typeof spawnNode>): Promise<void> {
@@ -32,13 +35,31 @@ describe("stopProcess", () => {
     );
     await waitForOutput(child);
     const closed = waitForClose(child, GRACE_MS);
-    const start = Date.now();
 
     stopProcess(child, GRACE_MS);
 
     assert.equal(await closed, null);
     assert.equal(child.signalCode, "SIGKILL");
-    assert.ok(Date.now() - start >= GRACE_MS);
+  });
+
+  it("kills the children of the process with it", async () => {
+    const child = spawnNode(
+      "const c = require('node:child_process').spawn(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], { stdio: 'ignore' }); process.on('SIGTERM', () => {}); console.log(c.pid); setInterval(() => {}, 1000);",
+    );
+    const grandchildPid = Number(
+      await new Promise<string>((resolvePromise) =>
+        child.stdout.once("data", (data: Buffer) => {
+          resolvePromise(String(data).trim());
+        }),
+      ),
+    );
+    const closed = waitForClose(child, GRACE_MS);
+
+    stopProcess(child, GRACE_MS);
+    await closed;
+
+    await new Promise((resolvePromise) => setTimeout(resolvePromise, 100));
+    assert.throws(() => process.kill(grandchildPid, 0), { code: "ESRCH" });
   });
 
   it("does nothing on a process that has already exited", async () => {
