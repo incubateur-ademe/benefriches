@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import type { AddressType } from "@/shared/core/gateways/AddressSearchGateway";
 import { NationalAddressBaseService } from "@/shared/infrastructure/address-service/nationalAddressBaseApi";
 import { useAddressSearch } from "@/shared/views/hooks/useAddressSearch";
 
@@ -9,8 +10,8 @@ import SearchAddressAutocompleteInput, {
 
 type SearchAddressAutocompleteContainerProps = Omit<
   SearchAddressAutocompleteInputProps,
-  "searchText" | "onSearchTextChange" | "suggestions"
->;
+  "searchText" | "onSearchTextChange" | "suggestions" | "searchFeedback"
+> & { addressType?: AddressType };
 
 function SearchAddressAutocompleteContainer({
   addressType,
@@ -19,7 +20,7 @@ function SearchAddressAutocompleteContainer({
 }: SearchAddressAutocompleteContainerProps) {
   const addressService = useMemo(() => new NationalAddressBaseService(), []);
   // display the already selected address (if any) when the component mounts
-  const { searchText, setSearchText, suggestions } = useAddressSearch(
+  const { searchText, setSearchText, suggestions, searchFeedback } = useAddressSearch(
     addressService,
     addressType,
     selectedAddress?.value,
@@ -32,7 +33,7 @@ function SearchAddressAutocompleteContainer({
       searchText={searchText}
       onSearchTextChange={setSearchText}
       suggestions={suggestions}
-      addressType={addressType}
+      searchFeedback={searchFeedback}
     />
   );
 }

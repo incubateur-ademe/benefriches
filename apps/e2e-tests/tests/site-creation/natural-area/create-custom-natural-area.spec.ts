@@ -122,7 +122,7 @@ test.describe("site creation - natural area - custom mode", () => {
     await siteFeaturesPage.expectFeaturesDataLines([
       ["Nom du site", "Forêt de Blajan"],
       ["Nature du site", "Forêt"],
-      ["Adresse du site", "Blajan"],
+      ["Adresse du site", "Blajan (31350)"],
       ["Propriétaire actuel", "Mairie de Blajan"],
       ["Forêt de feuillus", asSquareMeters(15_000)],
       ["Prairie herbacée", asSquareMeters(5_000)],

@@ -41,7 +41,7 @@ test.describe("site creation - agricultural operation - express mode", () => {
     await siteCreationPage.expectCreationSuccessWithDataInList([
       ["Type d'exploitation", "Polyculture / polyélevage"],
       ["Superficie totale du site", asSquareMeters(50_000)],
-      ["Adresse", "Lyon"],
+      ["Adresse", "Lyon (69001)"],
     ]);
     await siteCreationPage.expectWizardAriaSnapshot(
       "agricultural-operation-express-creation-result-step.aria.yml",
@@ -56,7 +56,7 @@ test.describe("site creation - agricultural operation - express mode", () => {
 
     await siteFeaturesPage.expectCurrentPage();
     await siteFeaturesPage.expectFeaturesDataLines([
-      ["Adresse du site", "Lyon"],
+      ["Adresse du site", "Lyon (69001)"],
       ["Type d'exploitation", "Polyculture / polyélevage"],
     ]);
   });

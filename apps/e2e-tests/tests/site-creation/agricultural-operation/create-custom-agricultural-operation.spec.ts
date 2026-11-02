@@ -162,7 +162,7 @@ test.describe("site creation - agricultural operation - custom mode", () => {
     await siteFeaturesPage.expectFeaturesDataLines([
       ["Nom du site", "Exploitation céréalière de Chartres"],
       ["Type d'exploitation", "Grandes cultures de céréales et oléagineux"],
-      ["Adresse du site", "Chartres"],
+      ["Adresse du site", "Chartres (28000)"],
       ["Propriétaire actuel", "Mairie de Chartres"],
       ["Culture", asSquareMeters(20_000)],
       ["Prairie herbacée", asSquareMeters(2_500)],
