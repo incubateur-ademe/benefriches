@@ -5,6 +5,8 @@ import {
   agriculturalOperationActivitySchema,
   fricheActivitySchema,
   naturalAreaTypeSchema,
+  SITE_NAME_MAX_LENGTH,
+  SITE_STAKEHOLDER_NAME_MAX_LENGTH,
   siteNatureSchema,
   siteYearlyExpenseSchema,
   siteYearlyIncomeSchema,
@@ -13,13 +15,18 @@ import {
 } from "../../site";
 import { soilsDistributionSchema } from "../../soils";
 
+const stakeholderSchema = z.object({
+  structureType: z.string(),
+  name: z.string().max(SITE_STAKEHOLDER_NAME_MAX_LENGTH),
+});
+
 export const baseCustomSiteSchema = z.object({
   id: z.string(),
-  name: z.string(),
+  name: z.string().max(SITE_NAME_MAX_LENGTH),
   description: z.string().optional(),
   address: addressSchema,
-  owner: z.object({ structureType: z.string(), name: z.string() }).optional(),
-  tenant: z.object({ structureType: z.string(), name: z.string() }).optional(),
+  owner: stakeholderSchema.optional(),
+  tenant: stakeholderSchema.optional(),
   yearlyExpenses: siteYearlyExpenseSchema.array(),
   yearlyIncomes: siteYearlyIncomeSchema.array(),
 });
@@ -53,7 +60,7 @@ export const urbanZoneCustomSiteFieldsSchema = z.object({
   landParcels: urbanZoneLandParcelSchema.array().nonempty(),
   hasContaminatedSoils: z.boolean().optional(),
   contaminatedSoilSurface: z.number().optional(),
-  manager: z.object({ structureType: z.string(), name: z.string() }),
+  manager: stakeholderSchema,
   vacantCommercialPremisesFootprint: z.number(),
   vacantCommercialPremisesFloorArea: z.number().optional(),
   fullTimeJobsEquivalent: z.number().optional(),

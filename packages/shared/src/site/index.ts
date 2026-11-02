@@ -11,3 +11,4 @@ export * from "./statu-quo-impacts/siteImpactsDataView.types";
 export * from "./statu-quo-impacts/computeStatuQuoSiteImpacts";
 export * from "./stakeholder";
 export * from "./siteEditability";
+export * from "./textFieldsMaxLength";

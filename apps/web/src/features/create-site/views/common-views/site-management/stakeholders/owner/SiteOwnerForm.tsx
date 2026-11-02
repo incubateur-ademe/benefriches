@@ -12,6 +12,8 @@ import RequiredLabel from "@/shared/views/components/form/RequiredLabel/Required
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
+import { stakeholderNameMaxLengthRule } from "../stakeholderNameMaxLengthRule";
+
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
@@ -63,6 +65,7 @@ function SiteOwnerForm({
   siteNature,
 }: Props) {
   const { register, handleSubmit, watch, formState } = useForm<FormValues>({
+    mode: "onChange",
     shouldUnregister: true,
     defaultValues: initialValues,
   });
@@ -159,6 +162,7 @@ function SiteOwnerForm({
               stateRelatedMessage={formState.errors.ownerName?.message}
               nativeInputProps={register("ownerName", {
                 required: "Ce champ est requis",
+                maxLength: stakeholderNameMaxLengthRule,
                 shouldUnregister: true,
               })}
             />
@@ -175,6 +179,7 @@ function SiteOwnerForm({
               stateRelatedMessage={formState.errors.ownerName?.message}
               nativeInputProps={register("ownerName", {
                 required: "Ce champ est requis",
+                maxLength: stakeholderNameMaxLengthRule,
                 shouldUnregister: true,
               })}
             />
