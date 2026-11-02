@@ -19,6 +19,8 @@ import {
   createReconversionProjectRequestDtoSchema,
   type CreateReconversionProjectRequestDto,
   type GetReconversionProjectFeaturesResponseDto,
+  idPathParamSchema,
+  type IdPathParam,
 } from "shared";
 // oxlint-disable-next-line api-conventions/no-local-dto-schema -- legacy local schemas, to move to packages/shared/src/api-dtos
 import { z } from "zod";
@@ -134,7 +136,8 @@ export class ReconversionProjectController {
   @UseGuards(JwtAuthGuard)
   @Put(":reconversionProjectId")
   async updateReconversionProject(
-    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Param("reconversionProjectId", { schema: idPathParamSchema })
+    reconversionProjectId: IdPathParam,
     @Body({ schema: httpUpdateReconversionProjectPropsSchema }) body: UpdateReconversionProjectBody,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
@@ -207,7 +210,8 @@ export class ReconversionProjectController {
   @UseGuards(JwtAuthGuard)
   @Post(":reconversionProjectId/duplicate")
   async duplicateReconversionProject(
-    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Param("reconversionProjectId", { schema: idPathParamSchema })
+    reconversionProjectId: IdPathParam,
     @Body({ schema: duplicateReconversionProjectBodySchema })
     body: DuplicateReconversionProjectBody,
     @Req() req: RequestWithAuthenticatedUser,
@@ -236,7 +240,8 @@ export class ReconversionProjectController {
   @UseGuards(JwtAuthGuard)
   @Post(":reconversionProjectId/archive")
   async archiveReconversionProject(
-    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Param("reconversionProjectId", { schema: idPathParamSchema })
+    reconversionProjectId: IdPathParam,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
     const authenticatedUserId = req.accessTokenPayload.userId;
@@ -275,7 +280,10 @@ export class ReconversionProjectController {
 
   @UseGuards(JwtAuthGuard)
   @Get(":reconversionProjectId/impacts")
-  async getProjectImpacts(@Param("reconversionProjectId") reconversionProjectId: string) {
+  async getProjectImpacts(
+    @Param("reconversionProjectId", { schema: idPathParamSchema })
+    reconversionProjectId: IdPathParam,
+  ) {
     const result = await this.getProjectImpactsAnalysisUseCase.execute({
       reconversionProjectId,
     });
@@ -295,7 +303,8 @@ export class ReconversionProjectController {
   @UseGuards(JwtAuthGuard)
   @Get(":reconversionProjectId/features")
   async getReconversionProjectFeatures(
-    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Param("reconversionProjectId", { schema: idPathParamSchema })
+    reconversionProjectId: IdPathParam,
   ): Promise<GetReconversionProjectFeaturesResponseDto> {
     const result = await this.getReconversionProjectFeaturesUseCase.execute({
       reconversionProjectId,
@@ -333,7 +342,8 @@ export class ReconversionProjectController {
 
   @Get(":reconversionProjectId/urban-sprawl-comparison")
   async getUrbanSprawlImpactsComparison(
-    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Param("reconversionProjectId", { schema: idPathParamSchema })
+    reconversionProjectId: IdPathParam,
     @Query({ schema: getUrbanSprawlImpactsComparisonDtoSchema })
     urbanSprawlComparisonQueryDto: UrbanSprawlComparisonQuery,
   ) {
@@ -357,7 +367,8 @@ export class ReconversionProjectController {
   @UseGuards(JwtAuthGuard)
   @Get(":reconversionProjectId")
   async getReconversionProject(
-    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Param("reconversionProjectId", { schema: idPathParamSchema })
+    reconversionProjectId: IdPathParam,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
     const authenticatedUserId = req.accessTokenPayload.userId;

@@ -2,7 +2,10 @@ import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { InMemorySitesService } from "../../infrastructure/sites-service/InMemorySitesService";
-import { reconversionProjectCreationInitiated } from "../actions/reconversionProjectCreationInitiated.action";
+import {
+  type GetSitesByIdGateway,
+  reconversionProjectCreationInitiated,
+} from "../actions/reconversionProjectCreationInitiated.action";
 import type { ProjectCreationState } from "../createProject.reducer";
 import type { ProjectSuggestion } from "../project.types";
 import { relatedSiteData } from "./siteData.mock";
@@ -38,7 +41,7 @@ describe("Reconversion project creation initialization", () => {
     });
   });
 
-  it("should be in error state when site fetching fails on reconversion project creation initialization", async () => {
+  it("should be in notFound state when the related site does not exist on reconversion project creation initialization", async () => {
     const fakeSiteService = new InMemorySitesService([relatedSiteData]);
     const store = createStore(
       getTestAppDependencies({
@@ -48,6 +51,38 @@ describe("Reconversion project creation initialization", () => {
 
     await store.dispatch(
       reconversionProjectCreationInitiated({ relatedSiteId: "non-existing-id" }),
+    );
+
+    const projectCreationState = store.getState().projectCreation;
+    expect(projectCreationState).toEqual<ProjectCreationState>({
+      projectId: expect.any(String),
+      siteDataLoadingState: "notFound",
+      siteData: undefined,
+      siteRelatedLocalAuthorities: { loadingState: "idle" },
+      urbanProject: expect.any(Object),
+      renewableEnergyProject: expect.any(Object),
+      surfaceAreaInputMode: "percentage",
+      demoProject: expect.any(Object),
+      useCaseSelection: {
+        stepsSequence: ["USE_CASE_SELECTION_PROJECT_PHASE"],
+        currentStep: "USE_CASE_SELECTION_PROJECT_PHASE",
+      },
+      currentProjectFlow: "USE_CASE_SELECTION",
+    });
+  });
+
+  it("should be in error state when site fetching fails on reconversion project creation initialization", async () => {
+    const failingSiteService: GetSitesByIdGateway = {
+      getSiteFeaturesById: () => Promise.reject(new Error("Network error")),
+    };
+    const store = createStore(
+      getTestAppDependencies({
+        getSiteByIdService: failingSiteService,
+      }),
+    );
+
+    await store.dispatch(
+      reconversionProjectCreationInitiated({ relatedSiteId: relatedSiteData.id }),
     );
 
     const projectCreationState = store.getState().projectCreation;

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
-import { useAppDispatch } from "@/app/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 
 import { reconversionProjectImpactsBreakEvenLevelRequested } from "../../application/project-impacts/actions";
 import ProjectPage from "./ProjectPage";
@@ -11,10 +12,15 @@ type Props = {
 
 export default function ProjectPageContainer({ projectId }: Props) {
   const dispatch = useAppDispatch();
+  const impactsLoadingState = useAppSelector(
+    (state) => state.projectImpacts.dataLoadingState.impacts,
+  );
 
   useEffect(() => {
     void dispatch(reconversionProjectImpactsBreakEvenLevelRequested({ projectId }));
   }, [projectId, dispatch]);
+
+  if (impactsLoadingState === "notFound") return <NotFoundScreen />;
 
   return <ProjectPage projectId={projectId} />;
 }

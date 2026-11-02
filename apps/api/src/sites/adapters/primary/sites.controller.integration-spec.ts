@@ -2116,4 +2116,50 @@ describe("Sites controller", () => {
       assert.ok(result.stakeholders !== undefined);
     });
   });
+
+  describe("routes taking a site id in their path", () => {
+    const validUpdateBody: UpdateCustomSiteDto = {
+      nature: "FRICHE",
+      name: "Friche",
+      address: {
+        city: "Lyon",
+        cityCode: "69123",
+        postCode: "69001",
+        banId: "69123_abc",
+        lat: 45.764,
+        long: 4.8357,
+        value: "1 rue de la République, 69001 Lyon",
+      },
+      soilsDistribution: { BUILDINGS: 2000 },
+      yearlyExpenses: [],
+      yearlyIncomes: [],
+    };
+    const malformedSiteIdRequests = [
+      { method: "get", path: "/api/sites/not-a-uuid/features", body: undefined },
+      { method: "get", path: "/api/sites/not-a-uuid", body: undefined },
+      { method: "get", path: "/api/sites/not-a-uuid/real-estate-valuation", body: undefined },
+      { method: "get", path: "/api/sites/not-a-uuid/impacts", body: undefined },
+      { method: "post", path: "/api/sites/not-a-uuid/archive", body: undefined },
+      { method: "put", path: "/api/sites/not-a-uuid", body: validUpdateBody },
+    ] as const;
+
+    for (const { method, path, body } of malformedSiteIdRequests) {
+      it(`gets a 400 for ${method.toUpperCase()} ${path} with a malformed site id`, async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+
+        const request = supertest(app.getHttpServer());
+        const response = await request[method](path)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(body);
+
+        assert.strictEqual(response.status, 400);
+        const { errors } = response.body as { errors: { code: string; path: string[] }[] };
+        assert.deepStrictEqual(
+          errors.map(({ code, path: issuePath }) => ({ code, path: issuePath })),
+          [{ code: "invalid_format", path: [] }],
+        );
+      });
+    }
+  });
 });

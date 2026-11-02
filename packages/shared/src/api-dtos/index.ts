@@ -1,3 +1,6 @@
+// Common DTOs
+export { idPathParamSchema, type IdPathParam } from "./common";
+
 // Auth DTOs
 export {
   registerUserRequestDtoSchema,
