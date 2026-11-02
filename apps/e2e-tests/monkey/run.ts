@@ -19,6 +19,7 @@ import {
   readMonkeyConfig,
   type MonkeyConfig,
 } from "./monkey-config";
+import { drawRunPlan, formatRunPlan, type RunPlan } from "./run-plan";
 
 const E2E_TESTS_DIR = resolve(__dirname, "..");
 const RUNS_DIR = join(E2E_TESTS_DIR, "monkey-runs");
@@ -131,12 +132,12 @@ function runClaude(options: {
 }
 
 /** The scenarios the agent wrote down, in order: every text it wrote between tool calls. */
-function buildNarrative(events: StreamEvent[], stopReason: StopReason): string {
+function buildNarrative(events: StreamEvent[], stopReason: StopReason, plan: RunPlan): string {
   const texts = events
     .filter((event) => event.type === "assistant")
     .flatMap((event) => event.message?.content ?? [])
     .flatMap((block) => (block.type === "text" && block.text ? [block.text.trim()] : []));
-  return `# Monkey run narrative\n\nStopped by: ${stopReason}\n\n${texts.join("\n\n")}\n`;
+  return `# Monkey run narrative\n\nStopped by: ${stopReason}\n\n## Plan\n\n${formatRunPlan(plan)}\n\n${texts.join("\n\n")}\n`;
 }
 
 async function main() {
@@ -148,7 +149,14 @@ async function main() {
     playwrightOutputDir: join(runDir, "playwright"),
   };
   await mkdir(paths.playwrightOutputDir, { recursive: true });
+  log(`seed: ${config.seed} (replay this run with MONKEY_SEED=${config.seed})`);
   log(`run folder: ${runDir}`);
+
+  const plan = drawRunPlan(config.seed);
+  await writeFile(join(runDir, "plan.json"), JSON.stringify(plan, null, 2));
+  log(
+    `plan: ${plan.persona}, ${plan.siteNature}, ${plan.projectType}, ${plan.creationMode}, quirks: ${plan.quirks.join(", ")}`,
+  );
 
   const email = await registerUser(config, paths.storageStatePath);
   log(`registered and logged in as ${email}`);
@@ -172,8 +180,14 @@ async function main() {
     ),
   );
 
-  const promptTemplate = await readFile(join(__dirname, "prompt.md"), "utf8");
-  const prompt = promptTemplate.replaceAll("{{BASE_URL}}", config.baseUrl);
+  const [promptTemplate, glossary] = await Promise.all([
+    readFile(join(__dirname, "prompt.md"), "utf8"),
+    readFile(join(__dirname, "glossary.md"), "utf8"),
+  ]);
+  const prompt = promptTemplate
+    .replace("{{GLOSSARY}}", glossary)
+    .replace("{{RUN_PLAN}}", formatRunPlan(plan))
+    .replaceAll("{{BASE_URL}}", config.baseUrl);
 
   const startedAt = new Date();
   log(
@@ -188,12 +202,14 @@ async function main() {
   });
 
   const result = events.find((event) => event.type === "result");
-  await writeFile(join(runDir, "narrative.md"), buildNarrative(events, stopReason));
+  await writeFile(join(runDir, "narrative.md"), buildNarrative(events, stopReason, plan));
   await writeFile(
     join(runDir, "run.json"),
     JSON.stringify(
       {
         baseUrl: config.baseUrl,
+        seed: config.seed,
+        plan,
         email,
         startedAt: startedAt.toISOString(),
         endedAt: new Date().toISOString(),

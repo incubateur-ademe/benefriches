@@ -94,6 +94,12 @@
       "rules": {
         "typescript/no-non-null-assertion": "off"
       }
+    },
+    {
+      "files": ["monkey/**/*.spec.ts"],
+      "rules": {
+        "typescript/no-floating-promises": "off"
+      }
     }
   ]
 }
