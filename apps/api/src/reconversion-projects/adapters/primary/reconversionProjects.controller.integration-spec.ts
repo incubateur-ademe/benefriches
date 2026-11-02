@@ -1058,6 +1058,122 @@ describe("ReconversionProjects controller", () => {
     });
   });
 
+  // "Supprimer le projet" / "Supprimer le site" archive the row (status = "archived") instead of
+  // deleting it, and deleting a site also deletes its projects. Every read must then treat the
+  // project as gone, even when its id is typed in the URL.
+  describe("reading a deleted (archived) reconversion project", () => {
+    const readEndpoints = [
+      { name: "GET /reconversion-projects/:id", path: "" },
+      { name: "GET /reconversion-projects/:id/features", path: "/features" },
+      { name: "GET /reconversion-projects/:id/impacts", path: "/impacts" },
+      {
+        name: "GET /reconversion-projects/:id/urban-sprawl-comparison",
+        path: "/urban-sprawl-comparison?comparisonSiteNature=AGRICULTURAL_OPERATION&evaluationPeriodInYears=10",
+      },
+    ];
+
+    const seedPhotovoltaicProjectOnFriche = async ({
+      userId,
+      siteStatus,
+      projectStatus,
+    }: {
+      userId: string;
+      siteStatus: "active" | "archived";
+      projectStatus: "active" | "archived";
+    }) => {
+      const siteId = uuid();
+      const projectId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: userId,
+        nature: "FRICHE",
+        name: "Site A",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date("2024-02-10"),
+        creation_mode: "custom",
+        status: siteStatus,
+      });
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        ban_id: "40192",
+        value: "Mont-de-Marsan",
+        city: "Mont-de-Marsan",
+        city_code: "40192",
+        post_code: "40000",
+        lat: 43.891274,
+        long: -0.50031,
+        site_id: siteId,
+      });
+      await app.get(SqlReconversionProjectRepository).save(
+        buildReconversionProject({
+          ...buildExhaustiveReconversionProjectProps(),
+          id: projectId,
+          createdBy: userId,
+          relatedSiteId: siteId,
+        }),
+      );
+      // save() always stores an active project: archive it the way "Supprimer le projet" does.
+      await sqlConnection("reconversion_projects")
+        .where({ id: projectId })
+        .update({ status: projectStatus });
+      return projectId;
+    };
+
+    for (const { name, path } of readEndpoints) {
+      it(`${name} gets a 200 when the project and its site are active`, async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+        const projectId = await seedPhotovoltaicProjectOnFriche({
+          userId: user.id,
+          siteStatus: "active",
+          projectStatus: "active",
+        });
+
+        const response = await supertest(app.getHttpServer())
+          .get(`/api/reconversion-projects/${projectId}${path}`)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send();
+
+        assert.strictEqual(response.status, 200);
+      });
+
+      it(`${name} gets a 404 when the project is archived`, async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+        const projectId = await seedPhotovoltaicProjectOnFriche({
+          userId: user.id,
+          siteStatus: "active",
+          projectStatus: "archived",
+        });
+
+        const response = await supertest(app.getHttpServer())
+          .get(`/api/reconversion-projects/${projectId}${path}`)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send();
+
+        assert.strictEqual(response.status, 404);
+      });
+
+      it(`${name} gets a 404 when the project's site is archived`, async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+        const projectId = await seedPhotovoltaicProjectOnFriche({
+          userId: user.id,
+          siteStatus: "archived",
+          projectStatus: "active",
+        });
+
+        const response = await supertest(app.getHttpServer())
+          .get(`/api/reconversion-projects/${projectId}${path}`)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send();
+
+        assert.strictEqual(response.status, 404);
+      });
+    }
+  });
+
   describe("POST /reconversion-projects/:reconversionProjectId/duplicate", () => {
     it("gets a 401 when not authenticated", async () => {
       const response = await supertest(app.getHttpServer())

@@ -42,6 +42,8 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
         "tenant_name",
       )
       .where("id", siteId)
+      // A deleted site is archived, not removed: it must read as not found.
+      .where("status", "active")
       .first();
 
     if (!sqlSite) return undefined;

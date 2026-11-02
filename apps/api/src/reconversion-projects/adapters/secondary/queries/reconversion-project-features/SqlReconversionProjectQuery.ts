@@ -189,6 +189,13 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
         ),
       )
       .where("reconversion_projects.id", reconversionProjectId)
+      // A deleted project (or a project of a deleted site) is archived, not removed: it must
+      // read as not found.
+      .where("reconversion_projects.status", "active")
+      .whereIn(
+        "reconversion_projects.related_site_id",
+        this.sqlConnection("sites").select("id").where("status", "active"),
+      )
       .first()) as ReconversionProjectSqlResult | undefined;
 
     if (!sqlResult) {

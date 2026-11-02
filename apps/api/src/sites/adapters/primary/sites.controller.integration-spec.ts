@@ -2116,4 +2116,58 @@ describe("Sites controller", () => {
       assert.ok(result.stakeholders !== undefined);
     });
   });
+
+  // "Supprimer le site" archives the row (status = "archived") instead of deleting it. Every read
+  // must then treat the site as gone, even when its id is typed in the URL.
+  describe("reading a deleted (archived) site", () => {
+    const readEndpoints = [
+      { name: "GET /sites/:siteId", path: "" },
+      { name: "GET /sites/:siteId/features", path: "/features" },
+      { name: "GET /sites/:siteId/impacts", path: "/impacts" },
+      { name: "GET /sites/:siteId/real-estate-valuation", path: "/real-estate-valuation" },
+    ];
+
+    for (const { name, path } of readEndpoints) {
+      it(`${name} gets a 200 when the site is active`, async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+        const site = buildFriche({ id: uuid() });
+        await sqlSiteRepository.save({
+          ...site,
+          createdAt: new Date("2024-02-10"),
+          createdBy: user.id,
+          creationMode: "custom",
+          status: "active",
+        });
+
+        const response = await supertest(app.getHttpServer())
+          .get(`/api/sites/${site.id}${path}`)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send();
+
+        assert.strictEqual(response.status, 200);
+      });
+
+      it(`${name} gets a 404 when the site is archived`, async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+        const site = buildFriche({ id: uuid() });
+        await sqlSiteRepository.save({
+          ...site,
+          createdAt: new Date("2024-02-10"),
+          createdBy: user.id,
+          creationMode: "custom",
+          status: "active",
+        });
+        await sqlConnection("sites").where({ id: site.id }).update({ status: "archived" });
+
+        const response = await supertest(app.getHttpServer())
+          .get(`/api/sites/${site.id}${path}`)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send();
+
+        assert.strictEqual(response.status, 404);
+      });
+    }
+  });
 });

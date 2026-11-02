@@ -411,6 +411,8 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         ),
       )
       .where("reconversion_projects.id", reconversionProjectId)
+      // A deleted project is archived, not removed: it must read as not found.
+      .where("reconversion_projects.status", "active")
       .first()) as ReconversionProjectSqlResult | undefined;
 
     if (!sqlResult) return null;
