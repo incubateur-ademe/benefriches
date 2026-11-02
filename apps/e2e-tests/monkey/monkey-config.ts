@@ -4,9 +4,13 @@
  */
 
 import { createSeed, MAX_SEED } from "./run-plan";
+import type { Budgets } from "./scenario-log";
 
-const DEFAULT_MAX_TURNS = 60;
-const DEFAULT_TIMEOUT_MINUTES = 20;
+// The run stops at the first budget it exhausts.
+const DEFAULT_MAX_TURNS = 150;
+const DEFAULT_TIMEOUT_MINUTES = 30;
+const DEFAULT_MAX_COST_USD = 5;
+const DEFAULT_MAX_HARD_ERRORS = 5;
 
 // The browser may only reach the target webapp, testmail.app and the address search API the
 // site wizard depends on: anything else is blocked by the browser context
@@ -21,8 +25,7 @@ const DISALLOWED_MCP_TOOLS = ["mcp__playwright__browser_run_code_unsafe"];
 export type MonkeyConfig = {
   baseUrl: string;
   testmail: { namespace: string; apiKey: string };
-  maxTurns: number;
-  timeoutMs: number;
+  budgets: Budgets;
   headed: boolean;
   seed: number;
 };
@@ -33,6 +36,16 @@ function readPositiveInteger(env: NodeJS.ProcessEnv, name: string, fallback: num
   const value = Number(raw);
   if (!Number.isInteger(value) || value <= 0) {
     throw new Error(`Invalid ${name} "${raw}": expected a positive integer`);
+  }
+  return value;
+}
+
+function readPositiveNumber(env: NodeJS.ProcessEnv, name: string, fallback: number): number {
+  const raw = env[name];
+  if (raw === undefined || raw === "") return fallback;
+  const value = Number(raw);
+  if (!Number.isFinite(value) || value <= 0) {
+    throw new Error(`Invalid ${name} "${raw}": expected a positive number`);
   }
   return value;
 }
@@ -61,8 +74,13 @@ export function readMonkeyConfig(env: NodeJS.ProcessEnv = process.env): MonkeyCo
       namespace: env.E2E_TESTMAIL_NAMESPACE ?? "",
       apiKey: env.E2E_TESTMAIL_API_KEY ?? "",
     },
-    maxTurns: readPositiveInteger(env, "MONKEY_MAX_TURNS", DEFAULT_MAX_TURNS),
-    timeoutMs: readPositiveInteger(env, "MONKEY_TIMEOUT_MINUTES", DEFAULT_TIMEOUT_MINUTES) * 60_000,
+    budgets: {
+      maxTurns: readPositiveInteger(env, "MONKEY_MAX_TURNS", DEFAULT_MAX_TURNS),
+      timeoutMs:
+        readPositiveInteger(env, "MONKEY_TIMEOUT_MINUTES", DEFAULT_TIMEOUT_MINUTES) * 60_000,
+      maxCostUsd: readPositiveNumber(env, "MONKEY_MAX_COST_USD", DEFAULT_MAX_COST_USD),
+      maxHardErrors: readPositiveInteger(env, "MONKEY_MAX_HARD_ERRORS", DEFAULT_MAX_HARD_ERRORS),
+    },
     headed: env.MONKEY_HEADED === "true",
     seed: readSeed(env),
   };
@@ -76,6 +94,8 @@ type RunPaths = {
   runDir: string;
   storageStatePath: string;
   playwrightOutputDir: string;
+  /** Loaded by Playwright MCP on every page: see hard-error-detector.ts. */
+  hardErrorDetectorPath: string;
 };
 
 /** Playwright MCP configuration file (see @playwright/mcp config.d.ts). */
@@ -89,6 +109,7 @@ export function buildPlaywrightMcpConfig(baseUrl: string, paths: RunPaths, heade
         storageState: paths.storageStatePath,
         viewport: { width: 1440, height: 900 },
       },
+      initPage: [paths.hardErrorDetectorPath],
     },
     network: { allowedOrigins: allowedOrigins(baseUrl) },
     outputDir: paths.playwrightOutputDir,
@@ -101,7 +122,7 @@ export function buildPlaywrightMcpConfig(baseUrl: string, paths: RunPaths, heade
 export function buildClaudeArgs(options: {
   prompt: string;
   mcpConfigPath: string;
-  maxTurns: number;
+  budgets: Pick<Budgets, "maxTurns" | "maxCostUsd">;
 }): string[] {
   return [
     "--print",
@@ -109,7 +130,9 @@ export function buildClaudeArgs(options: {
     "--model",
     "sonnet",
     "--max-turns",
-    String(options.maxTurns),
+    String(options.budgets.maxTurns),
+    "--max-budget-usd",
+    String(options.budgets.maxCostUsd),
     "--output-format",
     "stream-json",
     "--verbose",

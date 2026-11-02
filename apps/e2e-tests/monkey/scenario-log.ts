@@ -84,6 +84,8 @@ export type ScenarioLog = {
   version: typeof SCENARIO_LOG_VERSION;
   runId: string;
   baseUrl: string;
+  /** The testmail.app address of the user the agent is logged in as. */
+  userEmail: string | null;
   seed: number;
   plan: RunPlan;
   budgets: Budgets;
@@ -268,6 +270,7 @@ export function buildScenarios(input: {
 export function buildScenarioLog(input: {
   runId: string;
   baseUrl: string;
+  userEmail: string | null;
   plan: RunPlan;
   budgets: Budgets;
   startedAt: string;
@@ -284,6 +287,7 @@ export function buildScenarioLog(input: {
     version: SCENARIO_LOG_VERSION,
     runId: input.runId,
     baseUrl: input.baseUrl,
+    userEmail: input.userEmail,
     seed: input.plan.seed,
     plan: input.plan,
     budgets: input.budgets,
@@ -295,6 +299,23 @@ export function buildScenarioLog(input: {
     suspicionCount: findings.filter((finding) => finding.kind === "suspicion").length,
     scenarios,
   };
+}
+
+/**
+ * Why the run stopped: the budget the runner enforced (time, hard errors) or the user's
+ * interruption first, else what Claude Code reported (turns, cost, success or failure).
+ */
+export function resolveStopReason(options: {
+  forcedStop: StopReason | null;
+  resultSubtype: string | undefined;
+  exitCode: number | null;
+}): StopReason {
+  const { forcedStop, resultSubtype, exitCode } = options;
+  if (forcedStop) return forcedStop;
+  if (resultSubtype === "error_max_turns") return "turn-limit";
+  if (resultSubtype === "error_max_budget_usd") return "cost-limit";
+  if (exitCode === 0 && resultSubtype === "success") return "completed";
+  return "error";
 }
 
 /** Distinct hard errors in hard-errors.jsonl: repeats of a known one don't count. */

@@ -13,7 +13,7 @@ The [nightly workflow](../../.github/workflows/e2e-tests-staging.yml) runs the s
 
 ## Checks
 
-Run `pnpm --filter e2e-tests typecheck && pnpm --filter e2e-tests lint && pnpm --filter e2e-tests format:check`, and `pnpm --filter e2e-tests test` for the unit tests of `monkey/`. They don't need the stack.
+Run `pnpm --filter e2e-tests typecheck && pnpm --filter e2e-tests lint && pnpm --filter e2e-tests format:check`, and `pnpm --filter e2e-tests test` for the unit tests of `monkey/`. They don't need the stack. `pnpm --filter e2e-tests test:monkey-browser` tests the monkey hard-error detector in Playwright's Chromium.
 
 ## Layout
 
