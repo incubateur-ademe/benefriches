@@ -36,7 +36,7 @@ function ProjectionCreationDataSummaryContainer() {
 
   return (
     <UrbanProjectFormSummary
-      isDisabled={!isFormValid || saveState === "success"}
+      isDisabled={!isFormValid || saveState === "loading" || saveState === "success"}
       instructions={null}
       warnings={warnings}
       errors={errors}

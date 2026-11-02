@@ -100,6 +100,88 @@ describe("ReconversionProjects controller", () => {
           assert.ok(responseErrors[0]?.path.includes(mandatoryField));
         });
       }
+
+      it("responds with a 404 when the related site does not exist", async () => {
+        const { createdBy: _, ...requestBody } = buildMinimalReconversionProjectProps();
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+
+        const response = await supertest(app.getHttpServer())
+          .post("/api/reconversion-projects")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(requestBody);
+
+        assert.strictEqual(response.status, 404);
+        assert.deepStrictEqual(response.body, {
+          error: "SITE_NOT_FOUND",
+          message: `Site with ID ${requestBody.relatedSiteId} not found`,
+        });
+        assert.deepStrictEqual(await sqlConnection("reconversion_projects").select("id"), []);
+      });
+
+      it("responds with a 409 when a reconversion project with the same id already exists", async () => {
+        const { createdBy: _, ...requestBody } = buildMinimalReconversionProjectProps();
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+        await sqlConnection("sites").insert({
+          id: requestBody.relatedSiteId,
+          created_by: user.id,
+          name: "Site name",
+          surface_area: 14000,
+          owner_structure_type: "company",
+          created_at: new Date(),
+        });
+        await supertest(app.getHttpServer())
+          .post("/api/reconversion-projects")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(requestBody)
+          .expect(201);
+
+        const response = await supertest(app.getHttpServer())
+          .post("/api/reconversion-projects")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send({ ...requestBody, name: "Resubmitted name" });
+
+        assert.strictEqual(response.status, 409);
+        assert.deepStrictEqual(response.body, {
+          error: "RECONVERSION_PROJECT_ALREADY_EXISTS",
+          message: "A reconversion project with this ID already exists",
+        });
+        assert.deepStrictEqual(await sqlConnection("reconversion_projects").select("id", "name"), [
+          { id: requestBody.id, name: requestBody.name },
+        ]);
+      });
+
+      it("creates the project once and responds with a 409, not a 500, when the same project is submitted twice concurrently", async () => {
+        const { createdBy: _, ...requestBody } = buildMinimalReconversionProjectProps();
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+        await sqlConnection("sites").insert({
+          id: requestBody.relatedSiteId,
+          created_by: user.id,
+          name: "Site name",
+          surface_area: 14000,
+          owner_structure_type: "company",
+          created_at: new Date(),
+        });
+        const submit = () =>
+          supertest(app.getHttpServer())
+            .post("/api/reconversion-projects")
+            .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+            .send(requestBody)
+            .then((response) => response.status);
+
+        // A double click on the summary "Valider" button sends both requests at once.
+        const statuses = await Promise.all([submit(), submit()]);
+
+        assert.deepStrictEqual(
+          statuses.toSorted((a, b) => a - b),
+          [201, 409],
+        );
+        assert.deepStrictEqual(await sqlConnection("reconversion_projects").select("id"), [
+          { id: requestBody.id },
+        ]);
+      });
     });
 
     for (const { case: testCase, projectProps } of [

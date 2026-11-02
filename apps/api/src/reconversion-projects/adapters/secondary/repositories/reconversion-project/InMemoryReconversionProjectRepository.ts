@@ -9,6 +9,12 @@ export class InMemoryReconversionProjectRepository implements ReconversionProjec
   private reconversionProjects: ReconversionProjectSaveDto[] = [];
 
   async save(project: ReconversionProjectSaveDto) {
+    // Mirrors the primary key of the reconversion_projects table.
+    if (this.reconversionProjects.some(({ id }) => id === project.id)) {
+      throw new Error(
+        `InMemoryReconversionProjectRepository > save: reconversion project ${project.id} already exists`,
+      );
+    }
     this.reconversionProjects.push(project);
     await Promise.resolve();
   }

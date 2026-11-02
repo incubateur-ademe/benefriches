@@ -27,4 +27,10 @@ export const customUrbanProjectSaved = createAppAsyncThunk(
     await extra.saveReconversionProjectService.save(projectToSave);
     void dispatch(eventTracked(projectCreated("custom")));
   },
+  {
+    // A double click on "Valider" must not send the project twice: the second POST with the
+    // same id would be rejected and could leave the summary in error while the project exists.
+    condition: (_, { getState }) =>
+      getState().projectCreation.urbanProject.form.saveState !== "loading",
+  },
 );
