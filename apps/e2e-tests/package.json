@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "oxlint",
     "format:check": "prettier --check --cache \"./**/*.{js,ts,json}\" .",
-    "format": "prettier --write --cache \"./**/*.{js,ts,json}\" ."
+    "format": "prettier --write --cache \"./**/*.{js,ts,json}\" .",
+    "monkey": "tsx monkey/run.ts"
   },
   "dependencies": {
     "@axe-core/playwright": "~4.13.0",
@@ -18,6 +19,7 @@
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "@types/node": "~26.5.1",
-    "eslint-plugin-playwright": "~2.11.0"
+    "eslint-plugin-playwright": "~2.11.0",
+    "tsx": "~4.23.15"
   }
 }

@@ -3,3 +3,4 @@ test-results/
 node_modules/
 .git/
 **/*.spec.ts-snapshots/**
+monkey-runs/
