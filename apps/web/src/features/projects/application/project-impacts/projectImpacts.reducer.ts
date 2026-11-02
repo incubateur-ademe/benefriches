@@ -15,7 +15,7 @@ type LoadingState = "idle" | "loading" | "success" | "error";
 export type ProjectImpactsState = {
   evaluationPeriod: number | undefined;
   dataLoadingState: {
-    impacts: LoadingState;
+    impacts: LoadingState | "notFound";
     urbanSprawlSimulation: LoadingState;
   };
   contextData?: GetReconversionProjectImpactsResultDto["contextData"];
@@ -52,6 +52,12 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
   });
 
   /* fetch reconversion project impacts */
+  builder.addCase(reconversionProjectImpactsAnalysisRequested.rejected, (state, action) => {
+    state.dataLoadingState.impacts = action.payload === "notFound" ? "notFound" : "error";
+  });
+  builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.rejected, (state) => {
+    state.dataLoadingState.impacts = "error";
+  });
   builder.addMatcher(
     isAnyOf(
       reconversionProjectImpactsAnalysisRequested.pending,
@@ -59,15 +65,6 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
     ),
     (state) => {
       state.dataLoadingState.impacts = "loading";
-    },
-  );
-  builder.addMatcher(
-    isAnyOf(
-      reconversionProjectImpactsAnalysisRequested.rejected,
-      fetchQuickImpactsForUrbanProjectOnFriche.rejected,
-    ),
-    (state) => {
-      state.dataLoadingState.impacts = "error";
     },
   );
   builder.addMatcher(

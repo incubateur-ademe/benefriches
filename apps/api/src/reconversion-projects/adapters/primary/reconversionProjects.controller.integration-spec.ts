@@ -1278,6 +1278,23 @@ describe("ReconversionProjects controller", () => {
       assert.strictEqual(response.status, 404);
     });
 
+    it("gets a 400 when the project id is malformed", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/not-a-uuid/duplicate`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ newProjectId: uuid() });
+
+      assert.strictEqual(response.status, 400);
+      const { errors } = response.body as { errors: { code: string; path: string[] }[] };
+      assert.deepStrictEqual(
+        errors.map(({ code, path }) => ({ code, path })),
+        [{ code: "invalid_format", path: [] }],
+      );
+    });
+
     it("gets a 403 when user is not the creator of the project", async () => {
       const siteId = uuid();
 
@@ -1744,6 +1761,23 @@ describe("ReconversionProjects controller", () => {
         assert.strictEqual(response.status, 404);
       });
 
+      it("gets a 400 when the project id is malformed", async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+
+        const response = await supertest(app.getHttpServer())
+          .put(`/api/reconversion-projects/not-a-uuid`)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(baseUpdateReconversionProjectProps);
+
+        assert.strictEqual(response.status, 400);
+        const { errors } = response.body as { errors: { code: string; path: string[] }[] };
+        assert.deepStrictEqual(
+          errors.map(({ code, path }) => ({ code, path })),
+          [{ code: "invalid_format", path: [] }],
+        );
+      });
+
       it("gets a 403 when user is not the creator of the project", async () => {
         const siteId = uuid();
 
@@ -2028,5 +2062,38 @@ describe("ReconversionProjects controller", () => {
       assert.strictEqual(projects.length, 1);
       assert.strictEqual(projects[0]?.status, "archived");
     });
+  });
+
+  describe("routes taking a reconversion project id in their path", () => {
+    const malformedProjectIdRequests = [
+      { method: "get", path: "/api/reconversion-projects/not-a-uuid" },
+      { method: "get", path: "/api/reconversion-projects/not-a-uuid/impacts" },
+      { method: "get", path: "/api/reconversion-projects/abc/impacts" },
+      { method: "get", path: "/api/reconversion-projects/not-a-uuid/features" },
+      {
+        method: "get",
+        path: "/api/reconversion-projects/not-a-uuid/urban-sprawl-comparison?comparisonSiteNature=AGRICULTURAL_OPERATION&evaluationPeriodInYears=20",
+      },
+      { method: "post", path: "/api/reconversion-projects/not-a-uuid/archive" },
+    ] as const;
+
+    for (const { method, path } of malformedProjectIdRequests) {
+      it(`gets a 400 for ${method.toUpperCase()} ${path} with a malformed project id`, async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+
+        const request = supertest(app.getHttpServer());
+        const response = await request[method](path)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send();
+
+        assert.strictEqual(response.status, 400);
+        const { errors } = response.body as { errors: { code: string; path: string[] }[] };
+        assert.deepStrictEqual(
+          errors.map(({ code, path: issuePath }) => ({ code, path: issuePath })),
+          [{ code: "invalid_format", path: [] }],
+        );
+      });
+    }
   });
 });

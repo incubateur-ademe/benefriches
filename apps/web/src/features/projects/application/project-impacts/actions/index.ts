@@ -15,18 +15,21 @@ export const evaluationPeriodUpdated =
   createProjectImpactsAction<number>("evaluationPeriodUpdated");
 
 export interface ReconversionProjectImpactsGateway {
+  // Resolves to undefined when no project has this id (unknown or malformed id).
   getReconversionProjectImpacts(
     reconversionProjectId: string,
-  ): Promise<GetReconversionProjectImpactsResultDto>;
+  ): Promise<GetReconversionProjectImpactsResultDto | undefined>;
 }
 
 export const reconversionProjectImpactsAnalysisRequested = createAppAsyncThunk<
   GetReconversionProjectImpactsResultDto,
-  { projectId: string }
+  { projectId: string },
+  { rejectValue: "notFound" }
 >(
   createProjectImpactsActionName("reconversionProjectImpactsAnalysisRequested"),
-  async ({ projectId }, { extra }) => {
+  async ({ projectId }, { extra, rejectWithValue }) => {
     const data = await extra.reconversionProjectImpacts.getReconversionProjectImpacts(projectId);
+    if (!data) return rejectWithValue("notFound");
     return data;
   },
 );

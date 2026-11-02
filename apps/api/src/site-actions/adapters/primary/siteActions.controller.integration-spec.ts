@@ -79,6 +79,40 @@ describe("SiteActions controller", () => {
       assert.ok(responseErrors[0]?.path.includes("status"));
     });
 
+    it("responds with 400 when the site id is malformed", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .patch(`/api/sites/not-a-uuid/actions/${actionId}/status`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ status: "done" });
+
+      assert.strictEqual(response.status, 400);
+      const { errors } = response.body as { errors: { code: string; path: string[] }[] };
+      assert.deepStrictEqual(
+        errors.map(({ code, path }) => ({ code, path })),
+        [{ code: "invalid_format", path: [] }],
+      );
+    });
+
+    it("responds with 400 when the action id is malformed", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .patch(`/api/sites/${siteId}/actions/not-a-uuid/status`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ status: "done" });
+
+      assert.strictEqual(response.status, 400);
+      const { errors } = response.body as { errors: { code: string; path: string[] }[] };
+      assert.deepStrictEqual(
+        errors.map(({ code, path }) => ({ code, path })),
+        [{ code: "invalid_format", path: [] }],
+      );
+    });
+
     it("responds with 404 when action not found", async () => {
       const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);

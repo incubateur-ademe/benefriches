@@ -26,6 +26,9 @@ export class HttpSitesService implements GetSitesByIdGateway {
   async getSiteFeaturesById(siteId: string): Promise<ProjectSite | undefined> {
     const response = await fetch(`/api/sites/${siteId}/features`);
 
+    // 404: unknown site id, 400: malformed site id
+    if (response.status === 404 || response.status === 400) return undefined;
+
     if (!response.ok) throw new Error(`Error while fetching site with id ${siteId}`);
 
     const jsonResponse: unknown = await response.json();

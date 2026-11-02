@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import classNames from "@/shared/views/clsx";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import type { SitePageViewModel } from "../core/siteView.reducer";
@@ -61,6 +62,9 @@ function SitePage({
 
     case "error":
       return <SitePageError />;
+
+    case "notFound":
+      return <NotFoundScreen />;
 
     case "success":
       const { siteView } = viewModel;
