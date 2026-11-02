@@ -24,3 +24,7 @@ export {
   type ReconversionCompatibilityEvaluationStatus,
 } from "./reconversion-compatibility";
 export { type IDateProvider } from "./adapters/IDateProvider";
+export {
+  MIN_EVALUATION_PERIOD_IN_YEARS,
+  MAX_EVALUATION_PERIOD_IN_YEARS,
+} from "./sum-on-evolution-period/SumOnEvolutionPeriodService";
