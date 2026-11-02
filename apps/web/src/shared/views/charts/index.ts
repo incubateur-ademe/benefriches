@@ -16,6 +16,13 @@ export function withDefaultChartOptions(options: Options): Options {
     },
     exporting: {
       fallbackToExportServer: false,
+      csv: {
+        // Charts without an x axis (pie) ask for the category column header with no axis.
+        // Highcharts only handles that case when lang.exportData.categoryHeader is non-empty,
+        // so with our empty header it crashes ("reading 'bindAxes'") when the data table is
+        // opened. Answer that case here; `false` keeps Highcharts' header for the other columns.
+        columnHeaderFormatter: (item?: unknown) => (item ? false : ""),
+      },
       buttons: {
         contextButton: {
           enabled: false,
