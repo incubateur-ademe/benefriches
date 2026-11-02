@@ -128,6 +128,42 @@ describe("CreateReconversionProject Use Case", () => {
       assert.strictEqual(failureResult.getError(), "ReconversionProjectAlreadyExists");
       assert.strictEqual(eventPublisher.events.length, 0);
     });
+
+    it("Creates the project once when the same project is submitted twice concurrently", async () => {
+      const reconversionProjectProps = buildMinimalReconversionProjectProps();
+      const siteEntity: SiteEntity = {
+        ...buildFriche({ id: reconversionProjectProps.relatedSiteId }),
+        createdAt: fakeNow,
+        createdBy: "user-123",
+        creationMode: "custom",
+        status: "active",
+      };
+      siteRepository._setSites([siteEntity]);
+
+      const usecase = new CreateReconversionProjectUseCase(
+        dateProvider,
+        siteRepository,
+        reconversionProjectRepository,
+        uuidGenerator,
+        eventPublisher,
+      );
+      // Both requests check that the project does not exist before either one saves it,
+      // like a double click on the summary "Valider" button.
+      const results = await Promise.all([
+        usecase.execute({ reconversionProjectProps }),
+        usecase.execute({ reconversionProjectProps }),
+      ]);
+
+      assert.deepStrictEqual(
+        results.map((result) => (result.isFailure() ? result.getError() : "success")),
+        ["success", "ReconversionProjectAlreadyExists"],
+      );
+      assert.deepStrictEqual(
+        reconversionProjectRepository._getReconversionProjects().map(({ id }) => id),
+        [reconversionProjectProps.id],
+      );
+      assert.strictEqual(eventPublisher.events.length, 1);
+    });
   });
 
   describe("Success cases", () => {

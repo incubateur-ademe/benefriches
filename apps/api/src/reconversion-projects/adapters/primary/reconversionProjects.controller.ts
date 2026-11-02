@@ -5,6 +5,7 @@ import {
   NotFoundException,
   ForbiddenException,
   BadRequestException,
+  ConflictException,
   Param,
   Post,
   Put,
@@ -123,12 +124,32 @@ export class ReconversionProjectController {
     createReconversionProjectDto: CreateReconversionProjectRequestDto,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
-    await this.createReconversionProjectUseCase.execute({
+    const result = await this.createReconversionProjectUseCase.execute({
       reconversionProjectProps: {
         ...createReconversionProjectDto,
         createdBy: req.accessTokenPayload.userId,
       },
     });
+
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "ValidationError":
+          throw new BadRequestException({
+            error: "VALIDATION_ERROR",
+            message: "Invalid reconversion project data provided",
+          });
+        case "SiteNotFound":
+          throw new NotFoundException({
+            error: "SITE_NOT_FOUND",
+            message: `Site with ID ${createReconversionProjectDto.relatedSiteId} not found`,
+          });
+        case "ReconversionProjectAlreadyExists":
+          throw new ConflictException({
+            error: "RECONVERSION_PROJECT_ALREADY_EXISTS",
+            message: "A reconversion project with this ID already exists",
+          });
+      }
+    }
   }
 
   @UseGuards(JwtAuthGuard)
