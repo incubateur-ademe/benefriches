@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
+import { formatSurfaceArea } from "shared";
 import { describe, expect, it, vi } from "vitest";
 
 import type { SiteFeatures } from "../../core/site.types";
@@ -18,6 +19,10 @@ const siteFeatures: SiteFeatures = {
   contaminatedSurfaceArea: undefined,
   accidents: {},
 };
+
+// DataLine renders the label in <dd> and the value in <dt> of the same <dl>.
+const getDataLineValue = (view: HTMLElement, label: string) =>
+  within(view).getByText(label).closest("dl")?.querySelector("dt")?.textContent;
 
 describe("SiteFeaturesList", () => {
   it("renders no Modifier button and no incomplete-step warning when sectionProps is not given (read-only site page)", () => {
@@ -48,5 +53,67 @@ describe("SiteFeaturesList", () => {
     const button = screen.getByRole("button", { name: "Modifier" });
     button.click();
     expect(onClick).toHaveBeenCalledOnce();
+  });
+
+  describe("urban zone site", () => {
+    const urbanZoneSiteFeatures: SiteFeatures = {
+      id: "site-2",
+      isExpressSite: false,
+      address: "Chartres",
+      ownerName: "Owner",
+      expenses: [],
+      incomes: [],
+      surfaceArea: 10000,
+      soilsDistribution: { BUILDINGS: 10000 },
+      name: "ZAE Chartres",
+      nature: "URBAN_ZONE",
+      urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
+      contaminatedSurfaceArea: undefined,
+      landParcels: [],
+    };
+
+    it("shows the polluted surface entered in the wizard", () => {
+      const { container } = render(
+        <SiteFeaturesList
+          siteFeatures={{ ...urbanZoneSiteFeatures, contaminatedSurfaceArea: 2500 }}
+        />,
+      );
+
+      expect(getDataLineValue(container, "Superficie polluée")).toEqual(formatSurfaceArea(2500));
+    });
+
+    it("says no pollution was declared when the zone has no polluted surface", () => {
+      const { container } = render(
+        <SiteFeaturesList
+          siteFeatures={{ ...urbanZoneSiteFeatures, contaminatedSurfaceArea: undefined }}
+        />,
+      );
+
+      expect(getDataLineValue(container, "Superficie polluée")).toEqual(
+        "Pas de pollution déclarée",
+      );
+    });
+
+    it("shows the land-parcel split entered in the wizard", () => {
+      const { container } = render(
+        <SiteFeaturesList
+          siteFeatures={{
+            ...urbanZoneSiteFeatures,
+            landParcels: [
+              { type: "COMMERCIAL_ACTIVITY_AREA", surfaceArea: 6000 },
+              { type: "PUBLIC_SPACES", surfaceArea: 4000 },
+            ],
+          }}
+        />,
+      );
+
+      expect({
+        activity: getDataLineValue(container, "Surface d'activité"),
+        publicSpaces: getDataLineValue(container, "Espaces publics"),
+      }).toEqual({
+        activity: formatSurfaceArea(6000),
+        publicSpaces: formatSurfaceArea(4000),
+      });
+    });
   });
 });

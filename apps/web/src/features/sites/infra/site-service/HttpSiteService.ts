@@ -69,6 +69,10 @@ const mapApiSiteFeaturesResponseToFeaturesView = (
         nature: "URBAN_ZONE",
         contaminatedSurfaceArea: apiResponse.contaminatedSoilSurface,
         urbanZoneType: apiResponse.urbanZoneType,
+        landParcels: apiResponse.landParcels.map(({ type, surfaceArea }) => ({
+          type,
+          surfaceArea,
+        })),
         managerName: apiResponse.manager?.name,
         vacantCommercialPremisesFootprint: apiResponse.vacantCommercialPremisesFootprint,
         vacantCommercialPremisesFloorArea: apiResponse.vacantCommercialPremisesFloorArea,
