@@ -396,6 +396,131 @@ describe("Sites controller", () => {
       });
     }
 
+    describe("text length limits", () => {
+      const buildFricheDto = (
+        overrides: Partial<Extract<CreateCustomSiteDto, { nature: "FRICHE" }>>,
+      ): CreateCustomSiteDto => ({
+        id: "5b0e2f4a-7c1d-4e8b-9a3f-2d6c8e1b4a70",
+        nature: "FRICHE",
+        name: "Ancienne usine",
+        fricheActivity: "INDUSTRY",
+        owner: { structureType: "company", name: "Owner SARL" },
+        tenant: { structureType: "company", name: "Tenant SARL" },
+        soilsDistribution: { BUILDINGS: 5000, IMPERMEABLE_SOILS: 5000 },
+        yearlyExpenses: [],
+        yearlyIncomes: [],
+        address: {
+          city: "Lyon",
+          cityCode: "69123",
+          postCode: "69001",
+          banId: "69123",
+          lat: 45.758,
+          long: 4.835,
+          value: "Lyon",
+        },
+        ...overrides,
+      });
+
+      for (const { field, path, overrides } of [
+        { field: "site name", path: ["name"], overrides: { name: "a".repeat(256) } },
+        {
+          field: "owner name",
+          path: ["owner", "name"],
+          overrides: { owner: { structureType: "company", name: "a".repeat(256) } },
+        },
+        {
+          field: "tenant name",
+          path: ["tenant", "name"],
+          overrides: { tenant: { structureType: "company", name: "a".repeat(256) } },
+        },
+      ] as const) {
+        it(`responds with a 400 when the ${field} is longer than 255 characters`, async () => {
+          const user = new UserBuilder().asLocalAuthority().build();
+          const { accessToken } = await authenticateUser(app)(user);
+
+          const response = await supertest(app.getHttpServer())
+            .post("/api/sites/create-custom")
+            .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+            .send(buildFricheDto(overrides));
+
+          assert.strictEqual(response.status, 400);
+          assert.deepStrictEqual(
+            (response.body as BadRequestResponseBody).errors.map((error) => error.path),
+            [path],
+          );
+          assert.deepStrictEqual(await sqlConnection("sites").select("id"), []);
+        });
+      }
+
+      it("creates a site whose name, owner name and tenant name are 255 characters long", async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+        const siteName = "s".repeat(255);
+        const ownerName = "o".repeat(255);
+        const tenantName = "t".repeat(255);
+
+        const response = await supertest(app.getHttpServer())
+          .post("/api/sites/create-custom")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(
+            buildFricheDto({
+              name: siteName,
+              owner: { structureType: "company", name: ownerName },
+              tenant: { structureType: "company", name: tenantName },
+            }),
+          );
+
+        assert.strictEqual(response.status, 201);
+        assert.deepStrictEqual(
+          await sqlConnection("sites").select("name", "owner_name", "tenant_name"),
+          [{ name: siteName, owner_name: ownerName, tenant_name: tenantName }],
+        );
+      });
+
+      it("responds with a 400 when the urban zone manager name is longer than 255 characters", async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+        const urbanZoneDto: Extract<CreateCustomSiteDto, { nature: "URBAN_ZONE" }> = {
+          id: "0c7d5e2a-3b4f-4a6e-8d1c-9f2b7e5a3c10",
+          nature: "URBAN_ZONE",
+          urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
+          name: "Zone d'activites",
+          address: {
+            city: "Lyon",
+            cityCode: "69123",
+            postCode: "69001",
+            banId: "69123",
+            lat: 45.758,
+            long: 4.835,
+            value: "Lyon",
+          },
+          landParcels: [
+            {
+              type: "PUBLIC_SPACES",
+              surfaceArea: 2000,
+              soilsDistribution: { MINERAL_SOIL: 2000 },
+            },
+          ],
+          manager: { structureType: "activity_park_manager", name: "a".repeat(256) },
+          vacantCommercialPremisesFootprint: 0,
+          yearlyExpenses: [],
+          yearlyIncomes: [],
+        };
+
+        const response = await supertest(app.getHttpServer())
+          .post("/api/sites/create-custom")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(urbanZoneDto);
+
+        assert.strictEqual(response.status, 400);
+        assert.deepStrictEqual(
+          (response.body as BadRequestResponseBody).errors.map((error) => error.path),
+          [["manager", "name"]],
+        );
+        assert.deepStrictEqual(await sqlConnection("sites").select("id"), []);
+      });
+    });
+
     it("can create an agricultural operation", async () => {
       const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);

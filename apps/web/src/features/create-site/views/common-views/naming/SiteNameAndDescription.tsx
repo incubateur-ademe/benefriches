@@ -1,5 +1,6 @@
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { useForm } from "react-hook-form";
+import { SITE_NAME_MAX_LENGTH } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -19,6 +20,7 @@ type Props = {
 function SiteNameAndDescriptionForm({ initialValues, onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: initialValues,
+    mode: "onChange",
   });
 
   const nameError = formState.errors.name;
@@ -33,6 +35,10 @@ function SiteNameAndDescriptionForm({ initialValues, onSubmit, onBack }: Props) 
           stateRelatedMessage={nameError ? nameError.message : undefined}
           nativeInputProps={register("name", {
             required: "Ce champ est requis",
+            maxLength: {
+              value: SITE_NAME_MAX_LENGTH,
+              message: `Le nom ne doit pas dépasser ${SITE_NAME_MAX_LENGTH} caractères.`,
+            },
           })}
         />
         <Input
