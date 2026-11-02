@@ -27,6 +27,27 @@ const getEnumValueSerializer = <T extends string>(values: T[]): ValueSerializer<
 
 const onBoardingFeatureSerializer = getEnumValueSerializer([...onboardingVariantSchema.options]);
 
+// The project features page used to live at the misspelled `/mes-projets/<id>/caracterisques`.
+// Links to it may have been shared, so the old URL is rewritten to the new one, with its whole
+// query string and hash, before the router reads the location. A type-route secondary path would
+// keep only the query params the route declares.
+const LEGACY_PROJECT_FEATURES_PATH = /^(\/mes-projets\/[^/]+)\/caracterisques\/?$/;
+
+const redirectLegacyUrl = () => {
+  const { pathname, search, hash } = window.location;
+  const match = LEGACY_PROJECT_FEATURES_PATH.exec(pathname);
+  if (!match) {
+    return;
+  }
+  window.history.replaceState(
+    window.history.state,
+    "",
+    `${match[1]}/caracteristiques${search}${hash}`,
+  );
+};
+
+redirectLegacyUrl();
+
 const { RouteProvider, useRoute, routes, session } = createRouter(
   { scrollToTop: false },
   {
@@ -132,7 +153,7 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
       },
       () => `/onboarding-impacts`,
     ),
-    projectFeatures: projectImpacts.extend(`/caracterisques`),
+    projectFeatures: projectImpacts.extend(`/caracteristiques`),
     readImpactsDoc: defineRoute("/methodologie-calculs-impacts"),
     // MES EVALUATIONS
     myEvaluations: defineRoute("/mes-evaluations"),
