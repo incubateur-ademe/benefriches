@@ -64,7 +64,8 @@ function Autocomplete({ options, value, onSelect, className, inputProps }: Props
   return (
     <div className={classNames(className)}>
       <Combobox
-        value={value}
+        // `null` (not `undefined`) when nothing is selected, so the combobox stays controlled
+        value={value ?? null}
         onChange={(value) => {
           if (value) {
             onSelect(value);
