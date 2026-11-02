@@ -3,6 +3,7 @@ import type { Selector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
 import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
+import { isUnknownSiteOwner } from "@/features/create-project/core/project-form/stakeholders";
 import type { RenewableEnergyStepsState } from "@/features/create-project/core/renewable-energy/step-handlers/stepHandler.type";
 import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
 
@@ -42,7 +43,8 @@ export const createSelectSitePurchasedViewData = (
           sitePurchase?.willSiteBePurchased !== undefined
             ? { willSiteBePurchased: sitePurchase.willSiteBePurchased }
             : undefined,
-        siteOwnerName: siteData ? siteData.owner.name : undefined,
+        siteOwnerName:
+          siteData && !isUnknownSiteOwner(siteData.owner) ? siteData.owner.name : undefined,
       };
     },
   );

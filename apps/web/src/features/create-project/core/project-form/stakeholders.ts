@@ -35,6 +35,12 @@ export type AvailableProjectStakeholder = {
   structureType: ProjectStakeholderStructure;
 };
 
+// The API stores a site without a known owner as { name: "Propriétaire inconnu", structureType:
+// "unknown" }: that placeholder is not a real stakeholder, so it is never offered as a choice nor
+// named in a question.
+export const isUnknownSiteOwner = (owner: { structureType: string }) =>
+  owner.structureType === "unknown";
+
 export const hasStakeholder = (
   stakeholder: { name: string; structureType: string },
   stakeholders: AvailableProjectStakeholder[],
@@ -74,7 +80,7 @@ export const getProjectAvailableStakeholders = ({ siteOwner, siteTenant, current
       ]
     : [];
 
-  if (siteOwner && !hasStakeholder(siteOwner, stakeholders)) {
+  if (siteOwner && !isUnknownSiteOwner(siteOwner) && !hasStakeholder(siteOwner, stakeholders)) {
     stakeholders.push({
       name: siteOwner.name,
       role: "site_owner",

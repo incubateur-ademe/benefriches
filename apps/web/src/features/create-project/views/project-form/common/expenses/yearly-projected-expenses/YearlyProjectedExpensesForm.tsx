@@ -70,7 +70,7 @@ const YearlyProjectedExpensesForm = ({
 
         <RowNumericInput
           label={<span className="font-medium text-dsfr-text-label-grey">Total</span>}
-          addonText="€"
+          addonText="€ / an"
           nativeInputProps={{
             value: new Intl.NumberFormat("fr-FR").format(sumObjectValues(allExpenses)),
           }}
