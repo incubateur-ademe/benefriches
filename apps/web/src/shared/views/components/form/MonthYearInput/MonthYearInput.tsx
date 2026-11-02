@@ -16,6 +16,15 @@ type Props = {
   stateRelatedMessage?: string;
 };
 
+const INVALID_MONTH_MESSAGE = "Le mois doit être compris entre 01 et 12";
+
+function hasInvalidMonth(rawValue: string): boolean {
+  const digits = rawValue.replace(/\D/g, "");
+  if (digits.length < 2) return false;
+  const month = parseInt(digits.slice(0, 2), 10);
+  return month < 1 || month > 12;
+}
+
 function formatMonthYearInput(rawValue: string, previousValue: string): string {
   const digits = rawValue.replace(/\D/g, "");
 
@@ -59,6 +68,7 @@ function MonthYearInput({
 }: Props) {
   const [prevValue, setPrevValue] = useState(value);
   const [displayValue, setDisplayValue] = useState(() => dateStringToMonthYearDisplay(value));
+  const [isMonthInvalid, setIsMonthInvalid] = useState(false);
 
   // Sync internal display state when external storage value changes (e.g. form reset)
   if (value !== prevValue) {
@@ -73,6 +83,7 @@ function MonthYearInput({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
+    setIsMonthInvalid(false);
 
     // Handle backspace over the "/" separator
     // From "01/2" → backspace → "01/" or from "01/" → backspace → "01"
@@ -90,6 +101,7 @@ function MonthYearInput({
       }
     }
 
+    setIsMonthInvalid(hasInvalidMonth(rawValue));
     const formatted = formatMonthYearInput(rawValue, displayValue);
     setDisplayValue(formatted);
     onChange(monthYearDisplayToDateString(formatted) ?? "");
@@ -99,8 +111,8 @@ function MonthYearInput({
     <Input
       label={label}
       className={className}
-      state={state}
-      stateRelatedMessage={stateRelatedMessage}
+      state={isMonthInvalid ? "error" : state}
+      stateRelatedMessage={isMonthInvalid ? INVALID_MONTH_MESSAGE : stateRelatedMessage}
       nativeInputProps={{
         type: "text",
         inputMode: "numeric",
