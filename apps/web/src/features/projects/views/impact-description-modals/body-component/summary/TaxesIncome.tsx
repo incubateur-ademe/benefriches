@@ -16,23 +16,31 @@ type Props = {
 
 const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
   const { isSuccess, value } = impactData;
-  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink, onCloseLink } = useContext(ImpactModalDescriptionContext);
 
   const title = isSuccess ? `+ de recettes fiscales\u00a0💰` : `- de recettes fiscales\u00a0💸`;
 
   return (
     <ModalBody>
       <ModalHeader
-        title={title}
-        value={{
-          text: formatMonetaryImpact(value),
-          state: isSuccess ? "success" : "error",
-          description: isSuccess
-            ? `à venir au profit notamment de la collectivité`
-            : `en moins pour, notamment, la collectivité`,
+        onCloseLink={onCloseLink}
+        exportProps={false}
+        dataProps={{
+          type: "value",
+          headerProps: {
+            value: {
+              text: formatMonetaryImpact(value),
+              state: isSuccess ? "success" : "error",
+              description: isSuccess
+                ? `à venir au profit notamment de la collectivité`
+                : `en moins pour, notamment, la collectivité`,
+            },
+          },
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
-      />
+      >
+        {title}
+      </ModalHeader>
       <ModalContent noTitle>
         <p>
           La concrétisation du projet va générer des recettes fiscales pour la collectivité

@@ -38,7 +38,7 @@ function invert<T extends Record<string, string>>(map: T): Record<string, keyof 
 
 export const DETAILS_CODES_REVERSE = invert(DETAILS_CODES_BY_SECTION);
 
-export function parseContentState(contenu: string | undefined): DetailsName | undefined {
+export function parseDetails(contenu: string | undefined): DetailsName | undefined {
   if (!contenu) return undefined;
 
   return DETAILS_CODES_REVERSE[contenu];

@@ -16,19 +16,28 @@ type Props = {
 
 const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => {
   const { value } = impactData;
-  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink, onCloseLink } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody>
       <ModalHeader
-        title="Un cadre de vie amélioré&nbsp;🏡"
-        value={{
-          text: formatMonetaryImpact(value),
-          state: "success",
-          description: `de valeur patrimoniale attendue par la reconversion de la friche`,
+        onCloseLink={onCloseLink}
+        exportProps={false}
+        dataProps={{
+          type: "value",
+          headerProps: {
+            value: {
+              text: formatMonetaryImpact(value),
+              state: "success",
+              description: `de valeur patrimoniale attendue par la reconversion de la friche`,
+            },
+          },
         }}
+
         breadcrumbSegments={[{ label: "Synthèse" }, { label: "Un cadre de vie amélioré" }]}
-      />
+      >
+        Un cadre de vie amélioré&nbsp;🏡
+      </ModalHeader>
       <ModalContent noTitle>
         <p>
           La reconversion d’une friche urbaine, du fait de la transformation d’un espace plus ou

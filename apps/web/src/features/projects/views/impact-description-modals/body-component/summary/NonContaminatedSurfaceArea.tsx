@@ -17,7 +17,7 @@ type Props = {
 const SummaryNonContaminatedSurfaceAreaDescription = ({ impactData }: Props) => {
   const { isSuccess, value } = impactData;
   const { decontaminatedSurfaceArea, forecastContaminatedSurfaceArea, percentageEvolution } = value;
-  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink, onCloseLink } = useContext(ImpactModalDescriptionContext);
   const title = isSuccess
     ? `Des risques sanitaires réduits\u00a0☢️`
     : `des sols encore pollués\u00a0☢️`;
@@ -25,18 +25,26 @@ const SummaryNonContaminatedSurfaceAreaDescription = ({ impactData }: Props) => 
   return (
     <ModalBody>
       <ModalHeader
-        title={title}
-        value={{
-          text: isSuccess
-            ? formatSurfaceArea(decontaminatedSurfaceArea)
-            : formatSurfaceArea(forecastContaminatedSurfaceArea),
-          state: isSuccess ? "success" : "error",
-          description: isSuccess
-            ? `(soit ${formatPercentage(percentageEvolution)}) de sols dépollués`
-            : `de sols non dépollués`,
+        onCloseLink={onCloseLink}
+        exportProps={false}
+        dataProps={{
+          type: "value",
+          headerProps: {
+            value: {
+              text: isSuccess
+                ? formatSurfaceArea(decontaminatedSurfaceArea)
+                : formatSurfaceArea(forecastContaminatedSurfaceArea),
+              state: isSuccess ? "success" : "error",
+              description: isSuccess
+                ? `(soit ${formatPercentage(percentageEvolution)}) de sols dépollués`
+                : `de sols non dépollués`,
+            },
+          },
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
-      />
+      >
+        {title}
+      </ModalHeader>
       <ModalContent noTitle>
         {isSuccess ? (
           <>

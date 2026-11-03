@@ -4,32 +4,59 @@ import type { SocioEconomicImpactImpactKeyName } from "@/features/projects/core/
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 import type { SocioEconomicSectionName } from "../ImpactModalDescriptionContext";
-import type { BodyComponentType, ContentComponentType, ModalImpactConfig } from "./config.type";
+import type { ContentComponentType, ModalImpactConfig } from "./config.type";
+import { formatSocioEconomicDataProps, formatSubsectionImpactsDataProps } from "./formatData";
 
 const SOCIO_ECONOMIC_MODALS = {
   socioEconomic: {
-    BodyComponent: lazy<BodyComponentType>(
-      () => import("../body-component/socio-economic/SocioEconomicDescription"),
+    ContentComponent: lazy<ContentComponentType>(
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/socio_economic_section.mdx"),
     ),
+    dataProps: (p) =>
+      formatSocioEconomicDataProps({
+        impactsData: p.impactsData,
+        getDetailsLink: p.getDetailsLink,
+      }),
   },
   "socioEconomic.humanity": {
-    BodyComponent: lazy<BodyComponentType>(
-      () => import("../body-component/socio-economic/HumanityDescription"),
+    ContentComponent: lazy<ContentComponentType>(
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/socio_economic_humanity_section.mdx"),
     ),
+    dataProps: (p) =>
+      formatSubsectionImpactsDataProps({
+        key: "humanity",
+        impactsData: p.impactsData,
+        getDetailsLink: p.getDetailsLink,
+      }),
   },
   "socioEconomic.localPeopleOrCompany": {
-    BodyComponent: lazy<BodyComponentType>(
-      () => import("../body-component/socio-economic/LocalPeopleOrCompanyDescription"),
+    ContentComponent: lazy<ContentComponentType>(
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/socio_economic_local_people_or_company_section.mdx"),
     ),
+    dataProps: (p) =>
+      formatSubsectionImpactsDataProps({
+        key: "localPeopleOrCompany",
+        impactsData: p.impactsData,
+        getDetailsLink: p.getDetailsLink,
+      }),
   },
   "socioEconomic.localAuthority": {
-    BodyComponent: lazy<BodyComponentType>(
-      () => import("../body-component/socio-economic/LocalAuthorityDescription"),
+    ContentComponent: lazy<ContentComponentType>(
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/socio_economic_local_authority_section.mdx"),
     ),
+    dataProps: (p) =>
+      formatSubsectionImpactsDataProps({
+        key: "localAuthority",
+        impactsData: p.impactsData,
+        getDetailsLink: p.getDetailsLink,
+      }),
   },
 
   projectedRentalIncome: {
-    title: "🔑 Revenu locatif",
     description: "répartis entre l'actuel propriétaire et le futur propriétaire",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -37,14 +64,12 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   avoidedFricheMaintenanceAndSecuringCostsForOwner: {
-    title: "🏚️ Dépenses liées à la friche évitées pour le propriétaire",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs.mdx"),
     ),
   },
   avoidedFricheMaintenanceAndSecuringCostsForTenant: {
-    title: "🏚️ Dépenses liées à la friche évitées pour le locataire",
     subtitle: "Grâce à la reconversion de la friche",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -54,64 +79,48 @@ const SOCIO_ECONOMIC_MODALS = {
   "avoidedFricheMaintenanceAndSecuringCostsForOwner.accidentsCost": undefined,
   "avoidedFricheMaintenanceAndSecuringCostsForTenant.accidentsCost": undefined,
   "avoidedFricheMaintenanceAndSecuringCostsForOwner.illegalDumpingCost": {
-    title: "🚮 Débarras de dépôt sauvage",
-
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__illegal_dumping_cost.mdx"),
     ),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForTenant.illegalDumpingCost": {
-    title: "🚮 Débarras de dépôt sauvage",
-
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__illegal_dumping_cost.mdx"),
     ),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForOwner.maintenance": {
-    title: "🔧 Entretien",
-
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__maintenance.mdx"),
     ),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForTenant.maintenance": {
-    title: "🔧 Entretien",
-
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__maintenance.mdx"),
     ),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForOwner.otherSecuringCosts": {
-    title: "🛡 Autres dépenses de sécurisation",
-
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__other_securing_costs.mdx"),
     ),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForTenant.otherSecuringCosts": {
-    title: "🛡 Autres dépenses de sécurisation",
-
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__other_securing_costs.mdx"),
     ),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForOwner.security": {
-    title: "👮 Gardiennage",
-
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__security.mdx"),
     ),
   },
   "avoidedFricheMaintenanceAndSecuringCostsForTenant.security": {
-    title: "👮 Gardiennage",
-
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/avoided-friche-costs/avoided_friche_maintenance_and_securing_costs__security.mdx"),
@@ -131,7 +140,6 @@ const SOCIO_ECONOMIC_MODALS = {
   propertyTransferDutiesIncome: undefined,
 
   localPropertyValueIncrease: {
-    title: "🏡 Hausse de la valeur patrimoniale des bâtiments alentour",
     subtitle: "Grâce à la reconversion du site",
     description: "pour la population locale",
     ContentComponent: lazy<ContentComponentType>(
@@ -140,7 +148,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   localTransferDutiesIncrease: {
-    title: "🏛️ Droits de mutation sur les ventes immobilières alentour",
     description: "pour la collectivité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -148,7 +155,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   taxesIncome: {
-    title: "🏛️ Recettes fiscales",
     description: "pour la collectivité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -163,7 +169,6 @@ const SOCIO_ECONOMIC_MODALS = {
   previousSiteOperationBenefitLoss: undefined,
 
   avoidedPropertyDamageExpenses: {
-    title: "🚙 Dépenses de réparation évitées",
     subtitle: "Grâce aux déplacements évités",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -171,7 +176,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   avoidedCarRelatedExpenses: {
-    title: "🚗 Dépenses automobiles évitées",
     subtitle: "Grâce à la ou les commodités créées dans le quartier",
     description: "pour la population locale",
     ContentComponent: lazy<ContentComponentType>(
@@ -180,7 +184,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   avoidedAirConditioningExpenses: {
-    title: "❄️ Dépenses de climatisation évitées",
     description: "pour la population locale et les structures locales",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -188,7 +191,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   fricheRoadsAndUtilitiesExpenses: {
-    title: "🅿️ Dépenses d’entretien des VRD",
     description: "pour la collectivité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -196,7 +198,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   travelTimeSavedPerTravelerExpenses: {
-    title: "⏱️️ Valeur monétaire du temps passé en moins dans les transports",
     subtitle: "Grâce à la ou les commodités créées dans le quartier",
     description: "pour la population locale",
     ContentComponent: lazy<ContentComponentType>(
@@ -205,14 +206,12 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   avoidedTrafficAccidents: {
-    title: "🚗 Dépenses de santé évitées grâce à la diminution des accidents de la route",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/avoided-accidents/avoided_traffic_accidents.mdx"),
     ),
   },
   "avoidedTrafficAccidents.avoidedAccidentsDeathsExpenses": {
-    title: "🪦 Décès évités",
     subtitle: "Grâce aux déplacements évités",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -220,7 +219,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "avoidedTrafficAccidents.avoidedAccidentsMinorInjuriesExpenses": {
-    title: "🤕 Blessés légers évités",
     subtitle: "Grâce aux déplacements évités",
 
     ContentComponent: lazy<ContentComponentType>(
@@ -229,7 +227,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "avoidedTrafficAccidents.avoidedAccidentsSevereInjuriesExpenses": {
-    title: "‍🚑 Blessés graves évités",
     subtitle: "Grâce aux déplacements évités",
 
     ContentComponent: lazy<ContentComponentType>(
@@ -238,7 +235,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   avoidedCo2eqEmissions: {
-    title: "☁️ Valeur monétaire de la décarbonation",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -246,7 +242,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "avoidedCo2eqEmissions.avoidedCo2eqWithEnergyProduction": {
-    title: "⚡️️ Production d'énergies renouvelables",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -254,7 +249,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "avoidedCo2eqEmissions.avoidedTrafficCo2EqEmissions": {
-    title: "🚙 Déplacements en voiture évités",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -262,7 +256,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "avoidedCo2eqEmissions.avoidedAirConditioningCo2eqEmissions": {
-    title: "❄️ Utilisation réduite de de la climatisation",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -270,7 +263,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   avoidedAirPollutionHealthExpenses: {
-    title: "💨 Dépenses de santé évitées grâce à la réduction de la pollution de l’air",
     subtitle: "Grâce aux déplacements évités",
     description: "pour la société française",
     ContentComponent: lazy<ContentComponentType>(
@@ -279,7 +271,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   waterRegulation: {
-    title: "🚰 Dépenses de traitement de l’eau évitées",
     subtitle:
       "Grâce à la dépollution de la friche et à la régulation de la qualité de l’eau par les espaces naturels",
     description: "pour la collectivité",
@@ -289,7 +280,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   ecosystemServices: {
-    title: "🌱 Valeur monétaire des services écosystémiques",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -297,7 +287,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "ecosystemServices.forestRelatedProduct": {
-    title: "🪵 Produits issus de la forêt",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -305,7 +294,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "ecosystemServices.invasiveSpeciesRegulation": {
-    title: "🦔 Régulation des espèces invasives",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -313,7 +301,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "ecosystemServices.natureRelatedWelnessAndLeisure": {
-    title: "🚵 Bien-être et loisirs liés à la nature",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -321,7 +308,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "ecosystemServices.nitrogenCycle": {
-    title: "🍄 Cycle de l'azote",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -329,7 +315,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "ecosystemServices.pollination": {
-    title: "🐝 Pollinisation",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -337,14 +322,12 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "ecosystemServices.soilErosion": {
-    title: "🌾 Régulation de l'érosion des sols",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/ecosystem-services/ecosystem_services__soil_erosion.mdx"),
     ),
   },
   "ecosystemServices.waterCycle": {
-    title: "💧 Cycle de l'eau",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -352,7 +335,6 @@ const SOCIO_ECONOMIC_MODALS = {
     ),
   },
   "ecosystemServices.newStoredCo2Eq": {
-    title: "🍂️ CO2-eq stocké dans les sols",
     description: "pour l'humanité",
     ContentComponent: lazy<ContentComponentType>(
       () =>

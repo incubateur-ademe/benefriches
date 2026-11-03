@@ -185,11 +185,13 @@ type Context = {
   onClose: () => void;
   getDetailsLink: (args: UpdateModalContentArgs) => Link | undefined;
   dialogTitleId: string;
+  onCloseLink: Link;
 };
 
 export const ImpactModalDescriptionContext = createContext<Context>({
   contentState: INITIAL_CONTENT_STATE,
   onClose: () => {},
+  onCloseLink: { href: "", onClick: () => {} },
   dialogTitleId: "",
   getDetailsLink: () => {
     return undefined;

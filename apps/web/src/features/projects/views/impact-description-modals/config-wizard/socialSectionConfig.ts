@@ -9,14 +9,12 @@ import type { ContentComponentType, ModalImpactConfig } from "./config.type";
 
 const SOCIAL_METRICS_MODALS = {
   social: {
-    title: "Impacts sociaux",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/social_section.mdx"),
     ),
   },
   "social.jobs": {
-    title: "Impacts sur l'emploi",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/social_jobs_section.mdx"),
@@ -30,7 +28,6 @@ const SOCIAL_METRICS_MODALS = {
   "avoidedFricheAccidents.avoidedFricheAccidentsMinorInjuries": undefined,
   "avoidedFricheAccidents.avoidedFricheAccidentsSevereInjuries": undefined,
   avoidedTrafficAccidents: {
-    title: "🚘 Personnes préservées des accidents de la route",
     subtitle: "Grâce aux déplacements évités",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -38,7 +35,6 @@ const SOCIAL_METRICS_MODALS = {
     ),
   },
   "avoidedTrafficAccidents.avoidedTrafficAccidentsDeaths": {
-    title: "🪦 Décès évités",
     subtitle: "Grâce aux déplacements évités",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -46,7 +42,6 @@ const SOCIAL_METRICS_MODALS = {
     ),
   },
   "avoidedTrafficAccidents.avoidedTrafficAccidentsMinorInjuries": {
-    title: "🤕 Blessés légers évités",
     subtitle: "Grâce aux déplacements évités",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -54,7 +49,6 @@ const SOCIAL_METRICS_MODALS = {
     ),
   },
   "avoidedTrafficAccidents.avoidedTrafficAccidentsSevereInjuries": {
-    title: "🚑 Blessés graves évités",
     subtitle: "Grâce aux déplacements évités",
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -62,7 +56,6 @@ const SOCIAL_METRICS_MODALS = {
     ),
   },
   avoidedVehiculeKilometers: {
-    title: "🚙 Kilomètres évités",
     description: "pour la population locale",
     unit: "kms",
     ContentComponent: lazy<ContentComponentType>(
@@ -71,7 +64,6 @@ const SOCIAL_METRICS_MODALS = {
     ),
   },
   fullTimeJobs: {
-    title: "🧑‍🔧 Emplois équivalent temps plein",
     type: "etp",
     formatFn: formatETPImpact,
     ContentComponent: lazy<ContentComponentType>(
@@ -80,7 +72,6 @@ const SOCIAL_METRICS_MODALS = {
     ),
   },
   "fullTimeJobs.conversionFullTimeJobs": {
-    title: "👷 Reconversion du site",
     type: "etp",
     formatFn: formatETPImpact,
     ContentComponent: lazy<ContentComponentType>(
@@ -89,7 +80,6 @@ const SOCIAL_METRICS_MODALS = {
     ),
   },
   "fullTimeJobs.photovoltaicOperationsFullTimeJobs": {
-    title: "🧑‍🔧 Exploitation du site",
     type: "etp",
     formatFn: formatETPImpact,
     ContentComponent: lazy<ContentComponentType>(
@@ -98,21 +88,18 @@ const SOCIAL_METRICS_MODALS = {
     ),
   },
   "fullTimeJobs.urbanOperationsFullTimeJobs": {
-    title: "🧑‍🔧 Exploitation du site",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/full-time-jobs/full_time_jobs__operations_urban.mdx"),
     ),
   },
   householdsPoweredByRenewableEnergy: {
-    title: "🏠 Foyers alimentés par les EnR",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/households_powered_by_enr.mdx"),
     ),
   },
   timeTravelSavedInHours: {
-    title: "⏱️ Temps passé en moins dans les transports",
     unit: "h",
     description: "pour la population locale",
     ContentComponent: lazy<ContentComponentType>(

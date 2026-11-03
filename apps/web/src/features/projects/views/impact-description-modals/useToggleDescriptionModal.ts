@@ -4,7 +4,6 @@ import type { Link, Route } from "type-route";
 import type { routes } from "@/app/router";
 import type { embedRoutes } from "@/embed";
 
-import { MODAL_CONFIG_GROUPS } from "./ImpactModalContentWizard";
 import {
   INITIAL_CONTENT_STATE,
   parseContentState,
@@ -12,6 +11,7 @@ import {
   type UpdateModalContentArgs,
 } from "./ImpactModalDescriptionContext";
 import type { DetailsCode, SectionCode } from "./impactModalUrlCodes";
+import { MODAL_CONFIG_GROUPS } from "./useImpactListModalContent";
 
 type SupportedRoute =
   | Route<typeof routes.projectImpactsBreakEvenLevel>
@@ -66,9 +66,15 @@ export default <TRoute extends SupportedRoute>({
     getRouteFn({ ...route.params, details: undefined }).push();
   }, [route, getRouteFn]);
 
+  const onCloseLink = useMemo(
+    () => getRouteFn({ ...route.params, details: undefined }).link,
+    [route, getRouteFn],
+  );
+
   return {
     handleClose,
     getDetailsLink,
+    onCloseLink,
     contentState,
   };
 };

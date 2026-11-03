@@ -1,3 +1,5 @@
+import type { Link } from "type-route";
+
 import type { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
 import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
 import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
@@ -14,10 +16,11 @@ import type {
   EnvironmentalSectionName,
   SocialSectionName,
   SocioEconomicSectionName,
+  UpdateModalContentArgs,
 } from "./ImpactModalDescriptionContext";
 import type { SplitKey } from "./getImpactData";
 import { splitImpactKey } from "./getImpactData";
-import type { BreadcrumbSegment } from "./modal-layout/ModalBreadcrumb";
+import type { BreadcrumbProps, BreadcrumbSegment } from "./modal-layout/ModalBreadcrumb";
 
 function buildCascadingBreadcrumb(levels: (BreadcrumbSegment | undefined)[]): BreadcrumbSegment[] {
   return levels.filter((level): level is BreadcrumbSegment => level !== undefined);
@@ -32,11 +35,11 @@ function buildImpactSegments<
 >({
   impactDetailsName,
   getLabel,
-  getImpactContentState,
+  getLink,
 }: {
   impactDetailsName?: DetailsName;
   getLabel: (key: DetailsName | SplitKey<DetailsName>[0]) => string;
-  getImpactContentState: (impactDetailsName: SplitKey<DetailsName>[0]) => ContentState;
+  getLink: (impactDetailsName: SplitKey<DetailsName>[0]) => Link | undefined;
 }): (BreadcrumbSegment | undefined)[] {
   if (!impactDetailsName) {
     return [];
@@ -46,7 +49,7 @@ function buildImpactSegments<
   return [
     details && {
       label: getLabel(impactName),
-      contentState: getImpactContentState(impactName),
+      linkProps: getLink(impactName),
     },
     { label: getLabel(impactDetailsName) },
   ];
@@ -101,7 +104,8 @@ export const getBreadcrumbProps = (
         "economicBalance" | SocioEconomicSectionName | EnvironmentalSectionName | SocialSectionName;
     }
   >,
-) => {
+  getLink: (args: UpdateModalContentArgs) => Link | undefined,
+): BreadcrumbProps["segments"] => {
   switch (contentState.sectionName) {
     case "socioEconomic":
     case "socioEconomic.humanity":
@@ -109,25 +113,31 @@ export const getBreadcrumbProps = (
     case "socioEconomic.localPeopleOrCompany": {
       const [, subSection] = splitImpactKey(contentState.sectionName);
 
-      const subSectionSegment = subSection ? SOCIO_ECONOMIC_BREADCRUMBS[subSection] : undefined;
+      const subSectionSegment = subSection
+        ? {
+            label: SOCIO_ECONOMIC_BREADCRUMBS[subSection].label,
+            linkProps: getLink(SOCIO_ECONOMIC_BREADCRUMBS[subSection].contentState),
+          }
+        : undefined;
 
-      return {
-        section: {
+      return [
+        {
           label: "Impacts socio-économiques",
-          contentState: { sectionName: "socioEconomic" as const },
+          linkProps: getLink({ sectionName: "socioEconomic" }),
         },
-        segments: buildCascadingBreadcrumb([
+        ...buildCascadingBreadcrumb([
           subSectionSegment,
           ...buildImpactSegments({
             impactDetailsName: contentState.impactDetailsName,
             getLabel: getSocioEconomicImpactLabel,
-            getImpactContentState: (impactDetailsName) => ({
-              sectionName: contentState.sectionName,
-              impactDetailsName,
-            }),
+            getLink: (impactDetailsName) =>
+              getLink({
+                sectionName: contentState.sectionName,
+                impactDetailsName,
+              }),
           }),
         ]),
-      };
+      ];
     }
 
     case "social":
@@ -136,25 +146,30 @@ export const getBreadcrumbProps = (
     case "social.jobs": {
       const [, subSection] = splitImpactKey(contentState.sectionName);
 
-      const subSectionSegment = subSection ? SOCIAL_BREADCRUMBS[subSection] : undefined;
-
-      return {
-        section: {
+      const subSectionSegment = subSection
+        ? {
+            label: SOCIAL_BREADCRUMBS[subSection].label,
+            linkProps: getLink(SOCIAL_BREADCRUMBS[subSection].contentState),
+          }
+        : undefined;
+      return [
+        {
           label: "Impacts sociaux",
-          contentState: { sectionName: "social" as const },
+          linkProps: getLink({ sectionName: "social" }),
         },
-        segments: buildCascadingBreadcrumb([
+        ...buildCascadingBreadcrumb([
           subSectionSegment,
           ...buildImpactSegments({
             impactDetailsName: contentState.impactDetailsName,
             getLabel: getSocialImpactLabel,
-            getImpactContentState: (impactDetailsName) => ({
-              sectionName: contentState.sectionName,
-              impactDetailsName,
-            }),
+            getLink: (impactDetailsName) =>
+              getLink({
+                sectionName: contentState.sectionName,
+                impactDetailsName,
+              }),
           }),
         ]),
-      };
+      ];
     }
 
     case "environmental":
@@ -162,43 +177,49 @@ export const getBreadcrumbProps = (
     case "environmental.co2eq": {
       const [, subSection] = splitImpactKey(contentState.sectionName);
 
-      const subSectionSegment = subSection ? ENVIRONMENTAL_BREADCRUMBS[subSection] : undefined;
-
-      return {
-        section: {
+      const subSectionSegment = subSection
+        ? {
+            label: ENVIRONMENTAL_BREADCRUMBS[subSection].label,
+            linkProps: getLink(ENVIRONMENTAL_BREADCRUMBS[subSection].contentState),
+          }
+        : undefined;
+      return [
+        {
           label: "Impacts environnementaux",
-          contentState: { sectionName: "environmental" as const },
+          linkProps: getLink({ sectionName: "environmental" }),
         },
-        segments: buildCascadingBreadcrumb([
+        ...buildCascadingBreadcrumb([
           subSectionSegment,
           ...buildImpactSegments({
             impactDetailsName: contentState.impactDetailsName,
             getLabel: getEnvironmentalImpactLabel,
-            getImpactContentState: (impactDetailsName) => ({
-              sectionName: contentState.sectionName,
-              impactDetailsName,
-            }),
+            getLink: (impactDetailsName) =>
+              getLink({
+                sectionName: contentState.sectionName,
+                impactDetailsName,
+              }),
           }),
         ]),
-      };
+      ];
     }
 
     case "economicBalance":
-      return {
-        section: {
+      return [
+        {
           label: "Bilan de l'opération",
-          contentState: { sectionName: "economicBalance" as const },
+          linkProps: getLink({ sectionName: "economicBalance" }),
         },
-        segments: buildCascadingBreadcrumb(
+        ...buildCascadingBreadcrumb(
           buildImpactSegments({
             impactDetailsName: contentState.impactDetailsName,
             getLabel: getEconomicBalanceImpactLabel,
-            getImpactContentState: (impactDetailsName) => ({
-              sectionName: contentState.sectionName,
-              impactDetailsName,
-            }),
+            getLink: (impactDetailsName) =>
+              getLink({
+                sectionName: contentState.sectionName,
+                impactDetailsName,
+              }),
           }),
         ),
-      };
+      ];
   }
 };

@@ -7,8 +7,8 @@ import type { LetterGrade } from "shared";
 import { buildChartSvg } from "@/shared/views/components/Charts/buildChartSvgFromRef";
 
 import type { ContentComponentType } from "../../../impact-description-modals/config-wizard/config.type";
+import type { ModalHeaderProps } from "../../../impact-description-modals/modal-layout/ModalHeader";
 import { LETTER_GRADE_COLORS } from "../../layout/colors";
-import type { DataProps } from "../developmentScoreModalsConfig";
 import { ModalPdfDocument } from "./ModalPdfDocument";
 
 const isTextual = (c: ReactNode): c is string | number =>
@@ -117,8 +117,7 @@ const convertChartToDataUrl = async (
 export const getExportPdfModalDocumentAsBlob = async (props: {
   chartRef?: React.RefObject<HighchartsReact.RefObject | null>;
   ContentComponent: LazyExoticComponent<ContentComponentType>;
-  dataProps: DataProps;
-  headerProps: { badgeText?: string; letterGrade?: LetterGrade };
+  dataProps?: ModalHeaderProps["dataProps"];
   projectName: string;
 }) => {
   const chartImage = await convertChartToDataUrl(props.chartRef);

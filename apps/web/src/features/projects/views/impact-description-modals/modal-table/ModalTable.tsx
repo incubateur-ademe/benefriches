@@ -11,7 +11,7 @@ import classNames from "@/shared/views/clsx";
 import "./ModalTable.css";
 
 export type ModalTableProps = {
-  caption: string;
+  caption?: string;
   data: {
     color?: string;
     label: string;

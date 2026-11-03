@@ -1,19 +1,72 @@
 import { lazy } from "react";
+import { roundTo2Digits, sumListWithKey } from "shared";
 
 import type { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
-import type { BodyComponentType, ContentComponentType, ModalImpactConfig } from "./config.type";
+import { getEconomicBalanceImpactLabel } from "../../shared/getImpactLabel";
+import { getEconomicBalanceImpactColor } from "../colors";
+import type { ContentComponentType, ModalImpactConfig } from "./config.type";
 
 const ECONOMIC_BALANCE_MODALS = {
   economicBalance: {
-    BodyComponent: lazy<BodyComponentType>(
-      () => import("../body-component/EconomicBalanceDescription"),
+    ContentComponent: lazy<ContentComponentType>(
+      () =>
+        import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/index.mdx"),
     ),
+    dataProps: (p) => {
+      const impactList = p.projectEconomicBalance.economicBalance.map(
+        ({ total, keyName: name }) => ({
+          label: getEconomicBalanceImpactLabel(name),
+          color: getEconomicBalanceImpactColor(name),
+          value: roundTo2Digits(total),
+          name,
+          linkProps: p.getDetailsLink({
+            sectionName: "economicBalance",
+            impactDetailsName: name,
+          }),
+        }),
+      );
+
+      const incomes = impactList.filter(({ value }) => value > 0);
+      const expenses = impactList.filter(({ value }) => value < 0);
+      const data = [
+        {
+          label: "Dépenses",
+          total: sumListWithKey(expenses, "value"),
+          values: expenses,
+        },
+        {
+          label: "Recettes",
+          total: sumListWithKey(incomes, "value"),
+          values: incomes,
+        },
+      ];
+
+      return {
+        type: "groupedColumn",
+        headerProps: {
+          value: {
+            description: `pour ${p.projectEconomicBalance.bearerName}`,
+            state: p.projectEconomicBalance.total > 0 ? "success" : "error",
+            text: formatMonetaryImpact(p.projectEconomicBalance.total),
+          },
+        },
+        chartProps: {
+          format: "monetary",
+          exportTitle: "📉 Bilan de l'opération",
+          exportSubtitle: `pour ${p.projectEconomicBalance.bearerName}`,
+          data: data,
+        },
+        tableProps: {
+          caption: "Liste des dépenses et recettes liées au projet et au site",
+          data: data,
+        },
+      };
+    },
   },
 
   realEstateAcquisition: {
-    title: "🏠 Transaction foncière",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/real_estate_acquisition.mdx"),
@@ -21,7 +74,6 @@ const ECONOMIC_BALANCE_MODALS = {
   },
 
   "realEstateAcquisition.sitePurchase": {
-    title: "🏠 Acquisition du site",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/real_estate_acquisition-site_purchase.mdx"),
@@ -29,7 +81,6 @@ const ECONOMIC_BALANCE_MODALS = {
   },
 
   "realEstateAcquisition.siteResaleRevenue": {
-    title: "🚪 Cession du site",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/real_estate_acquisition-site_resale.mdx"),
@@ -38,35 +89,30 @@ const ECONOMIC_BALANCE_MODALS = {
   "realEstateAcquisition.buildingsResaleRevenue": undefined,
 
   siteReinstatement: {
-    title: "🚧 Remise en état de la friche",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/site_reinstatement.mdx"),
     ),
   },
   "siteReinstatement.sustainable_soils_reinstatement": {
-    title: "🌱 Restauration écologique",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/site_reinstatement-sustainable_soils_reinstatement.mdx"),
     ),
   },
   "siteReinstatement.deimpermeabilization": {
-    title: "🌧️ Désimperméabilisation",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/site_reinstatement-deimpermeabilization.mdx"),
     ),
   },
   "siteReinstatement.remediation": {
-    title: "✨ Dépollution des sols",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/site_reinstatement-remediation.mdx"),
     ),
   },
   "siteReinstatement.demolition": {
-    title: "🧱 Déconstruction",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/site_reinstatement-demolition.mdx"),
@@ -74,14 +120,12 @@ const ECONOMIC_BALANCE_MODALS = {
   },
   "siteReinstatement.asbestos_removal": undefined,
   "siteReinstatement.waste_collection": {
-    title: "♻️️ Évacuation et traitement des déchets",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/site_reinstatement-waste_collection.mdx"),
     ),
   },
   "siteReinstatement.other_reinstatement": {
-    title: "🏗️ Autres dépenses de remise en état",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/site_reinstatement-other_reinstatement.mdx"),
@@ -89,56 +133,48 @@ const ECONOMIC_BALANCE_MODALS = {
   },
 
   photovoltaicProjectInstallation: {
-    title: "⚡️ Installation de la centrale $EnR",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/photovoltaic_development_plan_installation.mdx"),
     ),
   },
   "photovoltaicProjectInstallation.installation_works": {
-    title: "🛠️ Travaux d'installation des panneaux",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/photovoltaic_development_plan_installation.mdx"),
     ),
   },
   "photovoltaicProjectInstallation.technical_studies": {
-    title: "📋 Études et honoraires techniques",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/photovoltaic_technical_studies.mdx"),
     ),
   },
   "photovoltaicProjectInstallation.other": {
-    title: "⚡️ Autres frais d’installation de la centrale",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/photovoltaic_other.mdx"),
     ),
   },
   urbanProjectInstallation: {
-    title: "🏘 Aménagement du site",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/urban_project_development_plan_installation.mdx"),
     ),
   },
   "urbanProjectInstallation.development_works": {
-    title: "🏗 Travaux d'aménagement",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/urban_project_works.mdx"),
     ),
   },
   "urbanProjectInstallation.technical_studies": {
-    title: "📋 Études et honoraires techniques",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/urban_project_technical_studies.mdx"),
     ),
   },
   "urbanProjectInstallation.other": {
-    title: "🏘 Autres dépenses d'aménagements",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/urban_project_other.mdx"),
@@ -152,21 +188,18 @@ const ECONOMIC_BALANCE_MODALS = {
   "projectBuildingsInstallation.other_construction_expenses": undefined,
 
   financialAssistanceRevenues: {
-    title: "🏦 Aides financières",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/financial_assistance.mdx"),
     ),
   },
   "financialAssistanceRevenues.public_subsidies": {
-    title: "🏫 Subventions publiques",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/financial_assistance-public_subsidies.mdx"),
     ),
   },
   "financialAssistanceRevenues.local_or_regional_authority_participation": {
-    title: "🏦 Participation des collectivités",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/economic-balance/financial_assistance-local_or_regional_authority_participation.mdx"),

@@ -27,22 +27,31 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
     frenchPersonAnnualEquivalent,
   );
 
-  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink, onCloseLink } = useContext(ImpactModalDescriptionContext);
   const title = isSuccess ? "- d’émissions de CO2\u00a0☁️" : "+ d’émissions de CO2\u00a0☁️";
 
   return (
     <ModalBody>
       <ModalHeader
-        title={title}
-        value={{
-          text: co2eqValueText,
-          state: isSuccess ? "success" : "error",
-          description: isSuccess
-            ? `de CO2-éq évitées, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`
-            : `de CO2-éq émises, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`,
+        onCloseLink={onCloseLink}
+        exportProps={false}
+        dataProps={{
+          type: "value",
+          headerProps: {
+            value: {
+              text: co2eqValueText,
+              state: isSuccess ? "success" : "error",
+              description: isSuccess
+                ? `de CO2-éq évitées, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`
+                : `de CO2-éq émises, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`,
+            },
+          },
         }}
+
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
-      />
+      >
+        {title}
+      </ModalHeader>
       <ModalContent noTitle>
         <p>
           La réalisation du projet a des conséquences sur les émissions de CO2 pour plusieurs

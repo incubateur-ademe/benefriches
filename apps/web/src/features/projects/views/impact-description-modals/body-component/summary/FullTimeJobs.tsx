@@ -18,23 +18,32 @@ const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
   const { isSuccess, value } = impactData;
   const { difference, percentageEvolution } = value;
 
-  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink, onCloseLink } = useContext(ImpactModalDescriptionContext);
 
   const title = isSuccess ? `+ d’emplois\u00a0👷` : `- d’emplois\u00a0👷`;
 
   return (
     <ModalBody>
       <ModalHeader
-        title={title}
-        value={{
-          text: formatNumberFr(difference),
-          state: isSuccess ? "success" : "error",
-          description: isSuccess
-            ? `emploi équivalent temps plein créé ou maintenu (soit ${formatPercentage(percentageEvolution)})`
-            : `emploi équivalent temps plein perdu (soit ${formatPercentage(percentageEvolution)})`,
+        onCloseLink={onCloseLink}
+        exportProps={false}
+        dataProps={{
+          type: "value",
+          headerProps: {
+            value: {
+              text: formatNumberFr(difference),
+              state: isSuccess ? "success" : "error",
+              description: isSuccess
+                ? `emploi équivalent temps plein créé ou maintenu (soit ${formatPercentage(percentageEvolution)})`
+                : `emploi équivalent temps plein perdu (soit ${formatPercentage(percentageEvolution)})`,
+            },
+          },
         }}
+
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
-      />
+      >
+        {title}
+      </ModalHeader>
       <ModalContent noTitle>
         <p>
           La concrétisation du projet nécessite généralement une activité économique qui va

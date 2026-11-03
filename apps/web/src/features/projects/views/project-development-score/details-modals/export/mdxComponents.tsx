@@ -38,7 +38,7 @@ export const pdfComponents = {
     <View wrap={false}>{renderChildren(children, s.pre)}</View>
   ),
   a: ({ href, children }: ComponentProps<"a">) => (
-    <PdfLink src={href}>{renderChildren(children, s.link, true)}</PdfLink>
+    <PdfLink href={href}>{renderChildren(children, s.link, true)}</PdfLink>
   ),
 
   li: ({ children }: ComponentProps<"li">) => (

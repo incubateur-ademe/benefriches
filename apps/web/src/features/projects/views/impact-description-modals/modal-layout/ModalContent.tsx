@@ -15,7 +15,7 @@ const ModalContent = ({ children, fullWidth = false, noTitle = false }: Props) =
   return (
     <div
       className={classNames(
-        fullWidth ? "px-6 md:px-[204px]" : "px-6 md:px-10",
+        fullWidth ? "px-6 md:px-51" : "px-6 md:px-10",
         noTitle ? "pt-8" : "pt-4",
         "pb-10",
         "mb-0",

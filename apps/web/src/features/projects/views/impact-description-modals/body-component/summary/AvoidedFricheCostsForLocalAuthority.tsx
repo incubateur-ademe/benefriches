@@ -23,7 +23,7 @@ const listFormatter = new Intl.ListFormat("fr", {
 const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: Props) => {
   const { value, isSuccess } = impactData;
 
-  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink, onCloseLink } = useContext(ImpactModalDescriptionContext);
 
   const title = isSuccess
     ? "- de dépenses de sécurisation\u00a0💰"
@@ -46,16 +46,25 @@ const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: P
   return (
     <ModalBody>
       <ModalHeader
-        title={title}
-        value={{
-          text: formatMonetaryImpact(value.total),
-          state: isSuccess ? "success" : "error",
-          description: isSuccess
-            ? `économisés par ${actorNames} grâce à la reconversion de la friche`
-            : `toujours à la charge de ${actorNames}`,
+        onCloseLink={onCloseLink}
+        exportProps={false}
+        dataProps={{
+          type: "value",
+          headerProps: {
+            value: {
+              text: formatMonetaryImpact(value.total),
+              state: isSuccess ? "success" : "error",
+              description: isSuccess
+                ? `économisés par ${actorNames} grâce à la reconversion de la friche`
+                : `toujours à la charge de ${actorNames}`,
+            },
+          },
         }}
+
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
-      />
+      >
+        {title}
+      </ModalHeader>
       <ModalContent noTitle>
         {isSuccess ? (
           <>

@@ -14,7 +14,7 @@ const ModalData = ({ children, className, noPadding }: Props) => {
     <div
       className={classNames(
         "grid grid-cols-1 lg:grid-cols-2 gap-10",
-        !noPadding && "p-6 md:p-10",
+        !noPadding && "p-6 md:px-10",
         className,
       )}
     >

@@ -1,3 +1,9 @@
+export const title = "🏛️ Recettes fiscales";
+
+# {title}
+
+## Qu'est-ce que c'est ?
+
 La concrétisation du projet va générer des recettes fiscales pour la collectivité, variables selon le type de projet et/ou la catégories d’utilisateurs :
 
 - exemples de taxes locales pour les entreprises : cotisation foncière des entreprises (CFE), taxe foncière sur les propriétés bâties (TFPB), taxe foncière sur les propriétés non bâties (TFPNB) ou encore taxe sur les surfaces commerciales (TaSCom);
@@ -22,8 +28,9 @@ _Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou 
 <If when={props.isUrban}>
   <ProjectFeature value="residentialBuildingsFloorArea" label="Surface de logements prévues" />
 </If>
+
 <If when={props.isUrban}>
-  - Nombre d’emplois prévus ou superficie de bâtiments à usage économique distinguant les activités
+  * Nombre d’emplois prévus ou superficie de bâtiments à usage économique distinguant les activités
   tertiaires (bureaux, administration, enseignements) des autres activités (commerce, artisanat,
   industrie)
 </If>

@@ -18,22 +18,31 @@ const SummaryPermeableSurfaceAreaDescription = ({ impactData }: Props) => {
   const { isSuccess, value } = impactData;
   const { difference, percentageEvolution } = value;
 
-  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink, onCloseLink } = useContext(ImpactModalDescriptionContext);
   const title = isSuccess ? `+ de sols perméables\u00a0☔️` : `- de sols perméables\u00a0☔️`;
 
   return (
     <ModalBody>
       <ModalHeader
-        title={title}
-        value={{
-          text: isSuccess ? formatSurfaceArea(difference) : formatSurfaceArea(difference),
-          state: isSuccess ? "success" : "error",
-          description: isSuccess
-            ? `(soit ${formatPercentage(percentageEvolution)}) de sols désimperméabilisés`
-            : `(soit ${formatPercentage(percentageEvolution)}) de sols imperméabilisés`,
+        onCloseLink={onCloseLink}
+        exportProps={false}
+        dataProps={{
+          type: "value",
+          headerProps: {
+            value: {
+              text: isSuccess ? formatSurfaceArea(difference) : formatSurfaceArea(difference),
+              state: isSuccess ? "success" : "error",
+              description: isSuccess
+                ? `(soit ${formatPercentage(percentageEvolution)}) de sols désimperméabilisés`
+                : `(soit ${formatPercentage(percentageEvolution)}) de sols imperméabilisés`,
+            },
+          },
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
-      />
+      >
+        {title}
+      </ModalHeader>
+
       <ModalContent noTitle>
         {isSuccess ? (
           <p>

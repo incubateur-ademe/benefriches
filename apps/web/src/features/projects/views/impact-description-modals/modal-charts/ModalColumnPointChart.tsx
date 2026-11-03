@@ -13,7 +13,7 @@ import { formatModalBarChartValue } from "./modalBarChartValueFormat";
 import { useBarChartCustomTooltip } from "./useBarChartCustomTooltip";
 
 export type ModalColumnPointChartProps = {
-  format: ValueFormat;
+  format?: ValueFormat;
   data: {
     label: string;
     value: number;
@@ -26,7 +26,7 @@ export type ModalColumnPointChartProps = {
 
 const ModalColumnPointChart = ({
   data,
-  format,
+  format = "default",
   exportTitle,
   exportSubtitle,
   chartProps,

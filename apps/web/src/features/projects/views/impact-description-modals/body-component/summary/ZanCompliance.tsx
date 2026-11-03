@@ -1,7 +1,9 @@
+import { useContext } from "react";
 import type { KeyImpactIndicatorData } from "shared";
 
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 
+import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import ModalBody from "../../modal-layout/ModalBody";
 import ModalContent from "../../modal-layout/ModalContent";
 import ModalHeader from "../../modal-layout/ModalHeader";
@@ -29,9 +31,17 @@ const SummaryZanComplianceDescription = ({ impactData }: Props) => {
     }
     return "Le projet est considéré défavorable à l'objectif de Zéro Artificialisation Nette car il consomme des espaces naturels, agricoles ou forestiers.";
   })();
+
+  const { onCloseLink } = useContext(ImpactModalDescriptionContext);
   return (
     <ModalBody size="small">
-      <ModalHeader title={title} breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]} />
+      <ModalHeader
+        exportProps={false}
+        onCloseLink={onCloseLink}
+        breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
+      >
+        {title}
+      </ModalHeader>
       <ModalContent noTitle>
         <p>{description}</p>
         {!isSuccess && impactData.value.artificializedSurfaceArea > 0 && (

@@ -8,18 +8,14 @@ import { findTotalByName } from "@/features/projects/core/group-impacts/findTota
 import type { EnvironmentalImpactMetricKeyName } from "@/features/projects/core/projectImpactsEnvironmental";
 import type { SocialImpactMetricKeyName } from "@/features/projects/core/projectImpactsSocial";
 
-import { serializeContentState } from "../../impact-description-modals/ImpactModalDescriptionContext";
+import type { ContentState } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import {
   getEnvironmentalImpactColor,
   getSocialImpactColor,
   getSocioEconomicImpactColor,
 } from "../../impact-description-modals/colors";
 import { getImpactModalData } from "../../impact-description-modals/getImpactData";
-import type { ModalColumnPointChartProps } from "../../impact-description-modals/modal-charts/ModalColumnPointChart";
-import type { ModalColumnSeriesChartProps } from "../../impact-description-modals/modal-charts/ModalColumnSeriesChart";
-import type { ModalGroupTableProps } from "../../impact-description-modals/modal-table/ModalGroupTable";
-import type { ModalTableProps } from "../../impact-description-modals/modal-table/ModalTable";
-import type { ImpactAreaChartProps } from "../../shared/charts/useImpactAreaChartProps";
+import type { ModalHeaderProps } from "../../impact-description-modals/modal-layout/ModalHeader";
 import {
   formatCO2Impact,
   formatETPImpact,
@@ -65,43 +61,19 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
     ),
     letterGrade: (d) => d.fullTimeJobsScore.score.letterGrade,
     dataProps: (p) => {
-      const data = getImpactModalData<SocialImpactMetricKeyName>(
+      return getImpactModalData<SocialImpactMetricKeyName>(
         p.modalsData.socialMetricsByCategory.jobs,
         "fullTimeJobs",
         {
+          caption: "Détails des emplois temps plein créés, supprimés ou préservés",
+          unit: "ETP",
           getLabel: getSocialImpactLabel,
           getColor: getSocialImpactColor,
           getLinkProps: (key) =>
-            p.getUpdateDetailsLink(
-              serializeContentState({ sectionName: "social.jobs", impactDetailsName: key }),
-            ),
+            p.getImpactListModalContentLink({ sectionName: "social.jobs", impactDetailsName: key }),
+          formatFn: formatETPImpact,
         },
       );
-      if (!data?.breakdown || !data.details) {
-        return undefined;
-      }
-      return {
-        type: "area",
-        chartProps: {
-          type: "etp",
-          base: data.breakdown?.base,
-          forecast: data.breakdown.forecast,
-          difference: data.total,
-          title: getSocialImpactLabel("fullTimeJobs"),
-          color: data.color,
-          details: data?.details.map((item) => ({
-            ...item,
-            base: item.breakdown?.base ?? 0,
-            forecast: item.breakdown?.forecast ?? item.value,
-            difference: item.value,
-          })),
-        },
-        tableProps: {
-          formatFn: formatETPImpact,
-          caption: "Détails des emplois temps plein créés, supprimés ou préservés",
-          data: data?.details,
-        },
-      };
     },
     MetricsComponent: FullTimeJobsMetrics,
   },
@@ -217,16 +189,26 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
           value: total,
           label: getSocioEconomicImpactLabel(keyName),
           color: getSocioEconomicImpactColor(keyName),
-          linkProps: p.getUpdateDetailsLink(
-            serializeContentState({
-              sectionName: "socioEconomic.localAuthority" as const,
-              impactDetailsName: keyName,
-            }),
-          ),
+          linkProps: p.getImpactListModalContentLink({
+            sectionName: "socioEconomic.localAuthority" as const,
+            impactDetailsName: keyName,
+          }),
         })),
       }));
       return {
         type: "groupedColumn",
+        total: p.modalsData.economicImpactsByBearerAndCategory.localAuthority.total,
+        headerProps: {
+          value: {
+            text: formatMonetaryImpact(
+              p.modalsData.economicImpactsByBearerAndCategory.localAuthority.total,
+            ),
+            state:
+              p.modalsData.economicImpactsByBearerAndCategory.localAuthority.total > 0
+                ? "success"
+                : "error",
+          },
+        },
         chartProps: {
           format: "monetary",
           exportTitle: "Impacts socio-économiques pour la collectivité",
@@ -259,46 +241,21 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
     ),
     letterGrade: (d) => d.environmentScore.indicators.co2eqEmissionsVariation.letterGrade,
     dataProps: (p) => {
-      const data = getImpactModalData<EnvironmentalImpactMetricKeyName>(
+      return getImpactModalData<EnvironmentalImpactMetricKeyName>(
         p.modalsData.environmentalMetricsByCategory.co2eq,
         "avoidedCo2eqEmissions",
         {
+          caption: "Liste des émissions de Co2eq évitées",
           getLabel: getEnvironmentalImpactLabel,
           getColor: getEnvironmentalImpactColor,
           getLinkProps: (key) =>
-            p.getUpdateDetailsLink(
-              serializeContentState({
-                sectionName: "environmental.co2eq",
-                impactDetailsName: key,
-              }),
-            ),
+            p.getImpactListModalContentLink({
+              sectionName: "environmental.co2eq",
+              impactDetailsName: key,
+            }),
+          formatFn: formatCO2Impact,
         },
       );
-      if (!data?.breakdown || !data.details) {
-        return undefined;
-      }
-      return {
-        type: "area",
-        chartProps: {
-          type: "co2",
-          base: data.breakdown?.base,
-          forecast: data.breakdown.forecast,
-          difference: data.total,
-          title: getSocialImpactLabel("fullTimeJobs"),
-          color: data.color,
-          details: data.details.map((item) => ({
-            ...item,
-            base: item.breakdown?.base ?? 0,
-            forecast: item.breakdown?.forecast ?? item.value,
-            difference: item.value,
-          })),
-        },
-        tableProps: {
-          formatFn: formatCO2Impact,
-          caption: "Liste des émissions de Co2eq évitées",
-          data: data.details,
-        },
-      };
     },
   },
   "environmentScore.ecosystemServices": {
@@ -309,16 +266,23 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
         label: getSocioEconomicImpactLabel(`ecosystemServices.${name}`),
         value: findTotalByName(metrics.ecosystemicServices, name),
         color: getSocioEconomicImpactColor(`ecosystemServices.${name}`),
-        linkProps: p.getUpdateDetailsLink(
-          serializeContentState({
-            sectionName: "socioEconomic.humanity",
-            impactDetailsName: `ecosystemServices.${name}`,
-          }),
-        ),
+        linkProps: p.getImpactListModalContentLink({
+          sectionName: "socioEconomic.humanity",
+          impactDetailsName: `ecosystemServices.${name}`,
+        }),
       })).toSorted((a, b) => b.value - a.value);
+
+      const total = sumListWithKey(details, "value");
 
       return {
         type: "column",
+        total: sumListWithKey(details, "value"),
+        headerProps: {
+          value: {
+            text: formatMonetaryImpact(total),
+            state: total > 0 ? "success" : "error",
+          },
+        },
         chartProps: {
           format: "monetary",
           data: details,
@@ -377,34 +341,18 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
       Pick<DevelopmentScoreDataView, "developmentScore">
     > | null;
 
-    dataProps: (p: DataPropsInput) => DataProps;
+    dataProps: (p: DataPropsInput) => ModalHeaderProps["dataProps"];
   }
 >;
 
 type DataPropsInput = DevelopmentScoreDataView & {
   getUpdateDetailsLink: (details?: string) => Link;
+  getImpactListModalContentLink: (args: ContentState) => Link | undefined;
 };
 
 type LetterGradeInput = DevelopmentScoreDataView["developmentScore"]["details"];
 
 export type ContentComponent = LazyExoticComponent<ContentComponentType>;
-export type DataProps =
-  | {
-      type: "area";
-      chartProps: ImpactAreaChartProps;
-      tableProps: ModalTableProps;
-    }
-  | {
-      type: "column";
-      chartProps: ModalColumnPointChartProps;
-      tableProps: ModalTableProps;
-    }
-  | {
-      type: "groupedColumn";
-      chartProps: ModalColumnSeriesChartProps;
-      tableProps: ModalGroupTableProps;
-    }
-  | undefined;
 
 type ContentComponentType = React.ComponentType<{
   components?: MDXComponents;

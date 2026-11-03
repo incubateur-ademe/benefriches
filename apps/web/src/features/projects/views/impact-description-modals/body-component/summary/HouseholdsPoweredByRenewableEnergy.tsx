@@ -16,19 +16,28 @@ type Props = {
 
 const SummaryHouseholdsPoweredByRenewableEnergyDescription = ({ impactData }: Props) => {
   const { value } = impactData;
-  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink, onCloseLink } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody>
       <ModalHeader
-        title="+ d’énergies renouvelables&nbsp;⚡"
-        value={{
-          text: formatNumberFr(value),
-          state: "success",
-          description: `nouveaux foyers alimentés en EnR`,
+        onCloseLink={onCloseLink}
+        exportProps={false}
+        dataProps={{
+          type: "value",
+          headerProps: {
+            value: {
+              text: formatNumberFr(value),
+              state: "success",
+              description: `nouveaux foyers alimentés en EnR`,
+            },
+          },
         }}
+
         breadcrumbSegments={[{ label: "Synthèse" }, { label: "+ d’énergies renouvelables" }]}
-      />
+      >
+        + d’énergies renouvelables&nbsp;⚡
+      </ModalHeader>
       <ModalContent noTitle>
         <p>
           Il s'agit d'une illustration du potentiel de production en électricité renouvelable qui

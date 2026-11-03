@@ -1,10 +1,11 @@
 import { Document, Page, Text, View, Image as PdfImage } from "@react-pdf/renderer";
-import { type ComponentProps } from "react";
+import { type ReactNode, type ComponentProps } from "react";
 import type { LetterGrade } from "shared";
 
-import { type ContentComponent, type DataProps } from "../developmentScoreModalsConfig";
+import { type ModalHeaderProps } from "../../../impact-description-modals/modal-layout/ModalHeader";
+import { type ContentComponent } from "../developmentScoreModalsConfig";
 import { ModalPdfData } from "./ModalPdfData";
-import { extractGradeColor } from "./helpers";
+import { extractGradeColor, renderChildren } from "./helpers";
 import { pdfComponents, pdfHeading } from "./mdxComponents";
 import { exportModalPdfStyles } from "./styles";
 
@@ -34,8 +35,7 @@ const PdfLetterBadgeText = (props: { badgeText?: string; letterGrade?: LetterGra
 export const ModalPdfDocument = (props: {
   ContentComponent: ContentComponent;
   chartImage: string | undefined;
-  dataProps: DataProps;
-  headerProps: { badgeText?: string; letterGrade?: LetterGrade };
+  dataProps?: ModalHeaderProps["dataProps"];
   projectName: string;
 }) => (
   <Document>
@@ -59,6 +59,7 @@ export const ModalPdfDocument = (props: {
         <props.ContentComponent
           components={{
             Metrics: () => null,
+            ModalLink: (p: { children: ReactNode }) => renderChildren(p.children, [], true),
             ...pdfComponents,
             h1: (p: ComponentProps<"h1">) => {
               return (
@@ -73,13 +74,18 @@ export const ModalPdfDocument = (props: {
                     }}
                   >
                     {pdfHeading("h1")(p)}
-                    <PdfLetterBadgeText {...props.headerProps} />
+                    <PdfLetterBadgeText {...props.dataProps?.headerProps.score} />
                   </View>
 
-                  <ModalPdfData {...props} />
+                  {props.dataProps && <ModalPdfData {...props} dataProps={props.dataProps} />}
                 </View>
               );
             },
+            If: ({ when, children }: { when: boolean; children: React.ReactNode }) =>
+              when ? renderChildren(children) : null,
+
+            SiteFeature: () => null,
+            ProjectFeature: () => null,
           }}
         />
       </View>

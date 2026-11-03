@@ -12,21 +12,18 @@ import type { ContentComponentType, ModalImpactConfig } from "./config.type";
 
 const ENVIRONMENTAL_METRICS_MODALS = {
   environmental: {
-    title: "Impacts environnementaux",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/environmental_section.mdx"),
     ),
   },
   "environmental.co2eq": {
-    title: "Impacts sur le CO2-eq",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/environmental_co2_section.mdx"),
     ),
   },
   "environmental.soils": {
-    title: "Impacts sur les sols",
     ContentComponent: lazy<ContentComponentType>(
       () =>
         import("@/features/projects/views/impact-description-modals/mdx-component/environmental_soils_section.mdx"),
@@ -34,7 +31,6 @@ const ENVIRONMENTAL_METRICS_MODALS = {
   },
 
   avoidedCo2eqEmissions: {
-    title: "☁️ CO2-eq stocké ou évité",
     type: "co2",
     formatFn: formatCO2Impact,
 
@@ -44,7 +40,6 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     ),
   },
   "avoidedCo2eqEmissions.avoidedAirConditioningCo2eqEmissions": {
-    title: "❄️ Evitées grâce à l’utilisation réduite de la climatisation",
     type: "co2",
     formatFn: formatCO2Impact,
 
@@ -54,7 +49,6 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     ),
   },
   "avoidedCo2eqEmissions.avoidedCO2TonsWithEnergyProduction": {
-    title: "⚡️️ Emissions de CO2-eq évitées grâce à la production d'énergies renouvelables",
     type: "co2",
     formatFn: formatCO2Impact,
 
@@ -64,7 +58,6 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     ),
   },
   "avoidedCo2eqEmissions.avoidedTrafficCo2EqEmissions": {
-    title: "🚙 Evitées grâce aux déplacements en voiture évités",
     type: "co2",
     formatFn: formatCO2Impact,
 
@@ -74,7 +67,6 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     ),
   },
   "avoidedCo2eqEmissions.newStoredCo2Eq": {
-    title: "🍂 CO2-eq stocké dans les sols",
     type: "co2",
     formatFn: formatCO2Impact,
     ContentComponent: lazy<ContentComponentType>(
@@ -83,7 +75,6 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     ),
   },
   newPermeableSurface: {
-    title: "🌧️ Surface perméable",
     type: "surface_area",
     formatFn: formatSurfaceAreaImpact,
 
@@ -93,7 +84,6 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     ),
   },
   "newPermeableSurface.newPermeableGreenSurface": {
-    title: "☘️ Surface végétalisée",
     type: "surface_area",
     formatFn: formatSurfaceAreaImpact,
     ContentComponent: lazy<ContentComponentType>(
@@ -102,7 +92,6 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     ),
   },
   "newPermeableSurface.newPermeableMineralSurface": {
-    title: "🪨 Surface minérale",
     formatFn: formatSurfaceAreaImpact,
 
     type: "surface_area",
@@ -113,7 +102,6 @@ const ENVIRONMENTAL_METRICS_MODALS = {
     ),
   },
   nonContaminatedSurfaceArea: {
-    title: "✨ Surface non polluée",
     type: "surface_area",
     formatFn: formatSurfaceAreaImpact,
 

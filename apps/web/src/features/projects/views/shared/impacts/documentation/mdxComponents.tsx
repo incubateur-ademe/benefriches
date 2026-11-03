@@ -118,7 +118,7 @@ export const commonMdxComponents: MDXComponents = {
   },
 
   code: ({ children }: ComponentProps<"code">) => (
-    <code className="bg-(--background-contrast-grey) block my-2 p-2 text-sm rounded-lg border">
+    <code className="inline-flex bg-(--background-contrast-grey) my-2 px-2 py-1 text-sm rounded-lg border">
       {children}
     </code>
   ),
@@ -153,12 +153,6 @@ export const commonMdxComponents: MDXComponents = {
 export const developmentScoreMdxComponents: MDXComponents = {
   ...commonMdxComponents,
   Metrics: () => null,
-  h1: heading("h1", "text-2xl font-bold mb-4"),
-  h2: heading("h2", "text-xl font-semibold my-4"),
-  h3: heading("h3", "text-lg font-semibold my-4"),
-  h4: heading("h4", "text-base font-bold my-3"),
-  h5: heading("h5", "text-base font-semibold my-3"),
-
   td: TdLetterGrade,
 };
 

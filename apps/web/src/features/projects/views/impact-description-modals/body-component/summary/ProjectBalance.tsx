@@ -19,7 +19,7 @@ type Props = {
 const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
   const { value, isSuccess } = impactData;
 
-  const { getDetailsLink } = useContext(ImpactModalDescriptionContext);
+  const { getDetailsLink, onCloseLink } = useContext(ImpactModalDescriptionContext);
 
   const { socioEconomicMonetaryImpactsTotal, economicBalanceTotal } = value;
 
@@ -30,31 +30,40 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
   return (
     <ModalBody>
       <ModalHeader
-        title={title}
-        subtitle={
-          <>
-            <span
-              className={classNames(
-                "font-bold",
-                getPositiveNegativeTextClassesFromValue(socioEconomicMonetaryImpactsTotal),
-              )}
-            >
-              {formatMonetaryImpact(socioEconomicMonetaryImpactsTotal)}
-            </span>{" "}
-            d'impacts socio-économiques contre{" "}
-            <span
-              className={classNames(
-                "font-bold",
-                getPositiveNegativeTextClassesFromValue(economicBalanceTotal),
-              )}
-            >
-              {formatMonetaryImpact(economicBalanceTotal)}
-            </span>{" "}
-            de bilan d’opération
-          </>
-        }
+        onCloseLink={onCloseLink}
+        exportProps={false}
+        dataProps={{
+          type: "value",
+          headerProps: {
+            subtitle: (
+              <>
+                <span
+                  className={classNames(
+                    "font-bold",
+                    getPositiveNegativeTextClassesFromValue(socioEconomicMonetaryImpactsTotal),
+                  )}
+                >
+                  {formatMonetaryImpact(socioEconomicMonetaryImpactsTotal)}
+                </span>{" "}
+                d'impacts socio-économiques contre{" "}
+                <span
+                  className={classNames(
+                    "font-bold",
+                    getPositiveNegativeTextClassesFromValue(economicBalanceTotal),
+                  )}
+                >
+                  {formatMonetaryImpact(economicBalanceTotal)}
+                </span>{" "}
+                de bilan d’opération
+              </>
+            ),
+          },
+        }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
-      />
+      >
+        {title}
+      </ModalHeader>
+
       <ModalContent noTitle>
         <p>
           {isSuccess
