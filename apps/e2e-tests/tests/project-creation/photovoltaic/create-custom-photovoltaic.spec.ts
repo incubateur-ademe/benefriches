@@ -18,6 +18,8 @@ test.describe("photovoltaic project creation - custom mode", () => {
     // Create mode selection
     await pvProjectCreationPage.expectStepTitle("Que savez vous de votre projet ?");
     await pvProjectCreationPage.selectCreateMode("custom");
+    await pvProjectCreationPage.expectMissingInformationStep();
+    await pvProjectCreationPage.goToNextStep();
 
     // Project type selection
     await pvProjectCreationPage.expectStepTitle("Quel type de projet souhaitez-vous évaluer ?");
@@ -170,6 +172,8 @@ test.describe("photovoltaic project creation - friche site", () => {
     // Create mode selection
     await pvProjectCreationPage.expectStepTitle("Que savez vous de votre projet ?");
     await pvProjectCreationPage.selectCreateMode("custom");
+    await pvProjectCreationPage.expectMissingInformationStep();
+    await pvProjectCreationPage.goToNextStep();
 
     // Project type selection
     await pvProjectCreationPage.expectStepTitle("Quel type de projet souhaitez-vous évaluer ?");
@@ -320,6 +324,8 @@ test.describe("photovoltaic project creation - friche site with contaminated soi
     await pvProjectCreationPage.selectProjectPhase("Montage / Développement");
     await pvProjectCreationPage.expectStepTitle("Que savez vous de votre projet ?");
     await pvProjectCreationPage.selectCreateMode("custom");
+    await pvProjectCreationPage.expectMissingInformationStep();
+    await pvProjectCreationPage.goToNextStep();
     await pvProjectCreationPage.expectStepTitle("Quel type de projet souhaitez-vous évaluer ?");
     await pvProjectCreationPage.selectProjectType();
     await pvProjectCreationPage.expectStepTitle("Quel système d'EnR souhaitez-vous installer ?");
@@ -432,6 +438,8 @@ test.describe("photovoltaic project creation - custom mode driven by surface", (
     // Create mode selection
     await pvProjectCreationPage.expectStepTitle("Que savez vous de votre projet ?");
     await pvProjectCreationPage.selectCreateMode("custom");
+    await pvProjectCreationPage.expectMissingInformationStep();
+    await pvProjectCreationPage.goToNextStep();
 
     // Project type selection
     await pvProjectCreationPage.expectStepTitle("Quel type de projet souhaitez-vous évaluer ?");
@@ -756,6 +764,8 @@ test.describe("photovoltaic project creation - non-suitable soils custom transfo
     // Create mode selection
     await pvProjectCreationPage.expectStepTitle("Que savez vous de votre projet ?");
     await pvProjectCreationPage.selectCreateMode("custom");
+    await pvProjectCreationPage.expectMissingInformationStep();
+    await pvProjectCreationPage.goToNextStep();
 
     // Project type selection
     await pvProjectCreationPage.expectStepTitle("Quel type de projet souhaitez-vous évaluer ?");

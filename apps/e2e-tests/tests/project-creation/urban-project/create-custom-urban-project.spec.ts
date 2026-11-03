@@ -104,6 +104,8 @@ test.describe("urban project creation - custom mode", () => {
 
       // --- connaissance du projet ---
       await urbanProjectCreationPage.selectCreateMode("custom");
+      await urbanProjectCreationPage.expectMissingInformationStep();
+      await urbanProjectCreationPage.goToNextStep();
       await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
 
       // --- usages ---
@@ -216,6 +218,8 @@ test.describe("urban project creation - custom mode", () => {
 
       // --- connaissance du projet ---
       await urbanProjectCreationPage.selectCreateMode("custom");
+      await urbanProjectCreationPage.expectMissingInformationStep();
+      await urbanProjectCreationPage.goToNextStep();
       await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
 
       // --- usages ---
@@ -306,6 +310,8 @@ test.describe("urban project creation - custom mode", () => {
 
       // --- connaissance du projet ---
       await urbanProjectCreationPage.selectCreateMode("custom");
+      await urbanProjectCreationPage.expectMissingInformationStep();
+      await urbanProjectCreationPage.goToNextStep();
       await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
 
       // --- usages ---
@@ -408,6 +414,8 @@ test.describe("urban project creation - custom mode", () => {
 
       // --- connaissance du projet ---
       await urbanProjectCreationPage.selectCreateMode("custom");
+      await urbanProjectCreationPage.expectMissingInformationStep();
+      await urbanProjectCreationPage.goToNextStep();
       await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
 
       // --- usages ---
@@ -531,6 +539,8 @@ test.describe("urban project creation - custom mode", () => {
 
       // --- connaissance du projet ---
       await urbanProjectCreationPage.selectCreateMode("custom");
+      await urbanProjectCreationPage.expectMissingInformationStep();
+      await urbanProjectCreationPage.goToNextStep();
       await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
 
       // --- usages ---
