@@ -1,10 +1,12 @@
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
+import type { SiteNature } from "shared";
 
 import type { SiteCreationCustomStep } from "../../createSite.reducer";
 import type { SiteCreationState } from "../../createSite.reducer";
 import { getInitialState } from "../../createSite.reducer";
 import {
   createModeSelectionCompleted,
+  impactsIntroductionStepCompleted,
   introductionStepCompleted,
   isFricheCompleted,
   mutabilityOrImpactsSelectionCompleted,
@@ -23,6 +25,13 @@ const enterCustomFlow = (state: SiteCreationState, firstStep: SiteCreationCustom
   state.custom.currentStep = firstStep;
   state.custom.firstSequenceStep = firstStep;
 };
+
+const FIRST_CUSTOM_STEP_BY_NATURE = {
+  FRICHE: "FRICHE_ACTIVITY",
+  AGRICULTURAL_OPERATION: "AGRICULTURAL_OPERATION_ACTIVITY",
+  NATURAL_AREA: "NATURAL_AREA_TYPE",
+  URBAN_ZONE: "URBAN_ZONE_TYPE",
+} as const satisfies Record<SiteNature, SiteCreationCustomStep>;
 
 export const registerIntroductionHandlers = (
   builder: ActionReducerMapBuilder<SiteCreationState>,
@@ -43,7 +52,7 @@ export const registerIntroductionHandlers = (
       if (isFriche) {
         state.nature = "FRICHE";
         if (state.skipUseMutability) {
-          enterCustomFlow(state, "FRICHE_ACTIVITY");
+          state.stepsHistory.push("IMPACTS_INTRODUCTION");
         } else {
           state.stepsHistory.push("USE_MUTABILITY");
         }
@@ -54,26 +63,18 @@ export const registerIntroductionHandlers = (
     .addCase(mutabilityOrImpactsSelectionCompleted, (state, action) => {
       state.useMutability = action.payload.useMutability;
       if (!action.payload.useMutability) {
-        enterCustomFlow(state, "FRICHE_ACTIVITY");
+        state.stepsHistory.push("IMPACTS_INTRODUCTION");
       }
     })
     .addCase(siteNatureCompleted, (state, action) => {
       state.nature = action.payload.nature;
-      switch (action.payload.nature) {
-        case "FRICHE":
-          enterCustomFlow(state, "FRICHE_ACTIVITY");
-          break;
-        case "AGRICULTURAL_OPERATION":
-          enterCustomFlow(state, "AGRICULTURAL_OPERATION_ACTIVITY");
-          break;
-        case "NATURAL_AREA":
-          enterCustomFlow(state, "NATURAL_AREA_TYPE");
-          break;
-        case "URBAN_ZONE":
-          enterCustomFlow(state, "URBAN_ZONE_TYPE");
-          break;
-        default:
-          break;
+      state.stepsHistory.push("IMPACTS_INTRODUCTION");
+    })
+    // Last pre-engine screen: the hand-off into the custom engine happens here, on the first
+    // step of the nature answered by IS_FRICHE or SITE_NATURE.
+    .addCase(impactsIntroductionStepCompleted, (state) => {
+      if (state.nature) {
+        enterCustomFlow(state, FIRST_CUSTOM_STEP_BY_NATURE[state.nature]);
       }
     })
     .addCase(createModeSelectionCompleted, (state, action) => {

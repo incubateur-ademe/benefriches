@@ -18,3 +18,5 @@ export const mutabilityOrImpactsSelectionCompleted = createStepCompletedAction<{
 }>("USE_MUTABILITY");
 
 export const siteNatureCompleted = createStepCompletedAction<{ nature: SiteNature }>("SITE_NATURE");
+
+export const impactsIntroductionStepCompleted = createStepCompletedAction("IMPACTS_INTRODUCTION");

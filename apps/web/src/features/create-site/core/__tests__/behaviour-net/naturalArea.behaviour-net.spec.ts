@@ -5,6 +5,7 @@ import { InMemoryCreateSiteService } from "../../../infrastructure/create-site-s
 import { addressStepCompleted } from "../../steps/address/address.actions";
 import { customSiteSaved } from "../../steps/final/final.actions";
 import {
+  impactsIntroductionStepCompleted,
   introductionStepCompleted,
   isFricheCompleted,
   siteCreationInitiated,
@@ -50,6 +51,9 @@ describe("Site creation behaviour net — natural area", () => {
     expect(currentStep(store)).toEqual("SITE_NATURE");
 
     store.dispatch(siteNatureCompleted({ nature: "NATURAL_AREA" }));
+    expect(currentStep(store)).toEqual("IMPACTS_INTRODUCTION");
+
+    store.dispatch(impactsIntroductionStepCompleted());
     expect(currentStep(store)).toEqual("NATURAL_AREA_TYPE");
 
     store.dispatch(naturalAreaTypeCompleted({ naturalAreaType: "FOREST" }));

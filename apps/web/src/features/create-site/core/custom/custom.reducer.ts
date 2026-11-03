@@ -13,7 +13,7 @@ export const customFormDefinition: CustomWizardFormDefinition = {
     finalSummaryFallbackStep: "FINAL_SUMMARY",
     onPreviousStepFallback: (state) => {
       // Backing out of the custom engine's very first step (whichever nature's activity step
-      // that is) leaves the engine entirely, back to the pre-engine SITE_NATURE/IS_FRICHE
+      // that is) leaves the engine entirely, back to the pre-engine IMPACTS_INTRODUCTION
       // step still sitting atop stepsHistory (see createSite.reducer.ts).
       state.customFlowStarted = false;
     },

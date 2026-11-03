@@ -37,6 +37,7 @@ export type SiteCreationStep =
   | "IS_FRICHE"
   | "USE_MUTABILITY"
   | "SITE_NATURE"
+  | "IMPACTS_INTRODUCTION"
   | "CREATE_MODE_SELECTION"
   | SiteCreationCustomStep
   | UrbanZoneSiteCreationStep;
@@ -100,7 +101,7 @@ const INITIAL_CUSTOM_STATE: CustomSiteCreationState = {
 
 export type SiteCreationState = {
   // Pre-engine steps only from here on (INTRODUCTION/IS_FRICHE/USE_MUTABILITY/SITE_NATURE/
-  // CREATE_MODE_SELECTION) — the legacy custom flow's own steps are driven by `custom` below.
+  // IMPACTS_INTRODUCTION/CREATE_MODE_SELECTION) — the legacy custom flow's own steps are driven by `custom` below.
   stepsHistory: SiteCreationStep[];
   /**
    * The custom flow's static base: an id generated once at flow start, plus the accumulator's
@@ -158,7 +159,7 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
   registerFinalHandlers(builder);
 
   // Deviation from the ticket's plan: the plan called for deleting `stepReverted` outright, but
-  // the 5 pre-engine steps (INTRODUCTION/IS_FRICHE/USE_MUTABILITY/SITE_NATURE/
+  // the pre-engine steps (INTRODUCTION/IS_FRICHE/USE_MUTABILITY/SITE_NATURE/IMPACTS_INTRODUCTION/
   // CREATE_MODE_SELECTION) stay outside the wizard-form engine and still need *some* back-nav
   // mechanism over `stepsHistory` — the ticket itself describes them as unchanged. Kept here,
   // trimmed to just the history pop (the old per-step `revert*Step` field-clearing calls are

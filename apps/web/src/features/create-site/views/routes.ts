@@ -7,6 +7,7 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   CREATE_MODE_SELECTION: "mode-de-creation",
   IS_FRICHE: "est-une-friche",
   SITE_NATURE: "nature-du-site",
+  IMPACTS_INTRODUCTION: "impacts-introduction",
   FRICHE_ACTIVITY: "type-de-friche",
   AGRICULTURAL_OPERATION_ACTIVITY: "activite-agricole",
   NATURAL_AREA_TYPE: "type-espace-naturel",
