@@ -4,6 +4,7 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 import {
   createModeCompleted,
   developmentPlanCategoriesCompleted,
+  missingInformationStepCompleted,
   projectPhaseCompleted,
   projectUseCaseSelectionStepGroupNavigated,
   renewableEnergyTypeCompleted,
@@ -88,14 +89,38 @@ describe("useCaseSelection reducer", () => {
       });
     });
 
-    it("adds PROJECT_TYPE_SELECTION step when custom mode selected", () => {
+    it("advances to MISSING_INFORMATION step when custom mode selected", () => {
       const store = createTestStore();
       store.dispatch(projectPhaseCompleted("setup"));
       store.dispatch(createModeCompleted("custom"));
+      expect(getCurrentFlow(store)).toBe("USE_CASE_SELECTION");
       expect(getUseCaseSelection(store)).toEqual({
         stepsSequence: [
           "USE_CASE_SELECTION_PROJECT_PHASE",
           "USE_CASE_SELECTION_CREATION_MODE",
+          "USE_CASE_SELECTION_MISSING_INFORMATION",
+          "USE_CASE_SELECTION_PROJECT_TYPE_SELECTION",
+        ],
+        currentStep: "USE_CASE_SELECTION_MISSING_INFORMATION",
+        creationMode: "custom",
+        projectPhase: "setup",
+        projectDevelopmentPlan: undefined,
+        projectSuggestions: undefined,
+      });
+    });
+  });
+
+  describe("missingInformationStepCompleted", () => {
+    it("advances to PROJECT_TYPE_SELECTION", () => {
+      const store = createTestStore();
+      store.dispatch(projectPhaseCompleted("setup"));
+      store.dispatch(createModeCompleted("custom"));
+      store.dispatch(missingInformationStepCompleted());
+      expect(getUseCaseSelection(store)).toEqual({
+        stepsSequence: [
+          "USE_CASE_SELECTION_PROJECT_PHASE",
+          "USE_CASE_SELECTION_CREATION_MODE",
+          "USE_CASE_SELECTION_MISSING_INFORMATION",
           "USE_CASE_SELECTION_PROJECT_TYPE_SELECTION",
         ],
         currentStep: "USE_CASE_SELECTION_PROJECT_TYPE_SELECTION",
@@ -165,11 +190,13 @@ describe("useCaseSelection reducer", () => {
       const store = createTestStore();
       store.dispatch(projectPhaseCompleted("setup"));
       store.dispatch(createModeCompleted("custom"));
+      store.dispatch(missingInformationStepCompleted());
       store.dispatch(developmentPlanCategoriesCompleted("RENEWABLE_ENERGY"));
       expect(getUseCaseSelection(store)).toEqual({
         stepsSequence: [
           "USE_CASE_SELECTION_PROJECT_PHASE",
           "USE_CASE_SELECTION_CREATION_MODE",
+          "USE_CASE_SELECTION_MISSING_INFORMATION",
           "USE_CASE_SELECTION_PROJECT_TYPE_SELECTION",
           "USE_CASE_SELECTION_RENEWABLE_ENERGY_TYPE",
         ],
@@ -230,6 +257,23 @@ describe("useCaseSelection reducer", () => {
         projectDevelopmentPlan: undefined,
         projectSuggestions: undefined,
       });
+    });
+
+    it("goes back from MISSING_INFORMATION to CREATION_MODE", () => {
+      const store = createTestStore();
+      store.dispatch(projectPhaseCompleted("setup"));
+      store.dispatch(createModeCompleted("custom"));
+      store.dispatch(stepReverted());
+      expect(getUseCaseSelection(store).currentStep).toBe("USE_CASE_SELECTION_CREATION_MODE");
+    });
+
+    it("goes back from PROJECT_TYPE_SELECTION to MISSING_INFORMATION in custom mode", () => {
+      const store = createTestStore();
+      store.dispatch(projectPhaseCompleted("setup"));
+      store.dispatch(createModeCompleted("custom"));
+      store.dispatch(missingInformationStepCompleted());
+      store.dispatch(stepReverted());
+      expect(getUseCaseSelection(store).currentStep).toBe("USE_CASE_SELECTION_MISSING_INFORMATION");
     });
 
     it("stays on first step when already at the beginning", () => {
