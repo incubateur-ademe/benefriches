@@ -6,6 +6,7 @@ import type { ProjectSuggestion } from "../project.types";
 import {
   createModeCompleted,
   developmentPlanCategoriesCompleted,
+  missingInformationStepCompleted,
   projectPhaseCompleted,
   projectUseCaseSelectionStepGroupNavigated,
   renewableEnergyTypeCompleted,
@@ -15,6 +16,7 @@ import {
 export type UseCaseSelectionStep =
   | "USE_CASE_SELECTION_PROJECT_PHASE"
   | "USE_CASE_SELECTION_CREATION_MODE"
+  | "USE_CASE_SELECTION_MISSING_INFORMATION"
   | "USE_CASE_SELECTION_PROJECT_TYPE_SELECTION"
   | "USE_CASE_SELECTION_RENEWABLE_ENERGY_TYPE";
 
@@ -68,6 +70,7 @@ const computeStepSequence = (
       ];
 
       if (state.creationMode === "custom") {
+        base.push("USE_CASE_SELECTION_MISSING_INFORMATION");
         base.push("USE_CASE_SELECTION_PROJECT_TYPE_SELECTION");
         if (state.projectDevelopmentPlan?.category === "RENEWABLE_ENERGY") {
           base.push("USE_CASE_SELECTION_RENEWABLE_ENERGY_TYPE");
@@ -111,6 +114,10 @@ export const useCaseSelectionProjectCreationReducer = createReducer(
       }
 
       state.useCaseSelection.stepsSequence = computeStepSequence(state.useCaseSelection);
+      state.useCaseSelection.currentStep = computeNextStep(state.useCaseSelection);
+    });
+
+    builder.addCase(missingInformationStepCompleted, (state) => {
       state.useCaseSelection.currentStep = computeNextStep(state.useCaseSelection);
     });
 

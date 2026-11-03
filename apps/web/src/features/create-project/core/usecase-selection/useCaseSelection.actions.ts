@@ -17,6 +17,10 @@ export const createModeCompleted = createUseCaseSelectionAction<"express" | "cus
   "createModeCompleted",
 );
 
+export const missingInformationStepCompleted = createUseCaseSelectionAction(
+  "missingInformationStepCompleted",
+);
+
 export const developmentPlanCategoriesCompleted =
   createUseCaseSelectionAction<DevelopmentPlanCategory>("developmentPlanCategoriesCompleted");
 

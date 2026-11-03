@@ -4,6 +4,7 @@ import type { UseCaseSelectionStep } from "../../core/usecase-selection/useCaseS
 import { selectUseCaseSelectionWizardViewData } from "../../core/usecase-selection/useCaseSelection.selectors";
 import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
 import CreateModeSelectionForm from "./create-mode-selection";
+import MissingInformationContainer from "./missing-information";
 import ProjectPhaseFormContainer from "./project-phase";
 import ProjectTypesFormContainer from "./project-types";
 import ProjectRenewableEnergyTypesFormContainer from "./renewable-energy-types";
@@ -11,6 +12,7 @@ import ProjectRenewableEnergyTypesFormContainer from "./renewable-energy-types";
 const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   USE_CASE_SELECTION_PROJECT_PHASE: "avancement-du-projet",
   USE_CASE_SELECTION_CREATION_MODE: "mode-de-creation",
+  USE_CASE_SELECTION_MISSING_INFORMATION: "informations-manquantes",
   USE_CASE_SELECTION_PROJECT_TYPE_SELECTION: "type-de-projet",
   USE_CASE_SELECTION_RENEWABLE_ENERGY_TYPE: "type-d-energie-renouvelable",
 } as const satisfies Record<UseCaseSelectionStep, string>;
@@ -29,6 +31,8 @@ const UseCaseSelectionProjectCreationWizard = () => {
       return <ProjectRenewableEnergyTypesFormContainer />;
     case "USE_CASE_SELECTION_CREATION_MODE":
       return <CreateModeSelectionForm />;
+    case "USE_CASE_SELECTION_MISSING_INFORMATION":
+      return <MissingInformationContainer />;
   }
 };
 
