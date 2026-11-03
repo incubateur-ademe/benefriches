@@ -21,6 +21,10 @@ test.describe("site creation - urban zone - custom mode", () => {
     // --- entry point ---
     await siteCreationPage.selectIsFriche("no");
     await siteCreationPage.selectSiteNature("URBAN_ZONE");
+
+    await siteCreationPage.expectImpactsIntroductionStep({ showsAvoidedCosts: false });
+    await siteCreationPage.continueFromImpactsIntroduction();
+
     await urbanZoneSiteCreationPage.selectUrbanZoneType("ECONOMIC_ACTIVITY_ZONE");
     await siteCreationPage.fillAddress("Chartres");
     await urbanZoneSiteCreationPage.goToNextStep(); // land parcels introduction
@@ -174,6 +178,10 @@ test.describe("site creation - urban zone - custom mode", () => {
     // --- entry point ---
     await siteCreationPage.selectIsFriche("no");
     await siteCreationPage.selectSiteNature("URBAN_ZONE");
+
+    await siteCreationPage.expectImpactsIntroductionStep({ showsAvoidedCosts: false });
+    await siteCreationPage.continueFromImpactsIntroduction();
+
     await urbanZoneSiteCreationPage.selectUrbanZoneType("ECONOMIC_ACTIVITY_ZONE");
     await siteCreationPage.fillAddress("Chartres");
     await urbanZoneSiteCreationPage.goToNextStep(); // land parcels introduction
@@ -291,6 +299,10 @@ test.describe("site creation - urban zone - custom mode", () => {
     // --- entry point ---
     await siteCreationPage.selectIsFriche("no");
     await siteCreationPage.selectSiteNature("URBAN_ZONE");
+
+    await siteCreationPage.expectImpactsIntroductionStep({ showsAvoidedCosts: false });
+    await siteCreationPage.continueFromImpactsIntroduction();
+
     await urbanZoneSiteCreationPage.selectUrbanZoneType("ECONOMIC_ACTIVITY_ZONE");
     await siteCreationPage.fillAddress("Chartres");
     await urbanZoneSiteCreationPage.goToNextStep(); // land parcels introduction

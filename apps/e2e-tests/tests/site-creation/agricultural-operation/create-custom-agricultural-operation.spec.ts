@@ -17,6 +17,9 @@ test.describe("site creation - agricultural operation - custom mode", () => {
     await siteCreationPage.selectIsFriche("no");
     await siteCreationPage.selectSiteNature("AGRICULTURAL_OPERATION");
 
+    await siteCreationPage.expectImpactsIntroductionStep({ showsAvoidedCosts: false });
+    await siteCreationPage.continueFromImpactsIntroduction();
+
     await siteCreationPage.expectStepTitle("De quel type d'exploitation agricole s'agit-il");
     await siteCreationPage.expectStepperCurrentStep("Introduction");
     await siteCreationPage.expectWizardAriaSnapshot(

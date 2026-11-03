@@ -17,6 +17,9 @@ test.describe("site creation - natural area - custom mode", () => {
     await siteCreationPage.selectIsFriche("no");
     await siteCreationPage.selectSiteNature("NATURAL_AREA");
 
+    await siteCreationPage.expectImpactsIntroductionStep({ showsAvoidedCosts: false });
+    await siteCreationPage.continueFromImpactsIntroduction();
+
     await siteCreationPage.expectStepTitle("De quel type d'espace naturel s'agit-il ?");
     await siteCreationPage.expectStepperCurrentStep("Introduction");
     await siteCreationPage.expectWizardAriaSnapshot("natural-area-custom-type-step.aria.yml");
