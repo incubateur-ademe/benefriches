@@ -2,9 +2,9 @@ import type { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import type { ReactNode } from "react";
 
+import SpeechBubble from "@/shared/views/components/SpeechBubble/SpeechBubble";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 
-import OnboardingSpeechBubble from "./OnboardingSpeechBubble";
 import OnboardingStepProgress from "./OnboardingStepProgress";
 import { getOnboardingStepInfo, type OnboardingStepKey } from "./onboardingSteps";
 import type { OnboardingVariant } from "./onboardingVariant";
@@ -57,7 +57,7 @@ export default function OnboardingStepShell({
       }
     >
       <OnboardingStepProgress currentStep={stepNumber} totalSteps={totalSteps} />
-      <OnboardingSpeechBubble>{children}</OnboardingSpeechBubble>
+      <SpeechBubble>{children}</SpeechBubble>
       {belowBubbleContent && <div className="mt-10">{belowBubbleContent}</div>}
     </OnboardingPageLayout>
   );

@@ -4,11 +4,11 @@ type Props = {
   children: ReactNode;
 };
 
-export default function OnboardingSpeechBubble({ children }: Props) {
+export default function SpeechBubble({ children }: Props) {
   return (
     <div className="flex flex-col items-center gap-4 md:flex-row md:items-start md:gap-6">
       <img
-        src="/img/onboarding/mintsa.png"
+        src="/img/mintsa.png"
         alt=""
         aria-hidden="true"
         className="size-[60px] shrink-0 rounded-full object-cover"

@@ -121,7 +121,7 @@ The pages are:
 Each page passes its step key and current variant to `OnboardingStepShell`. The shell composes:
 
 - `OnboardingStepProgress`, exposed as a three-step `progressbar`;
-- `OnboardingSpeechBubble`, which contains the step-specific content and Mintsa avatar;
+- the shared `SpeechBubble` (`shared/views/components/SpeechBubble`), which contains the step-specific content and Mintsa avatar;
 - an optional area below the bubble (used for `TestimoniesCarousel`);
 - the sticky `OnboardingPageLayout` bottom bar with “Retour” and “Suivant”/“Commencer”.
 
