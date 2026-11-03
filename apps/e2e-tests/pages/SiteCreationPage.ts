@@ -84,6 +84,23 @@ export class SiteCreationPage {
     await this.submit();
   }
 
+  async expectImpactsIntroductionStep({
+    showsAvoidedCosts,
+  }: {
+    showsAvoidedCosts: boolean;
+  }): Promise<void> {
+    await expect(
+      this.page.getByRole("heading", { name: /Voilà ce que Bénéfriches va analyser pour vous/ }),
+    ).toBeVisible();
+    await expect(
+      this.page.getByText("Les coûts évités grâce à la reconversion de la friche"),
+    ).toHaveCount(showsAvoidedCosts ? 1 : 0);
+  }
+
+  async continueFromImpactsIntroduction(): Promise<void> {
+    await this.page.getByRole("button", { name: "Suivant" }).click();
+  }
+
   async selectCreateMode(mode: CreateMode): Promise<void> {
     const labels: Record<CreateMode, string> = {
       express: "Évaluer un site et un projet demo",

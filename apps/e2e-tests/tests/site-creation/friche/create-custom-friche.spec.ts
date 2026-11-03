@@ -18,6 +18,9 @@ test.describe("site creation - friche - custom mode", () => {
     await siteCreationPage.selectIsFriche("yes");
     await siteCreationPage.selectWhatToEvaluate("impacts");
 
+    await siteCreationPage.expectImpactsIntroductionStep({ showsAvoidedCosts: true });
+    await siteCreationPage.continueFromImpactsIntroduction();
+
     await siteCreationPage.expectStepTitle("De quel type de friche s'agit-il ?");
     await siteCreationPage.expectStepperCurrentStep("Introduction");
     await siteCreationPage.expectWizardAriaSnapshot("friche-custom-activity-step.aria.yml");
