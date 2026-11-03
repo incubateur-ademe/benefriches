@@ -5,8 +5,11 @@ import type { ReconversionProjectImpactsGateway } from "../../application/projec
 export class HttpReconversionProjectImpactsApi implements ReconversionProjectImpactsGateway {
   async getReconversionProjectImpacts(
     reconversionProjectId: string,
-  ): Promise<GetReconversionProjectImpactsResultDto> {
+  ): Promise<GetReconversionProjectImpactsResultDto | undefined> {
     const response = await fetch(`/api/reconversion-projects/${reconversionProjectId}/impacts`);
+
+    // 404: unknown project id, 400: malformed project id
+    if (response.status === 404 || response.status === 400) return undefined;
 
     if (!response.ok)
       throw new Error(`Error while fetching reconversion projects break even level`);

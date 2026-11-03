@@ -1,5 +1,10 @@
 import { Body, Controller, NotFoundException, Param, Patch, UseGuards } from "@nestjs/common";
-import { type UpdateSiteActionStatusDto, updateSiteActionStatusDtoSchema } from "shared";
+import {
+  type IdPathParam,
+  idPathParamSchema,
+  type UpdateSiteActionStatusDto,
+  updateSiteActionStatusDtoSchema,
+} from "shared";
 
 import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
 import { UpdateSiteActionStatusUseCase } from "src/site-actions/core/usecases/updateSiteActionStatus.usecase";
@@ -14,8 +19,8 @@ export class SiteActionsController {
   @UseGuards(JwtAuthGuard)
   @Patch("sites/:siteId/actions/:actionId/status")
   async updateSiteActionStatus(
-    @Param("siteId") siteId: string,
-    @Param("actionId") actionId: string,
+    @Param("siteId", { schema: idPathParamSchema }) siteId: IdPathParam,
+    @Param("actionId", { schema: idPathParamSchema }) actionId: IdPathParam,
     @Body({ schema: updateSiteActionStatusDtoSchema })
     updateStatusDto: UpdateSiteActionStatusDto,
   ): Promise<void> {

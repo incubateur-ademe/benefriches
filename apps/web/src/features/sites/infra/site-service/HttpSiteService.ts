@@ -99,7 +99,7 @@ export class HttpSiteService implements SiteGateway {
     return mapApiSiteFeaturesResponseToFeaturesView(siteFeaturesParsingResult.data);
   }
 
-  async getSiteView(siteId: string): Promise<SiteView> {
+  async getSiteView(siteId: string): Promise<SiteView | undefined> {
     const response = await fetch(`/api/sites/${siteId}`, {
       method: "GET",
       headers: {
@@ -107,6 +107,8 @@ export class HttpSiteService implements SiteGateway {
       },
     });
 
+    // 404: unknown site id, 400: malformed site id
+    if (response.status === 404 || response.status === 400) return undefined;
     if (!response.ok) throw new Error("Error while fetching site view");
 
     const jsonResponse = (await response.json()) as unknown;

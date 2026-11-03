@@ -28,6 +28,8 @@ import {
   type GetSiteViewResponseDto,
   type GetFricheInactionCostDto,
   type GetSiteImpactsDto,
+  idPathParamSchema,
+  type IdPathParam,
 } from "shared";
 
 import { JwtAuthGuard, type RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
@@ -110,7 +112,7 @@ export class SitesController {
   @UseGuards(JwtAuthGuard)
   @Put("/sites/:siteId")
   async updateCustomSite(
-    @Param("siteId") siteId: string,
+    @Param("siteId", { schema: idPathParamSchema }) siteId: IdPathParam,
     @Body({ schema: updateCustomSiteDtoSchema }) updateSiteDto: UpdateCustomSiteDto,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
@@ -181,7 +183,9 @@ export class SitesController {
 
   @UseGuards(JwtAuthGuard)
   @Get("sites/:siteId/features")
-  async getSiteById(@Param("siteId") siteId: string): Promise<GetSiteFeaturesResponseDto> {
+  async getSiteById(
+    @Param("siteId", { schema: idPathParamSchema }) siteId: IdPathParam,
+  ): Promise<GetSiteFeaturesResponseDto> {
     const result = await this.getSiteByIdUseCase.execute({ siteId });
 
     if (result.isFailure()) {
@@ -200,7 +204,7 @@ export class SitesController {
   @UseGuards(JwtAuthGuard)
   @Get("sites/:siteId")
   async getSiteViewById(
-    @Param("siteId") siteId: string,
+    @Param("siteId", { schema: idPathParamSchema }) siteId: IdPathParam,
     @Req() req: RequestWithAuthenticatedUser,
   ): Promise<GetSiteViewResponseDto> {
     const authenticatedUserId = req.accessTokenPayload.userId;
@@ -226,7 +230,7 @@ export class SitesController {
   @UseGuards(JwtAuthGuard)
   @Get("sites/:siteId/real-estate-valuation")
   async getSiteRealEstateValuation(
-    @Param("siteId") siteId: string,
+    @Param("siteId", { schema: idPathParamSchema }) siteId: IdPathParam,
   ): Promise<GetSiteRealEstateValuationResponseDto> {
     const result = await this.getSiteRealEstateValuationUseCase.execute({ siteId });
 
@@ -246,7 +250,7 @@ export class SitesController {
   @UseGuards(JwtAuthGuard)
   @Post("sites/:siteId/archive")
   async archiveReconversionProject(
-    @Param("siteId") siteId: string,
+    @Param("siteId", { schema: idPathParamSchema }) siteId: IdPathParam,
     @Req() req: RequestWithAuthenticatedUser,
   ) {
     const authenticatedUserId = req.accessTokenPayload.userId;
@@ -318,7 +322,9 @@ export class SitesController {
 
   @UseGuards(JwtAuthGuard)
   @Get("sites/:siteId/impacts")
-  async getSiteImpacts(@Param("siteId") siteId: string): Promise<GetSiteImpactsDto> {
+  async getSiteImpacts(
+    @Param("siteId", { schema: idPathParamSchema }) siteId: IdPathParam,
+  ): Promise<GetSiteImpactsDto> {
     const result = await this.getSiteImpactsUseCase.execute({ siteId });
 
     if (result.isFailure()) {

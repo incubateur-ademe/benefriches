@@ -148,6 +148,20 @@ describe("siteView reducer", () => {
       });
     });
 
+    it("returns notFound state when the site does not exist", async () => {
+      const siteService = new InMemorySiteService();
+      siteService.setSiteView(createMockSiteView({ id: "site-123" }));
+      const store = createStore(getTestAppDependencies({ siteService }));
+
+      await store.dispatch(fetchSiteView({ siteId: "unknown-site" }));
+
+      const viewModel = selectSitePageViewModel(store.getState(), "unknown-site");
+      expect(viewModel).toEqual({
+        loadingState: "notFound",
+        siteView: undefined,
+      });
+    });
+
     it("returns error state when fetch fails", async () => {
       const siteId = "site-error";
 

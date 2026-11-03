@@ -215,6 +215,23 @@ describe("ReconversionCompatibility controller", () => {
       assert.strictEqual(response.status, 401);
     });
 
+    it("responds with 400 when the evaluation id is malformed", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-compatibility/not-a-uuid/add-related-site`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ relatedSiteId: uuid() });
+
+      assert.strictEqual(response.status, 400);
+      const { errors } = response.body as { errors: { code: string; path: string[] }[] };
+      assert.deepStrictEqual(
+        errors.map(({ code, path }) => ({ code, path })),
+        [{ code: "invalid_format", path: [] }],
+      );
+    });
+
     it("can't add related site id without required parameter", async () => {
       const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);

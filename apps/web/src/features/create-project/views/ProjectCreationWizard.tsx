@@ -7,6 +7,7 @@ import type { routes } from "@/app/router";
 import { RenewableEnergyFormProvider } from "@/features/create-project/views/photovoltaic-power-station/renewable-energy-form/RenewableEnergyFormProvider";
 import { ProjectFormProvider } from "@/features/create-project/views/project-form/ProjectFormProvider";
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
+import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
@@ -42,6 +43,7 @@ function ProjectCreationWizard({ route }: Props) {
         currentUserEmail={currentUserEmail}
         sidebarChildren={<ProjectCreationStepper />}
         mainChildren={(() => {
+          if (loadingState === "notFound") return <NotFoundScreen />;
           if (loadingState === "error") {
             return (
               <Alert

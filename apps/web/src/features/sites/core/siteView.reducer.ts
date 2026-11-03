@@ -9,7 +9,7 @@ import type { SiteView } from "./site.types";
 type SiteViewState = {
   byId: Record<
     string,
-    | { loadingState: "idle" | "loading" | "error"; data: SiteView | undefined }
+    | { loadingState: "idle" | "loading" | "error" | "notFound"; data: SiteView | undefined }
     | { loadingState: "success"; data: SiteView }
   >;
 };
@@ -50,12 +50,13 @@ export const siteViewReducer = createReducer(getInitialState(), (builder) => {
     })
     .addCase(fetchSiteView.rejected, (state, action) => {
       const siteId = action.meta.arg.siteId;
+      const loadingState = action.payload === "notFound" ? "notFound" : "error";
       if (state.byId[siteId]) {
-        state.byId[siteId].loadingState = "error";
+        state.byId[siteId].loadingState = loadingState;
       } else {
         state.byId[siteId] = {
           data: undefined,
-          loadingState: "error",
+          loadingState,
         };
       }
     });
@@ -64,7 +65,7 @@ export const siteViewReducer = createReducer(getInitialState(), (builder) => {
 const selectSelf = (state: RootState) => state.siteView;
 
 export type SitePageViewModel =
-  | { loadingState: "idle" | "loading" | "error"; siteView: undefined }
+  | { loadingState: "idle" | "loading" | "error" | "notFound"; siteView: undefined }
   | { loadingState: "success"; siteView: SiteView };
 
 export const selectSitePageViewModel = createSelector(

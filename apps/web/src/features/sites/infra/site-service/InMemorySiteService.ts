@@ -51,7 +51,7 @@ export class InMemorySiteService implements SiteGateway {
     return Promise.resolve(this.siteFeatures);
   }
 
-  async getSiteView(): Promise<SiteView> {
-    return Promise.resolve(this.siteView);
+  async getSiteView(siteId: string): Promise<SiteView | undefined> {
+    return Promise.resolve(this.siteView.id === siteId ? this.siteView : undefined);
   }
 }

@@ -8,6 +8,7 @@ import {
   UseGuards,
   Param,
 } from "@nestjs/common";
+import { idPathParamSchema, type IdPathParam } from "shared";
 // oxlint-disable-next-line api-conventions/no-local-dto-schema -- legacy local schemas, to move to packages/shared/src/api-dtos
 import { z } from "zod";
 
@@ -99,7 +100,7 @@ export class ReconversionCompatibilityController {
   @UseGuards(JwtAuthGuard)
   @Post(":evaluationId/add-related-site")
   async addSiteCreation(
-    @Param("evaluationId") evaluationId: string,
+    @Param("evaluationId", { schema: idPathParamSchema }) evaluationId: IdPathParam,
     @Body({ schema: addRelatedSiteIdBodySchema }) body: AddRelatedSiteBody,
   ) {
     const result = await this.addRelatedSiteToReconversionCompatibilityEvaluationUseCase.execute({

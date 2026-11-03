@@ -43,4 +43,28 @@ describe("Project impacts fetching", () => {
       currentViewMode: "summary",
     });
   });
+
+  it("should be in notFound state when the project does not exist", async () => {
+    const projectImpactsServiceMock = new MockReconversionProjectImpactsApi();
+    projectImpactsServiceMock._setReconversionProjectNotFound();
+
+    const store = new StoreBuilder()
+      .withAppDependencies({ reconversionProjectImpacts: projectImpactsServiceMock })
+      .build();
+
+    await store.dispatch(
+      reconversionProjectImpactsBreakEvenLevelRequested({ projectId: "unknown-project-id" }),
+    );
+
+    const state = store.getState();
+    expect(state.projectImpacts).toEqual<ProjectImpactsState>({
+      dataLoadingState: {
+        impacts: "notFound",
+        urbanSprawlSimulation: "idle",
+      },
+      evaluationPeriod: undefined,
+      currentViewMode: "summary",
+      contextData: undefined,
+    });
+  });
 });

@@ -39,7 +39,7 @@ export type CurrentProjectFlow =
 
 export type ProjectCreationState = {
   siteData?: ProjectSiteView;
-  siteDataLoadingState: "idle" | "loading" | "success" | "error";
+  siteDataLoadingState: "idle" | "loading" | "success" | "error" | "notFound";
   siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities;
   urbanProject: UrbanProjectState;
   projectId: string;
@@ -100,8 +100,8 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
 
       state.siteDataLoadingState = "success";
     })
-    .addCase(reconversionProjectCreationInitiated.rejected, (state) => {
-      state.siteDataLoadingState = "error";
+    .addCase(reconversionProjectCreationInitiated.rejected, (state, action) => {
+      state.siteDataLoadingState = action.payload === "notFound" ? "notFound" : "error";
     })
     .addCase(surfaceAreaInputModeUpdated, (state, action) => {
       state.surfaceAreaInputMode = action.payload;
