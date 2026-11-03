@@ -5,6 +5,7 @@ import { InMemoryCreateSiteService } from "../../../infrastructure/create-site-s
 import { addressStepCompleted } from "../../steps/address/address.actions";
 import { customSiteSaved } from "../../steps/final/final.actions";
 import {
+  impactsIntroductionStepCompleted,
   introductionStepCompleted,
   isFricheCompleted,
   siteCreationInitiated,
@@ -57,6 +58,9 @@ describe("Site creation behaviour net — agricultural operation", () => {
     expect(currentStep(store)).toEqual("SITE_NATURE");
 
     store.dispatch(siteNatureCompleted({ nature: "AGRICULTURAL_OPERATION" }));
+    expect(currentStep(store)).toEqual("IMPACTS_INTRODUCTION");
+
+    store.dispatch(impactsIntroductionStepCompleted());
     expect(currentStep(store)).toEqual("AGRICULTURAL_OPERATION_ACTIVITY");
 
     store.dispatch(

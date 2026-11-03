@@ -25,6 +25,7 @@ import SiteCreationCustomStepper from "./custom/Stepper";
 import SiteCreationExpressStepContent from "./demo";
 import SiteCreationExpressStepper from "./demo/Stepper";
 import UseMutabilityForm from "./friche/use-mutability";
+import SiteImpactsIntroduction from "./impacts-introduction";
 import SiteCreationIntroduction from "./introduction";
 import IsFricheForm from "./is-friche";
 import NavigationBlockerDialog from "./navigation-blocker";
@@ -39,7 +40,8 @@ import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRout
 
 export const HTML_MAIN_TITLE = "Renseignement du site";
 
-// Pre-engine steps only: INTRODUCTION/IS_FRICHE/USE_MUTABILITY/SITE_NATURE dispatch through
+// Pre-engine steps only: INTRODUCTION/IS_FRICHE/USE_MUTABILITY/SITE_NATURE (and
+// IMPACTS_INTRODUCTION, rendered below without a stepper) dispatch through
 // `stepReverted` + the per-step `*Completed` actions (core/steps/introduction), not the custom
 // wizard-form engine, so they render outside any form-context provider.
 const STEP_CONFIG: Partial<Record<SiteCreationStep, { title: string; content: React.ReactNode }>> =
@@ -113,6 +115,15 @@ export function useSiteCreationWizardLayout({
           sidebarChildren: (
             <FormStepper currentStepIndex={0} steps={["Introduction"]} isDone={false} />
           ),
+        };
+      }
+
+      // Not in STEP_CONFIG: unlike the other pre-engine steps, it has no stepper sidebar.
+      if (currentStep === "IMPACTS_INTRODUCTION") {
+        return {
+          htmlTitle: `Ce que Bénéfriches va analyser - ${HTML_MAIN_TITLE}`,
+          mainChildren: <SiteImpactsIntroduction />,
+          sidebarChildren: null,
         };
       }
 

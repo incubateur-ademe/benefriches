@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import { StoreBuilder, expectCurrentStep } from "../../../__tests__/creation-steps/testUtils";
 import { stepReverted } from "../../../actions/revert.action";
+import { previousStepRequested } from "../../../custom/custom.actions";
 import {
   createModeSelectionCompleted,
+  impactsIntroductionStepCompleted,
   introductionStepCompleted,
   isFricheCompleted,
   mutabilityOrImpactsSelectionCompleted,
@@ -98,7 +100,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode)", () 
       expectCurrentStep(store, "USE_MUTABILITY");
     });
 
-    it("enters the custom engine directly on FRICHE_ACTIVITY when skipUseMutability is true", () => {
+    it("goes to IMPACTS_INTRODUCTION without entering the custom engine when skipUseMutability is true", () => {
       const store = new StoreBuilder()
         .withSkipUseMutability(true)
         .withStepsHistory(["INTRODUCTION", "IS_FRICHE"])
@@ -106,8 +108,8 @@ describe("Site creation: introduction steps (intro, nature, creation mode)", () 
 
       store.dispatch(isFricheCompleted({ isFriche: true }));
 
-      expect(store.getState().siteCreation.customFlowStarted).toBe(true);
-      expectCurrentStep(store, "FRICHE_ACTIVITY");
+      expect(store.getState().siteCreation.customFlowStarted).toBe(false);
+      expectCurrentStep(store, "IMPACTS_INTRODUCTION");
     });
 
     it("goes back to INTRODUCTION when reverted", () => {
@@ -120,15 +122,15 @@ describe("Site creation: introduction steps (intro, nature, creation mode)", () 
   });
 
   describe("USE_MUTABILITY", () => {
-    it("enters the custom engine on FRICHE_ACTIVITY when useMutability is false", () => {
+    it("goes to IMPACTS_INTRODUCTION without entering the custom engine when useMutability is false", () => {
       const store = new StoreBuilder()
         .withStepsHistory(["INTRODUCTION", "IS_FRICHE", "USE_MUTABILITY"])
         .build();
 
       store.dispatch(mutabilityOrImpactsSelectionCompleted({ useMutability: false }));
 
-      expect(store.getState().siteCreation.customFlowStarted).toBe(true);
-      expectCurrentStep(store, "FRICHE_ACTIVITY");
+      expect(store.getState().siteCreation.customFlowStarted).toBe(false);
+      expectCurrentStep(store, "IMPACTS_INTRODUCTION");
     });
 
     it("goes back to IS_FRICHE when reverted", () => {
@@ -143,38 +145,18 @@ describe("Site creation: introduction steps (intro, nature, creation mode)", () 
   });
 
   describe("SITE_NATURE", () => {
-    it("enters the custom engine on FRICHE_ACTIVITY when nature is FRICHE", () => {
-      const store = new StoreBuilder().withStepsHistory(["IS_FRICHE", "SITE_NATURE"]).build();
+    it.each(["FRICHE", "AGRICULTURAL_OPERATION", "NATURAL_AREA", "URBAN_ZONE"] as const)(
+      "goes to IMPACTS_INTRODUCTION without entering the custom engine when nature is %s",
+      (nature) => {
+        const store = new StoreBuilder().withStepsHistory(["IS_FRICHE", "SITE_NATURE"]).build();
 
-      store.dispatch(siteNatureCompleted({ nature: "FRICHE" }));
+        store.dispatch(siteNatureCompleted({ nature }));
 
-      expect(store.getState().siteCreation.nature).toEqual("FRICHE");
-      expectCurrentStep(store, "FRICHE_ACTIVITY");
-    });
-
-    it("enters the custom engine on AGRICULTURAL_OPERATION_ACTIVITY when nature is AGRICULTURAL_OPERATION", () => {
-      const store = new StoreBuilder().withStepsHistory(["IS_FRICHE", "SITE_NATURE"]).build();
-
-      store.dispatch(siteNatureCompleted({ nature: "AGRICULTURAL_OPERATION" }));
-
-      expectCurrentStep(store, "AGRICULTURAL_OPERATION_ACTIVITY");
-    });
-
-    it("enters the custom engine on NATURAL_AREA_TYPE when nature is NATURAL_AREA", () => {
-      const store = new StoreBuilder().withStepsHistory(["IS_FRICHE", "SITE_NATURE"]).build();
-
-      store.dispatch(siteNatureCompleted({ nature: "NATURAL_AREA" }));
-
-      expectCurrentStep(store, "NATURAL_AREA_TYPE");
-    });
-
-    it("enters the custom engine on URBAN_ZONE_TYPE when nature is URBAN_ZONE", () => {
-      const store = new StoreBuilder().withStepsHistory(["IS_FRICHE", "SITE_NATURE"]).build();
-
-      store.dispatch(siteNatureCompleted({ nature: "URBAN_ZONE" }));
-
-      expectCurrentStep(store, "URBAN_ZONE_TYPE");
-    });
+        expect(store.getState().siteCreation.nature).toEqual(nature);
+        expect(store.getState().siteCreation.customFlowStarted).toBe(false);
+        expectCurrentStep(store, "IMPACTS_INTRODUCTION");
+      },
+    );
 
     it("goes back to IS_FRICHE when reverted", () => {
       const store = new StoreBuilder()
@@ -185,6 +167,83 @@ describe("Site creation: introduction steps (intro, nature, creation mode)", () 
       store.dispatch(stepReverted());
 
       expectCurrentStep(store, "IS_FRICHE");
+    });
+  });
+
+  describe("IMPACTS_INTRODUCTION", () => {
+    it.each([
+      { nature: "FRICHE", firstCustomStep: "FRICHE_ACTIVITY" },
+      { nature: "AGRICULTURAL_OPERATION", firstCustomStep: "AGRICULTURAL_OPERATION_ACTIVITY" },
+      { nature: "NATURAL_AREA", firstCustomStep: "NATURAL_AREA_TYPE" },
+      { nature: "URBAN_ZONE", firstCustomStep: "URBAN_ZONE_TYPE" },
+    ] as const)(
+      "enters the custom engine on $firstCustomStep when completed for a $nature site",
+      ({ nature, firstCustomStep }) => {
+        const store = new StoreBuilder()
+          .withNature(nature)
+          .withStepsHistory(["IS_FRICHE", "SITE_NATURE", "IMPACTS_INTRODUCTION"])
+          .build();
+
+        store.dispatch(impactsIntroductionStepCompleted());
+
+        expect(store.getState().siteCreation.customFlowStarted).toBe(true);
+        expectCurrentStep(store, firstCustomStep);
+      },
+    );
+
+    it("enters the custom engine on FRICHE_ACTIVITY after IS_FRICHE when mutability is skipped", () => {
+      const store = new StoreBuilder()
+        .withSkipUseMutability(true)
+        .withStepsHistory(["INTRODUCTION", "IS_FRICHE"])
+        .build();
+
+      store.dispatch(isFricheCompleted({ isFriche: true }));
+      store.dispatch(impactsIntroductionStepCompleted());
+
+      expectCurrentStep(store, "FRICHE_ACTIVITY");
+    });
+
+    it("goes back to USE_MUTABILITY when reverted after the mutability step", () => {
+      const store = new StoreBuilder()
+        .withStepsHistory(["INTRODUCTION", "IS_FRICHE", "USE_MUTABILITY"])
+        .build();
+      store.dispatch(mutabilityOrImpactsSelectionCompleted({ useMutability: false }));
+
+      store.dispatch(stepReverted());
+
+      expectCurrentStep(store, "USE_MUTABILITY");
+    });
+
+    it("goes back to IS_FRICHE when reverted and mutability is skipped", () => {
+      const store = new StoreBuilder()
+        .withSkipUseMutability(true)
+        .withStepsHistory(["INTRODUCTION", "IS_FRICHE"])
+        .build();
+      store.dispatch(isFricheCompleted({ isFriche: true }));
+
+      store.dispatch(stepReverted());
+
+      expectCurrentStep(store, "IS_FRICHE");
+    });
+
+    it("goes back to SITE_NATURE when reverted after the site nature step", () => {
+      const store = new StoreBuilder().withStepsHistory(["IS_FRICHE", "SITE_NATURE"]).build();
+      store.dispatch(siteNatureCompleted({ nature: "NATURAL_AREA" }));
+
+      store.dispatch(stepReverted());
+
+      expectCurrentStep(store, "SITE_NATURE");
+    });
+
+    it("is returned to when going back from the first custom step", () => {
+      const store = new StoreBuilder().withStepsHistory(["IS_FRICHE", "SITE_NATURE"]).build();
+      store.dispatch(siteNatureCompleted({ nature: "AGRICULTURAL_OPERATION" }));
+      store.dispatch(impactsIntroductionStepCompleted());
+
+      store.dispatch(previousStepRequested());
+
+      expect(store.getState().siteCreation.customFlowStarted).toBe(false);
+      expectCurrentStep(store, "IMPACTS_INTRODUCTION");
     });
   });
 });

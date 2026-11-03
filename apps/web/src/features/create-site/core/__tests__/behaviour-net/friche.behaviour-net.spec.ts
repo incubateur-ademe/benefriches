@@ -10,6 +10,7 @@ import {
 } from "../../steps/contamination-and-accidents/contaminationAndAccidents.actions";
 import { customSiteSaved } from "../../steps/final/final.actions";
 import {
+  impactsIntroductionStepCompleted,
   introductionStepCompleted,
   isFricheCompleted,
   mutabilityOrImpactsSelectionCompleted,
@@ -65,6 +66,9 @@ describe("Site creation behaviour net — friche", () => {
     expect(currentStep(store)).toEqual("USE_MUTABILITY");
 
     store.dispatch(mutabilityOrImpactsSelectionCompleted({ useMutability: false }));
+    expect(currentStep(store)).toEqual("IMPACTS_INTRODUCTION");
+
+    store.dispatch(impactsIntroductionStepCompleted());
     expect(currentStep(store)).toEqual("FRICHE_ACTIVITY");
 
     store.dispatch(fricheActivityStepCompleted("INDUSTRY"));

@@ -3,6 +3,7 @@ import type { Address } from "shared";
 import { InMemoryCreateSiteService } from "../../../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import { addressStepCompleted } from "../../steps/address/address.actions";
 import {
+  impactsIntroductionStepCompleted,
   introductionStepCompleted,
   isFricheCompleted,
   siteCreationInitiated,
@@ -40,6 +41,9 @@ describe("Site creation behaviour net — urban zone", () => {
     expect(currentStep(store)).toEqual("SITE_NATURE");
 
     store.dispatch(siteNatureCompleted({ nature: "URBAN_ZONE" }));
+    expect(currentStep(store)).toEqual("IMPACTS_INTRODUCTION");
+
+    store.dispatch(impactsIntroductionStepCompleted());
     expect(currentStep(store)).toEqual("URBAN_ZONE_TYPE");
 
     store.dispatch(urbanZoneTypeCompleted({ urbanZoneType: "ECONOMIC_ACTIVITY_ZONE" }));

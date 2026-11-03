@@ -51,7 +51,7 @@ export class StoreBuilder {
     return this;
   }
 
-  /** Seeds the pre-engine steps history (INTRODUCTION/IS_FRICHE/USE_MUTABILITY/SITE_NATURE/CREATE_MODE_SELECTION only). */
+  /** Seeds the pre-engine steps history (INTRODUCTION/IS_FRICHE/USE_MUTABILITY/SITE_NATURE/IMPACTS_INTRODUCTION/CREATE_MODE_SELECTION only). */
   withStepsHistory(stepsHistory: SiteCreationStep[]) {
     this.preloadedRootState.siteCreation = {
       ...this.preloadedRootState.siteCreation,
