@@ -24,6 +24,7 @@ export type EconomicBalanceImpactKeyName =
 export const groupEconomicBalanceByListViewCategory = (
   projectType: ProjectDevelopmentPlanType,
   projectEconomicBalance: ProjectEconomicBalance["details"],
+  bearerName?: string,
 ) => {
   return filterNonEmptyImpacts([
     groupImpactsByName(
@@ -33,17 +34,28 @@ export const groupEconomicBalanceByListViewCategory = (
       "siteResaleRevenue",
       "buildingsResaleRevenue",
     ),
-    extractDetailsGroup(projectEconomicBalance, "siteReinstatement"),
+    extractDetailsGroup(projectEconomicBalance, "siteReinstatement", {
+      bearerName: bearerName,
+    }),
     extractDetailsGroup(projectEconomicBalance, "projectInstallation", {
       keyGroupName:
         projectType === "PHOTOVOLTAIC_POWER_PLANT"
           ? "photovoltaicProjectInstallation"
           : "urbanProjectInstallation",
+      bearerName: bearerName,
     }),
-    extractDetailsGroup(projectEconomicBalance, "projectBuildingsInstallation"),
-    extractDetailsGroup(projectEconomicBalance, "financialAssistanceRevenues"),
-    extractDetailsGroup(projectEconomicBalance, "projectOperatingExpenses"),
-    extractDetailsGroup(projectEconomicBalance, "projectOperatingRevenues"),
+    extractDetailsGroup(projectEconomicBalance, "projectBuildingsInstallation", {
+      bearerName: bearerName,
+    }),
+    extractDetailsGroup(projectEconomicBalance, "financialAssistanceRevenues", {
+      bearerName: bearerName,
+    }),
+    extractDetailsGroup(projectEconomicBalance, "projectOperatingExpenses", {
+      bearerName: bearerName,
+    }),
+    extractDetailsGroup(projectEconomicBalance, "projectOperatingRevenues", {
+      bearerName: bearerName,
+    }),
   ]);
 };
 
@@ -61,6 +73,7 @@ export const buildEconomicBalanceListView = (
   const economicBalance = groupEconomicBalanceByListViewCategory(
     projectType,
     impactsData.projectEconomicBalance.details,
+    impactsData.stakeholders.project.developer.structureName,
   );
 
   return {
