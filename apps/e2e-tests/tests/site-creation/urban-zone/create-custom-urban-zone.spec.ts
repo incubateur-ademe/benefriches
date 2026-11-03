@@ -47,6 +47,8 @@ test.describe("site creation - urban zone - custom mode", () => {
     // --- soils ---
     await siteCreationPage.expectStepperCurrentStep("Sols et espaces");
     await urbanZoneSiteCreationPage.goToNextStep(); // soils and spaces introduction
+    await siteCreationPage.expectMissingInformationStep("Sols et espaces");
+    await siteCreationPage.goToNextStep();
     await siteCreationPage.expectWizardAriaSnapshot(
       "urban-zone-custom-soils-distribution-step.aria.yml",
     );
@@ -195,6 +197,8 @@ test.describe("site creation - urban zone - custom mode", () => {
     // --- soils ---
     await siteCreationPage.expectStepperCurrentStep("Sols et espaces");
     await urbanZoneSiteCreationPage.goToNextStep(); // soils and spaces introduction
+    await siteCreationPage.expectMissingInformationStep("Sols et espaces");
+    await siteCreationPage.goToNextStep();
     await urbanZoneSiteCreationPage.fillSoilsDistributionForCurrentParcel({
       BUILDINGS: 5_000,
       IMPERMEABLE_SOILS: 5_000,
@@ -316,6 +320,8 @@ test.describe("site creation - urban zone - custom mode", () => {
     // --- soils ---
     await siteCreationPage.expectStepperCurrentStep("Sols et espaces");
     await urbanZoneSiteCreationPage.goToNextStep(); // soils and spaces introduction
+    await siteCreationPage.expectMissingInformationStep("Sols et espaces");
+    await siteCreationPage.goToNextStep();
     await urbanZoneSiteCreationPage.fillSoilsDistributionForCurrentParcel({
       BUILDINGS: 5_000,
       IMPERMEABLE_SOILS: 5_000,

@@ -101,9 +101,9 @@ export class SiteCreationPage {
     await this.page.getByRole("button", { name: "Suivant" }).click();
   }
 
-  async expectMissingInformationStep(): Promise<void> {
+  async expectMissingInformationStep(stepperLabel = "Espaces"): Promise<void> {
     await this.expectStepTitle("Il vous manque des infos ? Pas de panique !");
-    await this.expectStepperCurrentStep("Espaces");
+    await this.expectStepperCurrentStep(stepperLabel);
   }
 
   async selectCreateMode(mode: CreateMode): Promise<void> {
