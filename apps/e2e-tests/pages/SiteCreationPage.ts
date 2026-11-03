@@ -101,6 +101,11 @@ export class SiteCreationPage {
     await this.page.getByRole("button", { name: "Suivant" }).click();
   }
 
+  async expectMissingInformationStep(): Promise<void> {
+    await this.expectStepTitle("Il vous manque des infos ? Pas de panique !");
+    await this.expectStepperCurrentStep("Espaces");
+  }
+
   async selectCreateMode(mode: CreateMode): Promise<void> {
     const labels: Record<CreateMode, string> = {
       express: "Évaluer un site et un projet demo",

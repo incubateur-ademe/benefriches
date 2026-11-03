@@ -40,6 +40,9 @@ test.describe("site creation - agricultural operation - custom mode", () => {
     await siteCreationPage.expectStepperCurrentStep("Espaces");
     await siteCreationPage.goToNextStep();
 
+    await siteCreationPage.expectMissingInformationStep();
+    await siteCreationPage.goToNextStep();
+
     await siteCreationPage.expectStepTitle("Quelle est la superficie totale de l'exploitation ?");
     await siteCreationPage.expectStepperCurrentStep("Espaces");
     await siteCreationPage.fillSurfaceArea(25_000);
