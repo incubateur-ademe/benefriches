@@ -37,6 +37,9 @@ test.describe("site creation - friche - custom mode", () => {
     await siteCreationPage.expectStepperCurrentStep("Espaces");
     await siteCreationPage.goToNextStep();
 
+    await siteCreationPage.expectMissingInformationStep();
+    await siteCreationPage.goToNextStep();
+
     await siteCreationPage.expectStepTitle("Quelle est la superficie totale de la friche ?");
     await siteCreationPage.expectStepperCurrentStep("Espaces");
     await siteCreationPage.fillSurfaceArea(10_000);

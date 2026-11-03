@@ -36,6 +36,9 @@ test.describe("site creation - natural area - custom mode", () => {
     await siteCreationPage.expectStepperCurrentStep("Espaces");
     await siteCreationPage.goToNextStep();
 
+    await siteCreationPage.expectMissingInformationStep();
+    await siteCreationPage.goToNextStep();
+
     await siteCreationPage.expectStepTitle("Quelle est la superficie totale de l'espace naturel ?");
     await siteCreationPage.expectStepperCurrentStep("Espaces");
     await siteCreationPage.fillSurfaceArea(20_000);
