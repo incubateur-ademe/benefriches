@@ -29,6 +29,7 @@ import {
   createParcelBuildingsFloorAreaHandler,
   createParcelSoilsDistributionHandler,
 } from "./steps/per-parcel-soils/parcelSoilsHandlerFactory";
+import { UrbanZoneMissingInformationHandler } from "./steps/soils-and-spaces-introduction/missingInformation.handler";
 import { SoilsAndSpacesIntroductionHandler } from "./steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.handler";
 import { UrbanZoneSoilsCarbonStorageHandler } from "./steps/summary/soils-carbon-storage/soilsCarbonStorage.handler";
 import { UrbanZoneSoilsSummaryHandler } from "./steps/summary/soils-summary/soilsSummary.handler";
@@ -120,6 +121,7 @@ export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
   ...answerStepHandlers,
   // Introduction
   URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION: SoilsAndSpacesIntroductionHandler,
+  URBAN_ZONE_MISSING_INFORMATION: UrbanZoneMissingInformationHandler,
   // Summary
   URBAN_ZONE_SOILS_SUMMARY: UrbanZoneSoilsSummaryHandler,
   URBAN_ZONE_SOILS_CARBON_STORAGE: UrbanZoneSoilsCarbonStorageHandler,

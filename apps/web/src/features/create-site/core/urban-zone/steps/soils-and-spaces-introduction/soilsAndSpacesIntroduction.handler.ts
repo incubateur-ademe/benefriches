@@ -1,17 +1,9 @@
-import { getSelectedParcelTypes } from "../../stateHelpers";
 import type { InfoStepHandler } from "../../stepHandlerRegistry";
-import { getParcelStepIds } from "../per-parcel-soils/parcelStepMapping";
 
 export const SoilsAndSpacesIntroductionHandler = {
   stepId: "URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION",
 
-  getNextStepId(params) {
-    const selectedTypes = getSelectedParcelTypes(params.answers);
-
-    const firstType = selectedTypes[0];
-    if (firstType) {
-      return getParcelStepIds(firstType).soilsDistribution;
-    }
-    return "URBAN_ZONE_SOILS_SUMMARY";
+  getNextStepId() {
+    return "URBAN_ZONE_MISSING_INFORMATION";
   },
 } satisfies InfoStepHandler;
