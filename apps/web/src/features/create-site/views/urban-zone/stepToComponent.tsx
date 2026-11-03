@@ -16,6 +16,7 @@ import LandParcelsSurfaceDistributionContainer from "./land-parcels-surface-dist
 import LocalAuthorityExpensesContainer from "./local-authority-expenses";
 import ManagementIntroductionContainer from "./management-introduction";
 import ManagerContainer from "./manager";
+import UrbanZoneMissingInformationContainer from "./missing-information";
 import NamingContainer from "./naming";
 import NamingIntroductionContainer from "./naming-introduction";
 import SoilsAndSpacesIntroductionContainer from "./soils-and-spaces-introduction";
@@ -63,6 +64,10 @@ const explicitUrbanZoneStepToComponent = {
   URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION: {
     htmlTitle: "Introduction - Sols et espaces",
     Component: SoilsAndSpacesIntroductionContainer,
+  },
+  URBAN_ZONE_MISSING_INFORMATION: {
+    htmlTitle: "Informations manquantes - Sols et espaces",
+    Component: UrbanZoneMissingInformationContainer,
   },
   URBAN_ZONE_LAND_PARCELS_SELECTION: {
     htmlTitle: "Surfaces foncières - Zone urbaine",

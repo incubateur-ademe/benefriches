@@ -113,9 +113,9 @@ describe("Urban zone - single parcel navigation", () => {
     expect(getCurrentStep(store)).toBe("URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION");
   });
 
-  it("should navigate forward from soils and spaces introduction to single parcel's soils distribution", () => {
+  it("should navigate forward from the missing information page to single parcel's soils distribution", () => {
     const store = new StoreBuilder()
-      .withCurrentStep("URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION")
+      .withCurrentStep("URBAN_ZONE_MISSING_INFORMATION")
       .withUrbanZoneSteps(SINGLE_PARCEL_STEPS)
       .build();
 

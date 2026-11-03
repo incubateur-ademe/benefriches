@@ -44,6 +44,7 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   URBAN_ZONE_LAND_PARCELS_INTRODUCTION: "zone-urbaine-surfaces-foncieres-introduction",
   // urban zone step handler steps
   URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION: "zone-urbaine-sols-et-espaces-introduction",
+  URBAN_ZONE_MISSING_INFORMATION: "zone-urbaine-informations-manquantes",
   URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION: "zone-urbaine-pollution-introduction",
   URBAN_ZONE_MANAGEMENT_INTRODUCTION: "zone-urbaine-gestion-introduction",
   URBAN_ZONE_NAMING_INTRODUCTION: "zone-urbaine-denomination-introduction",

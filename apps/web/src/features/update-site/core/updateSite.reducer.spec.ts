@@ -462,6 +462,57 @@ describe("updateSite reducer", () => {
       );
     });
 
+    it("never shows the soils introduction nor the missing-information page when editing the land parcels", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+      const onSurfaceDistribution = updateSiteReducer(
+        hydrated,
+        updateUrbanZoneFormActions.stepNavigationRequested({
+          stepId: "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION",
+        }),
+      );
+
+      const completed = updateSiteReducer(
+        onSurfaceDistribution,
+        updateUrbanZoneFormActions.stepCompletionRequested({
+          stepId: "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION",
+          answers: { surfaceAreas: { COMMERCIAL_ACTIVITY_AREA: 10000 } },
+        }),
+      );
+
+      expect(completed.urbanZone.currentStep).toBe("URBAN_ZONE_FINAL_SUMMARY");
+    });
+
+    it("goes back from the first parcel's soils step to the land parcels, skipping the missing-information page", () => {
+      const hydrated = updateSiteReducer(
+        undefined,
+        siteUpdateInitiated.fulfilled(
+          { features: URBAN_ZONE_FEATURES, isEditable: true, notEditableReason: null },
+          "requestId",
+          "site-uz-1",
+        ),
+      );
+      const onSoilsDistribution = updateSiteReducer(
+        hydrated,
+        updateUrbanZoneFormActions.stepNavigationRequested({
+          stepId: "URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION",
+        }),
+      );
+
+      const state = updateSiteReducer(
+        onSoilsDistribution,
+        updateUrbanZoneFormActions.previousStepRequested(),
+      );
+
+      expect(state.urbanZone.currentStep).toBe("URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION");
+    });
+
     it("completing the (already-completed) NAMING step on a fully-hydrated form returns to the summary (next_empty)", () => {
       const hydrated = updateSiteReducer(
         undefined,

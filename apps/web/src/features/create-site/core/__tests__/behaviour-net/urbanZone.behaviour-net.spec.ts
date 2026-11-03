@@ -78,6 +78,9 @@ describe("Site creation behaviour net — urban zone", () => {
     expect(currentStep(store)).toEqual("URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION");
 
     store.dispatch(nextStepRequested());
+    expect(currentStep(store)).toEqual("URBAN_ZONE_MISSING_INFORMATION");
+
+    store.dispatch(nextStepRequested());
     expect(currentStep(store)).toEqual("URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION");
 
     store.dispatch(

@@ -24,6 +24,7 @@ import { namingStepperConfig } from "./steps/naming/naming.stepperConfig";
 import { namingIntroductionStepperConfig } from "./steps/naming/namingIntroduction.stepperConfig";
 import { parcelBuildingsFloorAreaStepperConfig } from "./steps/per-parcel-soils/parcelBuildingsFloorArea.stepperConfig";
 import { parcelSoilsDistributionStepperConfig } from "./steps/per-parcel-soils/parcelSoilsDistribution.stepperConfig";
+import { missingInformationStepperConfig } from "./steps/soils-and-spaces-introduction/missingInformation.stepperConfig";
 import { soilsAndSpacesIntroductionStepperConfig } from "./steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.stepperConfig";
 import { soilsCarbonStorageStepperConfig } from "./steps/summary/soils-carbon-storage/soilsCarbonStorage.stepperConfig";
 import { soilsSummaryStepperConfig } from "./steps/summary/soils-summary/soilsSummary.stepperConfig";
@@ -113,6 +114,7 @@ export const URBAN_ZONE_STEP_TO_GROUP: StepToGroupMapping<
 
   // Soils and spaces introduction
   URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION: soilsAndSpacesIntroductionStepperConfig,
+  URBAN_ZONE_MISSING_INFORMATION: missingInformationStepperConfig,
 
   // Per-parcel soils distribution (all share the same config)
   URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION: parcelSoilsDistributionStepperConfig,
@@ -189,6 +191,7 @@ export const URBAN_ZONE_STEP_TO_SUMMARY_SECTION: Record<
   URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION: { groupId: "LAND_PARCELS" },
 
   URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION: { groupId: "SOILS" },
+  URBAN_ZONE_MISSING_INFORMATION: { groupId: "SOILS" },
   URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION: { groupId: "SOILS" },
   URBAN_ZONE_PUBLIC_SPACES_SOILS_DISTRIBUTION: { groupId: "SOILS" },
   URBAN_ZONE_SERVICED_SURFACE_SOILS_DISTRIBUTION: { groupId: "SOILS" },
