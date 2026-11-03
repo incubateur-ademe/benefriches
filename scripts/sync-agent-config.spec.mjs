@@ -102,7 +102,7 @@ function runSync(root, ...flags) {
   });
 }
 
-test("sync generates the agent TOML and hooks.json, excluding format-check", async (t) => {
+test("sync generates the agent TOML and hooks.json with format-check", async (t) => {
   const root = baseRepo();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
 
@@ -129,7 +129,19 @@ test("sync generates the agent TOML and hooks.json, excluding format-check", asy
     hooksJson.hooks.PreToolUse[0].hooks[0].command,
     '"$(git rev-parse --show-toplevel)"/.claude/hooks/block-env-read.sh',
   );
-  assert.equal(hooksJson.hooks.PostToolUse, undefined);
+  assert.deepEqual(hooksJson.hooks.PostToolUse, [
+    {
+      matcher: "Edit|Write",
+      hooks: [
+        {
+          type: "command",
+          command:
+            '"$(git rev-parse --show-toplevel)"/.claude/hooks/format-check.sh',
+          statusMessage: "Formatting code with Prettier...",
+        },
+      ],
+    },
+  ]);
 });
 
 test("--check passes right after sync", async (t) => {
