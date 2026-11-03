@@ -51,6 +51,11 @@ export class UrbanProjectCreationPage {
     await this.submit();
   }
 
+  async expectMissingInformationStep(): Promise<void> {
+    await this.expectStepTitle("Il vous manque des infos ? Pas de panique !");
+    await this.expectStepperCurrentStep("Connaissance du projet");
+  }
+
   async selectProjectPhase(label: string): Promise<void> {
     // Scope to label elements to avoid matching stepper nav items with the same text
     await this.page.locator("label").getByText(label, { exact: true }).click();

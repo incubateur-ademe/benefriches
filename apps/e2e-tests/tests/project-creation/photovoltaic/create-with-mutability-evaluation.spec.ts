@@ -16,6 +16,8 @@ test.describe("photovoltaic project creation -  with mutability results in url",
     // Create mode selection
     await pvProjectCreationPage.expectStepTitle("Que savez vous de votre projet ?");
     await pvProjectCreationPage.selectCreateMode("custom");
+    await pvProjectCreationPage.expectMissingInformationStep();
+    await pvProjectCreationPage.goToNextStep();
 
     await expect(
       pvProjectCreationPage.page

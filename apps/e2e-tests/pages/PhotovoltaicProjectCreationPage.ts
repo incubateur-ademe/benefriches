@@ -69,6 +69,10 @@ export class PhotovoltaicProjectCreationPage {
     await this.submit();
   }
 
+  async expectMissingInformationStep(): Promise<void> {
+    await this.expectStepTitle("Il vous manque des infos ? Pas de panique !");
+  }
+
   async selectProjectTemplate(): Promise<void> {
     await this.page.getByText("Centrale photovoltaïque").click();
     await this.submit();
