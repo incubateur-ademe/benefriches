@@ -13,6 +13,7 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   NATURAL_AREA_TYPE: "type-espace-naturel",
   ADDRESS: "adresse",
   SPACES_INTRODUCTION: "espaces-introduction",
+  MISSING_INFORMATION: "informations-manquantes",
   SURFACE_AREA: "superficie-du-site",
   SPACES_KNOWLEDGE: "connaissance-des-espaces",
   SPACES_SELECTION: "selection-des-espaces",

@@ -1,10 +1,71 @@
+import type { Address } from "shared";
 import { getSoilsDistributionForFricheActivity } from "shared";
 import { describe, expect, it } from "vitest";
 
 import { StoreBuilder, expectCurrentStep } from "../../../__tests__/creation-steps/testUtils";
 import { customFormActions } from "../../../custom/custom.actions";
 
+const ADDRESS: Address = {
+  banId: "75056_1",
+  value: "1 Rue de Paris 75001 Paris",
+  city: "Paris",
+  cityCode: "75056",
+  postCode: "75001",
+  long: 2.35,
+  lat: 48.85,
+};
+
+const SPACES_NATURES = [
+  { nature: "FRICHE", isFriche: true },
+  { nature: "AGRICULTURAL_OPERATION", isFriche: false },
+  { nature: "NATURAL_AREA", isFriche: false },
+] as const;
+
 describe("Site creation: spaces steps", () => {
+  describe.each(SPACES_NATURES)(
+    "MISSING_INFORMATION for a $nature site",
+    ({ nature, isFriche }) => {
+      // Starts on ADDRESS: completing it computes the steps sequence back navigation walks.
+      const buildStoreOnSpacesIntroduction = () => {
+        const store = new StoreBuilder()
+          .withIsFriche(isFriche)
+          .withNature(nature)
+          .withCustomStep("ADDRESS")
+          .build();
+        store.dispatch(
+          customFormActions.stepCompletionRequested({
+            stepId: "ADDRESS",
+            answers: { address: ADDRESS },
+          }),
+        );
+        return store;
+      };
+
+      it("is shown after the spaces introduction, then leads to SURFACE_AREA", () => {
+        const store = buildStoreOnSpacesIntroduction();
+        expectCurrentStep(store, "SPACES_INTRODUCTION");
+
+        store.dispatch(customFormActions.nextStepRequested());
+        expectCurrentStep(store, "MISSING_INFORMATION");
+
+        store.dispatch(customFormActions.nextStepRequested());
+        expectCurrentStep(store, "SURFACE_AREA");
+      });
+
+      it("goes back from SURFACE_AREA to MISSING_INFORMATION, then to the spaces introduction", () => {
+        const store = buildStoreOnSpacesIntroduction();
+        store.dispatch(customFormActions.nextStepRequested());
+        store.dispatch(customFormActions.nextStepRequested());
+
+        store.dispatch(customFormActions.previousStepRequested());
+        expectCurrentStep(store, "MISSING_INFORMATION");
+
+        store.dispatch(customFormActions.previousStepRequested());
+        expectCurrentStep(store, "SPACES_INTRODUCTION");
+      });
+    },
+  );
+
   describe("SURFACE_AREA", () => {
     it("goes to SPACES_KNOWLEDGE for a non urban-zone nature", () => {
       const store = new StoreBuilder().withCustomStep("SURFACE_AREA").build();

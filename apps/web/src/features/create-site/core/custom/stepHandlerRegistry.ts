@@ -69,6 +69,10 @@ export const customStepHandlerRegistry: CustomStepHandlerRegistry = {
   ...urbanZoneHandoffHandlers.infoSteps,
   SPACES_INTRODUCTION: {
     stepId: "SPACES_INTRODUCTION",
+    getNextStepId: () => "MISSING_INFORMATION",
+  },
+  MISSING_INFORMATION: {
+    stepId: "MISSING_INFORMATION",
     getNextStepId: () => "SURFACE_AREA",
   },
   SOILS_SUMMARY: {

@@ -18,6 +18,7 @@ describe("isNavigableCustomStep", () => {
 
   it("treats info/notice steps as not navigable", () => {
     expect(isNavigableCustomStep("SPACES_INTRODUCTION")).toBe(false);
+    expect(isNavigableCustomStep("MISSING_INFORMATION")).toBe(false);
     expect(isNavigableCustomStep("FINAL_SUMMARY")).toBe(false);
   });
 });
@@ -27,6 +28,7 @@ describe("computeCustomStepperGroups", () => {
     "FRICHE_ACTIVITY",
     "ADDRESS",
     "SPACES_INTRODUCTION",
+    "MISSING_INFORMATION",
     "SURFACE_AREA",
     "SPACES_KNOWLEDGE",
     "SPACES_SELECTION",
@@ -304,6 +306,7 @@ describe("CUSTOM_STEP_TO_SUMMARY_SECTION", () => {
     "FRICHE_ACTIVITY",
     "ADDRESS",
     "SPACES_INTRODUCTION",
+    "MISSING_INFORMATION",
     "SURFACE_AREA",
     "SPACES_KNOWLEDGE",
     "SPACES_SELECTION",
@@ -343,6 +346,7 @@ describe("CUSTOM_STEP_TO_SUMMARY_SECTION", () => {
 
     const allStepIds = Object.values(sections).flatMap((steps) => steps.map((s) => s.stepId));
     expect(allStepIds).not.toContain("SPACES_INTRODUCTION");
+    expect(allStepIds).not.toContain("MISSING_INFORMATION");
     expect(allStepIds).not.toContain("FINAL_SUMMARY");
     expect(allStepIds).not.toContain("SOILS_SUMMARY");
   });

@@ -27,6 +27,7 @@ import {
   yearlyIncomeStepCompleted,
 } from "../../steps/site-management/siteManagement.actions";
 import {
+  missingInformationStepCompleted,
   siteSurfaceAreaStepCompleted,
   soilsCarbonStorageStepCompleted,
   soilsIntroductionStepCompleted,
@@ -72,6 +73,9 @@ describe("Site creation behaviour net — agricultural operation", () => {
     expect(currentStep(store)).toEqual("SPACES_INTRODUCTION");
 
     store.dispatch(soilsIntroductionStepCompleted());
+    expect(currentStep(store)).toEqual("MISSING_INFORMATION");
+
+    store.dispatch(missingInformationStepCompleted());
     expect(currentStep(store)).toEqual("SURFACE_AREA");
 
     store.dispatch(siteSurfaceAreaStepCompleted({ surfaceArea: 30000 }));

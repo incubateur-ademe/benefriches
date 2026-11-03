@@ -31,6 +31,7 @@ import {
   yearlyExpensesSummaryCompleted,
 } from "../../steps/site-management/siteManagement.actions";
 import {
+  missingInformationStepCompleted,
   siteSurfaceAreaStepCompleted,
   soilsCarbonStorageStepCompleted,
   soilsDistributionStepCompleted,
@@ -79,6 +80,9 @@ describe("Site creation behaviour net — friche", () => {
     expect(currentStep(store)).toEqual("SPACES_INTRODUCTION");
 
     store.dispatch(soilsIntroductionStepCompleted());
+    expect(currentStep(store)).toEqual("MISSING_INFORMATION");
+
+    store.dispatch(missingInformationStepCompleted());
     expect(currentStep(store)).toEqual("SURFACE_AREA");
 
     store.dispatch(siteSurfaceAreaStepCompleted({ surfaceArea: 30000 }));

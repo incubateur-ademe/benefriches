@@ -33,6 +33,7 @@ import {
   siteSurfaceAreaStepCompleted,
   soilsCarbonStorageStepCompleted,
   soilsDistributionStepCompleted,
+  missingInformationStepCompleted,
   soilsIntroductionStepCompleted,
   soilsSelectionStepCompleted,
   soilsSummaryStepCompleted,
@@ -87,6 +88,9 @@ export const addLegacyCustomActionsToBuilder = (
     })
     .addCase(soilsIntroductionStepCompleted, (state) => {
       advanceFromStep(state, definition, "SPACES_INTRODUCTION");
+    })
+    .addCase(missingInformationStepCompleted, (state) => {
+      advanceFromStep(state, definition, "MISSING_INFORMATION");
     })
     .addCase(siteSurfaceAreaStepCompleted, (state, action) => {
       completeCustomStep(state, definition, { stepId: "SURFACE_AREA", answers: action.payload });
