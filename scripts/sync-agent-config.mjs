@@ -11,9 +11,7 @@ const CODEX_EVENTS = [
   "Stop",
 ];
 
-const CLAUDE_ONLY_HOOKS = {
-  "format-check.sh": "Codex apply_patch input has no tool_input.file_path",
-};
+const CLAUDE_ONLY_HOOKS = {};
 
 const PATH_PREFIXES = [
   ".claude/",

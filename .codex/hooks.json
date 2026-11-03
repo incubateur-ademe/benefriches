@@ -22,6 +22,18 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$(git rev-parse --show-toplevel)\"/.claude/hooks/format-check.sh",
+            "statusMessage": "Formatting code with Prettier..."
+          }
+        ]
+      }
     ]
   }
 }
