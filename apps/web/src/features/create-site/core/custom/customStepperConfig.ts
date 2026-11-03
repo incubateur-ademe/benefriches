@@ -77,6 +77,7 @@ export const CUSTOM_STEP_TO_GROUP: StepToGroupMapping<
   URBAN_ZONE_TYPE: { groupId: "INTRODUCTION" },
   ADDRESS: { groupId: "ADDRESS" },
   SPACES_INTRODUCTION: { groupId: "SPACES" },
+  MISSING_INFORMATION: { groupId: "SPACES" },
   SURFACE_AREA: { groupId: "SPACES", subGroupId: "SPACES_TOTAL_SURFACE_AREA" },
   SPACES_KNOWLEDGE: { groupId: "SPACES", subGroupId: "SPACES_TYPES" },
   SPACES_SELECTION: { groupId: "SPACES", subGroupId: "SPACES_TYPES" },
@@ -141,6 +142,7 @@ export const CUSTOM_STEP_TO_SUMMARY_SECTION: StepToGroupMapping<
 
   SURFACE_AREA: { groupId: "SOILS" },
   SPACES_INTRODUCTION: { groupId: "SOILS" },
+  MISSING_INFORMATION: { groupId: "SOILS" },
   SPACES_KNOWLEDGE: { groupId: "SOILS" },
   SPACES_SELECTION: { groupId: "SOILS" },
   SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE: { groupId: "SOILS" },

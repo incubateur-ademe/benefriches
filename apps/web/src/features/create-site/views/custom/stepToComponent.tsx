@@ -16,6 +16,7 @@ import IsSiteOperatedForm from "../common-views/site-management/stakeholders/is-
 import SiteOwnerForm from "../common-views/site-management/stakeholders/owner";
 import SiteOperatorForm from "../common-views/site-management/stakeholders/site-operator";
 import SiteTenantForm from "../common-views/site-management/stakeholders/tenant";
+import SiteMissingInformation from "../common-views/spaces-and-soils/missing-information";
 import SiteSoilsCarbonStorage from "../common-views/spaces-and-soils/soils-carbon-storage";
 import SiteSoilsSummary from "../common-views/spaces-and-soils/soils-summary";
 import SiteSpacesDistribution from "../common-views/spaces-and-soils/spaces-distribution/distribution";
@@ -51,6 +52,10 @@ export const customStepToComponent: Record<SiteCreationCustomStep, StepView> = {
     Component: LandParcelsIntroductionContainer,
   },
   SPACES_INTRODUCTION: { htmlTitle: "Introduction - Espaces", Component: SiteSpacesIntroduction },
+  MISSING_INFORMATION: {
+    htmlTitle: "Informations manquantes - Espaces",
+    Component: SiteMissingInformation,
+  },
   SURFACE_AREA: { htmlTitle: "Surface - Espaces", Component: SiteSurfaceAreaForm },
   SPACES_KNOWLEDGE: { htmlTitle: "Type de saisie - Espaces", Component: SpacesKnowledgeForm },
   SPACES_SELECTION: { htmlTitle: "Sélection - Espaces", Component: SiteSpacesSelectionForm },

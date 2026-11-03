@@ -27,6 +27,7 @@ const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
     case "ADDRESS":
       return "Adresse";
     case "SPACES_INTRODUCTION":
+    case "MISSING_INFORMATION":
     case "SURFACE_AREA":
     case "SPACES_KNOWLEDGE":
     case "SPACES_SELECTION":

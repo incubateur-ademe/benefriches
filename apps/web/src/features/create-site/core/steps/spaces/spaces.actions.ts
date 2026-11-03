@@ -8,6 +8,8 @@ export const surfaceAreaInputModeUpdated = createSiteCreationAction<"percentage"
 
 export const soilsIntroductionStepCompleted = createStepCompletedAction("SPACES_INTRODUCTION");
 
+export const missingInformationStepCompleted = createStepCompletedAction("MISSING_INFORMATION");
+
 export const siteSurfaceAreaStepCompleted = createStepCompletedAction<{ surfaceArea: number }>(
   "SURFACE_AREA",
 );

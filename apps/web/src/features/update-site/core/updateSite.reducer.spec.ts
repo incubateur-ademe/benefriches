@@ -230,6 +230,31 @@ describe("updateSite reducer", () => {
     expect(state.custom.steps).toEqual(stepsBefore);
   });
 
+  it("returns to the summary after editing the address, without showing the spaces introduction nor the missing-information page", () => {
+    const hydrated = updateSiteReducer(
+      undefined,
+      siteUpdateInitiated.fulfilled(
+        { features: FRICHE_FEATURES, isEditable: true, notEditableReason: null },
+        "requestId",
+        "site-1",
+      ),
+    );
+    const onAddress = updateSiteReducer(
+      hydrated,
+      updateCustomFormActions.stepNavigationRequested({ stepId: "ADDRESS" }),
+    );
+
+    const state = updateSiteReducer(
+      onAddress,
+      updateCustomFormActions.stepCompletionRequested({
+        stepId: "ADDRESS",
+        answers: { address: FRICHE_FEATURES.address },
+      }),
+    );
+
+    expect(state.custom.currentStep).toBe("FINAL_SUMMARY");
+  });
+
   it("records isEditable/notEditableReason without hydrating a wizard when the site is not editable", () => {
     const state = updateSiteReducer(
       undefined,

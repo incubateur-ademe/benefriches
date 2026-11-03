@@ -17,6 +17,7 @@ import type { Owner, SiteCreationData, Tenant } from "../siteFoncier.types";
 // Info/navigation-only steps — no stored answer, forward-only or terminal.
 export const CUSTOM_INFO_STEP_IDS = [
   "SPACES_INTRODUCTION",
+  "MISSING_INFORMATION",
   "SOILS_SUMMARY",
   "SOILS_CARBON_STORAGE",
   "SOILS_CONTAMINATION_INTRODUCTION",
