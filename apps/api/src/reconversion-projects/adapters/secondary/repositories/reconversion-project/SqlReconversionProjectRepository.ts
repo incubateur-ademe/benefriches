@@ -533,34 +533,42 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
 
   async update(reconversionProject: ReconversionProjectUpdateDto): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {
-      await trx("reconversion_projects").where({ id: reconversionProject.id }).update({
-        updated_at: reconversionProject.updatedAt,
-        name: reconversionProject.name,
-        description: reconversionProject.description,
-        future_operator_name: reconversionProject.futureOperator?.name,
-        future_operator_structure_type: reconversionProject.futureOperator?.structureType,
-        future_site_owner_name: reconversionProject.futureSiteOwner?.name,
-        future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
-        reinstatement_contract_owner_name: reconversionProject.reinstatementContractOwner?.name,
-        reinstatement_contract_owner_structure_type:
-          reconversionProject.reinstatementContractOwner?.structureType,
-        site_purchase_selling_price: reconversionProject.sitePurchaseSellingPrice,
-        site_purchase_property_transfer_duties:
-          reconversionProject.sitePurchasePropertyTransferDuties,
-        reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
-        reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
-        operations_first_year: reconversionProject.operationsFirstYear,
-        project_phase: reconversionProject.projectPhase,
-        site_resale_expected_selling_price: reconversionProject.siteResaleExpectedSellingPrice,
-        site_resale_expected_property_transfer_duties:
-          reconversionProject.siteResaleExpectedPropertyTransferDuties,
-        buildings_resale_expected_selling_price:
-          reconversionProject.buildingsResaleExpectedSellingPrice,
-        buildings_resale_expected_property_transfer_duties:
-          reconversionProject.buildingsResaleExpectedPropertyTransferDuties,
-        friche_decontaminated_soil_surface_area: reconversionProject.decontaminatedSoilSurface,
-        involves_reinstatement: reconversionProject.involvesReinstatement,
-      });
+      await trx("reconversion_projects")
+        .where({ id: reconversionProject.id })
+        .update({
+          updated_at: reconversionProject.updatedAt,
+          name: reconversionProject.name,
+          description: reconversionProject.description ?? null,
+          future_operator_name: reconversionProject.futureOperator?.name ?? null,
+          future_operator_structure_type: reconversionProject.futureOperator?.structureType ?? null,
+          future_site_owner_name: reconversionProject.futureSiteOwner?.name ?? null,
+          future_site_owner_structure_type:
+            reconversionProject.futureSiteOwner?.structureType ?? null,
+          reinstatement_contract_owner_name:
+            reconversionProject.reinstatementContractOwner?.name ?? null,
+          reinstatement_contract_owner_structure_type:
+            reconversionProject.reinstatementContractOwner?.structureType ?? null,
+          site_purchase_selling_price: reconversionProject.sitePurchaseSellingPrice ?? null,
+          site_purchase_property_transfer_duties:
+            reconversionProject.sitePurchasePropertyTransferDuties ?? null,
+          reinstatement_schedule_start_date:
+            reconversionProject.reinstatementSchedule?.startDate ?? null,
+          reinstatement_schedule_end_date:
+            reconversionProject.reinstatementSchedule?.endDate ?? null,
+          operations_first_year: reconversionProject.operationsFirstYear ?? null,
+          project_phase: reconversionProject.projectPhase,
+          site_resale_expected_selling_price:
+            reconversionProject.siteResaleExpectedSellingPrice ?? null,
+          site_resale_expected_property_transfer_duties:
+            reconversionProject.siteResaleExpectedPropertyTransferDuties ?? null,
+          buildings_resale_expected_selling_price:
+            reconversionProject.buildingsResaleExpectedSellingPrice ?? null,
+          buildings_resale_expected_property_transfer_duties:
+            reconversionProject.buildingsResaleExpectedPropertyTransferDuties ?? null,
+          friche_decontaminated_soil_surface_area:
+            reconversionProject.decontaminatedSoilSurface ?? null,
+          involves_reinstatement: reconversionProject.involvesReinstatement,
+        });
 
       // Delete and recreate soils distribution
       await trx("reconversion_project_soils_distributions")

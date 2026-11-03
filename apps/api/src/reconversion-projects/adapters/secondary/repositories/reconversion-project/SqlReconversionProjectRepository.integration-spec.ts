@@ -1313,6 +1313,126 @@ describe("SqlReconversionProjectRepository integration", () => {
         ]);
       });
 
+      it("Clears buildings resale prices when the update no longer has any", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject: ReconversionProjectSaveDto = {
+          ...new UrbanProjectBuilder()
+            .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+            .withRelatedSiteId(siteId)
+            .build(),
+          buildingsResaleExpectedSellingPrice: 149000,
+          buildingsResaleExpectedPropertyTransferDuties: 9999,
+        };
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const {
+          buildingsResaleExpectedSellingPrice: _sellingPrice,
+          buildingsResaleExpectedPropertyTransferDuties: _transferDuties,
+          ...projectWithoutBuildingsResale
+        } = reconversionProject;
+        const updatedProject: ReconversionProjectUpdateDto = {
+          ...projectWithoutBuildingsResale,
+          updatedAt,
+        };
+
+        await reconversionProjectRepository.update(updatedProject);
+
+        const result = await sqlConnection("reconversion_projects")
+          .select(
+            "buildings_resale_expected_selling_price",
+            "buildings_resale_expected_property_transfer_duties",
+          )
+          .where({ id: reconversionProject.id })
+          .first();
+
+        assert.deepStrictEqual(result, {
+          buildings_resale_expected_selling_price: null,
+          buildings_resale_expected_property_transfer_duties: null,
+        });
+      });
+
+      it("Clears every other optional column the update no longer has", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject: ReconversionProjectSaveDto = {
+          ...new UrbanProjectBuilder()
+            .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+            .withRelatedSiteId(siteId)
+            .withFutureOperator("Operator", "company")
+            .withFutureSiteOwner("Owner", "company")
+            .build(),
+          description: "Description",
+          reinstatementContractOwner: { name: "Reinstatement company", structureType: "company" },
+          reinstatementSchedule: {
+            startDate: new Date("2025-02-01"),
+            endDate: new Date("2028-06-30"),
+          },
+          sitePurchaseSellingPrice: 150000,
+          sitePurchasePropertyTransferDuties: 12000,
+          siteResaleExpectedSellingPrice: 2000000,
+          siteResaleExpectedPropertyTransferDuties: 20000,
+          operationsFirstYear: 2029,
+          decontaminatedSoilSurface: 3000,
+        };
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const updatedProject: ReconversionProjectUpdateDto = {
+          ...reconversionProject,
+          description: undefined,
+          futureOperator: undefined,
+          futureSiteOwner: undefined,
+          reinstatementContractOwner: undefined,
+          reinstatementSchedule: undefined,
+          sitePurchaseSellingPrice: undefined,
+          sitePurchasePropertyTransferDuties: undefined,
+          siteResaleExpectedSellingPrice: undefined,
+          siteResaleExpectedPropertyTransferDuties: undefined,
+          operationsFirstYear: undefined,
+          decontaminatedSoilSurface: undefined,
+          updatedAt,
+        };
+
+        await reconversionProjectRepository.update(updatedProject);
+
+        const result = await sqlConnection("reconversion_projects")
+          .select(
+            "description",
+            "future_operator_name",
+            "future_operator_structure_type",
+            "future_site_owner_name",
+            "future_site_owner_structure_type",
+            "reinstatement_contract_owner_name",
+            "reinstatement_contract_owner_structure_type",
+            "reinstatement_schedule_start_date",
+            "reinstatement_schedule_end_date",
+            "site_purchase_selling_price",
+            "site_purchase_property_transfer_duties",
+            "site_resale_expected_selling_price",
+            "site_resale_expected_property_transfer_duties",
+            "operations_first_year",
+            "friche_decontaminated_soil_surface_area",
+          )
+          .where({ id: reconversionProject.id })
+          .first();
+
+        assert.deepStrictEqual(result, {
+          description: null,
+          future_operator_name: null,
+          future_operator_structure_type: null,
+          future_site_owner_name: null,
+          future_site_owner_structure_type: null,
+          reinstatement_contract_owner_name: null,
+          reinstatement_contract_owner_structure_type: null,
+          reinstatement_schedule_start_date: null,
+          reinstatement_schedule_end_date: null,
+          site_purchase_selling_price: null,
+          site_purchase_property_transfer_duties: null,
+          site_resale_expected_selling_price: null,
+          site_resale_expected_property_transfer_duties: null,
+          operations_first_year: null,
+          friche_decontaminated_soil_surface_area: null,
+        });
+      });
+
       it("Updates buildings construction costs by deleting old and inserting new", async () => {
         const siteId = await insertSiteInDb();
         const reconversionProject = new UrbanProjectBuilder()
