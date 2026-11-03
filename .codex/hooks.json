@@ -14,6 +14,11 @@
             "type": "command",
             "command": "\"$(git rev-parse --show-toplevel)\"/.claude/hooks/block-hook-bypass.mjs",
             "statusMessage": "Checking command for pre-commit bypass..."
+          },
+          {
+            "type": "command",
+            "command": "\"$(git rev-parse --show-toplevel)\"/.claude/hooks/enforce-pnpm.sh",
+            "statusMessage": "Checking command for npm/yarn usage..."
           }
         ]
       }
