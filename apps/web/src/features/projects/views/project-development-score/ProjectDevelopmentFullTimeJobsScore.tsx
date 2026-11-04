@@ -58,6 +58,7 @@ export default function ProjectDevelopmentFullTimeJobsScore({
           exportingOptions={{ colors, colorBySeries: true }}
           containerProps={{
             id: chartContainerId,
+            className: "max-w-full",
           }}
           options={options}
           classes={{ title: "text-xl" }}

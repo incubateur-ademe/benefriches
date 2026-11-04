@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import type { Route } from "type-route";
+import type { Link } from "type-route";
 
-import { routes } from "@/app/router";
 import type { DevelopmentScoreDataView } from "@/features/projects/application/project-impacts/selectors/projectDevelopmentScore.selectors";
 
 import MdxContentDialog from "../../impact-description-modals/lazy-component/MdxContentDialog";
+import type { ModalHeaderDataProps } from "../../impact-description-modals/modal-layout/ModalHeader";
 import useImpactListModalContent from "../../impact-description-modals/useImpactListModalContent";
 import useToggleDescriptionModal from "../../impact-description-modals/useToggleDescriptionModal";
 import { developmentScoreMdxComponents } from "../../shared/impacts/documentation/mdxComponents";
@@ -12,27 +12,30 @@ import DevelopmentScoreModalLink from "./DevelopmentScoreModalLink";
 import { DEVELOPMENT_SCORE_CONFIG_MODALS } from "./developmentScoreModalsConfig";
 import { type DetailsName, parseDetails, serializeDetails } from "./useOpenDescriptionModalLink";
 
-type Props = DevelopmentScoreDataView & {
-  route: Route<typeof routes.projectImpactsDevelopmentScore>;
+type Props = {
+  routeParamsDetails?: string;
+  getUpdateRouteDetailsFn: (details?: string) => { link: Link; push: () => void };
+  developmentScore: DevelopmentScoreDataView["developmentScore"];
+  modalsData: DevelopmentScoreDataView["modalsData"];
+  disableExport?: boolean;
 };
 
-function DevelopmentScoreModalDescription({ developmentScore, route, modalsData }: Props) {
-  const detailsName = useMemo(() => parseDetails(route.params.details), [route.params.details]);
+function DevelopmentScoreModalDescription({
+  developmentScore,
+  modalsData,
+  routeParamsDetails,
+  getUpdateRouteDetailsFn,
+  disableExport = false,
+}: Props) {
+  const detailsName = useMemo(() => parseDetails(routeParamsDetails), [routeParamsDetails]);
 
   const { getUpdateDetailsLink } = useMemo(
     () => ({
       getLink: (detailsName?: DetailsName) =>
-        routes[route.name]({
-          ...route.params,
-          details: detailsName ? serializeDetails(detailsName) : undefined,
-        }).link,
-      getUpdateDetailsLink: (details?: string) =>
-        routes[route.name]({
-          ...route.params,
-          details,
-        }).link,
+        getUpdateRouteDetailsFn(detailsName ? serializeDetails(detailsName) : undefined).link,
+      getUpdateDetailsLink: (details?: string) => getUpdateRouteDetailsFn(details).link,
     }),
-    [route],
+    [getUpdateRouteDetailsFn],
   );
 
   const config = detailsName ? DEVELOPMENT_SCORE_CONFIG_MODALS[detailsName] : undefined;
@@ -40,14 +43,10 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
   const {
     contentState: impactsListModalsMatchedState,
     getDetailsLink: getImpactListModalContentLink,
-  } = useToggleDescriptionModal({
-    route,
-    getRouteFn: routes.projectImpactsDevelopmentScore,
-  });
+  } = useToggleDescriptionModal({ getUpdateRouteDetailsFn, routeParamsDetails });
 
   const isImpactListDetailsContent =
     impactsListModalsMatchedState.sectionName &&
-    impactsListModalsMatchedState.sectionName !== "summary" &&
     impactsListModalsMatchedState.sectionName !== "breakEvenLevel";
 
   const listDetailsConfig = useImpactListModalContent(
@@ -88,11 +87,36 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
     return null;
   }
 
+  const dataPropsWithScore: ModalHeaderDataProps = dataProps
+    ? {
+        ...dataProps,
+        headerProps: {
+          ...dataProps?.headerProps,
+          score: letterGrade
+            ? {
+                letterGrade,
+                labelKind: badgeKind,
+              }
+            : undefined,
+        },
+      }
+    : {
+        type: "value",
+        headerProps: {
+          score: letterGrade
+            ? {
+                letterGrade,
+                labelKind: badgeKind,
+              }
+            : undefined,
+        },
+      };
+
   return (
     <MdxContentDialog
       modalsData={modalsData}
-      route={route}
-      getRouteFn={routes[route.name]}
+      routeParamsDetails={routeParamsDetails}
+      getUpdateRouteDetailsFn={getUpdateRouteDetailsFn}
       ContentComponent={WizardComponent}
       mdxComponents={{
         ...developmentScoreMdxComponents,
@@ -108,36 +132,12 @@ function DevelopmentScoreModalDescription({ developmentScore, route, modalsData 
           MetricsComponent ? <MetricsComponent developmentScore={developmentScore} /> : null,
       }}
       disableExport={
+        disableExport ||
         detailsName === "global" ||
         detailsName === "environmentScore" ||
         detailsName === "localPeopleQualityOfLifeScore"
       }
-      dataProps={
-        dataProps
-          ? {
-              ...dataProps,
-              headerProps: {
-                ...dataProps?.headerProps,
-                score: letterGrade
-                  ? {
-                      letterGrade,
-                      labelKind: badgeKind,
-                    }
-                  : undefined,
-              },
-            }
-          : {
-              type: "value",
-              headerProps: {
-                score: letterGrade
-                  ? {
-                      letterGrade,
-                      labelKind: badgeKind,
-                    }
-                  : undefined,
-              },
-            }
-      }
+      dataProps={dataPropsWithScore}
     />
   );
 }

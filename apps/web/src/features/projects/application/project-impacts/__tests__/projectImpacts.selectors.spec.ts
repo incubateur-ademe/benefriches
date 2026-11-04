@@ -10,7 +10,6 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 import {
   selectImpactsListViewData,
   selectImpactsPageViewData,
-  selectImpactsSummaryViewData,
 } from "../selectors/projectImpacts.selectors";
 
 const MOCK_STATES = {
@@ -60,23 +59,6 @@ describe("projectImpacts ViewData selectors", () => {
     });
   });
 
-  describe("selectImpactsSummaryViewData", () => {
-    it("returns composed view data from state", () => {
-      const store = createStore(getTestAppDependencies(), MOCK_STATES);
-      const rootState = store.getState();
-
-      const viewData = selectImpactsSummaryViewData(rootState);
-
-      expect(viewData).toEqual({
-        keyImpactIndicatorsList: expect.any(Array),
-      });
-
-      // Verify key indicators are present
-      expect(viewData.keyImpactIndicatorsList.length).toBeGreaterThan(0);
-      expect(viewData.keyImpactIndicatorsList.map((i) => i.name)).toContain("zanCompliance");
-    });
-  });
-
   describe("selectImpactsPageViewData", () => {
     it("returns composed view data from state", () => {
       const store = createStore(getTestAppDependencies(), MOCK_STATES);
@@ -85,16 +67,9 @@ describe("projectImpacts ViewData selectors", () => {
       const viewData = selectImpactsPageViewData(rootState);
 
       expect(viewData).toEqual({
-        dataLoadingState: {
-          impacts: "idle",
-          urbanSprawlSimulation: "idle",
-        },
+        dataLoadingState: "idle",
         evaluationPeriod: 20,
-        currentViewMode: "list",
         displayImpactsAccuracyDisclaimer: false,
-        contextData: MOCK_STATES.projectImpacts.contextData,
-        impactsData: MOCK_STATES.projectImpacts.impacts,
-        modalsData: expect.any(Object),
       });
     });
 
@@ -118,7 +93,6 @@ describe("projectImpacts ViewData selectors", () => {
       const viewData = selectImpactsPageViewData(rootState);
 
       expect(viewData.displayImpactsAccuracyDisclaimer).toBe(true);
-      expect(viewData.contextData?.isExpressProject).toBe(true);
     });
   });
 });

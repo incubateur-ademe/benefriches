@@ -1,9 +1,10 @@
 import type { LetterGrade } from "shared";
+import type { Link } from "type-route";
 
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
 import ImpactChartCard from "../shared/charts/ImpactChartCard";
 import useImpactAreaChartProps from "../shared/charts/useImpactAreaChartProps";
-import useOpenDescriptionModalLink from "./details-modals/useOpenDescriptionModalLink";
+import { type DetailsName } from "./details-modals/useOpenDescriptionModalLink";
 import MetricCard from "./layout/ProjectDevelopmentMetricCard";
 import ProjectDevelopmentScoreFamilyHeader from "./layout/ProjectDevelopmentScoreFamilyHeader";
 import GradeTextBadge from "./layout/ProjectDevelopmentScoreGradeTextBadge";
@@ -11,6 +12,7 @@ import { getLetterGradeBadgeText } from "./layout/gradeLabels";
 
 type Props = DevelopmentScoreDataView["developmentScore"]["details"]["environmentScore"] & {
   anchor: string;
+  getLink: (details: DetailsName) => Link;
 };
 
 const listFormatter = new Intl.ListFormat("fr", { style: "long", type: "conjunction" });
@@ -136,7 +138,12 @@ const describeEcosystemServices = (grade: LetterGrade) => {
 
 const CO2_CHART_TITLE = "☁️ CO2 eq stocké ou évité";
 
-export default function ProjectDevelopmentEnvironmentScore({ score, indicators, anchor }: Props) {
+export default function ProjectDevelopmentEnvironmentScore({
+  score,
+  indicators,
+  anchor,
+  getLink,
+}: Props) {
   const { co2eqEmissionsVariation, zanCompliance, soilsQuality, waterQuality, ecosystemServices } =
     indicators;
 
@@ -156,8 +163,6 @@ export default function ProjectDevelopmentEnvironmentScore({ score, indicators, 
     difference: avoidedCo2eqEmissions + newStoredCo2Eq,
   });
 
-  const getLink = useOpenDescriptionModalLink();
-
   return (
     <div className="grid md:grid-cols-3 gap-6">
       <ProjectDevelopmentScoreFamilyHeader
@@ -168,7 +173,7 @@ export default function ProjectDevelopmentEnvironmentScore({ score, indicators, 
       />
 
       <div className="md:col-span-2 grid md:grid-cols-2 gap-4">
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 max-w-full">
           <ImpactChartCard
             title={CO2_CHART_TITLE}
             exportingOptions={{ colors, colorBySeries: true }}

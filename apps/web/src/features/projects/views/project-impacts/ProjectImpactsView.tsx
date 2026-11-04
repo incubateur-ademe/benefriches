@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { Route } from "type-route";
 
 import { routes, useRoute } from "@/app/router";
-import type { ImpactsPageViewData } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
+import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
@@ -22,9 +22,8 @@ import ImpactsListViewContainer from "./list-view";
 
 type Props = {
   projectId: string;
-  dataLoadingState: ProjectImpactsState["dataLoadingState"];
-  contextData: ImpactsPageViewData["contextData"];
-  modalsData: ImpactsPageViewData["modalsData"];
+  dataLoadingState: ProjectImpactsState["dataLoadingState"]["impacts"];
+  modalsData: ModalDataProps;
   onEvaluationPeriodChange: (n: number) => void;
   evaluationPeriod: number | undefined;
   onExportModalOpened: () => void;
@@ -34,7 +33,6 @@ type Props = {
 const ProjectImpactsView = ({
   displayImpactsAccuracyDisclaimer,
   projectId,
-  contextData,
   dataLoadingState,
   onEvaluationPeriodChange,
   evaluationPeriod,
@@ -92,7 +90,7 @@ const ProjectImpactsView = ({
 
       {displayImpactsAccuracyDisclaimer && <ImpactsAccuracyDisclaimer />}
 
-      {dataLoadingState.impacts === "error" && (
+      {dataLoadingState === "error" && (
         <Alert
           description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
           severity="error"
@@ -100,25 +98,28 @@ const ProjectImpactsView = ({
           className="my-7"
         />
       )}
-      {dataLoadingState.impacts === "loading" && <LoadingSpinner />}
-      {dataLoadingState.impacts === "success" && (
+      {dataLoadingState === "loading" && <LoadingSpinner />}
+      {dataLoadingState === "success" && (
         <ImpactModalDescriptionProvider
-          route={route}
-          getRouteFn={routes[route.name]}
+          routeParamsDetails={route.params.details}
+          getUpdateRouteDetailsFn={(details?: string) =>
+            routes.projectImpacts({ ...route.params, details })
+          }
           {...modalsData!}
         >
           <>
-            <HtmlTitle>{`Liste - ${contextData?.projectName} - Impacts`}</HtmlTitle>
+            <HtmlTitle>{`Liste - ${modalsData.contextData?.projectName} - Impacts`}</HtmlTitle>
             <ImpactsListViewContainer />
           </>
           <ProjectImpactFooter
-            siteId={contextData?.relatedSiteId ?? ""}
+            siteId={modalsData.contextData?.relatedSiteId ?? ""}
             projectId={projectId}
             evaluationPeriod={evaluationPeriod}
             isUpdateEnabled={
-              (contextData?.projectDevelopmentPlan.type === "URBAN_PROJECT" ||
-                contextData?.projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT") &&
-              !contextData.isExpressProject
+              (modalsData.contextData?.projectDevelopmentPlan.type === "URBAN_PROJECT" ||
+                modalsData.contextData?.projectDevelopmentPlan.type ===
+                  "PHOTOVOLTAIC_POWER_PLANT") &&
+              !modalsData.contextData.isExpressProject
             }
             onExportModalOpened={onExportModalOpened}
           />
@@ -137,7 +138,10 @@ const ProjectImpactsView = ({
             />
             .
           </div>
-          <ExportImpactsModal projectId={projectId} siteId={contextData?.relatedSiteId ?? ""} />
+          <ExportImpactsModal
+            projectId={projectId}
+            siteId={modalsData.contextData?.relatedSiteId ?? ""}
+          />
         </ImpactModalDescriptionProvider>
       )}
     </>

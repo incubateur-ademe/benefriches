@@ -1,10 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
-import type {
-  KeyImpactIndicatorData,
-  ReconversionStakeholders,
-  GetReconversionProjectImpactsResultDto,
-} from "shared";
-import { cropImpactsByEvaluationPeriod, getKeyImpactIndicatorsList } from "shared";
+import type { ReconversionStakeholders, GetReconversionProjectImpactsResultDto } from "shared";
+import { cropImpactsByEvaluationPeriod } from "shared";
 
 import type { RootState } from "@/app/store/store";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
@@ -26,7 +22,7 @@ import {
 } from "@/features/projects/core/projectImpactsSocioEconomic";
 import type { ProjectDevelopmentPlanType } from "@/features/projects/core/projects.types";
 
-import { type ProjectImpactsState, type ViewMode } from "../projectImpacts.reducer";
+import { type ProjectImpactsState } from "../projectImpacts.reducer";
 
 // List View
 type ImpactsListViewData = {
@@ -92,12 +88,6 @@ export const selectEconomicBalanceProjectImpacts = createSelector(
   buildEconomicBalanceListView,
 );
 
-export const selectKeyImpactIndicatorsList = createSelector(
-  [selectImpactsCroppedByEvaluationPeriod, selectImpactsContextData],
-  (impacts, contextData) =>
-    impacts && contextData ? getKeyImpactIndicatorsList(impacts, contextData) : [],
-);
-
 export const selectImpactsListViewData = createSelector(
   [
     selectEconomicBalanceProjectImpacts,
@@ -118,19 +108,7 @@ export const selectImpactsListViewData = createSelector(
   }),
 );
 
-// Summary View
-type ImpactsSummaryViewData = {
-  keyImpactIndicatorsList: KeyImpactIndicatorData[];
-};
-
-export const selectImpactsSummaryViewData = createSelector(
-  [selectKeyImpactIndicatorsList],
-  (keyImpactIndicatorsList): ImpactsSummaryViewData => ({
-    keyImpactIndicatorsList,
-  }),
-);
-
-const selectDisplayImpactsAccuracyDisclaimer = createSelector(
+export const selectDisplayImpactsAccuracyDisclaimer = createSelector(
   [selectProjectImpactsState, selectAppSettings],
   (state, appSettings): boolean => {
     const isExpressProject = !!state.contextData?.isExpressProject;
@@ -180,13 +158,9 @@ export type ModalDataProps = ImpactsDescriptionModalsDataView;
 
 // Page View
 export type ImpactsPageViewData = {
-  dataLoadingState: ProjectImpactsState["dataLoadingState"];
+  dataLoadingState: ProjectImpactsState["dataLoadingState"]["impacts"];
   evaluationPeriod: number | undefined;
-  currentViewMode: ViewMode;
-  impactsData: ProjectImpactsState["impacts"];
-  contextData: ProjectImpactsState["contextData"];
   displayImpactsAccuracyDisclaimer: boolean;
-  modalsData?: ImpactsDescriptionModalsDataView;
 };
 
 export const selectImpactsPageViewData = createSelector(
@@ -194,22 +168,10 @@ export const selectImpactsPageViewData = createSelector(
     selectProjectImpactsState,
     selectDisplayImpactsAccuracyDisclaimer,
     selectImpactsCroppedByEvaluationPeriod,
-    selectImpactsContextData,
-    selectImpactsDescriptionModalsDataView,
   ],
-  (
-    projectImpactsState,
-    displayImpactsAccuracyDisclaimer,
-    impactsData,
-    contextData,
-    modalsData,
-  ): ImpactsPageViewData => ({
-    dataLoadingState: projectImpactsState.dataLoadingState,
+  (projectImpactsState, displayImpactsAccuracyDisclaimer): ImpactsPageViewData => ({
+    dataLoadingState: projectImpactsState.dataLoadingState.impacts,
     evaluationPeriod: projectImpactsState.evaluationPeriod,
-    currentViewMode: projectImpactsState.currentViewMode,
     displayImpactsAccuracyDisclaimer: displayImpactsAccuracyDisclaimer,
-    impactsData,
-    contextData,
-    modalsData,
   }),
 );

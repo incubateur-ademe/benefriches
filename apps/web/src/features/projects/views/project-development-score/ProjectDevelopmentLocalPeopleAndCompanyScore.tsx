@@ -1,14 +1,17 @@
+import { Link } from "type-route";
+
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
 
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
-import useOpenDescriptionModalLink from "./details-modals/useOpenDescriptionModalLink";
+import { DetailsName } from "./details-modals/useOpenDescriptionModalLink";
 import MetricCard from "./layout/ProjectDevelopmentMetricCard";
 import ProjectDevelopmentScoreFamilyHeader from "./layout/ProjectDevelopmentScoreFamilyHeader";
 
 type Props =
   DevelopmentScoreDataView["developmentScore"]["details"]["localPeopleQualityOfLifeScore"] & {
     anchor: string;
+    getLink: (details: DetailsName) => Link;
   };
 
 const listFormatter = new Intl.ListFormat("fr", {
@@ -20,9 +23,8 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({
   score,
   indicators,
   anchor,
+  getLink,
 }: Props) {
-  const getLink = useOpenDescriptionModalLink();
-
   if (score.gradePoints === 0) {
     return null;
   }

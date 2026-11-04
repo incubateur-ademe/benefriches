@@ -1,5 +1,4 @@
 import { createContext } from "react";
-import type { KeyImpactIndicatorData } from "shared";
 import type { Link } from "type-route";
 
 import type { EconomicBalanceImpactKeyName } from "@/features/projects/core/projectImpactsEconomicBalance";
@@ -19,8 +18,6 @@ import {
   SOCIO_ECO_DETAILS_CODES_REVERSE,
   SOCIAL_DETAILS_CODES_REVERSE,
   ENVIRONMENTAL_DETAILS_CODES_REVERSE,
-  SUMMARY_DETAILS_CODES_REVERSE,
-  SUMMARY_DETAILS_CODES,
 } from "./impactModalUrlCodes";
 
 type IsClosedState = {
@@ -58,10 +55,6 @@ type IsOpenedState =
       impactDetailsName?: EnvironmentalImpactMetricKeyName;
     }
   | {
-      sectionName: "summary";
-      impactDetailsName?: KeyImpactIndicatorData["name"];
-    }
-  | {
       sectionName: "breakEvenLevel";
     };
 
@@ -90,7 +83,6 @@ const DETAILS_CODES_BY_SECTION: Record<
   environmental: ENVIRONMENTAL_DETAILS_CODES,
   "environmental.co2eq": ENVIRONMENTAL_DETAILS_CODES,
   "environmental.soils": ENVIRONMENTAL_DETAILS_CODES,
-  summary: SUMMARY_DETAILS_CODES,
   breakEvenLevel: undefined,
 } as const;
 
@@ -173,8 +165,6 @@ export function parseContentState(
     }
     case "breakEvenLevel":
       return { sectionName };
-    case "summary":
-      return { sectionName, impactDetailsName: SUMMARY_DETAILS_CODES_REVERSE[impactDetailsCode] };
     default:
       return INITIAL_CONTENT_STATE;
   }

@@ -82,7 +82,7 @@ export default (
   getDetailsLink: (args: UpdateModalContentArgs) => Link | undefined,
 ) => {
   const config = useMemo(() => {
-    if (!contentState.sectionName || contentState.sectionName === "summary") {
+    if (!contentState.sectionName) {
       return undefined;
     }
 

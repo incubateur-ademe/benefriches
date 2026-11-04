@@ -1,6 +1,3 @@
-// shared/impacts/modals/impactModalUrlCodes.ts
-import type { KeyImpactIndicatorData } from "shared";
-
 import type {
   EconomicBalanceImpactKeyName,
   EconomicBalanceMainImpactKeyName,
@@ -46,8 +43,7 @@ export type DetailsCode =
   | ValueOf<typeof ECONOMIC_BALANCE_DETAILS_CODES>
   | ValueOf<typeof SOCIO_ECO_DETAILS_CODES>
   | ValueOf<typeof SOCIAL_DETAILS_CODES>
-  | ValueOf<typeof ENVIRONMENTAL_DETAILS_CODES>
-  | ValueOf<typeof SUMMARY_DETAILS_CODES>;
+  | ValueOf<typeof ENVIRONMENTAL_DETAILS_CODES>;
 
 export const ECONOMIC_BALANCE_IMPACT_CODES = {
   projectOperatingExpenses: "depenses-exploitation",
@@ -239,19 +235,6 @@ export const ENVIRONMENTAL_DETAILS_CODES = {
   nonContaminatedSurfaceArea: "surface-non-contaminee",
 } as const satisfies Record<EnvironmentalImpactMetricKeyName, string>;
 
-export const SUMMARY_DETAILS_CODES = {
-  avoidedCo2eqEmissions: "emissions-co2-evites",
-  avoidedFricheCostsForLocalAuthority: "couts-evites-collectivite",
-  fullTimeJobs: "emplois",
-  householdsPoweredByRenewableEnergy: "foyer-alimentes-enr",
-  localPropertyValueIncrease: "hausse-valeur-patrimoniale",
-  nonContaminatedSurfaceArea: "depollution",
-  permeableSurfaceArea: "surface-permeable",
-  projectImpactBalance: "bilan-projet",
-  taxesIncomesImpact: "impots",
-  zanCompliance: "loi-zan",
-} as const satisfies Record<KeyImpactIndicatorData["name"], string>;
-
 function invert<T extends Record<string, string>>(map: T): Record<string, keyof T | undefined> {
   return Object.fromEntries(Object.entries(map).map(([k, v]) => [v, k]));
 }
@@ -262,4 +245,3 @@ export const ECONOMIC_BALANCE_DETAILS_CODES_REVERSE = invert(ECONOMIC_BALANCE_DE
 export const SOCIO_ECO_DETAILS_CODES_REVERSE = invert(SOCIO_ECO_DETAILS_CODES);
 export const SOCIAL_DETAILS_CODES_REVERSE = invert(SOCIAL_DETAILS_CODES);
 export const ENVIRONMENTAL_DETAILS_CODES_REVERSE = invert(ENVIRONMENTAL_DETAILS_CODES);
-export const SUMMARY_DETAILS_CODES_REVERSE = invert(SUMMARY_DETAILS_CODES);

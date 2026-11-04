@@ -10,10 +10,8 @@ import {
   useLayoutEffect,
   useMemo,
 } from "react";
-import type { Link, Route } from "type-route";
+import type { Link } from "type-route";
 
-import { type routes } from "@/app/router";
-import { type embedRoutes } from "@/embed";
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -29,17 +27,14 @@ import type { ModalHeaderProps } from "../modal-layout/ModalHeader";
 import ModalHeader from "../modal-layout/ModalHeader";
 import useToggleDescriptionModal from "../useToggleDescriptionModal";
 
-type Props<TRoute extends SupportedRoute> = Pick<
-  ModalHeaderProps,
-  "breadcrumbSegments" | "dataProps"
-> & {
+type Props = Pick<ModalHeaderProps, "breadcrumbSegments" | "dataProps"> & {
   modalsData: ModalDataProps;
   dialogId?: string;
   ContentComponent: LazyExoticComponent<ContentComponentType>;
   disableExport?: boolean;
   mdxComponents?: MDXComponents;
-  route: TRoute;
-  getRouteFn: (params: TRoute["params"]) => { link: Link; push: () => void };
+  routeParamsDetails?: string;
+  getUpdateRouteDetailsFn: (details?: string) => { link: Link; push: () => void };
 };
 
 const DIALOG_ID = "impact-modal-description";
@@ -84,32 +79,26 @@ const ModalLink = ({
   </a>
 );
 
-type SupportedRoute =
-  | Route<typeof routes.projectImpactsDevelopmentScore>
-  | Route<typeof routes.projectImpactsBreakEvenLevel>
-  | Route<typeof routes.projectImpacts>
-  | Route<typeof embedRoutes.routes.quickImpactsUrbanProject>;
-
-export default function <TRoute extends SupportedRoute>({
+export default function ({
   modalsData,
   ContentComponent,
   dialogId = DIALOG_ID,
   dataProps,
   breadcrumbSegments,
   mdxComponents,
-  route,
-  getRouteFn,
+  routeParamsDetails,
+  getUpdateRouteDetailsFn,
   disableExport,
-}: Props<TRoute>) {
+}: Props) {
   const { isDark } = useIsDark();
 
   const { contextData, impactsData } = modalsData;
 
-  const isOpen = Boolean(route.params.details);
+  const isOpen = Boolean(routeParamsDetails);
 
   const { getDetailsLink, handleClose, onCloseLink, contentState } = useToggleDescriptionModal({
-    route,
-    getRouteFn,
+    routeParamsDetails,
+    getUpdateRouteDetailsFn,
   });
 
   const BoundSiteFeature = useMemo(

@@ -66,7 +66,7 @@ const extractProjectDevelopmentPlan = (developmentPlan: DevelopmentPlanFeatures)
 };
 
 // Calculés grâce à https://data.ofgl.fr/explore/dataset/ofgl-base-communes-consolidee/analyze/?&refine.agregat=D%C3%A9penses+d%27%C3%A9quipement&refine.exer=2025
-const FALLBACK_AVERAGE_CAPITAL_EXPENDITURES_AMOUNT_PER_POPULATION = [
+export const FALLBACK_AVERAGE_CAPITAL_EXPENDITURES_AMOUNT_PER_POPULATION = [
   { minPopulation: 0, averageCapitalExpenditures2025: 50_000 },
   { minPopulation: 100, averageCapitalExpenditures2025: 100_000 },
   { minPopulation: 200, averageCapitalExpenditures2025: 150_000 },

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { getDevelopmentScoreCardContent, typedObjectEntries, type LetterGrade } from "shared";
-import type { Link, Route } from "type-route";
+import type { Link } from "type-route";
 
-import { type routes, useRoute } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
@@ -63,8 +62,13 @@ const FAMILY_CONFIG = {
   },
 } as const;
 
-type Props = DevelopmentScoreDataView & {
+type Props = {
   projectId: string;
+  routeParamsDetails?: string;
+  getUpdateRouteDetailsFn: (details?: string) => { link: Link; push: () => void };
+  developmentScore: DevelopmentScoreDataView["developmentScore"];
+  modalsData: DevelopmentScoreDataView["modalsData"];
+  disableExport?: boolean;
 };
 
 const FamilyScore = (props: {
@@ -98,6 +102,9 @@ export default function ProjectDevelopmentScore({
   projectId,
   developmentScore,
   modalsData,
+  routeParamsDetails,
+  getUpdateRouteDetailsFn,
+  disableExport = false,
 }: Props) {
   const [isTitleInViewport, setIsTitleInViewPort] = useState(false);
 
@@ -124,7 +131,7 @@ export default function ProjectDevelopmentScore({
 
   const { bgColor, textColor } = LETTER_GRADE_COLORS[score.letterGrade];
 
-  const getLink = useOpenDescriptionModalLink();
+  const getLink = useOpenDescriptionModalLink(getUpdateRouteDetailsFn);
 
   const { title, headline, body } = getDevelopmentScoreCardContent({
     letterGrade: developmentScore.score.letterGrade,
@@ -141,9 +148,11 @@ export default function ProjectDevelopmentScore({
     <div className="flex flex-col gap-14">
       <div className="flex items-center justify-between">
         <DevelopmentScoreModalDescription
-          route={route}
+          routeParamsDetails={routeParamsDetails}
+          getUpdateRouteDetailsFn={getUpdateRouteDetailsFn}
           developmentScore={developmentScore}
           modalsData={modalsData}
+          disableExport={disableExport}
         />
         <h3 className="text-2xl mb-0" ref={titleRef}>
           Score d'impact
@@ -227,11 +236,13 @@ export default function ProjectDevelopmentScore({
 
       <ProjectDevelopmentLocalPeopleAndCompanyScore
         anchor={FAMILY_CONFIG.localPeopleQualityOfLifeScore.anchor}
+        getLink={getLink}
         {...localPeopleQualityOfLifeScore}
       />
 
       <ProjectDevelopmentEnvironmentScore
         anchor={FAMILY_CONFIG.environmentScore.anchor}
+        getLink={getLink}
         {...environmentScore}
       />
 

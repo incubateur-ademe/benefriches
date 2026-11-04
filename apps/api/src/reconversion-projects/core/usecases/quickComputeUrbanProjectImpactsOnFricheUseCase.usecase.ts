@@ -3,6 +3,7 @@ import {
   NewUrbanCenterProjectGenerator,
   computeProjectImpactsWithBreakEvenLevel,
   ReconversionProjectImpactsWithBreakEvenLevelInput,
+  computeProjectDevelopmentScore,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -11,9 +12,11 @@ import { TResult, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 import type { Friche, Site } from "src/sites/core/models/site";
 import { CityImpactsDataProvider } from "src/territory/core/gateways/CityImpactsDataProvider";
+import { MunicipalityCapitalExpendituresProvider } from "src/territory/core/gateways/MunicipalityCapitalExpendituresProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { getDefaultImpactsEvaluationPeriod } from "../model/impactsEvaluationPeriod";
+import { FALLBACK_AVERAGE_CAPITAL_EXPENDITURES_AMOUNT_PER_POPULATION } from "./getProjectImpactsAnalysisUseCase.usecase";
 
 type City = {
   name: string;
@@ -32,13 +35,7 @@ type Request = {
 };
 
 type QuickComputeUrbanProjectImpactsOnFricheResult = TResult<
-  {
-    impacts: GetReconversionProjectImpactsResultDto["impacts"];
-    contextData: Omit<
-      GetReconversionProjectImpactsResultDto["contextData"],
-      "municipalityCapitalExpenditures"
-    >;
-  },
+  GetReconversionProjectImpactsResultDto,
   never
 >;
 
@@ -50,16 +47,19 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
   private readonly siteGenerationService: SiteGenerationService;
   private readonly dateProvider: DateProvider;
   private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
+  private readonly municipalityCapitalExpendituresQuery: MunicipalityCapitalExpendituresProvider;
   constructor(
     cityDataQuery: CityImpactsDataProvider,
     siteGenerationService: SiteGenerationService,
     dateProvider: DateProvider,
     getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
+    municipalityCapitalExpendituresQuery: MunicipalityCapitalExpendituresProvider,
   ) {
     this.cityDataQuery = cityDataQuery;
     this.siteGenerationService = siteGenerationService;
     this.dateProvider = dateProvider;
     this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
+    this.municipalityCapitalExpendituresQuery = municipalityCapitalExpendituresQuery;
   }
 
   async execute({
@@ -112,6 +112,59 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
 
     const operationsFirstYear =
       reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear();
+
+    const municipalityCapitalExpenditures: GetReconversionProjectImpactsResultDto["contextData"]["municipalityCapitalExpenditures"] =
+      await (async () => {
+        try {
+          const queryResult = await this.municipalityCapitalExpendituresQuery.getLastReferenceYear(
+            site.address.cityCode,
+          );
+          return {
+            ...queryResult,
+            accuracy: "city",
+          };
+        } catch {
+          return {
+            amount:
+              FALLBACK_AVERAGE_CAPITAL_EXPENDITURES_AMOUNT_PER_POPULATION.findLast(
+                (s) => cityData.stats.population >= s.minPopulation,
+              )?.averageCapitalExpenditures2025 ?? 1_100_000,
+            referenceYear: "2025",
+            accuracy: "average",
+          };
+        }
+      })();
+
+    const contextData = {
+      projectId: reconversionProject.id,
+      projectName: reconversionProject.name,
+      relatedSiteId: reconversionProject.relatedSiteId,
+      relatedSiteName: site.name,
+      isExpressSite: true,
+      isExpressProject: true,
+      projectDevelopmentPlan:
+        reconversionProject.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+          ? {
+              type: reconversionProject.developmentPlan.type,
+              installationElectricalPowerKWc:
+                reconversionProject.developmentPlan.features.electricalPowerKWc,
+              installationSurfaceArea: reconversionProject.developmentPlan.features.surfaceArea,
+            }
+          : {
+              type: reconversionProject.developmentPlan.type,
+              buildingsFloorAreaDistribution:
+                reconversionProject.developmentPlan.features.buildingsFloorAreaDistribution,
+            },
+      siteAddress: {
+        lat: site.address.lat,
+        long: site.address.long,
+        label: site.address.value,
+      },
+      siteNature: site.nature,
+      siteSurfaceArea: site.surfaceArea,
+      fricheActivity: site.fricheActivity,
+      municipalityCapitalExpenditures,
+    };
 
     const impacts = computeProjectImpactsWithBreakEvenLevel({
       reconversionProject: {
@@ -170,35 +223,8 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
 
     return success({
       impacts,
-      contextData: {
-        projectId: reconversionProject.id,
-        projectName: reconversionProject.name,
-        relatedSiteId: reconversionProject.relatedSiteId,
-        relatedSiteName: site.name,
-        isExpressSite: true,
-        isExpressProject: true,
-        projectDevelopmentPlan:
-          reconversionProject.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-            ? {
-                type: reconversionProject.developmentPlan.type,
-                installationElectricalPowerKWc:
-                  reconversionProject.developmentPlan.features.electricalPowerKWc,
-                installationSurfaceArea: reconversionProject.developmentPlan.features.surfaceArea,
-              }
-            : {
-                type: reconversionProject.developmentPlan.type,
-                buildingsFloorAreaDistribution:
-                  reconversionProject.developmentPlan.features.buildingsFloorAreaDistribution,
-              },
-        siteAddress: {
-          lat: site.address.lat,
-          long: site.address.long,
-          label: site.address.value,
-        },
-        siteNature: site.nature,
-        siteSurfaceArea: site.surfaceArea,
-        fricheActivity: site.fricheActivity,
-      },
+      developmentScore: computeProjectDevelopmentScore(contextData, impacts),
+      contextData,
     });
   }
 }

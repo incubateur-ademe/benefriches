@@ -1,30 +1,30 @@
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
+import type { Link, Route } from "type-route";
 
+import type { embedRoutes } from "@/embed";
 import classNames from "@/shared/views/clsx";
 
-import type { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
-import ImpactsListViewContainer from "../project-impacts/list-view";
-import ImpactsSummaryViewContainer from "../project-impacts/summary-view";
-import ImpactsActionBar from "../shared/actions/ActionBar";
+import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
+import ProjectDevelopmentScore from "../project-development-score/ProjectDevelopmentScorePage";
 import QuickImpactsCallout from "./Callout";
 import QuickImpactsTitle from "./Title";
 
-type Props = {
-  evaluationPeriod: number;
-  currentViewMode: ViewMode;
-  onCurrentViewModeChange: (v: ViewMode) => void;
-  onEvaluationPeriodChange: (ep: number) => void;
-  siteCity: string;
-  siteSurfaceArea: number;
-};
+type Props = Route<typeof embedRoutes.routes.quickImpactsUrbanProject>["params"] &
+  DevelopmentScoreDataView & {
+    evaluationPeriod: number;
+    getUpdateRouteDetailsFn: (details?: string) => {
+      link: Link;
+      push: () => void;
+    };
+  };
 
 export default function QuickImpactsEmbedView({
-  currentViewMode,
-  evaluationPeriod,
-  onCurrentViewModeChange,
-  onEvaluationPeriodChange,
-  siteCity,
   siteSurfaceArea,
+  evaluationPeriod,
+  developmentScore,
+  modalsData,
+  details: routeParamsDetails,
+  getUpdateRouteDetailsFn,
 }: Props) {
   const { isDark } = useIsDark();
 
@@ -39,21 +39,20 @@ export default function QuickImpactsEmbedView({
         isDark ? "highcharts-dark" : "highcharts-light",
       )}
     >
-      <QuickImpactsTitle siteCity={siteCity} />
+      <QuickImpactsTitle siteCity={modalsData.contextData.siteAddress.label} />
       <QuickImpactsCallout
         evaluationPeriod={evaluationPeriod}
-        siteCity={siteCity}
+        siteCity={modalsData.contextData.siteAddress.label}
         siteSurfaceArea={siteSurfaceArea}
       />
-      <ImpactsActionBar
-        small
-        evaluationPeriod={evaluationPeriod}
-        onEvaluationPeriodChange={onEvaluationPeriodChange}
-        onViewModeClick={onCurrentViewModeChange}
-        selectedViewMode={currentViewMode}
+      <ProjectDevelopmentScore
+        developmentScore={developmentScore}
+        modalsData={modalsData}
+        routeParamsDetails={routeParamsDetails}
+        getUpdateRouteDetailsFn={getUpdateRouteDetailsFn}
+        projectId={modalsData.contextData.projectId}
+        disableExport
       />
-      {currentViewMode === "summary" && <ImpactsSummaryViewContainer />}
-      {currentViewMode === "list" && <ImpactsListViewContainer />}
     </div>
   );
 }

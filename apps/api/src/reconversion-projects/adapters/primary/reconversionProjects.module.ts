@@ -212,12 +212,14 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         cityDataRepo: SqlCityImpactsQuery,
         getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         dateProvider: DateProvider,
+        municipalityCapitalExpendituresQuery: MunicipalityCapitalExpendituresProvider,
       ) {
         return new QuickComputeUrbanProjectImpactsOnFricheUseCase(
           cityDataRepo,
           new FricheGenerator(),
           dateProvider,
           getCarbonStorageFromSoilDistribution,
+          municipalityCapitalExpendituresQuery,
         );
       },
       inject: [SqlCityImpactsQuery, GetCarbonStorageFromSoilDistributionService, RealDateProvider],

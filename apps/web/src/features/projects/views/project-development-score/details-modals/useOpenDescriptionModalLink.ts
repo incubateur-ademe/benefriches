@@ -1,7 +1,5 @@
 import { useCallback } from "react";
-import type { Route } from "type-route";
-
-import { routes, useRoute } from "@/app/router";
+import type { Link } from "type-route";
 
 const DETAILS_CODES_BY_SECTION = {
   global: "score",
@@ -46,15 +44,12 @@ export function parseDetails(contenu: string | undefined): DetailsName | undefin
 
 export const closeModalLink = () => {};
 
-export default () => {
-  const route = useRoute() as Route<typeof routes.projectImpactsDevelopmentScore>;
+export default (getUpdateRouteDetailsFn: (details?: string) => { link: Link }) => {
   return useCallback(
     (detailsName?: DetailsName) => {
-      return routes[route.name]({
-        ...route.params,
-        details: detailsName ? serializeDetails(detailsName) : detailsName,
-      }).link;
+      return getUpdateRouteDetailsFn(detailsName ? serializeDetails(detailsName) : detailsName)
+        .link;
     },
-    [route],
+    [getUpdateRouteDetailsFn],
   );
 };

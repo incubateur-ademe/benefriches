@@ -24,8 +24,10 @@ export default function ProjectBreakEvenLevelTabContainer({ projectId }: Props) 
 
   return (
     <ImpactModalDescriptionProvider
-      route={route}
-      getRouteFn={routes[route.name]}
+      routeParamsDetails={route.params.details}
+      getUpdateRouteDetailsFn={(details?: string) =>
+        routes[route.name]({ ...route.params, details })
+      }
       {...breakEvenLevelView.modalsProps}
     >
       <ProjectBreakEvenLevelTab
