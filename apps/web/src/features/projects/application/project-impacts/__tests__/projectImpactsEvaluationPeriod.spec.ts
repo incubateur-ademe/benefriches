@@ -15,7 +15,7 @@ import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastru
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { StoreBuilder } from ".";
-import { reconversionProjectImpactsBreakEvenLevelRequested } from "../actions";
+import { reconversionProjectImpactsAnalysisRequested } from "../actions";
 import { selectAvoidedUrbanSprawlCostsAnalysisDataView } from "../selectors/projectAvoidedCostsAnalysis.selectors";
 import {
   selectImpactsCroppedByEvaluationPeriod,
@@ -117,7 +117,7 @@ describe("Project impacts evaluation period", () => {
       .withAppDependencies({ reconversionProjectImpacts: projectImpactsServiceMock })
       .build();
 
-    await store.dispatch(reconversionProjectImpactsBreakEvenLevelRequested({ projectId: "12345" }));
+    await store.dispatch(reconversionProjectImpactsAnalysisRequested({ projectId: "12345" }));
 
     expect(selectImpactsPageViewData(store.getState()).evaluationPeriod).toEqual(30);
   });
@@ -134,7 +134,7 @@ describe("Project impacts evaluation period", () => {
       .withEvaluationPeriod(20)
       .build();
 
-    await store.dispatch(reconversionProjectImpactsBreakEvenLevelRequested({ projectId: "12345" }));
+    await store.dispatch(reconversionProjectImpactsAnalysisRequested({ projectId: "12345" }));
 
     expect(selectImpactsPageViewData(store.getState()).evaluationPeriod).toEqual(20);
   });
@@ -144,7 +144,6 @@ describe("Project impacts evaluation period", () => {
       projectImpacts: {
         dataLoadingState: { impacts: "success", urbanSprawlSimulation: "idle" },
         evaluationPeriod: 2,
-        currentViewMode: "summary",
         impacts: threeYearImpacts,
         contextData: urbanProjectImpactMockMeta,
       },
@@ -293,7 +292,6 @@ describe("Project impacts evaluation period", () => {
       projectImpacts: {
         dataLoadingState: { impacts: "success", urbanSprawlSimulation: "success" },
         evaluationPeriod: 2,
-        currentViewMode: "summary",
         impacts: threeYearImpacts,
         contextData: urbanProjectImpactMockMeta,
         urbanSprawlSimulation,

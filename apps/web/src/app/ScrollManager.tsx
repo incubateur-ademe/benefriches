@@ -6,10 +6,9 @@ import { useRoute } from "./router";
 type AppRoute = ReturnType<typeof useRoute>;
 
 const IGNORED_PARAMS_BY_ROUTE: Partial<Record<keyof typeof routes, Set<string>>> = {
-  projectImpactsDevelopmentScore: new Set(["details", "documentation"]),
-  projectImpactsBreakEvenLevel: new Set(["details", "documentation"]),
-  projectAvoidedCostsAnalysis: new Set(["details", "documentation"]),
-  projectImpacts: new Set(["details", "documentation"]),
+  projectImpactsDevelopmentScore: new Set(["details"]),
+  projectImpactsBreakEvenLevel: new Set(["details"]),
+  projectAvoidedCostsAnalysis: new Set(["details"]),
 };
 
 function getComparableParams(route: AppRoute): Record<string, unknown> {

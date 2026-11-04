@@ -7,7 +7,7 @@ import {
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
 
 import { StoreBuilder } from ".";
-import { reconversionProjectImpactsBreakEvenLevelRequested } from "../actions";
+import { reconversionProjectImpactsAnalysisRequested } from "../actions";
 import type { ProjectImpactsState } from "../projectImpacts.reducer";
 
 describe("Project impacts fetching", () => {
@@ -28,7 +28,7 @@ describe("Project impacts fetching", () => {
 
     expect(initialState.projectImpacts.dataLoadingState.impacts).toEqual("idle");
 
-    await store.dispatch(reconversionProjectImpactsBreakEvenLevelRequested({ projectId }));
+    await store.dispatch(reconversionProjectImpactsAnalysisRequested({ projectId }));
 
     const state = store.getState();
     expect(state.projectImpacts).toEqual<ProjectImpactsState>({
@@ -40,7 +40,6 @@ describe("Project impacts fetching", () => {
       impacts: urbanProjectImpactMock,
       developmentScore: urbanProjectDevelopmentScoreMock,
       evaluationPeriod: 50,
-      currentViewMode: "summary",
     });
   });
 });

@@ -8,7 +8,7 @@ import type { SocioEconomicImpactsByBearerListView } from "@/features/projects/c
 import type { ProjectFeatures } from "@/features/projects/core/projects.types";
 import type { SiteFeatures } from "@/features/sites/core/site.types";
 
-import type { PdfExportSectionSelection } from "../export-impacts/pdf-export/pdfExportSections";
+import type { PdfExportSectionSelection } from "../../project-page/export-impacts-modal/pdf-export/pdfExportSections";
 import AboutBenefrichesPdfPage from "./about-benefriches/AboutBenefrichesPdfPage";
 import ProjectPdfExportCoverPage from "./components/CoverPage";
 import { ExportImpactsContext } from "./context";

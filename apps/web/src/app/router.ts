@@ -126,7 +126,6 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
     projectImpactsDevelopmentScore: projectImpacts.extend(`/score-impacts`),
     projectImpactsBreakEvenLevel: projectImpacts.extend(`/analyse-cout-benefice`),
     projectAvoidedCostsAnalysis: projectImpacts.extend(`/analyse-couts-evites`),
-    projectImpacts: projectImpacts.extend(`/impacts`),
     projectImpactsOnboarding: projectImpacts.extend(
       {
         etape: param.query.optional.string,

@@ -10,8 +10,8 @@ import { selectExportImpactsView } from "@/features/projects/application/project
 import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
-import type { Props as ImpactsPdfDocumentProps } from "../../pdf-export";
-import PdfExportDocument from "../../pdf-export";
+import type { Props as ImpactsPdfDocumentProps } from "../../../pdf-impacts-export/pdf-export";
+import PdfExportDocument from "../../../pdf-impacts-export/pdf-export";
 import type { PdfExportSectionSelection } from "./pdfExportSections";
 
 const octetsToKo = (octets: number) => octets / 1000;

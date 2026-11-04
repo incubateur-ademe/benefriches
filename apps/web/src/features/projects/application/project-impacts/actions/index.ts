@@ -3,8 +3,6 @@ import type { GetReconversionProjectImpactsResultDto } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
-import type { ViewMode } from "../projectImpacts.reducer";
-
 const PROJECT_IMPACTS_PREFIX = "projectImpacts";
 
 const createProjectImpactsActionName = (actionName: string) =>
@@ -13,7 +11,6 @@ const createProjectImpactsActionName = (actionName: string) =>
 const createProjectImpactsAction = <TPayload = void>(actionName: string) =>
   createAction<TPayload>(createProjectImpactsActionName(actionName));
 
-export const viewModeUpdated = createProjectImpactsAction<ViewMode>("impactsViewModeUpdated");
 export const evaluationPeriodUpdated =
   createProjectImpactsAction<number>("evaluationPeriodUpdated");
 
@@ -23,11 +20,11 @@ export interface ReconversionProjectImpactsGateway {
   ): Promise<GetReconversionProjectImpactsResultDto>;
 }
 
-export const reconversionProjectImpactsBreakEvenLevelRequested = createAppAsyncThunk<
+export const reconversionProjectImpactsAnalysisRequested = createAppAsyncThunk<
   GetReconversionProjectImpactsResultDto,
   { projectId: string }
 >(
-  createProjectImpactsActionName("reconversionProjectImpactsBreakEvenLevelRequested"),
+  createProjectImpactsActionName("reconversionProjectImpactsAnalysisRequested"),
   async ({ projectId }, { extra }) => {
     const data = await extra.reconversionProjectImpacts.getReconversionProjectImpacts(projectId);
     return data;

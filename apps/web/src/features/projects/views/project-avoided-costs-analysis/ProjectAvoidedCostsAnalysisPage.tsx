@@ -5,8 +5,8 @@ import HorizontalCheckableTile from "@/shared/views/components/CheckableTile/Hor
 import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";
 
 import type { ProjectDevelopmentPlanType } from "../../core/projects.types";
-import BreakEvenLevelImpactsActionBar from "../project-break-even-level/ProjectBreakEvenLevelActionBar";
 import ProjectPageHeader from "../project-page/header";
+import BreakEvenLevelImpactsActionBar from "../shared/actions/ProjectActionBarWithEvaluationPeriod";
 import ProjectAvoidedInactionCosts from "./avoided-inaction-costs";
 import ProjectAvoidedUrbanSprawlCosts from "./avoided-urban-sprawl-costs";
 import UrbanSprawlImpactsComparisonIntroductionModalContainer from "./avoided-urban-sprawl-costs/introduction";
@@ -42,7 +42,7 @@ export default function ProjectAvoidedCostsAnalysisPage({
         <BreakEvenLevelImpactsActionBar
           evaluationPeriod={evaluationPeriodInYears}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
-          header={<ProjectPageHeader projectId={projectId} />}
+          header={<ProjectPageHeader projectId={projectId} noMenu size="small" />}
         />
       </div>
 

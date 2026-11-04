@@ -78,7 +78,6 @@ describe("selectProjectSummaryDataView", () => {
       projectImpacts: {
         dataLoadingState: { impacts: "success", urbanSprawlSimulation: "idle" },
         evaluationPeriod: photovoltaicProjectImpactsResultDto.projectionYears.length,
-        currentViewMode: "summary",
         developmentScore: photovoltaicProjectDevelopmentScoreMock,
         impacts: photovoltaicProjectImpactsResultDto,
         contextData: photovoltaicProjectImpactMockMeta,
@@ -111,7 +110,6 @@ describe("selectProjectSummaryDataView", () => {
       projectImpacts: {
         dataLoadingState: { impacts: "success", urbanSprawlSimulation: "idle" },
         evaluationPeriod: 50,
-        currentViewMode: "summary",
         impacts: urbanImpactsWithLocalAuthorityTenant,
         contextData: urbanProjectImpactMockMeta,
         developmentScore: urbanProjectDevelopmentScoreMock,
@@ -144,7 +142,6 @@ describe("selectProjectSummaryDataView", () => {
       projectImpacts: {
         dataLoadingState: { impacts: "success", urbanSprawlSimulation: "idle" },
         evaluationPeriod: 10,
-        currentViewMode: "summary",
         impacts: urbanImpactsWithLocalAuthorityTenant,
         contextData: urbanProjectImpactMockMeta,
         developmentScore: urbanProjectDevelopmentScoreMock,

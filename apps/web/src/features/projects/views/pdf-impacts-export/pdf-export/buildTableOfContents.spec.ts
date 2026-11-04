@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { PdfExportSectionSelection } from "../export-impacts/pdf-export/pdfExportSections";
+import type { PdfExportSectionSelection } from "../../project-page/export-impacts-modal/pdf-export/pdfExportSections";
 import { buildTableOfContents, getSectionLabel, type TableOfContent } from "./buildTableOfContents";
 
 const allSectionsSelected: PdfExportSectionSelection = {

@@ -4,7 +4,7 @@ import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 import useDuplicateProject from "@/shared/views/project/useDuplicateProject";
 
-import { exportImpactsModal } from "../../project-impacts/export-impacts/createExportModal";
+import { exportImpactsModal } from "../export-impacts-modal/createExportModal";
 
 type Props = {
   siteId: string;

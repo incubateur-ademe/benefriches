@@ -69,6 +69,7 @@ type Props = {
   developmentScore: DevelopmentScoreDataView["developmentScore"];
   modalsData: DevelopmentScoreDataView["modalsData"];
   disableExport?: boolean;
+  disableStickyHeader?: boolean;
 };
 
 const FamilyScore = (props: {
@@ -105,6 +106,7 @@ export default function ProjectDevelopmentScore({
   routeParamsDetails,
   getUpdateRouteDetailsFn,
   disableExport = false,
+  disableStickyHeader = false,
 }: Props) {
   const [isTitleInViewport, setIsTitleInViewPort] = useState(false);
 
@@ -160,7 +162,7 @@ export default function ProjectDevelopmentScore({
         <span className="px-4 py-2 font-medium rounded-sm text-(--text-action-high-blue-france) shadow-[inset_0_0_0_1px_var(--border-action-high-blue-france)]">
           Durée : 50 ans
         </span>
-        {!isTitleInViewport && (
+        {!isTitleInViewport && !disableStickyHeader && (
           <div
             className={classNames(
               "bg-dsfr-grey",
@@ -173,7 +175,7 @@ export default function ProjectDevelopmentScore({
               "py-4 md:p-4",
             )}
           >
-            <ProjectPageHeader projectId={projectId} />
+            <ProjectPageHeader projectId={projectId} className="fr-container" size="small" />
           </div>
         )}
       </div>

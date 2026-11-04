@@ -3,7 +3,7 @@ import { createContext, useContext } from "react";
 import {
   getDefaultSectionSelection,
   type PdfExportSectionSelection,
-} from "../export-impacts/pdf-export/pdfExportSections";
+} from "../../project-page/export-impacts-modal/pdf-export/pdfExportSections";
 import { buildTableOfContents, getSectionLabel, type TableOfContent } from "./buildTableOfContents";
 import type { pageIds } from "./pageIds";
 

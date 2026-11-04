@@ -18,7 +18,6 @@ const MOCK_STATES = {
       urbanSprawlSimulation: "idle",
     },
     evaluationPeriod: photovoltaicProjectImpactsResultDto.projectionYears.length,
-    currentViewMode: "list",
     impacts: photovoltaicProjectImpactsResultDto,
     contextData: photovoltaicProjectImpactMockMeta,
   } satisfies RootState["projectImpacts"],

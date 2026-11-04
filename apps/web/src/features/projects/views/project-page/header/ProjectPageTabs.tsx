@@ -26,12 +26,6 @@ const ProjectPageTabs = () => {
           linkProps={routes.projectImpactsDevelopmentScore(route.params).link}
         />
         <TabItem
-          isActive={route.name === routes.projectImpacts.name}
-          iconId="fr-icon-bar-chart-box-line"
-          label="Évaluation des impacts"
-          linkProps={routes.projectImpacts(route.params).link}
-        />
-        <TabItem
           isActive={route.name === routes.projectImpactsBreakEvenLevel.name}
           iconId="fr-icon-line-chart-line"
           label="Analyse coût-bénéfices"

@@ -41,9 +41,11 @@ function ProjectImpactsStickyActionBar({
           "justify-between",
           "items-end",
           "md:items-center",
+          "gap-2",
         )}
       >
-        {header}
+        <div className="grow">{header}</div>
+
         {!isSmScreen && evaluationPeriod !== undefined && (
           <ImpactEvaluationPeriodSelect
             onChange={onEvaluationPeriodChange}

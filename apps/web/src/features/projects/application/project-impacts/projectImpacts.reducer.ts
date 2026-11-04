@@ -6,30 +6,19 @@ import type {
 } from "shared";
 import { getDefaultEvaluationPeriodInYears } from "shared";
 
-import {
-  evaluationPeriodUpdated,
-  reconversionProjectImpactsBreakEvenLevelRequested,
-  viewModeUpdated,
-} from "./actions";
+import { evaluationPeriodUpdated, reconversionProjectImpactsAnalysisRequested } from "./actions";
 import { fetchQuickImpactsForUrbanProjectOnFriche } from "./actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { urbanSprawlImpactsComparisonRequested } from "./actions/urbanSprawlImpactsComparisonRequested.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-const DEFAULT_VIEW_MODE = "summary";
-
-export type ViewMode = "list" | "summary";
-
 export type ProjectImpactsState = {
+  evaluationPeriod: number | undefined;
   dataLoadingState: {
     impacts: LoadingState;
     urbanSprawlSimulation: LoadingState;
   };
   contextData?: GetReconversionProjectImpactsResultDto["contextData"];
-
-  currentViewMode: ViewMode;
-  evaluationPeriod: number | undefined;
-
   impacts?: GetReconversionProjectImpactsResultDto["impacts"];
   developmentScore?: GetReconversionProjectImpactsResultDto["developmentScore"];
   urbanSprawlSimulation?: UrbanSprawlImpactsComparisonResultDto;
@@ -43,15 +32,10 @@ export const getInitialState = (): ProjectImpactsState => {
       urbanSprawlSimulation: "idle",
     },
     evaluationPeriod: undefined,
-    currentViewMode: DEFAULT_VIEW_MODE,
   };
 };
 
 export const projectImpactsReducer = createReducer(getInitialState(), (builder) => {
-  builder.addCase(viewModeUpdated, (state, action: PayloadAction<ViewMode>) => {
-    state.currentViewMode = action.payload;
-  });
-
   builder.addCase(evaluationPeriodUpdated, (state, action: PayloadAction<number>) => {
     state.evaluationPeriod = action.payload;
   });
@@ -70,7 +54,7 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
   /* fetch reconversion project impacts */
   builder.addMatcher(
     isAnyOf(
-      reconversionProjectImpactsBreakEvenLevelRequested.pending,
+      reconversionProjectImpactsAnalysisRequested.pending,
       fetchQuickImpactsForUrbanProjectOnFriche.pending,
     ),
     (state) => {
@@ -79,7 +63,7 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
   );
   builder.addMatcher(
     isAnyOf(
-      reconversionProjectImpactsBreakEvenLevelRequested.rejected,
+      reconversionProjectImpactsAnalysisRequested.rejected,
       fetchQuickImpactsForUrbanProjectOnFriche.rejected,
     ),
     (state) => {
@@ -88,7 +72,7 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
   );
   builder.addMatcher(
     isAnyOf(
-      reconversionProjectImpactsBreakEvenLevelRequested.fulfilled,
+      reconversionProjectImpactsAnalysisRequested.fulfilled,
       fetchQuickImpactsForUrbanProjectOnFriche.fulfilled,
     ),
     (state, action) => {

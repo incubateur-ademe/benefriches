@@ -1,10 +1,10 @@
-import { Link } from "type-route";
+import type { Link } from "type-route";
 
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
 
 import type { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
-import { DetailsName } from "./details-modals/useOpenDescriptionModalLink";
+import type { DetailsName } from "./details-modals/useOpenDescriptionModalLink";
 import MetricCard from "./layout/ProjectDevelopmentMetricCard";
 import ProjectDevelopmentScoreFamilyHeader from "./layout/ProjectDevelopmentScoreFamilyHeader";
 

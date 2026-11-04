@@ -9,12 +9,12 @@ import classNames from "@/shared/views/clsx";
 import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
 import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
 import type { ProjectSummaryDataView } from "../../application/project-impacts/selectors/projectSummary.selector";
-import BreakEvenLevelImpactsActionBar from "../project-break-even-level/ProjectBreakEvenLevelActionBar";
 import ProjectBreakEvenLevelSummary from "../project-break-even-level/ProjectBreakEvenLevelSummary";
 import { LETTER_GRADE_COLORS } from "../project-development-score/layout/colors";
-import ExportImpactsModal from "../project-impacts-export/export-impacts/ExportModal";
+import ExportImpactsModal from "../project-page/export-impacts-modal/ExportModal";
 import ProjectImpactFooter from "../project-page/footer/ProjectImpactFooter";
 import ProjectPageHeader from "../project-page/header/";
+import BreakEvenLevelImpactsActionBar from "../shared/actions/ProjectActionBarWithEvaluationPeriod";
 import ProjectSummaryComparisonCard from "./ProjectSummaryComparisonCard";
 import { ProjectSummaryMap } from "./ProjectSummaryMap";
 
@@ -54,7 +54,7 @@ export default function ProjectSummaryTab({
           onEvaluationPeriodChange={(evaluationPeriodInYears: number) => {
             void dispatch(evaluationPeriodUpdated(evaluationPeriodInYears));
           }}
-          header={<ProjectPageHeader projectId={projectId} />}
+          header={<ProjectPageHeader projectId={projectId} noMenu size="small" />}
         />
       </div>
 

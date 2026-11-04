@@ -1,12 +1,10 @@
 import { useContext } from "react";
 
-import { useAppSelector } from "@/app/hooks/store.hooks";
-
 import type { BreakEvenLevelTabDataView } from "../../application/project-impacts/selectors/projectBreakEvenLevel.selectors";
-import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
 import { ImpactModalDescriptionContext } from "../impact-description-modals/ImpactModalDescriptionContext";
+import AboutImpactsModalButton from "../project-page/about-impacts-modal/AboutImpactsModalButton";
 import ProjectPageHeader from "../project-page/header/";
-import BreakEvenLevalImpactsActionBar from "./ProjectBreakEvenLevelActionBar";
+import BreakEvenLevelImpactsActionBar from "../shared/actions/ProjectActionBarWithEvaluationPeriod";
 import ProjectBreakEvenLevelSection from "./ProjectBreakEvenLevelSection";
 import ProjectBreakEvenLevelSummary from "./ProjectBreakEvenLevelSummary";
 import BreakEvenLevelChart from "./charts/BreakEvenLevelChart";
@@ -18,6 +16,7 @@ import LocalPeopleOrCompanyIndirectEconomicImpactsCharts from "./charts/LocalPeo
 
 type Props = BreakEvenLevelTabDataView & {
   projectId: string;
+  evaluationPeriod: number;
   onEvaluationPeriodChange: (value: number) => void;
 };
 
@@ -27,8 +26,8 @@ export default function ProjectBreakEvenLevelTab({
   indirectEconomicImpactsByBearer,
   projectEconomicBalanceByCategory,
   onEvaluationPeriodChange,
+  evaluationPeriod,
 }: Props) {
-  const { evaluationPeriod = 50 } = useAppSelector(selectImpactsPageViewData);
   const { projectionYears, aggregatedReconversionImpacts } = impacts;
   const {
     breakEvenYear,
@@ -46,10 +45,10 @@ export default function ProjectBreakEvenLevelTab({
     <div className="flex flex-col gap-10">
       <div className="flex items-center justify-between">
         <h3 className="text-2xl mb-0">Analyse coût-bénéfice</h3>
-        <BreakEvenLevalImpactsActionBar
+        <BreakEvenLevelImpactsActionBar
           evaluationPeriod={evaluationPeriod}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
-          header={<ProjectPageHeader projectId={projectId} />}
+          header={<ProjectPageHeader projectId={projectId} noMenu size="small" />}
         />
       </div>
 
@@ -137,6 +136,21 @@ export default function ProjectBreakEvenLevelTab({
           />
         }
       />
+
+      <div className="py-8">
+        💡 Comment sont calculés les indicateurs ? Qu’est-ce qu’un impact monétarisé ? Bénéfriches
+        répond à toutes vos questions dans sa
+        <AboutImpactsModalButton
+          buttonProps={{
+            className: "ml-2",
+            children: "FAQ",
+            iconId: "fr-icon-questionnaire-line",
+            size: "small",
+            priority: "tertiary",
+          }}
+        />
+        .
+      </div>
     </div>
   );
 }

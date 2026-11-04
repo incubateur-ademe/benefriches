@@ -7,10 +7,7 @@ import { createStore, type RootState } from "@/app/store/store";
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import {
-  selectImpactsListViewData,
-  selectImpactsPageViewData,
-} from "../selectors/projectImpacts.selectors";
+import { selectImpactsPageViewData } from "../selectors/projectImpacts.selectors";
 
 const MOCK_STATES = {
   projectImpacts: {
@@ -19,7 +16,6 @@ const MOCK_STATES = {
       urbanSprawlSimulation: "idle",
     },
     evaluationPeriod: photovoltaicProjectImpactMock.projectionYears.length,
-    currentViewMode: "list",
     impacts: photovoltaicProjectImpactMock,
     contextData: photovoltaicProjectImpactMockMeta,
   } satisfies RootState["projectImpacts"],
@@ -27,38 +23,6 @@ const MOCK_STATES = {
 };
 
 describe("projectImpacts ViewData selectors", () => {
-  describe("selectImpactsListViewData", () => {
-    it("returns composed view data from state", () => {
-      const store = createStore(getTestAppDependencies(), MOCK_STATES);
-      const rootState = store.getState();
-
-      const viewData = selectImpactsListViewData(rootState);
-
-      expect(viewData).toEqual({
-        economicBalance: expect.objectContaining({
-          total: -700000,
-          bearerName: "Mairie de Blajan",
-          economicBalance: expect.any(Array),
-        }),
-        socioEconomicImpacts: expect.objectContaining({
-          total: expect.any(Number),
-          humanity: expect.any(Object),
-          localPeopleOrCompany: expect.any(Object),
-          localAuthority: expect.any(Object),
-        }),
-        environmentImpacts: expect.objectContaining({
-          soils: expect.any(Object),
-          co2eq: expect.any(Object),
-        }),
-        socialImpacts: expect.objectContaining({
-          humanity: expect.any(Object),
-          localPeopleOrCompany: expect.any(Object),
-          jobs: expect.any(Object),
-        }),
-      });
-    });
-  });
-
   describe("selectImpactsPageViewData", () => {
     it("returns composed view data from state", () => {
       const store = createStore(getTestAppDependencies(), MOCK_STATES);

@@ -4,8 +4,8 @@ import { useState } from "react";
 import type { ClassValue } from "@/shared/views/clsx";
 import classNames from "@/shared/views/clsx";
 
-import ImpactEvaluationPeriodSelect from "../shared/actions/ImpactEvaluationPeriodSelect";
-import ProjectImpactsStickyActionBar from "../shared/actions/StickyActionBar";
+import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
+import ProjectImpactsStickyActionBar from "./StickyActionBar";
 
 type Props = {
   evaluationPeriod: number | undefined;
@@ -14,7 +14,7 @@ type Props = {
   className?: ClassValue;
 };
 
-function BreakEvenLevelImpactsActionBar({
+function ProjectActionBarWithEvaluationPeriod({
   evaluationPeriod,
   onEvaluationPeriodChange,
   header,
@@ -55,4 +55,4 @@ function BreakEvenLevelImpactsActionBar({
   );
 }
 
-export default BreakEvenLevelImpactsActionBar;
+export default ProjectActionBarWithEvaluationPeriod;

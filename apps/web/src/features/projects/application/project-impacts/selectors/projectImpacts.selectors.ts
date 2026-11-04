@@ -24,14 +24,6 @@ import type { ProjectDevelopmentPlanType } from "@/features/projects/core/projec
 
 import { type ProjectImpactsState } from "../projectImpacts.reducer";
 
-// List View
-type ImpactsListViewData = {
-  economicBalance: EconomicBalanceByCategory;
-  socioEconomicImpacts: SocioEconomicImpactsByBearerListView;
-  environmentImpacts: EnvironmentalImpactMetricsByListViewCategory;
-  socialImpacts: SocialImpactMetricsByListViewCategory;
-};
-
 const selectProjectImpactsState = (state: RootState) => state.projectImpacts;
 
 export const selectImpactsContextData = createSelector(
@@ -86,26 +78,6 @@ export const selectEconomicBalanceProjectImpacts = createSelector(
   selectProjectDevelopmentType,
   selectImpactsCroppedByEvaluationPeriod,
   buildEconomicBalanceListView,
-);
-
-export const selectImpactsListViewData = createSelector(
-  [
-    selectEconomicBalanceProjectImpacts,
-    selectSocioEconomicProjectImpactsListView,
-    selectEnvironmentalProjectImpacts,
-    selectSocialProjectImpacts,
-  ],
-  (
-    economicBalance,
-    socioEconomicImpacts,
-    environmentImpacts,
-    socialImpacts,
-  ): ImpactsListViewData => ({
-    economicBalance,
-    socioEconomicImpacts,
-    environmentImpacts,
-    socialImpacts,
-  }),
 );
 
 export const selectDisplayImpactsAccuracyDisclaimer = createSelector(

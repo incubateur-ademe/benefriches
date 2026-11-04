@@ -1,7 +1,7 @@
 import type {
   PdfExportSectionId,
   PdfExportSectionSelection,
-} from "../export-impacts/pdf-export/pdfExportSections";
+} from "../../project-page/export-impacts-modal/pdf-export/pdfExportSections";
 import type { pageIds } from "./pageIds";
 
 type SubSection = {

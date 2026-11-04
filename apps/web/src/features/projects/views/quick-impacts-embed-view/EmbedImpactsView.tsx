@@ -52,6 +52,7 @@ export default function QuickImpactsEmbedView({
         getUpdateRouteDetailsFn={getUpdateRouteDetailsFn}
         projectId={modalsData.contextData.projectId}
         disableExport
+        disableStickyHeader
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import { View } from "@react-pdf/renderer";
 
 import type { ModalGroupTableProps } from "../../../impact-description-modals/modal-table/ModalGroupTable";
-import { formatMonetaryImpactPdf } from "../../../project-impacts/pdf-export/format";
+import { formatMonetaryImpactPdf } from "../../../pdf-impacts-export/pdf-export/format";
 import { ModalPdfTableTdValue, ModalPdfTdLegendSquare } from "./ModalPdfTable";
 import { ModalPdfSimpleTd } from "./ModalPdfTd";
 import { renderChildren } from "./helpers";

@@ -156,7 +156,10 @@ function AdminUserPage({ viewData }: Props) {
               noCaption
               headers={PROJECTS_HEADERS}
               data={viewData.activity.projects.map((project) => [
-                <a key={project.id} {...routes.projectImpacts({ projectId: project.id }).link}>
+                <a
+                  key={project.id}
+                  {...routes.projectImpactsSummary({ projectId: project.id }).link}
+                >
                   {project.name}
                 </a>,
                 project.id,
