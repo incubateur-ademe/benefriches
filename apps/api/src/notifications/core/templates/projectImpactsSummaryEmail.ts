@@ -1,4 +1,4 @@
-import type { BreakEvenHorizon, KeyImpactIndicatorData, ZanComplianceIndicator } from "shared";
+import type { AvoidedCostsAnalysisData, BreakEvenHorizon, DevelopmentScoreCardInput } from "shared";
 
 import type { LifecycleEmailProject } from "src/notifications/core/gateways/LifecycleEmailProjectQuery";
 import {
@@ -9,8 +9,8 @@ import {
 } from "src/notifications/core/templates/emailLayout";
 import {
   buildBreakEvenCard,
-  buildMainImpactIndicatorCard,
-  buildZanComplianceCard,
+  buildAvoidedCostsAnalysisCard,
+  buildDevelopmentScoreCard,
 } from "src/notifications/core/templates/projectImpactsSummaryCards";
 import { NBSP } from "src/notifications/core/templates/reminderGreeting";
 
@@ -18,11 +18,11 @@ import { NBSP } from "src/notifications/core/templates/reminderGreeting";
 // so the template takes literal inputs and the preview samples stay synchronous.
 export type ProjectImpactsSummaryContent = {
   project: LifecycleEmailProject;
-  // 30 (photovoltaic plant) or 50: the "Sur <n> ans" of the break-even card.
+  // always 50 because of developmentScore specification: the "Sur <n> ans" of the break-even card.
   evaluationPeriodInYears: number;
-  zanCompliance: ZanComplianceIndicator | undefined;
+  developmentScore: DevelopmentScoreCardInput;
   breakEvenHorizon: BreakEvenHorizon;
-  mainImpactIndicator: KeyImpactIndicatorData | undefined;
+  avoidedCostsAnalysisData: AvoidedCostsAnalysisData;
 };
 
 export type BuildProjectImpactsSummaryEmailInput = ProjectImpactsSummaryContent & {
@@ -54,7 +54,7 @@ export function buildProjectImpactsSummaryEmail(
   // The name is user input: a newline has no place in a header.
   const subjectSiteName = project.siteName.replace(/\s+/g, " ").trim();
   // Never a hardcoded domain: always built from the injected webapp URL. The paths are the web
-  // routes projectImpacts, projectImpactsBreakEvenLevel and projectAvoidedCostsAnalysis.
+  // routes projectDevelopmentScore, projectImpactsBreakEvenLevel and projectAvoidedCostsAnalysis.
   const projectUrl = (page: string): string =>
     new URL(`/mes-projets/${encodeURIComponent(project.id)}/${page}`, input.webappUrl).toString();
 
@@ -65,24 +65,20 @@ export function buildProjectImpactsSummaryEmail(
   // The evaluation date is the project's creation date.
   const evaluationDate = `Évaluation réalisée le ${formatEvaluationDate(project.createdAt)}`;
 
-  // No ZAN indicator: no card 1 (type-level only, the derivation always yields one). No main
-  // indicator: no card 3.
-  const zanComplianceCard = input.zanCompliance
-    ? buildZanComplianceCard(input.zanCompliance, {
-        label: "Voir le détail des impacts",
-        url: projectUrl("impacts"),
-      })
-    : undefined;
+  const developmentScoreCard = buildDevelopmentScoreCard(input.developmentScore, {
+    label: "Voir le détail du score",
+    url: projectUrl("score-impacts"),
+  });
+
   const breakEvenCard = buildBreakEvenCard(input.breakEvenHorizon, input.evaluationPeriodInYears, {
     label: "Voir l'analyse coût-bénéfices",
     url: projectUrl("analyse-cout-benefice"),
   });
-  const mainImpactIndicatorCard = input.mainImpactIndicator
-    ? buildMainImpactIndicatorCard(input.mainImpactIndicator, {
-        label: "Voir l'analyse des coûts évités",
-        url: projectUrl("analyse-couts-evites"),
-      })
-    : undefined;
+
+  const avoidedCostsAnalysisCard = buildAvoidedCostsAnalysisCard(input.avoidedCostsAnalysisData, {
+    label: "Voir l'analyse des coûts évités",
+    url: projectUrl("analyse-couts-evites"),
+  });
 
   const sections: EmailSection[] = [
     {
@@ -95,9 +91,9 @@ export function buildProjectImpactsSummaryEmail(
       html: `<span style="font-size:14px;">${escapeHtml(evaluationDate)}</span>`,
       text: evaluationDate,
     },
-    ...(zanComplianceCard ? [zanComplianceCard] : []),
+    ...(developmentScoreCard ? [developmentScoreCard] : []),
     breakEvenCard,
-    ...(mainImpactIndicatorCard ? [mainImpactIndicatorCard] : []),
+    ...(avoidedCostsAnalysisCard ? [avoidedCostsAnalysisCard] : []),
   ];
 
   return renderEmail({

@@ -1,89 +1,198 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import type { BreakEvenHorizon } from "../key-impact-indicators/breakEvenHorizon";
 import type {
-  KeyImpactIndicatorData,
-  ZanComplianceIndicator,
-} from "../key-impact-indicators/keyImpactIndicators";
+  LetterGrade,
+  LetterGradeWithModifier,
+  ProjectDevelopmentScore,
+} from "../development-score";
+import { MAIN_GRADE_TEXT } from "../development-score/gradeText";
+import { getLetterGradeFromLetterGradeWithModifiers } from "../development-score/scoring.helpers";
+import type { LocalAuthorityIndirectEconomicImpactCategory } from "../group-impacts/groupImpacts.types";
+import type { BreakEvenHorizon } from "./breakEvenHorizon";
 import type { SummaryCardContent } from "./summaryCards";
 import {
+  getAvoidedCostsAnalysisCardContent,
   getBreakEvenCardContent,
-  getMainImpactIndicatorCardContent,
-  getZanComplianceCardContent,
+  getDevelopmentScoreCardContent,
 } from "./summaryCards";
 
 // Intl's fr-FR output: U+202F groups thousands; a U+00A0 precedes a unit.
 const NNBSP = " ";
 const NBSP = " ";
 
-describe("getZanComplianceCardContent", () => {
+type DevelopmentScoreKey = keyof ProjectDevelopmentScore["details"];
+
+const buildDevelopmentScore = (
+  detailsGrade: Partial<Record<DevelopmentScoreKey, LetterGrade>>,
+  letterGradeWithModifiers: LetterGradeWithModifier = "B+",
+) => ({
+  letterGrade: getLetterGradeFromLetterGradeWithModifiers(letterGradeWithModifiers),
+  letterGradeWithModifiers,
+  ...detailsGrade,
+});
+
+describe("getDevelopmentScoreCardContent", () => {
   const cases: {
+    letterGradeWithModifiers: LetterGradeWithModifier;
     label: string;
-    zanCompliance: ZanComplianceIndicator;
-    expected: SummaryCardContent;
+    detailsGrade: Partial<Record<DevelopmentScoreKey, LetterGrade>>;
+    expectedBody: string;
   }[] = [
     {
-      label: "a friche reconversion as favourable",
-      zanCompliance: {
-        name: "zanCompliance",
-        isSuccess: true,
-        value: { isAgriculturalFriche: false, artificializedSurfaceArea: 0 },
+      label: "a single positive highlighted element",
+      letterGradeWithModifiers: "B+",
+      detailsGrade: {
+        localAuthorityEconomicScore: "A",
+        fullTimeJobsScore: "D",
+        localPeopleQualityOfLifeScore: "C",
+        environmentScore: "C",
       },
-      expected: {
-        headline: "Projet favorable au ZAN",
-        body: "Le projet reconvertit un site en friche et limite la consommation d'espaces naturels, agricoles ou forestiers.",
-      },
+      expectedBody: "Notamment sur les finances publiques.",
     },
     {
-      label: "an agricultural friche as unfavourable",
-      zanCompliance: {
-        name: "zanCompliance",
-        isSuccess: false,
-        value: {
-          isAgriculturalFriche: true,
-          permeableSurfaceAreaDifference: -500,
-          artificializedSurfaceArea: 500,
-        },
+      label: "two positive highlighted elements",
+      letterGradeWithModifiers: "B+",
+      detailsGrade: {
+        localAuthorityEconomicScore: "D",
+        fullTimeJobsScore: "B",
+        localPeopleQualityOfLifeScore: "D",
+        environmentScore: "A",
       },
-      expected: {
-        headline: "Projet défavorable au ZAN",
-        body: "Le projet imperméabilise des sols agricoles.",
-      },
+      expectedBody: "Notamment sur l'emploi et l'environnement.",
     },
     {
-      label: "a permeability loss as unfavourable",
-      zanCompliance: {
-        name: "zanCompliance",
-        isSuccess: false,
-        value: {
-          isAgriculturalFriche: false,
-          permeableSurfaceAreaDifference: -1200,
-          artificializedSurfaceArea: 1200,
-        },
+      label: "three positive highlighted elements",
+      letterGradeWithModifiers: "B+",
+      detailsGrade: {
+        localAuthorityEconomicScore: "B",
+        fullTimeJobsScore: "B",
+        localPeopleQualityOfLifeScore: "D",
+        environmentScore: "B",
       },
-      expected: {
-        headline: "Projet défavorable au ZAN",
-        body: "Le projet imperméabilise des sols.",
-      },
+      expectedBody: "Notamment sur les finances publiques, l'emploi et l'environnement.",
     },
     {
-      label: "a non-friche site without permeability loss as unfavourable",
-      zanCompliance: {
-        name: "zanCompliance",
-        isSuccess: false,
-        value: { permeableSurfaceAreaDifference: undefined, artificializedSurfaceArea: 0 },
+      label: "all four positive elements",
+      letterGradeWithModifiers: "A",
+
+      detailsGrade: {
+        localPeopleQualityOfLifeScore: "A",
+        environmentScore: "A",
+        localAuthorityEconomicScore: "A",
+        fullTimeJobsScore: "A",
       },
-      expected: {
-        headline: "Projet défavorable au ZAN",
-        body: "Le projet consomme des espaces naturels, agricoles ou forestiers.",
+      expectedBody:
+        "Notamment sur les finances publiques, l'emploi, la qualité de vie des riverains et l'environnement.",
+    },
+    {
+      label: "a single negative highlighted element",
+      letterGradeWithModifiers: "D+",
+      detailsGrade: {
+        localAuthorityEconomicScore: "B",
+        fullTimeJobsScore: "E",
+        localPeopleQualityOfLifeScore: "B",
+        environmentScore: "B",
       },
+      expectedBody: "Notamment sur l'emploi.",
+    },
+    {
+      label: "two negative highlighted elements",
+      letterGradeWithModifiers: "D+",
+      detailsGrade: {
+        localAuthorityEconomicScore: "E",
+        fullTimeJobsScore: "B",
+        localPeopleQualityOfLifeScore: "D",
+        environmentScore: "B",
+      },
+      expectedBody: "Notamment sur les finances publiques et la qualité de vie des riverains.",
+    },
+    {
+      label: "three negative highlighted elements",
+      letterGradeWithModifiers: "D+",
+      detailsGrade: {
+        localAuthorityEconomicScore: "C",
+        fullTimeJobsScore: "E",
+        localPeopleQualityOfLifeScore: "B",
+        environmentScore: "E",
+      },
+      expectedBody: "Notamment sur les finances publiques, l'emploi et l'environnement.",
+    },
+    {
+      label: "all four negative elements",
+      letterGradeWithModifiers: "E+",
+
+      detailsGrade: {
+        localPeopleQualityOfLifeScore: "E",
+        environmentScore: "E",
+        localAuthorityEconomicScore: "E",
+        fullTimeJobsScore: "C",
+      },
+      expectedBody:
+        "Notamment sur les finances publiques, l'emploi, la qualité de vie des riverains et l'environnement.",
+    },
+    {
+      label: "all four neutral elements",
+      letterGradeWithModifiers: "C",
+      detailsGrade: {
+        localPeopleQualityOfLifeScore: "C",
+        environmentScore: "C",
+        localAuthorityEconomicScore: "C",
+        fullTimeJobsScore: "C",
+      },
+      expectedBody:
+        "Notamment sur les finances publiques, l'emploi, la qualité de vie des riverains et l'environnement.",
+    },
+    {
+      label: "neutral score + with 2 positive and 2 negative",
+      letterGradeWithModifiers: "C+",
+      detailsGrade: {
+        localPeopleQualityOfLifeScore: "B",
+        environmentScore: "B",
+        localAuthorityEconomicScore: "D",
+        fullTimeJobsScore: "D",
+      },
+      expectedBody: "Notamment sur les finances publiques et l'emploi.",
+    },
+    {
+      label: "neutral score - with 2 positive and 2 negative",
+      letterGradeWithModifiers: "C-",
+      detailsGrade: {
+        localPeopleQualityOfLifeScore: "B",
+        environmentScore: "B",
+        localAuthorityEconomicScore: "D",
+        fullTimeJobsScore: "D",
+      },
+      expectedBody: "Notamment sur les finances publiques et l'emploi.",
+    },
+    {
+      label: "neutral score with 2 positive and 2 negative",
+      letterGradeWithModifiers: "C",
+
+      detailsGrade: {
+        localPeopleQualityOfLifeScore: "B",
+        environmentScore: "B",
+        localAuthorityEconomicScore: "D",
+        fullTimeJobsScore: "D",
+      },
+      expectedBody: "Notamment sur les finances publiques et l'emploi.",
     },
   ];
 
-  for (const { label, zanCompliance, expected } of cases) {
+  for (const { label, detailsGrade, expectedBody, letterGradeWithModifiers } of cases) {
     it(`shows ${label}`, () => {
-      assert.deepStrictEqual(getZanComplianceCardContent(zanCompliance), expected);
+      const expected: SummaryCardContent = {
+        title:
+          MAIN_GRADE_TEXT[getLetterGradeFromLetterGradeWithModifiers(letterGradeWithModifiers)],
+        headline: letterGradeWithModifiers,
+        body: expectedBody,
+      };
+      assert.deepStrictEqual(
+        getDevelopmentScoreCardContent(
+          buildDevelopmentScore(detailsGrade, letterGradeWithModifiers),
+        ),
+        expected,
+      );
     });
   }
 });
@@ -157,193 +266,94 @@ describe("getBreakEvenCardContent", () => {
   }
 });
 
-describe("getMainImpactIndicatorCardContent", () => {
+describe("getAvoidedCostsAnalysisCardContent", () => {
+  it("falls back on the total of the socio-economic impacts when there is no main local authority impact", () => {
+    assert.deepStrictEqual(
+      getAvoidedCostsAnalysisCardContent({
+        localAuthorityMainIndirectEconomicImpact: undefined,
+        indirectEconomicImpactsTotal: 1_250_000,
+      }),
+      {
+        headline: `+1${NNBSP}250${NNBSP}000${NBSP}€`,
+        title: "Total des impacts socio-économiques",
+        body: "pour la collectivité, les riverains ou l'humanité",
+      },
+    );
+  });
+
+  it("falls back on a negative total of the socio-economic impacts", () => {
+    assert.deepStrictEqual(
+      getAvoidedCostsAnalysisCardContent({
+        localAuthorityMainIndirectEconomicImpact: undefined,
+        indirectEconomicImpactsTotal: -30_000,
+      }),
+      {
+        headline: `-30${NNBSP}000${NBSP}€`,
+        title: "Total des impacts socio-économiques",
+        body: "pour la collectivité, les riverains ou l'humanité",
+      },
+    );
+  });
+
   const cases: {
-    label: string;
-    indicator: KeyImpactIndicatorData;
-    expected: SummaryCardContent;
+    name: LocalAuthorityIndirectEconomicImpactCategory;
+    positiveBody: string;
+    negativeBody: string;
   }[] = [
     {
-      label: "the collectivité's gains from the avoided friche costs",
-      indicator: {
-        name: "avoidedFricheCostsForLocalAuthority",
-        isSuccess: true,
-        value: {
-          total: 150_000,
-          details: [
-            { impactName: "avoidedFricheMaintenanceAndSecuringCostsForOwner", amount: 150_000 },
-          ],
-        },
-      },
-      expected: {
-        headline: `+150${NNBSP}000${NBSP}€`,
-        title: "Gains pour la collectivité",
-        body: "grâce à la reconversion de la friche",
-      },
+      name: "fricheCosts",
+      positiveBody: "grâce à la reconversion de la friche",
+      negativeBody: "à cause du maintien de la friche",
     },
     {
-      label: "the collectivité's losses from keeping the friche",
-      indicator: {
-        name: "avoidedFricheCostsForLocalAuthority",
-        isSuccess: false,
-        value: {
-          total: -20_000,
-          details: [
-            { impactName: "avoidedFricheMaintenanceAndSecuringCostsForTenant", amount: -20_000 },
-          ],
-        },
-      },
-      expected: {
-        headline: `-20${NNBSP}000${NBSP}€`,
-        title: "Pertes pour la collectivité",
-        body: "à cause du maintien de la friche",
-      },
+      name: "taxesIncome",
+      positiveBody: "grâce aux recettes fiscales supplémentaires",
+      negativeBody: "à cause d'une perte de recettes fiscales",
     },
     {
-      label: "the collectivité's gains from additional tax income",
-      indicator: { name: "taxesIncomesImpact", isSuccess: true, value: 50_000 },
-      expected: {
-        headline: `+50${NNBSP}000${NBSP}€`,
-        title: "Gains pour la collectivité",
-        body: "grâce aux recettes fiscales supplémentaires",
-      },
+      name: "municipalityExpenses",
+      positiveBody: "grâce aux économies de dépenses municipales réalisées",
+      negativeBody: "à cause de dépenses municipales supplémentaires",
     },
     {
-      label: "the collectivité's losses from lost tax income",
-      indicator: { name: "taxesIncomesImpact", isSuccess: false, value: -5_000 },
-      expected: {
-        headline: `-5${NNBSP}000${NBSP}€`,
-        title: "Pertes pour la collectivité",
-        body: "à cause d'une perte de recettes fiscales",
-      },
+      name: "operatingEconomicBalance",
+      positiveBody: "grâce aux recettes d'exploitation",
+      negativeBody: "à cause de dépenses d'exploitation",
     },
     {
-      label: "the residents' potential gains from the property value increase",
-      indicator: { name: "localPropertyValueIncrease", isSuccess: true, value: 250_000 },
-      expected: {
-        headline: `+250${NNBSP}000${NBSP}€`,
-        title: "Gains potentiels pour les riverains",
-        body: "grâce à la hausse de valeur patrimoniale attendue par la reconversion de la friche",
-      },
-    },
-    {
-      label: "full-time jobs going up",
-      indicator: {
-        name: "fullTimeJobs",
-        isSuccess: true,
-        value: { difference: 12, percentageEvolution: 25.4 },
-      },
-      expected: {
-        headline: "25%",
-        title: "ETP en hausse",
-        body: "12 emploi équivalent temps plein créé ou maintenu",
-      },
-    },
-    {
-      label: "full-time jobs going down",
-      indicator: {
-        name: "fullTimeJobs",
-        isSuccess: false,
-        value: { difference: -3.5, percentageEvolution: -40.2 },
-      },
-      expected: {
-        headline: "-40%",
-        title: "ETP en baisse",
-        body: "-3,5 emploi équivalent temps plein perdu",
-      },
-    },
-    {
-      label: "the households powered by renewable energy",
-      indicator: { name: "householdsPoweredByRenewableEnergy", isSuccess: true, value: 1500 },
-      expected: {
-        headline: `1${NNBSP}500`,
-        title: "nouveaux foyers alimentés en EnR",
-        body: "grâce à la production photovoltaïque annuelle",
-      },
-    },
-    {
-      label: "avoided CO2eq emissions",
-      indicator: { name: "avoidedCo2eqEmissions", isSuccess: true, value: 920 },
-      expected: {
-        headline: `920${NBSP}t`,
-        title: "Émissions de CO2eq évitées",
-        body: "soit les émissions de 100 français pendant 1 an",
-      },
-    },
-    {
-      label: "CO2eq emissions, unsigned",
-      indicator: { name: "avoidedCo2eqEmissions", isSuccess: false, value: -46 },
-      expected: {
-        headline: `46${NBSP}t`,
-        title: "Émissions de CO2eq",
-        body: "soit les émissions de 5 français pendant 1 an",
-      },
-    },
-    {
-      label: "more permeable soils",
-      indicator: {
-        name: "permeableSurfaceArea",
-        isSuccess: true,
-        value: { difference: 20_000, percentageEvolution: 82.4 },
-      },
-      expected: {
-        headline: `20${NNBSP}000 ㎡`,
-        title: "Augmentation des sols perméables",
-        body: "82% de sols désimperméabilisés",
-      },
-    },
-    {
-      label: "fewer permeable soils",
-      indicator: {
-        name: "permeableSurfaceArea",
-        isSuccess: false,
-        value: { difference: -1200, percentageEvolution: -12.4 },
-      },
-      expected: {
-        headline: `-1${NNBSP}200 ㎡`,
-        title: "Diminution des sols perméables",
-        body: "-12% de sols imperméabilisés",
-      },
-    },
-    {
-      label: "decontaminated soils",
-      indicator: {
-        name: "nonContaminatedSurfaceArea",
-        isSuccess: true,
-        value: {
-          decontaminatedSurfaceArea: 3000,
-          forecastContaminatedSurfaceArea: 1000,
-          percentageEvolution: 30,
-        },
-      },
-      expected: {
-        headline: `3${NNBSP}000 ㎡`,
-        title: "de sols dépollués",
-        body: `Les risques sanitaires seront réduits${NBSP}☢️`,
-      },
-    },
-    {
-      label: "soils left contaminated",
-      indicator: {
-        name: "nonContaminatedSurfaceArea",
-        isSuccess: false,
-        value: {
-          decontaminatedSurfaceArea: 0,
-          forecastContaminatedSurfaceArea: 3000,
-          percentageEvolution: 0,
-        },
-      },
-      expected: {
-        headline: `3${NNBSP}000 ㎡`,
-        title: "de sols non dépollués",
-        body: `Les risques sanitaires seront encore présents${NBSP}☢️`,
-      },
+      name: "rentalIncome",
+      positiveBody: "grâce aux revenus locatifs supplémentaires",
+      negativeBody: "à cause d'une perte de revenus locatifs",
     },
   ];
 
-  for (const { label, indicator, expected } of cases) {
-    it(`shows ${label}`, () => {
-      assert.deepStrictEqual(getMainImpactIndicatorCardContent(indicator), expected);
+  for (const { name, positiveBody, negativeBody } of cases) {
+    it(`shows the collectivité's gains for ${name}`, () => {
+      assert.deepStrictEqual(
+        getAvoidedCostsAnalysisCardContent({
+          localAuthorityMainIndirectEconomicImpact: { name, total: 150_000 },
+          indirectEconomicImpactsTotal: 999_999,
+        }),
+        {
+          headline: `+150${NNBSP}000${NBSP}€`,
+          title: "Gains pour la collectivité",
+          body: positiveBody,
+        },
+      );
+    });
+
+    it(`shows the collectivité's losses for ${name}`, () => {
+      assert.deepStrictEqual(
+        getAvoidedCostsAnalysisCardContent({
+          localAuthorityMainIndirectEconomicImpact: { name, total: -20_000 },
+          indirectEconomicImpactsTotal: 999_999,
+        }),
+        {
+          headline: `-20${NNBSP}000${NBSP}€`,
+          title: "Pertes pour la collectivité",
+          body: negativeBody,
+        },
+      );
     });
   }
 });

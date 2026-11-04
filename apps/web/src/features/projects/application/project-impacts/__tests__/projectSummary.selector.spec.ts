@@ -1,7 +1,9 @@
 import {
+  type GetReconversionProjectImpactsResultDto,
   photovoltaicProjectDevelopmentScoreMock,
   photovoltaicProjectImpactMockMeta,
   photovoltaicProjectImpactsResultDto,
+  roundToInteger,
   urbanProjectDevelopmentScoreMock,
   urbanProjectImpactMockMeta,
   urbanProjectImpactsResultDto,
@@ -18,21 +20,55 @@ import { selectProjectSummaryDataView } from "../selectors/projectSummary.select
 
 // The urban mock with a local-authority tenant (so the avoided friche costs depend on the
 // evaluation period) and a break-even year.
-const urbanImpactsWithLocalAuthorityTenant = {
+
+const buildYearlySeries = (total: number, years: number) => {
+  const perYear = roundToInteger(total / years);
+  const detailsByYear = Array.from({ length: years }, () => perYear);
+  const roundedSum = roundToInteger(perYear * years);
+  detailsByYear[years - 1] = roundToInteger((detailsByYear[years - 1] ?? 0) + (total - roundedSum));
+
+  let cumulative = 0;
+  const cumulativeByYear = detailsByYear.map((value) => {
+    cumulative = roundToInteger(cumulative + value);
+    return cumulative;
+  });
+
+  return { detailsByYear, cumulativeByYear };
+};
+
+const urbanImpactsWithLocalAuthorityTenant: GetReconversionProjectImpactsResultDto["impacts"] = {
   ...urbanProjectImpactsResultDto,
   stakeholders: {
-    ...urbanProjectImpactsResultDto.stakeholders,
+    future: {},
+    project: {
+      developer: { structureType: "municipality", structureName: "Mairie de Blajan" },
+      reinstatementContractOwner: { structureType: "unknown" },
+    },
     current: {
-      ...urbanProjectImpactsResultDto.stakeholders.current,
+      owner: { structureType: "municipality", structureName: "Mairie de Blajan" },
       tenant: { structureType: "epci" as const, structureName: "CC Blajan" },
     },
   },
   aggregatedReconversionImpacts: {
     ...urbanProjectImpactsResultDto.aggregatedReconversionImpacts,
+    indirectEconomicImpacts: {
+      total:
+        urbanProjectImpactsResultDto.aggregatedReconversionImpacts.indirectEconomicImpacts.total +
+        1000000,
+      details: [
+        ...urbanProjectImpactsResultDto.aggregatedReconversionImpacts.indirectEconomicImpacts
+          .details,
+        {
+          name: "avoidedFricheMaintenanceAndSecuringCostsForTenant" as const,
+          details: "illegalDumpingCost" as const,
+          total: 1000000,
+          ...buildYearlySeries(1000000, 50),
+        },
+      ],
+    },
     breakEvenYear: "2040",
   },
 };
-
 const buildProjectionYears = (startYear: number, count: number) =>
   Array.from({ length: count }, (_, index) => String(startYear + index));
 
@@ -56,18 +92,11 @@ describe("selectProjectSummaryDataView", () => {
       breakEvenYear: undefined,
       projectionYears: buildProjectionYears(2024, 20),
       developmentScore: photovoltaicProjectDevelopmentScoreMock,
-      mainImpactIndicator: {
-        name: "avoidedFricheCostsForLocalAuthority",
-        isSuccess: false,
-        value: {
-          details: [
-            {
-              impactName: "avoidedFricheMaintenanceAndSecuringCostsForOwner",
-              amount: 0,
-              bearerName: "Mairie de Blajan",
-            },
-          ],
-          total: 0,
+      avoidedCostsAnalysisData: {
+        indirectEconomicImpactsTotal: -195584,
+        localAuthorityMainIndirectEconomicImpact: {
+          name: "rentalIncome",
+          total: -540000,
         },
       },
       siteId: "68382abb-3a81-45e6-8af4-913767a28141",
@@ -96,23 +125,11 @@ describe("selectProjectSummaryDataView", () => {
       breakEvenYear: "2040",
       projectionYears: buildProjectionYears(2026, 50),
       developmentScore: urbanProjectDevelopmentScoreMock,
-      mainImpactIndicator: {
-        name: "avoidedFricheCostsForLocalAuthority",
-        isSuccess: true,
-        value: {
-          details: [
-            {
-              impactName: "avoidedFricheMaintenanceAndSecuringCostsForOwner",
-              amount: 0,
-              bearerName: "Mairie de Blajan",
-            },
-            {
-              impactName: "avoidedFricheMaintenanceAndSecuringCostsForTenant",
-              amount: 131000,
-              bearerName: "CC Blajan",
-            },
-          ],
-          total: 131000,
+      avoidedCostsAnalysisData: {
+        indirectEconomicImpactsTotal: 1324611,
+        localAuthorityMainIndirectEconomicImpact: {
+          name: "fricheCosts",
+          total: 1131000,
         },
       },
       siteId: "13958ec7-0468-4ecb-8217-0cc80a82b633",
@@ -141,24 +158,11 @@ describe("selectProjectSummaryDataView", () => {
       breakEvenYear: "2040",
       projectionYears: buildProjectionYears(2026, 10),
       developmentScore: urbanProjectDevelopmentScoreMock,
-
-      mainImpactIndicator: {
-        name: "avoidedFricheCostsForLocalAuthority",
-        isSuccess: true,
-        value: {
-          details: [
-            {
-              impactName: "avoidedFricheMaintenanceAndSecuringCostsForOwner",
-              amount: 0,
-              bearerName: "Mairie de Blajan",
-            },
-            {
-              impactName: "avoidedFricheMaintenanceAndSecuringCostsForTenant",
-              amount: 26200,
-              bearerName: "CC Blajan",
-            },
-          ],
-          total: 26200,
+      avoidedCostsAnalysisData: {
+        indirectEconomicImpactsTotal: 264930,
+        localAuthorityMainIndirectEconomicImpact: {
+          name: "fricheCosts",
+          total: 226200,
         },
       },
       siteId: "13958ec7-0468-4ecb-8217-0cc80a82b633",

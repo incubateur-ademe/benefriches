@@ -1,11 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
-import type { GetReconversionProjectImpactsResultDto, SiteNature } from "shared";
-import { cropUrbanSprawlSimulationByEvaluationPeriod } from "shared";
+import type {
+  GetReconversionProjectImpactsResultDto,
+  SiteNature,
+  IndirectEconomicImpactsByBearerAndGroupCategory,
+} from "shared";
+import {
+  cropUrbanSprawlSimulationByEvaluationPeriod,
+  groupIndirectEconomicImpactsByBearerAndCategory,
+} from "shared";
 
 import type { RootState } from "@/app/store/store";
 
-import type { IndirectEconomicImpactsByBearerAndGroupCategory } from "../../../core/groupIndirectImpactsByBearer";
-import { groupIndirectEconomicImpactsByBearerAndCategory } from "../../../core/groupIndirectImpactsByBearer";
 import type { ProjectDevelopmentPlanType } from "../../../core/projects.types";
 import type { ProjectImpactsState } from "../projectImpacts.reducer";
 import { selectImpactsCroppedByEvaluationPeriod } from "./projectImpacts.selectors";

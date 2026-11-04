@@ -50,7 +50,7 @@ export const LETTER_GRADE_THRESHOLDS: { grade: LetterGradeWithModifier; minGrade
 
 export const getLetterGradeFromLetterGradeWithModifiers = (
   letterGrade: LetterGradeWithModifier,
-) => {
+): LetterGrade => {
   switch (letterGrade) {
     case "A":
     case "A+":

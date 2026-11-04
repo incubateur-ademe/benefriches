@@ -1,10 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
-import type { GetReconversionProjectImpactsResultDto } from "shared";
+import type {
+  GetReconversionProjectImpactsResultDto,
+  IndirectEconomicImpactsByBearerAndGroupCategory,
+} from "shared";
+import { groupIndirectEconomicImpactsByBearerAndCategory } from "shared";
 
 import type { EconomicBalanceByCategory } from "@/features/projects/core/projectImpactsEconomicBalance";
 
-import type { IndirectEconomicImpactsByBearerAndGroupCategory } from "../../../core/groupIndirectImpactsByBearer";
-import { groupIndirectEconomicImpactsByBearerAndCategory } from "../../../core/groupIndirectImpactsByBearer";
 import {
   type ModalDataProps,
   selectEconomicBalanceProjectImpacts,
@@ -30,6 +32,7 @@ export type BreakEvenLevelTabDataView =
       projectEconomicBalanceByCategory: EconomicBalanceByCategory;
       impacts: GetReconversionProjectImpactsResultDto["impacts"];
       modalsProps: ModalDataProps;
+      evaluationPeriod: number;
     }
   | undefined;
 
@@ -54,6 +57,7 @@ export const selectBreakEvenLevelTabDataView = createSelector(
       projectEconomicBalanceByCategory,
       indirectEconomicImpactsByBearer,
       modalsProps,
+      evaluationPeriod: impactsForEvaluationPeriod.projectionYears.length,
     };
   },
 );

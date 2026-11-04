@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import type { BreakEvenHorizon, KeyImpactIndicatorData, ZanComplianceIndicator } from "shared";
+import type { BreakEvenHorizon } from "shared";
 
 import {
   buildProjectImpactsSummaryEmail,
+  ProjectImpactsSummaryContent,
   type BuildProjectImpactsSummaryEmailInput,
 } from "./projectImpactsSummaryEmail";
 
@@ -17,7 +18,8 @@ const project = {
   createdAt: new Date("2026-06-15T10:00:00.000Z"),
 };
 const unsubscribeUrl = "http://localhost:3001/emails/desinscription?token=t";
-const impactsUrl = "http://localhost:3001/mes-projets/11111111-1111-4111-8111-111111111111/impacts";
+const impactsUrl =
+  "http://localhost:3001/mes-projets/11111111-1111-4111-8111-111111111111/score-impacts";
 const costBenefitUrl =
   "http://localhost:3001/mes-projets/11111111-1111-4111-8111-111111111111/analyse-cout-benefice";
 const avoidedCostsUrl =
@@ -26,21 +28,20 @@ const avoidedCostsUrl =
 const favourableInput = {
   project,
   evaluationPeriodInYears: 50,
-  zanCompliance: {
-    name: "zanCompliance",
-    isSuccess: true,
-    value: { isAgriculturalFriche: false, artificializedSurfaceArea: 0 },
+  developmentScore: {
+    letterGrade: "A",
+    letterGradeWithModifiers: "A-",
+    environmentScore: "B",
+    localPeopleQualityOfLifeScore: "B",
+    fullTimeJobsScore: "A",
   },
   breakEvenHorizon: { status: "compensated", breakEvenYear: "2058", yearsToBreakEven: 26 },
-  mainImpactIndicator: {
-    name: "avoidedFricheCostsForLocalAuthority",
-    isSuccess: true,
-    value: {
+  avoidedCostsAnalysisData: {
+    localAuthorityMainIndirectEconomicImpact: {
+      name: "fricheCosts",
       total: 1_087_355,
-      details: [
-        { impactName: "avoidedFricheMaintenanceAndSecuringCostsForOwner", amount: 1_087_355 },
-      ],
     },
+    indirectEconomicImpactsTotal: 2_000_000,
   },
   webappUrl: "http://localhost:3001",
   unsubscribeUrl,
@@ -48,17 +49,20 @@ const favourableInput = {
 
 const unfavourableInput = {
   ...favourableInput,
-  zanCompliance: {
-    name: "zanCompliance",
-    isSuccess: false,
-    value: {
-      isAgriculturalFriche: false,
-      permeableSurfaceAreaDifference: -1200,
-      artificializedSurfaceArea: 1200,
-    },
+  developmentScore: {
+    letterGrade: "D",
+    letterGradeWithModifiers: "D-",
+    environmentScore: "D",
+    fullTimeJobsScore: "E",
   },
   breakEvenHorizon: { status: "notCompensatedWithinPeriod", breakEvenYear: undefined },
-  mainImpactIndicator: { name: "taxesIncomesImpact", isSuccess: false, value: -45_000 },
+  avoidedCostsAnalysisData: {
+    localAuthorityMainIndirectEconomicImpact: {
+      name: "taxesIncome",
+      total: -45_000,
+    },
+    indirectEconomicImpactsTotal: 2_000,
+  },
 } satisfies BuildProjectImpactsSummaryEmailInput;
 
 const footer = [
@@ -113,9 +117,10 @@ describe("buildProjectImpactsSummaryEmail", () => {
         "Voici les résultats de l'évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Ancienne carrière d’argile de Blajan ».",
         "Évaluation réalisée le 15 juin 2026",
         [
-          "Projet favorable au ZAN",
-          "Le projet reconvertit un site en friche et limite la consommation d'espaces naturels, agricoles ou forestiers.",
-          `Voir le détail des impacts : ${impactsUrl}`,
+          "A-",
+          "Projet à impact très positif",
+          "Notamment sur l'emploi, la qualité de vie des riverains et l'environnement.",
+          `Voir le détail du score : ${impactsUrl}`,
         ].join("\n"),
         [
           "En 26 ans",
@@ -143,9 +148,10 @@ describe("buildProjectImpactsSummaryEmail", () => {
         "Voici les résultats de l'évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Ancienne carrière d’argile de Blajan ».",
         "Évaluation réalisée le 15 juin 2026",
         [
-          "Projet défavorable au ZAN",
-          "Le projet imperméabilise des sols.",
-          `Voir le détail des impacts : ${impactsUrl}`,
+          "D-",
+          "Projet à impact négatif",
+          "Notamment sur l'emploi et l'environnement.",
+          `Voir le détail du score : ${impactsUrl}`,
         ].join("\n"),
         [
           "Sur 50 ans",
@@ -164,43 +170,47 @@ describe("buildProjectImpactsSummaryEmail", () => {
     );
   });
 
-  describe("ZAN card", () => {
-    const cases: { label: string; zanCompliance: ZanComplianceIndicator; expected: string[] }[] = [
+  describe("development score card", () => {
+    const cases: {
+      label: string;
+      developmentScore: ProjectImpactsSummaryContent["developmentScore"];
+      expected: string[];
+    }[] = [
       {
         label: "an agricultural friche as unfavourable",
-        zanCompliance: {
-          name: "zanCompliance",
-          isSuccess: false,
-          value: {
-            isAgriculturalFriche: true,
-            permeableSurfaceAreaDifference: -500,
-            artificializedSurfaceArea: 500,
-          },
+        developmentScore: {
+          letterGrade: "D",
+          letterGradeWithModifiers: "D-",
+          environmentScore: "D",
+          fullTimeJobsScore: "E",
         },
         expected: [
-          "Projet défavorable au ZAN",
-          "Le projet imperméabilise des sols agricoles.",
-          `Voir le détail des impacts : ${impactsUrl}`,
+          "D-",
+          "Projet à impact négatif",
+          "Notamment sur l'emploi et l'environnement.",
+          `Voir le détail du score : ${impactsUrl}`,
         ],
       },
       {
         label: "a non-friche site without permeability loss as unfavourable",
-        zanCompliance: {
-          name: "zanCompliance",
-          isSuccess: false,
-          value: { permeableSurfaceAreaDifference: undefined, artificializedSurfaceArea: 0 },
+        developmentScore: {
+          letterGrade: "E",
+          letterGradeWithModifiers: "E-",
+          environmentScore: "E",
+          localAuthorityEconomicScore: "E",
         },
         expected: [
-          "Projet défavorable au ZAN",
-          "Le projet consomme des espaces naturels, agricoles ou forestiers.",
-          `Voir le détail des impacts : ${impactsUrl}`,
+          "E-",
+          "Projet à impact très négatif",
+          "Notamment sur les finances publiques et l'environnement.",
+          `Voir le détail du score : ${impactsUrl}`,
         ],
       },
     ];
 
-    for (const { label, zanCompliance, expected } of cases) {
+    for (const { label, developmentScore, expected } of cases) {
       it(`shows ${label}`, () => {
-        const email = buildProjectImpactsSummaryEmail({ ...favourableInput, zanCompliance });
+        const email = buildProjectImpactsSummaryEmail({ ...favourableInput, developmentScore });
 
         assert.strictEqual(email.text.split("\n\n")[2], expected.join("\n"));
       });
@@ -262,20 +272,21 @@ describe("buildProjectImpactsSummaryEmail", () => {
     }
   });
 
-  describe("main indicator card", () => {
+  describe("avoided costs analysis card", () => {
     const avoidedCostsLink = `Voir l'analyse des coûts évités : ${avoidedCostsUrl}`;
-    const cases: { label: string; indicator: KeyImpactIndicatorData; expected: string[] }[] = [
+    const cases: {
+      label: string;
+      indicator: ProjectImpactsSummaryContent["avoidedCostsAnalysisData"];
+      expected: string[];
+    }[] = [
       {
         label: "the collectivité's gains from the avoided friche costs",
         indicator: {
-          name: "avoidedFricheCostsForLocalAuthority",
-          isSuccess: true,
-          value: {
+          localAuthorityMainIndirectEconomicImpact: {
+            name: "fricheCosts",
             total: 150_000,
-            details: [
-              { impactName: "avoidedFricheMaintenanceAndSecuringCostsForOwner", amount: 150_000 },
-            ],
           },
+          indirectEconomicImpactsTotal: 1000000,
         },
         expected: [
           `+150${NNBSP}000${NBSP}€`,
@@ -287,14 +298,11 @@ describe("buildProjectImpactsSummaryEmail", () => {
       {
         label: "the collectivité's losses from keeping the friche",
         indicator: {
-          name: "avoidedFricheCostsForLocalAuthority",
-          isSuccess: false,
-          value: {
+          localAuthorityMainIndirectEconomicImpact: {
+            name: "fricheCosts",
             total: -20_000,
-            details: [
-              { impactName: "avoidedFricheMaintenanceAndSecuringCostsForTenant", amount: -20_000 },
-            ],
           },
+          indirectEconomicImpactsTotal: 5000,
         },
         expected: [
           `-20${NNBSP}000${NBSP}€`,
@@ -305,7 +313,13 @@ describe("buildProjectImpactsSummaryEmail", () => {
       },
       {
         label: "the collectivité's gains from additional tax income",
-        indicator: { name: "taxesIncomesImpact", isSuccess: true, value: 50_000 },
+        indicator: {
+          localAuthorityMainIndirectEconomicImpact: {
+            name: "taxesIncome",
+            total: 50_000,
+          },
+          indirectEconomicImpactsTotal: 100000,
+        },
         expected: [
           `+50${NNBSP}000${NBSP}€`,
           "Gains pour la collectivité",
@@ -315,7 +329,13 @@ describe("buildProjectImpactsSummaryEmail", () => {
       },
       {
         label: "the collectivité's losses from lost tax income",
-        indicator: { name: "taxesIncomesImpact", isSuccess: false, value: -5_000 },
+        indicator: {
+          localAuthorityMainIndirectEconomicImpact: {
+            name: "taxesIncome",
+            total: -5000,
+          },
+          indirectEconomicImpactsTotal: 10000,
+        },
         expected: [
           `-5${NNBSP}000${NBSP}€`,
           "Pertes pour la collectivité",
@@ -324,134 +344,124 @@ describe("buildProjectImpactsSummaryEmail", () => {
         ],
       },
       {
-        label: "the residents' potential gains from the property value increase",
-        indicator: { name: "localPropertyValueIncrease", isSuccess: true, value: 250_000 },
+        label: "municipality avoideded expenses increases",
+        indicator: {
+          localAuthorityMainIndirectEconomicImpact: {
+            name: "municipalityExpenses",
+            total: 250_000,
+          },
+          indirectEconomicImpactsTotal: 10000,
+        },
         expected: [
           `+250${NNBSP}000${NBSP}€`,
-          "Gains potentiels pour les riverains",
-          "grâce à la hausse de valeur patrimoniale attendue par la reconversion de la friche",
+          "Gains pour la collectivité",
+          "grâce aux économies de dépenses municipales réalisées",
           avoidedCostsLink,
         ],
       },
       {
-        label: "full-time jobs going up",
+        label: "municipality avoideded expenses decreases",
         indicator: {
-          name: "fullTimeJobs",
-          isSuccess: true,
-          value: { difference: 12, percentageEvolution: 25.4 },
-        },
-        expected: [
-          "25%",
-          "ETP en hausse",
-          "12 emploi équivalent temps plein créé ou maintenu",
-          avoidedCostsLink,
-        ],
-      },
-      {
-        label: "full-time jobs going down",
-        indicator: {
-          name: "fullTimeJobs",
-          isSuccess: false,
-          value: { difference: -3.5, percentageEvolution: -40.2 },
-        },
-        expected: [
-          "-40%",
-          "ETP en baisse",
-          "-3,5 emploi équivalent temps plein perdu",
-          avoidedCostsLink,
-        ],
-      },
-      {
-        label: "the households powered by renewable energy",
-        indicator: { name: "householdsPoweredByRenewableEnergy", isSuccess: true, value: 1500 },
-        expected: [
-          `1${NNBSP}500`,
-          "nouveaux foyers alimentés en EnR",
-          "grâce à la production photovoltaïque annuelle",
-          avoidedCostsLink,
-        ],
-      },
-      {
-        label: "avoided CO2eq emissions",
-        indicator: { name: "avoidedCo2eqEmissions", isSuccess: true, value: 920 },
-        expected: [
-          `920${NBSP}t`,
-          "Émissions de CO2eq évitées",
-          "soit les émissions de 100 français pendant 1 an",
-          avoidedCostsLink,
-        ],
-      },
-      {
-        label: "CO2eq emissions",
-        indicator: { name: "avoidedCo2eqEmissions", isSuccess: false, value: -46 },
-        expected: [
-          `46${NBSP}t`,
-          "Émissions de CO2eq",
-          "soit les émissions de 5 français pendant 1 an",
-          avoidedCostsLink,
-        ],
-      },
-      {
-        label: "more permeable soils",
-        indicator: {
-          name: "permeableSurfaceArea",
-          isSuccess: true,
-          value: { difference: 20_000, percentageEvolution: 82.4 },
-        },
-        expected: [
-          `20${NNBSP}000 ㎡`,
-          "Augmentation des sols perméables",
-          "82% de sols désimperméabilisés",
-          avoidedCostsLink,
-        ],
-      },
-      {
-        label: "fewer permeable soils",
-        indicator: {
-          name: "permeableSurfaceArea",
-          isSuccess: false,
-          value: { difference: -1200, percentageEvolution: -12.4 },
-        },
-        expected: [
-          `-1${NNBSP}200 ㎡`,
-          "Diminution des sols perméables",
-          "-12% de sols imperméabilisés",
-          avoidedCostsLink,
-        ],
-      },
-      {
-        label: "decontaminated soils",
-        indicator: {
-          name: "nonContaminatedSurfaceArea",
-          isSuccess: true,
-          value: {
-            decontaminatedSurfaceArea: 3000,
-            forecastContaminatedSurfaceArea: 1000,
-            percentageEvolution: 30,
+          localAuthorityMainIndirectEconomicImpact: {
+            name: "municipalityExpenses",
+            total: -25_000,
           },
+          indirectEconomicImpactsTotal: 10000,
         },
         expected: [
-          `3${NNBSP}000 ㎡`,
-          "de sols dépollués",
-          `Les risques sanitaires seront réduits${NBSP}☢️`,
+          `-25${NNBSP}000${NBSP}€`,
+          "Pertes pour la collectivité",
+          "à cause de dépenses municipales supplémentaires",
           avoidedCostsLink,
         ],
       },
       {
-        label: "soils left contaminated",
+        label: "municipality operating balance is positive",
         indicator: {
-          name: "nonContaminatedSurfaceArea",
-          isSuccess: false,
-          value: {
-            decontaminatedSurfaceArea: 0,
-            forecastContaminatedSurfaceArea: 3000,
-            percentageEvolution: 0,
+          localAuthorityMainIndirectEconomicImpact: {
+            name: "operatingEconomicBalance",
+            total: 200_000,
           },
+          indirectEconomicImpactsTotal: 10000,
         },
         expected: [
-          `3${NNBSP}000 ㎡`,
-          "de sols non dépollués",
-          `Les risques sanitaires seront encore présents${NBSP}☢️`,
+          `+200${NNBSP}000${NBSP}€`,
+          "Gains pour la collectivité",
+          "grâce aux recettes d'exploitation",
+          avoidedCostsLink,
+        ],
+      },
+      {
+        label: "municipality operating balance is negative",
+        indicator: {
+          localAuthorityMainIndirectEconomicImpact: {
+            name: "operatingEconomicBalance",
+            total: -5_000,
+          },
+          indirectEconomicImpactsTotal: 10000,
+        },
+        expected: [
+          `-5${NNBSP}000${NBSP}€`,
+          "Pertes pour la collectivité",
+          "à cause de dépenses d'exploitation",
+          avoidedCostsLink,
+        ],
+      },
+      {
+        label: "municipality rent income is positive",
+        indicator: {
+          localAuthorityMainIndirectEconomicImpact: {
+            name: "rentalIncome",
+            total: 100_000,
+          },
+          indirectEconomicImpactsTotal: 10000,
+        },
+        expected: [
+          `+100${NNBSP}000${NBSP}€`,
+          "Gains pour la collectivité",
+          "grâce aux revenus locatifs supplémentaires",
+          avoidedCostsLink,
+        ],
+      },
+      {
+        label: "municipality rent decreases",
+        indicator: {
+          localAuthorityMainIndirectEconomicImpact: {
+            name: "rentalIncome",
+            total: -8_000,
+          },
+          indirectEconomicImpactsTotal: 10000,
+        },
+        expected: [
+          `-8${NNBSP}000${NBSP}€`,
+          "Pertes pour la collectivité",
+          "à cause d'une perte de revenus locatifs",
+          avoidedCostsLink,
+        ],
+      },
+      {
+        label: "no main indicator for local authority and total economic impacts > 0",
+        indicator: {
+          indirectEconomicImpactsTotal: 100_000_611,
+          localAuthorityMainIndirectEconomicImpact: undefined,
+        },
+        expected: [
+          `+100${NNBSP}000${NNBSP}611${NBSP}€`,
+          "Total des impacts socio-économiques",
+          "pour la collectivité, les riverains ou l'humanité",
+          avoidedCostsLink,
+        ],
+      },
+      {
+        label: "no main indicator for local authority and total economic impacts < 0",
+        indicator: {
+          indirectEconomicImpactsTotal: -100_000,
+          localAuthorityMainIndirectEconomicImpact: undefined,
+        },
+        expected: [
+          `-100${NNBSP}000${NBSP}€`,
+          "Total des impacts socio-économiques",
+          "pour la collectivité, les riverains ou l'humanité",
           avoidedCostsLink,
         ],
       },
@@ -461,37 +471,12 @@ describe("buildProjectImpactsSummaryEmail", () => {
       it(`shows ${label}`, () => {
         const email = buildProjectImpactsSummaryEmail({
           ...favourableInput,
-          mainImpactIndicator: indicator,
+          avoidedCostsAnalysisData: indicator,
         });
 
         assert.strictEqual(email.text.split("\n\n")[4], expected.join("\n"));
       });
     }
-  });
-
-  it("omits the third card when no main indicator applies", () => {
-    const email = buildProjectImpactsSummaryEmail({
-      ...favourableInput,
-      mainImpactIndicator: undefined,
-    });
-
-    assert.deepStrictEqual(email.text.split("\n\n"), [
-      "Voici les résultats de l'évaluation socio-économique du projet « Habitation, école et commerce » sur le site « Ancienne carrière d’argile de Blajan ».",
-      "Évaluation réalisée le 15 juin 2026",
-      [
-        "Projet favorable au ZAN",
-        "Le projet reconvertit un site en friche et limite la consommation d'espaces naturels, agricoles ou forestiers.",
-        `Voir le détail des impacts : ${impactsUrl}`,
-      ].join("\n"),
-      [
-        "En 26 ans",
-        "Coût de l'opération compensé",
-        "Les impacts socio-économiques compenseront le coût de l'opération en 2058.",
-        `Voir l'analyse coût-bénéfices : ${costBenefitUrl}`,
-      ].join("\n"),
-      footer,
-    ]);
-    assert.deepStrictEqual(hrefs(email.html), [impactsUrl, costBenefitUrl, unsubscribeUrl]);
   });
 
   describe("evaluation date", () => {

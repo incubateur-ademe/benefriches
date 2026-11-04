@@ -372,17 +372,19 @@ describe("SendLifecycleEmailPreview UseCase", () => {
       const expectedEmail = buildProjectImpactsSummaryEmail({
         project: realProject,
         evaluationPeriodInYears: 50,
-        zanCompliance: {
-          name: "zanCompliance",
-          isSuccess: true,
-          value: {
-            isAgriculturalFriche: false,
-            permeableSurfaceAreaDifference: undefined,
-            artificializedSurfaceArea: 0,
-          },
+        developmentScore: {
+          letterGrade: "C",
+          letterGradeWithModifiers: "C+",
+          environmentScore: "C",
+          localAuthorityEconomicScore: "A",
+          localPeopleQualityOfLifeScore: "D",
+          fullTimeJobsScore: "C",
         },
         breakEvenHorizon: { status: "compensated", breakEvenYear: "2052", yearsToBreakEven: 26 },
-        mainImpactIndicator: { name: "taxesIncomesImpact", isSuccess: true, value: 50_000 },
+        avoidedCostsAnalysisData: {
+          indirectEconomicImpactsTotal: 500000,
+          localAuthorityMainIndirectEconomicImpact: { name: "taxesIncome", total: 50_000 },
+        },
         webappUrl,
         unsubscribeUrl: buildUnsubscribeUrl(webappUrl, tokenService.sign(PREVIEW_SAMPLE_USER.id)),
       });

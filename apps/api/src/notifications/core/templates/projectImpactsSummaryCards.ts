@@ -2,12 +2,12 @@
 // shared, so the email and the app read the same; the email adds each card's link.
 import {
   getBreakEvenCardContent,
-  getMainImpactIndicatorCardContent,
-  getZanComplianceCardContent,
+  getAvoidedCostsAnalysisCardContent,
+  getDevelopmentScoreCardContent,
   type BreakEvenHorizon,
-  type KeyImpactIndicatorData,
   type SummaryCardContent,
-  type ZanComplianceIndicator,
+  type AvoidedCostsAnalysisData,
+  type DevelopmentScoreCardInput,
 } from "shared";
 
 import type { EmailSection } from "src/notifications/core/templates/emailLayout";
@@ -21,10 +21,10 @@ const toCardSection = (content: SummaryCardContent, link: CardLink): CardSection
   link,
 });
 
-export const buildZanComplianceCard = (
-  zanCompliance: ZanComplianceIndicator,
+export const buildDevelopmentScoreCard = (
+  developmentScore: DevelopmentScoreCardInput,
   link: CardLink,
-): CardSection => toCardSection(getZanComplianceCardContent(zanCompliance), link);
+): CardSection => toCardSection(getDevelopmentScoreCardContent(developmentScore), link);
 
 export const buildBreakEvenCard = (
   breakEvenHorizon: BreakEvenHorizon,
@@ -33,10 +33,10 @@ export const buildBreakEvenCard = (
 ): CardSection =>
   toCardSection(getBreakEvenCardContent(breakEvenHorizon, evaluationPeriodInYears), link);
 
-export const buildMainImpactIndicatorCard = (
-  indicator: KeyImpactIndicatorData,
+export const buildAvoidedCostsAnalysisCard = (
+  avoidedCostsAnalysisData: AvoidedCostsAnalysisData,
   link: CardLink,
 ): CardSection | undefined => {
-  const content = getMainImpactIndicatorCardContent(indicator);
-  return content ? toCardSection(content, link) : undefined;
+  const content = getAvoidedCostsAnalysisCardContent(avoidedCostsAnalysisData);
+  return toCardSection(content, link);
 };

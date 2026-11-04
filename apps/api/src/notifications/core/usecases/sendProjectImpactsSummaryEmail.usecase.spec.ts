@@ -98,10 +98,26 @@ const buildImpactsResult = ({
         cumulativeIndirectEconomicImpactsByYear: [],
         indirectEconomicImpacts:
           taxesIncomePerYear === 0
-            ? { total: 0, details: [] }
-            : {
-                total: taxesIncomeTotal,
+            ? {
+                total: 2000,
                 details: [
+                  {
+                    name: "natureRelatedWelnessAndLeisure",
+                    total: 2000,
+                    detailsByYear: [],
+                    cumulativeByYear: [],
+                  },
+                ],
+              }
+            : {
+                total: 2000 + taxesIncomeTotal,
+                details: [
+                  {
+                    name: "natureRelatedWelnessAndLeisure",
+                    total: 2000,
+                    detailsByYear: [],
+                    cumulativeByYear: [],
+                  },
                   {
                     name: "projectNewHousesTaxesIncome",
                     total: taxesIncomeTotal,
@@ -137,14 +153,15 @@ const expectedMessage = (
   }),
 });
 
-const zanComplianceOnIndustrialFriche = {
-  name: "zanCompliance",
-  isSuccess: true,
-  value: {
-    isAgriculturalFriche: false,
-    permeableSurfaceAreaDifference: undefined,
-    artificializedSurfaceArea: 0,
-  },
+const developmentScoreOnIndustrialFriche = {
+  letterGrade: urbanProjectDevelopmentScoreMock.score.letterGrade,
+  letterGradeWithModifiers: urbanProjectDevelopmentScoreMock.score.letterGradeWithModifiers,
+  environmentScore: urbanProjectDevelopmentScoreMock.details.environmentScore.score.letterGrade,
+  fullTimeJobsScore: urbanProjectDevelopmentScoreMock.details.fullTimeJobsScore.score.letterGrade,
+  localAuthorityEconomicScore:
+    urbanProjectDevelopmentScoreMock.details.localAuthorityEconomicScore.score.letterGrade,
+  localPeopleQualityOfLifeScore:
+    urbanProjectDevelopmentScoreMock.details.localPeopleQualityOfLifeScore.score.letterGrade,
 } as const;
 
 const setup = (
@@ -227,9 +244,12 @@ describe("SendProjectImpactsSummaryEmail UseCase", () => {
     assert.deepStrictEqual(mailer.sentEmails, [
       expectedMessage({
         evaluationPeriodInYears: 50,
-        zanCompliance: zanComplianceOnIndustrialFriche,
+        developmentScore: developmentScoreOnIndustrialFriche,
         breakEvenHorizon: { status: "compensated", breakEvenYear: "2052", yearsToBreakEven: 26 },
-        mainImpactIndicator: { name: "taxesIncomesImpact", isSuccess: true, value: 50000 },
+        avoidedCostsAnalysisData: {
+          indirectEconomicImpactsTotal: 52000,
+          localAuthorityMainIndirectEconomicImpact: { name: "taxesIncome", total: 50000 },
+        },
       }),
     ]);
     assert.deepStrictEqual(deliveries, [
@@ -255,7 +275,6 @@ describe("SendProjectImpactsSummaryEmail UseCase", () => {
       buildImpactsResult({
         developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
         years: 50,
-        // Year index 35: after the 30 years a photovoltaic plant is judged over.
         breakEvenYear: "2061",
         taxesIncomePerYear: 1000,
       }),
@@ -265,10 +284,13 @@ describe("SendProjectImpactsSummaryEmail UseCase", () => {
 
     assert.deepStrictEqual(mailer.sentEmails, [
       expectedMessage({
-        evaluationPeriodInYears: 30,
-        zanCompliance: zanComplianceOnIndustrialFriche,
-        breakEvenHorizon: { status: "notCompensatedWithinPeriod", breakEvenYear: "2061" },
-        mainImpactIndicator: { name: "taxesIncomesImpact", isSuccess: true, value: 30000 },
+        evaluationPeriodInYears: 50,
+        developmentScore: developmentScoreOnIndustrialFriche,
+        breakEvenHorizon: { status: "compensated", yearsToBreakEven: 35, breakEvenYear: "2061" },
+        avoidedCostsAnalysisData: {
+          indirectEconomicImpactsTotal: 52000,
+          localAuthorityMainIndirectEconomicImpact: { name: "taxesIncome", total: 50000 },
+        },
       }),
     ]);
   });
@@ -285,42 +307,73 @@ describe("SendProjectImpactsSummaryEmail UseCase", () => {
     assert.deepStrictEqual(mailer.sentEmails, [
       expectedMessage({
         evaluationPeriodInYears: 50,
-        zanCompliance: zanComplianceOnIndustrialFriche,
+        developmentScore: developmentScoreOnIndustrialFriche,
         breakEvenHorizon: { status: "notCompensatedWithinPeriod", breakEvenYear: undefined },
-        mainImpactIndicator: { name: "taxesIncomesImpact", isSuccess: true, value: 50000 },
+        avoidedCostsAnalysisData: {
+          indirectEconomicImpactsTotal: 52000,
+          localAuthorityMainIndirectEconomicImpact: { name: "taxesIncome", total: 50000 },
+        },
       }),
     ]);
   });
 
-  it("sends the unfavourable ZAN card for a project on a non-friche site", async () => {
+  it("sends the unfavourable development score card", async () => {
     const { useCase, calculator, mailer } = setup();
-    calculator._setResult(
-      "project-1",
-      buildImpactsResult({
-        siteNature: "AGRICULTURAL_OPERATION",
-        fricheActivity: undefined,
+    calculator._setResult("project-1", {
+      ...buildImpactsResult({
         breakEvenYear: "2052",
         taxesIncomePerYear: 1000,
       }),
-    );
+      developmentScore: {
+        score: {
+          letterGrade: "D",
+          letterGradeWithModifiers: "D-",
+          gradePoints: 30,
+        },
+        details: {
+          environmentScore: {
+            ...urbanProjectDevelopmentScoreMock.details.environmentScore,
+            score: { letterGrade: "D", letterGradeWithModifiers: "D-", gradePoints: 50 },
+          },
+          localAuthorityEconomicScore: {
+            ...urbanProjectDevelopmentScoreMock.details.localAuthorityEconomicScore,
+            score: { letterGrade: "E", letterGradeWithModifiers: "E+", gradePoints: 10 },
+          },
+          localPeopleQualityOfLifeScore: {
+            ...urbanProjectDevelopmentScoreMock.details.localPeopleQualityOfLifeScore,
+            score: { letterGrade: "D", letterGradeWithModifiers: "D-", gradePoints: 50 },
+          },
+          fullTimeJobsScore: {
+            ...urbanProjectDevelopmentScoreMock.details.fullTimeJobsScore,
+            score: { letterGrade: "D", letterGradeWithModifiers: "D-", gradePoints: 50 },
+          },
+        },
+      },
+    });
 
     await useCase.execute({ reconversionProjectId: "project-1", userId: "user-1" });
 
     assert.deepStrictEqual(mailer.sentEmails, [
       expectedMessage({
         evaluationPeriodInYears: 50,
-        zanCompliance: {
-          name: "zanCompliance",
-          isSuccess: false,
-          value: { permeableSurfaceAreaDifference: undefined, artificializedSurfaceArea: 0 },
+        developmentScore: {
+          letterGrade: "D",
+          letterGradeWithModifiers: "D-",
+          environmentScore: "D",
+          fullTimeJobsScore: "D",
+          localAuthorityEconomicScore: "E",
+          localPeopleQualityOfLifeScore: "D",
         },
         breakEvenHorizon: { status: "compensated", breakEvenYear: "2052", yearsToBreakEven: 26 },
-        mainImpactIndicator: { name: "taxesIncomesImpact", isSuccess: true, value: 50000 },
+        avoidedCostsAnalysisData: {
+          indirectEconomicImpactsTotal: 52000,
+          localAuthorityMainIndirectEconomicImpact: { name: "taxesIncome", total: 50000 },
+        },
       }),
     ]);
   });
 
-  it("sends the losses card when the main indicator is unfavourable", async () => {
+  it("sends the losses card when the avoidedCostsAnalysisData is unfavourable", async () => {
     const { useCase, calculator, mailer } = setup();
     calculator._setResult(
       "project-1",
@@ -332,14 +385,17 @@ describe("SendProjectImpactsSummaryEmail UseCase", () => {
     assert.deepStrictEqual(mailer.sentEmails, [
       expectedMessage({
         evaluationPeriodInYears: 50,
-        zanCompliance: zanComplianceOnIndustrialFriche,
+        developmentScore: developmentScoreOnIndustrialFriche,
         breakEvenHorizon: { status: "compensated", breakEvenYear: "2052", yearsToBreakEven: 26 },
-        mainImpactIndicator: { name: "taxesIncomesImpact", isSuccess: false, value: -5000 },
+        avoidedCostsAnalysisData: {
+          indirectEconomicImpactsTotal: -4800,
+          localAuthorityMainIndirectEconomicImpact: { name: "taxesIncome", total: -5000 },
+        },
       }),
     ]);
   });
 
-  it("sends no third card when no main indicator applies", async () => {
+  it("sends the total socio economic impacts card when no main indicator applies for localAuthority", async () => {
     const { useCase, calculator, mailer } = setup();
     calculator._setResult(
       "project-1",
@@ -351,9 +407,12 @@ describe("SendProjectImpactsSummaryEmail UseCase", () => {
     assert.deepStrictEqual(mailer.sentEmails, [
       expectedMessage({
         evaluationPeriodInYears: 50,
-        zanCompliance: zanComplianceOnIndustrialFriche,
+        developmentScore: developmentScoreOnIndustrialFriche,
         breakEvenHorizon: { status: "compensated", breakEvenYear: "2052", yearsToBreakEven: 26 },
-        mainImpactIndicator: undefined,
+        avoidedCostsAnalysisData: {
+          indirectEconomicImpactsTotal: 2000,
+          localAuthorityMainIndirectEconomicImpact: undefined,
+        },
       }),
     ]);
   });

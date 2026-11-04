@@ -1,3 +1,5 @@
+import { getDevelopmentScoreCardContent } from "shared";
+
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
 import { impactsExportModalOpened } from "@/features/analytics/core/analyticsEvents";
@@ -7,12 +9,10 @@ import classNames from "@/shared/views/clsx";
 import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
 import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
 import type { ProjectSummaryDataView } from "../../application/project-impacts/selectors/projectSummary.selector";
-import BreakEvenLevalImpactsActionBar from "../project-break-even-level/ProjectBreakEvenLevelActionBar";
+import BreakEvenLevelImpactsActionBar from "../project-break-even-level/ProjectBreakEvenLevelActionBar";
 import ProjectBreakEvenLevelSummary from "../project-break-even-level/ProjectBreakEvenLevelSummary";
-import ProjectDevelopmentMainScoreHighlightText from "../project-development-score/ProjectDevelopmentMainScoreHighlightText";
 import { LETTER_GRADE_COLORS } from "../project-development-score/layout/colors";
-import { MAIN_GRADE_TEXT } from "../project-development-score/layout/gradeLabels";
-import ExportImpactsModal from "../project-impacts/export-impacts/ExportModal";
+import ExportImpactsModal from "../project-impacts-export/export-impacts/ExportModal";
 import ProjectImpactFooter from "../project-page/footer/ProjectImpactFooter";
 import ProjectPageHeader from "../project-page/header/";
 import ProjectSummaryComparisonCard from "./ProjectSummaryComparisonCard";
@@ -25,7 +25,7 @@ export default function ProjectSummaryTab({
   projectionYears,
   breakEvenYear,
   developmentScore,
-  mainImpactIndicator,
+  avoidedCostsAnalysisData,
   projectContext,
   siteAddress,
   siteName,
@@ -34,11 +34,22 @@ export default function ProjectSummaryTab({
   const dispatch = useAppDispatch();
   const { evaluationPeriod = 50 } = useAppSelector(selectImpactsPageViewData);
 
+  const { title, headline, body } = getDevelopmentScoreCardContent({
+    letterGrade: developmentScore.score.letterGrade,
+    letterGradeWithModifiers: developmentScore.score.letterGradeWithModifiers,
+    environmentScore: developmentScore.details.environmentScore.score.letterGrade,
+    localAuthorityEconomicScore:
+      developmentScore.details.localAuthorityEconomicScore.score.letterGrade,
+    localPeopleQualityOfLifeScore:
+      developmentScore.details.localPeopleQualityOfLifeScore.score.letterGrade,
+    fullTimeJobsScore: developmentScore.details.fullTimeJobsScore.score.letterGrade,
+  });
+
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-center justify-between">
         <h3 className="text-2xl mb-0">Aperçu</h3>
-        <BreakEvenLevalImpactsActionBar
+        <BreakEvenLevelImpactsActionBar
           evaluationPeriod={evaluationPeriod}
           onEvaluationPeriodChange={(evaluationPeriodInYears: number) => {
             void dispatch(evaluationPeriodUpdated(evaluationPeriodInYears));
@@ -69,12 +80,10 @@ export default function ProjectSummaryTab({
                 LETTER_GRADE_COLORS[developmentScore.score.letterGrade].textColor,
               )}
             >
-              {developmentScore.score.letterGradeWithModifiers}
+              {headline}
             </span>
-            <h4 className="text-[32px] mb-4">
-              {MAIN_GRADE_TEXT[developmentScore.score.letterGrade]}
-            </h4>
-            <ProjectDevelopmentMainScoreHighlightText developmentScore={developmentScore} />
+            <h4 className="text-[32px] mb-4">{title}</h4>
+            <p>{body}</p>
           </div>
 
           <div>
@@ -103,7 +112,7 @@ export default function ProjectSummaryTab({
 
         <ProjectSummaryComparisonCard
           projectId={projectId}
-          mainImpactIndicator={mainImpactIndicator}
+          avoidedCostsAnalysisData={avoidedCostsAnalysisData}
         />
       </div>
 

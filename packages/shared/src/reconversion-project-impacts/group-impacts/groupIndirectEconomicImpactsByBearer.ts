@@ -1,16 +1,7 @@
 import type { GetReconversionProjectImpactsResultDto } from "../../api-dtos";
 import { LOCAL_AUTHORITIES } from "../../local-authority";
 import { sumListWithKey } from "../../services";
-import type { SiteStatuQuoEconomicImpact } from "../../site";
-import type {
-  AggregatedReconversionProjectOnSiteImpactItemView,
-  UrbanSprawlComparisonIndirectEconomicImpactItemView,
-} from "../projectImpacts.types";
-
-export type IndirectEconomicImpactItem =
-  | AggregatedReconversionProjectOnSiteImpactItemView
-  | UrbanSprawlComparisonIndirectEconomicImpactItemView
-  | SiteStatuQuoEconomicImpact;
+import type { IndirectEconomicImpactItem } from "./groupImpacts.types";
 
 const isLocalAuthority = (structureType?: string) =>
   structureType === "localAuthority" || LOCAL_AUTHORITIES.some((item) => item === structureType);

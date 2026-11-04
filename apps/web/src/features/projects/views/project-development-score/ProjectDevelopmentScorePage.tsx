@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { typedObjectEntries, type LetterGrade } from "shared";
+import { getDevelopmentScoreCardContent, typedObjectEntries, type LetterGrade } from "shared";
 import type { Link, Route } from "type-route";
 
 import { type routes, useRoute } from "@/app/router";
@@ -11,13 +11,11 @@ import ProjectDevelopmentEnvironmentScore from "./ProjectDevelopmentEnvironmentS
 import ProjectDevelopmentFullTimeJobsScore from "./ProjectDevelopmentFullTimeJobsScore";
 import ProjectDevelopmentLocalAuthorityFinancesScore from "./ProjectDevelopmentLocalAuthorityFinancesScore";
 import ProjectDevelopmentLocalPeopleAndCompanyScore from "./ProjectDevelopmentLocalPeopleAndCompanyScore";
-import ProjectDevelopmentMainScoreHighlightText from "./ProjectDevelopmentMainScoreHighlightText";
 import DevelopmentScoreModalDescription from "./details-modals/DevelopmentScoreModalDescription";
 import useOpenDescriptionModalLink from "./details-modals/useOpenDescriptionModalLink";
 import ProjectDevelopmentGrade from "./layout/ProjectDevelopmentGrade";
 import GradeScale from "./layout/ProjectDevelopmentScoreGradeScale";
 import { LETTER_GRADE_COLORS } from "./layout/colors";
-import { MAIN_GRADE_TEXT } from "./layout/gradeLabels";
 
 const isPositive = (grade: LetterGrade) => grade === "A" || grade === "B";
 
@@ -103,8 +101,6 @@ export default function ProjectDevelopmentScore({
 }: Props) {
   const [isTitleInViewport, setIsTitleInViewPort] = useState(false);
 
-  const route = useRoute() as Route<typeof routes.projectImpactsDevelopmentScore>;
-
   const { details, score } = developmentScore;
 
   const titleRef = (node: HTMLHeadingElement) => {
@@ -129,6 +125,17 @@ export default function ProjectDevelopmentScore({
   const { bgColor, textColor } = LETTER_GRADE_COLORS[score.letterGrade];
 
   const getLink = useOpenDescriptionModalLink();
+
+  const { title, headline, body } = getDevelopmentScoreCardContent({
+    letterGrade: developmentScore.score.letterGrade,
+    letterGradeWithModifiers: developmentScore.score.letterGradeWithModifiers,
+    environmentScore: developmentScore.details.environmentScore.score.letterGrade,
+    localAuthorityEconomicScore:
+      developmentScore.details.localAuthorityEconomicScore.score.letterGrade,
+    localPeopleQualityOfLifeScore:
+      developmentScore.details.localPeopleQualityOfLifeScore.score.letterGrade,
+    fullTimeJobsScore: developmentScore.details.fullTimeJobsScore.score.letterGrade,
+  });
 
   return (
     <div className="flex flex-col gap-14">
@@ -171,13 +178,10 @@ export default function ProjectDevelopmentScore({
               textColor,
             )}
           >
-            {score.letterGradeWithModifiers}
+            {headline}
           </span>
-          <h4 className="mb-0">{MAIN_GRADE_TEXT[score.letterGrade]}</h4>
-          <ProjectDevelopmentMainScoreHighlightText
-            className="mt-1 opacity-90"
-            developmentScore={developmentScore}
-          />
+          <h4 className="mb-0">{title}</h4>
+          <p className="mt-1 opacity-90">{body}</p>
           <a
             {...getLink("global")}
             className="text-sm invisible group-hover:visible group-focus:visible"

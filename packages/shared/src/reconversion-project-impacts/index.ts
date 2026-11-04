@@ -18,7 +18,9 @@ export * from "./mocks";
 
 export {
   groupIndirectEconomicImpactsByBearer,
+  groupIndirectEconomicImpactsByBearerAndCategory,
   type IndirectEconomicImpactItem,
+  type IndirectEconomicImpactsByBearerAndGroupCategory
 } from "./group-impacts";
 export * from "./key-impact-indicators";
 export * from "./summary-cards";

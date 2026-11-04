@@ -62,7 +62,7 @@ export default function ProjectAvoidedInactionCosts({
       />
       <ScenarioHeader
         pictoUrl={getPictogramUrlForSiteNature(siteNature)}
-        label="Friche non reconvertie"
+        label={siteNature === "FRICHE" ? "Friche non reconvertie" : "Site non reconverti"}
         badge={
           siteNature === "FRICHE" && (
             <Badge small style="mutability">

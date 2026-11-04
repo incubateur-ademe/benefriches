@@ -1,17 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
-import type { KeyImpactIndicatorData, ProjectDevelopmentScore } from "shared";
-import { getSummaryHeadlineIndicators } from "shared";
+import {
+  type AvoidedCostsAnalysisData,
+  getAvoidedCostsAnalysisData,
+  type ProjectDevelopmentScore,
+} from "shared";
 
 import type { RootState } from "@/app/store/store";
 
-import {
-  selectImpactsCroppedByEvaluationPeriod,
-  selectKeyImpactIndicatorsList,
-} from "./projectImpacts.selectors";
+import { selectImpactsCroppedByEvaluationPeriod } from "./projectImpacts.selectors";
 
 export type ProjectSummaryDataView = {
-  mainImpactIndicator?: KeyImpactIndicatorData;
   developmentScore: ProjectDevelopmentScore;
+  avoidedCostsAnalysisData: AvoidedCostsAnalysisData;
   breakEvenYear?: string;
   projectionYears: string[];
   siteAddress: {
@@ -30,18 +30,17 @@ export type ProjectSummaryDataView = {
 const selectSelf = (state: RootState) => state.projectImpacts;
 
 export const selectProjectSummaryDataView = createSelector(
-  [selectSelf, selectKeyImpactIndicatorsList, selectImpactsCroppedByEvaluationPeriod],
-  (state, keyImpactIndicatorList, breakEvenLevel): ProjectSummaryDataView | undefined => {
+  [selectSelf, selectImpactsCroppedByEvaluationPeriod],
+  (state, breakEvenLevel): ProjectSummaryDataView | undefined => {
     if (!breakEvenLevel || !state.contextData || !state.developmentScore) {
       return undefined;
     }
-    const { mainImpactIndicator } = getSummaryHeadlineIndicators(keyImpactIndicatorList);
 
     return {
       breakEvenYear: breakEvenLevel.aggregatedReconversionImpacts.breakEvenYear,
       projectionYears: breakEvenLevel.projectionYears,
       developmentScore: state.developmentScore,
-      mainImpactIndicator,
+      avoidedCostsAnalysisData: getAvoidedCostsAnalysisData(breakEvenLevel),
       siteId: state.contextData.relatedSiteId,
       siteName: state.contextData.relatedSiteName,
       siteAddress: state.contextData.siteAddress,

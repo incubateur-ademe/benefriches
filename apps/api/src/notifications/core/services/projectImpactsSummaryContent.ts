@@ -1,10 +1,4 @@
-import {
-  cropImpactsByEvaluationPeriod,
-  getBreakEvenHorizon,
-  getDefaultEvaluationPeriodInYears,
-  getKeyImpactIndicatorsList,
-  getSummaryHeadlineIndicators,
-} from "shared";
+import { getAvoidedCostsAnalysisData, getBreakEvenHorizon } from "shared";
 
 import type { LifecycleEmailProjectQuery } from "src/notifications/core/gateways/LifecycleEmailProjectQuery";
 import type { LifecycleEmailRecipient } from "src/notifications/core/gateways/LifecycleEmailRecipientQuery";
@@ -57,26 +51,31 @@ export async function loadProjectImpactsSummaryContent(
   }
 
   // Names and date come from `project` (one source); contextData only feeds the derivation.
-  const { impacts, contextData } = result.getData();
-  const evaluationPeriodInYears = getDefaultEvaluationPeriodInYears(
-    contextData.projectDevelopmentPlan.type,
-  );
-  const croppedImpacts = cropImpactsByEvaluationPeriod(impacts, evaluationPeriodInYears);
-  const { zanCompliance, mainImpactIndicator } = getSummaryHeadlineIndicators(
-    getKeyImpactIndicatorsList(croppedImpacts, contextData),
-  );
+  const { impacts, developmentScore } = result.getData();
+
   // The same fields the web selector selectProjectSummaryDataView reads.
   const breakEvenHorizon = getBreakEvenHorizon({
-    breakEvenYear: croppedImpacts.aggregatedReconversionImpacts.breakEvenYear,
-    projectionYears: croppedImpacts.projectionYears,
+    breakEvenYear: impacts.aggregatedReconversionImpacts.breakEvenYear,
+    projectionYears: impacts.projectionYears,
   });
+
+  const avoidedCostsAnalysisData = getAvoidedCostsAnalysisData(impacts);
 
   return success({
     project,
-    evaluationPeriodInYears,
-    zanCompliance,
+    developmentScore: {
+      letterGrade: developmentScore.score.letterGrade,
+      letterGradeWithModifiers: developmentScore.score.letterGradeWithModifiers,
+      environmentScore: developmentScore.details.environmentScore.score.letterGrade,
+      localAuthorityEconomicScore:
+        developmentScore.details.localAuthorityEconomicScore.score.letterGrade,
+      localPeopleQualityOfLifeScore:
+        developmentScore.details.localPeopleQualityOfLifeScore.score.letterGrade,
+      fullTimeJobsScore: developmentScore.details.fullTimeJobsScore.score.letterGrade,
+    },
     breakEvenHorizon,
-    mainImpactIndicator,
+    avoidedCostsAnalysisData,
+    evaluationPeriodInYears: impacts.projectionYears.length,
   });
 }
 

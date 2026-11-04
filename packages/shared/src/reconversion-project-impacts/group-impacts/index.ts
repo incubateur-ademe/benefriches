@@ -1,4 +1,8 @@
+export { groupIndirectEconomicImpactsByBearer } from "./groupIndirectEconomicImpactsByBearer";
+
+export { groupIndirectEconomicImpactsByBearerAndCategory } from "./groupIndirectEconomicImpactsByBearerAndCategory";
+
 export {
-  groupIndirectEconomicImpactsByBearer,
   type IndirectEconomicImpactItem,
-} from "./groupIndirectEconomicImpactsByBearer";
+  type IndirectEconomicImpactsByBearerAndGroupCategory,
+} from "./groupImpacts.types";

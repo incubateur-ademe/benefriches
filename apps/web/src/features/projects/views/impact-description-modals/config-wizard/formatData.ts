@@ -3,11 +3,11 @@ import {
   formatMonetaryImpact,
   sumListWithKey,
   typedObjectEntries,
+  groupIndirectEconomicImpactsByBearerAndCategory,
 } from "shared";
 import type { Link } from "type-route";
 
 import type { ModalDataProps } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
-import { groupIndirectEconomicImpactsByBearerAndCategory } from "@/features/projects/core/groupIndirectImpactsByBearer";
 import { groupSocioEconomicImpactsByListViewCategory } from "@/features/projects/core/projectImpactsSocioEconomic";
 
 import { getSocioEconomicImpactLabel } from "../../shared/getImpactLabel";

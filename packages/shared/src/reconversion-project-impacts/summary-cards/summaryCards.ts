@@ -1,45 +1,50 @@
 // The copy of the Synthèse tab's three headline cards, shared by the web app and the project
 // impacts summary email so both read the same. Plain text only: the apps add layout, icons and
 // links.
-import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "../../co2eq";
-import {
-  formatCO2Impact,
-  formatMonetaryImpact,
-  formatNumberFr,
-  formatPercentage,
-  formatPerFrenchPersonAnnualEquivalent,
-  formatSurfaceArea,
-} from "../../format-number";
-import type { BreakEvenHorizon } from "../key-impact-indicators/breakEvenHorizon";
-import type {
-  KeyImpactIndicatorData,
-  ZanComplianceIndicator,
-} from "../key-impact-indicators/keyImpactIndicators";
+import { formatMonetaryImpact } from "../../format-number";
+import { typedObjectEntries } from "../../object-entries";
+import type { LetterGrade, ProjectDevelopmentScore } from "../development-score";
+import { MAIN_GRADE_TEXT } from "../development-score/gradeText";
+import type { AvoidedCostsAnalysisData } from "./avoidedCostsAnalysisData";
+import type { BreakEvenHorizon } from "./breakEvenHorizon";
 
 export type SummaryCardContent = { headline: string; title?: string; body: string };
 
-const NO_BREAK_SPACE = " ";
-
 const pluralizeYears = (years: number): string => `${years} ${years > 1 ? "ans" : "an"}`;
 
-export const getZanComplianceCardContent = (
-  zanCompliance: ZanComplianceIndicator,
-): SummaryCardContent => {
-  if (zanCompliance.isSuccess) {
-    return {
-      headline: "Projet favorable au ZAN",
-      body: "Le projet reconvertit un site en friche et limite la consommation d'espaces naturels, agricoles ou forestiers.",
-    };
-  }
+const HIGHLIGHT_ELEMENTS = {
+  localAuthorityEconomicScore: { order: 1, text: "les finances publiques" },
+  fullTimeJobsScore: { order: 2, text: "l'emploi" },
+  localPeopleQualityOfLifeScore: { order: 3, text: "la qualité de vie des riverains" },
+  environmentScore: { order: 4, text: "l'environnement" },
+} as const;
 
-  const { isAgriculturalFriche, permeableSurfaceAreaDifference } = zanCompliance.value;
+const listFormatter = new Intl.ListFormat("fr");
+const isPositiveGrade = (grade: LetterGrade) => grade === "A" || grade === "B";
+
+export type DevelopmentScoreCardInput = Pick<
+  ProjectDevelopmentScore["score"],
+  "letterGrade" | "letterGradeWithModifiers"
+> &
+  Partial<Record<keyof ProjectDevelopmentScore["details"], LetterGrade>>;
+
+export const getDevelopmentScoreCardContent = (
+  developmentScore: DevelopmentScoreCardInput,
+): Required<SummaryCardContent> => {
+  const { letterGrade, letterGradeWithModifiers, ...gradeDetails } = developmentScore;
+  const isPositive = isPositiveGrade(letterGrade);
+
+  const labels = typedObjectEntries(gradeDetails)
+    .filter(([, grade]) => grade && isPositiveGrade(grade) === isPositive)
+    .toSorted(([a], [b]) => HIGHLIGHT_ELEMENTS[a].order - HIGHLIGHT_ELEMENTS[b].order)
+    .map(([name]) => HIGHLIGHT_ELEMENTS[name].text);
+
   return {
-    headline: "Projet défavorable au ZAN",
-    body: isAgriculturalFriche
-      ? "Le projet imperméabilise des sols agricoles."
-      : permeableSurfaceAreaDifference !== undefined && permeableSurfaceAreaDifference < 0
-        ? "Le projet imperméabilise des sols."
-        : "Le projet consomme des espaces naturels, agricoles ou forestiers.",
+    headline: letterGradeWithModifiers,
+    title: MAIN_GRADE_TEXT[letterGrade],
+    body: labels.length
+      ? `Notamment sur ${listFormatter.format(labels)}.`
+      : "sur différents critères.",
   };
 };
 
@@ -76,100 +81,52 @@ export const getBreakEvenCardContent = (
 
 // The headline is the indicator's value; the body continues the title, hence its lower-case start
 // (not the email mockup's capitalised sentence, "Grâce à la suppression de la friche…").
-export const getMainImpactIndicatorCardContent = (
-  indicator: KeyImpactIndicatorData,
-): Required<SummaryCardContent> | undefined => {
-  switch (indicator.name) {
-    case "avoidedFricheCostsForLocalAuthority":
-      return indicator.isSuccess
-        ? {
-            headline: formatMonetaryImpact(indicator.value.total),
-            title: "Gains pour la collectivité",
-            body: "grâce à la reconversion de la friche",
-          }
-        : {
-            headline: formatMonetaryImpact(indicator.value.total),
-            title: "Pertes pour la collectivité",
-            body: "à cause du maintien de la friche",
-          };
-    case "taxesIncomesImpact":
-      return indicator.isSuccess
-        ? {
-            headline: formatMonetaryImpact(indicator.value),
-            title: "Gains pour la collectivité",
-            body: "grâce aux recettes fiscales supplémentaires",
-          }
-        : {
-            headline: formatMonetaryImpact(indicator.value),
-            title: "Pertes pour la collectivité",
-            body: "à cause d'une perte de recettes fiscales",
-          };
-    case "localPropertyValueIncrease":
-      return {
-        headline: formatMonetaryImpact(indicator.value),
-        title: "Gains potentiels pour les riverains",
-        body: "grâce à la hausse de valeur patrimoniale attendue par la reconversion de la friche",
-      };
-    case "fullTimeJobs": {
-      const { difference, percentageEvolution } = indicator.value;
-      return indicator.isSuccess
-        ? {
-            headline: formatPercentage(percentageEvolution),
-            title: "ETP en hausse",
-            body: `${formatNumberFr(difference)} emploi équivalent temps plein créé ou maintenu`,
-          }
-        : {
-            headline: formatPercentage(percentageEvolution),
-            title: "ETP en baisse",
-            body: `${formatNumberFr(difference)} emploi équivalent temps plein perdu`,
-          };
-    }
-    case "householdsPoweredByRenewableEnergy":
-      return {
-        headline: formatNumberFr(indicator.value),
-        title: "nouveaux foyers alimentés en EnR",
-        body: "grâce à la production photovoltaïque annuelle",
-      };
-    case "avoidedCo2eqEmissions": {
-      const co2eqTons = Math.abs(indicator.value);
-      const frenchPersons = formatPerFrenchPersonAnnualEquivalent(
-        getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson(co2eqTons),
-      );
-      return {
-        headline: formatCO2Impact(co2eqTons, { withSignPrefix: false }),
-        title: indicator.isSuccess ? "Émissions de CO2eq évitées" : "Émissions de CO2eq",
-        body: `soit les émissions de ${frenchPersons} français pendant 1 an`,
-      };
-    }
-    case "permeableSurfaceArea": {
-      const { difference, percentageEvolution } = indicator.value;
-      return indicator.isSuccess
-        ? {
-            headline: formatSurfaceArea(difference),
-            title: "Augmentation des sols perméables",
-            body: `${formatPercentage(percentageEvolution)} de sols désimperméabilisés`,
-          }
-        : {
-            headline: formatSurfaceArea(difference),
-            title: "Diminution des sols perméables",
-            body: `${formatPercentage(percentageEvolution)} de sols imperméabilisés`,
-          };
-    }
-    case "nonContaminatedSurfaceArea":
-      return indicator.isSuccess
-        ? {
-            headline: formatSurfaceArea(indicator.value.decontaminatedSurfaceArea),
-            title: "de sols dépollués",
-            body: `Les risques sanitaires seront réduits${NO_BREAK_SPACE}☢️`,
-          }
-        : {
-            headline: formatSurfaceArea(indicator.value.forecastContaminatedSurfaceArea),
-            title: "de sols non dépollués",
-            body: `Les risques sanitaires seront encore présents${NO_BREAK_SPACE}☢️`,
-          };
-    // Never a main indicator: getSummaryHeadlineIndicators excludes both.
-    case "zanCompliance":
-    case "projectImpactBalance":
-      return undefined;
+export const getAvoidedCostsAnalysisCardContent = (
+  props: AvoidedCostsAnalysisData,
+): Required<SummaryCardContent> => {
+  if (!props.localAuthorityMainIndirectEconomicImpact) {
+    return {
+      headline: formatMonetaryImpact(props.indirectEconomicImpactsTotal),
+      body: "pour la collectivité, les riverains ou l'humanité",
+      title: "Total des impacts socio-économiques",
+    };
   }
+
+  const headline = formatMonetaryImpact(props.localAuthorityMainIndirectEconomicImpact.total);
+  const title =
+    props.localAuthorityMainIndirectEconomicImpact.total > 0
+      ? "Gains pour la collectivité"
+      : "Pertes pour la collectivité";
+
+  const body = (() => {
+    switch (props.localAuthorityMainIndirectEconomicImpact.name) {
+      case "fricheCosts":
+        return props.localAuthorityMainIndirectEconomicImpact.total > 0
+          ? "grâce à la reconversion de la friche"
+          : "à cause du maintien de la friche";
+      case "taxesIncome":
+        return props.localAuthorityMainIndirectEconomicImpact.total > 0
+          ? "grâce aux recettes fiscales supplémentaires"
+          : "à cause d'une perte de recettes fiscales";
+
+      case "municipalityExpenses":
+        return props.localAuthorityMainIndirectEconomicImpact.total > 0
+          ? "grâce aux économies de dépenses municipales réalisées"
+          : "à cause de dépenses municipales supplémentaires";
+      case "operatingEconomicBalance":
+        return props.localAuthorityMainIndirectEconomicImpact.total > 0
+          ? "grâce aux recettes d'exploitation"
+          : "à cause de dépenses d'exploitation";
+      case "rentalIncome":
+        return props.localAuthorityMainIndirectEconomicImpact.total > 0
+          ? "grâce aux revenus locatifs supplémentaires"
+          : "à cause d'une perte de revenus locatifs";
+    }
+  })();
+
+  return {
+    headline,
+    body,
+    title,
+  };
 };

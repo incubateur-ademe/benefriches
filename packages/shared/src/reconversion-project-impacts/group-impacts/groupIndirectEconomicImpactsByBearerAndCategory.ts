@@ -1,24 +1,12 @@
-import type { GetReconversionProjectImpactsResultDto, IndirectEconomicImpactItem } from "shared";
-import { groupIndirectEconomicImpactsByBearer } from "shared";
+import type { GetReconversionProjectImpactsResultDto } from "../../api-dtos";
+import type {
+  IndirectEconomicImpactItem,
+  IndirectEconomicImpactsByBearerAndGroupCategory,
+  IndirectEconomicImpactsGroupedByCategory,
+} from "./groupImpacts.types";
+import { groupIndirectEconomicImpactsByBearer } from "./groupIndirectEconomicImpactsByBearer";
 
-export type IndirectEconomicImpactsGroupedByCategory<
-  T extends IndirectEconomicImpactItem = IndirectEconomicImpactItem,
-> = Partial<
-  Record<
-    | "localPropertyValueIncrease"
-    | "rentalIncome"
-    | "taxesIncome"
-    | "operatingEconomicBalance"
-    | "fricheCosts"
-    | "municipalityExpenses"
-    | "purchasingPowerIncrease"
-    | "environmentalAction"
-    | "avoidedHealthExpenses",
-    T[]
-  >
->;
-
-export const groupIndirectEconomicImpactsByCategory = <
+const groupIndirectEconomicImpactsByCategory = <
   T extends IndirectEconomicImpactItem = IndirectEconomicImpactItem,
 >(
   indirectEconomicImpacts: T[],
@@ -90,38 +78,6 @@ export const groupIndirectEconomicImpactsByCategory = <
         return name;
     }
   });
-};
-
-export type IndirectEconomicImpactsByBearerAndGroupCategory<
-  T extends IndirectEconomicImpactItem = IndirectEconomicImpactItem,
-> = {
-  total: number;
-  localAuthority: {
-    total: number;
-  } & Pick<
-    IndirectEconomicImpactsGroupedByCategory<T>,
-    | "rentalIncome"
-    | "taxesIncome"
-    | "fricheCosts"
-    | "municipalityExpenses"
-    | "operatingEconomicBalance"
-  >;
-  localPeopleOrCompany: {
-    total: number;
-  } & Pick<
-    IndirectEconomicImpactsGroupedByCategory<T>,
-    | "rentalIncome"
-    | "fricheCosts"
-    | "operatingEconomicBalance"
-    | "localPropertyValueIncrease"
-    | "purchasingPowerIncrease"
-  >;
-  humanity: {
-    total: number;
-  } & Pick<
-    IndirectEconomicImpactsGroupedByCategory<T>,
-    "avoidedHealthExpenses" | "environmentalAction"
-  >;
 };
 
 type Props<T extends IndirectEconomicImpactItem = IndirectEconomicImpactItem> = {

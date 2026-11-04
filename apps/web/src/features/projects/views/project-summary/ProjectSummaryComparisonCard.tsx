@@ -1,23 +1,28 @@
-import { getMainImpactIndicatorCardContent } from "shared";
+import { getAvoidedCostsAnalysisCardContent } from "shared";
 
 import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 
 import type { ProjectSummaryDataView } from "../../application/project-impacts/selectors/projectSummary.selector";
 
-type Props = Pick<ProjectSummaryDataView, "mainImpactIndicator"> & { projectId: string };
+type Props = { projectId: string } & Pick<ProjectSummaryDataView, "avoidedCostsAnalysisData">;
 
-export default function ProjectSummaryComparisonCard({ mainImpactIndicator, projectId }: Props) {
-  const content = mainImpactIndicator
-    ? getMainImpactIndicatorCardContent(mainImpactIndicator)
-    : undefined;
+export default function ProjectSummaryComparisonCard({
+  avoidedCostsAnalysisData,
+  projectId,
+}: Props) {
+  const content = getAvoidedCostsAnalysisCardContent(avoidedCostsAnalysisData);
+
+  const isSuccess =
+    (avoidedCostsAnalysisData.localAuthorityMainIndirectEconomicImpact?.total ??
+      avoidedCostsAnalysisData.indirectEconomicImpactsTotal) > 0;
 
   return (
     <div className="border rounded-3xl p-6 flex flex-col justify-between">
       <div>
         <span
           className={classNames(
-            "bg-success-ultralight",
+            isSuccess ? "bg-success-ultralight" : "bg-error-ultralight",
             "text-[32px]",
             "p-2",
             "mb-4",

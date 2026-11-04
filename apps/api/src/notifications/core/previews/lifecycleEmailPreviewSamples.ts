@@ -61,20 +61,18 @@ export const PREVIEW_SAMPLE_PROJECT = {
 export const PREVIEW_SAMPLE_FAVOURABLE_IMPACTS_SUMMARY = {
   project: PREVIEW_SAMPLE_PROJECT,
   evaluationPeriodInYears: 50,
-  zanCompliance: {
-    name: "zanCompliance",
-    isSuccess: true,
-    value: { isAgriculturalFriche: false, artificializedSurfaceArea: 0 },
+  developmentScore: {
+    letterGrade: "B",
+    letterGradeWithModifiers: "B",
+    localAuthorityEconomicScore: "B",
+    localPeopleQualityOfLifeScore: "B",
   },
   breakEvenHorizon: { status: "compensated", breakEvenYear: "2058", yearsToBreakEven: 26 },
-  mainImpactIndicator: {
-    name: "avoidedFricheCostsForLocalAuthority",
-    isSuccess: true,
-    value: {
+  avoidedCostsAnalysisData: {
+    indirectEconomicImpactsTotal: 2_000_000,
+    localAuthorityMainIndirectEconomicImpact: {
       total: 1_087_355,
-      details: [
-        { impactName: "avoidedFricheMaintenanceAndSecuringCostsForOwner", amount: 1_087_355 },
-      ],
+      name: "fricheCosts",
     },
   },
 } satisfies ProjectImpactsSummaryContent;
@@ -83,17 +81,22 @@ export const PREVIEW_SAMPLE_FAVOURABLE_IMPACTS_SUMMARY = {
 export const PREVIEW_SAMPLE_UNFAVOURABLE_IMPACTS_SUMMARY = {
   project: PREVIEW_SAMPLE_PROJECT,
   evaluationPeriodInYears: 50,
-  zanCompliance: {
-    name: "zanCompliance",
-    isSuccess: false,
-    value: {
-      isAgriculturalFriche: false,
-      permeableSurfaceAreaDifference: -1200,
-      artificializedSurfaceArea: 1200,
-    },
+  developmentScore: {
+    letterGrade: "D",
+    letterGradeWithModifiers: "D-",
+    localAuthorityEconomicScore: "D",
+    localPeopleQualityOfLifeScore: "D",
+    environmentScore: "E",
+    fullTimeJobsScore: "E",
   },
   breakEvenHorizon: { status: "notCompensatedWithinPeriod", breakEvenYear: undefined },
-  mainImpactIndicator: { name: "taxesIncomesImpact", isSuccess: false, value: -45_000 },
+  avoidedCostsAnalysisData: {
+    indirectEconomicImpactsTotal: 5_000,
+    localAuthorityMainIndirectEconomicImpact: {
+      total: -45_000,
+      name: "taxesIncome",
+    },
+  },
 } satisfies ProjectImpactsSummaryContent;
 
 // Every sample of the type, in order: most types have one, a type whose content varies
