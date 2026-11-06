@@ -37,7 +37,7 @@ test.describe("site creation - natural area - express mode", () => {
     await siteCreationPage.expectCreationSuccessWithDataInList([
       ["Nature du site", "Forêt"],
       ["Superficie totale du site", asSquareMeters(25_000)],
-      ["Adresse", "Fontainebleau"],
+      ["Adresse", "Fontainebleau (77300)"],
     ]);
     await siteCreationPage.expectWizardAriaSnapshot(
       "natural-area-express-creation-result-step.aria.yml",
@@ -52,7 +52,7 @@ test.describe("site creation - natural area - express mode", () => {
 
     await siteFeaturesPage.expectCurrentPage();
     await siteFeaturesPage.expectFeaturesDataLines([
-      ["Adresse du site", "Fontainebleau"],
+      ["Adresse du site", "Fontainebleau (77300)"],
       ["Nature du site", "Forêt"],
     ]);
   });

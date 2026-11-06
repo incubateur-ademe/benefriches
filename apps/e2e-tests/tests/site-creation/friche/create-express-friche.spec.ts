@@ -35,7 +35,7 @@ test.describe("site creation - friche - express mode", () => {
     await siteCreationPage.expectCreationSuccessWithDataInList([
       ["Type de friche", "Friche industrielle"],
       ["Superficie totale du site", asSquareMeters(10_000)],
-      ["Adresse", "Blajan"],
+      ["Adresse", "Blajan (31350)"],
     ]);
 
     await siteCreationPage.expectWizardAriaSnapshot("friche-express-creation-result-step.aria.yml");
@@ -49,7 +49,7 @@ test.describe("site creation - friche - express mode", () => {
 
     await siteFeaturesPage.expectCurrentPage();
     await siteFeaturesPage.expectFeaturesDataLines([
-      ["Adresse du site", "Blajan"],
+      ["Adresse du site", "Blajan (31350)"],
       ["Type de friche", "Friche industrielle"],
     ]);
   });
