@@ -33,6 +33,17 @@ export type FormValues = {
   firstYearOfOperation: number;
 };
 
+// Operations cannot start before the works (site reinstatement and installation) are over
+const getLatestWorksEndYear = (values: FormValues): number | undefined => {
+  const endYears = [values.reinstatementSchedule?.endDate, values.installationSchedule?.endDate]
+    .filter((endDate): endDate is string => !!endDate)
+    // read the year from the "YYYY-MM-DD" string: new Date() would parse it as UTC and could
+    // shift "2030-01-01" to 2029 in a timezone behind UTC
+    .map((endDate) => parseInt(endDate.slice(0, 4), 10))
+    .filter((year) => !Number.isNaN(year));
+  return endYears.length > 0 ? Math.max(...endYears) : undefined;
+};
+
 const formatScheduleBeforeSubmit = (schedule?: Partial<Schedule>): Schedule | undefined => {
   return schedule?.startDate && schedule.endDate
     ? { startDate: schedule.startDate, endDate: schedule.endDate }
@@ -46,7 +57,7 @@ function ScheduleProjectionForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { handleSubmit, control, formState, register, setValue } = useForm<FormValues>({
+  const { handleSubmit, control, formState, register, trigger, getValues } = useForm<FormValues>({
     mode: "onBlur",
     defaultValues: {
       firstYearOfOperation: initialValues?.firstYearOfOperations,
@@ -65,6 +76,14 @@ function ScheduleProjectionForm({
     },
   });
 
+  const revalidateDates = (scheduleName: "reinstatementSchedule" | "installationSchedule") => {
+    // only re-check the year once the user has entered one, to avoid showing a "required" error early
+    const hasYear = getValues("firstYearOfOperation") !== undefined;
+    void trigger(
+      hasYear ? [`${scheduleName}.endDate`, "firstYearOfOperation"] : `${scheduleName}.endDate`,
+    );
+  };
+
   return (
     <WizardFormLayout title="Calendrier">
       <form
@@ -81,8 +100,8 @@ function ScheduleProjectionForm({
             control={control}
             scheduleName="reinstatementSchedule"
             label="🚧 Remise en état de la friche"
-            onStartDateChange={() => {
-              setValue("reinstatementSchedule.endDate", "");
+            onDatesChange={() => {
+              revalidateDates("reinstatementSchedule");
             }}
           />
         )}
@@ -91,8 +110,8 @@ function ScheduleProjectionForm({
           control={control}
           scheduleName="installationSchedule"
           label={installationScheduleLabel}
-          onStartDateChange={() => {
-            setValue("installationSchedule.endDate", "");
+          onDatesChange={() => {
+            revalidateDates("installationSchedule");
           }}
         />
 
@@ -120,6 +139,13 @@ function ScheduleProjectionForm({
               max: {
                 value: 2100,
                 message: "Veuillez entrer une année valide",
+              },
+              validate: (year, values) => {
+                const latestWorksEndYear = getLatestWorksEndYear(values);
+                if (year === undefined || latestWorksEndYear === undefined) return true;
+                return year >= latestWorksEndYear
+                  ? true
+                  : `L'année de mise en service ne peut pas être antérieure à la fin des travaux (${latestWorksEndYear})`;
               },
             }),
           }}

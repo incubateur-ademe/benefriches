@@ -11,10 +11,17 @@ type Props = {
   label: string;
   scheduleName: "installationSchedule" | "reinstatementSchedule";
   control: Control<FormValues>;
-  onStartDateChange: () => void;
+  /** Called after either date changed, so that fields depending on these dates are re-validated */
+  onDatesChange: () => void;
 };
 
-function ScheduleField({ label, scheduleName, control, onStartDateChange }: Props) {
+const END_BEFORE_START_MESSAGE = "La date de fin doit être après la date de début";
+
+// Dates are "YYYY-MM-DD" strings: lexicographic order is chronological order
+const isEndBeforeStart = (startDate?: string, endDate?: string) =>
+  !!startDate && !!endDate && endDate < startDate;
+
+function ScheduleField({ label, scheduleName, control, onDatesChange }: Props) {
   const formValues = useWatch({ control });
   const formState = useFormState({
     control,
@@ -54,7 +61,7 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
                 value={field.value ?? ""}
                 onChange={(dateString) => {
                   field.onChange(dateString);
-                  onStartDateChange();
+                  onDatesChange();
                 }}
                 onBlur={field.onBlur}
                 name={field.name}
@@ -66,13 +73,10 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
             name={`${scheduleName}.endDate`}
             control={control}
             rules={{
-              validate: (value) => {
-                if (!value || !startDateValue) return true;
-                if (value < startDateValue) {
-                  return "La date de fin doit être après la date de début";
-                }
-                return true;
-              },
+              validate: (value, values) =>
+                isEndBeforeStart(values[scheduleName]?.startDate, value)
+                  ? END_BEFORE_START_MESSAGE
+                  : true,
             }}
             render={({ field }) => (
               <MonthYearInput
@@ -81,6 +85,7 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
                 value={field.value ?? ""}
                 onChange={(dateString) => {
                   field.onChange(dateString);
+                  onDatesChange();
                 }}
                 onBlur={field.onBlur}
                 name={field.name}
@@ -88,7 +93,10 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
             )}
           />
         </div>
-        {startDateValue && endDateValue && !hasError ? (
+        {startDateValue &&
+        endDateValue &&
+        !hasError &&
+        !isEndBeforeStart(startDateValue, endDateValue) ? (
           <p>
             Soit{" "}
             <strong>
