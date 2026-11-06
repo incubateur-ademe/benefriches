@@ -9,6 +9,8 @@ import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton"
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
+import { stakeholderNameMaxLengthRule } from "../stakeholderNameMaxLengthRule";
+
 type Props = {
   initialValues: FormValues | undefined;
   onSubmit: (data: FormValues) => void;
@@ -40,6 +42,7 @@ const requiredMessage = "Ce champ est requis";
 
 function SiteTenantForm({ initialValues, onSubmit, onBack, localAuthoritiesList }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
+    mode: "onChange",
     shouldUnregister: true,
     defaultValues: initialValues,
   });
@@ -89,6 +92,7 @@ function SiteTenantForm({ initialValues, onSubmit, onBack, localAuthoritiesList 
               stateRelatedMessage={formState.errors.companyName?.message}
               nativeInputProps={register("companyName", {
                 required: "Ce champ est requis",
+                maxLength: stakeholderNameMaxLengthRule,
               })}
             />
           )}
@@ -106,6 +110,7 @@ function SiteTenantForm({ initialValues, onSubmit, onBack, localAuthoritiesList 
               stateRelatedMessage={formState.errors.tenantName?.message}
               nativeInputProps={register("tenantName", {
                 required: "Ce champ est requis",
+                maxLength: stakeholderNameMaxLengthRule,
               })}
             />
           )}
