@@ -42,7 +42,14 @@ function NonSuitableSoilsSurfaceToTransformForm({
   });
 
   const totalSurfaceEntered = sumObjectValues(watch("soilsTransformation"));
+  // The photovoltaic panels must fit on suitable soils: the user has to transform at least the
+  // missing suitable surface area before moving on.
   const totalSurfaceEnteredIsValid = totalSurfaceEntered >= missingSuitableSurfaceArea;
+  const maxSurfaceToTransform = soilsToTransform.reduce(
+    (total, { currentSurfaceArea }) => total + currentSurfaceArea,
+    0,
+  );
+  const selectedSoilsCannotCoverMissingSurface = maxSurfaceToTransform < missingSuitableSurfaceArea;
 
   return (
     <WizardFormLayout
@@ -65,7 +72,12 @@ function NonSuitableSoilsSurfaceToTransformForm({
         </FormInfo>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          if (!totalSurfaceEnteredIsValid) return;
+          onSubmit(data);
+        })}
+      >
         {soilsToTransform.map(({ soilType, currentSurfaceArea }) => {
           const nativeInputProps = register(`soilsTransformation.${soilType}`, {
             ...optionalNumericFieldRegisterOptions,
@@ -107,7 +119,17 @@ function NonSuitableSoilsSurfaceToTransformForm({
               : `${formatSurfaceArea(Math.abs(missingSuitableSurfaceArea - totalSurfaceEntered))} manquants`
           }
         />
-        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
+        {selectedSoilsCannotCoverMissingSurface && (
+          <p className="fr-error-text mb-5">
+            Les espaces sélectionnés ne suffisent pas : revenez à l'étape précédente pour
+            sélectionner d'autres espaces à supprimer.
+          </p>
+        )}
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel="Valider"
+          disabled={!formState.isValid || !totalSurfaceEnteredIsValid}
+        />
       </form>
     </WizardFormLayout>
   );
