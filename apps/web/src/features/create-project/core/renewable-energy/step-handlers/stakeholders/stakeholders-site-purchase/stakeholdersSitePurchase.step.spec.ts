@@ -1,3 +1,4 @@
+import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
 import {
   getCurrentStep,
   StoreBuilder,
@@ -6,6 +7,7 @@ import {
   previousStepRequested,
   stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { creationRenewableEnergyFormSelectors } from "@/features/create-project/core/renewable-energy/renewableEnergyProject.selectors";
 
 describe("Renewable energy creation - Steps - stakeholders site purchase", () => {
   describe("completion", () => {
@@ -115,6 +117,51 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
         .build();
       store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR");
+    });
+  });
+
+  describe("view data", () => {
+    it("should give the site owner name to the question when the owner is known", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          ...relatedSiteData,
+          owner: { name: "Mairie de Grenoble", structureType: "municipality" },
+        })
+        .build();
+
+      const viewData = creationRenewableEnergyFormSelectors.selectSitePurchasedViewData(
+        store.getState(),
+      );
+
+      expect(viewData).toEqual({
+        isCurrentUserSiteOwner: false,
+        initialValues: undefined,
+        siteOwnerName: "Mairie de Grenoble",
+      });
+    });
+
+    it("should not name the site owner when it is the unknown owner placeholder", () => {
+      // A site saved without owner comes back from the API as this placeholder
+      // (structureType "unknown" is not part of the shared owner type).
+      const store = new StoreBuilder()
+        .withSiteData({
+          ...relatedSiteData,
+          owner: {
+            name: "Propriétaire inconnu",
+            structureType: "unknown",
+          } as unknown as typeof relatedSiteData.owner,
+        })
+        .build();
+
+      const viewData = creationRenewableEnergyFormSelectors.selectSitePurchasedViewData(
+        store.getState(),
+      );
+
+      expect(viewData).toEqual({
+        isCurrentUserSiteOwner: false,
+        initialValues: undefined,
+        siteOwnerName: undefined,
+      });
     });
   });
 });
