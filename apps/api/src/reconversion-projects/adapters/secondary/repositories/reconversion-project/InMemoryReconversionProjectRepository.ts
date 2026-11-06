@@ -41,7 +41,9 @@ export class InMemoryReconversionProjectRepository implements ReconversionProjec
   }
 
   getById(id: string): Promise<ReconversionProjectDataView | null> {
-    const foundReconversionProject = this.reconversionProjects.find((project) => project.id === id);
+    const foundReconversionProject = this.reconversionProjects.find(
+      (project) => project.id === id && project.status === "active",
+    );
     return Promise.resolve(foundReconversionProject ?? null);
   }
 

@@ -46,6 +46,8 @@ export class SqlSitesQuery implements SitesQuery {
   async getSiteFeaturesById(siteId: string): Promise<SiteFeaturesView | undefined> {
     const sqlResult = (await this.sqlConnection("sites")
       .where("sites.id", siteId)
+      // A deleted site is archived, not removed: it must read as not found.
+      .where("sites.status", "active")
       .leftJoin("addresses as address", "sites.id", "address.site_id")
       .leftJoin("site_expenses as expenses", "sites.id", "expenses.site_id")
       .leftJoin("site_incomes as incomes", "sites.id", "incomes.site_id")
@@ -341,6 +343,7 @@ export class SqlSitesQuery implements SitesQuery {
   ): Promise<SiteSurfaceAreaAndCityCode | undefined> {
     const result = (await this.sqlConnection("sites")
       .where("sites.id", siteId)
+      .where("sites.status", "active")
       .leftJoin("addresses", "sites.id", "addresses.site_id")
       .select("sites.surface_area", "addresses.city_code")
       .first()) as { surface_area: number; city_code: string } | undefined;
