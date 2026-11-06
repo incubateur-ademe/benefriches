@@ -32,11 +32,19 @@ function LandParcelBuildingsFloorAreaForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>({
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     defaultValues: {
       buildingsFloorSurfaceArea: initialValue,
     },
   });
+
+  // Unlike the urban project wizard, this is a warning, not a block: some existing urban zone
+  // buildings (e.g. warehouses, open structures) may count little or no floor area.
+  const buildingsFloorSurfaceArea = watch("buildingsFloorSurfaceArea");
+  const isBelowBuildingsFootprint =
+    Number.isFinite(buildingsFloorSurfaceArea) &&
+    buildingsFloorSurfaceArea > 0 &&
+    buildingsFloorSurfaceArea < buildingsFootprintSurfaceArea;
 
   const parcelLabel = getLandParcelTypeLabelWithDeArticle(currentParcelType);
 
@@ -59,8 +67,19 @@ function LandParcelBuildingsFloorAreaForm({
             min: { value: 1, message: "La surface doit être supérieure à 0." },
             valueAsNumber: true,
           })}
-          state={formState.errors.buildingsFloorSurfaceArea ? "error" : "default"}
-          stateRelatedMessage={formState.errors.buildingsFloorSurfaceArea?.message}
+          state={
+            formState.errors.buildingsFloorSurfaceArea
+              ? "error"
+              : isBelowBuildingsFootprint
+                ? "warning"
+                : "default"
+          }
+          stateRelatedMessage={
+            formState.errors.buildingsFloorSurfaceArea?.message ??
+            (isBelowBuildingsFootprint
+              ? "La surface de plancher est inférieure à la surface au sol des bâtiments. Vérifiez la valeur saisie."
+              : undefined)
+          }
         />
         {initialValue && (
           <p>

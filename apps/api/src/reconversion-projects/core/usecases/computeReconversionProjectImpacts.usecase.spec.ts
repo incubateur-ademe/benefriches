@@ -497,6 +497,37 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       );
     });
 
+    it("caps the default evaluation period at 50 years when the contract duration is longer", async () => {
+      const projectQuery = new InMemoryReconversionProjectImpactsQuery();
+      projectQuery._setData({
+        ...reconversionProjectImpactDataView,
+        developmentPlan: {
+          ...reconversionProjectImpactDataView.developmentPlan,
+          features: {
+            ...reconversionProjectImpactDataView.developmentPlan.features,
+            contractDuration: 500,
+          },
+        },
+      });
+      const siteQuery = new InMemorySiteImpactsQuery();
+      siteQuery._setData(site);
+
+      const usecase = new ComputeReconversionProjectImpactsUseCase(
+        projectQuery,
+        siteQuery,
+        new InMemoryCityImpactsQuery(),
+        new FakeGetSoilsCarbonStorageService(),
+        dateProvider,
+      );
+      const result = await usecase.execute({
+        reconversionProjectId: reconversionProjectImpactDataView.id,
+      });
+
+      assert.strictEqual(result.isSuccess(), true);
+      const data = (result as SuccessResult<ComputedImpacts>).getData();
+      assert.strictEqual(data.evaluationPeriodInYears, 50);
+    });
+
     it("returns impacts when soils carbon storage cannot be computed", async () => {
       const evaluationPeriodInYears = 10;
       const projectQuery = new InMemoryReconversionProjectImpactsQuery();
