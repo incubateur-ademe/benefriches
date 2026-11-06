@@ -75,12 +75,21 @@ export class CreateReconversionProjectUseCase implements UseCase<
       return fail("ReconversionProjectAlreadyExists");
     }
 
-    await this.reconversionProjectRepository.save({
-      ...parsedReconversionProject,
-      createdAt: this.dateProvider.now(),
-      creationMode: "custom",
-      status: "active",
-    });
+    try {
+      await this.reconversionProjectRepository.save({
+        ...parsedReconversionProject,
+        createdAt: this.dateProvider.now(),
+        creationMode: "custom",
+        status: "active",
+      });
+    } catch (error) {
+      // A concurrent request with the same id (e.g. a double submit) can pass the existence
+      // check above and save first: the save then fails on the primary key.
+      if (await this.reconversionProjectRepository.existsWithId(parsedReconversionProject.id)) {
+        return fail("ReconversionProjectAlreadyExists");
+      }
+      throw error;
+    }
 
     await this.eventPublisher.publish(
       createReconversionProjectCreatedEvent(this.uuidGenerator.generate(), {
