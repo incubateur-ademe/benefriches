@@ -10,6 +10,7 @@ import type {
   SiteYearlyExpensePurpose,
   SiteYearlyIncome,
   SoilsDistribution,
+  UrbanZoneLandParcelType,
   UrbanZoneType,
 } from "shared";
 
@@ -52,6 +53,9 @@ type UrbanZoneSiteFeatures = BaseSiteFeatures & {
   nature: "URBAN_ZONE";
   contaminatedSurfaceArea?: number;
   urbanZoneType?: UrbanZoneType;
+  // optional: only the saved site (API) carries the land-parcel split, not every caller building
+  // these features (e.g. the avoided-costs intro modal)
+  landParcels?: { type: UrbanZoneLandParcelType; surfaceArea: number }[];
   managerName?: string;
   vacantCommercialPremisesFootprint?: number;
   vacantCommercialPremisesFloorArea?: number;

@@ -10,6 +10,7 @@ import {
   roundToInteger,
 } from "shared";
 
+import { PARCEL_TYPE_LABELS } from "@/features/create-site/views/urban-zone/landParcelTypeMetadata";
 import {
   formatNumberFr,
   formatPercentage,
@@ -53,6 +54,19 @@ export default function SiteFeaturesList({
       <Section title="📍 Localisation" {...sectionProps?.LOCATION}>
         <DataLine label={<strong>Adresse du site</strong>} value={siteFeatures.address} />
       </Section>
+      {siteFeatures.nature === "URBAN_ZONE" &&
+        siteFeatures.landParcels &&
+        siteFeatures.landParcels.length > 0 && (
+          <Section title="🗺️ Surfaces foncières">
+            {siteFeatures.landParcels.map(({ type, surfaceArea }) => (
+              <DataLine
+                key={type}
+                label={PARCEL_TYPE_LABELS[type]}
+                value={formatSurfaceArea(roundToInteger(surfaceArea))}
+              />
+            ))}
+          </Section>
+        )}
       <Section
         title="🌾️ Sols"
         tooltip="L'occupation des sols conditionne la capacité d'infiltration des eaux, la capacité de stockage de carbone dans les sols, etc."
@@ -165,56 +179,62 @@ export default function SiteFeaturesList({
           )}
         </Section>
       )}
+      {(siteFeatures.nature === "FRICHE" || siteFeatures.nature === "URBAN_ZONE") && (
+        <Section title="☣️ Pollution" {...sectionProps?.CONTAMINATION}>
+          <DataLine
+            label={<strong>Superficie polluée</strong>}
+            labelTooltip={
+              siteFeatures.nature === "FRICHE"
+                ? `Les activités antérieures exercées sur un site en friche, qu'elles soient industrielles, de service, ferroviaire, etc. peuvent être à l'origine de pollution des sols.
+La pollution à l'amiante des bâtiments n'est pas considérée ici.`
+                : undefined
+            }
+            valueTooltip={
+              siteFeatures.nature === "FRICHE" &&
+              siteFeatures.isExpressSite &&
+              siteFeatures.fricheActivity
+                ? `On considère ici que ${formatPercentage(getContaminatedPercentageFromFricheActivity(siteFeatures.fricheActivity) * 100)} de la surface de la friche est polluée. Il s'agit d'une valeur couramment rencontrée sur les friches de type « ${getFricheActivityLabel(siteFeatures.fricheActivity)} ». Cela n'implique pas systématiquement que toute cette surface sera à dépolluer.`
+                : undefined
+            }
+            value={
+              siteFeatures.contaminatedSurfaceArea
+                ? formatSurfaceArea(roundToInteger(siteFeatures.contaminatedSurfaceArea))
+                : "Pas de pollution déclarée"
+            }
+          />
+        </Section>
+      )}
       {siteFeatures.nature === "FRICHE" && (
-        <>
-          <Section title="☣️ Pollution" {...sectionProps?.CONTAMINATION}>
+        <Section title="💥 Accidents" {...sectionProps?.ACCIDENTS}>
+          <>
             <DataLine
-              label={<strong>Superficie polluée</strong>}
-              labelTooltip="Les activités antérieures exercées sur un site en friche, qu'elles soient industrielles, de service, ferroviaire, etc. peuvent être à l'origine de pollution des sols.
-La pollution à l'amiante des bâtiments n'est pas considérée ici."
+              label={<strong>Accidents survenus sur le site depuis 5 ans</strong>}
+              labelTooltip="Les friches, en tant que lieux laissés à l'abandon, font fréquemment l'objet d'intrusion. La présence de zones dangereuses et l'état potentiellement délabrées (ex : toitures, passerelles) deviennent sources d'accident."
+              value={<strong>{sumObjectValues(siteFeatures.accidents) || "Aucun"}</strong>}
               valueTooltip={
-                siteFeatures.isExpressSite && siteFeatures.fricheActivity
-                  ? `On considère ici que ${formatPercentage(getContaminatedPercentageFromFricheActivity(siteFeatures.fricheActivity) * 100)} de la surface de la friche est polluée. Il s'agit d'une valeur couramment rencontrée sur les friches de type « ${getFricheActivityLabel(siteFeatures.fricheActivity)} ». Cela n'implique pas systématiquement que toute cette surface sera à dépolluer.`
+                siteFeatures.isExpressSite
+                  ? "En l'absence de moyennes chiffrées, on considère ici que la friche n'a pas été concernée par des accidents."
                   : undefined
               }
-              value={
-                siteFeatures.contaminatedSurfaceArea
-                  ? formatSurfaceArea(roundToInteger(siteFeatures.contaminatedSurfaceArea))
-                  : "Pas de pollution déclarée"
-              }
             />
-          </Section>
-          <Section title="💥 Accidents" {...sectionProps?.ACCIDENTS}>
-            <>
-              <DataLine
-                label={<strong>Accidents survenus sur le site depuis 5 ans</strong>}
-                labelTooltip="Les friches, en tant que lieux laissés à l'abandon, font fréquemment l'objet d'intrusion. La présence de zones dangereuses et l'état potentiellement délabrées (ex : toitures, passerelles) deviennent sources d'accident."
-                value={<strong>{sumObjectValues(siteFeatures.accidents) || "Aucun"}</strong>}
-                valueTooltip={
-                  siteFeatures.isExpressSite
-                    ? "En l'absence de moyennes chiffrées, on considère ici que la friche n'a pas été concernée par des accidents."
-                    : undefined
-                }
-              />
-              {sumObjectValues(siteFeatures.accidents) > 0 && (
-                <div className="ml-4">
-                  <DataLine
-                    label="Blessés légers"
-                    value={siteFeatures.accidents.minorInjuries ?? "Non renseigné"}
-                  />
-                  <DataLine
-                    label="Blessés graves"
-                    value={siteFeatures.accidents.severeInjuries ?? "Non renseigné"}
-                  />
-                  <DataLine
-                    label="Tués"
-                    value={siteFeatures.accidents.accidentsDeaths ?? "Non renseigné"}
-                  />
-                </div>
-              )}
-            </>
-          </Section>
-        </>
+            {sumObjectValues(siteFeatures.accidents) > 0 && (
+              <div className="ml-4">
+                <DataLine
+                  label="Blessés légers"
+                  value={siteFeatures.accidents.minorInjuries ?? "Non renseigné"}
+                />
+                <DataLine
+                  label="Blessés graves"
+                  value={siteFeatures.accidents.severeInjuries ?? "Non renseigné"}
+                />
+                <DataLine
+                  label="Tués"
+                  value={siteFeatures.accidents.accidentsDeaths ?? "Non renseigné"}
+                />
+              </div>
+            )}
+          </>
+        </Section>
       )}
       <SiteFeaturesManagementSection {...siteFeatures} sectionProps={sectionProps?.MANAGEMENT} />
       <Section title="✍ Dénomination" {...sectionProps?.NAMING}>
