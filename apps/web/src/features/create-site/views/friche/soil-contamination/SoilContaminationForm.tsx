@@ -37,6 +37,13 @@ function toHasContaminatedSoilsString(value: boolean | undefined): HasContaminat
   return value ? "yes" : "no";
 }
 
+// Product rule: skipping this step ("Passer", no option selected) is saved as "Non", on purpose.
+// The "no" option reads "Non / Ne sait pas", so an unanswered question counts as "ne sait pas"
+// and is stored as `hasContaminatedSoils: false`, never left unknown.
+function toHasContaminatedSoilsAnswer(value: HasContaminatedSoilsString): boolean {
+  return value === "yes";
+}
+
 function SoilContaminationForm({
   title,
   instructions,
@@ -64,7 +71,7 @@ function SoilContaminationForm({
       <form
         onSubmit={handleSubmit(({ hasContaminatedSoils: value, contaminatedSurface }) => {
           onSubmit({
-            hasContaminatedSoils: value === "yes",
+            hasContaminatedSoils: toHasContaminatedSoilsAnswer(value),
             contaminatedSoilSurface: contaminatedSurface,
           });
         })}
