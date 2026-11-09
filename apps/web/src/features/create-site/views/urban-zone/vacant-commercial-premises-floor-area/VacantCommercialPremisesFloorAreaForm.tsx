@@ -6,6 +6,7 @@ import {
 } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import { numericFieldSetValueAs } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -53,7 +54,7 @@ function VacantCommercialPremisesFloorAreaForm({
           nativeInputProps={register("surfaceArea", {
             required: "Ce champ est requis.",
             min: { value: 0, message: "La surface doit être supérieure ou égale à 0." },
-            valueAsNumber: true,
+            setValueAs: numericFieldSetValueAs,
           })}
           state={formState.errors.surfaceArea ? "error" : "default"}
           stateRelatedMessage={formState.errors.surfaceArea?.message}
