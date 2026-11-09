@@ -6,9 +6,9 @@ import { type Style, renderChildren } from "./helpers";
 import { exportModalPdfStyles as s } from "./styles";
 
 export const pdfHeading =
-  <T extends "h1" | "h2" | "h3" | "h4" | "h5" | "h6">(tag: T) =>
+  <T extends "h1" | "h2" | "h3" | "h4" | "h5" | "h6">(tag: T, style?: Style) =>
   ({ children }: ComponentProps<T>) => (
-    <View minPresenceAhead={60}>{renderChildren(children, s[tag], true)}</View>
+    <View minPresenceAhead={60}>{renderChildren(children, [s[tag], style], true)}</View>
   );
 
 const container =

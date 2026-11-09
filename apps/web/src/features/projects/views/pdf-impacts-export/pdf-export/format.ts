@@ -15,14 +15,14 @@ import {
   formatTimeImpact,
 } from "../../shared/formatImpactValue";
 
-const replaceNonBreakingSpacePdf = (str: string): string => {
+export const replaceNonBreakingSpacePdf = (str: string): string => {
   // non-breaking space is rendered as '/' in PDF-kit
   // see https://github.com/foliojs/pdfkit/issues/1331
   // eslint-disable-next-line no-irregular-whitespace
   return str.replace(/[\u00A0\u1680​\u180e\u2000-\u2009\u200a​\u200b​\u202f\u205f​\u3000]/g, " ");
 };
 
-const replaceSquareMetersHtmlSymbolPdf = (str: string): string => {
+export const replaceSquareMetersHtmlSymbolPdf = (str: string): string => {
   // PDF does not handle the HTML symbol for square meters
   return str.replace(SQUARE_METERS_HTML_SYMBOL, "m²");
 };

@@ -27,6 +27,12 @@ import {
   getSocioEconomicImpactLabel,
 } from "../../shared/getImpactLabel";
 import { LOCAL_AUTHORITY_IMPACTS_CATEGORIES } from "../../shared/impacts/impactGroupCategory";
+import {
+  describeSoilsQuality,
+  describeWaterQuality,
+  describeZanCompliance,
+} from "../ProjectDevelopmentEnvironmentScore";
+import { localPeopleQualityOfLifeDescriptions } from "../ProjectDevelopmentLocalPeopleAndCompanyScore";
 import type { DetailsName } from "./useOpenDescriptionModalLink";
 
 const FullTimeJobsMetrics = lazy(() => import("./metrics/FullTimeJobsMetrics"));
@@ -88,7 +94,12 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
     letterGrade: (d) => d.localPeopleQualityOfLifeScore.score.letterGrade,
   },
   "localPeopleQualityOfLifeScore.livingEnvironment": {
-    dataProps: () => undefined,
+    dataProps: () => ({
+      type: "value",
+      headerProps: {
+        subtitle: localPeopleQualityOfLifeDescriptions.livingEnvironment,
+      },
+    }),
     MetricsComponent: null,
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -97,7 +108,14 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
     letterGrade: (d) => d.localPeopleQualityOfLifeScore.indicators.livingEnvironment.letterGrade,
   },
   "localPeopleQualityOfLifeScore.localHealthiness": {
-    dataProps: () => undefined,
+    dataProps: (d) => ({
+      type: "value",
+      headerProps: {
+        subtitle: localPeopleQualityOfLifeDescriptions.localHealthiness(
+          d.developmentScore.details.localPeopleQualityOfLifeScore.indicators,
+        ),
+      },
+    }),
     MetricsComponent: null,
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -106,7 +124,14 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
     letterGrade: (d) => d.localPeopleQualityOfLifeScore.indicators.localHealthiness.letterGrade,
   },
   "localPeopleQualityOfLifeScore.accessToHealthCare": {
-    dataProps: () => undefined,
+    dataProps: (d) => ({
+      type: "value",
+      headerProps: {
+        subtitle: localPeopleQualityOfLifeDescriptions.accessToHealthCare(
+          d.developmentScore.details.localPeopleQualityOfLifeScore.indicators,
+        ),
+      },
+    }),
     MetricsComponent: null,
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -115,7 +140,14 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
     letterGrade: (d) => d.localPeopleQualityOfLifeScore.indicators.accessToHealthCare.letterGrade,
   },
   "localPeopleQualityOfLifeScore.accessToLocalServices": {
-    dataProps: () => undefined,
+    dataProps: (d) => ({
+      type: "value",
+      headerProps: {
+        subtitle: localPeopleQualityOfLifeDescriptions.accessToLocalServices(
+          d.developmentScore.details.localPeopleQualityOfLifeScore.indicators,
+        ),
+      },
+    }),
     MetricsComponent: null,
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -125,7 +157,12 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
       d.localPeopleQualityOfLifeScore.indicators.accessToLocalServices.letterGrade,
   },
   "localPeopleQualityOfLifeScore.frichesAccidents": {
-    dataProps: () => undefined,
+    dataProps: () => ({
+      type: "value",
+      headerProps: {
+        subtitle: localPeopleQualityOfLifeDescriptions.fricheAccidents,
+      },
+    }),
     MetricsComponent: null,
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -134,7 +171,12 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
     letterGrade: (d) => d.localPeopleQualityOfLifeScore.indicators.fricheAccidents.letterGrade,
   },
   "localPeopleQualityOfLifeScore.trafficSecurity": {
-    dataProps: () => undefined,
+    dataProps: () => ({
+      type: "value",
+      headerProps: {
+        subtitle: localPeopleQualityOfLifeDescriptions.trafficSecurity,
+      },
+    }),
     MetricsComponent: null,
     ContentComponent: lazy<ContentComponentType>(
       () =>
@@ -304,7 +346,14 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
     MetricsComponent: null,
   },
   "environmentScore.soilsQuality": {
-    dataProps: () => undefined,
+    dataProps: (d) => ({
+      type: "value",
+      headerProps: {
+        subtitle: describeSoilsQuality(
+          d.developmentScore.details.environmentScore.indicators.soilsQuality,
+        ),
+      },
+    }),
     MetricsComponent: null,
 
     ContentComponent: lazy<ContentComponentType>(
@@ -314,7 +363,14 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
     letterGrade: (d) => d.environmentScore.indicators.soilsQuality.letterGrade,
   },
   "environmentScore.waterQuality": {
-    dataProps: () => undefined,
+    dataProps: (d) => ({
+      type: "value",
+      headerProps: {
+        subtitle: describeWaterQuality(
+          d.developmentScore.details.environmentScore.indicators.waterQuality,
+        ),
+      },
+    }),
     MetricsComponent: null,
 
     ContentComponent: lazy<ContentComponentType>(
@@ -324,7 +380,14 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
     letterGrade: (d) => d.environmentScore.indicators.waterQuality.letterGrade,
   },
   "environmentScore.zanCompliance": {
-    dataProps: () => undefined,
+    dataProps: (d) => ({
+      type: "value",
+      headerProps: {
+        subtitle: describeZanCompliance(
+          d.developmentScore.details.environmentScore.indicators.zanCompliance,
+        ),
+      },
+    }),
     MetricsComponent: null,
     ContentComponent: lazy<ContentComponentType>(
       () =>

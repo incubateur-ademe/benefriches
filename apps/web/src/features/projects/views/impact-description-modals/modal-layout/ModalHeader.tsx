@@ -164,26 +164,31 @@ export default ({
             </a>
           </div>
         </div>
-        <div className={classNames("inline-flex justify-between items-center gap-4 mb-2")}>
-          <div>
-            <h1 id={DIALOG_TITLE_ID} className={classNames(fr.cx("fr-modal__title"), "mb-0")}>
-              {children}
-            </h1>
-            {dataProps?.headerProps.subtitle && (
-              <div className="font-bold mt-2">{dataProps.headerProps.subtitle}</div>
+        <div className="mb-2">
+          <h1
+            id={DIALOG_TITLE_ID}
+            className={classNames(
+              fr.cx("fr-modal__title"),
+              "mb-0",
+              "inline-flex justify-between items-center gap-4",
             )}
-          </div>
-
-          {dataProps?.headerProps.score?.letterGrade && (
-            <GradeTextBadge
-              letterGrade={dataProps?.headerProps.score.letterGrade}
-              badgeText={getLetterGradeBadgeText(
-                dataProps?.headerProps.score.labelKind,
-                dataProps?.headerProps.score?.letterGrade,
-              )}
-            />
+          >
+            {children}
+            {dataProps?.headerProps.score?.letterGrade && (
+              <GradeTextBadge
+                letterGrade={dataProps?.headerProps.score.letterGrade}
+                badgeText={getLetterGradeBadgeText(
+                  dataProps?.headerProps.score.labelKind,
+                  dataProps?.headerProps.score?.letterGrade,
+                )}
+              />
+            )}
+          </h1>
+          {dataProps?.headerProps.subtitle && (
+            <div className="font-bold mt-2">{dataProps.headerProps.subtitle}</div>
           )}
         </div>
+
         {dataProps?.headerProps.value && (
           <div>
             <span

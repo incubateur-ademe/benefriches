@@ -4,13 +4,21 @@ import { type ReactNode, type ComponentProps } from "react";
 import type { LetterGrade } from "shared";
 
 import { type ModalHeaderProps } from "../../../impact-description-modals/modal-layout/ModalHeader";
+import {
+  replaceNonBreakingSpacePdf,
+  replaceSquareMetersHtmlSymbolPdf,
+} from "../../../pdf-impacts-export/pdf-export/format";
+import { LETTER_GRADE_BADGE_TEXT, type ScoreBadgeLabelKind } from "../../layout/gradeLabels";
 import { type ContentComponent } from "../developmentScoreModalsConfig";
 import { ModalPdfData } from "./ModalPdfData";
 import { extractGradeColor, renderChildren } from "./helpers";
 import { pdfComponents, pdfHeading } from "./mdxComponents";
 import { exportModalPdfStyles } from "./styles";
 
-const PdfLetterBadgeText = (props: { badgeText?: string; letterGrade?: LetterGrade }) => {
+const PdfLetterBadgeText = (props: {
+  badgeKind?: ScoreBadgeLabelKind;
+  letterGrade?: LetterGrade;
+}) => {
   if (!props.letterGrade) {
     return null;
   }
@@ -23,13 +31,75 @@ const PdfLetterBadgeText = (props: { badgeText?: string; letterGrade?: LetterGra
         paddingVertical: 3,
         fontWeight: 700,
         display: "flex",
-        marginBottom: 12,
         backgroundColor: extractGradeColor(props.letterGrade, "bgColor"),
         color: extractGradeColor(props.letterGrade, "textColor"),
       }}
     >
-      {props.badgeText}
+      {LETTER_GRADE_BADGE_TEXT[props.badgeKind ?? "qualitative"][props.letterGrade]}
     </Text>
+  );
+};
+
+const PdfHeader = ({
+  dataProps,
+  chartImage,
+  ...rest
+}: {
+  dataProps?: ModalHeaderProps["dataProps"];
+  chartImage: string | undefined;
+} & ComponentProps<"h1">) => {
+  return (
+    <View>
+      <View
+        style={{
+          marginBottom: 12,
+        }}
+      >
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 8,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            marginBottom: 4,
+          }}
+        >
+          {pdfHeading("h1", { marginBottom: 0 })(rest)}
+          <PdfLetterBadgeText {...dataProps?.headerProps.score} />
+        </View>
+        {dataProps?.headerProps.subtitle && (
+          <Text style={{ fontSize: 10, fontWeight: "bold" }}>{dataProps.headerProps.subtitle}</Text>
+        )}
+        {dataProps?.headerProps.value && (
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 2,
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "bold",
+                color: dataProps?.headerProps.value.state === "success" ? "#19753C" : "#CE0500",
+              }}
+            >
+              {replaceSquareMetersHtmlSymbolPdf(
+                replaceNonBreakingSpacePdf(dataProps?.headerProps.value.text),
+              )}
+            </Text>
+
+            {dataProps?.headerProps.value.description && (
+              <Text style={{ color: "#333" }}>{dataProps?.headerProps.value.description}</Text>
+            )}
+          </View>
+        )}
+      </View>
+      {dataProps && <ModalPdfData chartImage={chartImage} dataProps={dataProps} />}
+    </View>
   );
 };
 
@@ -66,26 +136,9 @@ export const ModalPdfDocument = (props: {
             ...props.mdxComponents,
             ...pdfComponents,
             ModalLink: (p: { children: ReactNode }) => renderChildren(p.children, [], true),
-            h1: (p: ComponentProps<"h1">) => {
-              return (
-                <View>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      gap: 8,
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    {pdfHeading("h1")(p)}
-                    <PdfLetterBadgeText {...props.dataProps?.headerProps.score} />
-                  </View>
-
-                  {props.dataProps && <ModalPdfData {...props} dataProps={props.dataProps} />}
-                </View>
-              );
-            },
+            h1: (p: ComponentProps<"h1">) => (
+              <PdfHeader dataProps={props.dataProps} chartImage={props.chartImage} {...p} />
+            ),
             If: ({ when, children }: { when: boolean; children: React.ReactNode }) =>
               when ? renderChildren(children) : null,
           }}

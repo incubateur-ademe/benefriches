@@ -27,21 +27,21 @@ const buildGradeDescription = (props: {
   positiveReasons: { text: string; when: boolean }[];
   neutralText: string;
   negativeReasons: { text: string; when: boolean }[];
-}): string | null => {
+}): string | undefined => {
   const { grade, negativeReasons, positiveReasons, neutralText } = props;
   if (grade === "A" || grade === "B") {
     const reasons = formatReasons(positiveReasons);
-    return reasons && `Grâce à ${reasons}.`;
+    return reasons ? `Grâce à ${reasons}.` : undefined;
   }
   if (grade === "C") return neutralText;
 
   const reasons = formatReasons(negativeReasons);
-  return reasons && `À cause de ${reasons}.`;
+  return reasons ? `À cause de ${reasons}.` : undefined;
 };
 
 type Indicators = Props["indicators"];
 
-const describeZanCompliance = ({ letterGrade, metrics }: Indicators["zanCompliance"]) =>
+export const describeZanCompliance = ({ letterGrade, metrics }: Indicators["zanCompliance"]) =>
   buildGradeDescription({
     grade: letterGrade!,
     neutralText: "Pas ou peu de changement sur les surfaces perméables",
@@ -69,7 +69,10 @@ const describeZanCompliance = ({ letterGrade, metrics }: Indicators["zanComplian
     ],
   });
 
-const describeSoilsQuality = ({ letterGrade, metrics }: NonNullable<Indicators["soilsQuality"]>) =>
+export const describeSoilsQuality = ({
+  letterGrade,
+  metrics,
+}: NonNullable<Indicators["soilsQuality"]>) =>
   buildGradeDescription({
     grade: letterGrade,
     neutralText: "Pas ou peu de changement sur les surfaces perméables et la pollution",
@@ -85,16 +88,19 @@ const describeSoilsQuality = ({ letterGrade, metrics }: NonNullable<Indicators["
         text: "la pollution toujours présente sur les sols de la friche",
         when:
           metrics.contamination.siteContaminatedSurface > 0 &&
-          metrics.contamination.difference === 0,
+          metrics.contamination.percentVariation < 50,
       },
       {
         text: "la destruction de surfaces perméables",
         when: metrics.permeableSurfaceDifference.difference < 0,
-      }, // était > 0
+      },
     ],
   });
 
-const describeWaterQuality = ({ letterGrade, metrics }: NonNullable<Indicators["waterQuality"]>) =>
+export const describeWaterQuality = ({
+  letterGrade,
+  metrics,
+}: NonNullable<Indicators["waterQuality"]>) =>
   buildGradeDescription({
     grade: letterGrade,
     neutralText:
