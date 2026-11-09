@@ -1,6 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { type HighchartsReact } from "highcharts-react-official";
+import type { MDXComponents } from "mdx/types";
 import {
   cloneElement,
   type ReactElement,
@@ -51,6 +52,7 @@ const downloadModalAsPDF = async (props: {
   ContentComponent: LazyExoticComponent<ContentComponentType>;
   fileName: string;
   projectName: string;
+  mdxComponents?: MDXComponents;
 }) => {
   const blob = await getExportPdfModalDocumentAsBlob(props);
 
@@ -107,6 +109,7 @@ export type ModalHeaderProps = {
     | {
         ContentComponent: LazyExoticComponent<ContentComponentType>;
         projectName: string;
+        mdxComponents?: MDXComponents;
       }
     | false;
 };
@@ -142,6 +145,7 @@ export default ({
                   void downloadModalAsPDF({
                     chartRef,
                     ContentComponent: exportProps.ContentComponent,
+                    mdxComponents: exportProps.mdxComponents,
                     dataProps,
                     fileName: `${exportProps.projectName} - ${titleWithoutEmoji}`,
                     projectName: exportProps.projectName,

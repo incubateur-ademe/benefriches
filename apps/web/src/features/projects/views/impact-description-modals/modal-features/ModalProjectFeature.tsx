@@ -1,10 +1,13 @@
 import { useMemo } from "react";
 import type { BuildingsUseDistribution } from "shared";
 
-import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 
+import { formatSurfaceAreaPdf } from "../../pdf-impacts-export/pdf-export/format";
 import ModalFeature from "./ModalFeature";
 import ModalFeatureLine from "./ModalFeatureLine";
+import ModalFeaturePdf from "./ModalFeaturePdf";
+import ModalFeaturePdfLine from "./ModalFeaturePdfLine";
 import type { ModalSoilsDistributionProps } from "./ModalSoilsDistribution";
 import ModalSoilsDistribution from "./ModalSoilsDistribution";
 
@@ -36,71 +39,86 @@ type Props = {
         type: "URBAN_PROJECT";
         buildingsFloorAreaDistribution: BuildingsUseDistribution;
       };
+  isPdf?: boolean;
 };
 
-const ModalProjectFeature = ({
+const getSiteFeatureValue = ({
   value,
-  label,
-  soilsSubset,
-  soilsDistribution,
+  isPdf,
   projectDevelopmentPlan,
   decontaminatedSurfaceArea,
   siteContaminatedSurfaceArea,
 }: Props) => {
-  const total = useMemo(() => {
-    switch (value) {
-      case "contaminatedSurfaceArea":
-        return siteContaminatedSurfaceArea && decontaminatedSurfaceArea
-          ? siteContaminatedSurfaceArea - decontaminatedSurfaceArea
-          : undefined;
-      case "photovoltaicSurfaceArea":
-        return projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-          ? projectDevelopmentPlan.installationSurfaceArea
-          : undefined;
-      case "electricalPowerKwc":
-        return projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-          ? projectDevelopmentPlan.installationElectricalPowerKWc
-          : undefined;
+  const formatSurfaceFn = isPdf ? formatSurfaceAreaPdf : formatSurfaceArea;
 
-      case "publicFacilitiesBuildingsFloorArea":
-        return projectDevelopmentPlan.type === "URBAN_PROJECT"
-          ? projectDevelopmentPlan.buildingsFloorAreaDistribution.PUBLIC_FACILITIES
-          : undefined;
-      case "officesBuildingsFloorArea":
-        return projectDevelopmentPlan.type === "URBAN_PROJECT"
-          ? projectDevelopmentPlan.buildingsFloorAreaDistribution.OFFICES
-          : undefined;
-      case "residentialBuildingsFloorArea":
-        return projectDevelopmentPlan.type === "URBAN_PROJECT"
-          ? projectDevelopmentPlan.buildingsFloorAreaDistribution.RESIDENTIAL
-          : undefined;
+  switch (value) {
+    case "contaminatedSurfaceArea":
+      return siteContaminatedSurfaceArea && decontaminatedSurfaceArea
+        ? formatSurfaceFn(siteContaminatedSurfaceArea - decontaminatedSurfaceArea)
+        : undefined;
 
-      case "groundFloorRetailSurface":
-        return projectDevelopmentPlan.type === "URBAN_PROJECT"
-          ? projectDevelopmentPlan.buildingsFloorAreaDistribution.LOCAL_STORE
-          : undefined;
-    }
-  }, [projectDevelopmentPlan, siteContaminatedSurfaceArea, decontaminatedSurfaceArea, value]);
+    case "photovoltaicSurfaceArea":
+      return projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+        ? formatSurfaceFn(projectDevelopmentPlan.installationSurfaceArea)
+        : undefined;
 
-  if (value === "soilsDistribution") {
+    case "electricalPowerKwc":
+      return projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+        ? `${formatNumberFr(projectDevelopmentPlan.installationElectricalPowerKWc)} Kwc}`
+        : undefined;
+
+    case "publicFacilitiesBuildingsFloorArea":
+      return projectDevelopmentPlan.type === "URBAN_PROJECT"
+        ? formatSurfaceFn(
+            projectDevelopmentPlan.buildingsFloorAreaDistribution.PUBLIC_FACILITIES ?? 0,
+          )
+        : undefined;
+
+    case "officesBuildingsFloorArea":
+      return projectDevelopmentPlan.type === "URBAN_PROJECT"
+        ? formatSurfaceFn(projectDevelopmentPlan.buildingsFloorAreaDistribution.OFFICES ?? 0)
+        : undefined;
+
+    case "residentialBuildingsFloorArea":
+      return projectDevelopmentPlan.type === "URBAN_PROJECT"
+        ? formatSurfaceFn(projectDevelopmentPlan.buildingsFloorAreaDistribution.RESIDENTIAL ?? 0)
+        : undefined;
+
+    case "groundFloorRetailSurface":
+      return projectDevelopmentPlan.type === "URBAN_PROJECT"
+        ? formatSurfaceFn(projectDevelopmentPlan.buildingsFloorAreaDistribution.LOCAL_STORE ?? 0)
+        : undefined;
+  }
+};
+
+const ModalProjectFeature = (props: Props) => {
+  const formattedValue = useMemo(() => getSiteFeatureValue(props), [props]);
+
+  if (props.value === "soilsDistribution") {
     return (
       <ModalSoilsDistribution
-        label={label}
-        soilsDistribution={soilsDistribution}
-        soilsSubset={soilsSubset}
+        label={props.label}
+        soilsDistribution={props.soilsDistribution}
+        soilsSubset={props.soilsSubset}
+        isPdf={props.isPdf ?? false}
       />
     );
   }
-  if (!total) {
+  if (!formattedValue) {
     return null;
+  }
+
+  if (props.isPdf) {
+    return (
+      <ModalFeaturePdf>
+        <ModalFeaturePdfLine label={props.label} value={formattedValue} />
+      </ModalFeaturePdf>
+    );
   }
 
   return (
     <ModalFeature>
-      <ModalFeatureLine
-        label={label}
-        value={`${formatNumberFr(total)} ${value === "electricalPowerKwc" ? "Kwc" : "m²"}`}
-      />
+      <ModalFeatureLine label={props.label} value={formattedValue} />
     </ModalFeature>
   );
 };

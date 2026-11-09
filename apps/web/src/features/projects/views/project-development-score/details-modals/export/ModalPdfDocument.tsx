@@ -1,4 +1,5 @@
 import { Document, Page, Text, View, Image as PdfImage } from "@react-pdf/renderer";
+import type { MDXComponents } from "mdx/types";
 import { type ReactNode, type ComponentProps } from "react";
 import type { LetterGrade } from "shared";
 
@@ -37,6 +38,7 @@ export const ModalPdfDocument = (props: {
   chartImage: string | undefined;
   dataProps?: ModalHeaderProps["dataProps"];
   projectName: string;
+  mdxComponents?: MDXComponents;
 }) => (
   <Document>
     <Page size="A4" orientation="landscape" style={exportModalPdfStyles.page}>
@@ -59,8 +61,11 @@ export const ModalPdfDocument = (props: {
         <props.ContentComponent
           components={{
             Metrics: () => null,
-            ModalLink: (p: { children: ReactNode }) => renderChildren(p.children, [], true),
+            SiteFeature: () => null,
+            ProjectFeature: () => null,
+            ...props.mdxComponents,
             ...pdfComponents,
+            ModalLink: (p: { children: ReactNode }) => renderChildren(p.children, [], true),
             h1: (p: ComponentProps<"h1">) => {
               return (
                 <View>
@@ -83,9 +88,6 @@ export const ModalPdfDocument = (props: {
             },
             If: ({ when, children }: { when: boolean; children: React.ReactNode }) =>
               when ? renderChildren(children) : null,
-
-            SiteFeature: () => null,
-            ProjectFeature: () => null,
           }}
         />
       </View>

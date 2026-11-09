@@ -1,9 +1,12 @@
 import { useMemo } from "react";
 
-import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 
+import { formatSurfaceAreaPdf } from "../../pdf-impacts-export/pdf-export/format";
 import ModalFeature from "./ModalFeature";
 import ModalFeatureLine from "./ModalFeatureLine";
+import ModalFeaturePdf from "./ModalFeaturePdf";
+import ModalFeaturePdfLine from "./ModalFeaturePdfLine";
 import type { ModalSoilsDistributionProps } from "./ModalSoilsDistribution";
 import ModalSoilsDistribution from "./ModalSoilsDistribution";
 
@@ -15,6 +18,7 @@ type Props = {
   siteSurfaceArea: number;
   contaminatedSurfaceArea?: number;
   siteAddress: string;
+  isPdf?: boolean;
 };
 
 const ModalSiteFeature = ({
@@ -25,41 +29,46 @@ const ModalSiteFeature = ({
   soilsDistribution,
   contaminatedSurfaceArea,
   siteAddress,
+  isPdf = false,
 }: Props) => {
-  const total = useMemo(() => {
+  const formatFn = isPdf ? formatSurfaceAreaPdf : formatSurfaceArea;
+  const formattedValue = useMemo(() => {
     switch (value) {
       case "contaminatedSurfaceArea":
-        return contaminatedSurfaceArea;
+        return formatFn(contaminatedSurfaceArea ?? 0);
 
       case "siteSurfaceArea":
-        return siteSurfaceArea;
+        return formatFn(siteSurfaceArea);
+      case "siteAddress":
+        return siteAddress;
     }
-  }, [value, contaminatedSurfaceArea, siteSurfaceArea]);
-
-  if (value === "siteAddress") {
-    return (
-      <ModalFeature>
-        <ModalFeatureLine label={label} value={siteAddress} />
-      </ModalFeature>
-    );
-  }
+  }, [value, contaminatedSurfaceArea, siteSurfaceArea, siteAddress, formatFn]);
 
   if (value === "soilsDistribution") {
     return (
       <ModalSoilsDistribution
+        isPdf={isPdf}
         label={label}
         soilsDistribution={soilsDistribution}
         soilsSubset={soilsSubset}
       />
     );
   }
-  if (!total) {
+  if (!formattedValue) {
     return null;
+  }
+
+  if (isPdf) {
+    return (
+      <ModalFeaturePdf>
+        <ModalFeaturePdfLine label={label} value={formattedValue} />
+      </ModalFeaturePdf>
+    );
   }
 
   return (
     <ModalFeature>
-      <ModalFeatureLine label={label} value={`${formatNumberFr(total)} m²`} />
+      <ModalFeatureLine label={label} value={formattedValue} />
     </ModalFeature>
   );
 };

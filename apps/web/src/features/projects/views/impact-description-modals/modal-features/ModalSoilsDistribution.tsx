@@ -1,5 +1,6 @@
 import type { SoilType } from "shared";
 import {
+  formatSurfaceArea,
   isForest,
   isImpermeableSoil,
   isPermeableSurfaceWithoutPermanentVegetation,
@@ -13,8 +14,11 @@ import {
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 
+import { formatSurfaceAreaPdf } from "../../pdf-impacts-export/pdf-export/format";
 import ModalFeature from "./ModalFeature";
 import ModalFeatureLine from "./ModalFeatureLine";
+import ModalFeaturePdf from "./ModalFeaturePdf";
+import ModalFeaturePdfLine from "./ModalFeaturePdfLine";
 
 const getSoilsDistributionFilterFunction = (
   subset?: ModalSoilsDistributionProps["soilsSubset"],
@@ -68,18 +72,41 @@ export type ModalSoilsDistributionProps = {
     total: number;
     soilType: SoilType;
   }[];
+  isPdf: boolean;
 };
 
 const ModalSoilsDistribution = ({
   label,
   soilsSubset,
   soilsDistribution,
+  isPdf,
 }: ModalSoilsDistributionProps) => {
   const list = soilsDistribution.filter((item) =>
     getSoilsDistributionFilterFunction(soilsSubset)(item.soilType),
   );
 
   const total = sumListWithKey(list, "total");
+
+  if (isPdf) {
+    return (
+      <ModalFeaturePdf>
+        <ModalFeaturePdfLine
+          isTotal
+          label={label}
+          value={formatSurfaceAreaPdf(total)}
+          style={{ paddingTop: 8 }}
+        />
+        {list.map((item, index) => (
+          <ModalFeaturePdfLine
+            key={item.soilType}
+            label={getLabelForSoilType(item.soilType)}
+            value={formatSurfaceAreaPdf(item.total)}
+            style={index === list.length - 1 ? { paddingBottom: 8 } : undefined}
+          />
+        ))}
+      </ModalFeaturePdf>
+    );
+  }
 
   return (
     <ModalFeature>
@@ -88,7 +115,7 @@ const ModalSoilsDistribution = ({
         <ModalFeatureLine
           key={item.soilType}
           label={getLabelForSoilType(item.soilType)}
-          value={`${formatNumberFr(item.total)} m²`}
+          value={formatSurfaceArea(item.total)}
         />
       ))}
     </ModalFeature>

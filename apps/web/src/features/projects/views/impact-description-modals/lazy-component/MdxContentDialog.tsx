@@ -190,6 +190,12 @@ export default function ({
                               : {
                                   ContentComponent: ContentComponent,
                                   projectName: contextData.projectName,
+                                  mdxComponents: {
+                                    SiteFeature: (props) => <BoundSiteFeature isPdf {...props} />,
+                                    ProjectFeature: (props) => (
+                                      <BoundProjectFeature isPdf {...props} />
+                                    ),
+                                  },
                                 }
                           }
                           dataProps={dataProps}

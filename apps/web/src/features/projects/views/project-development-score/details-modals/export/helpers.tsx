@@ -1,6 +1,7 @@
 import { Font, Text } from "@react-pdf/renderer";
 import type { View } from "@react-pdf/renderer";
 import { type HighchartsReact } from "highcharts-react-official";
+import type { MDXComponents } from "mdx/types";
 import { Children, type ComponentProps, type LazyExoticComponent, type ReactNode } from "react";
 import type { LetterGrade } from "shared";
 
@@ -119,6 +120,7 @@ export const getExportPdfModalDocumentAsBlob = async (props: {
   ContentComponent: LazyExoticComponent<ContentComponentType>;
   dataProps?: ModalHeaderProps["dataProps"];
   projectName: string;
+  mdxComponents?: MDXComponents;
 }) => {
   const chartImage = await convertChartToDataUrl(props.chartRef);
 
