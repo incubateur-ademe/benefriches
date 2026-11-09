@@ -1,6 +1,6 @@
 import { Document, Page, Text, View, Image as PdfImage } from "@react-pdf/renderer";
 import type { MDXComponents } from "mdx/types";
-import { type ReactNode, type ComponentProps } from "react";
+import { type ReactNode, type ComponentProps, useState } from "react";
 import type { LetterGrade } from "shared";
 
 import { type ModalHeaderProps } from "../../../impact-description-modals/modal-layout/ModalHeader";
@@ -109,41 +109,56 @@ export const ModalPdfDocument = (props: {
   dataProps?: ModalHeaderProps["dataProps"];
   projectName: string;
   mdxComponents?: MDXComponents;
-}) => (
-  <Document>
-    <Page size="A4" orientation="landscape" style={exportModalPdfStyles.page}>
-      <View fixed style={exportModalPdfStyles.header}>
-        <View
-          style={{
-            display: "flex",
-            gap: 8,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <PdfImage src="/img/logos/logo-benefriches.png" style={{ height: 16 }} />
-          <Text style={exportModalPdfStyles.headerText}>{props.projectName}</Text>
-        </View>
+}) => {
+  const [currentDate] = useState(() => new Date().toLocaleDateString("fr-FR"));
 
-        <PdfImage src="/img/logos/logo-ademe.png" style={{ height: 28 }} />
-      </View>
-      <View>
-        <props.ContentComponent
-          components={{
-            Metrics: () => null,
-            SiteFeature: () => null,
-            ProjectFeature: () => null,
-            ...props.mdxComponents,
-            ...pdfComponents,
-            ModalLink: (p: { children: ReactNode }) => renderChildren(p.children, [], true),
-            h1: (p: ComponentProps<"h1">) => (
-              <PdfHeader dataProps={props.dataProps} chartImage={props.chartImage} {...p} />
-            ),
-            If: ({ when, children }: { when: boolean; children: React.ReactNode }) =>
-              when ? renderChildren(children) : null,
-          }}
-        />
-      </View>
-    </Page>
-  </Document>
-);
+  return (
+    <Document>
+      <Page size="A4" orientation="landscape" style={exportModalPdfStyles.page}>
+        <View fixed style={exportModalPdfStyles.header}>
+          <View
+            style={{
+              display: "flex",
+              gap: 8,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <PdfImage src="/img/logos/logo-benefriches.png" style={{ height: 16 }} />
+            <Text style={exportModalPdfStyles.headerText}>
+              Évaluation des impacts du projet « {props.projectName} »
+            </Text>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              gap: 8,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text style={exportModalPdfStyles.headerText}>Résultats du {currentDate}</Text>
+            <PdfImage src="/img/logos/logo-ademe.png" style={{ height: 28 }} />
+          </View>
+        </View>
+        <View>
+          <props.ContentComponent
+            components={{
+              Metrics: () => null,
+              SiteFeature: () => null,
+              ProjectFeature: () => null,
+              ...props.mdxComponents,
+              ...pdfComponents,
+              ModalLink: (p: { children: ReactNode }) => renderChildren(p.children, [], true),
+              h1: (p: ComponentProps<"h1">) => (
+                <PdfHeader dataProps={props.dataProps} chartImage={props.chartImage} {...p} />
+              ),
+              If: ({ when, children }: { when: boolean; children: React.ReactNode }) =>
+                when ? renderChildren(children) : null,
+            }}
+          />
+        </View>
+      </Page>
+    </Document>
+  );
+};
