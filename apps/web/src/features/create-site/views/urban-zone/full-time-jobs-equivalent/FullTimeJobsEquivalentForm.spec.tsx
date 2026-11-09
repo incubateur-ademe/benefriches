@@ -64,8 +64,21 @@ describe("FullTimeJobsEquivalentForm", () => {
     const input = await screen.findByRole("textbox", { name: /nombre d'emplois/i });
     fireEvent.input(input, { target: { value: "abc" } });
 
-    expect(await screen.findByText("Veuillez entrer un nombre valide.")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Ce champ est nécessaire pour déterminer les questions suivantes"),
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Valider" })).toBeDisabled();
     expect(onSubmitSpy).not.toHaveBeenCalled();
+  });
+
+  it("blocks submission with the shared message when the value is negative", async () => {
+    const onSubmitSpy = vi.fn();
+    render(<FullTimeJobsEquivalentForm onSubmit={onSubmitSpy} onBack={vi.fn()} />);
+
+    const input = await screen.findByRole("textbox", { name: /nombre d'emplois/i });
+    fireEvent.input(input, { target: { value: "-2,5" } });
+
+    expect(await screen.findByText("Veuillez entrer un nombre valide")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Valider" })).toBeDisabled();
   });
 });

@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
 
-import { decimalStringToNumber } from "@/shared/core/number-conversion/numberConversion";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import {
+  optionalNumericFieldRegisterOptions,
+  requiredNumericFieldRegisterOptions,
+} from "@/shared/views/components/form/NumericInput/registerOptions";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type FormValues = {
@@ -29,15 +32,8 @@ function FullTimeJobsEquivalentForm({ initialValue, onSubmit, onBack }: Props) {
         <RowNumericInput
           label="Nombre d'emplois (ETP)"
           nativeInputProps={register("fullTimeJobs", {
-            required: "Ce champ est requis.",
-            min: { value: 0, message: "La valeur doit être supérieure ou égale à 0." },
-            // Jobs are stored as decimals (e.g. 2.5 FTE); accept both "2,5" and "2.5".
-            setValueAs: (value?: string | number) => {
-              if (typeof value === "number") return value;
-              if (!value?.trim()) return undefined;
-              return decimalStringToNumber(value) ?? Number.NaN;
-            },
-            validate: (value) => Number.isFinite(value) || "Veuillez entrer un nombre valide.",
+            ...optionalNumericFieldRegisterOptions,
+            required: requiredNumericFieldRegisterOptions.required,
           })}
           state={formState.errors.fullTimeJobs ? "error" : "default"}
           stateRelatedMessage={formState.errors.fullTimeJobs?.message}

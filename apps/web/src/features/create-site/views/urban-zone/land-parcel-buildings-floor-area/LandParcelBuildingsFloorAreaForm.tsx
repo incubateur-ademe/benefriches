@@ -8,6 +8,7 @@ import {
 } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import { numericFieldSetValueAs } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -57,7 +58,7 @@ function LandParcelBuildingsFloorAreaForm({
           nativeInputProps={register("buildingsFloorSurfaceArea", {
             required: "Ce champ est requis.",
             min: { value: 1, message: "La surface doit être supérieure à 0." },
-            valueAsNumber: true,
+            setValueAs: numericFieldSetValueAs,
           })}
           state={formState.errors.buildingsFloorSurfaceArea ? "error" : "default"}
           stateRelatedMessage={formState.errors.buildingsFloorSurfaceArea?.message}

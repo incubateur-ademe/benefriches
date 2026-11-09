@@ -6,6 +6,7 @@ import {
 } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import { numericFieldSetValueAs } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -57,7 +58,7 @@ function VacantCommercialPremisesFootprintForm({
                 message: "La surface ne peut pas être supérieure à la superficie totale du site.",
               },
             }),
-            valueAsNumber: true,
+            setValueAs: numericFieldSetValueAs,
           })}
           state={formState.errors.surfaceArea ? "error" : "default"}
           stateRelatedMessage={formState.errors.surfaceArea?.message}
