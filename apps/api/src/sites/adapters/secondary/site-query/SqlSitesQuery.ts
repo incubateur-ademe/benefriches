@@ -9,7 +9,6 @@ import {
   SiteNature,
   SurfaceAreaDistribution,
   type SoilType,
-  type UrbanZoneLandParcel,
   type UrbanZoneType,
 } from "shared";
 
@@ -26,21 +25,12 @@ import { SitesQuery, SiteSurfaceAreaAndCityCode } from "src/sites/core/gateways/
 import { aggregateSoilsFromParcels } from "src/sites/core/models/site";
 import { SiteFeaturesView, SiteViewData } from "src/sites/core/models/views";
 
+import { parseUrbanZoneLandParcels } from "../parseUrbanZoneLandParcels";
+
 export class SqlSitesQuery implements SitesQuery {
   private readonly sqlConnection: Knex;
   constructor(@Inject(SqlConnection) sqlConnection: Knex) {
     this.sqlConnection = sqlConnection;
-  }
-
-  private parseUrbanZoneLandParcels(
-    landParcels: SqlSiteUrbanZoneFeatures["land_parcels"],
-  ): UrbanZoneLandParcel[] {
-    if (!landParcels) return [];
-    if (typeof landParcels === "string") {
-      return JSON.parse(landParcels) as UrbanZoneLandParcel[];
-    }
-
-    return landParcels as UrbanZoneLandParcel[];
   }
 
   async getSiteFeaturesById(siteId: string): Promise<SiteFeaturesView | undefined> {
@@ -176,7 +166,7 @@ export class SqlSitesQuery implements SitesQuery {
     const sqlSite = sqlResult?.[0];
     if (!sqlSite) return undefined;
 
-    const urbanZoneLandParcels = this.parseUrbanZoneLandParcels(sqlSite.land_parcels);
+    const urbanZoneLandParcels = parseUrbanZoneLandParcels(sqlSite.land_parcels);
     const soilsDistribution: SurfaceAreaDistribution<SoilType> =
       sqlSite.nature === "URBAN_ZONE"
         ? aggregateSoilsFromParcels(urbanZoneLandParcels)
