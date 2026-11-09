@@ -9,12 +9,13 @@ import {
   SiteYearlyExpense,
   SiteYearlyIncome,
   SoilsDistribution,
-  UrbanZoneLandParcel,
 } from "shared";
 
 import { SiteImpactsQuery } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { aggregateSoilsFromParcels } from "src/sites/core/models/site";
+
+import { parseUrbanZoneLandParcels } from "../parseUrbanZoneLandParcels";
 
 export class SqlSiteImpactsQuery implements SiteImpactsQuery {
   private readonly sqlConnection: Knex;
@@ -24,23 +25,18 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
 
   // Urban zone soils are stored per land parcel in site_urban_zone_features, not in
   // site_soils_distributions: the site's soils are the sum of its parcels' soils.
-  private async getSoilsDistribution(
-    siteId: string,
-    nature: SiteNature,
-  ): Promise<SoilsDistribution> {
-    if (nature === "URBAN_ZONE") {
-      const urbanZoneFeatures = await this.sqlConnection("site_urban_zone_features")
-        .select("land_parcels")
-        .where("site_id", siteId)
-        .first();
-      const landParcels = urbanZoneFeatures?.land_parcels ?? [];
-      return aggregateSoilsFromParcels(
-        (typeof landParcels === "string"
-          ? JSON.parse(landParcels)
-          : landParcels) as UrbanZoneLandParcel[],
-      ).toJSON();
-    }
+  private async getUrbanZoneSoilsDistribution(siteId: string): Promise<SoilsDistribution> {
+    const urbanZoneFeatures = await this.sqlConnection("site_urban_zone_features")
+      .select("land_parcels")
+      .where("site_id", siteId)
+      .first();
 
+    return aggregateSoilsFromParcels(
+      parseUrbanZoneLandParcels(urbanZoneFeatures?.land_parcels),
+    ).toJSON();
+  }
+
+  private async getSiteSoilsDistribution(siteId: string): Promise<SoilsDistribution> {
     const sqlSoilDistributions = await this.sqlConnection("site_soils_distributions")
       .select("soil_type", "surface_area")
       .where("site_id", siteId);
@@ -80,7 +76,10 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
 
     if (!sqlSite) return undefined;
 
-    const soilsDistribution = await this.getSoilsDistribution(siteId, sqlSite.nature as SiteNature);
+    const soilsDistribution =
+      sqlSite.nature === "URBAN_ZONE"
+        ? await this.getUrbanZoneSoilsDistribution(siteId)
+        : await this.getSiteSoilsDistribution(siteId);
 
     const sqlYearlyExpenses = await this.sqlConnection("site_expenses")
       .select("amount", "purpose", "bearer")
