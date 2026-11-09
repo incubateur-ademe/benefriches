@@ -32,6 +32,28 @@ describe("GetInfluenceAreaValuesService", () => {
     );
   });
 
+  it("returns an influence area of 0 m² if inflence radius is 0", () => {
+    const service = new InfluenceAreaService({
+      siteSquareMetersSurfaceArea: 23589,
+      citySquareMetersSurfaceArea: 677.12 * 10000,
+      cityPopulation: 9157,
+      influenceRadius: 0,
+    });
+    assert.deepEqual(service["influenceSquareMetersArea"], 0);
+  });
+
+  it("always returns a positive influence area", () => {
+    for (let radius of [200, 500, 100, 10000, 25000, 23589, 0, 10]) {
+      const service = new InfluenceAreaService({
+        siteSquareMetersSurfaceArea: 23589,
+        citySquareMetersSurfaceArea: 677.12 * 10000,
+        cityPopulation: 9157,
+        influenceRadius: radius,
+      });
+      assert.ok(service["influenceSquareMetersArea"] >= 0);
+    }
+  });
+
   it("returns an housing surface of 1556 m² in influence area", () => {
     assert.ok(
       Math.abs(

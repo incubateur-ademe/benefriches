@@ -149,4 +149,17 @@ describe("YearlyTravelRelatedImpacts", () => {
         0.005,
     );
   });
+
+  it("returns avoidedKilometersPerVehiculePerYear = 0", () => {
+    const service = new YearlyTravelRelatedImpacts({
+      buildingsFloorAreaDistribution: {},
+      siteSquareMetersSurfaceArea: 23589,
+      citySquareMetersSurfaceArea: 677.12 * 10000,
+      cityPopulation: 9157,
+    });
+
+    assert.deepEqual(service.getInfluenceAreaSquareMetersHousingSurface(), 0);
+    assert.deepEqual(service["impactedInhabitants"], 0);
+    assert.deepEqual(service.getAvoidedKilometersPerVehiculePerYear(), 0);
+  });
 });

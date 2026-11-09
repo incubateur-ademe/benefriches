@@ -37,9 +37,7 @@ export class InfluenceAreaService {
 
   protected get influenceSquareMetersArea() {
     const siteRadius = Math.sqrt(this.siteSquareMetersSurfaceArea / Math.PI);
-    return (
-      Math.pow(siteRadius + this.influenceRadius, 2) * Math.PI - this.siteSquareMetersSurfaceArea
-    );
+    return Math.PI * this.influenceRadius * (2 * siteRadius + this.influenceRadius);
   }
 
   static getInhabitantsFromHousingSurface(housingSurface: number) {
