@@ -96,22 +96,12 @@ const USER_ACTIVITY: AdminUserActivity = {
     {
       date: "2026-01-10T10:00:00.000Z",
       type: "account_created",
-      entityId: null,
-      entityName: null,
-      emailType: null,
-      deliveryStatus: null,
-      deliveryAttempts: null,
-      deliveryErrorMessage: null,
     },
     {
       date: "2026-02-01T09:00:00.000Z",
       type: "site_created",
       entityId: "site-1",
       entityName: "Friche",
-      emailType: null,
-      deliveryStatus: null,
-      deliveryAttempts: null,
-      deliveryErrorMessage: null,
     },
   ],
   sites: [

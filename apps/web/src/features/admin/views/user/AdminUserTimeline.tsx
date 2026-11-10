@@ -34,7 +34,9 @@ function withTimelineKeys(events: AdminUserTimelineEvent[]): KeyedTimelineEvent[
   const occurrencesByBaseKey = new Map<string, number>();
 
   return events.map((event) => {
-    const baseKey = `${event.type}|${event.date}|${event.entityId ?? ""}|${event.emailType ?? ""}`;
+    const entityId = "entityId" in event ? event.entityId : "";
+    const emailType = "emailType" in event ? event.emailType : "";
+    const baseKey = `${event.type}|${event.date}|${entityId}|${emailType}`;
     const occurrences = occurrencesByBaseKey.get(baseKey) ?? 0;
     occurrencesByBaseKey.set(baseKey, occurrences + 1);
     return { key: occurrences === 0 ? baseKey : `${baseKey}#${occurrences}`, event };

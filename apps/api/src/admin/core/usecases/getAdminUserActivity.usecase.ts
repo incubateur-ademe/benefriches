@@ -9,93 +9,60 @@ import type { AdminUserActivityRecord } from "../models/adminUserReadModel";
 
 type Request = { userId: string };
 
-const NO_EMAIL_FIELDS = {
-  emailType: null,
-  deliveryStatus: null,
-  deliveryAttempts: null,
-  deliveryErrorMessage: null,
-} as const;
-
 export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserTimelineEvent[] => {
-  const events: { date: Date; event: Omit<AdminUserTimelineEvent, "date"> }[] = [];
-
-  events.push({
-    date: activity.user.createdAt,
-    event: {
-      type: "account_created",
-      entityId: activity.user.id,
-      entityName: null,
-      ...NO_EMAIL_FIELDS,
-    },
-  });
+  const events: AdminUserTimelineEvent[] = [
+    { type: "account_created", date: activity.user.createdAt.toISOString() },
+  ];
 
   activity.loginDates.forEach((date) => {
-    events.push({
-      date,
-      event: { type: "login", entityId: null, entityName: null, ...NO_EMAIL_FIELDS },
-    });
+    events.push({ type: "login", date: date.toISOString() });
   });
 
   activity.sites.forEach((site) => {
     events.push({
-      date: site.createdAt,
-      event: { type: "site_created", entityId: site.id, entityName: site.name, ...NO_EMAIL_FIELDS },
+      type: "site_created",
+      date: site.createdAt.toISOString(),
+      entityId: site.id,
+      entityName: site.name,
     });
     if (site.updatedAt) {
       events.push({
-        date: site.updatedAt,
-        event: {
-          type: "site_updated",
-          entityId: site.id,
-          entityName: site.name,
-          ...NO_EMAIL_FIELDS,
-        },
+        type: "site_updated",
+        date: site.updatedAt.toISOString(),
+        entityId: site.id,
+        entityName: site.name,
       });
     }
   });
 
   activity.projects.forEach((project) => {
     events.push({
-      date: project.createdAt,
-      event: {
-        type: "project_created",
-        entityId: project.id,
-        entityName: project.name,
-        ...NO_EMAIL_FIELDS,
-      },
+      type: "project_created",
+      date: project.createdAt.toISOString(),
+      entityId: project.id,
+      entityName: project.name,
     });
     if (project.updatedAt) {
       events.push({
-        date: project.updatedAt,
-        event: {
-          type: "project_updated",
-          entityId: project.id,
-          entityName: project.name,
-          ...NO_EMAIL_FIELDS,
-        },
+        type: "project_updated",
+        date: project.updatedAt.toISOString(),
+        entityId: project.id,
+        entityName: project.name,
       });
     }
   });
 
   activity.compatibilityEvaluations.forEach((evaluation) => {
     events.push({
-      date: evaluation.createdAt,
-      event: {
-        type: "compatibility_evaluation_created",
-        entityId: evaluation.id,
-        entityName: null,
-        ...NO_EMAIL_FIELDS,
-      },
+      type: "compatibility_evaluation_created",
+      date: evaluation.createdAt.toISOString(),
+      entityId: evaluation.id,
     });
     if (evaluation.completedAt) {
       events.push({
-        date: evaluation.completedAt,
-        event: {
-          type: "compatibility_evaluation_completed",
-          entityId: evaluation.id,
-          entityName: null,
-          ...NO_EMAIL_FIELDS,
-        },
+        type: "compatibility_evaluation_completed",
+        date: evaluation.completedAt.toISOString(),
+        entityId: evaluation.id,
       });
     }
   });
@@ -104,32 +71,23 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
     switch (delivery.status) {
       case "sent":
         events.push({
+          type: "lifecycle_email_sent",
           // sent_at is always set on a sent delivery; the fallback only satisfies the type.
-          date: delivery.sentAt ?? delivery.lastAttemptedAt,
-          event: {
-            type: "lifecycle_email_sent",
-            entityId: null,
-            entityName: delivery.relatedEntityName,
-            emailType: delivery.emailType,
-            deliveryStatus: null,
-            deliveryAttempts: null,
-            deliveryErrorMessage: null,
-          },
+          date: (delivery.sentAt ?? delivery.lastAttemptedAt).toISOString(),
+          emailType: delivery.emailType,
+          entityName: delivery.relatedEntityName,
         });
         break;
       case "failed":
       case "abandoned":
         events.push({
-          date: delivery.lastAttemptedAt,
-          event: {
-            type: "lifecycle_email_failed",
-            entityId: null,
-            entityName: delivery.relatedEntityName,
-            emailType: delivery.emailType,
-            deliveryStatus: delivery.status,
-            deliveryAttempts: delivery.attempts,
-            deliveryErrorMessage: delivery.errorMessage,
-          },
+          type: "lifecycle_email_failed",
+          date: delivery.lastAttemptedAt.toISOString(),
+          emailType: delivery.emailType,
+          entityName: delivery.relatedEntityName,
+          deliveryStatus: delivery.status,
+          deliveryAttempts: delivery.attempts,
+          deliveryErrorMessage: delivery.errorMessage,
         });
         break;
       case "pending":
@@ -137,30 +95,25 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
     }
   });
 
+  activity.impactsExports.forEach((impactsExport) => {
+    events.push({
+      type: "impacts_exported",
+      date: impactsExport.exportedAt.toISOString(),
+      entityId: impactsExport.projectId,
+      entityName: impactsExport.projectName,
+      impactsExportFormat: impactsExport.format,
+      entityArchived: impactsExport.projectArchived,
+    });
+  });
+
   if (activity.user.lifecycleEmailsUnsubscribedAt) {
     events.push({
-      date: activity.user.lifecycleEmailsUnsubscribedAt,
-      event: {
-        type: "lifecycle_emails_unsubscribed",
-        entityId: null,
-        entityName: null,
-        ...NO_EMAIL_FIELDS,
-      },
+      type: "lifecycle_emails_unsubscribed",
+      date: activity.user.lifecycleEmailsUnsubscribedAt.toISOString(),
     });
   }
 
-  return events
-    .toSorted((a, b) => b.date.getTime() - a.date.getTime())
-    .map(({ date, event }) => ({
-      date: date.toISOString(),
-      type: event.type,
-      entityId: event.entityId,
-      entityName: event.entityName,
-      emailType: event.emailType,
-      deliveryStatus: event.deliveryStatus,
-      deliveryAttempts: event.deliveryAttempts,
-      deliveryErrorMessage: event.deliveryErrorMessage,
-    }));
+  return events.toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
 
 export class GetAdminUserActivityUseCase implements UseCase<

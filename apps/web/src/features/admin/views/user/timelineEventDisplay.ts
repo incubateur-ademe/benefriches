@@ -28,6 +28,8 @@ export const getTimelineEventBadge = (event: AdminUserTimelineEvent): TimelineEv
         : { label: "Échec · nouvelle tentative prévue", severity: "warning" };
     case "lifecycle_emails_unsubscribed":
       return { label: "Désinscription" };
+    case "impacts_exported":
+      return event.entityArchived ? { label: "Archivé" } : null;
     default:
       return null;
   }
@@ -50,4 +52,4 @@ export const getTimelineEventDetail = (
 };
 
 export const isTimelineEventInError = (event: AdminUserTimelineEvent): boolean =>
-  event.deliveryStatus === "failed" || event.deliveryStatus === "abandoned";
+  event.type === "lifecycle_email_failed";

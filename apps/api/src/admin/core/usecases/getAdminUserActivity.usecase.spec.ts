@@ -38,6 +38,7 @@ const buildActivity = (
     projects: [],
     compatibilityEvaluations: [],
     lifecycleEmailDeliveries: [],
+    impactsExports: [],
     ...activity,
   };
 };
@@ -45,12 +46,6 @@ const buildActivity = (
 const ACCOUNT_CREATED_EVENT = {
   date: "2026-01-01T08:00:00.000Z",
   type: "account_created",
-  entityId: "user-1",
-  entityName: null,
-  emailType: null,
-  deliveryStatus: null,
-  deliveryAttempts: null,
-  deliveryErrorMessage: null,
 } as const satisfies AdminUserTimelineEvent;
 
 const getTimeline = async (activity: AdminUserActivityRecord) => {
@@ -147,6 +142,7 @@ describe("GetAdminUserActivity UseCase", () => {
           },
         ],
         lifecycleEmailDeliveries: [],
+        impactsExports: [],
       },
     ]);
     const usecase = new GetAdminUserActivityUseCase(adminUsersQuery);
@@ -172,122 +168,65 @@ describe("GetAdminUserActivity UseCase", () => {
         {
           date: "2026-01-20T09:00:00.000Z",
           type: "login",
-          entityId: null,
-          entityName: null,
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-15T10:00:00.000Z",
           type: "project_updated",
           entityId: "project-1",
           entityName: "Centrale PV",
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-10T10:00:00.000Z",
           type: "site_updated",
           entityId: "site-1",
           entityName: "Friche industrielle",
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-09T10:00:00.000Z",
           type: "compatibility_evaluation_created",
           entityId: "evaluation-2",
-          entityName: null,
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-08T10:00:00.000Z",
           type: "compatibility_evaluation_completed",
           entityId: "evaluation-1",
-          entityName: null,
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-07T10:00:00.000Z",
           type: "compatibility_evaluation_created",
           entityId: "evaluation-1",
-          entityName: null,
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-06T10:00:00.000Z",
           type: "project_created",
           entityId: "project-2",
           entityName: "Quartier mixte",
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-05T10:00:00.000Z",
           type: "project_created",
           entityId: "project-1",
           entityName: "Centrale PV",
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-04T10:00:00.000Z",
           type: "site_created",
           entityId: "site-2",
           entityName: "Terrain agricole",
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-03T10:00:00.000Z",
           type: "site_created",
           entityId: "site-1",
           entityName: "Friche industrielle",
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-02T09:00:00.000Z",
           type: "login",
-          entityId: null,
-          entityName: null,
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-01T08:00:00.000Z",
           type: "account_created",
-          entityId: "user-1",
-          entityName: null,
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
       ],
       sites: [
@@ -371,6 +310,7 @@ describe("GetAdminUserActivity UseCase", () => {
         projects: [],
         compatibilityEvaluations: [],
         lifecycleEmailDeliveries: [],
+        impactsExports: [],
       },
     ]);
     const usecase = new GetAdminUserActivityUseCase(adminUsersQuery);
@@ -396,12 +336,6 @@ describe("GetAdminUserActivity UseCase", () => {
         {
           date: "2026-02-01T08:00:00.000Z",
           type: "account_created",
-          entityId: "user-2",
-          entityName: null,
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
       ],
       sites: [],
@@ -429,12 +363,8 @@ describe("GetAdminUserActivity UseCase", () => {
         {
           date: "2026-01-01T08:01:00.000Z",
           type: "lifecycle_email_sent",
-          entityId: null,
           entityName: null,
           emailType: "welcome",
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         ACCOUNT_CREATED_EVENT,
       ] satisfies AdminUserTimelineEvent[]);
@@ -458,7 +388,6 @@ describe("GetAdminUserActivity UseCase", () => {
           {
             date: "2026-01-05T10:00:00.000Z",
             type: "lifecycle_email_failed",
-            entityId: null,
             entityName: null,
             emailType: "first-site-reminder",
             deliveryStatus: status,
@@ -495,12 +424,6 @@ describe("GetAdminUserActivity UseCase", () => {
         {
           date: "2026-02-01T12:00:00.000Z",
           type: "lifecycle_emails_unsubscribed",
-          entityId: null,
-          entityName: null,
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         ACCOUNT_CREATED_EVENT,
       ] satisfies AdminUserTimelineEvent[]);
@@ -536,22 +459,14 @@ describe("GetAdminUserActivity UseCase", () => {
         {
           date: "2026-01-04T10:00:00.000Z",
           type: "lifecycle_email_sent",
-          entityId: null,
           entityName: "Parking Sud",
           emailType: "project-impacts-summary",
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-03T10:00:00.000Z",
           type: "lifecycle_email_sent",
-          entityId: null,
           entityName: "Friche Duval",
           emailType: "first-project-reminder",
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         ACCOUNT_CREATED_EVENT,
       ] satisfies AdminUserTimelineEvent[]);
@@ -574,12 +489,8 @@ describe("GetAdminUserActivity UseCase", () => {
         {
           date: "2026-01-04T10:00:00.000Z",
           type: "lifecycle_email_sent",
-          entityId: null,
           entityName: null,
           emailType: "project-impacts-summary",
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         ACCOUNT_CREATED_EVENT,
       ] satisfies AdminUserTimelineEvent[]);
@@ -628,17 +539,10 @@ describe("GetAdminUserActivity UseCase", () => {
         {
           date: "2026-01-15T10:00:00.000Z",
           type: "lifecycle_emails_unsubscribed",
-          entityId: null,
-          entityName: null,
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-12T10:00:00.000Z",
           type: "lifecycle_email_failed",
-          entityId: null,
           entityName: "Friche Duval",
           emailType: "first-project-reminder",
           deliveryStatus: "failed",
@@ -648,32 +552,128 @@ describe("GetAdminUserActivity UseCase", () => {
         {
           date: "2026-01-10T10:00:00.000Z",
           type: "login",
-          entityId: null,
-          entityName: null,
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-07T10:00:00.000Z",
           type: "site_created",
           entityId: "site-1",
           entityName: "Friche Duval",
-          emailType: null,
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
         },
         {
           date: "2026-01-05T10:00:00.000Z",
           type: "lifecycle_email_sent",
-          entityId: null,
           entityName: null,
           emailType: "welcome",
-          deliveryStatus: null,
-          deliveryAttempts: null,
-          deliveryErrorMessage: null,
+        },
+        ACCOUNT_CREATED_EVENT,
+      ] satisfies AdminUserTimelineEvent[]);
+    });
+  });
+
+  describe("impacts exports", () => {
+    it("adds one impacts_exported event per export, dated at the export and carrying the project's name and format", async () => {
+      const timeline = await getTimeline(
+        buildActivity({
+          impactsExports: [
+            {
+              projectId: "project-1",
+              projectName: "Quartier mixte",
+              projectArchived: false,
+              format: "pdf",
+              exportedAt: new Date("2026-01-05T10:00:00.000Z"),
+            },
+            {
+              projectId: "project-1",
+              projectName: "Quartier mixte",
+              projectArchived: false,
+              format: "pdf",
+              exportedAt: new Date("2026-01-08T10:00:00.000Z"),
+            },
+          ],
+        }),
+      );
+
+      assert.deepStrictEqual(timeline, [
+        {
+          date: "2026-01-08T10:00:00.000Z",
+          type: "impacts_exported",
+          entityId: "project-1",
+          entityName: "Quartier mixte",
+          impactsExportFormat: "pdf",
+          entityArchived: false,
+        },
+        {
+          date: "2026-01-05T10:00:00.000Z",
+          type: "impacts_exported",
+          entityId: "project-1",
+          entityName: "Quartier mixte",
+          impactsExportFormat: "pdf",
+          entityArchived: false,
+        },
+        ACCOUNT_CREATED_EVENT,
+      ] satisfies AdminUserTimelineEvent[]);
+    });
+
+    it("marks the export of an archived project as archived", async () => {
+      const timeline = await getTimeline(
+        buildActivity({
+          impactsExports: [
+            {
+              projectId: "project-2",
+              projectName: "Centrale PV",
+              projectArchived: true,
+              format: "pdf",
+              exportedAt: new Date("2026-01-05T10:00:00.000Z"),
+            },
+          ],
+        }),
+      );
+
+      assert.deepStrictEqual(timeline, [
+        {
+          date: "2026-01-05T10:00:00.000Z",
+          type: "impacts_exported",
+          entityId: "project-2",
+          entityName: "Centrale PV",
+          impactsExportFormat: "pdf",
+          entityArchived: true,
+        },
+        ACCOUNT_CREATED_EVENT,
+      ] satisfies AdminUserTimelineEvent[]);
+    });
+
+    it("interleaves impacts exports chronologically with activity events", async () => {
+      const timeline = await getTimeline(
+        buildActivity({
+          loginDates: [new Date("2026-01-04T10:00:00.000Z"), new Date("2026-01-06T10:00:00.000Z")],
+          impactsExports: [
+            {
+              projectId: "project-1",
+              projectName: "Quartier mixte",
+              projectArchived: false,
+              format: "pdf",
+              exportedAt: new Date("2026-01-05T10:00:00.000Z"),
+            },
+          ],
+        }),
+      );
+
+      assert.deepStrictEqual(timeline, [
+        {
+          date: "2026-01-06T10:00:00.000Z",
+          type: "login",
+        },
+        {
+          date: "2026-01-05T10:00:00.000Z",
+          type: "impacts_exported",
+          entityId: "project-1",
+          entityName: "Quartier mixte",
+          impactsExportFormat: "pdf",
+          entityArchived: false,
+        },
+        {
+          date: "2026-01-04T10:00:00.000Z",
+          type: "login",
         },
         ACCOUNT_CREATED_EVENT,
       ] satisfies AdminUserTimelineEvent[]);

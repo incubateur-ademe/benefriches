@@ -4,15 +4,30 @@ import type { AdminUserTimelineEvent } from "../../core/admin.types";
 import { formatAdminDate } from "../formatAdminDate";
 import AdminUserTimeline from "./AdminUserTimeline";
 
-const emailEvent = (
-  overrides: Partial<AdminUserTimelineEvent> & Pick<AdminUserTimelineEvent, "type">,
+type EmailEvent = Extract<
+  AdminUserTimelineEvent,
+  { type: "lifecycle_email_sent" | "lifecycle_email_failed" }
+>;
+
+const sentEmailEvent = (
+  emailType: EmailEvent["emailType"],
+  entityName: string | null = null,
 ): AdminUserTimelineEvent => ({
   date: "2026-01-10T10:00:00.000Z",
-  entityId: null,
+  type: "lifecycle_email_sent",
+  emailType,
+  entityName,
+});
+
+const failedEmailEvent = (
+  overrides: Partial<Omit<Extract<EmailEvent, { type: "lifecycle_email_failed" }>, "type">>,
+): AdminUserTimelineEvent => ({
+  date: "2026-01-10T10:00:00.000Z",
+  type: "lifecycle_email_failed",
+  emailType: "first-site-reminder",
   entityName: null,
-  emailType: null,
-  deliveryStatus: null,
-  deliveryAttempts: null,
+  deliveryStatus: "failed",
+  deliveryAttempts: 1,
   deliveryErrorMessage: null,
   ...overrides,
 });
@@ -20,26 +35,31 @@ const emailEvent = (
 const LOGIN_EVENT: AdminUserTimelineEvent = {
   date: "2026-01-09T10:00:00.000Z",
   type: "login",
-  entityId: null,
-  entityName: null,
-  emailType: null,
-  deliveryStatus: null,
-  deliveryAttempts: null,
-  deliveryErrorMessage: null,
 };
 
-const SENT_WELCOME_EVENT = emailEvent({ type: "lifecycle_email_sent", emailType: "welcome" });
+const SENT_WELCOME_EVENT = sentEmailEvent("welcome");
 
-const UNSUBSCRIBED_EVENT = emailEvent({ type: "lifecycle_emails_unsubscribed" });
+const UNSUBSCRIBED_EVENT: AdminUserTimelineEvent = {
+  date: "2026-01-10T10:00:00.000Z",
+  type: "lifecycle_emails_unsubscribed",
+};
 
 const failedEvent = (deliveryStatus: "failed" | "abandoned") =>
-  emailEvent({
-    type: "lifecycle_email_failed",
+  failedEmailEvent({
     emailType: "first-site-reminder",
     deliveryStatus,
     deliveryAttempts: 2,
     deliveryErrorMessage: "Connection timeout",
   });
+
+const impactsExportedEvent = (entityArchived: boolean): AdminUserTimelineEvent => ({
+  date: "2026-01-10T10:00:00.000Z",
+  type: "impacts_exported",
+  entityId: "p1",
+  entityName: "Quartier mixte",
+  impactsExportFormat: "pdf",
+  entityArchived,
+});
 
 const getTimelineItems = () =>
   within(screen.getByRole("list", { name: "Activité" })).getAllByRole("listitem");
@@ -50,12 +70,6 @@ describe("AdminUserTimeline", () => {
       event: {
         date: "2026-01-10T10:00:00.000Z",
         type: "account_created",
-        entityId: null,
-        entityName: null,
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
       },
       label: "Création du compte",
     },
@@ -63,12 +77,6 @@ describe("AdminUserTimeline", () => {
       event: {
         date: "2026-01-10T10:00:00.000Z",
         type: "login",
-        entityId: null,
-        entityName: null,
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
       },
       label: "Connexion",
     },
@@ -78,10 +86,6 @@ describe("AdminUserTimeline", () => {
         type: "site_created",
         entityId: "s1",
         entityName: "Friche",
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
       },
       label: "Création du site « Friche »",
     },
@@ -91,10 +95,6 @@ describe("AdminUserTimeline", () => {
         type: "site_updated",
         entityId: "s1",
         entityName: "Friche",
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
       },
       label: "Modification du site « Friche »",
     },
@@ -104,10 +104,6 @@ describe("AdminUserTimeline", () => {
         type: "project_created",
         entityId: "p1",
         entityName: "Projet",
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
       },
       label: "Création du projet « Projet »",
     },
@@ -117,10 +113,6 @@ describe("AdminUserTimeline", () => {
         type: "project_updated",
         entityId: "p1",
         entityName: "Projet",
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
       },
       label: "Modification du projet « Projet »",
     },
@@ -129,11 +121,6 @@ describe("AdminUserTimeline", () => {
         date: "2026-01-10T10:00:00.000Z",
         type: "compatibility_evaluation_created",
         entityId: "e1",
-        entityName: null,
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
       },
       label: "Évaluation de compatibilité lancée",
     },
@@ -142,34 +129,24 @@ describe("AdminUserTimeline", () => {
         date: "2026-01-10T10:00:00.000Z",
         type: "compatibility_evaluation_completed",
         entityId: "e1",
-        entityName: null,
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
       },
       label: "Évaluation de compatibilité terminée",
     },
     { event: SENT_WELCOME_EVENT, label: "Email de bienvenue" },
     {
-      event: emailEvent({ type: "lifecycle_email_sent", emailType: "first-site-reminder" }),
+      event: sentEmailEvent("first-site-reminder"),
       label: "Rappel : créer votre premier site",
     },
     {
-      event: emailEvent({
-        type: "lifecycle_email_sent",
-        emailType: "first-project-reminder",
-        entityName: "Friche Duval",
-      }),
+      event: sentEmailEvent("first-project-reminder", "Friche Duval"),
       label: "Rappel : créer votre premier projet pour le site « Friche Duval »",
     },
     {
-      event: emailEvent({ type: "lifecycle_email_sent", emailType: "first-project-reminder" }),
+      event: sentEmailEvent("first-project-reminder"),
       label: "Rappel : créer votre premier projet pour le site",
     },
     {
-      event: emailEvent({
-        type: "lifecycle_email_failed",
+      event: failedEmailEvent({
         emailType: "project-impacts-summary",
         entityName: "Parking Sud",
         deliveryStatus: "failed",
@@ -178,14 +155,18 @@ describe("AdminUserTimeline", () => {
       label: "Récapitulatif des impacts du projet « Parking Sud »",
     },
     {
-      event: emailEvent({ type: "lifecycle_email_sent", emailType: "project-impacts-summary" }),
+      event: sentEmailEvent("project-impacts-summary"),
       label: "Récapitulatif des impacts du projet",
     },
     { event: UNSUBSCRIBED_EVENT, label: "Désinscription des emails de rappel" },
+    {
+      event: impactsExportedEvent(false),
+      label: "Impacts téléchargés (PDF) « Quartier mixte »",
+    },
   ];
 
   for (const { event, label } of cases) {
-    it(`renders "${label}" for a ${event.type} ${event.emailType ?? ""} event`, () => {
+    it(`renders "${label}" for a ${event.type} event`, () => {
       render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[event]} />);
 
       expect(screen.getByText(label)).toBeInTheDocument();
@@ -200,22 +181,10 @@ describe("AdminUserTimeline", () => {
           {
             date: "2026-01-10T10:00:00.000Z",
             type: "account_created",
-            entityId: null,
-            entityName: null,
-            emailType: null,
-            deliveryStatus: null,
-            deliveryAttempts: null,
-            deliveryErrorMessage: null,
           },
           {
             date: "2026-03-05T10:00:00.000Z",
             type: "login",
-            entityId: null,
-            entityName: null,
-            emailType: null,
-            deliveryStatus: null,
-            deliveryAttempts: null,
-            deliveryErrorMessage: null,
           },
         ]}
       />,
@@ -238,6 +207,11 @@ describe("AdminUserTimeline", () => {
       },
       { name: "abandoned email", event: failedEvent("abandoned"), badge: "Échec · abandonné" },
       { name: "unsubscribe", event: UNSUBSCRIBED_EVENT, badge: "Désinscription" },
+      {
+        name: "archived project impacts export",
+        event: impactsExportedEvent(true),
+        badge: "Archivé",
+      },
     ];
 
     for (const { name, event, badge } of badgeCases) {
@@ -254,6 +228,15 @@ describe("AdminUserTimeline", () => {
       const item = getTimelineItems()[0]!;
       expect(within(item).getByText("Connexion")).toBeInTheDocument();
       expect(item.textContent).toEqual(`${formatAdminDate(LOGIN_EVENT.date)}Connexion`);
+    });
+
+    it("renders no badge for the impacts export of an active project", () => {
+      const event = impactsExportedEvent(false);
+      render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[event]} />);
+
+      expect(getTimelineItems()[0]!.textContent).toEqual(
+        `${formatAdminDate(event.date)}Impacts téléchargés (PDF) « Quartier mixte »`,
+      );
     });
   });
 
@@ -280,6 +263,7 @@ describe("AdminUserTimeline", () => {
       { name: "login", event: LOGIN_EVENT, marker: "Activité" },
       { name: "sent email", event: SENT_WELCOME_EVENT, marker: "Email" },
       { name: "unsubscribe", event: UNSUBSCRIBED_EVENT, marker: "Email" },
+      { name: "impacts export", event: impactsExportedEvent(false), marker: "Activité" },
       { name: "failed email", event: failedEvent("failed"), marker: "Email en échec" },
       { name: "abandoned email", event: failedEvent("abandoned"), marker: "Email en échec" },
     ];
