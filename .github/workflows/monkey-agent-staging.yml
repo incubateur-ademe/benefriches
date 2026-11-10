@@ -3,9 +3,11 @@ name: Monkey agent on staging
 permissions:
   contents: read
 
-# Manual trigger only for now: a weekly schedule is added once a few runs have proved useful
-# (see apps/e2e-tests/monkey/README.md). Keep it away from the nightly e2e run at 03:00 UTC.
+# Weekly, and on manual trigger. Keep the schedule away from the nightly e2e run at 03:00 UTC.
 on:
+  schedule:
+    # Every Monday at 04:00 UTC (05:00 Paris time in winter, 06:00 in summer).
+    - cron: "0 4 * * 1"
   workflow_dispatch:
     inputs:
       seed:

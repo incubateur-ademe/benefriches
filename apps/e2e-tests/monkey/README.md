@@ -28,13 +28,13 @@ Exit code: 1 when the run found at least one hard error, 2 when the agent or the
 
 ## Run it in CI
 
-The [Monkey agent on staging workflow](../../../.github/workflows/monkey-agent-staging.yml) runs the same command against staging, on manual trigger only: `gh workflow run monkey-agent-staging.yml`, or `gh workflow run monkey-agent-staging.yml -f seed=<seed>` to replay a run.
+The [Monkey agent on staging workflow](../../../.github/workflows/monkey-agent-staging.yml) runs the same command against staging every Monday at 04:00 UTC and on manual trigger: `gh workflow run monkey-agent-staging.yml`, or `gh workflow run monkey-agent-staging.yml -f seed=<seed>` to replay a run.
 
 - It runs in the `staging` GitHub environment: `WEBAPP_BASE_URL` (passed as `BASE_URL`), the testmail.app secrets of the nightly e2e run and the dedicated `MONKEY_TESTING_ANTHROPIC_API_KEY` secret, which the workflow passes to Claude Code as `ANTHROPIC_API_KEY` instead of a login. It installs a pinned Claude Code and uses the Google Chrome of the runner.
 - The budgets are the defaults above. The monkey step times out after 35 minutes and the job after 45. The in-process 30-minute budget fires first; the step timeout is only a backstop, and the runner may force-kill the run before it writes its summary, in which case a final `if: always()` step appends `summary.md` to the job summary. Its concurrency group `monkey-agent-staging` queues a second run instead of running both.
 - The job is red when the run exits with 1 (a hard error) or 2 (the agent or the runner failed), green otherwise.
 - The job summary is the run's `summary.md`. The `monkey-run` artifact (14 days) is the run folder, without `storage-state.json` (the session cookies of the run's user).
-- No schedule yet: a weekly one is added once a few manual runs have found at least one real bug with fewer than about half of their findings being noise. It must stay away from the nightly e2e run at 03:00 UTC.
+- The schedule must stay away from the nightly e2e run at 03:00 UTC.
 
 ## Read a report
 
