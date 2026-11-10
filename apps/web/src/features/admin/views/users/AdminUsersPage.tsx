@@ -1,10 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
-import Button from "@codegouvfr/react-dsfr/Button";
-import Input from "@codegouvfr/react-dsfr/Input";
 import Pagination from "@codegouvfr/react-dsfr/Pagination";
 import Table from "@codegouvfr/react-dsfr/Table";
-import { useForm } from "react-hook-form";
 
 import { routes } from "@/app/router";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
@@ -12,14 +9,13 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import type { AdminUsersViewData } from "../../core/admin.selectors";
 import AdminAccessDeniedAlert from "../AdminAccessDeniedAlert";
+import AdminUserSearchForm from "../AdminUserSearchForm";
 import { formatAdminDate } from "../formatAdminDate";
 
 type Props = {
   viewData: AdminUsersViewData;
   onSearchSubmitted: (search: string) => void;
 };
-
-type SearchFormValues = { search: string };
 
 const USERS_TABLE_HEADERS = [
   "Email",
@@ -31,9 +27,6 @@ const USERS_TABLE_HEADERS = [
 
 function AdminUsersPage({ viewData, onSearchSubmitted }: Props) {
   const { loadingState, users, total, page, pageCount, search } = viewData;
-  const { register, handleSubmit } = useForm<SearchFormValues>({
-    defaultValues: { search },
-  });
 
   return (
     <section className={fr.cx("fr-container", "fr-py-4w")}>
@@ -43,22 +36,7 @@ function AdminUsersPage({ viewData, onSearchSubmitted }: Props) {
       </a>
       <h1 className="mt-4">Utilisateurs</h1>
 
-      <form
-        className="flex flex-wrap items-end gap-4 mb-6"
-        onSubmit={handleSubmit((values) => {
-          onSearchSubmitted(values.search.trim());
-        })}
-      >
-        <Input
-          label="Rechercher un utilisateur"
-          hintText="Email, nom ou structure"
-          className="mb-0 grow max-w-xl"
-          nativeInputProps={{ ...register("search"), type: "search" }}
-        />
-        <Button type="submit" iconId="fr-icon-search-line">
-          Rechercher
-        </Button>
-      </form>
+      <AdminUserSearchForm search={search} onSearchSubmitted={onSearchSubmitted} />
 
       {loadingState === "loading" && <LoadingSpinner />}
 

@@ -5,6 +5,7 @@ import { after, before, describe, it } from "node:test";
 import type {
   GetAdminDashboardStatsResponseDto,
   GetAdminUserResponseDto,
+  ListAdminImpactsExportersResponseDto,
   ListAdminUsersResponseDto,
 } from "shared";
 import supertest from "supertest";
@@ -14,6 +15,7 @@ import { v4 as uuid } from "uuid";
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
 import type { User } from "src/auth/core/user";
 import { LIFECYCLE_EMAIL_MAX_ATTEMPTS } from "src/notifications/core/models/lifecycleEmail";
+import { RECONVERSION_PROJECT_IMPACTS_EXPORTED } from "src/reconversion-projects/core/events/reconversionProjectImpactsExported.event";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
@@ -303,6 +305,94 @@ describe("Admin controller", () => {
         compatibilityEvaluations: [],
         lifecycleEmailMaxAttempts: LIFECYCLE_EMAIL_MAX_ATTEMPTS,
       });
+    });
+  });
+
+  describe("GET /admin/exports", () => {
+    it("responds with 401 if not authenticated", async () => {
+      const response = await supertest(app.getHttpServer()).get("/api/admin/exports");
+
+      assert.strictEqual(response.status, 401);
+    });
+
+    it("responds with 403 if authenticated user is not an administrator", async () => {
+      const user = new UserBuilder().build();
+      await saveUser(app)(user);
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .get("/api/admin/exports")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
+
+      assert.strictEqual(response.status, 403);
+    });
+
+    it("responds with 400 when page is not a positive integer", async () => {
+      const { accessToken } = await authenticateAdmin();
+
+      const response = await supertest(app.getHttpServer())
+        .get("/api/admin/exports?page=0")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
+
+      assert.strictEqual(response.status, 400);
+      assert.deepStrictEqual(
+        (response.body as { errors: { path: string[] }[] }).errors.map((error) => error.path),
+        [["page"]],
+      );
+    });
+
+    it("responds with 200 and the paginated impacts exporters for an administrator", async () => {
+      const { accessToken } = await authenticateAdmin();
+      const userId = uuid();
+      const projectId = uuid();
+      await sqlConnection("users").insert({
+        id: userId,
+        email: "jane@collectivite.fr",
+        firstname: "Jane",
+        lastname: "Doe",
+        structure_name: "Mairie de Blajan",
+        structure_type: "municipality",
+        structure_activity: "local_authority",
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+        personal_data_storage_consented_at: new Date("2026-01-01T08:00:00.000Z"),
+      });
+      await sqlConnection("domain_events").insert([
+        {
+          id: uuid(),
+          name: RECONVERSION_PROJECT_IMPACTS_EXPORTED,
+          payload: { userId, reconversionProjectId: projectId, format: "pdf", sections: {} },
+          created_at: new Date("2026-10-01T08:00:00.000Z"),
+        },
+        {
+          id: uuid(),
+          name: RECONVERSION_PROJECT_IMPACTS_EXPORTED,
+          payload: { userId, reconversionProjectId: projectId, format: "pdf", sections: {} },
+          created_at: new Date("2026-10-05T08:00:00.000Z"),
+        },
+      ]);
+
+      const response = await supertest(app.getHttpServer())
+        .get("/api/admin/exports?search=blajan")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
+
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
+        users: [
+          {
+            id: userId,
+            email: "jane@collectivite.fr",
+            firstName: "Jane",
+            lastName: "Doe",
+            structureName: "Mairie de Blajan",
+            impactsExportsCount: 2,
+            exportedProjectsCount: 1,
+            lastImpactsExportedAt: "2026-10-05T08:00:00.000Z",
+          },
+        ],
+        total: 1,
+        page: 1,
+        pageSize: 25,
+      } satisfies ListAdminImpactsExportersResponseDto);
     });
   });
 });

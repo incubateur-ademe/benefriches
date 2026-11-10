@@ -3,7 +3,12 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "@/app/store/store";
 
 import type { AdminState, AdminUserLoad } from "./admin.reducer";
-import type { AdminDashboardStats, AdminLoadingState, AdminUserSummary } from "./admin.types";
+import type {
+  AdminDashboardStats,
+  AdminImpactsExporter,
+  AdminLoadingState,
+  AdminUserSummary,
+} from "./admin.types";
 
 const selectAdmin = (state: RootState): AdminState => state.admin;
 
@@ -55,4 +60,25 @@ export const selectAdminUserViewData = createSelector(
     const { latestRequestId: _latestRequestId, ...viewData } = entry;
     return viewData;
   },
+);
+
+export type AdminImpactsExportersViewData = {
+  loadingState: AdminLoadingState;
+  users: AdminImpactsExporter[];
+  total: number;
+  page: number;
+  pageCount: number;
+  search: string;
+};
+
+export const selectAdminImpactsExportersViewData = createSelector(
+  [selectAdmin],
+  ({ impactsExportersList }): AdminImpactsExportersViewData => ({
+    loadingState: impactsExportersList.loadingState,
+    users: impactsExportersList.users,
+    total: impactsExportersList.total,
+    page: impactsExportersList.page,
+    pageCount: Math.max(1, Math.ceil(impactsExportersList.total / impactsExportersList.pageSize)),
+    search: impactsExportersList.search,
+  }),
 );

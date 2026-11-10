@@ -38,13 +38,22 @@ function AdminDashboardPage({ loadingState, stats }: Props) {
       <HtmlTitle>Administration</HtmlTitle>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <h1 className="mb-0">Administration</h1>
-        <Button
-          priority="secondary"
-          iconId="fr-icon-user-line"
-          linkProps={routes.adminUsers().link}
-        >
-          Voir les utilisateurs
-        </Button>
+        <div className="flex flex-wrap gap-4">
+          <Button
+            priority="secondary"
+            iconId="fr-icon-user-line"
+            linkProps={routes.adminUsers().link}
+          >
+            Voir les utilisateurs
+          </Button>
+          <Button
+            priority="secondary"
+            iconId="fr-icon-download-line"
+            linkProps={routes.adminImpactsExporters().link}
+          >
+            Voir les exports d'impacts
+          </Button>
+        </div>
       </div>
 
       {loadingState === "loading" && <LoadingSpinner />}

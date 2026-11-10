@@ -1,6 +1,16 @@
-import type { AdminDashboardStats, AdminUserActivity, AdminUsersList } from "../admin.types";
+import type {
+  AdminDashboardStats,
+  AdminImpactsExportersList,
+  AdminUserActivity,
+  AdminUsersList,
+} from "../admin.types";
 
 export type ListAdminUsersParams = {
+  search?: string;
+  page?: number;
+};
+
+export type ListAdminImpactsExportersParams = {
   search?: string;
   page?: number;
 };
@@ -23,4 +33,5 @@ export interface AdminGateway {
   getDashboardStats(): Promise<AdminDashboardStats>;
   listUsers(params: ListAdminUsersParams): Promise<AdminUsersList>;
   getUserActivity(userId: string): Promise<AdminUserActivity>;
+  listImpactsExporters(params: ListAdminImpactsExportersParams): Promise<AdminImpactsExportersList>;
 }

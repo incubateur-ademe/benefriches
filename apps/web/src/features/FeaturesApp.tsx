@@ -47,6 +47,7 @@ const UpdateSitePage = lazy(() => import("@/features/update-site/views"));
 const AdminDashboardPage = lazy(() => import("@/features/admin/views/dashboard"));
 const AdminUsersPage = lazy(() => import("@/features/admin/views/users"));
 const AdminUserPage = lazy(() => import("@/features/admin/views/user"));
+const AdminImpactsExportersPage = lazy(() => import("@/features/admin/views/impacts-exporters"));
 
 const formsLayoutGroup = createGroup([
   routes.createSite,
@@ -171,6 +172,15 @@ function FeaturesApp() {
                 return (
                   <RequireAdminUser>
                     <AdminUserPage userId={route.params.userId} />
+                  </RequireAdminUser>
+                );
+              case routes.adminImpactsExporters.name:
+                return (
+                  <RequireAdminUser>
+                    <AdminImpactsExportersPage
+                      search={route.params.search}
+                      page={route.params.page}
+                    />
                   </RequireAdminUser>
                 );
               // 404
