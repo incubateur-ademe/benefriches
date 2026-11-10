@@ -102,6 +102,8 @@ const USER_ACTIVITY: AdminUserActivity = {
       deliveryStatus: null,
       deliveryAttempts: null,
       deliveryErrorMessage: null,
+      impactsExportFormat: null,
+      entityArchived: null,
     },
     {
       date: "2026-02-01T09:00:00.000Z",
@@ -112,6 +114,8 @@ const USER_ACTIVITY: AdminUserActivity = {
       deliveryStatus: null,
       deliveryAttempts: null,
       deliveryErrorMessage: null,
+      impactsExportFormat: null,
+      entityArchived: null,
     },
   ],
   sites: [

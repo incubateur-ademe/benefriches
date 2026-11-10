@@ -14,6 +14,8 @@ const emailEvent = (
   deliveryStatus: null,
   deliveryAttempts: null,
   deliveryErrorMessage: null,
+  impactsExportFormat: null,
+  entityArchived: null,
   ...overrides,
 });
 
@@ -26,6 +28,8 @@ const LOGIN_EVENT: AdminUserTimelineEvent = {
   deliveryStatus: null,
   deliveryAttempts: null,
   deliveryErrorMessage: null,
+  impactsExportFormat: null,
+  entityArchived: null,
 };
 
 const SENT_WELCOME_EVENT = emailEvent({ type: "lifecycle_email_sent", emailType: "welcome" });
@@ -39,7 +43,22 @@ const failedEvent = (deliveryStatus: "failed" | "abandoned") =>
     deliveryStatus,
     deliveryAttempts: 2,
     deliveryErrorMessage: "Connection timeout",
+    impactsExportFormat: null,
+    entityArchived: null,
   });
+
+const impactsExportedEvent = (entityArchived: boolean): AdminUserTimelineEvent => ({
+  date: "2026-01-10T10:00:00.000Z",
+  type: "impacts_exported",
+  entityId: "p1",
+  entityName: "Quartier mixte",
+  emailType: null,
+  deliveryStatus: null,
+  deliveryAttempts: null,
+  deliveryErrorMessage: null,
+  impactsExportFormat: "pdf",
+  entityArchived,
+});
 
 const getTimelineItems = () =>
   within(screen.getByRole("list", { name: "Activité" })).getAllByRole("listitem");
@@ -56,6 +75,8 @@ describe("AdminUserTimeline", () => {
         deliveryStatus: null,
         deliveryAttempts: null,
         deliveryErrorMessage: null,
+        impactsExportFormat: null,
+        entityArchived: null,
       },
       label: "Création du compte",
     },
@@ -69,6 +90,8 @@ describe("AdminUserTimeline", () => {
         deliveryStatus: null,
         deliveryAttempts: null,
         deliveryErrorMessage: null,
+        impactsExportFormat: null,
+        entityArchived: null,
       },
       label: "Connexion",
     },
@@ -82,6 +105,8 @@ describe("AdminUserTimeline", () => {
         deliveryStatus: null,
         deliveryAttempts: null,
         deliveryErrorMessage: null,
+        impactsExportFormat: null,
+        entityArchived: null,
       },
       label: "Création du site « Friche »",
     },
@@ -95,6 +120,8 @@ describe("AdminUserTimeline", () => {
         deliveryStatus: null,
         deliveryAttempts: null,
         deliveryErrorMessage: null,
+        impactsExportFormat: null,
+        entityArchived: null,
       },
       label: "Modification du site « Friche »",
     },
@@ -108,6 +135,8 @@ describe("AdminUserTimeline", () => {
         deliveryStatus: null,
         deliveryAttempts: null,
         deliveryErrorMessage: null,
+        impactsExportFormat: null,
+        entityArchived: null,
       },
       label: "Création du projet « Projet »",
     },
@@ -121,6 +150,8 @@ describe("AdminUserTimeline", () => {
         deliveryStatus: null,
         deliveryAttempts: null,
         deliveryErrorMessage: null,
+        impactsExportFormat: null,
+        entityArchived: null,
       },
       label: "Modification du projet « Projet »",
     },
@@ -134,6 +165,8 @@ describe("AdminUserTimeline", () => {
         deliveryStatus: null,
         deliveryAttempts: null,
         deliveryErrorMessage: null,
+        impactsExportFormat: null,
+        entityArchived: null,
       },
       label: "Évaluation de compatibilité lancée",
     },
@@ -147,6 +180,8 @@ describe("AdminUserTimeline", () => {
         deliveryStatus: null,
         deliveryAttempts: null,
         deliveryErrorMessage: null,
+        impactsExportFormat: null,
+        entityArchived: null,
       },
       label: "Évaluation de compatibilité terminée",
     },
@@ -182,6 +217,10 @@ describe("AdminUserTimeline", () => {
       label: "Récapitulatif des impacts du projet",
     },
     { event: UNSUBSCRIBED_EVENT, label: "Désinscription des emails de rappel" },
+    {
+      event: impactsExportedEvent(false),
+      label: "Impacts téléchargés (PDF) « Quartier mixte »",
+    },
   ];
 
   for (const { event, label } of cases) {
@@ -206,6 +245,8 @@ describe("AdminUserTimeline", () => {
             deliveryStatus: null,
             deliveryAttempts: null,
             deliveryErrorMessage: null,
+            impactsExportFormat: null,
+            entityArchived: null,
           },
           {
             date: "2026-03-05T10:00:00.000Z",
@@ -216,6 +257,8 @@ describe("AdminUserTimeline", () => {
             deliveryStatus: null,
             deliveryAttempts: null,
             deliveryErrorMessage: null,
+            impactsExportFormat: null,
+            entityArchived: null,
           },
         ]}
       />,
@@ -238,6 +281,11 @@ describe("AdminUserTimeline", () => {
       },
       { name: "abandoned email", event: failedEvent("abandoned"), badge: "Échec · abandonné" },
       { name: "unsubscribe", event: UNSUBSCRIBED_EVENT, badge: "Désinscription" },
+      {
+        name: "archived project impacts export",
+        event: impactsExportedEvent(true),
+        badge: "Archivé",
+      },
     ];
 
     for (const { name, event, badge } of badgeCases) {
@@ -254,6 +302,15 @@ describe("AdminUserTimeline", () => {
       const item = getTimelineItems()[0]!;
       expect(within(item).getByText("Connexion")).toBeInTheDocument();
       expect(item.textContent).toEqual(`${formatAdminDate(LOGIN_EVENT.date)}Connexion`);
+    });
+
+    it("renders no badge for the impacts export of an active project", () => {
+      const event = impactsExportedEvent(false);
+      render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[event]} />);
+
+      expect(getTimelineItems()[0]!.textContent).toEqual(
+        `${formatAdminDate(event.date)}Impacts téléchargés (PDF) « Quartier mixte »`,
+      );
     });
   });
 
@@ -280,6 +337,7 @@ describe("AdminUserTimeline", () => {
       { name: "login", event: LOGIN_EVENT, marker: "Activité" },
       { name: "sent email", event: SENT_WELCOME_EVENT, marker: "Email" },
       { name: "unsubscribe", event: UNSUBSCRIBED_EVENT, marker: "Email" },
+      { name: "impacts export", event: impactsExportedEvent(false), marker: "Activité" },
       { name: "failed email", event: failedEvent("failed"), marker: "Email en échec" },
       { name: "abandoned email", event: failedEvent("abandoned"), marker: "Email en échec" },
     ];

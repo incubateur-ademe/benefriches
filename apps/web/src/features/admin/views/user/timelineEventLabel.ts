@@ -17,6 +17,15 @@ const getLifecycleEmailLabel = (event: AdminUserTimelineEvent): string => {
   }
 };
 
+const getImpactsExportFormatLabel = (event: AdminUserTimelineEvent): string => {
+  switch (event.impactsExportFormat) {
+    case "pdf":
+      return "PDF";
+    case null:
+      return "";
+  }
+};
+
 export const getTimelineEventLabel = (event: AdminUserTimelineEvent): string => {
   switch (event.type) {
     case "account_created":
@@ -40,5 +49,7 @@ export const getTimelineEventLabel = (event: AdminUserTimelineEvent): string => 
       return getLifecycleEmailLabel(event);
     case "lifecycle_emails_unsubscribed":
       return "Désinscription des emails de rappel";
+    case "impacts_exported":
+      return `Impacts téléchargés (${getImpactsExportFormatLabel(event)})${quote(event.entityName)}`;
   }
 };
