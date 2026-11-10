@@ -36,6 +36,7 @@ type Props = {
 
 function ManagerForm({ initialValues, localAuthoritiesList, onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
+    mode: "onChange",
     shouldUnregister: true,
     defaultValues: {
       structureType: initialValues.structureType ?? null,
@@ -45,6 +46,9 @@ function ManagerForm({ initialValues, localAuthoritiesList, onSubmit, onBack }: 
 
   const structureTypeError = formState.errors.structureType;
   const structureTypeValue = watch("structureType");
+  const structureTypeField = register("structureType", {
+    required: "Veuillez sélectionner un type de gestionnaire.",
+  });
 
   return (
     <WizardFormLayout title="Qui est le gestionnaire de la zone commerciale ?">
@@ -73,15 +77,9 @@ function ManagerForm({ initialValues, localAuthoritiesList, onSubmit, onBack }: 
           <RadioButton
             label="Un gestionnaire de parc d'activité"
             value="activity_park_manager"
-            {...register("structureType", {
-              required: "Veuillez sélectionner un type de gestionnaire.",
-            })}
+            {...structureTypeField}
           />
-          <RadioButton
-            label="Une collectivité"
-            value="local_authority"
-            {...register("structureType")}
-          />
+          <RadioButton label="Une collectivité" value="local_authority" {...structureTypeField} />
 
           {structureTypeValue === "local_authority" && (
             <Select

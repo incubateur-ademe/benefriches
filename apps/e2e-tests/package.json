@@ -15,13 +15,13 @@
     "monkey": "tsx monkey/run.ts"
   },
   "dependencies": {
-    "@axe-core/playwright": "~4.13.0",
+    "@axe-core/playwright": "~4.14.0",
     "shared": "workspace:*"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0",
-    "@types/node": "~26.5.1",
-    "eslint-plugin-playwright": "~2.11.0",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "~26.6.6",
+    "eslint-plugin-playwright": "~2.12.2",
     "tsx": "~4.23.15"
   }
 }
