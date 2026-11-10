@@ -211,4 +211,70 @@ describe("useAddressSearch", () => {
     expect(search).toHaveBeenCalledWith("Montr", { type: undefined });
     expect(result.current.suggestions).toEqual([addressMont]);
   });
+  it("reports that no address was found when the search succeeds without results", async () => {
+    const search = vi.fn().mockResolvedValue([]);
+    const gateway: AddressSearchGateway = { search };
+    const { result } = renderHook(() => useAddressSearch(gateway));
+
+    act(() => {
+      result.current.setSearchText("Bsancon zzqx");
+    });
+
+    await act(async () => {
+      vi.advanceTimersByTime(DEBOUNCE_DELAY);
+    });
+
+    expect(result.current.searchFeedback).toBe("no_result");
+  });
+
+  it("reports a failed search when the gateway rejects", async () => {
+    const search = vi.fn().mockRejectedValue(new Error("Service unavailable"));
+    const gateway: AddressSearchGateway = { search };
+    const { result } = renderHook(() => useAddressSearch(gateway));
+
+    act(() => {
+      result.current.setSearchText("Paris 1er");
+    });
+
+    await act(async () => {
+      vi.advanceTimersByTime(DEBOUNCE_DELAY);
+    });
+
+    expect(result.current.searchFeedback).toBe("search_failed");
+    expect(result.current.suggestions).toEqual([]);
+  });
+
+  it("reports a too long query without searching for it", async () => {
+    const search = vi.fn().mockResolvedValue([]);
+    const gateway: AddressSearchGateway = { search };
+    const { result } = renderHook(() => useAddressSearch(gateway));
+
+    act(() => {
+      result.current.setSearchText("a".repeat(201));
+    });
+
+    await act(async () => {
+      vi.advanceTimersByTime(DEBOUNCE_DELAY);
+    });
+
+    expect(search).not.toHaveBeenCalled();
+    expect(result.current.searchFeedback).toBe("query_too_long");
+  });
+
+  it("gives no feedback when the search finds addresses", async () => {
+    const addressMont = createAddress({ value: "Montrouge" });
+    const search = vi.fn().mockResolvedValue([addressMont]);
+    const gateway: AddressSearchGateway = { search };
+    const { result } = renderHook(() => useAddressSearch(gateway));
+
+    act(() => {
+      result.current.setSearchText("Montr");
+    });
+
+    await act(async () => {
+      vi.advanceTimersByTime(DEBOUNCE_DELAY);
+    });
+
+    expect(result.current.searchFeedback).toBeUndefined();
+  });
 });

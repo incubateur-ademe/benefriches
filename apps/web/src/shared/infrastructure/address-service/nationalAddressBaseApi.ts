@@ -41,12 +41,18 @@ type ErrorResponse = { code: number; message: string };
 type BanFeatureCollection = FeatureCollection<Point, BanAddress>;
 type APIResponse = BanFeatureCollection | ErrorResponse;
 
+// A municipality label is only the town name: several towns share a name (e.g. Saint-Denis 93200
+// and 97400), so the postcode is added to tell them apart in the suggestions and wherever the
+// saved address is shown. Street and house number labels already hold the postcode.
+const getAddressLabel = ({ type, label, postcode }: BanAddress): string =>
+  type === "municipality" ? `${label} (${postcode})` : label;
+
 const mapNationalBaseAddressToAddress = (
   nationalBaseAddress: Feature<Point, BanAddress>,
 ): AddressWithBanId => {
   const address: AddressWithBanId = {
     banId: nationalBaseAddress.properties.id,
-    value: nationalBaseAddress.properties.label,
+    value: getAddressLabel(nationalBaseAddress.properties),
     city: nationalBaseAddress.properties.city,
     cityCode: nationalBaseAddress.properties.citycode,
     postCode: nationalBaseAddress.properties.postcode,
@@ -82,18 +88,21 @@ export class NationalAddressBaseService implements AddressSearchGateway {
       queryParams.append("type", options.type);
     }
 
-    try {
-      const response = await fetch(`${BAN_API_URL}${queryParams.toString()}`);
+    // Rejects on any failure so the caller can tell "no address found" from "search failed".
+    const response = await fetch(`${BAN_API_URL}${queryParams.toString()}`);
 
-      const result = (await response.json()) as APIResponse;
-
-      if ("code" in result) {
-        throw new Error(result.message);
-      }
-      return result.features.map(mapNationalBaseAddressToAddress);
-    } catch (error) {
-      console.error(error);
-      return [];
+    if (!response.ok) {
+      const errorBody = (await response.json().catch(() => undefined)) as ErrorResponse | undefined;
+      throw new Error(
+        errorBody?.message ?? `Address search failed with HTTP status ${response.status}`,
+      );
     }
+
+    const result = (await response.json()) as APIResponse;
+
+    if ("code" in result) {
+      throw new Error(result.message);
+    }
+    return result.features.map(mapNationalBaseAddressToAddress);
   }
 }

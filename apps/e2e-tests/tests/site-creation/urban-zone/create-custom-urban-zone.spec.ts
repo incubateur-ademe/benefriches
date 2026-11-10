@@ -149,7 +149,7 @@ test.describe("site creation - urban zone - custom mode", () => {
     await siteFeaturesPage.expectFeaturesDataLines([
       ["Nom du site", "ZAE Chartres"],
       ["Type de zone urbaine", "Zone d'activités économiques"],
-      ["Adresse du site", "Chartres"],
+      ["Adresse du site", "Chartres (28000)"],
       ["Gestionnaire", "Gestionnaire de parc d'activité"],
       ["Emprise foncière des locaux commerciaux vacants ou en friche", asSquareMeters(500)],
       ["Surface de plancher des locaux commerciaux vacants ou en friche", asSquareMeters(1_000)],
@@ -275,7 +275,7 @@ test.describe("site creation - urban zone - custom mode", () => {
     await siteFeaturesPage.expectFeaturesDataLines([
       ["Nom du site", "ZAE Sans Vacants"],
       ["Type de zone urbaine", "Zone d'activités économiques"],
-      ["Adresse du site", "Chartres"],
+      ["Adresse du site", "Chartres (28000)"],
       ["Gestionnaire", "Gestionnaire de parc d'activité"],
       ["Emplois équivalents temps plein", "40"],
       ["Bâtiments", asSquareMeters(5_000)],
@@ -394,7 +394,7 @@ test.describe("site creation - urban zone - custom mode", () => {
     await siteFeaturesPage.expectFeaturesDataLines([
       ["Nom du site", "ZAE Collectivite"],
       ["Type de zone urbaine", "Zone d'activités économiques"],
-      ["Adresse du site", "Chartres"],
+      ["Adresse du site", "Chartres (28000)"],
       ["Gestionnaire", "Mairie de Chartres"],
       ["Emplois équivalents temps plein", "5"],
       ["Bâtiments", asSquareMeters(5_000)],

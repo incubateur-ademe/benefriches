@@ -86,26 +86,6 @@ describe("SearchAddressAutocompleteInput", () => {
     expect(onSelectedAddressChange).toHaveBeenCalledWith(address);
   });
 
-  it("formats municipality address labels with postCode", () => {
-    const address = createAddress({
-      banId: "ban-mun",
-      value: "Montrouge",
-      postCode: "92120",
-    });
-
-    render(
-      <SearchAddressAutocompleteInput
-        {...defaultProps()}
-        suggestions={[address]}
-        addressType="municipality"
-      />,
-    );
-
-    openDropdown();
-    const option = screen.getByRole("option", { name: "Montrouge (92120)" });
-    expect(option).toBeInTheDocument();
-  });
-
   it("displays suggestions with correct labels", () => {
     const addresses = [
       createAddress({ banId: "ban-1", value: "1 rue de la Paix, Paris" }),
@@ -117,5 +97,69 @@ describe("SearchAddressAutocompleteInput", () => {
     openDropdown();
     expect(screen.getByRole("option", { name: "1 rue de la Paix, Paris" })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: "2 avenue des Champs, Paris" })).toBeInTheDocument();
+  });
+  const feedbackCases = [
+    {
+      searchFeedback: "no_result",
+      message:
+        "Aucune adresse trouvée. Vérifiez l'orthographe, ou saisissez seulement la commune ou le code postal.",
+    },
+    {
+      searchFeedback: "search_failed",
+      message:
+        "La recherche d'adresse n'a pas abouti. Modifiez votre saisie ou réessayez dans quelques instants.",
+    },
+    {
+      searchFeedback: "query_too_long",
+      message: "L'adresse saisie est trop longue : 200 caractères maximum.",
+    },
+  ] as const;
+
+  for (const { searchFeedback, message } of feedbackCases) {
+    it(`tells the user about the search outcome "${searchFeedback}"`, () => {
+      render(
+        <SearchAddressAutocompleteInput
+          {...defaultProps()}
+          searchText="some text"
+          searchFeedback={searchFeedback}
+        />,
+      );
+
+      expect(screen.getByText(message)).toBeInTheDocument();
+    });
+  }
+
+  it("shows the form validation error rather than the search outcome", () => {
+    render(
+      <SearchAddressAutocompleteInput
+        {...defaultProps()}
+        searchInputProps={{
+          label: SEARCH_INPUT_LABEL,
+          nativeInputProps: {},
+          state: "error",
+          stateRelatedMessage: "L'adresse est nécessaire pour les étapes suivantes",
+        }}
+        searchFeedback="no_result"
+      />,
+    );
+
+    expect(
+      screen.getByText("L'adresse est nécessaire pour les étapes suivantes"),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/Aucune adresse trouvée/)).not.toBeInTheDocument();
+  });
+  it("gives no search feedback once an address is selected", () => {
+    const address = createAddress({ banId: "ban-123", value: "Saint-Denis (93200)" });
+
+    render(
+      <SearchAddressAutocompleteInput
+        {...defaultProps()}
+        searchText="Saint-Denis (93200)"
+        selectedAddress={address}
+        searchFeedback="no_result"
+      />,
+    );
+
+    expect(screen.queryByText(/Aucune adresse trouvée/)).not.toBeInTheDocument();
   });
 });
