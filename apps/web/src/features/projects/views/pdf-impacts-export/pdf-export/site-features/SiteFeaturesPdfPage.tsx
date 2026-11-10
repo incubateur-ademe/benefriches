@@ -80,14 +80,17 @@ export default function SiteFeaturesPdfPage({ siteFeatures }: Props) {
                 {sumObjectValues(siteFeatures.accidents) > 0 && (
                   <div className="ml-4">
                     <DataLine
+                      isDetails
                       label="Blessés légers"
                       value={siteFeatures.accidents.minorInjuries ?? "Non renseigné"}
                     />
                     <DataLine
+                      isDetails
                       label="Blessés graves"
                       value={siteFeatures.accidents.severeInjuries ?? "Non renseigné"}
                     />
                     <DataLine
+                      isDetails
                       label="Tués"
                       value={siteFeatures.accidents.accidentsDeaths ?? "Non renseigné"}
                     />
