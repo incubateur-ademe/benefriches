@@ -52,4 +52,4 @@ export const getTimelineEventDetail = (
 };
 
 export const isTimelineEventInError = (event: AdminUserTimelineEvent): boolean =>
-  event.deliveryStatus === "failed" || event.deliveryStatus === "abandoned";
+  event.type === "lifecycle_email_failed";

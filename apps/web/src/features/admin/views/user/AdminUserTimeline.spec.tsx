@@ -4,47 +4,52 @@ import type { AdminUserTimelineEvent } from "../../core/admin.types";
 import { formatAdminDate } from "../formatAdminDate";
 import AdminUserTimeline from "./AdminUserTimeline";
 
-const emailEvent = (
-  overrides: Partial<AdminUserTimelineEvent> & Pick<AdminUserTimelineEvent, "type">,
+type EmailEvent = Extract<
+  AdminUserTimelineEvent,
+  { type: "lifecycle_email_sent" | "lifecycle_email_failed" }
+>;
+
+const sentEmailEvent = (
+  emailType: EmailEvent["emailType"],
+  entityName: string | null = null,
 ): AdminUserTimelineEvent => ({
   date: "2026-01-10T10:00:00.000Z",
-  entityId: null,
+  type: "lifecycle_email_sent",
+  emailType,
+  entityName,
+});
+
+const failedEmailEvent = (
+  overrides: Partial<Omit<Extract<EmailEvent, { type: "lifecycle_email_failed" }>, "type">>,
+): AdminUserTimelineEvent => ({
+  date: "2026-01-10T10:00:00.000Z",
+  type: "lifecycle_email_failed",
+  emailType: "first-site-reminder",
   entityName: null,
-  emailType: null,
-  deliveryStatus: null,
-  deliveryAttempts: null,
+  deliveryStatus: "failed",
+  deliveryAttempts: 1,
   deliveryErrorMessage: null,
-  impactsExportFormat: null,
-  entityArchived: null,
   ...overrides,
 });
 
 const LOGIN_EVENT: AdminUserTimelineEvent = {
   date: "2026-01-09T10:00:00.000Z",
   type: "login",
-  entityId: null,
-  entityName: null,
-  emailType: null,
-  deliveryStatus: null,
-  deliveryAttempts: null,
-  deliveryErrorMessage: null,
-  impactsExportFormat: null,
-  entityArchived: null,
 };
 
-const SENT_WELCOME_EVENT = emailEvent({ type: "lifecycle_email_sent", emailType: "welcome" });
+const SENT_WELCOME_EVENT = sentEmailEvent("welcome");
 
-const UNSUBSCRIBED_EVENT = emailEvent({ type: "lifecycle_emails_unsubscribed" });
+const UNSUBSCRIBED_EVENT: AdminUserTimelineEvent = {
+  date: "2026-01-10T10:00:00.000Z",
+  type: "lifecycle_emails_unsubscribed",
+};
 
 const failedEvent = (deliveryStatus: "failed" | "abandoned") =>
-  emailEvent({
-    type: "lifecycle_email_failed",
+  failedEmailEvent({
     emailType: "first-site-reminder",
     deliveryStatus,
     deliveryAttempts: 2,
     deliveryErrorMessage: "Connection timeout",
-    impactsExportFormat: null,
-    entityArchived: null,
   });
 
 const impactsExportedEvent = (entityArchived: boolean): AdminUserTimelineEvent => ({
@@ -52,10 +57,6 @@ const impactsExportedEvent = (entityArchived: boolean): AdminUserTimelineEvent =
   type: "impacts_exported",
   entityId: "p1",
   entityName: "Quartier mixte",
-  emailType: null,
-  deliveryStatus: null,
-  deliveryAttempts: null,
-  deliveryErrorMessage: null,
   impactsExportFormat: "pdf",
   entityArchived,
 });
@@ -69,14 +70,6 @@ describe("AdminUserTimeline", () => {
       event: {
         date: "2026-01-10T10:00:00.000Z",
         type: "account_created",
-        entityId: null,
-        entityName: null,
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
-        impactsExportFormat: null,
-        entityArchived: null,
       },
       label: "Création du compte",
     },
@@ -84,14 +77,6 @@ describe("AdminUserTimeline", () => {
       event: {
         date: "2026-01-10T10:00:00.000Z",
         type: "login",
-        entityId: null,
-        entityName: null,
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
-        impactsExportFormat: null,
-        entityArchived: null,
       },
       label: "Connexion",
     },
@@ -101,12 +86,6 @@ describe("AdminUserTimeline", () => {
         type: "site_created",
         entityId: "s1",
         entityName: "Friche",
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
-        impactsExportFormat: null,
-        entityArchived: null,
       },
       label: "Création du site « Friche »",
     },
@@ -116,12 +95,6 @@ describe("AdminUserTimeline", () => {
         type: "site_updated",
         entityId: "s1",
         entityName: "Friche",
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
-        impactsExportFormat: null,
-        entityArchived: null,
       },
       label: "Modification du site « Friche »",
     },
@@ -131,12 +104,6 @@ describe("AdminUserTimeline", () => {
         type: "project_created",
         entityId: "p1",
         entityName: "Projet",
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
-        impactsExportFormat: null,
-        entityArchived: null,
       },
       label: "Création du projet « Projet »",
     },
@@ -146,12 +113,6 @@ describe("AdminUserTimeline", () => {
         type: "project_updated",
         entityId: "p1",
         entityName: "Projet",
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
-        impactsExportFormat: null,
-        entityArchived: null,
       },
       label: "Modification du projet « Projet »",
     },
@@ -160,13 +121,6 @@ describe("AdminUserTimeline", () => {
         date: "2026-01-10T10:00:00.000Z",
         type: "compatibility_evaluation_created",
         entityId: "e1",
-        entityName: null,
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
-        impactsExportFormat: null,
-        entityArchived: null,
       },
       label: "Évaluation de compatibilité lancée",
     },
@@ -175,36 +129,24 @@ describe("AdminUserTimeline", () => {
         date: "2026-01-10T10:00:00.000Z",
         type: "compatibility_evaluation_completed",
         entityId: "e1",
-        entityName: null,
-        emailType: null,
-        deliveryStatus: null,
-        deliveryAttempts: null,
-        deliveryErrorMessage: null,
-        impactsExportFormat: null,
-        entityArchived: null,
       },
       label: "Évaluation de compatibilité terminée",
     },
     { event: SENT_WELCOME_EVENT, label: "Email de bienvenue" },
     {
-      event: emailEvent({ type: "lifecycle_email_sent", emailType: "first-site-reminder" }),
+      event: sentEmailEvent("first-site-reminder"),
       label: "Rappel : créer votre premier site",
     },
     {
-      event: emailEvent({
-        type: "lifecycle_email_sent",
-        emailType: "first-project-reminder",
-        entityName: "Friche Duval",
-      }),
+      event: sentEmailEvent("first-project-reminder", "Friche Duval"),
       label: "Rappel : créer votre premier projet pour le site « Friche Duval »",
     },
     {
-      event: emailEvent({ type: "lifecycle_email_sent", emailType: "first-project-reminder" }),
+      event: sentEmailEvent("first-project-reminder"),
       label: "Rappel : créer votre premier projet pour le site",
     },
     {
-      event: emailEvent({
-        type: "lifecycle_email_failed",
+      event: failedEmailEvent({
         emailType: "project-impacts-summary",
         entityName: "Parking Sud",
         deliveryStatus: "failed",
@@ -213,7 +155,7 @@ describe("AdminUserTimeline", () => {
       label: "Récapitulatif des impacts du projet « Parking Sud »",
     },
     {
-      event: emailEvent({ type: "lifecycle_email_sent", emailType: "project-impacts-summary" }),
+      event: sentEmailEvent("project-impacts-summary"),
       label: "Récapitulatif des impacts du projet",
     },
     { event: UNSUBSCRIBED_EVENT, label: "Désinscription des emails de rappel" },
@@ -224,7 +166,7 @@ describe("AdminUserTimeline", () => {
   ];
 
   for (const { event, label } of cases) {
-    it(`renders "${label}" for a ${event.type} ${event.emailType ?? ""} event`, () => {
+    it(`renders "${label}" for a ${event.type} event`, () => {
       render(<AdminUserTimeline lifecycleEmailMaxAttempts={5} events={[event]} />);
 
       expect(screen.getByText(label)).toBeInTheDocument();
@@ -239,26 +181,10 @@ describe("AdminUserTimeline", () => {
           {
             date: "2026-01-10T10:00:00.000Z",
             type: "account_created",
-            entityId: null,
-            entityName: null,
-            emailType: null,
-            deliveryStatus: null,
-            deliveryAttempts: null,
-            deliveryErrorMessage: null,
-            impactsExportFormat: null,
-            entityArchived: null,
           },
           {
             date: "2026-03-05T10:00:00.000Z",
             type: "login",
-            entityId: null,
-            entityName: null,
-            emailType: null,
-            deliveryStatus: null,
-            deliveryAttempts: null,
-            deliveryErrorMessage: null,
-            impactsExportFormat: null,
-            entityArchived: null,
           },
         ]}
       />,

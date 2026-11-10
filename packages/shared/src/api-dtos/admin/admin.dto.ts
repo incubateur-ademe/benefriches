@@ -65,35 +65,52 @@ export const listAdminUsersResponseDtoSchema = z.object({
 });
 export type ListAdminUsersResponseDto = z.infer<typeof listAdminUsersResponseDtoSchema>;
 
-export const adminUserTimelineEventTypeSchema = z.enum([
-  "account_created",
-  "login",
-  "site_created",
-  "site_updated",
-  "project_created",
-  "project_updated",
-  "compatibility_evaluation_created",
-  "compatibility_evaluation_completed",
-  "lifecycle_email_sent",
-  "lifecycle_email_failed",
-  "lifecycle_emails_unsubscribed",
-  "impacts_exported",
-]);
-export type AdminUserTimelineEventType = z.infer<typeof adminUserTimelineEventTypeSchema>;
+const timelineEventBaseSchema = z.object({ date: isoDateSchema });
 
-export const adminUserTimelineEventSchema = z.object({
-  date: isoDateSchema,
-  type: adminUserTimelineEventTypeSchema,
-  entityId: z.string().nullable(),
-  entityName: z.string().nullable(),
-  emailType: lifecycleEmailTypeSchema.nullable(),
-  deliveryStatus: lifecycleEmailDeliveryStatusSchema.extract(["failed", "abandoned"]).nullable(),
-  deliveryAttempts: z.number().nullable(),
-  deliveryErrorMessage: z.string().nullable(),
-  impactsExportFormat: impactsExportFormatSchema.nullable(),
-  entityArchived: z.boolean().nullable(),
+const timelineEntityEventSchema = timelineEventBaseSchema.extend({
+  entityId: z.string(),
+  entityName: z.string(),
 });
+
+export const adminUserTimelineEventSchema = z.discriminatedUnion("type", [
+  timelineEventBaseSchema.extend({
+    type: z.literal("account_created"),
+  }),
+  timelineEventBaseSchema.extend({
+    type: z.literal("login"),
+  }),
+  timelineEntityEventSchema.extend({
+    type: z.literal(["site_created", "site_updated", "project_created", "project_updated"]),
+  }),
+  timelineEventBaseSchema.extend({
+    type: z.literal(["compatibility_evaluation_created", "compatibility_evaluation_completed"]),
+    entityId: z.string(),
+  }),
+  timelineEventBaseSchema.extend({
+    type: z.literal("lifecycle_email_sent"),
+    emailType: lifecycleEmailTypeSchema,
+    // Site or project the email is about; null when it isn't about one or it was deleted.
+    entityName: z.string().nullable(),
+  }),
+  timelineEventBaseSchema.extend({
+    type: z.literal("lifecycle_email_failed"),
+    emailType: lifecycleEmailTypeSchema,
+    entityName: z.string().nullable(),
+    deliveryStatus: lifecycleEmailDeliveryStatusSchema.extract(["failed", "abandoned"]),
+    deliveryAttempts: z.number(),
+    deliveryErrorMessage: z.string().nullable(),
+  }),
+  timelineEventBaseSchema.extend({
+    type: z.literal("lifecycle_emails_unsubscribed"),
+  }),
+  timelineEntityEventSchema.extend({
+    type: z.literal("impacts_exported"),
+    impactsExportFormat: impactsExportFormatSchema,
+    entityArchived: z.boolean(),
+  }),
+]);
 export type AdminUserTimelineEvent = z.infer<typeof adminUserTimelineEventSchema>;
+export type AdminUserTimelineEventType = AdminUserTimelineEvent["type"];
 
 export const adminUserSiteSchema = z.object({
   id: z.string(),
