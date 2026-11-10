@@ -59,7 +59,7 @@ export default function ProjectSummaryTab({
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {siteAddress.lat && siteAddress.long && (
+        {siteAddress.lat && siteAddress.long ? (
           <div className="border rounded-3xl">
             <ProjectSummaryMap
               lat={siteAddress.lat}
@@ -69,7 +69,7 @@ export default function ProjectSummaryTab({
               siteId={siteId}
             />
           </div>
-        )}
+        ) : null}
 
         <div className="border rounded-3xl p-6  flex flex-col justify-between">
           <div>
