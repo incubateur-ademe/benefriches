@@ -91,6 +91,10 @@ A grade from A to E summarizing the project's performance on four criteria: loca
 _UI wording (FR)_: « Score d'impact » (overall: « Projet à impact très positif » to « Projet à impact très négatif »)
 _Avoid_: « Score d'aménagement »
 
+**Impacts export**:
+A user downloading a project's impacts as a file, in a given format (`impactsExport`, format `pdf`). Opening the export window or generating the file without downloading it doesn't count; every download counts, repeats included.
+_UI wording (FR)_: « Télécharger les impacts du projet », « Télécharger le document »
+
 ## Relationships
 
 - A **site** has a nature: **Friche**, **Agricultural operation**, **Natural area** or **Urban zone**.

@@ -1,18 +1,6 @@
-import z from "zod";
+import type { PdfExportSectionSelection } from "shared";
 
-const pdfExportSectionIdSchema = z.enum([
-  "siteFeatures",
-  "projectFeatures",
-  "economicBalance",
-  "socioEconomicImpacts",
-  "socialImpacts",
-  "environmentalImpacts",
-  "aboutBenefriches",
-]);
-
-export type PdfExportSectionId = z.infer<typeof pdfExportSectionIdSchema>;
-
-export type PdfExportSectionSelection = Record<PdfExportSectionId, boolean>;
+export type { PdfExportSectionId, PdfExportSectionSelection } from "shared";
 
 export const getDefaultSectionSelection = (): PdfExportSectionSelection => ({
   siteFeatures: true,

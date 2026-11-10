@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   NotFoundException,
   ForbiddenException,
   BadRequestException,
@@ -22,6 +23,8 @@ import {
   type GetReconversionProjectFeaturesResponseDto,
   idPathParamSchema,
   type IdPathParam,
+  reportImpactsExportedRequestDtoSchema,
+  type ReportImpactsExportedRequestDto,
 } from "shared";
 // oxlint-disable-next-line api-conventions/no-local-dto-schema -- legacy local schemas, to move to packages/shared/src/api-dtos
 import { z } from "zod";
@@ -40,6 +43,7 @@ import { GetReconversionProjectUseCase } from "src/reconversion-projects/core/us
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
+import { ReportImpactsExportedUseCase } from "src/reconversion-projects/core/usecases/reportImpactsExported.usecase";
 import { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/updateReconversionProject.usecase";
 
 type UpdateReconversionProjectBody = z.infer<typeof httpUpdateReconversionProjectPropsSchema>;
@@ -87,6 +91,7 @@ export class ReconversionProjectController {
   private readonly getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase;
   private readonly duplicateReconversionProjectUseCase: DuplicateReconversionProjectUseCase;
   private readonly archiveReconversionProjectUseCase: ArchiveReconversionProjectUseCase;
+  private readonly reportImpactsExportedUseCase: ReportImpactsExportedUseCase;
   constructor(
     createReconversionProjectUseCase: CreateReconversionProjectUseCase,
     updateReconversionProjectUseCase: UpdateReconversionProjectUseCase,
@@ -100,6 +105,7 @@ export class ReconversionProjectController {
     getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase,
     duplicateReconversionProjectUseCase: DuplicateReconversionProjectUseCase,
     archiveReconversionProjectUseCase: ArchiveReconversionProjectUseCase,
+    reportImpactsExportedUseCase: ReportImpactsExportedUseCase,
   ) {
     this.createReconversionProjectUseCase = createReconversionProjectUseCase;
     this.updateReconversionProjectUseCase = updateReconversionProjectUseCase;
@@ -117,6 +123,7 @@ export class ReconversionProjectController {
       getProjectUrbanSprawlImpactsComparisonUseCase;
     this.duplicateReconversionProjectUseCase = duplicateReconversionProjectUseCase;
     this.archiveReconversionProjectUseCase = archiveReconversionProjectUseCase;
+    this.reportImpactsExportedUseCase = reportImpactsExportedUseCase;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -281,6 +288,34 @@ export class ReconversionProjectController {
           );
         case "UserNotAuthorized":
           throw new ForbiddenException();
+      }
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(":reconversionProjectId/report-impacts-exported")
+  @HttpCode(204)
+  async reportImpactsExported(
+    @Param("reconversionProjectId", { schema: idPathParamSchema })
+    reconversionProjectId: IdPathParam,
+    @Body({ schema: reportImpactsExportedRequestDtoSchema })
+    body: ReportImpactsExportedRequestDto,
+    @Req() req: RequestWithAuthenticatedUser,
+  ): Promise<void> {
+    const result = await this.reportImpactsExportedUseCase.execute({
+      userId: req.accessTokenPayload.userId,
+      reconversionProjectId,
+      format: body.format,
+      sections: body.sections,
+    });
+
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "ReconversionProjectNotFound":
+          throw new NotFoundException({
+            error: "RECONVERSION_PROJECT_NOT_FOUND",
+            message: `Reconversion project with id ${reconversionProjectId} not found`,
+          });
       }
     }
   }

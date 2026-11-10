@@ -2064,6 +2064,204 @@ describe("ReconversionProjects controller", () => {
     });
   });
 
+  describe("POST /reconversion-projects/:reconversionProjectId/report-impacts-exported", () => {
+    const sections = {
+      siteFeatures: true,
+      projectFeatures: true,
+      economicBalance: false,
+      socioEconomicImpacts: true,
+      socialImpacts: false,
+      environmentalImpacts: true,
+      aboutBenefriches: false,
+    };
+
+    const insertProjectCreatedBy = async (creatorId: string) => {
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: creatorId,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+      const project = new UrbanProjectBuilder()
+        .withCreatedBy(creatorId)
+        .withRelatedSiteId(siteId)
+        .build();
+      await app.get(SqlReconversionProjectRepository).save(project);
+      return project.id;
+    };
+
+    it("gets a 401 when not authenticated", async () => {
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${uuid()}/report-impacts-exported`)
+        .send({ format: "pdf", sections });
+
+      assert.strictEqual(response.status, 401);
+    });
+
+    it("gets a 404 and records nothing when the project does not exist", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${uuid()}/report-impacts-exported`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ format: "pdf", sections });
+
+      assert.strictEqual(response.status, 404);
+      assert.deepStrictEqual(
+        await sqlConnection("domain_events").where("name", "reconversion-project.impacts-exported"),
+        [],
+      );
+    });
+
+    it("gets a 400 when the project id is malformed", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-projects/not-a-uuid/report-impacts-exported")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ format: "pdf", sections });
+
+      assert.strictEqual(response.status, 400);
+      const { errors } = response.body as BadRequestResponseBody;
+      assert.deepStrictEqual(
+        errors.map(({ path }) => path),
+        [[]],
+      );
+    });
+
+    it("gets a 400 when the format is not supported", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+      const projectId = await insertProjectCreatedBy(user.id);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${projectId}/report-impacts-exported`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ format: "xlsx", sections });
+
+      assert.strictEqual(response.status, 400);
+      const { errors } = response.body as BadRequestResponseBody;
+      assert.deepStrictEqual(
+        errors.map(({ path }) => path),
+        [["format"]],
+      );
+    });
+
+    it("gets a 400 when a section is missing from the selection", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+      const projectId = await insertProjectCreatedBy(user.id);
+      const { aboutBenefriches: _omitted, ...incompleteSections } = sections;
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${projectId}/report-impacts-exported`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ format: "pdf", sections: incompleteSections });
+
+      assert.strictEqual(response.status, 400);
+      const { errors } = response.body as BadRequestResponseBody;
+      assert.deepStrictEqual(
+        errors.map(({ path }) => path),
+        [["sections", "aboutBenefriches"]],
+      );
+    });
+
+    it("gets a 400 when a section is not a boolean", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+      const projectId = await insertProjectCreatedBy(user.id);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${projectId}/report-impacts-exported`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ format: "pdf", sections: { ...sections, siteFeatures: "yes" } });
+
+      assert.strictEqual(response.status, 400);
+      const { errors } = response.body as BadRequestResponseBody;
+      assert.deepStrictEqual(
+        errors.map(({ path }) => path),
+        [["sections", "siteFeatures"]],
+      );
+    });
+
+    it("gets a 204 and records the impacts export for the authenticated user", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+      const projectId = await insertProjectCreatedBy(user.id);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${projectId}/report-impacts-exported`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ format: "pdf", sections });
+
+      assert.strictEqual(response.status, 204);
+      assert.deepStrictEqual(
+        await sqlConnection("domain_events")
+          .select("name", "payload")
+          .where("name", "reconversion-project.impacts-exported"),
+        [
+          {
+            name: "reconversion-project.impacts-exported",
+            payload: { userId: user.id, reconversionProjectId: projectId, format: "pdf", sections },
+          },
+        ],
+      );
+    });
+
+    it("records the impacts export when the authenticated user is not the project's creator", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+      const projectId = await insertProjectCreatedBy(uuid());
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${projectId}/report-impacts-exported`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ format: "pdf", sections });
+
+      assert.strictEqual(response.status, 204);
+      assert.deepStrictEqual(
+        await sqlConnection("domain_events")
+          .select("name", "payload")
+          .where("name", "reconversion-project.impacts-exported"),
+        [
+          {
+            name: "reconversion-project.impacts-exported",
+            payload: { userId: user.id, reconversionProjectId: projectId, format: "pdf", sections },
+          },
+        ],
+      );
+    });
+
+    it("records the authenticated user, ignoring a userId sent in the body", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+      const projectId = await insertProjectCreatedBy(user.id);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${projectId}/report-impacts-exported`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ format: "pdf", sections, userId: uuid() });
+
+      assert.strictEqual(response.status, 204);
+      assert.deepStrictEqual(
+        await sqlConnection("domain_events")
+          .select("name", "payload")
+          .where("name", "reconversion-project.impacts-exported"),
+        [
+          {
+            name: "reconversion-project.impacts-exported",
+            payload: { userId: user.id, reconversionProjectId: projectId, format: "pdf", sections },
+          },
+        ],
+      );
+    });
+  });
+
   describe("routes taking a reconversion project id in their path", () => {
     const malformedProjectIdRequests = [
       { method: "get", path: "/api/reconversion-projects/not-a-uuid" },

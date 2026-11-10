@@ -24,3 +24,4 @@ export {
 } from "./group-impacts";
 export * from "./summary-cards";
 export * from "./evaluation-period";
+export * from "./impacts-export";

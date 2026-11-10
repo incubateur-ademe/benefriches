@@ -56,6 +56,8 @@ export {
   type CreateReconversionProjectRequestDto,
   type GetReconversionProjectFeaturesResponseDto,
   type GetReconversionProjectImpactsResultDto,
+  reportImpactsExportedRequestDtoSchema,
+  type ReportImpactsExportedRequestDto,
 } from "./reconversion-projects";
 
 export {
