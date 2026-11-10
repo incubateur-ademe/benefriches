@@ -32,6 +32,7 @@ import {
   ReconversionProjectsListQuery,
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
+import { ReportImpactsExportedUseCase } from "src/reconversion-projects/core/usecases/reportImpactsExported.usecase";
 import { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/updateReconversionProject.usecase";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
@@ -284,6 +285,17 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         return new ArchiveReconversionProjectUseCase(repository, dateProvider);
       },
       inject: [SqlReconversionProjectRepository, RealDateProvider],
+    },
+    {
+      provide: ReportImpactsExportedUseCase,
+      useFactory(
+        repository: ReconversionProjectRepository,
+        uidGenerator: UidGenerator,
+        eventPublisher: DomainEventPublisher,
+      ) {
+        return new ReportImpactsExportedUseCase(repository, uidGenerator, eventPublisher);
+      },
+      inject: [SqlReconversionProjectRepository, RandomUuidGenerator, RealEventPublisher],
     },
     SqlReconversionProjectRepository,
     SqlReconversionProjectQuery,

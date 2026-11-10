@@ -1,5 +1,8 @@
 import { createAction } from "@reduxjs/toolkit";
-import type { GetReconversionProjectImpactsResultDto } from "shared";
+import type {
+  GetReconversionProjectImpactsResultDto,
+  ReportImpactsExportedRequestDto,
+} from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
@@ -19,6 +22,10 @@ export interface ReconversionProjectImpactsGateway {
   getReconversionProjectImpacts(
     reconversionProjectId: string,
   ): Promise<GetReconversionProjectImpactsResultDto | undefined>;
+  reportImpactsExported(
+    reconversionProjectId: string,
+    impactsExport: ReportImpactsExportedRequestDto,
+  ): Promise<void>;
 }
 
 export const reconversionProjectImpactsAnalysisRequested = createAppAsyncThunk<

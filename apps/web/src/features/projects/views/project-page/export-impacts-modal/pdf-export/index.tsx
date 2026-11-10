@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { impactsExportDownloaded } from "@/features/analytics/core/analyticsEvents";
 import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
+import { impactsExported } from "@/features/projects/application/project-impacts/actions/impactsExported.action";
 import { selectExportImpactsView } from "@/features/projects/application/project-impacts/selectors/exportImpacts.selectors";
 import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
@@ -106,7 +107,10 @@ export default function PdfExportDownloadContainer({
       evaluationPeriodInYears={evaluationPeriodInYears as number}
       selectedSections={selectedSections}
       onDownloadAvailable={onDownloadAvailable}
-      onExportDownloaded={() => void dispatch(eventTracked(impactsExportDownloaded("pdf")))}
+      onExportDownloaded={() => {
+        void dispatch(eventTracked(impactsExportDownloaded("pdf")));
+        void dispatch(impactsExported({ projectId, format: "pdf", sections: selectedSections }));
+      }}
     />
   );
 }

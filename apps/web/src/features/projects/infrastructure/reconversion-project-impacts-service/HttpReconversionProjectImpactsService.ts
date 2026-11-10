@@ -1,4 +1,7 @@
-import type { GetReconversionProjectImpactsResultDto } from "shared";
+import type {
+  GetReconversionProjectImpactsResultDto,
+  ReportImpactsExportedRequestDto,
+} from "shared";
 
 import type { ReconversionProjectImpactsGateway } from "../../application/project-impacts/actions";
 
@@ -16,5 +19,21 @@ export class HttpReconversionProjectImpactsApi implements ReconversionProjectImp
 
     const jsonResponse = (await response.json()) as GetReconversionProjectImpactsResultDto;
     return jsonResponse;
+  }
+
+  async reportImpactsExported(
+    reconversionProjectId: string,
+    impactsExport: ReportImpactsExportedRequestDto,
+  ): Promise<void> {
+    const response = await fetch(
+      `/api/reconversion-projects/${reconversionProjectId}/report-impacts-exported`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(impactsExport),
+      },
+    );
+
+    if (!response.ok) throw new Error("Error while reporting the impacts export");
   }
 }
