@@ -1,11 +1,13 @@
 import {
   getAdminDashboardStatsResponseDtoSchema,
   getAdminUserResponseDtoSchema,
+  listAdminImpactsExportersResponseDtoSchema,
   listAdminUsersResponseDtoSchema,
 } from "shared";
 
 import type {
   AdminDashboardStats,
+  AdminImpactsExportersList,
   AdminUserActivity,
   AdminUsersList,
 } from "../../core/admin.types";
@@ -13,6 +15,7 @@ import {
   AdminAccessForbiddenError,
   type AdminGateway,
   AdminUserNotFoundError,
+  type ListAdminImpactsExportersParams,
   type ListAdminUsersParams,
 } from "../../core/gateways/AdminGateway";
 
@@ -61,6 +64,30 @@ export class HttpAdminService implements AdminGateway {
     const result = getAdminUserResponseDtoSchema.safeParse(jsonResponse);
 
     if (!result.success) throw new Error("HttpAdminService: Invalid user activity response");
+
+    return result.data;
+  }
+
+  async listImpactsExporters({
+    search,
+    page,
+  }: ListAdminImpactsExportersParams): Promise<AdminImpactsExportersList> {
+    const searchParams = new URLSearchParams();
+    if (search) searchParams.set("search", search);
+    if (page) searchParams.set("page", String(page));
+    const query = searchParams.toString();
+
+    const response = await fetch(`/api/admin/exports${query ? `?${query}` : ""}`);
+
+    if (response.status === 403) throw new AdminAccessForbiddenError();
+    if (!response.ok) throw new Error("Error while fetching admin impacts exporters list");
+
+    const jsonResponse: unknown = await response.json();
+    const result = listAdminImpactsExportersResponseDtoSchema.safeParse(jsonResponse);
+
+    if (!result.success) {
+      throw new Error("HttpAdminService: Invalid impacts exporters list response");
+    }
 
     return result.data;
   }

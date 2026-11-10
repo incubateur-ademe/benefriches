@@ -1,4 +1,5 @@
 export type {
+  AdminImpactsExporter,
   AdminMonthlyStats,
   AdminUserCompatibilityEvaluation,
   AdminUserProject,
@@ -8,6 +9,7 @@ export type {
   AdminUserTimelineEventType,
   GetAdminDashboardStatsResponseDto as AdminDashboardStats,
   GetAdminUserResponseDto as AdminUserActivity,
+  ListAdminImpactsExportersResponseDto as AdminImpactsExportersList,
   ListAdminUsersResponseDto as AdminUsersList,
 } from "shared";
 

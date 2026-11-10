@@ -1,10 +1,12 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import { adminDashboardStatsRequested } from "./actions/adminDashboardStatsRequested.action";
+import { adminImpactsExportersListRequested } from "./actions/adminImpactsExportersListRequested.action";
 import { adminUserActivityRequested } from "./actions/adminUserActivityRequested.action";
 import { adminUsersListRequested } from "./actions/adminUsersListRequested.action";
 import type {
   AdminDashboardStats,
+  AdminImpactsExporter,
   AdminLoadingState,
   AdminUserActivity,
   AdminUserSummary,
@@ -32,6 +34,15 @@ export type AdminState = {
     search: string;
   };
   usersById: Record<string, AdminUserEntry>;
+  impactsExportersList: {
+    loadingState: AdminLoadingState;
+    latestRequestId: string | null;
+    users: AdminImpactsExporter[];
+    total: number;
+    page: number;
+    pageSize: number;
+    search: string;
+  };
 };
 
 export const initialState: AdminState = {
@@ -46,6 +57,15 @@ export const initialState: AdminState = {
     search: "",
   },
   usersById: {},
+  impactsExportersList: {
+    loadingState: "idle",
+    latestRequestId: null,
+    users: [],
+    total: 0,
+    page: 1,
+    pageSize: 25,
+    search: "",
+  },
 };
 
 export const adminReducer = createReducer(initialState, (builder) => {
@@ -104,6 +124,27 @@ export const adminReducer = createReducer(initialState, (builder) => {
       loadingState: action.payload ?? "error",
       latestRequestId: requestId,
     };
+  });
+
+  builder.addCase(adminImpactsExportersListRequested.pending, (state, action) => {
+    state.impactsExportersList.loadingState = "loading";
+    state.impactsExportersList.latestRequestId = action.meta.requestId;
+    state.impactsExportersList.search = action.meta.arg.search ?? "";
+    state.impactsExportersList.page = action.meta.arg.page ?? 1;
+  });
+  builder.addCase(adminImpactsExportersListRequested.fulfilled, (state, action) => {
+    if (action.meta.requestId !== state.impactsExportersList.latestRequestId) return;
+    state.impactsExportersList.loadingState = "success";
+    state.impactsExportersList.users = action.payload.users;
+    state.impactsExportersList.total = action.payload.total;
+    state.impactsExportersList.page = action.payload.page;
+    state.impactsExportersList.pageSize = action.payload.pageSize;
+  });
+  builder.addCase(adminImpactsExportersListRequested.rejected, (state, action) => {
+    if (action.meta.requestId !== state.impactsExportersList.latestRequestId) return;
+    state.impactsExportersList.loadingState = action.payload ?? "error";
+    state.impactsExportersList.users = [];
+    state.impactsExportersList.total = 0;
   });
 });
 

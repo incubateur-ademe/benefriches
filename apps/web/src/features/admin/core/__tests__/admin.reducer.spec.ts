@@ -3,14 +3,21 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { InMemoryAdminService } from "../../infrastructure/admin-service/InMemoryAdminService";
 import { adminDashboardStatsRequested } from "../actions/adminDashboardStatsRequested.action";
+import { adminImpactsExportersListRequested } from "../actions/adminImpactsExportersListRequested.action";
 import { adminUserActivityRequested } from "../actions/adminUserActivityRequested.action";
 import { adminUsersListRequested } from "../actions/adminUsersListRequested.action";
 import {
   selectAdminDashboardViewData,
+  selectAdminImpactsExportersViewData,
   selectAdminUsersViewData,
   selectAdminUserViewData,
 } from "../admin.selectors";
-import type { AdminDashboardStats, AdminUserActivity, AdminUsersList } from "../admin.types";
+import type {
+  AdminDashboardStats,
+  AdminImpactsExportersList,
+  AdminUserActivity,
+  AdminUsersList,
+} from "../admin.types";
 
 const DASHBOARD_STATS: AdminDashboardStats = {
   totals: { users: 120, sites: 80, projects: 45, compatibilityEvaluations: 30 },
@@ -46,6 +53,24 @@ const USERS_LIST: AdminUsersList = {
       structureActivity: "municipality",
       createdAt: "2026-01-10T10:00:00.000Z",
       lastLoginAt: "2026-09-01T08:30:00.000Z",
+    },
+  ],
+  total: 51,
+  page: 2,
+  pageSize: 25,
+};
+
+const IMPACTS_EXPORTERS_LIST: AdminImpactsExportersList = {
+  users: [
+    {
+      id: "user-1",
+      email: "jane@example.com",
+      firstName: "Jane",
+      lastName: "Doe",
+      structureName: "Mairie de Lyon",
+      impactsExportsCount: 4,
+      exportedProjectsCount: 2,
+      lastImpactsExportedAt: "2026-10-15T12:00:00.000Z",
     },
   ],
   total: 51,
@@ -275,6 +300,82 @@ describe("admin reducer", () => {
         total: 51,
         page: 2,
         pageSize: 25,
+        pageCount: 3,
+        search: "",
+      });
+    });
+  });
+
+  describe("adminImpactsExportersListRequested", () => {
+    it("exposes the paginated impacts exporters with the requested search", async () => {
+      const store = createTestStore({ impactsExportersList: IMPACTS_EXPORTERS_LIST });
+
+      await store.dispatch(adminImpactsExportersListRequested({ search: "jane", page: 2 }));
+
+      expect(selectAdminImpactsExportersViewData(store.getState())).toEqual({
+        loadingState: "success",
+        users: IMPACTS_EXPORTERS_LIST.users,
+        total: 51,
+        page: 2,
+        pageCount: 3,
+        search: "jane",
+      });
+    });
+
+    it("exposes an empty error state when fetch fails", async () => {
+      const store = createTestStore({ shouldFail: true });
+
+      await store.dispatch(adminImpactsExportersListRequested({ search: "jane", page: 2 }));
+
+      expect(selectAdminImpactsExportersViewData(store.getState())).toEqual({
+        loadingState: "error",
+        users: [],
+        total: 0,
+        page: 2,
+        pageCount: 1,
+        search: "jane",
+      });
+    });
+
+    it("exposes a forbidden state when admin access is denied", async () => {
+      const store = createTestStore({ shouldDenyAccess: true });
+
+      await store.dispatch(adminImpactsExportersListRequested({ page: 1 }));
+
+      expect(selectAdminImpactsExportersViewData(store.getState())).toEqual({
+        loadingState: "forbidden",
+        users: [],
+        total: 0,
+        page: 1,
+        pageCount: 1,
+        search: "",
+      });
+    });
+
+    it("ignores a late response of an earlier request", () => {
+      const store = createTestStore();
+
+      store.dispatch(adminImpactsExportersListRequested.pending("req-old", { page: 1 }));
+      store.dispatch(adminImpactsExportersListRequested.pending("req-new", { page: 2 }));
+      store.dispatch(
+        adminImpactsExportersListRequested.fulfilled(IMPACTS_EXPORTERS_LIST, "req-new", {
+          page: 2,
+        }),
+      );
+      store.dispatch(
+        adminImpactsExportersListRequested.rejected(
+          new Error("x"),
+          "req-old",
+          { page: 1 },
+          "error",
+        ),
+      );
+
+      expect(selectAdminImpactsExportersViewData(store.getState())).toEqual({
+        loadingState: "success",
+        users: IMPACTS_EXPORTERS_LIST.users,
+        total: 51,
+        page: 2,
         pageCount: 3,
         search: "",
       });

@@ -19,4 +19,17 @@ describe("AdminDashboardPage", () => {
     expect(await screen.findByText("Accès réservé aux administrateurs")).toBeInTheDocument();
     expect(screen.queryByRole("status", { name: "Chargement..." })).not.toBeInTheDocument();
   });
+
+  it("links to the impacts exports page", () => {
+    render(
+      <Provider store={createStore(getTestAppDependencies())}>
+        <AdminDashboardPageContainer />
+      </Provider>,
+    );
+
+    expect(screen.getByRole("link", { name: "Voir les exports d'impacts" })).toHaveAttribute(
+      "href",
+      "/admin/exports",
+    );
+  });
 });

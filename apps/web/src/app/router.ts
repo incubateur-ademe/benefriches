@@ -205,6 +205,10 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
       { userId: param.path.string },
       (params) => `/admin/utilisateurs/${params.userId}`,
     ),
+    adminImpactsExporters: defineRoute(
+      { search: param.query.optional.string, page: param.query.optional.number },
+      () => "/admin/exports",
+    ),
     // PAGES
     budget: defineRoute("/budget"),
     stats: defineRoute("/statistiques"),
