@@ -4,10 +4,12 @@ import { after, before, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import type {
+  AdminUserImpactsExportRecord,
   AdminUserLifecycleEmailDeliveryRecord,
   AdminUserRecord,
 } from "src/admin/core/models/adminUserReadModel";
 import { LOGIN_SUCCEEDED } from "src/auth/core/events/loginSucceeded.event";
+import { RECONVERSION_PROJECT_IMPACTS_EXPORTED } from "src/reconversion-projects/core/events/reconversionProjectImpactsExported.event";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
 import { SqlAdminUsersQuery } from "./SqlAdminUsersQuery";
@@ -39,6 +41,23 @@ const insertLogin = async (sqlConnection: Knex, userId: string, createdAt: Date)
     id: uuid(),
     name: LOGIN_SUCCEEDED,
     payload: { userId, userEmail: `${userId}@test.fr`, method: "email-link" },
+    created_at: createdAt,
+  });
+};
+
+const insertImpactsExport = async (
+  sqlConnection: Knex,
+  { userId, projectId, createdAt }: { userId: string; projectId: string; createdAt: Date },
+): Promise<void> => {
+  await sqlConnection("domain_events").insert({
+    id: uuid(),
+    name: RECONVERSION_PROJECT_IMPACTS_EXPORTED,
+    payload: {
+      userId,
+      reconversionProjectId: projectId,
+      format: "pdf",
+      sections: {},
+    },
     created_at: createdAt,
   });
 };
@@ -369,6 +388,7 @@ describe("SqlAdminUsersQuery integration", () => {
           },
         ],
         lifecycleEmailDeliveries: [],
+        impactsExports: [],
       });
     });
 
@@ -565,6 +585,100 @@ describe("SqlAdminUsersQuery integration", () => {
           errorMessage: null,
         },
       ] satisfies AdminUserLifecycleEmailDeliveryRecord[]);
+    });
+
+    it("returns the user's impacts exports with the project's current name and archived status", async () => {
+      const userId = uuid();
+      const otherUserId = uuid();
+      await insertUser(sqlConnection, {
+        id: userId,
+        email: "jane@collectivite.fr",
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+      });
+      await insertUser(sqlConnection, {
+        id: otherUserId,
+        email: "john@company.fr",
+        created_at: new Date("2026-01-01T08:00:00.000Z"),
+      });
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: userId,
+        name: "Friche industrielle",
+        nature: "FRICHE",
+        surface_area: 1000,
+        owner_structure_type: "company",
+        creation_mode: "custom",
+        created_at: new Date("2026-01-02T10:00:00.000Z"),
+      });
+      const activeProjectId = uuid();
+      const archivedProjectId = uuid();
+      await sqlConnection("reconversion_projects").insert([
+        {
+          id: activeProjectId,
+          created_by: userId,
+          name: "Quartier mixte (renommé)",
+          related_site_id: siteId,
+          creation_mode: "custom",
+          status: "active",
+          created_at: new Date("2026-01-03T10:00:00.000Z"),
+        },
+        {
+          id: archivedProjectId,
+          created_by: userId,
+          name: "Centrale PV",
+          related_site_id: siteId,
+          creation_mode: "express",
+          status: "archived",
+          created_at: new Date("2026-01-03T10:00:00.000Z"),
+        },
+      ]);
+      await insertImpactsExport(sqlConnection, {
+        userId,
+        projectId: activeProjectId,
+        createdAt: new Date("2026-01-06T10:00:00.000Z"),
+      });
+      await insertImpactsExport(sqlConnection, {
+        userId,
+        projectId: activeProjectId,
+        createdAt: new Date("2026-01-04T10:00:00.000Z"),
+      });
+      await insertImpactsExport(sqlConnection, {
+        userId,
+        projectId: archivedProjectId,
+        createdAt: new Date("2026-01-05T10:00:00.000Z"),
+      });
+      await insertImpactsExport(sqlConnection, {
+        userId: otherUserId,
+        projectId: activeProjectId,
+        createdAt: new Date("2026-01-07T10:00:00.000Z"),
+      });
+
+      const result = await query.getUserActivity(userId);
+
+      assert.deepStrictEqual(result?.impactsExports, [
+        {
+          projectId: activeProjectId,
+          projectName: "Quartier mixte (renommé)",
+          projectArchived: false,
+          format: "pdf",
+          exportedAt: new Date("2026-01-04T10:00:00.000Z"),
+        },
+        {
+          projectId: archivedProjectId,
+          projectName: "Centrale PV",
+          projectArchived: true,
+          format: "pdf",
+          exportedAt: new Date("2026-01-05T10:00:00.000Z"),
+        },
+        {
+          projectId: activeProjectId,
+          projectName: "Quartier mixte (renommé)",
+          projectArchived: false,
+          format: "pdf",
+          exportedAt: new Date("2026-01-06T10:00:00.000Z"),
+        },
+      ] satisfies AdminUserImpactsExportRecord[]);
     });
 
     it("returns the user's lifecycle emails unsubscribe date", async () => {

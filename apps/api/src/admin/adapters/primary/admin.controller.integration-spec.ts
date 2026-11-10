@@ -278,6 +278,8 @@ describe("Admin controller", () => {
             deliveryStatus: null,
             deliveryAttempts: null,
             deliveryErrorMessage: null,
+            impactsExportFormat: null,
+            entityArchived: null,
           },
           {
             date: "2026-01-01T08:00:00.000Z",
@@ -288,6 +290,8 @@ describe("Admin controller", () => {
             deliveryStatus: null,
             deliveryAttempts: null,
             deliveryErrorMessage: null,
+            impactsExportFormat: null,
+            entityArchived: null,
           },
         ],
         sites: [

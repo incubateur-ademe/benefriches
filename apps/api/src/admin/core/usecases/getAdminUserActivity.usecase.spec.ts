@@ -38,6 +38,7 @@ const buildActivity = (
     projects: [],
     compatibilityEvaluations: [],
     lifecycleEmailDeliveries: [],
+    impactsExports: [],
     ...activity,
   };
 };
@@ -51,6 +52,8 @@ const ACCOUNT_CREATED_EVENT = {
   deliveryStatus: null,
   deliveryAttempts: null,
   deliveryErrorMessage: null,
+  impactsExportFormat: null,
+  entityArchived: null,
 } as const satisfies AdminUserTimelineEvent;
 
 const getTimeline = async (activity: AdminUserActivityRecord) => {
@@ -147,6 +150,7 @@ describe("GetAdminUserActivity UseCase", () => {
           },
         ],
         lifecycleEmailDeliveries: [],
+        impactsExports: [],
       },
     ]);
     const usecase = new GetAdminUserActivityUseCase(adminUsersQuery);
@@ -178,6 +182,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-15T10:00:00.000Z",
@@ -188,6 +194,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-10T10:00:00.000Z",
@@ -198,6 +206,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-09T10:00:00.000Z",
@@ -208,6 +218,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-08T10:00:00.000Z",
@@ -218,6 +230,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-07T10:00:00.000Z",
@@ -228,6 +242,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-06T10:00:00.000Z",
@@ -238,6 +254,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-05T10:00:00.000Z",
@@ -248,6 +266,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-04T10:00:00.000Z",
@@ -258,6 +278,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-03T10:00:00.000Z",
@@ -268,6 +290,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-02T09:00:00.000Z",
@@ -278,6 +302,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-01T08:00:00.000Z",
@@ -288,6 +314,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
       ],
       sites: [
@@ -371,6 +399,7 @@ describe("GetAdminUserActivity UseCase", () => {
         projects: [],
         compatibilityEvaluations: [],
         lifecycleEmailDeliveries: [],
+        impactsExports: [],
       },
     ]);
     const usecase = new GetAdminUserActivityUseCase(adminUsersQuery);
@@ -402,6 +431,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
       ],
       sites: [],
@@ -435,6 +466,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         ACCOUNT_CREATED_EVENT,
       ] satisfies AdminUserTimelineEvent[]);
@@ -464,6 +497,8 @@ describe("GetAdminUserActivity UseCase", () => {
             deliveryStatus: status,
             deliveryAttempts: 2,
             deliveryErrorMessage: "Connection timeout",
+            impactsExportFormat: null,
+            entityArchived: null,
           },
           ACCOUNT_CREATED_EVENT,
         ] satisfies AdminUserTimelineEvent[]);
@@ -501,6 +536,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         ACCOUNT_CREATED_EVENT,
       ] satisfies AdminUserTimelineEvent[]);
@@ -542,6 +579,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-03T10:00:00.000Z",
@@ -552,6 +591,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         ACCOUNT_CREATED_EVENT,
       ] satisfies AdminUserTimelineEvent[]);
@@ -580,6 +621,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         ACCOUNT_CREATED_EVENT,
       ] satisfies AdminUserTimelineEvent[]);
@@ -634,6 +677,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-12T10:00:00.000Z",
@@ -644,6 +689,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: "failed",
           deliveryAttempts: 1,
           deliveryErrorMessage: "Connection timeout",
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-10T10:00:00.000Z",
@@ -654,6 +701,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-07T10:00:00.000Z",
@@ -664,6 +713,8 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         {
           date: "2026-01-05T10:00:00.000Z",
@@ -674,6 +725,150 @@ describe("GetAdminUserActivity UseCase", () => {
           deliveryStatus: null,
           deliveryAttempts: null,
           deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
+        },
+        ACCOUNT_CREATED_EVENT,
+      ] satisfies AdminUserTimelineEvent[]);
+    });
+  });
+
+  describe("impacts exports", () => {
+    it("adds one impacts_exported event per export, dated at the export and carrying the project's name and format", async () => {
+      const timeline = await getTimeline(
+        buildActivity({
+          impactsExports: [
+            {
+              projectId: "project-1",
+              projectName: "Quartier mixte",
+              projectArchived: false,
+              format: "pdf",
+              exportedAt: new Date("2026-01-05T10:00:00.000Z"),
+            },
+            {
+              projectId: "project-1",
+              projectName: "Quartier mixte",
+              projectArchived: false,
+              format: "pdf",
+              exportedAt: new Date("2026-01-08T10:00:00.000Z"),
+            },
+          ],
+        }),
+      );
+
+      assert.deepStrictEqual(timeline, [
+        {
+          date: "2026-01-08T10:00:00.000Z",
+          type: "impacts_exported",
+          entityId: "project-1",
+          entityName: "Quartier mixte",
+          emailType: null,
+          deliveryStatus: null,
+          deliveryAttempts: null,
+          deliveryErrorMessage: null,
+          impactsExportFormat: "pdf",
+          entityArchived: false,
+        },
+        {
+          date: "2026-01-05T10:00:00.000Z",
+          type: "impacts_exported",
+          entityId: "project-1",
+          entityName: "Quartier mixte",
+          emailType: null,
+          deliveryStatus: null,
+          deliveryAttempts: null,
+          deliveryErrorMessage: null,
+          impactsExportFormat: "pdf",
+          entityArchived: false,
+        },
+        ACCOUNT_CREATED_EVENT,
+      ] satisfies AdminUserTimelineEvent[]);
+    });
+
+    it("marks the export of an archived project as archived", async () => {
+      const timeline = await getTimeline(
+        buildActivity({
+          impactsExports: [
+            {
+              projectId: "project-2",
+              projectName: "Centrale PV",
+              projectArchived: true,
+              format: "pdf",
+              exportedAt: new Date("2026-01-05T10:00:00.000Z"),
+            },
+          ],
+        }),
+      );
+
+      assert.deepStrictEqual(timeline, [
+        {
+          date: "2026-01-05T10:00:00.000Z",
+          type: "impacts_exported",
+          entityId: "project-2",
+          entityName: "Centrale PV",
+          emailType: null,
+          deliveryStatus: null,
+          deliveryAttempts: null,
+          deliveryErrorMessage: null,
+          impactsExportFormat: "pdf",
+          entityArchived: true,
+        },
+        ACCOUNT_CREATED_EVENT,
+      ] satisfies AdminUserTimelineEvent[]);
+    });
+
+    it("interleaves impacts exports chronologically with activity events", async () => {
+      const timeline = await getTimeline(
+        buildActivity({
+          loginDates: [new Date("2026-01-04T10:00:00.000Z"), new Date("2026-01-06T10:00:00.000Z")],
+          impactsExports: [
+            {
+              projectId: "project-1",
+              projectName: "Quartier mixte",
+              projectArchived: false,
+              format: "pdf",
+              exportedAt: new Date("2026-01-05T10:00:00.000Z"),
+            },
+          ],
+        }),
+      );
+
+      assert.deepStrictEqual(timeline, [
+        {
+          date: "2026-01-06T10:00:00.000Z",
+          type: "login",
+          entityId: null,
+          entityName: null,
+          emailType: null,
+          deliveryStatus: null,
+          deliveryAttempts: null,
+          deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
+        },
+        {
+          date: "2026-01-05T10:00:00.000Z",
+          type: "impacts_exported",
+          entityId: "project-1",
+          entityName: "Quartier mixte",
+          emailType: null,
+          deliveryStatus: null,
+          deliveryAttempts: null,
+          deliveryErrorMessage: null,
+          impactsExportFormat: "pdf",
+          entityArchived: false,
+        },
+        {
+          date: "2026-01-04T10:00:00.000Z",
+          type: "login",
+          entityId: null,
+          entityName: null,
+          emailType: null,
+          deliveryStatus: null,
+          deliveryAttempts: null,
+          deliveryErrorMessage: null,
+          impactsExportFormat: null,
+          entityArchived: null,
         },
         ACCOUNT_CREATED_EVENT,
       ] satisfies AdminUserTimelineEvent[]);

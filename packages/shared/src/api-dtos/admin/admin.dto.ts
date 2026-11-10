@@ -5,6 +5,7 @@ import {
   lifecycleEmailTypeSchema,
 } from "../../lifecycle-emails";
 import { reconversionCompatibilityEvaluationStatusSchema } from "../../reconversion-compatibility";
+import { impactsExportFormatSchema } from "../../reconversion-project-impacts/impacts-export";
 import { reconversionProjectCreationModeSchema } from "../../reconversion-projects/_common/creationMode";
 import { siteNatureSchema } from "../../site";
 
@@ -76,6 +77,7 @@ export const adminUserTimelineEventTypeSchema = z.enum([
   "lifecycle_email_sent",
   "lifecycle_email_failed",
   "lifecycle_emails_unsubscribed",
+  "impacts_exported",
 ]);
 export type AdminUserTimelineEventType = z.infer<typeof adminUserTimelineEventTypeSchema>;
 
@@ -88,6 +90,8 @@ export const adminUserTimelineEventSchema = z.object({
   deliveryStatus: lifecycleEmailDeliveryStatusSchema.extract(["failed", "abandoned"]).nullable(),
   deliveryAttempts: z.number().nullable(),
   deliveryErrorMessage: z.string().nullable(),
+  impactsExportFormat: impactsExportFormatSchema.nullable(),
+  entityArchived: z.boolean().nullable(),
 });
 export type AdminUserTimelineEvent = z.infer<typeof adminUserTimelineEventSchema>;
 

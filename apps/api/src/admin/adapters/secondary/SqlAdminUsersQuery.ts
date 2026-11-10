@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { Knex } from "knex";
 import {
+  impactsExportFormatSchema,
   lifecycleEmailDeliveryStatusSchema,
   lifecycleEmailTypeSchema,
   type ReconversionCompatibilityEvaluationStatus,
@@ -14,6 +15,7 @@ import type {
   AdminUserListItem,
 } from "src/admin/core/models/adminUserReadModel";
 import { LOGIN_SUCCEEDED } from "src/auth/core/events/loginSucceeded.event";
+import { RECONVERSION_PROJECT_IMPACTS_EXPORTED } from "src/reconversion-projects/core/events/reconversionProjectImpactsExported.event";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 import { whereAdminUserMatchesSearch } from "./adminUserSearch";
@@ -38,6 +40,14 @@ type LifecycleEmailDeliveryRow = {
   last_attempted_at: Date;
   attempts: number;
   error_message: string | null;
+};
+
+type ImpactsExportRow = {
+  project_id: string;
+  project_name: string;
+  project_status: string;
+  format: string;
+  created_at: Date;
 };
 
 @Injectable()
@@ -121,64 +131,83 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
 
     if (!user) return undefined;
 
-    const [loginRows, siteRows, projectRows, evaluationRows, deliveryRows] = await Promise.all([
-      this.sqlConnection("domain_events")
-        .select("created_at")
-        .where("name", LOGIN_SUCCEEDED)
-        .whereRaw("payload->>'userId' = ?", [userId])
-        .orderBy("created_at", "asc"),
-      this.sqlConnection("sites")
-        .select("id", "name", "nature", "creation_mode", "status", "created_at", "updated_at")
-        .where("created_by", userId)
-        .orderBy("created_at", "asc"),
-      this.sqlConnection("reconversion_projects")
-        .select(
-          "id",
-          "name",
-          "related_site_id",
-          "creation_mode",
-          "status",
-          "created_at",
-          "updated_at",
-        )
-        .where("created_by", userId)
-        .orderBy("created_at", "asc"),
-      this.sqlConnection("reconversion_compatibility_evaluations")
-        .select("id", "related_site_id", "status", "created_at", "completed_at")
-        .where("created_by", userId)
-        .orderBy("created_at", "asc"),
-      this.sqlConnection("lifecycle_email_deliveries as d")
-        .select(
-          "d.email_type",
-          "d.status",
-          "d.sent_at",
-          "d.last_attempted_at",
-          "d.attempts",
-          "d.error_message",
-          this.sqlConnection.raw("COALESCE(s.name, p.name) AS related_entity_name"),
-        )
-        // email_type says what related_entity_id points to; a deleted entity leaves the name null.
-        .leftJoin("sites as s", (join) => {
-          join
-            .on("s.id", "d.related_entity_id")
-            .andOnVal("d.email_type", "=", lifecycleEmailTypeSchema.enum["first-project-reminder"]);
-        })
-        .leftJoin("reconversion_projects as p", (join) => {
-          join
-            .on("p.id", "d.related_entity_id")
-            .andOnVal(
-              "d.email_type",
-              "=",
-              lifecycleEmailTypeSchema.enum["project-impacts-summary"],
-            );
-        })
-        .where("d.user_id", userId)
-        // Only types and statuses the code knows, so a leftover row of a retired type or an
-        // unexpected status can't make the parse below throw and break the page.
-        .whereIn("d.email_type", lifecycleEmailTypeSchema.options)
-        .whereIn("d.status", lifecycleEmailDeliveryStatusSchema.options)
-        .orderBy("d.created_at", "asc") as Promise<LifecycleEmailDeliveryRow[]>,
-    ]);
+    const [loginRows, siteRows, projectRows, evaluationRows, deliveryRows, impactsExportRows] =
+      await Promise.all([
+        this.sqlConnection("domain_events")
+          .select("created_at")
+          .where("name", LOGIN_SUCCEEDED)
+          .whereRaw("payload->>'userId' = ?", [userId])
+          .orderBy("created_at", "asc"),
+        this.sqlConnection("sites")
+          .select("id", "name", "nature", "creation_mode", "status", "created_at", "updated_at")
+          .where("created_by", userId)
+          .orderBy("created_at", "asc"),
+        this.sqlConnection("reconversion_projects")
+          .select(
+            "id",
+            "name",
+            "related_site_id",
+            "creation_mode",
+            "status",
+            "created_at",
+            "updated_at",
+          )
+          .where("created_by", userId)
+          .orderBy("created_at", "asc"),
+        this.sqlConnection("reconversion_compatibility_evaluations")
+          .select("id", "related_site_id", "status", "created_at", "completed_at")
+          .where("created_by", userId)
+          .orderBy("created_at", "asc"),
+        this.sqlConnection("lifecycle_email_deliveries as d")
+          .select(
+            "d.email_type",
+            "d.status",
+            "d.sent_at",
+            "d.last_attempted_at",
+            "d.attempts",
+            "d.error_message",
+            this.sqlConnection.raw("COALESCE(s.name, p.name) AS related_entity_name"),
+          )
+          // email_type says what related_entity_id points to; a deleted entity leaves the name null.
+          .leftJoin("sites as s", (join) => {
+            join
+              .on("s.id", "d.related_entity_id")
+              .andOnVal(
+                "d.email_type",
+                "=",
+                lifecycleEmailTypeSchema.enum["first-project-reminder"],
+              );
+          })
+          .leftJoin("reconversion_projects as p", (join) => {
+            join
+              .on("p.id", "d.related_entity_id")
+              .andOnVal(
+                "d.email_type",
+                "=",
+                lifecycleEmailTypeSchema.enum["project-impacts-summary"],
+              );
+          })
+          .where("d.user_id", userId)
+          // Only types and statuses the code knows, so a leftover row of a retired type or an
+          // unexpected status can't make the parse below throw and break the page.
+          .whereIn("d.email_type", lifecycleEmailTypeSchema.options)
+          .whereIn("d.status", lifecycleEmailDeliveryStatusSchema.options)
+          .orderBy("d.created_at", "asc") as Promise<LifecycleEmailDeliveryRow[]>,
+        this.sqlConnection("domain_events as e")
+          .select(
+            "e.created_at",
+            "p.id as project_id",
+            "p.name as project_name",
+            "p.status as project_status",
+            this.sqlConnection.raw("e.payload->>'format' AS format"),
+          )
+          .join("reconversion_projects as p", (join) => {
+            join.on(this.sqlConnection.raw("p.id::text = e.payload->>'reconversionProjectId'"));
+          })
+          .where("e.name", RECONVERSION_PROJECT_IMPACTS_EXPORTED)
+          .whereRaw("e.payload->>'userId' = ?", [userId])
+          .orderBy("e.created_at", "asc") as Promise<ImpactsExportRow[]>,
+      ]);
 
     return {
       user: {
@@ -228,6 +257,13 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
         lastAttemptedAt: row.last_attempted_at,
         attempts: row.attempts,
         errorMessage: row.error_message,
+      })),
+      impactsExports: impactsExportRows.map((row) => ({
+        projectId: row.project_id,
+        projectName: row.project_name,
+        projectArchived: row.project_status === "archived",
+        format: impactsExportFormatSchema.parse(row.format),
+        exportedAt: row.created_at,
       })),
     };
   }

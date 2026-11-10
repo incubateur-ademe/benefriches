@@ -1,4 +1,5 @@
 import type {
+  ImpactsExportFormat,
   LifecycleEmailDeliveryStatus,
   LifecycleEmailType,
   ReconversionCompatibilityEvaluationStatus,
@@ -64,6 +65,15 @@ export type AdminUserLifecycleEmailDeliveryRecord = {
   errorMessage: string | null;
 };
 
+export type AdminUserImpactsExportRecord = {
+  projectId: string;
+  // The project's current name, not the one it had when the impacts were exported.
+  projectName: string;
+  projectArchived: boolean;
+  format: ImpactsExportFormat;
+  exportedAt: Date;
+};
+
 export type AdminUserActivityRecord = {
   user: AdminUserRecord;
   loginDates: Date[];
@@ -71,4 +81,5 @@ export type AdminUserActivityRecord = {
   projects: AdminUserProjectRecord[];
   compatibilityEvaluations: AdminUserCompatibilityEvaluationRecord[];
   lifecycleEmailDeliveries: AdminUserLifecycleEmailDeliveryRecord[];
+  impactsExports: AdminUserImpactsExportRecord[];
 };

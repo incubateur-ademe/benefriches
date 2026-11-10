@@ -16,6 +16,12 @@ const NO_EMAIL_FIELDS = {
   deliveryErrorMessage: null,
 } as const;
 
+const NO_TYPE_SPECIFIC_FIELDS = {
+  ...NO_EMAIL_FIELDS,
+  impactsExportFormat: null,
+  entityArchived: null,
+} as const;
+
 export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserTimelineEvent[] => {
   const events: { date: Date; event: Omit<AdminUserTimelineEvent, "date"> }[] = [];
 
@@ -25,21 +31,26 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
       type: "account_created",
       entityId: activity.user.id,
       entityName: null,
-      ...NO_EMAIL_FIELDS,
+      ...NO_TYPE_SPECIFIC_FIELDS,
     },
   });
 
   activity.loginDates.forEach((date) => {
     events.push({
       date,
-      event: { type: "login", entityId: null, entityName: null, ...NO_EMAIL_FIELDS },
+      event: { type: "login", entityId: null, entityName: null, ...NO_TYPE_SPECIFIC_FIELDS },
     });
   });
 
   activity.sites.forEach((site) => {
     events.push({
       date: site.createdAt,
-      event: { type: "site_created", entityId: site.id, entityName: site.name, ...NO_EMAIL_FIELDS },
+      event: {
+        type: "site_created",
+        entityId: site.id,
+        entityName: site.name,
+        ...NO_TYPE_SPECIFIC_FIELDS,
+      },
     });
     if (site.updatedAt) {
       events.push({
@@ -48,7 +59,7 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
           type: "site_updated",
           entityId: site.id,
           entityName: site.name,
-          ...NO_EMAIL_FIELDS,
+          ...NO_TYPE_SPECIFIC_FIELDS,
         },
       });
     }
@@ -61,7 +72,7 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
         type: "project_created",
         entityId: project.id,
         entityName: project.name,
-        ...NO_EMAIL_FIELDS,
+        ...NO_TYPE_SPECIFIC_FIELDS,
       },
     });
     if (project.updatedAt) {
@@ -71,7 +82,7 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
           type: "project_updated",
           entityId: project.id,
           entityName: project.name,
-          ...NO_EMAIL_FIELDS,
+          ...NO_TYPE_SPECIFIC_FIELDS,
         },
       });
     }
@@ -84,7 +95,7 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
         type: "compatibility_evaluation_created",
         entityId: evaluation.id,
         entityName: null,
-        ...NO_EMAIL_FIELDS,
+        ...NO_TYPE_SPECIFIC_FIELDS,
       },
     });
     if (evaluation.completedAt) {
@@ -94,7 +105,7 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
           type: "compatibility_evaluation_completed",
           entityId: evaluation.id,
           entityName: null,
-          ...NO_EMAIL_FIELDS,
+          ...NO_TYPE_SPECIFIC_FIELDS,
         },
       });
     }
@@ -114,6 +125,8 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
             deliveryStatus: null,
             deliveryAttempts: null,
             deliveryErrorMessage: null,
+            impactsExportFormat: null,
+            entityArchived: null,
           },
         });
         break;
@@ -129,12 +142,28 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
             deliveryStatus: delivery.status,
             deliveryAttempts: delivery.attempts,
             deliveryErrorMessage: delivery.errorMessage,
+            impactsExportFormat: null,
+            entityArchived: null,
           },
         });
         break;
       case "pending":
         break;
     }
+  });
+
+  activity.impactsExports.forEach((impactsExport) => {
+    events.push({
+      date: impactsExport.exportedAt,
+      event: {
+        type: "impacts_exported",
+        entityId: impactsExport.projectId,
+        entityName: impactsExport.projectName,
+        ...NO_EMAIL_FIELDS,
+        impactsExportFormat: impactsExport.format,
+        entityArchived: impactsExport.projectArchived,
+      },
+    });
   });
 
   if (activity.user.lifecycleEmailsUnsubscribedAt) {
@@ -144,7 +173,7 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
         type: "lifecycle_emails_unsubscribed",
         entityId: null,
         entityName: null,
-        ...NO_EMAIL_FIELDS,
+        ...NO_TYPE_SPECIFIC_FIELDS,
       },
     });
   }
@@ -160,6 +189,8 @@ export const buildUserTimeline = (activity: AdminUserActivityRecord): AdminUserT
       deliveryStatus: event.deliveryStatus,
       deliveryAttempts: event.deliveryAttempts,
       deliveryErrorMessage: event.deliveryErrorMessage,
+      impactsExportFormat: event.impactsExportFormat,
+      entityArchived: event.entityArchived,
     }));
 };
 
