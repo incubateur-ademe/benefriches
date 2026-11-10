@@ -139,10 +139,10 @@ importers:
         specifier: ~12.3.2
         version: 12.3.2(@nestjs/common@12.3.2(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.3.2)(@nestjs/platform-express@12.3.2)
       '@swc/cli':
-        specifier: ~0.8.2
+        specifier: ~0.8.1
         version: 0.8.2(@swc/core@1.16.21(@swc/helpers@0.5.23))(chokidar@5.0.0)
       '@swc/core':
-        specifier: ^1.16.21
+        specifier: ^1.16.2
         version: 1.16.21(@swc/helpers@0.5.23)
       '@trivago/prettier-plugin-sort-imports':
         specifier: ~6.0.2
