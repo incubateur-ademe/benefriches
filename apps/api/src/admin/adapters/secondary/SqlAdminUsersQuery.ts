@@ -16,6 +16,8 @@ import type {
 import { LOGIN_SUCCEEDED } from "src/auth/core/events/loginSucceeded.event";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
+import { whereAdminUserMatchesSearch } from "./adminUserSearch";
+
 type UserListRow = {
   id: string;
   email: string;
@@ -55,17 +57,8 @@ export class SqlAdminUsersQuery implements AdminUsersQuery {
     page: number;
     pageSize: number;
   }): Promise<{ users: AdminUserListItem[]; total: number }> {
-    const applySearch = (qb: Knex.QueryBuilder): Knex.QueryBuilder => {
-      if (!search) return qb;
-      const pattern = `%${search}%`;
-      return qb.where((builder) => {
-        builder
-          .whereILike("users.email", pattern)
-          .orWhereILike("users.firstname", pattern)
-          .orWhereILike("users.lastname", pattern)
-          .orWhereILike("users.structure_name", pattern);
-      });
-    };
+    const applySearch = (qb: Knex.QueryBuilder): Knex.QueryBuilder =>
+      whereAdminUserMatchesSearch(qb, search);
 
     const [countRow, rows] = await Promise.all([
       applySearch(this.sqlConnection("users")).count<{ count: string | number }[]>("* as count"),

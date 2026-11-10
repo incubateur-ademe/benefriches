@@ -12,6 +12,9 @@ import {
   adminUserIdParamSchema,
   type GetAdminDashboardStatsResponseDto,
   type GetAdminUserResponseDto,
+  type ListAdminImpactsExportersRequestDto,
+  listAdminImpactsExportersRequestDtoSchema,
+  type ListAdminImpactsExportersResponseDto,
   type ListAdminUsersRequestDto,
   listAdminUsersRequestDtoSchema,
   type ListAdminUsersResponseDto,
@@ -19,6 +22,7 @@ import {
 
 import { GetAdminDashboardStatsUseCase } from "src/admin/core/usecases/getAdminDashboardStats.usecase";
 import { GetAdminUserActivityUseCase } from "src/admin/core/usecases/getAdminUserActivity.usecase";
+import { ListAdminImpactsExportersUseCase } from "src/admin/core/usecases/listAdminImpactsExporters.usecase";
 import { ListAdminUsersUseCase } from "src/admin/core/usecases/listAdminUsers.usecase";
 import { AdminGuard } from "src/auth/adapters/AdminGuard";
 
@@ -28,15 +32,18 @@ export class AdminController {
   private readonly getAdminDashboardStatsUseCase: GetAdminDashboardStatsUseCase;
   private readonly listAdminUsersUseCase: ListAdminUsersUseCase;
   private readonly getAdminUserActivityUseCase: GetAdminUserActivityUseCase;
+  private readonly listAdminImpactsExportersUseCase: ListAdminImpactsExportersUseCase;
 
   constructor(
     getAdminDashboardStatsUseCase: GetAdminDashboardStatsUseCase,
     listAdminUsersUseCase: ListAdminUsersUseCase,
     getAdminUserActivityUseCase: GetAdminUserActivityUseCase,
+    listAdminImpactsExportersUseCase: ListAdminImpactsExportersUseCase,
   ) {
     this.getAdminDashboardStatsUseCase = getAdminDashboardStatsUseCase;
     this.listAdminUsersUseCase = listAdminUsersUseCase;
     this.getAdminUserActivityUseCase = getAdminUserActivityUseCase;
+    this.listAdminImpactsExportersUseCase = listAdminImpactsExportersUseCase;
   }
 
   @Get("stats")
@@ -75,6 +82,20 @@ export class AdminController {
         case "UserNotFound":
           throw new NotFoundException({ code: "UserNotFound", message: "User not found" });
       }
+    }
+
+    return result.getData();
+  }
+
+  @Get("exports")
+  async listImpactsExporters(
+    @Query({ schema: listAdminImpactsExportersRequestDtoSchema })
+    query: ListAdminImpactsExportersRequestDto,
+  ): Promise<ListAdminImpactsExportersResponseDto> {
+    const result = await this.listAdminImpactsExportersUseCase.execute(query);
+
+    if (result.isFailure()) {
+      throw new InternalServerErrorException({ message: "Unexpected Internal Error" });
     }
 
     return result.getData();
