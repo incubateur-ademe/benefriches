@@ -257,7 +257,7 @@ export const DEVELOPMENT_SCORE_CONFIG_MODALS = {
           data: data,
         },
         tableProps: {
-          formatFn: formatCO2Impact,
+          formatFn: formatMonetaryImpact,
           caption: "Liste des impacts socio-économiques pour la collectivité",
           data: data,
         },
