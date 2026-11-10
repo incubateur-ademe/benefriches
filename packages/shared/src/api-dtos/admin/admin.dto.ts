@@ -136,3 +136,30 @@ export const getAdminUserResponseDtoSchema = z.object({
   lifecycleEmailMaxAttempts: z.number(),
 });
 export type GetAdminUserResponseDto = z.infer<typeof getAdminUserResponseDtoSchema>;
+
+export const listAdminImpactsExportersRequestDtoSchema = listAdminUsersRequestDtoSchema;
+export type ListAdminImpactsExportersRequestDto = z.infer<
+  typeof listAdminImpactsExportersRequestDtoSchema
+>;
+
+export const adminImpactsExporterSchema = z.object({
+  id: z.string(),
+  email: z.string(),
+  firstName: z.string().nullable(),
+  lastName: z.string().nullable(),
+  structureName: z.string().nullable(),
+  impactsExportsCount: z.number(),
+  exportedProjectsCount: z.number(),
+  lastImpactsExportedAt: isoDateSchema,
+});
+export type AdminImpactsExporter = z.infer<typeof adminImpactsExporterSchema>;
+
+export const listAdminImpactsExportersResponseDtoSchema = z.object({
+  users: z.array(adminImpactsExporterSchema),
+  total: z.number(),
+  page: z.number(),
+  pageSize: z.number(),
+});
+export type ListAdminImpactsExportersResponseDto = z.infer<
+  typeof listAdminImpactsExportersResponseDtoSchema
+>;
