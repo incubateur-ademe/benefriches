@@ -22,7 +22,6 @@ const ProjectPageTabs = () => {
           isActive={route.name === routes.projectImpactsDevelopmentScore.name}
           iconId="fr-icon-award-line"
           label="Score d'impact"
-          beta
           linkProps={routes.projectImpactsDevelopmentScore(route.params).link}
         />
         <TabItem
