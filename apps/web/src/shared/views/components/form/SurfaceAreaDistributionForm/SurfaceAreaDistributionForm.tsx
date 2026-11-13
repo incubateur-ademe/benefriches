@@ -8,6 +8,7 @@ import {
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
 } from "@/shared/core/format-number/formatNumber";
+import { decimalStringToNumber } from "@/shared/core/number-conversion/numberConversion";
 import { computePercentage, computeValueFromPercentage } from "@/shared/core/percentage/percentage";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -18,6 +19,24 @@ import InputModeSelect from "./InputModeSelect";
 import SurfaceAreaPieChart from "./SurfaceAreaPieChart";
 
 type FormValues = SurfaceAreaDistributionJson<string>;
+
+// Inputs accept decimals (mainly percentages), so a French decimal comma ("60,5") must be read like a dot ("60.5").
+// A value that is not a number becomes NaN so that validation tells the user instead of silently
+// truncating it (parseFloat("60,5") === 60).
+const parseSurfaceInput = (value?: string | number): number | undefined => {
+  if (typeof value === "number") return value;
+  if (!value?.trim()) return undefined;
+  return decimalStringToNumber(value) ?? Number.NaN;
+};
+
+// Invalid entries count as 0 in the running total; validation reports them on submit.
+const withoutInvalidValues = (values: FormValues): FormValues =>
+  Object.fromEntries(
+    typedObjectEntries(values).map(([name, value]) => [
+      name,
+      Number.isFinite(value) ? value : undefined,
+    ]),
+  );
 
 type SurfaceConfig = {
   name: string;
@@ -113,7 +132,7 @@ function SurfaceAreaDistributionForm({
   } = useForm<FormValues>({
     defaultValues: initialValues,
   });
-  const surfaceValues = watch();
+  const surfaceValues = withoutInvalidValues(watch());
   const totalAllocatedSurface =
     SurfaceAreaDistribution.fromJSON(surfaceValues).getTotalSurfaceArea();
 
@@ -202,6 +221,11 @@ function SurfaceAreaDistributionForm({
               stateRelatedMessage={fieldError?.message}
               nativeInputProps={register(name, {
                 ...optionalNumericFieldRegisterOptions,
+                setValueAs: parseSurfaceInput,
+                validate: (value) =>
+                  value === undefined ||
+                  Number.isFinite(value) ||
+                  "Veuillez entrer un nombre valide",
                 max: {
                   value: maxValue,
                   message: maxErrorMessage,
