@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 
 import { DEFAULT_FUTURE_SITE_OWNER } from "@/features/create-project/core/project-form/stakeholders";
-import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
 
 import { getProjectData } from "../../../helpers/readers/projectDataReaders";
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
@@ -105,48 +104,6 @@ describe("Urban project creation - Steps - site resale selection", () => {
 
     expect(getData(store).siteResaleExpectedSellingPrice).toBeUndefined();
     expect(getData(store).futureSiteOwner).toBeUndefined();
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
-  });
-
-  it("marks the resale estimation as failed when the valuation service errors on 'unknown'", async () => {
-    const store = new StoreBuilder()
-      .withSteps(INITIAL_STEPS)
-      .withAppDependencies({ realEstateValuationService: new DisabledRealEstateValuationService() })
-      .build();
-
-    store.dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
-        answers: { siteResaleSelection: "unknown" },
-      }),
-    );
-
-    // Wait for async thunk dispatched by listener to complete
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    expect(store.getState().projectCreation.urbanProject.siteResaleEstimationLoadingState).toBe(
-      "error",
-    );
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
-  });
-
-  it("resolves the resale estimation and routes to the expenses introduction when 'unknown' is selected", async () => {
-    const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
-
-    store.dispatch(
-      stepCompletionRequested({
-        stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
-        answers: { siteResaleSelection: "unknown" },
-      }),
-    );
-
-    // Wait for async thunk dispatched by listener to complete
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    expect(store.getState().projectCreation.urbanProject.siteResaleEstimationLoadingState).toBe(
-      "success",
-    );
-    expect(getData(store).futureSiteOwner).toEqual(DEFAULT_FUTURE_SITE_OWNER);
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 });

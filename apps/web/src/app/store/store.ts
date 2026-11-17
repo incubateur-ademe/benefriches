@@ -25,7 +25,6 @@ import type { UpdateProjectServiceGateway } from "@/features/update-project/core
 import type { UpdateSiteServiceGateway } from "@/features/update-site/core/updateSite.types";
 import type { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 import type { AdministrativeDivisionGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
-import type { RealEstateValuationGateway } from "@/shared/core/gateways/RealEstateValuationGateway";
 import type { SoilsCarbonStorageGateway } from "@/shared/core/gateways/SoilsCarbonStorageGateway";
 
 import { getListener, setupAllListeners } from "./listenerMiddleware";
@@ -54,7 +53,6 @@ export type AppDependencies = {
   reconversionCompatibilityEvaluationService: ReconversionCompatibilityEvaluationGateway;
   updateProjectService: UpdateProjectServiceGateway;
   updateSiteService: UpdateSiteServiceGateway;
-  realEstateValuationService: RealEstateValuationGateway;
   supportChatService: SupportChatGateway;
   analyticsService: AnalyticsGateway;
   lifecycleEmailsService: LifecycleEmailsGateway;

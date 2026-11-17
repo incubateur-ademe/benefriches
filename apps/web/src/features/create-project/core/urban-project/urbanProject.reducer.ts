@@ -3,10 +3,8 @@ import { createReducer } from "@reduxjs/toolkit";
 
 import { answerStepHandlers } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
 import { addUrbanProjectFormCasesToBuilder } from "@/features/create-project/core/urban-project/urbanProjectForm.reducer";
-import { MutateStateHelper } from "@/shared/core/wizard-form/helpers/mutateState";
 
 import type { ProjectCreationState } from "../createProject.reducer";
-import { fetchEstimatedSiteResalePrice } from "./fetchEstimatedSiteResalePrice.action";
 import { creationProjectFormUrbanActions } from "./urbanProject.actions";
 import { customUrbanProjectSaved } from "./urbanProjectCustomSaved.action";
 
@@ -39,24 +37,6 @@ const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (bui
   });
   builder.addCase(customUrbanProjectSaved.rejected, (state) => {
     state.urbanProject.form.saveState = "error";
-  });
-  // Fetch estimated site resale price
-  builder.addCase(fetchEstimatedSiteResalePrice.pending, (state) => {
-    state.urbanProject.siteResaleEstimationLoadingState = "loading";
-  });
-  builder.addCase(fetchEstimatedSiteResalePrice.fulfilled, (state, action) => {
-    state.urbanProject.siteResaleEstimationLoadingState = "success";
-    MutateStateHelper.setDefaultValues(
-      state.urbanProject.form,
-      "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
-      {
-        siteResaleExpectedSellingPrice: action.payload.sellingPrice,
-        siteResaleExpectedPropertyTransferDuties: action.payload.propertyTransferDuties,
-      },
-    );
-  });
-  builder.addCase(fetchEstimatedSiteResalePrice.rejected, (state) => {
-    state.urbanProject.siteResaleEstimationLoadingState = "error";
   });
 });
 

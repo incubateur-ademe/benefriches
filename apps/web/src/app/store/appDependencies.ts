@@ -25,7 +25,6 @@ import { HttpUpdateReconversionProjectService } from "@/features/update-project/
 import { HttpUpdateSiteService } from "@/features/update-site/infrastructure/update-site-service/HttpUpdateSiteService";
 import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/CreateFeatureAlertService";
 import { MunicipalityDataService } from "@/shared/infrastructure/administrative-division-service/municipalityDataService";
-import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
 
 import type { AppDependencies } from "./store";
@@ -53,7 +52,6 @@ export const appDependencies: AppDependencies = {
   reconversionCompatibilityEvaluationService: new HttpReconversionCompatibilityEvaluation(),
   updateProjectService: new HttpUpdateReconversionProjectService(),
   updateSiteService: new HttpUpdateSiteService(),
-  realEstateValuationService: new DisabledRealEstateValuationService(),
   supportChatService: BENEFRICHES_ENV.crispEnabled
     ? new CrispSupportChatService(BENEFRICHES_ENV.crispWebsiteId)
     : new NoopSupportChatService(),
