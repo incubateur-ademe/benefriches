@@ -4,20 +4,20 @@ import { v4 as uuid } from "uuid";
 
 import type {
   ProjectSiteView,
-  SiteRelatedLocalAuthorities,
+  RelatedSiteCityReferenceData,
 } from "@/features/create-project/core/project-form/projectSite.types";
 import type { UrbanProjectState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { getUrbanProjectInitialState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import type { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 import { currentProjectFlowUpdated } from "./actions/currentProjectFlowUpdated.action";
-import { fetchSiteRelatedLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
+import { fetchSiteCityReferenceData } from "./actions/getSiteCityReferenceData.action";
 import { reconversionProjectCreationInitiated } from "./actions/reconversionProjectCreationInitiated.action";
 import { surfaceAreaInputModeUpdated } from "./actions/surfaceAreaInputModeUpdated.action";
 import type { DemoProjectCreationState } from "./demo/demoProject.reducer";
 import { DEMO_INITIAL_STATE, demoProjectCreationReducer } from "./demo/demoProject.reducer";
 import type { DemoProjectCreationStep } from "./demo/demoSteps";
-import { addWizardFormCasesToBuilder } from "./project-form/siteRelatedLocalAuthorities.action";
+import { addWizardFormCasesToBuilder } from "./project-form/siteCityReferenceData.action";
 import type { RenewableEnergyProjectState } from "./renewable-energy/renewableEnergy.reducer";
 import {
   INITIAL_STATE as renenewableEnergyProjectInitialState,
@@ -40,7 +40,7 @@ export type CurrentProjectFlow =
 export type ProjectCreationState = {
   siteData?: ProjectSiteView;
   siteDataLoadingState: "idle" | "loading" | "success" | "error" | "notFound";
-  siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities;
+  siteCityReferenceData: RelatedSiteCityReferenceData;
   urbanProject: UrbanProjectState;
   projectId: string;
   currentProjectFlow: CurrentProjectFlow;
@@ -66,15 +66,13 @@ export const getInitialState = (): ProjectCreationState => {
     surfaceAreaInputMode: "percentage",
     siteData: undefined,
     siteDataLoadingState: "idle",
-    siteRelatedLocalAuthorities: {
-      loadingState: "idle",
-    },
+    siteCityReferenceData: { loadingState: "idle" },
     urbanProject: getUrbanProjectInitialState("URBAN_PROJECT_USES_INTRODUCTION"),
   };
 };
 
 const projectCreationReducer = createReducer(getInitialState(), (builder) => {
-  addWizardFormCasesToBuilder(builder, { fetchSiteRelatedLocalAuthorities });
+  addWizardFormCasesToBuilder(builder, { fetchSiteCityReferenceData });
 
   builder
     .addCase(reconversionProjectCreationInitiated.pending, (_state, action) => {

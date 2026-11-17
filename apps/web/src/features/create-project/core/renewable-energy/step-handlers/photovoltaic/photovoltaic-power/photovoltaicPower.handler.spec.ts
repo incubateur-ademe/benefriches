@@ -49,7 +49,7 @@ describe("PowerHandler", () => {
   describe("getNextStepId", () => {
     it("goes to the surface step when the key parameter is POWER", () => {
       const nextStep = PowerHandler.getNextStepId({
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
         answers: stepsStateWithKeyParameter("POWER"),
       });
 
@@ -58,7 +58,7 @@ describe("PowerHandler", () => {
 
     it("goes to the expected annual production step when the key parameter is SURFACE", () => {
       const nextStep = PowerHandler.getNextStepId({
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
         answers: stepsStateWithKeyParameter("SURFACE"),
       });
 
@@ -69,7 +69,7 @@ describe("PowerHandler", () => {
   describe("getPreviousStepId", () => {
     it("goes back to the key parameter step when the key parameter is POWER", () => {
       const previousStep = PowerHandler.getPreviousStepId!({
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
         answers: stepsStateWithKeyParameter("POWER"),
       });
 
@@ -78,7 +78,7 @@ describe("PowerHandler", () => {
 
     it("goes back to the surface step when the key parameter is SURFACE", () => {
       const previousStep = PowerHandler.getPreviousStepId!({
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
         answers: stepsStateWithKeyParameter("SURFACE"),
       });
 
@@ -90,7 +90,7 @@ describe("PowerHandler", () => {
     it("invalidates the expected annual production when power changes and it is not the key parameter", () => {
       const rules = PowerHandler.getDependencyRules!(
         {
-          context: { siteData: undefined },
+          context: { siteData: undefined, siteCityReferenceData: undefined },
           answers: stepsStateWithKeyParameterAndPower("SURFACE", 10000),
         },
         newPower(20000),
@@ -107,7 +107,7 @@ describe("PowerHandler", () => {
     it("also invalidates the surface twin when power changes and power is the key parameter", () => {
       const rules = PowerHandler.getDependencyRules!(
         {
-          context: { siteData: undefined },
+          context: { siteData: undefined, siteCityReferenceData: undefined },
           answers: stepsStateWithKeyParameterAndPower("POWER", 10000),
         },
         newPower(20000),
@@ -125,7 +125,7 @@ describe("PowerHandler", () => {
     it("returns no rule when power is re-entered unchanged (power is the key parameter)", () => {
       const rules = PowerHandler.getDependencyRules!(
         {
-          context: { siteData: undefined },
+          context: { siteData: undefined, siteCityReferenceData: undefined },
           answers: stepsStateWithKeyParameterAndPower("POWER", 10000),
         },
         newPower(10000),
@@ -137,7 +137,7 @@ describe("PowerHandler", () => {
     it("returns no rule when power is re-entered unchanged (surface is the key parameter)", () => {
       const rules = PowerHandler.getDependencyRules!(
         {
-          context: { siteData: undefined },
+          context: { siteData: undefined, siteCityReferenceData: undefined },
           answers: stepsStateWithKeyParameterAndPower("SURFACE", 10000),
         },
         newPower(10000),
@@ -149,7 +149,7 @@ describe("PowerHandler", () => {
     it("emits no rule for a dependent step that is not yet completed (first-time power completion)", () => {
       const rules = PowerHandler.getDependencyRules!(
         {
-          context: { siteData: undefined },
+          context: { siteData: undefined, siteCityReferenceData: undefined },
           // Only key parameter + power present: surface and production not yet completed.
           answers: {
             ...stepsStateWithKeyParameter("POWER"),

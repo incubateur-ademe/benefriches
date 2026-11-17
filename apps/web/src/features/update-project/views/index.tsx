@@ -11,7 +11,10 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
-import { reconversionProjectUpdateInitiated } from "../core/updateProject.actions";
+import {
+  reconversionProjectUpdateInitiated,
+  updateProjectFormActions,
+} from "../core/updateProject.actions";
 import PhotovoltaicPowerStationUpdateView from "./PhotovoltaicPowerStationUpdateView";
 import UnavailableFeatureView from "./UnavailableFeatureView";
 import UrbanProjectUpdateView from "./UrbanProjectUpdateView";
@@ -30,10 +33,20 @@ function UpdateProjectPage({ route }: Props) {
     isExpress: isExpressProject,
   } = useAppSelector((state) => state.projectUpdate.projectData);
 
+  const siteRelatedCityCode = useAppSelector(
+    (state) => state.projectUpdate.siteData?.address.cityCode,
+  );
+
   useEffect(() => {
     const projectId = route.params.projectId;
     void dispatch(reconversionProjectUpdateInitiated(projectId));
   }, [dispatch, route.params.projectId]);
+
+  useEffect(() => {
+    if (siteRelatedCityCode) {
+      void dispatch(updateProjectFormActions.fetchSiteCityReferenceData());
+    }
+  }, [dispatch, siteRelatedCityCode]);
 
   if (loadingState !== "success") {
     return (

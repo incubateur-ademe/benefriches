@@ -258,7 +258,7 @@ export const convertPhotovoltaicProjectDataToSteps = ({
   const reinstatementExpensesStep = steps.RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT;
   if (reinstatementExpensesStep) {
     reinstatementExpensesStep.defaultValues = ReinstatementExpensesHandler.getDefaultAnswers?.({
-      context: { siteData },
+      context: { siteData, siteCityReferenceData: undefined },
       answers: steps,
     });
   }

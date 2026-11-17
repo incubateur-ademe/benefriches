@@ -3,13 +3,14 @@ import SitePurchaseAmountsForm from "@/features/create-project/views/project-for
 import { useProjectForm } from "@/features/create-project/views/project-form/useProjectForm";
 
 function SitePurchaseAmountsContainer() {
-  const { onBack, onRequestStepCompletion, selectStepAnswers } = useProjectForm();
-  const stepAnswers = useAppSelector(
-    selectStepAnswers("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS"),
-  );
+  const { onBack, onRequestStepCompletion, selectSitePurchaseAmountsDataView } = useProjectForm();
+  const { currentValues, defaultValues, futureSiteOwnerName, landAndRealEstateValues } =
+    useAppSelector(selectSitePurchaseAmountsDataView);
 
   return (
     <SitePurchaseAmountsForm
+      futureSiteOwnerName={futureSiteOwnerName}
+      landAndRealEstateValues={landAndRealEstateValues}
       onSubmit={(formData) => {
         onRequestStepCompletion({
           stepId: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
@@ -20,9 +21,17 @@ function SitePurchaseAmountsContainer() {
         });
       }}
       onBack={onBack}
-      initialValues={{
-        sellingPrice: stepAnswers?.sitePurchaseSellingPrice,
-        propertyTransferDuties: stepAnswers?.sitePurchasePropertyTransferDuties,
+      defaultValues={
+        defaultValues
+          ? {
+              sellingPrice: defaultValues?.sitePurchaseSellingPrice,
+              propertyTransferDuties: defaultValues?.sitePurchasePropertyTransferDuties,
+            }
+          : undefined
+      }
+      currentValues={{
+        sellingPrice: currentValues?.sitePurchaseSellingPrice,
+        propertyTransferDuties: currentValues?.sitePurchasePropertyTransferDuties,
       }}
     />
   );

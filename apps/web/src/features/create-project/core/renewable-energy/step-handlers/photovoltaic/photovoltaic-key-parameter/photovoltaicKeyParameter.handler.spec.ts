@@ -7,7 +7,7 @@ describe("KeyParameterHandler", () => {
   describe("getNextStepId", () => {
     it("navigates to the power step when the key parameter is POWER", () => {
       const nextStep = KeyParameterHandler.getNextStepId(
-        { context: { siteData: undefined }, answers: {} },
+        { context: { siteData: undefined, siteCityReferenceData: undefined }, answers: {} },
         { photovoltaicKeyParameter: "POWER" },
       );
 
@@ -16,7 +16,7 @@ describe("KeyParameterHandler", () => {
 
     it("navigates to the surface step when the key parameter is SURFACE", () => {
       const nextStep = KeyParameterHandler.getNextStepId(
-        { context: { siteData: undefined }, answers: {} },
+        { context: { siteData: undefined, siteCityReferenceData: undefined }, answers: {} },
         { photovoltaicKeyParameter: "SURFACE" },
       );
 

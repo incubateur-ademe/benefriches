@@ -332,7 +332,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
   if (reinstatementExpensesStep) {
     reinstatementExpensesStep.defaultValues =
       UrbanProjectReinstatementExpensesHandler.getDefaultAnswers({
-        context: { siteData },
+        context: { siteData, siteCityReferenceData: undefined },
         answers: steps,
       });
   }

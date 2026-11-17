@@ -1,4 +1,5 @@
 import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
+import { mockSiteCityReferenceData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
 
 import type { AnswersByStep } from "../../../renewableEnergySteps";
 import type {
@@ -56,7 +57,7 @@ describe("SurfaceHandler", () => {
   describe("getNextStepId", () => {
     it("goes to the expected annual production step when the key parameter is POWER", () => {
       const nextStep = SurfaceHandler.getNextStepId({
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
         answers: stepsStateWithKeyParameter("POWER"),
       });
 
@@ -65,7 +66,7 @@ describe("SurfaceHandler", () => {
 
     it("goes to the power step when the key parameter is SURFACE", () => {
       const nextStep = SurfaceHandler.getNextStepId({
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
         answers: stepsStateWithKeyParameter("SURFACE"),
       });
 
@@ -76,7 +77,7 @@ describe("SurfaceHandler", () => {
   describe("getPreviousStepId", () => {
     it("goes back to the power step when the key parameter is POWER", () => {
       const previousStep = SurfaceHandler.getPreviousStepId!({
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
         answers: stepsStateWithKeyParameter("POWER"),
       });
 
@@ -85,7 +86,7 @@ describe("SurfaceHandler", () => {
 
     it("goes back to the key parameter step when the key parameter is SURFACE", () => {
       const previousStep = SurfaceHandler.getPreviousStepId!({
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
         answers: stepsStateWithKeyParameter("SURFACE"),
       });
 
@@ -97,7 +98,7 @@ describe("SurfaceHandler", () => {
     it("invalidates the power twin and the expected annual production when surface changes and surface is the key parameter", () => {
       const rules = SurfaceHandler.getDependencyRules!(
         {
-          context: { siteData: undefined },
+          context: { siteData: undefined, siteCityReferenceData: undefined },
           answers: stepsStateWithKeyParameterAndSurface("SURFACE", 1000),
         },
         newSurface(2000),
@@ -115,7 +116,7 @@ describe("SurfaceHandler", () => {
     it("does not touch power or production when surface changes but power is the key parameter", () => {
       const rules = SurfaceHandler.getDependencyRules!(
         {
-          context: { siteData: undefined },
+          context: { siteData: undefined, siteCityReferenceData: undefined },
           answers: stepsStateWithKeyParameterAndSurface("POWER", 1000),
         },
         newSurface(2000),
@@ -127,7 +128,7 @@ describe("SurfaceHandler", () => {
     it("returns no rule when surface is re-entered unchanged (surface is the key parameter)", () => {
       const rules = SurfaceHandler.getDependencyRules!(
         {
-          context: { siteData: undefined },
+          context: { siteData: undefined, siteCityReferenceData: undefined },
           answers: stepsStateWithKeyParameterAndSurface("SURFACE", 1000),
         },
         newSurface(1000),
@@ -139,7 +140,7 @@ describe("SurfaceHandler", () => {
     it("returns no rule when surface is re-entered unchanged (power is the key parameter)", () => {
       const rules = SurfaceHandler.getDependencyRules!(
         {
-          context: { siteData: undefined },
+          context: { siteData: undefined, siteCityReferenceData: undefined },
           answers: stepsStateWithKeyParameterAndSurface("POWER", 1000),
         },
         newSurface(1000),
@@ -151,7 +152,7 @@ describe("SurfaceHandler", () => {
     it("emits no rule for a dependent step that is not yet completed (first-time surface completion)", () => {
       const rules = SurfaceHandler.getDependencyRules!(
         {
-          context: { siteData: undefined },
+          context: { siteData: undefined, siteCityReferenceData: undefined },
           // Only key parameter + surface present: power and production not yet completed.
           answers: {
             ...stepsStateWithKeyParameter("SURFACE"),
@@ -172,7 +173,7 @@ describe("SurfaceHandler", () => {
 const SUITABLE_SURFACE_AREA = 15000;
 
 const contextWithSuitableArea: { context: RenewableEnergyStepHandlerContext } = {
-  context: { siteData: relatedSiteData },
+  context: { siteData: relatedSiteData, siteCityReferenceData: mockSiteCityReferenceData },
 };
 
 const nonSuitableSoilsSteps = (): RenewableEnergyStepsState => ({

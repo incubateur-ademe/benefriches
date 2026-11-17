@@ -1,4 +1,7 @@
-import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
+import type {
+  ProjectSiteView,
+  RelatedSiteCityReferenceData,
+} from "@/features/create-project/core/project-form/projectSite.types";
 import type {
   AnswersByStep,
   AnswerStepId,
@@ -22,6 +25,7 @@ import type {
 // end-to-end.
 export type UrbanStepHandlerContext = {
   siteData: ProjectSiteView | undefined;
+  siteCityReferenceData: RelatedSiteCityReferenceData | undefined;
 };
 
 export type StepHandlerParams<

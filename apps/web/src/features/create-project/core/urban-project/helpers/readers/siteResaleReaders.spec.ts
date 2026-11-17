@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import type { UrbanProjectStepsState } from "../../urbanProject.state";
 import {
   isSiteResalePlannedAfterDevelopment,
-  shouldSiteResalePriceBeEstimated,
+  shouldPrefillSiteResalePrice,
 } from "./siteResaleReaders";
 
 describe("siteResaleReaders", () => {
@@ -42,7 +42,7 @@ describe("siteResaleReaders", () => {
     });
   });
 
-  describe("shouldSiteResalePriceBeEstimated", () => {
+  describe("shouldPrefillSiteResalePrice", () => {
     it("should return true when siteResaleSelection is 'unknown'", () => {
       const steps: UrbanProjectStepsState = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
@@ -51,7 +51,7 @@ describe("siteResaleReaders", () => {
         },
       };
 
-      expect(shouldSiteResalePriceBeEstimated(steps)).toBe(true);
+      expect(shouldPrefillSiteResalePrice(steps)).toBe(true);
     });
 
     it("should return false when siteResaleSelection is 'yes'", () => {
@@ -62,7 +62,7 @@ describe("siteResaleReaders", () => {
         },
       };
 
-      expect(shouldSiteResalePriceBeEstimated(steps)).toBe(false);
+      expect(shouldPrefillSiteResalePrice(steps)).toBe(false);
     });
   });
 });

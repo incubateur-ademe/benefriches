@@ -6,7 +6,10 @@ describe("BuildingsUsesFloorSurfaceAreaHandler", () => {
   it("routes to BUILDINGS_REUSE_INTRODUCTION when site has existing buildings", () => {
     const nextStep = BuildingsUsesFloorSurfaceAreaHandler.getNextStepId({
       answers: {},
-      context: { siteData: { soilsDistribution: { BUILDINGS: 2500 } } as never },
+      context: {
+        siteData: { soilsDistribution: { BUILDINGS: 2500 } } as never,
+        siteCityReferenceData: undefined,
+      },
     });
 
     expect(nextStep).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
@@ -15,7 +18,10 @@ describe("BuildingsUsesFloorSurfaceAreaHandler", () => {
   it("routes to BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION when site has no buildings", () => {
     const nextStep = BuildingsUsesFloorSurfaceAreaHandler.getNextStepId({
       answers: {},
-      context: { siteData: { soilsDistribution: { BUILDINGS: 0 } } as never },
+      context: {
+        siteData: { soilsDistribution: { BUILDINGS: 0 } } as never,
+        siteCityReferenceData: undefined,
+      },
     });
 
     expect(nextStep).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");

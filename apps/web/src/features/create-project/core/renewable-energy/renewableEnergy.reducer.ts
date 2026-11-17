@@ -137,7 +137,10 @@ export const renewableEnergyProjectReducer = createReducer(
         },
         registry: answerStepHandlers,
         selectForm: (state) => state.renewableEnergyProject,
-        buildContext: (state) => ({ siteData: state.siteData }),
+        buildContext: (state) => ({
+          siteData: state.siteData,
+          siteCityReferenceData: state.siteCityReferenceData,
+        }),
       },
     );
     addSaveReconversionProjectCases(builder);

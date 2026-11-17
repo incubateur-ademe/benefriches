@@ -5,7 +5,10 @@ import { buildUser } from "@/features/onboarding/core/user.mock";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { fetchSiteMunicipalityData } from "../actions/siteMunicipalityData.actions";
+import {
+  fetchSiteMunicipalityData,
+  type GetMunicipalityDataResult,
+} from "../actions/siteMunicipalityData.actions";
 import {
   selectAvailableLocalAuthorities,
   selectAvailableLocalAuthoritiesWithoutCurrentOwner,
@@ -30,6 +33,12 @@ const API_MOCKED_RESULT = {
       },
     },
     population: 83459,
+    landAndRealEstateValues: {
+      accuracy: "city",
+      landWithoutBuildingsMedianPricePerSquareMeters: 2000,
+      propertyValueMedianPricePerSquareMeters: 10000,
+    },
+    isRural: false,
   },
   "38185": {
     localAuthorities: {
@@ -51,8 +60,14 @@ const API_MOCKED_RESULT = {
       },
     },
     population: 160649,
+    landAndRealEstateValues: {
+      accuracy: "city",
+      landWithoutBuildingsMedianPricePerSquareMeters: 2000,
+      propertyValueMedianPricePerSquareMeters: 10000,
+    },
+    isRural: false,
   },
-};
+} as const satisfies Record<string, GetMunicipalityDataResult>;
 
 const PARIS_ADDRESS_MOCK = {
   lat: 2.347,
@@ -117,7 +132,9 @@ describe("Site Municipality data reducer", () => {
     const state = store.getState();
     expect(state.siteMunicipalityData).toEqual({
       loadingState: "success",
-      ...API_MOCKED_RESULT["75110"],
+      isRural: API_MOCKED_RESULT["75110"].isRural,
+      localAuthorities: API_MOCKED_RESULT["75110"].localAuthorities,
+      population: API_MOCKED_RESULT["75110"].population,
     });
   });
 
@@ -135,6 +152,7 @@ describe("Site Municipality data reducer", () => {
       loadingState: "success",
       localAuthorities: API_MOCKED_RESULT["38185"].localAuthorities,
       population: API_MOCKED_RESULT["38185"].population,
+      isRural: false,
     });
   });
 

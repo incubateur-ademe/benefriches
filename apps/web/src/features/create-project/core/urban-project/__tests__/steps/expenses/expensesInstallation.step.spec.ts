@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { UrbanProjectInstallationExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-installation/expensesInstallation.handler";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { mockSiteData } from "../../_siteData.mock";
+import { mockSiteCityReferenceData, mockSiteData } from "../../_siteData.mock";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const { stepCompletionRequested } = creationProjectFormUrbanActions;
@@ -12,7 +12,7 @@ describe("Urban project creation - Steps - Installation expenses", () => {
   it("computes default installation expenses (development works, technical studies, other) from the site surface area", () => {
     const defaults = UrbanProjectInstallationExpensesHandler.getDefaultAnswers({
       answers: {},
-      context: { siteData: mockSiteData },
+      context: { siteData: mockSiteData, siteCityReferenceData: mockSiteCityReferenceData },
     });
 
     expect(defaults?.installationExpenses).toEqual([

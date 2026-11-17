@@ -62,7 +62,7 @@ describe("update project reducer", () => {
     state.urbanProject.form.steps = steps;
     state.urbanProject.form.stepsSequence = computeStepsSequence(
       {
-        context: { siteData: state.siteData },
+        context: { siteData: state.siteData, siteCityReferenceData: state.siteCityReferenceData },
         answers: steps,
       },
       state.urbanProject.form.firstSequenceStep,
@@ -144,7 +144,7 @@ describe("update project reducer", () => {
     state.urbanProject.form.steps = steps;
     state.urbanProject.form.stepsSequence = computeStepsSequence(
       {
-        context: { siteData: state.siteData },
+        context: { siteData: state.siteData, siteCityReferenceData: state.siteCityReferenceData },
         answers: steps,
       },
       state.urbanProject.form.firstSequenceStep,

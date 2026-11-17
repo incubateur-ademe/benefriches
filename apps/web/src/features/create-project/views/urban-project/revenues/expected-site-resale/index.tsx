@@ -6,12 +6,9 @@ import SiteResaleRevenueForm from "./SiteResaleRevenueForm";
 function SiteResaleRevenueFormContainer() {
   const { onBack, selectSiteResaleRevenueViewData, onRequestStepCompletion } = useProjectForm();
 
-  const {
-    shouldSiteResalePriceBeEstimated,
-    estimationFailed,
-    initialSellingPrice,
-    initialPropertyTransferDuties,
-  } = useAppSelector(selectSiteResaleRevenueViewData);
+  const { landAndRealEstateValues, defaultValues, currentValues } = useAppSelector(
+    selectSiteResaleRevenueViewData,
+  );
 
   return (
     <SiteResaleRevenueForm
@@ -25,11 +22,14 @@ function SiteResaleRevenueFormContainer() {
         });
       }}
       onBack={onBack}
-      shouldSiteResalePriceBeEstimated={shouldSiteResalePriceBeEstimated}
-      estimationFailed={estimationFailed}
-      initialValues={{
-        sellingPrice: initialSellingPrice,
-        propertyTransferDuties: initialPropertyTransferDuties,
+      landValues={landAndRealEstateValues}
+      defaultValues={{
+        sellingPrice: defaultValues?.sellingPrice,
+        propertyTransferDuties: defaultValues?.propertyTransferDuties,
+      }}
+      currentValues={{
+        sellingPrice: currentValues.sellingPrice,
+        propertyTransferDuties: currentValues.propertyTransferDuties,
       }}
     />
   );

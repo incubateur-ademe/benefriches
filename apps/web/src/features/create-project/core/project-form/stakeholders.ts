@@ -8,7 +8,7 @@ import {
 import type { UserStructureActivity, UserStructureType } from "@/shared/core/userStructure";
 
 import type { ProjectStakeholder, ProjectStakeholderStructure } from "../project.types";
-import type { SiteRelatedLocalAuthorities } from "./projectSite.types";
+import type { RelatedSiteCityReferenceData } from "./projectSite.types";
 
 export const DEFAULT_FUTURE_SITE_OWNER = {
   name: "Futur propriétaire inconnu",
@@ -119,7 +119,7 @@ export type AvailableLocalAuthorityStakeholder = {
 };
 
 export const getAvailableLocalAuthoritiesStakeholders = (
-  siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities,
+  siteRelatedLocalAuthorities: Exclude<RelatedSiteCityReferenceData["localAuthorities"], undefined>,
   projectAvailableStakeholders: AvailableProjectStakeholder[],
 ) => {
   const projectLocalAuthorities = projectAvailableStakeholders.filter((element) =>

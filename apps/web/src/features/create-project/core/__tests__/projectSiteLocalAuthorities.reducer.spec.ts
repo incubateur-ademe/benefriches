@@ -6,8 +6,9 @@ import { createStore } from "@/app/store/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { fetchSiteRelatedLocalAuthorities } from "../actions/getSiteLocalAuthorities.action";
+import { fetchSiteCityReferenceData } from "../actions/getSiteCityReferenceData.action";
 import { getInitialState as getInitialProjectCreationState } from "../createProject.reducer";
+import type { GetMunicipalityDataResult } from "../project-form/siteCityReferenceData.action";
 import { relatedSiteData } from "./siteData.mock";
 
 const API_MOCKED_RESULT = {
@@ -27,6 +28,12 @@ const API_MOCKED_RESULT = {
       },
     },
     population: 83459,
+    landAndRealEstateValues: {
+      accuracy: "city",
+      landWithoutBuildingsMedianPricePerSquareMeters: 2000,
+      propertyValueMedianPricePerSquareMeters: 10000,
+    },
+    isRural: false,
   },
   "38185": {
     localAuthorities: {
@@ -48,8 +55,14 @@ const API_MOCKED_RESULT = {
       },
     },
     population: 160649,
+    landAndRealEstateValues: {
+      accuracy: "city",
+      landWithoutBuildingsMedianPricePerSquareMeters: 2000,
+      propertyValueMedianPricePerSquareMeters: 10000,
+    },
+    isRural: false,
   },
-};
+} as const satisfies Record<string, GetMunicipalityDataResult>;
 
 const PARIS_ADDRESS_MOCK: Address = {
   lat: 2.347,
@@ -87,12 +100,10 @@ describe("Site Local Authorities reducer", () => {
       }),
     );
 
-    await store.dispatch(fetchSiteRelatedLocalAuthorities());
+    await store.dispatch(fetchSiteCityReferenceData());
 
     const state = store.getState();
-    expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
-      loadingState: "error",
-    });
+    expect(state.projectCreation.siteCityReferenceData.loadingState).toEqual("error");
   });
 
   it("should call Local Authorities Service with the right payload", async () => {
@@ -108,7 +119,7 @@ describe("Site Local Authorities reducer", () => {
       },
     );
 
-    await store.dispatch(fetchSiteRelatedLocalAuthorities());
+    await store.dispatch(fetchSiteCityReferenceData());
 
     expect(localAuthoritiesMockSpy.getMunicipalityData).toHaveBeenCalledTimes(1);
     expect(localAuthoritiesMockSpy.getMunicipalityData).toHaveBeenCalledWith("75110");
@@ -124,13 +135,13 @@ describe("Site Local Authorities reducer", () => {
       },
     );
 
-    await store.dispatch(fetchSiteRelatedLocalAuthorities());
+    await store.dispatch(fetchSiteCityReferenceData());
 
     const state = store.getState();
-    expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
-      loadingState: "success",
-      ...API_MOCKED_RESULT["75110"].localAuthorities,
-    });
+    expect(state.projectCreation.siteCityReferenceData?.loadingState).toEqual("success");
+    expect(state.projectCreation.siteCityReferenceData?.localAuthorities).toEqual(
+      API_MOCKED_RESULT["75110"].localAuthorities,
+    );
   });
 
   it("should get all site local authorities for grenoble cityCode", async () => {
@@ -149,13 +160,13 @@ describe("Site Local Authorities reducer", () => {
       },
     );
 
-    await store.dispatch(fetchSiteRelatedLocalAuthorities());
+    await store.dispatch(fetchSiteCityReferenceData());
 
     const state = store.getState();
-    expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
-      loadingState: "success",
-      ...API_MOCKED_RESULT["38185"].localAuthorities,
-    });
+    expect(state.projectCreation.siteCityReferenceData?.loadingState).toEqual("success");
+    expect(state.projectCreation.siteCityReferenceData?.localAuthorities).toEqual(
+      API_MOCKED_RESULT["38185"].localAuthorities,
+    );
   });
 
   it("should return error state when service fails", async () => {
@@ -172,11 +183,9 @@ describe("Site Local Authorities reducer", () => {
       },
     );
 
-    await store.dispatch(fetchSiteRelatedLocalAuthorities());
+    await store.dispatch(fetchSiteCityReferenceData());
 
     const state = store.getState();
-    expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
-      loadingState: "error",
-    });
+    expect(state.projectCreation.siteCityReferenceData?.loadingState).toEqual("error");
   });
 });

@@ -4,9 +4,8 @@ import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import type { RootState } from "@/app/store/store";
 import type {
   ProjectSiteView,
-  SiteRelatedLocalAuthorities,
+  RelatedSiteCityReferenceData,
 } from "@/features/create-project/core/project-form/projectSite.types";
-import type { GetMunicipalityDataResult } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 import { makeWizardFormActionType } from "@/shared/core/wizard-form/wizardForm.actions";
 
 export type { GetMunicipalityDataResult } from "@/shared/core/gateways/AdministrativeDivisionGateway";
@@ -14,12 +13,12 @@ export type { AdministrativeDivisionGateway as SiteMunicipalityDataGateway } fro
 
 type SelectSiteRelatedFormState = (state: RootState) => {
   siteData?: ProjectSiteView;
-  siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities;
+  siteCityReferenceData: RelatedSiteCityReferenceData;
 };
 
 export type WizardFormReducerActions = {
-  fetchSiteRelatedLocalAuthorities: AsyncThunk<
-    GetMunicipalityDataResult["localAuthorities"],
+  fetchSiteCityReferenceData: AsyncThunk<
+    Omit<RelatedSiteCityReferenceData, "loadingState">,
     void,
     AsyncThunkConfig
   >;
@@ -30,54 +29,60 @@ export const createWizardFormActions = (
   selectSiteRelatedFormState: SelectSiteRelatedFormState,
 ): WizardFormReducerActions => {
   return {
-    fetchSiteRelatedLocalAuthorities: createAppAsyncThunk<
-      GetMunicipalityDataResult["localAuthorities"]
+    fetchSiteCityReferenceData: createAppAsyncThunk<
+      Omit<RelatedSiteCityReferenceData, "loadingState">
     >(
-      makeWizardFormActionType(prefix, "fetchSiteRelatedLocalAuthorities"),
+      makeWizardFormActionType(prefix, "fetchSiteCityReferenceData"),
       async (_, { extra, getState }) => {
         const formState = selectSiteRelatedFormState(getState());
         const siteAddress = formState.siteData?.address;
-        const localAuthoritiesData = formState.siteRelatedLocalAuthorities;
 
         const cityCode = siteAddress?.cityCode;
         if (!cityCode) {
-          throw new Error(`${prefix}/fetchSiteRelatedLocalAuthorities: Missing city code`);
+          throw new Error(`${prefix}/fetchSiteCityReferenceData: Missing city code`);
         }
 
-        const { loadingState, city, department, region, epci } = localAuthoritiesData;
-        const cachedCityCode = city?.code;
+        const {
+          loadingState,
+          localAuthorities,
+          cityCode: storeCityCode,
+          landAndRealEstateValues,
+        } = formState.siteCityReferenceData;
 
         const dataAlreadyFetched =
-          loadingState === "success" && cachedCityCode === cityCode && city && department && region;
+          loadingState === "success" &&
+          cityCode === storeCityCode &&
+          localAuthorities &&
+          landAndRealEstateValues;
 
         if (dataAlreadyFetched) {
-          return Promise.resolve({ city, department, region, epci });
+          return Promise.resolve(formState.siteCityReferenceData);
         }
 
         const result = await extra.municipalityDataService.getMunicipalityData(cityCode);
-        return result.localAuthorities;
+        return { cityCode, ...result };
       },
     ),
   };
 };
 
 export const addWizardFormCasesToBuilder = <
-  S extends { siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities },
+  S extends { siteCityReferenceData: RelatedSiteCityReferenceData },
 >(
   builder: ActionReducerMapBuilder<S>,
   actions: WizardFormReducerActions,
 ) => {
   builder
-    .addCase(actions.fetchSiteRelatedLocalAuthorities.pending, (state) => {
-      state.siteRelatedLocalAuthorities.loadingState = "loading";
+    .addCase(actions.fetchSiteCityReferenceData.pending, (state) => {
+      state.siteCityReferenceData.loadingState = "loading";
     })
-    .addCase(actions.fetchSiteRelatedLocalAuthorities.fulfilled, (state, action) => {
-      state.siteRelatedLocalAuthorities = {
+    .addCase(actions.fetchSiteCityReferenceData.fulfilled, (state, action) => {
+      state.siteCityReferenceData = {
         loadingState: "success",
         ...action.payload,
       };
     })
-    .addCase(actions.fetchSiteRelatedLocalAuthorities.rejected, (state) => {
-      state.siteRelatedLocalAuthorities.loadingState = "error";
+    .addCase(actions.fetchSiteCityReferenceData.rejected, (state) => {
+      state.siteCityReferenceData.loadingState = "error";
     });
 };

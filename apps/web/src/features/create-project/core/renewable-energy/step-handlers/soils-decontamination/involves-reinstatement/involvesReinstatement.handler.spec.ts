@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { RenewableEnergyStepsState } from "../../stepHandler.type";
 import { InvolvesReinstatementHandler } from "./involvesReinstatement.handler";
 
-const CONTEXT = { siteData: undefined };
+const CONTEXT = { siteData: undefined, siteCityReferenceData: undefined };
 
 const REINSTATEMENT_STEPS: RenewableEnergyStepsState = {
   RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT: {

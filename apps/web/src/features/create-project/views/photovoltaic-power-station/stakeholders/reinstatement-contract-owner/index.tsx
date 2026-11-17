@@ -8,7 +8,7 @@ function SiteReinstatementContractOwnerFormContainer() {
   const {
     onBack,
     onRequestStepCompletion,
-    onFetchSiteLocalAuthorities,
+    onFetchSiteCityReferenceData,
     selectPVReinstatementContractOwnerViewData,
   } = useRenewableEnergyForm();
   const { availableStakeholdersList, availableLocalAuthoritiesStakeholders } = useAppSelector(
@@ -37,7 +37,7 @@ function SiteReinstatementContractOwnerFormContainer() {
       }
       onSubmit={onSubmit}
       onBack={onBack}
-      onFetchSiteLocalAuthorities={onFetchSiteLocalAuthorities}
+      onFetchSiteLocalAuthorities={onFetchSiteCityReferenceData}
       availableStakeholdersList={availableStakeholdersList}
       availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
     />

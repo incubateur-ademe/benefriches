@@ -1,4 +1,7 @@
-import type { ProjectSiteView } from "@/features/create-project/core/project-form/projectSite.types";
+import type {
+  ProjectSiteView,
+  RelatedSiteCityReferenceData,
+} from "@/features/create-project/core/project-form/projectSite.types";
 import type {
   AnswerStepHandler as GenericAnswerStepHandler,
   InfoStepHandler as GenericInfoStepHandler,
@@ -21,6 +24,7 @@ import type {
 // later without reshaping every handler signature.
 export type RenewableEnergyStepHandlerContext = {
   siteData: ProjectSiteView | undefined;
+  siteCityReferenceData: RelatedSiteCityReferenceData | undefined;
 };
 
 export type RenewableEnergyStepsState = WizardFormStepsState<AnswersByStep>;

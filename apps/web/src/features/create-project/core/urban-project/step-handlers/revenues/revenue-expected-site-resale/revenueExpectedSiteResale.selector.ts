@@ -2,39 +2,66 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
-import { shouldSiteResalePriceBeEstimated } from "@/features/create-project/core/urban-project/helpers/readers/siteResaleReaders";
-import type {
-  UrbanProjectState,
-  UrbanProjectStepsState,
-} from "@/features/create-project/core/urban-project/urbanProject.state";
+import type { RelatedSiteCityReferenceData } from "@/features/create-project/core/project-form/projectSite.types";
+import { shouldPrefillSiteResalePrice } from "@/features/create-project/core/urban-project/helpers/readers/siteResaleReaders";
+import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 type SiteResaleRevenueViewData = {
-  shouldSiteResalePriceBeEstimated: boolean;
-  estimationFailed: boolean;
-  initialSellingPrice: number | undefined;
-  initialPropertyTransferDuties: number | undefined;
+  defaultValues:
+    | {
+        sellingPrice?: number;
+        propertyTransferDuties?: number;
+      }
+    | undefined;
+  currentValues: {
+    sellingPrice?: number;
+    propertyTransferDuties?: number;
+  };
+  landAndRealEstateValues?: SiteCityReferenceViewData;
 };
+
+type SiteCityReferenceViewData =
+  | (RelatedSiteCityReferenceData["landAndRealEstateValues"] & {
+      cityName?: string;
+      addressLabel: string;
+      loadingState: RelatedSiteCityReferenceData["loadingState"];
+    })
+  | undefined;
 
 export const createSelectSiteResaleRevenueViewData = (
   selectStepState: Selector<RootState, UrbanProjectStepsState>,
-  selectSiteResaleEstimationLoadingState: Selector<
-    RootState,
-    UrbanProjectState["siteResaleEstimationLoadingState"]
-  >,
+  selectSiteCityReferenceViewData: Selector<RootState, SiteCityReferenceViewData>,
 ) =>
   createSelector(
-    [selectStepState, selectSiteResaleEstimationLoadingState],
-    (steps, siteResaleEstimationLoadingState): SiteResaleRevenueViewData => {
-      const revenueAnswers =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE") ??
-        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
+    [selectStepState, selectSiteCityReferenceViewData],
+    (steps, siteCityReferenceData): SiteResaleRevenueViewData => {
+      const revenueAnswers = ReadStateHelper.getStepAnswers(
+        steps,
+        "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
+      );
+      const revenueDefaultAnswers = ReadStateHelper.getDefaultAnswers(
+        steps,
+        "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
+      );
+
+      const initialValues = shouldPrefillSiteResalePrice(steps)
+        ? (revenueAnswers ?? revenueDefaultAnswers)
+        : revenueAnswers;
 
       return {
-        shouldSiteResalePriceBeEstimated: shouldSiteResalePriceBeEstimated(steps),
-        estimationFailed: siteResaleEstimationLoadingState === "error",
-        initialSellingPrice: revenueAnswers?.siteResaleExpectedSellingPrice,
-        initialPropertyTransferDuties: revenueAnswers?.siteResaleExpectedPropertyTransferDuties,
+        defaultValues: revenueDefaultAnswers
+          ? {
+              sellingPrice: revenueDefaultAnswers?.siteResaleExpectedSellingPrice,
+              propertyTransferDuties:
+                revenueDefaultAnswers?.siteResaleExpectedPropertyTransferDuties,
+            }
+          : undefined,
+        currentValues: {
+          sellingPrice: initialValues?.siteResaleExpectedSellingPrice,
+          propertyTransferDuties: initialValues?.siteResaleExpectedPropertyTransferDuties,
+        },
+        landAndRealEstateValues: siteCityReferenceData,
       };
     },
   );

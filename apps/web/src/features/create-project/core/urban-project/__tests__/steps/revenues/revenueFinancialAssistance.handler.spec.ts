@@ -36,7 +36,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
 
       const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
@@ -56,7 +56,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
 
       const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
@@ -76,7 +76,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
 
       const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
@@ -92,7 +92,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
 
       const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
@@ -101,7 +101,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when steps state is empty", () => {
       const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         answers: {},
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");

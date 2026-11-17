@@ -18,7 +18,12 @@ export type GetMunicipalityDataResult = {
     };
   };
   population: number;
-  isRural?: boolean;
+  isRural: boolean;
+  landAndRealEstateValues: {
+    landWithoutBuildingsMedianPricePerSquareMeters?: number;
+    propertyValueMedianPricePerSquareMeters: number;
+    accuracy: "city" | "france";
+  };
 };
 
 export interface AdministrativeDivisionGateway {

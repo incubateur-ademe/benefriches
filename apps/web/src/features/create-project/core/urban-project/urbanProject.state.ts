@@ -76,7 +76,7 @@ export const getUrbanProjectInitialState = <
     steps: {},
     firstSequenceStep: initialStep,
     stepsSequence: computeStepsSequence(
-      { context: { siteData: undefined }, answers: {} },
+      { context: { siteData: undefined, siteCityReferenceData: undefined }, answers: {} },
       initialStep,
       stepHandlerRegistry,
     ),

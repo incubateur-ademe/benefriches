@@ -7,7 +7,7 @@ function FutureOwnerFormContainer() {
   const {
     onBack,
     onRequestStepCompletion,
-    onFetchSiteLocalAuthorities,
+    onFetchSiteCityReferenceData,
     selectPVFutureSiteOwnerViewData,
   } = useRenewableEnergyForm();
   const { availableStakeholdersList, availableLocalAuthoritiesStakeholders } = useAppSelector(
@@ -26,7 +26,7 @@ function FutureOwnerFormContainer() {
       title="Qui sera le nouveau propriétaire du site ?"
       onSubmit={onSubmit}
       onBack={onBack}
-      onFetchSiteLocalAuthorities={onFetchSiteLocalAuthorities}
+      onFetchSiteLocalAuthorities={onFetchSiteCityReferenceData}
       availableStakeholdersList={availableStakeholdersList.filter(
         ({ role }) => role !== "site_owner",
       )}

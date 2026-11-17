@@ -1,4 +1,4 @@
-import type { GetCityRuralityResponseDto, LocalAuthority } from "shared";
+import type { GetCityReferenceDataResponseDto, LocalAuthority } from "shared";
 
 import type { AdministrativeDivisionGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 
@@ -44,22 +44,17 @@ async function fetchMunicipalityGeoData(cityCode: string): Promise<Response> {
   return response.json() as Promise<Response>;
 }
 
-async function fetchCityRurality(cityCode: string): Promise<boolean | undefined> {
-  try {
-    const response = await fetch(`/api/territory/city-rurality?cityCode=${cityCode}`);
-    if (!response.ok) return undefined;
-    const json = (await response.json()) as GetCityRuralityResponseDto;
-    return json.isRural;
-  } catch {
-    return undefined;
-  }
+async function fetchCityReferenceData(cityCode: string): Promise<GetCityReferenceDataResponseDto> {
+  const response = await fetch(`/api/territory/city-reference-data/${cityCode}`);
+  if (!response.ok) throw new Error("Error while fetching city reference data");
+  return (await response.json()) as GetCityReferenceDataResponseDto;
 }
 
 export class MunicipalityDataService implements AdministrativeDivisionGateway {
   async getMunicipalityData(cityCode: string) {
-    const [jsonResult, isRural] = await Promise.all([
+    const [jsonResult, stats] = await Promise.all([
       fetchMunicipalityGeoData(cityCode),
-      fetchCityRurality(cityCode),
+      fetchCityReferenceData(cityCode),
     ]);
 
     return {
@@ -83,8 +78,8 @@ export class MunicipalityDataService implements AdministrativeDivisionGateway {
           code: jsonResult.region.code,
         },
       },
-      population: jsonResult.population,
-      isRural,
+      ...stats,
+      population: jsonResult.population ?? stats.population,
     };
   }
 

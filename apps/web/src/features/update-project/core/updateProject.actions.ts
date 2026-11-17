@@ -2,7 +2,7 @@ import { httpUpdateReconversionProjectPropsSchema } from "shared";
 import z from "zod";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
-import { createWizardFormActions } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
+import { createWizardFormActions } from "@/features/create-project/core/project-form/siteCityReferenceData.action";
 import { getProjectData as getRenewableEnergyProjectData } from "@/features/create-project/core/renewable-energy/helpers/readers/projectDataReaders";
 import {
   createFetchCurrentAndProjectedSoilsCarbonStorage,

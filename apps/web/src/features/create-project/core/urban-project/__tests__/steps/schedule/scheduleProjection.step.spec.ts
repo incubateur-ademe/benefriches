@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { UrbanProjectScheduleProjectionHandler } from "@/features/create-project/core/urban-project/step-handlers/schedule/schedule-projection/scheduleProjection.handler";
 
-import { mockSiteData } from "../../_siteData.mock";
+import { mockSiteCityReferenceData, mockSiteData } from "../../_siteData.mock";
 
 describe("Urban project creation - Steps - Schedule projection", () => {
   it("generates a default schedule including a reinstatement phase when involvesReinstatement is true", () => {
@@ -13,7 +13,7 @@ describe("Urban project creation - Steps - Schedule projection", () => {
           payload: { involvesReinstatement: true },
         },
       },
-      context: { siteData: mockSiteData },
+      context: { siteData: mockSiteData, siteCityReferenceData: mockSiteCityReferenceData },
     });
 
     expect(defaults?.reinstatementSchedule).toEqual({

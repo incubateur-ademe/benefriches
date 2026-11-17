@@ -1,3 +1,5 @@
+import { computePropertyTransferDutiesFromSellingPrice, roundToInteger } from "shared";
+
 import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
 
 import type { AnswerStepHandler } from "../../stepHandler.type";
@@ -19,5 +21,31 @@ export const ExpensesSitePurchaseAmountsHandler = {
       return "URBAN_PROJECT_EXPENSES_REINSTATEMENT";
     }
     return "URBAN_PROJECT_EXPENSES_INSTALLATION";
+  },
+
+  getDefaultAnswers({ context }) {
+    const { siteCityReferenceData, siteData } = context;
+    const { loadingState, landAndRealEstateValues } = siteCityReferenceData ?? {};
+    const { landWithoutBuildingsMedianPricePerSquareMeters } = landAndRealEstateValues ?? {};
+    const siteSurfaceArea = siteData?.surfaceArea;
+
+    if (
+      loadingState !== "success" ||
+      !siteSurfaceArea ||
+      !landWithoutBuildingsMedianPricePerSquareMeters
+    ) {
+      return undefined;
+    }
+
+    const sitePurchaseSellingPrice = roundToInteger(
+      landWithoutBuildingsMedianPricePerSquareMeters * siteSurfaceArea,
+    );
+
+    return {
+      sitePurchaseSellingPrice,
+      sitePurchasePropertyTransferDuties: roundToInteger(
+        computePropertyTransferDutiesFromSellingPrice(sitePurchaseSellingPrice),
+      ),
+    };
   },
 } satisfies AnswerStepHandler<"URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS">;

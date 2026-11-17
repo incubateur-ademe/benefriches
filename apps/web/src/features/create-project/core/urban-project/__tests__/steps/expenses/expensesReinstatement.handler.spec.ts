@@ -4,6 +4,8 @@ import type { ProjectSiteView } from "@/features/create-project/core/project-for
 import { UrbanProjectReinstatementExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
 import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
+import { mockSiteCityReferenceData } from "../../_siteData.mock";
+
 describe("UrbanProjectReinstatementExpensesHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_INSTALLATION", () => {
@@ -59,7 +61,7 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
 
       const defaultAnswers = UrbanProjectReinstatementExpensesHandler.getDefaultAnswers({
         answers,
-        context: { siteData },
+        context: { siteData, siteCityReferenceData: mockSiteCityReferenceData },
       });
 
       expect(defaultAnswers).toBeDefined();
@@ -79,6 +81,7 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
       const defaultAnswers = UrbanProjectReinstatementExpensesHandler.getDefaultAnswers({
         answers: {},
         context: {
+          siteCityReferenceData: mockSiteCityReferenceData,
           siteData: {
             id: "test-site",
             name: "Test Site",

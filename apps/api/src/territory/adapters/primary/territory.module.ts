@@ -8,10 +8,9 @@ import {
   SqlConnectionModule,
 } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { MunicipalityCapitalExpendituresProvider } from "src/territory/core/gateways/MunicipalityCapitalExpendituresProvider";
-import { GetCityRuralityUseCase } from "src/territory/core/usecases/getCityRurality.usecase";
+import { GetCityReferenceDataUseCase } from "src/territory/core/usecases/getCityReferenceData.usecase";
 
 import { SqlCityImpactsQuery } from "../secondary/city-impacts-query/SqlCityImpactsQuery";
-import { SqlCityRuralityQuery } from "../secondary/city-rurality-query/SqlCityRuralityQuery";
 import { OFGLApi } from "../secondary/municipality-capital-expenditures-query/ApiMunicipalCapitalExpendituresQuery";
 import { FakeMunicipalityCapitalExpendituresProvider } from "../secondary/municipality-capital-expenditures-query/FakeMunicipalityCapitalExpendituresProvider";
 import { TerritoryController } from "./territory.controller";
@@ -21,12 +20,12 @@ import { TerritoryController } from "./territory.controller";
   controllers: [TerritoryController],
   providers: [
     {
-      provide: GetCityRuralityUseCase,
-      useFactory: (cityRuralityQuery: SqlCityRuralityQuery) =>
-        new GetCityRuralityUseCase(cityRuralityQuery),
-      inject: [SqlCityRuralityQuery],
+      provide: GetCityReferenceDataUseCase,
+      useFactory: (cityReferenceDataQuery: SqlCityImpactsQuery) =>
+        new GetCityReferenceDataUseCase(cityReferenceDataQuery),
+      inject: [SqlCityImpactsQuery],
     },
-    SqlCityRuralityQuery,
+    SqlCityImpactsQuery,
     {
       provide: SqlCityImpactsQuery,
       useFactory: (sqlConnection: Knex) => new SqlCityImpactsQuery(sqlConnection),
@@ -44,6 +43,6 @@ import { TerritoryController } from "./territory.controller";
       inject: [HttpService, ConfigService],
     },
   ],
-  exports: [GetCityRuralityUseCase, SqlCityImpactsQuery, SqlCityRuralityQuery, OFGLApi],
+  exports: [GetCityReferenceDataUseCase, SqlCityImpactsQuery, OFGLApi],
 })
 export class TerritoryModule {}

@@ -2,6 +2,7 @@ import { v4 as uuid } from "uuid";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import type { ProjectCreationState } from "../../createProject.reducer";
+import type { RelatedSiteCityReferenceData } from "../../project-form/projectSite.types";
 
 export const mockSiteData: Exclude<ProjectCreationState["siteData"], undefined> = {
   id: uuid(),
@@ -24,3 +25,13 @@ export const mockSiteData: Exclude<ProjectCreationState["siteData"], undefined> 
     PRAIRIE_GRASS: 2000,
   },
 };
+
+export const mockSiteCityReferenceData = {
+  cityCode: "12345",
+  loadingState: "success",
+  landAndRealEstateValues: {
+    propertyValueMedianPricePerSquareMeters: 2500,
+    landWithoutBuildingsMedianPricePerSquareMeters: 210,
+    accuracy: "city",
+  },
+} as const satisfies RelatedSiteCityReferenceData;

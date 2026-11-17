@@ -24,7 +24,10 @@ const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (bui
     },
     registry: answerStepHandlers,
     selectForm: (state) => state.urbanProject.form,
-    buildContext: (state) => ({ siteData: state.siteData }),
+    buildContext: (state) => ({
+      siteData: state.siteData,
+      siteCityReferenceData: state.siteCityReferenceData,
+    }),
   });
 
   // Custom create Save

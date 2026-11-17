@@ -14,6 +14,6 @@ export function isSiteResalePlannedAfterDevelopment(steps: Steps): boolean {
   return selection === "yes" || selection === "unknown";
 }
 
-export function shouldSiteResalePriceBeEstimated(steps: Steps): boolean {
+export function shouldPrefillSiteResalePrice(steps: Steps): boolean {
   return getSiteResaleSelection(steps) === "unknown";
 }

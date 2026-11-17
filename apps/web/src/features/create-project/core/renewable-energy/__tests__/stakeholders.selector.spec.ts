@@ -383,9 +383,7 @@ describe("Project Stakeholders selector", () => {
         currentUser: USER,
       });
       const availableLocalAuthoritiesStakeholders = getAvailableLocalAuthoritiesStakeholders(
-        {
-          loadingState: "error",
-        },
+        {},
         availableProjectStakeholder,
       );
       const localAuthorities =
@@ -404,7 +402,6 @@ describe("Project Stakeholders selector", () => {
       const availableLocalAuthoritiesStakeholdersWithNoEpci =
         getAvailableLocalAuthoritiesStakeholders(
           {
-            loadingState: "success",
             city: {
               code: "38185",
               name: "Grenoble",

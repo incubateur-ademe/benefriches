@@ -4,12 +4,27 @@ import type { FormValues } from "@/features/create-project/views/project-form/co
 import SitePurchaseAmountsForm from "@/features/create-project/views/project-form/common/expenses/site-purchase-amounts/SitePurchaseAmountsForm";
 
 function SitePurchaseAmountsContainer() {
-  const { onBack, onRequestStepCompletion, selectSitePurchaseAmounts } = useRenewableEnergyForm();
-  const initialValues = useAppSelector(selectSitePurchaseAmounts);
+  const { onBack, onRequestStepCompletion, selectSitePurchaseAmountsDataView } =
+    useRenewableEnergyForm();
+  const { defaultValues, currentValues, futureSiteOwnerName } = useAppSelector(
+    selectSitePurchaseAmountsDataView,
+  );
 
   return (
     <SitePurchaseAmountsForm
-      initialValues={initialValues}
+      futureSiteOwnerName={futureSiteOwnerName}
+      defaultValues={
+        defaultValues
+          ? {
+              sellingPrice: defaultValues?.sellingPrice,
+              propertyTransferDuties: defaultValues?.propertyTransferDuties,
+            }
+          : undefined
+      }
+      currentValues={{
+        sellingPrice: currentValues?.sellingPrice,
+        propertyTransferDuties: currentValues?.propertyTransferDuties,
+      }}
       onSubmit={(data: FormValues) => {
         onRequestStepCompletion({
           stepId: "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS",

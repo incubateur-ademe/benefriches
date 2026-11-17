@@ -4,11 +4,16 @@ import { useProjectForm } from "@/features/create-project/views/project-form/use
 import BuildingsResaleRevenueForm from "./BuildingsResaleRevenueForm";
 
 function BuildingsResaleRevenueFormContainer() {
-  const { onBack, onRequestStepCompletion, selectStepAnswers } = useProjectForm();
-  const stepAnswers = useAppSelector(selectStepAnswers("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE"));
+  const { onBack, onRequestStepCompletion, selectStepValues, selectSiteCityReferenceViewData } =
+    useProjectForm();
+
+  const stepValues = useAppSelector(selectStepValues("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE"));
+
+  const cityReferenceData = useAppSelector(selectSiteCityReferenceViewData);
 
   return (
     <BuildingsResaleRevenueForm
+      landAndRealEstateValues={cityReferenceData}
       onSubmit={(formData) => {
         onRequestStepCompletion({
           stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
@@ -19,9 +24,13 @@ function BuildingsResaleRevenueFormContainer() {
         });
       }}
       onBack={onBack}
-      initialValues={{
-        sellingPrice: stepAnswers?.buildingsResaleSellingPrice,
-        propertyTransferDuties: stepAnswers?.buildingsResalePropertyTransferDuties,
+      defaultValues={{
+        sellingPrice: stepValues?.defaultValues?.buildingsResaleSellingPrice,
+        propertyTransferDuties: stepValues?.defaultValues?.buildingsResalePropertyTransferDuties,
+      }}
+      currentValues={{
+        sellingPrice: stepValues?.payload?.buildingsResaleSellingPrice,
+        propertyTransferDuties: stepValues?.payload?.buildingsResalePropertyTransferDuties,
       }}
     />
   );

@@ -2,16 +2,26 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 
+import type { RelatedSiteCityReferenceData } from "@/features/create-project/core/project-form/projectSite.types";
+import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+import DefaultValueSwitch from "@/shared/views/components/form/DefaultValuesSwitch/DefaultValueSwitch";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
+import SiteRealEstateValuesExplanation from "../../../project-form/modal-content/SiteRealEstateValuesExplanation";
+
 type Props = {
-  initialValues?: FormValues;
+  defaultValues: FormValues | undefined;
+  currentValues: FormValues | undefined;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
+  landAndRealEstateValues?: {
+    cityName?: string;
+    addressLabel: string;
+  } & RelatedSiteCityReferenceData["landAndRealEstateValues"];
 };
 
 type FormValues = {
@@ -19,9 +29,21 @@ type FormValues = {
   propertyTransferDuties?: number;
 };
 
-const BuildingsResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) => {
-  const { handleSubmit, control, watch, setValue, formState } = useForm<FormValues>({
-    defaultValues: initialValues,
+const EMPTY_VALUES = {
+  sellingPrice: undefined,
+  propertyTransferDuties: undefined,
+};
+
+const BuildingsResaleRevenueForm = ({
+  currentValues,
+  defaultValues,
+  onSubmit,
+  onBack,
+  landAndRealEstateValues,
+}: Props) => {
+  const { handleSubmit, control, watch, setValue, formState, reset } = useForm<FormValues>({
+    defaultValues: EMPTY_VALUES,
+    values: currentValues,
   });
 
   const sellingPrice = watch("sellingPrice");
@@ -36,22 +58,44 @@ const BuildingsResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) 
   }, [sellingPrice, setValue, formState.isReady]);
 
   return (
-    <WizardFormLayout
-      title="Montant de la vente des bâtiments"
-      instructions={
-        <FormInfo emoji="auto">
-          <span className="title">D'où viennent les montants préremplis ?</span>
-          <p>
-            Montants calculés d'après le prix moyen / hectare d'une friche dans cette zone
-            géographique (consulter la grille des prix)
-          </p>
-          <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
-            Explorateur de données de valeurs foncières
-          </ExternalLink>
-        </FormInfo>
-      }
-    >
+    <WizardFormLayout title="Montant de la vente des bâtiments">
       <form onSubmit={handleSubmit(onSubmit)}>
+        {defaultValues?.sellingPrice ? (
+          <DefaultValueSwitch
+            defaultChecked={sellingPrice === defaultValues.sellingPrice}
+            badge={<>Valeur estimée: {formatMoney(defaultValues.sellingPrice)}</>}
+            ModalContent={
+              landAndRealEstateValues && (
+                <SiteRealEstateValuesExplanation {...landAndRealEstateValues} />
+              )
+            }
+            onChange={(checked) => {
+              if (checked) {
+                reset(defaultValues);
+                return;
+              }
+              reset(
+                currentValues?.sellingPrice === defaultValues.sellingPrice
+                  ? EMPTY_VALUES
+                  : currentValues,
+              );
+            }}
+          />
+        ) : (
+          <FormWarning>
+            <div>
+              <strong>Estimation indisponible</strong>
+              <p>
+                Nous n'avons pas pu trouver de données pertinentes pour estimer le prix de revente
+                des bâtiments. Vous pouvez saisir les montants manuellement si vous les connaissez,
+                ou passer cette étape.
+              </p>
+              <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
+                Explorateur de données de valeurs foncières
+              </ExternalLink>
+            </div>
+          </FormWarning>
+        )}
         <FormRowNumericInput
           controller={{ name: "sellingPrice", control }}
           className="pt-4!"

@@ -15,6 +15,7 @@ export const selectProjectCreationWizardViewData = createSelector(selectSelf, (s
   return {
     currentProjectFlow: state.currentProjectFlow,
     loadingState: state.siteDataLoadingState,
+    siteRelatedCityCode: state.siteData?.address?.cityCode,
   };
 });
 

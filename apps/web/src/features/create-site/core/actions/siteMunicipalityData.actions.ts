@@ -1,8 +1,8 @@
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
-import type { GetMunicipalityDataResult } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 
 import type { createSiteFormRootSelectors } from "../selectors/createSite.selectors";
 import { siteCreationRootSelectors } from "../selectors/createSite.selectors";
+import type { SiteLocalAuthorities } from "../siteMunicipalityData.reducer";
 
 export type { GetMunicipalityDataResult } from "@/shared/core/gateways/AdministrativeDivisionGateway";
 export type { AdministrativeDivisionGateway as SiteMunicipalityDataGateway } from "@/shared/core/gateways/AdministrativeDivisionGateway";
@@ -11,7 +11,11 @@ export const createFetchSiteMunicipalityData = (
   actionType: string,
   rootSelectors: ReturnType<typeof createSiteFormRootSelectors>,
 ) =>
-  createAppAsyncThunk<GetMunicipalityDataResult>(actionType, async (_, { extra, getState }) => {
+  createAppAsyncThunk<{
+    localAuthorities?: SiteLocalAuthorities;
+    population?: number;
+    isRural?: boolean;
+  }>(actionType, async (_, { extra, getState }) => {
     const rootState = getState();
     const { siteMunicipalityData } = rootState;
     const cityCode = rootSelectors.selectDerivedSiteData(rootState).address?.cityCode;
@@ -20,17 +24,14 @@ export const createFetchSiteMunicipalityData = (
       throw new Error("fetchSiteMunicipalityData: Missing city code");
     }
 
-    const { loadingState, localAuthorities, population } = siteMunicipalityData;
+    const { loadingState, localAuthorities } = siteMunicipalityData;
     const siteLocalAuthoritiesCityCode = localAuthorities?.city.code;
 
     const dataAlreadyFetched =
-      loadingState === "success" &&
-      siteLocalAuthoritiesCityCode === cityCode &&
-      localAuthorities &&
-      population;
+      loadingState === "success" && siteLocalAuthoritiesCityCode === cityCode && localAuthorities;
 
     if (dataAlreadyFetched) {
-      return Promise.resolve({ localAuthorities, population });
+      return Promise.resolve(siteMunicipalityData);
     }
 
     const result = await extra.municipalityDataService.getMunicipalityData(cityCode);

@@ -59,12 +59,12 @@ export const createWizardFormSelectors = (entityName: "projectCreation" | "proje
 
   const selectAvailableLocalAuthoritiesStakeholders = createSelector(
     [
-      (state: RootState) => state[entityName].siteRelatedLocalAuthorities,
+      (state: RootState) => state[entityName].siteCityReferenceData.localAuthorities,
       selectProjectAvailableStakeholders,
     ],
     (siteRelatedLocalAuthorities, projectAvailableStakeholders) => {
       return getAvailableLocalAuthoritiesStakeholders(
-        siteRelatedLocalAuthorities,
+        siteRelatedLocalAuthorities ?? {},
         projectAvailableStakeholders,
       );
     },
@@ -85,6 +85,21 @@ export const createWizardFormSelectors = (entityName: "projectCreation" | "proje
     (siteData): boolean => siteData?.nature === "FRICHE",
   );
 
+  const selectSiteCityReferenceViewData = createSelector(selectSelf, (state) => {
+    if (
+      state.siteCityReferenceData.loadingState === "success" &&
+      state.siteCityReferenceData.landAndRealEstateValues
+    ) {
+      return {
+        cityName: state.siteData?.address.city,
+        addressLabel: state.siteData?.address.value ?? "",
+        loadingState: state.siteCityReferenceData.loadingState,
+        ...state.siteCityReferenceData.landAndRealEstateValues,
+      };
+    }
+    return undefined;
+  });
+
   return {
     selectSiteData,
     selectIsSiteFriche,
@@ -92,6 +107,7 @@ export const createWizardFormSelectors = (entityName: "projectCreation" | "proje
     selectSiteSoilsDistribution,
     selectProjectAvailableStakeholders,
     selectAvailableLocalAuthoritiesStakeholders,
+    selectSiteCityReferenceViewData,
     selectSiteSurfaceArea,
     selectSiteContaminatedSurfaceArea,
   };

@@ -17,7 +17,7 @@ describe("RevenueIntroductionHandler", () => {
       // Act
       const nextStep = RevenueIntroductionHandler.getNextStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       // Assert
@@ -53,7 +53,7 @@ describe("RevenueIntroductionHandler", () => {
       // Act
       const nextStep = RevenueIntroductionHandler.getNextStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       // Assert
@@ -89,7 +89,7 @@ describe("RevenueIntroductionHandler", () => {
       // Act
       const nextStep = RevenueIntroductionHandler.getNextStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       // Assert
@@ -108,7 +108,7 @@ describe("RevenueIntroductionHandler", () => {
       // Act
       const nextStep = RevenueIntroductionHandler.getNextStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       // Assert
@@ -142,7 +142,7 @@ describe("RevenueIntroductionHandler", () => {
       // Act
       const previousStep = RevenueIntroductionHandler.getPreviousStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       // Assert
@@ -161,7 +161,7 @@ describe("RevenueIntroductionHandler", () => {
       // Act
       const previousStep = RevenueIntroductionHandler.getPreviousStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       // Assert
@@ -172,7 +172,7 @@ describe("RevenueIntroductionHandler", () => {
       // Act
       const previousStep = RevenueIntroductionHandler.getPreviousStepId({
         answers: {},
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       // Assert

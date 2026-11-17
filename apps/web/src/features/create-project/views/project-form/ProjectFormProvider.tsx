@@ -93,8 +93,8 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
     [dispatch, actions],
   );
 
-  const onFetchSiteLocalAuthorities = useCallback(
-    () => dispatch(actions.fetchSiteRelatedLocalAuthorities()),
+  const onFetchSiteCityReferenceData = useCallback(
+    () => dispatch(actions.fetchSiteCityReferenceData()),
     [dispatch, actions],
   );
 
@@ -118,7 +118,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
       onNavigateToStep,
       onNavigateToStepperGroup,
       onFetchSoilsCarbonStorageDifference,
-      onFetchSiteLocalAuthorities,
+      onFetchSiteCityReferenceData,
       onCancelStepCompletion,
       onConfirmStepCompletion,
       onSave,
@@ -132,7 +132,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
       onNavigateToStep,
       onNavigateToStepperGroup,
       onFetchSoilsCarbonStorageDifference,
-      onFetchSiteLocalAuthorities,
+      onFetchSiteCityReferenceData,
       onCancelStepCompletion,
       onConfirmStepCompletion,
       onSave,

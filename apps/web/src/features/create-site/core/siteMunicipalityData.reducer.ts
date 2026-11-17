@@ -9,7 +9,7 @@ import { selectSiteAddress, selectSiteOwner } from "./selectors/createSite.selec
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-type SiteLocalAuthorities = {
+export type SiteLocalAuthorities = {
   city: {
     code: string;
     name: string;

@@ -11,6 +11,7 @@ import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
+import { fetchSiteCityReferenceData } from "../core/actions/getSiteCityReferenceData.action";
 import { reconversionProjectCreationInitiated } from "../core/actions/reconversionProjectCreationInitiated.action";
 import { selectProjectCreationWizardViewData } from "../core/createProject.selectors";
 import ProjectCreationStepper from "./ProjectCreationStepper";
@@ -24,7 +25,9 @@ type Props = {
 };
 
 function ProjectCreationWizard({ route }: Props) {
-  const { currentProjectFlow, loadingState } = useAppSelector(selectProjectCreationWizardViewData);
+  const { currentProjectFlow, loadingState, siteRelatedCityCode } = useAppSelector(
+    selectProjectCreationWizardViewData,
+  );
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const dispatch = useAppDispatch();
 
@@ -35,6 +38,16 @@ function ProjectCreationWizard({ route }: Props) {
       : { relatedSiteId };
     void dispatch(reconversionProjectCreationInitiated(payload));
   }, [dispatch, route.params.siteId, route.params.projectSuggestions]);
+
+  useEffect(() => {
+    if (
+      currentProjectFlow !== "DEMO" &&
+      currentProjectFlow !== "USE_CASE_SELECTION" &&
+      siteRelatedCityCode
+    ) {
+      void dispatch(fetchSiteCityReferenceData());
+    }
+  }, [dispatch, currentProjectFlow, siteRelatedCityCode]);
 
   return (
     <ProjectFormProvider mode="create">

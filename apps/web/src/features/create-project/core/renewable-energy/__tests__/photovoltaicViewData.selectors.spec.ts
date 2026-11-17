@@ -41,7 +41,7 @@ const buildState = (
     projectId: "",
     siteData,
     siteDataLoadingState: "success",
-    siteRelatedLocalAuthorities: { loadingState: "idle" },
+    siteCityReferenceData: { loadingState: "idle" },
     renewableEnergyProject: {
       ...INITIAL_STATE,
       createMode: "custom",

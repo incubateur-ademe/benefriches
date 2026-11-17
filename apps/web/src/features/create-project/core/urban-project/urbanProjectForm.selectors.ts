@@ -56,6 +56,11 @@ export const createUrbanProjectFormSelectors = (
     getProjectSoilDistribution(state),
   );
 
+  const selectStepValues = <T extends AnswerStepId>(stepId: T) =>
+    createSelector([selectStepState], (steps) => {
+      return ReadStateHelper.getStep(steps, stepId);
+    });
+
   const selectStepAnswers = <T extends AnswerStepId>(stepId: T) =>
     createSelector([selectStepState], (steps) => {
       if (!isAnswersStep(stepId)) {
@@ -161,16 +166,6 @@ export const createUrbanProjectFormSelectors = (
     (state) => state.urbanProject.form.saveState,
   );
 
-  const selectSiteResaleEstimationLoadingState = createSelector(
-    [selectSelf],
-    (state) => state.urbanProject.siteResaleEstimationLoadingState,
-  );
-
-  const selectSiteResaleRevenueViewData = createSelectSiteResaleRevenueViewData(
-    selectStepState,
-    selectSiteResaleEstimationLoadingState,
-  );
-
   const selectPublicGreenSpacesSurfaceAreaViewData =
     createSelectPublicGreenSpacesSurfaceAreaViewData(
       selectStepState,
@@ -274,10 +269,30 @@ export const createUrbanProjectFormSelectors = (
     }),
   );
 
+  const selectSiteResaleRevenueViewData = createSelectSiteResaleRevenueViewData(
+    selectStepState,
+    selectors.selectSiteCityReferenceViewData,
+  );
+
+  const selectSitePurchaseAmountsDataView = createSelector(
+    selectStepValues("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS"),
+    selectStepAnswers("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER"),
+    selectors.selectSiteCityReferenceViewData,
+    (step, projectDeveloper, siteCityReferenceData) => {
+      return {
+        futureSiteOwnerName: projectDeveloper?.projectDeveloper?.name,
+        defaultValues: step?.defaultValues,
+        currentValues: step?.payload,
+        landAndRealEstateValues: siteCityReferenceData,
+      };
+    },
+  );
+
   return {
     selectStepState,
     selectProjectSoilsDistributionByType,
     selectProjectSoilsDistribution,
+    selectStepValues,
     selectStepAnswers,
     selectSoilsCarbonStorageDifference,
     selectIsFormStatusValid,
@@ -291,6 +306,7 @@ export const createUrbanProjectFormSelectors = (
     selectNavigationBlockerDialogViewData,
     selectUrbanProjectCreationStepperViewData,
     selectSiteResaleRevenueViewData,
+    selectSitePurchaseAmountsDataView,
     selectPublicGreenSpacesSurfaceAreaViewData,
     selectUsesFloorSurfaceAreaViewData,
     selectBuildingsFootprintToReuseViewData,

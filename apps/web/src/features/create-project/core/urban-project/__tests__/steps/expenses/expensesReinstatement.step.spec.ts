@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { UrbanProjectReinstatementExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.handler";
 
-import { mockSiteData } from "../../_siteData.mock";
+import { mockSiteCityReferenceData, mockSiteData } from "../../_siteData.mock";
 
 describe("Urban project creation - Steps - Reinstatement expenses", () => {
   it("computes default reinstatement expenses with a positive total from the project soil distribution", () => {
@@ -21,7 +21,7 @@ describe("Urban project creation - Steps - Reinstatement expenses", () => {
           },
         },
       },
-      context: { siteData: mockSiteData },
+      context: { siteData: mockSiteData, siteCityReferenceData: mockSiteCityReferenceData },
     });
 
     const expenses = defaults?.reinstatementExpenses ?? [];

@@ -66,6 +66,12 @@ export const getTestAppDependencies = (
         },
       },
       population: 0,
+      isRural: false,
+      landAndRealEstateValues: {
+        accuracy: "france",
+        landWithoutBuildingsMedianPricePerSquareMeters: 200,
+        propertyValueMedianPricePerSquareMeters: 2000,
+      },
     }),
     currentUserService: new InMemoryCurrentUserService(),
     createUserService: new InMemoryCreateUserService(),

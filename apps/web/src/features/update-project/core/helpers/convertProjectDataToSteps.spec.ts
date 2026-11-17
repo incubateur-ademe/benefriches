@@ -269,7 +269,7 @@ describe("convertProjectDataToSteps - buildings construction expenses left empty
       siteData: BASE_SITE_DATA,
     });
     const sequence = computeStepsSequence(
-      { context: { siteData: BASE_SITE_DATA }, answers: steps },
+      { context: { siteData: BASE_SITE_DATA, siteCityReferenceData: undefined }, answers: steps },
       "URBAN_PROJECT_USES_INTRODUCTION",
       stepHandlerRegistry,
     );

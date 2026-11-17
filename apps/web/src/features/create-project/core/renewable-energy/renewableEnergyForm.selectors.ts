@@ -7,7 +7,7 @@ import type { RootState } from "@/app/store/store";
 import { createWizardFormSelectors } from "../project-form/projectForm.selectors";
 import { ReadStateHelper } from "./helpers/readState";
 import type { RenewableEnergyProjectState } from "./renewableEnergy.reducer";
-import { answersByStepSchemas, isAnswersStep } from "./renewableEnergySteps";
+import { answersByStepSchemas, type AnswerStepId, isAnswersStep } from "./renewableEnergySteps";
 import {
   createSelectBiodiversityAndClimateSensibleSoilsSurfaceAreaDestroyed,
   createSelectFutureBiodiversityAndClimateSensibleSoilsSurfaceArea,
@@ -331,6 +331,36 @@ export const createRenewableEnergyFormSelectors = (prefix: "projectCreation" | "
   const selectSoilsCarbonStorageViewData =
     createSelectSoilsCarbonStorageViewData(selectSoilsCarbonStorage);
 
+  const selectStepValues = <T extends AnswerStepId>(stepId: T) =>
+    createSelector([selectSteps], (steps) => {
+      return ReadStateHelper.getStep(steps, stepId);
+    });
+
+  const selectStepAnswers = <T extends AnswerStepId>(stepId: T) =>
+    createSelector([selectSteps], (steps) => {
+      if (!isAnswersStep(stepId)) {
+        return undefined;
+      }
+      return (
+        ReadStateHelper.getStepAnswers(steps, stepId) ??
+        ReadStateHelper.getDefaultAnswers(steps, stepId)
+      );
+    });
+
+  const selectSitePurchaseAmountsDataView = createSelector(
+    selectStepValues("RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS"),
+    selectStepAnswers("RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER"),
+    wizardFormSelectors.selectSiteCityReferenceViewData,
+    (step, futureSiteOwner, siteCityReferenceData) => {
+      return {
+        futureSiteOwnerName: futureSiteOwner?.futureSiteOwner?.name,
+        defaultValues: step?.defaultValues,
+        currentValues: step?.payload,
+        landAndRealEstateValues: siteCityReferenceData,
+      };
+    },
+  );
+
   return {
     selectSteps,
     selectStepsSequence,
@@ -386,6 +416,7 @@ export const createRenewableEnergyFormSelectors = (prefix: "projectCreation" | "
     selectCreationResultViewData,
     selectPhotovoltaicFinalSummaryViewData,
     selectSoilsCarbonStorageViewData,
+    selectSitePurchaseAmountsDataView,
     ...wizardFormSelectors,
   };
 };

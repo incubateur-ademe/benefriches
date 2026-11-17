@@ -8,7 +8,7 @@ function DeveloperFormContainer() {
   const {
     onBack,
     onRequestStepCompletion,
-    onFetchSiteLocalAuthorities,
+    onFetchSiteCityReferenceData,
     selectPVDeveloperViewData,
   } = useRenewableEnergyForm();
   const { availableStakeholdersList, availableLocalAuthoritiesStakeholders } =
@@ -38,7 +38,7 @@ function DeveloperFormContainer() {
       }
       onSubmit={onSubmit}
       onBack={onBack}
-      onFetchSiteLocalAuthorities={onFetchSiteLocalAuthorities}
+      onFetchSiteLocalAuthorities={onFetchSiteCityReferenceData}
       availableStakeholdersList={availableStakeholdersList}
       availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
     />

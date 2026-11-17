@@ -7,7 +7,7 @@ function DeveloperFormContainer() {
   const {
     onBack,
     onRequestStepCompletion,
-    onFetchSiteLocalAuthorities,
+    onFetchSiteCityReferenceData,
     selectProjectDeveloperViewData,
   } = useProjectForm();
   const { availableStakeholdersList, availableLocalAuthoritiesStakeholders, projectDeveloper } =
@@ -36,7 +36,7 @@ function DeveloperFormContainer() {
         });
       }}
       onBack={onBack}
-      onFetchSiteLocalAuthorities={onFetchSiteLocalAuthorities}
+      onFetchSiteLocalAuthorities={onFetchSiteCityReferenceData}
     />
   );
 }

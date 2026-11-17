@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import { UrbanProjectInstallationExpensesHandler } from "@/features/create-project/core/urban-project/step-handlers/expenses/expenses-installation/expensesInstallation.handler";
 import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
 
+import { mockSiteCityReferenceData } from "../../_siteData.mock";
+
 describe("UrbanProjectInstallationExpensesHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION when developer will build the new buildings", () => {
@@ -32,7 +34,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
 
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION");
@@ -65,7 +67,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
 
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION");
@@ -85,7 +87,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
 
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
@@ -101,7 +103,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
 
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
         answers,
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
@@ -110,7 +112,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when steps state is empty", () => {
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
         answers: {},
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
@@ -122,6 +124,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId({
         answers: {},
         context: {
+          siteCityReferenceData: mockSiteCityReferenceData,
           siteData: {
             id: "test-site",
             name: "Test Site",
@@ -149,6 +152,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId({
         answers: {},
         context: {
+          siteCityReferenceData: mockSiteCityReferenceData,
           siteData: {
             id: "test-site",
             name: "Test Site",
@@ -175,7 +179,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
     it("should return URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS when siteData is undefined", () => {
       const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId({
         answers: {},
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS");
@@ -187,6 +191,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       const defaultAnswers = UrbanProjectInstallationExpensesHandler.getDefaultAnswers({
         answers: {},
         context: {
+          siteCityReferenceData: mockSiteCityReferenceData,
           siteData: {
             id: "test-site",
             name: "Test Site",
@@ -224,7 +229,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
     it("should return undefined when site surface area is not available", () => {
       const defaultAnswers = UrbanProjectInstallationExpensesHandler.getDefaultAnswers({
         answers: {},
-        context: { siteData: undefined },
+        context: { siteData: undefined, siteCityReferenceData: undefined },
       });
 
       expect(defaultAnswers).toBeUndefined();

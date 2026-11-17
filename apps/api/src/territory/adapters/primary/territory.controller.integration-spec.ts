@@ -22,31 +22,42 @@ describe("Territory controller", () => {
     await sqlConnection.destroy();
   });
 
-  describe("GET /territory/city-rurality", () => {
-    it("returns 400 when cityCode is missing", async () => {
-      const response = await supertest(app.getHttpServer()).get("/api/territory/city-rurality");
+  describe("GET /territory/city-reference-data", () => {
+    it("returns 404 when cityCode is missing", async () => {
+      const response = await supertest(app.getHttpServer()).get(
+        "/api/territory/city-reference-data",
+      );
 
-      assert.strictEqual(response.status, 400);
+      assert.strictEqual(response.status, 404);
+    });
+
+    it("returns 200 with default values when cityCode is unknown", async () => {
+      const response = await supertest(app.getHttpServer()).get(
+        "/api/territory/city-reference-data/wrong",
+      );
+
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body.landAndRealEstateValues.accuracy, "france");
     });
 
     it("returns isRural true for a commune in the FRR rural list", async () => {
       // 01029 (Beaupont) is classified "FRR socle" in the seeded FRR list
       const response = await supertest(app.getHttpServer()).get(
-        "/api/territory/city-rurality?cityCode=01029",
+        "/api/territory/city-reference-data/01029",
       );
 
       assert.strictEqual(response.status, 200);
-      assert.deepStrictEqual(response.body, { cityCode: "01029", isRural: true });
+      assert.deepStrictEqual(response.body.isRural, true);
     });
 
     it("returns isRural false for a commune that is 'Non classée'", async () => {
       // 01001 (L'Abergement-Clémenciat) is "Non classée"
       const response = await supertest(app.getHttpServer()).get(
-        "/api/territory/city-rurality?cityCode=01001",
+        "/api/territory/city-reference-data/01001",
       );
 
       assert.strictEqual(response.status, 200);
-      assert.deepStrictEqual(response.body, { cityCode: "01001", isRural: false });
+      assert.deepStrictEqual(response.body.isRural, false);
     });
   });
 });

@@ -1,5 +1,10 @@
 // Common DTOs
-export { idPathParamSchema, type IdPathParam } from "./common";
+export {
+  idPathParamSchema,
+  type IdPathParam,
+  cityCodeParamSchema,
+  type CityCodeParam,
+} from "./common";
 
 // Auth DTOs
 export {
@@ -42,13 +47,11 @@ export {
 // Site Actions DTOs
 export { updateSiteActionStatusDtoSchema, type UpdateSiteActionStatusDto } from "./site-actions";
 
-// City Rurality DTOs
+// City Reference Data DTOs
 export {
-  getCityRuralityRequestDtoSchema,
-  type GetCityRuralityRequestDto,
-  getCityRuralityResponseDtoSchema,
-  type GetCityRuralityResponseDto,
-} from "./city-rurality";
+  getCityReferenceDataResponseDtoSchema,
+  type GetCityReferenceDataResponseDto,
+} from "./city-reference-data";
 
 // Reconversion Projects DTOs
 export {

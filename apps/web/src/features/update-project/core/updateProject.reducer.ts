@@ -3,9 +3,9 @@ import type { DevelopmentPlanType, ProjectPhase } from "shared";
 
 import type {
   ProjectSiteView,
-  SiteRelatedLocalAuthorities,
+  RelatedSiteCityReferenceData,
 } from "@/features/create-project/core/project-form/projectSite.types";
-import { addWizardFormCasesToBuilder } from "@/features/create-project/core/project-form/siteRelatedLocalAuthorities.action";
+import { addWizardFormCasesToBuilder } from "@/features/create-project/core/project-form/siteCityReferenceData.action";
 import type { RenewableEnergyProjectState } from "@/features/create-project/core/renewable-energy/renewableEnergy.reducer";
 import { INITIAL_STATE as renewableEnergyInitialState } from "@/features/create-project/core/renewable-energy/renewableEnergy.reducer";
 import { addRenewableEnergyFormCasesToBuilder } from "@/features/create-project/core/renewable-energy/renewableEnergyForm.reducer";
@@ -45,7 +45,7 @@ export type UrbanProjectUpdateStep = Exclude<
 type ProjectUpdateState = {
   siteData?: ProjectSiteView;
   siteDataLoadingState: "idle" | "loading" | "success" | "error";
-  siteRelatedLocalAuthorities: SiteRelatedLocalAuthorities;
+  siteCityReferenceData: RelatedSiteCityReferenceData;
   urbanProject: UrbanProjectState<UrbanProjectUpdateStep>;
   renewableEnergyProject: RenewableEnergyProjectState;
   projectData: {
@@ -67,7 +67,7 @@ const getInitialState = (): ProjectUpdateState => {
     renewableEnergyProject: renewableEnergyInitialState,
     siteData: undefined,
     siteDataLoadingState: "idle",
-    siteRelatedLocalAuthorities: {
+    siteCityReferenceData: {
       loadingState: "idle",
     },
     urbanProject: getUrbanProjectInitialState<UrbanProjectUpdateStep>(
@@ -86,7 +86,10 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
     },
     registry: answerStepHandlers,
     selectForm: (state) => state.urbanProject.form,
-    buildContext: (state) => ({ siteData: state.siteData }),
+    buildContext: (state) => ({
+      siteData: state.siteData,
+      siteCityReferenceData: state.siteCityReferenceData,
+    }),
   });
 
   addRenewableEnergyFormCasesToBuilder<ProjectUpdateState>(
@@ -99,7 +102,10 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       },
       registry: renewableEnergyAnswerStepHandlers,
       selectForm: (state) => state.renewableEnergyProject,
-      buildContext: (state) => ({ siteData: state.siteData }),
+      buildContext: (state) => ({
+        siteData: state.siteData,
+        siteCityReferenceData: state.siteCityReferenceData,
+      }),
     },
   );
 
@@ -133,7 +139,10 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
 
         state.renewableEnergyProject.stepsSequence = computeStepsSequence(
           {
-            context: { siteData: action.payload.siteData },
+            context: {
+              siteCityReferenceData: state.siteCityReferenceData,
+              siteData: action.payload.siteData,
+            },
             answers: state.renewableEnergyProject.steps,
           },
           state.renewableEnergyProject.firstSequenceStep,
@@ -148,7 +157,10 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
 
       state.urbanProject.form.stepsSequence = computeStepsSequence(
         {
-          context: { siteData: action.payload.siteData },
+          context: {
+            siteCityReferenceData: state.siteCityReferenceData,
+            siteData: action.payload.siteData,
+          },
           answers: state.urbanProject.form.steps,
         },
         state.urbanProject.form.firstSequenceStep,

@@ -6,7 +6,7 @@ function SiteReinstatementContractOwnerFormContainer() {
   const {
     onBack,
     onRequestStepCompletion,
-    onFetchSiteLocalAuthorities,
+    onFetchSiteCityReferenceData,
     selectReinstatementContractOwnerViewData,
   } = useProjectForm();
   const {
@@ -26,7 +26,7 @@ function SiteReinstatementContractOwnerFormContainer() {
         });
       }}
       onBack={onBack}
-      onFetchSiteLocalAuthorities={onFetchSiteLocalAuthorities}
+      onFetchSiteLocalAuthorities={onFetchSiteCityReferenceData}
       availableStakeholdersList={availableStakeholdersList}
       availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
     />

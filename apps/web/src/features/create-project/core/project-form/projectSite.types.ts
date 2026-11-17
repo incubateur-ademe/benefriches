@@ -21,9 +21,18 @@ export type LocalAuthorities = {
   };
 };
 
-export type SiteRelatedLocalAuthorities = {
-  loadingState: "idle" | "loading" | "success" | "error";
-} & LocalAuthorities;
+export type RelatedSiteCityReferenceData = {
+  loadingState: "success" | "error" | "idle" | "loading";
+  cityCode?: string;
+  localAuthorities?: LocalAuthorities;
+  landAndRealEstateValues?: {
+    landWithoutBuildingsMedianPricePerSquareMeters?: number;
+    propertyValueMedianPricePerSquareMeters: number;
+    accuracy: "city" | "france";
+  };
+  population?: number;
+  isRural?: boolean;
+};
 
 export type ProjectSiteView = {
   id: string;
