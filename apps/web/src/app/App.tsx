@@ -5,7 +5,6 @@ import { pageViewed } from "@/features/analytics/core/pageViewed.action";
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 import PublicApp from "@/features/public-pages/PublicApp";
 import classNames from "@/shared/views/clsx";
-import { Seo } from "@/shared/views/components/Seo/Seo";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { ScrollManager } from "./ScrollManager";
@@ -49,7 +48,7 @@ function App() {
           }
           return (
             <>
-              <Seo title="Bénéfriches" noindex />
+              <meta name="robots" content="noindex" />
               <FeaturesApp />
             </>
           );
