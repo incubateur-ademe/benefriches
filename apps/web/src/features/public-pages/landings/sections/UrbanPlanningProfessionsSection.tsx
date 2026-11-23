@@ -8,8 +8,8 @@ type UrbanPlanningProfessionCardProps = {
 
 function UrbanPlanningProfessionCard({ title, text, imgSrc }: UrbanPlanningProfessionCardProps) {
   return (
-    <article className="flex rounded-xl bg-white dark:bg-grey-dark dark:border-blue-ultradark dark:border h-[184px]">
-      <img src={imgSrc} alt="" className="rounded-s-xl h-full" />
+    <article className="flex rounded-xl bg-white dark:bg-grey-dark dark:border-blue-ultradark dark:border h-46">
+      <img src={imgSrc} loading="lazy" decoding="async" alt="" className="rounded-s-xl h-full" />
       <div className="p-6">
         <h3 className="text-xl mb-1">{title}</h3>
         <p className="text-sm leading-6 mb-0">{text}</p>
@@ -23,7 +23,7 @@ export default function UrbanPlanningProfessionsSection() {
     <section className="py-20 bg-grey-light dark:bg-grey-dark">
       <div className="fr-container">
         <SectionTitle>Un outil conçu pour tous les métiers de l'aménagement</SectionTitle>
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 mt-[60px]">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 mt-15">
           <UrbanPlanningProfessionCard
             title="Aménageurs urbains"
             text="Évaluez la faisabilité de vos projets de reconversion grâce à une vision claire des impacts environnementaux, économiques et sociaux. Anticipez les bénéfices avant de vous lancer."
@@ -56,8 +56,8 @@ export default function UrbanPlanningProfessionsSection() {
 
           <UrbanPlanningProfessionCard
             title="Industriels"
-            text="Evaluez les intérêts extra-financiers à implanter votre activité sur une friche et valorisez les informations auprès des investisseurs, élus et clients"
-            imgSrc="/img/pictograms/urban-planning-professions/industry.svg"
+            text="Évaluez les intérêts extra-financiers à implanter votre activité sur une friche et valorisez les informations auprès des investisseurs, élus et clients"
+            imgSrc="/img/pictograms/urban-planning-professions/industry.jpg"
           />
         </div>
       </div>

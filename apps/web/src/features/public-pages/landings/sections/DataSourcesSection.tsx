@@ -26,14 +26,51 @@ export default function DataSourcesSection() {
         </div>
         <div className="md:pl-6 m-auto">
           <div className="mb-10 hidden md:flex justify-between items-center">
-            <img src="/img/logos/logo-ademe.svg" aria-hidden="true" alt="" height="80px" />
-            <img src="/img/logos/logo-aldo.svg" aria-hidden="true" alt="" height="50px" />
-            <img src="/img/logos/logo-insee.svg" aria-hidden="true" alt="" height="80px" />
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/img/logos/logo-ademe.svg"
+              aria-hidden="true"
+              alt=""
+              height="80px"
+            />
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/img/logos/logo-aldo.svg"
+              aria-hidden="true"
+              alt=""
+              height="50px"
+            />
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/img/logos/logo-insee.svg"
+              aria-hidden="true"
+              alt=""
+              height="80px"
+            />
           </div>
           <div className="hidden md:flex justify-between gap-6">
-            <img src="/img/logos/logo-brgm.svg" aria-hidden="true" alt="" height="80px" />
-            <img src="/img/logos/logo-shift-project.svg" aria-hidden="true" alt="" height="80px" />
             <img
+              loading="lazy"
+              decoding="async"
+              src="/img/logos/logo-brgm.svg"
+              aria-hidden="true"
+              alt=""
+              height="80px"
+            />
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/img/logos/logo-shift-project.svg"
+              aria-hidden="true"
+              alt=""
+              height="80px"
+            />
+            <img
+              loading="lazy"
+              decoding="async"
               src="/img/logos/logo-france-strategie.svg"
               aria-hidden="true"
               alt=""
@@ -41,12 +78,49 @@ export default function DataSourcesSection() {
             />
           </div>
           <div className="flex md:hidden gap-8 flex-wrap justify-center">
-            <img src="/img/logos/logo-ademe.svg" aria-hidden="true" alt="" height="60px" />
-            <img src="/img/logos/logo-aldo.svg" aria-hidden="true" alt="" height="40px" />
-            <img src="/img/logos/logo-insee.svg" aria-hidden="true" alt="" height="60px" />
-            <img src="/img/logos/logo-brgm.svg" aria-hidden="true" alt="" height="60px" />
-            <img src="/img/logos/logo-shift-project.svg" aria-hidden="true" alt="" height="60px" />
             <img
+              loading="lazy"
+              decoding="async"
+              src="/img/logos/logo-ademe.svg"
+              aria-hidden="true"
+              alt=""
+              height="60px"
+            />
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/img/logos/logo-aldo.svg"
+              aria-hidden="true"
+              alt=""
+              height="40px"
+            />
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/img/logos/logo-insee.svg"
+              aria-hidden="true"
+              alt=""
+              height="60px"
+            />
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/img/logos/logo-brgm.svg"
+              aria-hidden="true"
+              alt=""
+              height="60px"
+            />
+            <img
+              loading="lazy"
+              decoding="async"
+              src="/img/logos/logo-shift-project.svg"
+              aria-hidden="true"
+              alt=""
+              height="60px"
+            />
+            <img
+              loading="lazy"
+              decoding="async"
               src="/img/logos/logo-france-strategie.svg"
               aria-hidden="true"
               alt=""

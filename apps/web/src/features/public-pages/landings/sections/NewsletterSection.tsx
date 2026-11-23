@@ -5,7 +5,13 @@ export default function NewsletterSection() {
     <section className="bg-blue-light py-20">
       <div className="fr-container">
         <div className="flex flex-col md:flex-row gap-6 items-center md:justify-between">
-          <img src="/img/pictograms/newsletter.svg" alt="" className="md:mr-16" />
+          <img
+            src="/img/pictograms/newsletter.svg"
+            loading="lazy"
+            decoding="async"
+            alt=""
+            className="md:mr-16"
+          />
           <div className="md:mr-12">
             <h2 className="dark:text-grey-dark">
               Bénéfriches, un produit de l'ADEME qui évolue chaque jour
