@@ -121,7 +121,7 @@ export default function TestimoniesCarousel({ title, fullBleed, arrowsPosition =
               onClick={() => {
                 scrollToIndex(index);
               }}
-              className={`w-3 h-3 rounded-full transition-colors ${
+              className={`w-5 h-5 rounded-full transition-colors ${
                 index === currentIndex ? "bg-black" : "bg-[#00000040] hover:bg-gray-400"
               }`}
               aria-label={`Aller au témoignage ${index + 1}`}
