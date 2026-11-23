@@ -53,6 +53,7 @@ FROM deps AS build
 # preserving the generated apps/web/public/dsfr produced by postinstall above.
 COPY packages/shared ./packages/shared
 COPY apps/web/src ./apps/web/src
+COPY apps/web/vite-plugins ./apps/web/vite-plugins
 COPY apps/web/vite.config.ts apps/web/tsconfig*.json ./apps/web/
 # Build shared first (web depends on packages/shared/dist), then the webapp.
 # `pnpm --filter web build` self-runs the prebuild `react-dsfr update-icons`,
