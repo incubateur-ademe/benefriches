@@ -1,0 +1,65 @@
+{
+  "siteUrl": "https://benefriches.ademe.fr",
+  "routes": {
+    "home": {
+      "path": "/",
+      "title": "Bénéfriches, l'outil qui calcule la valeur réelle de votre projet d'aménagement",
+      "description": "Bénéfriches quantifie et monétarise les impacts environnementaux, sociaux et économiques d'un projet d'aménagement, sur friche ou en extension urbaine.",
+      "indexable": true
+    },
+    "budget": {
+      "path": "/budget",
+      "title": "Budget - Bénéfriches",
+      "description": null,
+      "indexable": true
+    },
+    "stats": {
+      "path": "/statistiques",
+      "title": "Statistiques - Bénéfriches",
+      "description": "Bénéfriches quantifie et monétarise les impacts environnementaux, sociaux et économiques d'un projet d'aménagement, sur friche ou en extension urbaine.",
+      "indexable": true
+    },
+    "mentionsLegales": {
+      "path": "/mentions-legales",
+      "title": "Mentions légales - Bénéfriches",
+      "description": null,
+      "indexable": true
+    },
+    "accessibilite": {
+      "path": "/accessibilite",
+      "title": "Accessibilité - Bénéfriches",
+      "description": null,
+      "indexable": true
+    },
+    "politiqueConfidentialite": {
+      "path": "/politique-de-confidentialite",
+      "title": "Politique de confidentialité - Bénéfriches",
+      "description": null,
+      "indexable": true
+    },
+    "accessBenefriches": {
+      "path": "/acceder-a-benefriches",
+      "title": "Accès - Bénéfriches",
+      "description": null,
+      "indexable": false
+    },
+    "authWithToken": {
+      "path": "/authentification/token",
+      "title": "Connexion - Bénéfriches",
+      "description": null,
+      "indexable": false
+    },
+    "onBoardingIdentity": {
+      "path": "/premiers-pas/identite",
+      "title": "Votre profil - Bénéfriches",
+      "description": null,
+      "indexable": false
+    },
+    "lifecycleEmailsUnsubscribe": {
+      "path": "/emails/desinscription",
+      "title": "Désinscription - Bénéfriches",
+      "description": null,
+      "indexable": false
+    }
+  }
+}

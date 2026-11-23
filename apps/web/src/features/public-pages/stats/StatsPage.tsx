@@ -1,11 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
-import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
-
 function StatsPage() {
   return (
     <section className={fr.cx("fr-container", "fr-py-4w")}>
-      <HtmlTitle>Statistiques</HtmlTitle>
       <h1>Statistiques</h1>
       <iframe
         title="Tableau de bord Metabase des statistiques Bénéfriches"

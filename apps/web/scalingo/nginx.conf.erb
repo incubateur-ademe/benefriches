@@ -8,24 +8,34 @@ set $CSP_WORKER "worker-src blob: https://*.crisp.chat";
 set $CSP_FRAME "frame-ancestors 'none'";
 set $CSP_FRAME_SRC "frame-src https://tally.so https://benefriches-metabase.osc-secnum-fr1.scalingo.io <%= ENV['WEBAPP_MUTAFRICHES_FRAME_SRC'] %>";
 
+absolute_redirect off;
+
+# Redirection des anciennes pages de campagne vers la home avec conservation des paramètres pour le suivi.
+location ~ ^/commencer-avec-(mutabilite|benefriches)/?$ {
+  return 301 /$is_args$args;
+}
 
 location / {
   root /app/dist;
   add_header Content-Security-Policy "$CSP_DEFAULT; $CSP_SCRIPT; $CSP_CONNECT; $CSP_STYLE; $CSP_FONT; $CSP_IMG; $CSP_WORKER; $CSP_FRAME; $CSP_FRAME_SRC;";
   add_header X-Content-Type-Options "nosniff";
   add_header X-Frame-Options "DENY";
-  try_files $uri $uri/ /index.html =404;
+  <% if ENV['WEBAPP_SEO_DISABLE_INDEXING'] == 'true' %>
+  add_header X-Robots-Tag "noindex, nofollow";
+  <% end %>
+  try_files $uri $uri/ /index.html;
 }
 
 # serve embed.html on /embed/* route
 location /embed/ {
   root /app/dist;
-  try_files $uri $uri/ /embed.html =404;
+  add_header X-Robots-Tag "noindex";
+  try_files $uri $uri/ /embed.html;
 }
 
 location /api {
   proxy_pass <%= ENV['API_HOST_URL'] %>;
   real_ip_header X-Forwarded-For;
-  proxy_buffer_size 16k;  
+  proxy_buffer_size 16k;
   proxy_busy_buffers_size 16k;
 }

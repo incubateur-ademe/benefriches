@@ -6,6 +6,8 @@ import remarkGfm from "remark-gfm";
 import { defineConfig, loadEnv, ViteDevServer } from "vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
+import { seoFiles } from "./vite-plugins/seoFiles";
+
 const interceptEmbedRouting = () => {
   return {
     name: "intercept-embed-routes-middleware",
@@ -54,6 +56,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     interceptEmbedRouting(),
     injectGoogleVerification(mode),
+    seoFiles(),
   ],
   build: {
     rollupOptions: {

@@ -1,7 +1,8 @@
 import { lazy, Suspense } from "react";
 
-import { routes, useRoute } from "@/app/router";
+import { type PublicRoute, routes, seoByRoute } from "@/app/router";
 import UnsubscribePageContainer from "@/features/lifecycle-emails/views/unsubscribe";
+import { Seo } from "@/shared/views/components/Seo/Seo";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import PublicPageLayout from "@/shared/views/layout/PublicPageLayout/HeaderFooterLayout";
 
@@ -9,8 +10,6 @@ import NotFoundScreen from "../../shared/views/components/NotFound/NotFound";
 import AccessBenefrichesPage from "../onboarding/views/pages/access-benefriches";
 import AuthWithToken from "../onboarding/views/pages/auth-with-token/AuthWithToken";
 import OnBoardingIdentityPage from "../onboarding/views/pages/identity/OnBoardingIdentityPage";
-import BenefrichesLandingPage from "./landings/BenefrichesLandingPage";
-import MutabiliteLandingPage from "./landings/MutabiliteLandingPage";
 
 /* Lazy-loaded pages */
 const AccessibilitePage = lazy(
@@ -26,19 +25,26 @@ const PolitiqueConfidentialitePage = lazy(
 );
 const StatsPage = lazy(() => import("@/features/public-pages/stats/StatsPage"));
 
-function PublicApp() {
-  const route = useRoute();
+function PublicApp({ route }: { route: PublicRoute }) {
+  const seo = route.name ? seoByRoute[route.name] : undefined;
+
   return (
     <PublicPageLayout>
+      {seo ? (
+        <Seo
+          title={seo.title}
+          description={seo.description}
+          path={seo.path}
+          noindex={!seo.indexable}
+        />
+      ) : (
+        <Seo title={`Page introuvable - ${seoByRoute.home.title}`} noindex />
+      )}
       <Suspense fallback={<LoadingSpinner />}>
         {(() => {
           switch (route.name) {
             case routes.home.name:
               return <HomePage />;
-            case routes.landingBenefriches.name:
-              return <BenefrichesLandingPage />;
-            case routes.landingMutabilite.name:
-              return <MutabiliteLandingPage />;
             case routes.budget.name:
               return <BudgetPage />;
             case routes.stats.name:

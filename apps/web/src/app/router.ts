@@ -1,8 +1,35 @@
-import type { ValueSerializer } from "type-route";
-import { createRouter, defineRoute, noMatch, param } from "type-route";
+import type { Route, ValueSerializer } from "type-route";
+import { createGroup, createRouter, defineRoute, noMatch, param } from "type-route";
 
 import type { ProjectSuggestion } from "@/features/create-project/core/project.types";
 import { onboardingVariantSchema } from "@/features/onboarding/views/pages/step-shell/onboardingVariant";
+
+import { routes as seoRoutesConfig } from "./seo.json";
+
+const publicRoutes = [
+  "home",
+  "budget",
+  "stats",
+  "mentionsLegales",
+  "accessibilite",
+  "politiqueConfidentialite",
+  "accessBenefriches",
+  "authWithToken",
+  "onBoardingIdentity",
+  "lifecycleEmailsUnsubscribe",
+] as const;
+
+type PublicRouteName = (typeof publicRoutes)[number];
+
+export const seoByRoute = seoRoutesConfig satisfies Record<
+  PublicRouteName,
+  {
+    path: string;
+    title: string;
+    description?: string | null;
+    indexable: boolean;
+  }
+>;
 
 const onBoarding = defineRoute("/premiers-pas");
 const projectImpacts = defineRoute(
@@ -51,9 +78,7 @@ redirectLegacyUrl();
 const { RouteProvider, useRoute, routes, session } = createRouter(
   { scrollToTop: false },
   {
-    home: defineRoute("/"),
-    landingBenefriches: defineRoute("/commencer-avec-benefriches"),
-    landingMutabilite: defineRoute("/commencer-avec-mutabilite"),
+    home: defineRoute(seoByRoute.home.path),
     // ONBOARDING GLOBAL
     onBoardingIdentity: onBoarding.extend(
       {
@@ -92,12 +117,12 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
     ),
     accessBenefriches: defineRoute(
       { redirectTo: param.query.optional.string },
-      () => "/acceder-a-benefriches",
+      () => seoByRoute.accessBenefriches.path,
     ),
     // AUTHENTIFICATION
     authWithToken: defineRoute(
       { token: param.query.string, redirectTo: param.query.optional.string },
-      () => "/authentification/token",
+      () => seoByRoute.authWithToken.path,
     ),
     // FORMS
     createSite: defineRoute(
@@ -210,18 +235,24 @@ const { RouteProvider, useRoute, routes, session } = createRouter(
       () => "/admin/exports",
     ),
     // PAGES
-    budget: defineRoute("/budget"),
-    stats: defineRoute("/statistiques"),
-    mentionsLegales: defineRoute("/mentions-legales"),
-    accessibilite: defineRoute("/accessibilite"),
-    politiqueConfidentialite: defineRoute("/politique-de-confidentialite"),
+    budget: defineRoute(seoByRoute.budget.path),
+    stats: defineRoute(seoByRoute.stats.path),
+    mentionsLegales: defineRoute(seoByRoute.mentionsLegales.path),
+    accessibilite: defineRoute(seoByRoute.accessibilite.path),
+    politiqueConfidentialite: defineRoute(seoByRoute.politiqueConfidentialite.path),
     // LIFECYCLE EMAILS
     // Token optional so a truncated link shows the unsubscribe error page, not the 404.
     lifecycleEmailsUnsubscribe: defineRoute(
       { token: param.query.optional.string },
-      () => "/emails/desinscription",
+      () => seoByRoute.lifecycleEmailsUnsubscribe.path,
     ),
   },
 );
 
-export { RouteProvider, useRoute, routes, session };
+const routesGroups = {
+  public: createGroup(publicRoutes.map((name) => routes[name])),
+};
+
+export type PublicRoute = Extract<Route<typeof routes>, { name: PublicRouteName | false }>;
+
+export { RouteProvider, useRoute, routes, session, routesGroups };

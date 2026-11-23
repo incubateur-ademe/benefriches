@@ -1,4 +1,7 @@
+import { typedObjectKeys } from "shared";
 import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { routes, seoByRoute } from "./router";
 
 // The router reads the browser location when it is created, so each test sets the URL
 // first and then loads a fresh copy of the module.
@@ -59,5 +62,13 @@ describe("project features route", () => {
       params: { projectId: "project-123", details: "environnement.sols" },
       url: "/mes-projets/project-123/caracteristiques?details=environnement.sols&utm_source=email",
     });
+  });
+
+  it("SEO path are the same than router routes", () => {
+    for (const name of typedObjectKeys(seoByRoute)) {
+      const href =
+        name === "authWithToken" ? routes[name]({ token: "" }).href : routes[name]().href;
+      expect(href.split("?")[0]).toBe(seoByRoute[name].path);
+    }
   });
 });

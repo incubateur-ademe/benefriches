@@ -1,33 +1,18 @@
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
-import { useEffect } from "react";
-import { createGroup } from "type-route";
+import { lazy, Suspense, useEffect } from "react";
 
-import FeaturesApp from "@/features/FeaturesApp";
 import { pageViewed } from "@/features/analytics/core/pageViewed.action";
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 import PublicApp from "@/features/public-pages/PublicApp";
 import classNames from "@/shared/views/clsx";
+import { Seo } from "@/shared/views/components/Seo/Seo";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { ScrollManager } from "./ScrollManager";
 import { useAppDispatch } from "./hooks/store.hooks";
-import { routes, useRoute } from "./router";
+import { routesGroups, useRoute } from "./router";
 
-const groups = {
-  public: createGroup([
-    routes.home,
-    routes.landingBenefriches,
-    routes.landingMutabilite,
-    routes.budget,
-    routes.stats,
-    routes.mentionsLegales,
-    routes.accessibilite,
-    routes.politiqueConfidentialite,
-    routes.accessBenefriches,
-    routes.authWithToken,
-    routes.onBoardingIdentity,
-    routes.lifecycleEmailsUnsubscribe,
-  ]),
-};
+const FeaturesApp = lazy(() => import("@/features/FeaturesApp"));
 
 function App() {
   const route = useRoute();
@@ -57,12 +42,19 @@ function App() {
       )}
     >
       <ScrollManager />
-      {(() => {
-        if (groups.public.has(route)) {
-          return <PublicApp />;
-        }
-        return <FeaturesApp />;
-      })()}
+      <Suspense fallback={<LoadingSpinner />}>
+        {(() => {
+          if (routesGroups.public.has(route) || route.name === false) {
+            return <PublicApp route={route} />;
+          }
+          return (
+            <>
+              <Seo title="Bénéfriches" noindex />
+              <FeaturesApp />
+            </>
+          );
+        })()}
+      </Suspense>
     </div>
   );
 }
