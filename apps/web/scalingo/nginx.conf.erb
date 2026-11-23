@@ -7,6 +7,11 @@ set $CSP_IMG "img-src 'self' blob: data: https://*.crisp.chat https://a.tile.ope
 set $CSP_WORKER "worker-src blob: https://*.crisp.chat";
 set $CSP_FRAME "frame-ancestors 'none'";
 set $CSP_FRAME_SRC "frame-src https://tally.so https://benefriches-metabase.osc-secnum-fr1.scalingo.io <%= ENV['WEBAPP_MUTAFRICHES_FRAME_SRC'] %>";
+set $seo_disable_indexing "<%= ENV['WEBAPP_SEO_DISABLE_INDEXING'] %>";
+set $robots_tag "";
+if ($seo_disable_indexing = "true") {
+  set $robots_tag "noindex, nofollow";
+}
 
 absolute_redirect off;
 
@@ -20,9 +25,7 @@ location / {
   add_header Content-Security-Policy "$CSP_DEFAULT; $CSP_SCRIPT; $CSP_CONNECT; $CSP_STYLE; $CSP_FONT; $CSP_IMG; $CSP_WORKER; $CSP_FRAME; $CSP_FRAME_SRC;";
   add_header X-Content-Type-Options "nosniff";
   add_header X-Frame-Options "DENY";
-  <% if ENV['WEBAPP_SEO_DISABLE_INDEXING'] == 'true' %>
-  add_header X-Robots-Tag "noindex, nofollow";
-  <% end %>
+  add_header X-Robots-Tag $robots_tag;
   try_files $uri $uri/ /index.html;
 }
 

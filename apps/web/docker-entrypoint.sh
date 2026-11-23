@@ -21,9 +21,13 @@ echo "Configuring nginx..."
 echo "  API_HOST_URL: $API_HOST_URL"
 echo "  WEBAPP_MUTAFRICHES_FRAME_SRC: $WEBAPP_MUTAFRICHES_FRAME_SRC"
 
+# Optional : empty if not defined (default = indexation allowed)
+SEO_DISABLE_INDEXING="${WEBAPP_SEO_DISABLE_INDEXING:-}"
+
 # Process ERB template to generate site config
 sed -e "s|<%= ENV\['API_HOST_URL'\] %>|${API_HOST_URL}|g" \
     -e "s|<%= ENV\['WEBAPP_MUTAFRICHES_FRAME_SRC'\] %>|${WEBAPP_MUTAFRICHES_FRAME_SRC}|g" \
+    -e "s|<%= ENV\['WEBAPP_SEO_DISABLE_INDEXING'\] %>|${SEO_DISABLE_INDEXING}|g" \
     -e "s|/app/dist|${NGINX_ROOT}|g" \
     "$SITE_CONF_TEMPLATE" > "$SITE_CONF_OUTPUT"
 
