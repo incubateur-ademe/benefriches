@@ -47,7 +47,7 @@ export default function EvaluateReconversionCompatibilityPage() {
       <iframe
         width="100%"
         height="950px"
-        src={`${BENEFRICHES_ENV.mutafrichesUrl}?integrator=${BENEFRICHES_ENV.mutafrichesIntegrator}&callbackUrl=${encodeURIComponent(
+        src={`${BENEFRICHES_ENV.mutafrichesUrl}/analyser?integrator=${BENEFRICHES_ENV.mutafrichesIntegrator}&callbackUrl=${encodeURIComponent(
           `${window.location.origin}/callback`,
         )}&callbackLabel=${encodeURIComponent("Retour vers Bénéfriches")}`}
         title="Explorer la compatibilité de ma friche"
