@@ -1,3 +1,5 @@
+import type { SiteNature } from "shared";
+
 import { getFutureOperator } from "@/features/create-project/core/project-form/stakeholders";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import type { UrbanProjectStepsState } from "@/features/create-project/core/urban-project/urbanProject.state";
@@ -47,4 +49,16 @@ export function readFutureOperator(stepsState: StepsState): ProjectStakeholder |
     ReadStateHelper.getStepAnswers(stepsState, "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER")
       ?.projectDeveloper,
   );
+}
+
+export function shouldAskReinstatementContractOwner(
+  stepsState: StepsState,
+  siteNature: SiteNature | undefined,
+): boolean {
+  const involvesReinstatement = ReadStateHelper.getStepAnswers(
+    stepsState,
+    "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+  )?.involvesReinstatement;
+
+  return involvesReinstatement !== false && siteNature === "FRICHE";
 }

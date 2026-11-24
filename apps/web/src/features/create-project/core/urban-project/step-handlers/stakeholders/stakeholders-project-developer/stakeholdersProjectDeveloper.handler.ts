@@ -1,5 +1,5 @@
 import { willHaveBuildings } from "@/features/create-project/core/urban-project/helpers/readers/buildingsReaders";
-import { ReadStateHelper } from "@/shared/core/wizard-form/helpers/readState";
+import { shouldAskReinstatementContractOwner } from "@/features/create-project/core/urban-project/step-handlers/stakeholders/stakeholdersReaders";
 
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
@@ -15,12 +15,7 @@ export const StakeholdersProjectDeveloperHandler = {
       return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
     }
 
-    const involvesReinstatement = ReadStateHelper.getStepAnswers(
-      answers,
-      "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
-    )?.involvesReinstatement;
-
-    if (involvesReinstatement !== false && context.siteData?.nature === "FRICHE") {
+    if (shouldAskReinstatementContractOwner(answers, context.siteData?.nature)) {
       return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
     }
 
