@@ -19,7 +19,7 @@
     "shared": "workspace:*"
   },
   "devDependencies": {
-    "@playwright/test": "^1.64.1",
+    "@playwright/test": "^1.65.1",
     "@types/node": "~26.6.6",
     "eslint-plugin-playwright": "~2.12.2",
     "tsx": "~4.23.15"

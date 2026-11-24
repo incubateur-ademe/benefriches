@@ -2,9 +2,6 @@
   "$schema": "../../node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "unicorn", "node", "oxc", "import"],
   "jsPlugins": ["eslint-plugin-playwright"],
-  "options": {
-    "typeAware": true
-  },
   "categories": {
     "correctness": "error",
     "nursery": "error",

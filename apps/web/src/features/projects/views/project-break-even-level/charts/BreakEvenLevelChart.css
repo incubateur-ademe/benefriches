@@ -23,6 +23,7 @@
   stroke: #1a3a5c;
   stroke-width: 1px;
   stroke-dasharray: 4px, 4px;
+  clip-path: inset(0 -2px 38px -2px);
 }
 
 /* Marqueur rond sur la courbe */
@@ -60,31 +61,4 @@
   justify-content: center;
   color: white;
   font-size: 12px;
-}
-
-.breakeven-column-badge__check {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 6px;
-  z-index: 50;
-  background: #3ab0e0;
-  border-radius: 50%;
-  color: white;
-  font-size: 18px;
-  border: 3px solid white;
-}
-
-.breakeven-column-graph .breakeven-column-dashed-plotband {
-  fill: transparent;
-  stroke: #1a3a5c;
-  stroke-dasharray: 4px, 4px;
-  stroke-linejoin: round;
-}
-
-.breakeven-column-graph .breakeven-column-solid-plotband {
-  fill: transparent;
-  stroke: #1a3a5c;
 }

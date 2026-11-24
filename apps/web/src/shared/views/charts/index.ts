@@ -15,6 +15,7 @@ export function withDefaultChartOptions(options: Options): Options {
       noData: "Aucune donnée disponible",
     },
     exporting: {
+      allowHTML: true,
       fallbackToExportServer: false,
       csv: {
         // Charts without an x axis (pie) ask for the category column header with no axis.
@@ -29,6 +30,7 @@ export function withDefaultChartOptions(options: Options): Options {
         },
       },
       chartOptions: {
+        palette: { colorScheme: "light" },
         chart: {
           styledMode: false,
           height: undefined,
@@ -40,6 +42,13 @@ export function withDefaultChartOptions(options: Options): Options {
           spacingLeft: 10,
           spacingRight: 10,
           spacingTop: 10,
+        },
+        plotOptions: {
+          series: {
+            dataLabels: {
+              style: { textOutline: "none" },
+            },
+          },
         },
       },
     },

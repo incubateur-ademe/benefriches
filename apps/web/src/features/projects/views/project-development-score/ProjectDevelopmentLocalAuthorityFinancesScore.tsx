@@ -156,7 +156,6 @@ export default function ProjectDevelopmentLocalAuthorityFinancesScore({
 
             series: [
               {
-                type: "column",
                 name: "Montant (en €)",
                 data,
               },

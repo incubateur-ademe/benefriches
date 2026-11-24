@@ -26,14 +26,14 @@
     "test:scripts": "node --test \"scripts/**/*.spec.mjs\" \".tooling/**/*.spec.mjs\" \".claude/hooks/**/*.spec.mjs\""
   },
   "devDependencies": {
-    "@playwright/mcp": "~0.0.82",
-    "@upstash/context7-mcp": "4.0.7",
+    "@playwright/mcp": "~0.0.85",
+    "@upstash/context7-mcp": "4.7.1",
     "@vitest/coverage-v8": "catalog:",
     "husky": "^9.1.7",
-    "lint-staged": "^17.6.0",
-    "oxlint": "^1.86.0",
-    "oxlint-tsgolint": "^7.0.2003",
-    "prettier": "~3.9.9",
+    "lint-staged": "^17.6.1",
+    "oxlint": "^1.94.0",
+    "oxlint-tsgolint": "^7.0.2007",
+    "prettier": "~3.10.1",
     "typescript": "~6.0.3",
     "vitest": "catalog:"
   }

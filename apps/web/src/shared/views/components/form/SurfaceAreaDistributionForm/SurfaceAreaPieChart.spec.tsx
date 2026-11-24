@@ -17,11 +17,12 @@ describe("SurfaceAreaPieChart", () => {
 
     const rows = within(screen.getByRole("table"))
       .getAllByRole<HTMLTableRowElement>("row")
-      .map((row) => Array.from(row.cells, (cell) => cell.textContent));
+      .map((row) => Array.from(row.cells, (cell) => cell.textContent.replace(/\s/g, " ")));
+
     expect(rows).toEqual([
       ["", "Superficie"],
-      ["Surface d'activité", "6,000"],
-      ["Espaces publics", "4,000"],
+      ["Surface d'activité", "6 000"],
+      ["Espaces publics", "4 000"],
     ]);
   });
 });

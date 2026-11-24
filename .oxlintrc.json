@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "react",
+    "oxc",
+    "import"
+  ],
+  "jsPlugins": [
+    "./.tooling/oxlint/architecture-boundaries.mjs"
+  ],
+  "options": {
+    "typeAware": true
+  },
+}

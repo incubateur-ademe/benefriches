@@ -5,6 +5,11 @@ import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNum
 
 import SurfaceAreaDistributionForm from "./SurfaceAreaDistributionForm";
 
+const getSlices = (name?: RegExp) =>
+  screen
+    .getAllByRole("img", name ? { name } : undefined)
+    .filter((el) => !el.classList.contains("highcharts-point-condemned"));
+
 describe("SurfaceAreaDistributionForm", () => {
   describe("with input mode: square meters", () => {
     it("should not submit and display remaining surface to allocate when no surface area has been entered", async () => {
@@ -97,10 +102,13 @@ describe("SurfaceAreaDistributionForm", () => {
       fireEvent.input(input1, { target: { value: 30 } });
       fireEvent.input(input2, { target: { value: 15 } });
 
-      expect(screen.getAllByRole("img")).toHaveLength(3);
-      expect(screen.getByRole("img", { name: /Area 1, 30/ })).toBeVisible();
-      expect(screen.getByRole("img", { name: /Area 2, 15/ })).toBeVisible();
-      expect(screen.getByRole("img", { name: /Non assigné, 5/ })).toBeVisible();
+      expect(getSlices()).toHaveLength(3);
+      expect(getSlices(/Area 1, 30/)).toHaveLength(1);
+      expect(getSlices(/Area 1, 30/)[0]).toBeVisible();
+      expect(getSlices(/Area 2, 15/)).toHaveLength(1);
+      expect(getSlices(/Area 2, 15/)[0]).toBeVisible();
+      expect(getSlices(/Non assigné, 5/)).toHaveLength(1);
+      expect(getSlices(/Non assigné, 5/)[0]).toBeVisible();
     });
 
     it("should let user switch to percentage mode", async () => {
@@ -272,9 +280,11 @@ describe("SurfaceAreaDistributionForm", () => {
       // enter surface areas in percentage
       fireEvent.input(input1, { target: { value: 50 } });
 
-      expect(screen.getAllByRole("img")).toHaveLength(2);
-      expect(screen.getByRole("img", { name: /Area 1, 25/ })).toBeVisible();
-      expect(screen.getByRole("img", { name: /Non assigné, 25/ })).toBeVisible();
+      expect(getSlices()).toHaveLength(2);
+      expect(getSlices(/Area 1, 25/)).toHaveLength(1);
+      expect(getSlices(/Area 1, 25/)[0]).toBeVisible();
+      expect(getSlices(/Non assigné, 25/)).toHaveLength(1);
+      expect(getSlices(/Non assigné, 25/)[0]).toBeVisible();
     });
 
     it("should let user switch to square meters mode", async () => {

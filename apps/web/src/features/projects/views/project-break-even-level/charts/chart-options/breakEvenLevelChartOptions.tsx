@@ -1,4 +1,4 @@
-import type { XAxisPlotBandsOptions } from "highcharts";
+import type { SVGPathArray, Chart } from "highcharts";
 import { useMemo } from "react";
 
 import { withDefaultChartOptions } from "@/shared/views/charts";
@@ -24,6 +24,7 @@ const areaChartOptions = withDefaultChartOptions({
     spacingRight: 0,
     spacingTop: 10,
     height: 374,
+    className: "breakeven-graph",
   },
 
   credits: {
@@ -135,10 +136,25 @@ export const useGetBreakEventLevelAreaChartProps = ({
   return { options, containerProps: { className: "breakeven-graph" } };
 };
 
+const CHECK_STROKE_COLOR = "#1a3a5c";
+const CHECK_COLOR = "#29b6e8";
+const CHECK_PATH: [number, number][] = [
+  [9, 16],
+  [13.5, 20.5],
+  [23, 11],
+];
+
 const svgLegendCheckString = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-  <circle cx="16" cy="16" r="16" fill="#29b6e8"/>
-  <path d="M9 16l4.5 4.5L23 11" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="16" cy="16" r="16" fill="${CHECK_COLOR}"/>
+  <path d="M${CHECK_PATH[0]?.join(" ")} L${CHECK_PATH[1]?.join(" ")} L${CHECK_PATH[2]?.join(" ")}" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
 </svg>`;
+
+const svgCheckDataUrl = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svgLegendCheckString)}`;
+
+const columnDecorations = new WeakMap<Chart, Highcharts.SVGElement>();
+
+const BADGE_RADIUS = 13;
+const BADGE_BORDER = 2;
 
 const getSampleIndices = (totalYear: number, breakEvenIndex: number | undefined) => {
   const indices = new Set<number>();
@@ -161,6 +177,60 @@ const getSampleIndices = (totalYear: number, breakEvenIndex: number | undefined)
   return indices;
 };
 
+export function drawColumnDecorations(chart: Chart, bandIndex: number) {
+  columnDecorations.get(chart)?.destroy();
+  columnDecorations.delete(chart);
+
+  const { renderer, plotTop, plotHeight } = chart;
+  const xAxis = chart.xAxis[0];
+  if (!xAxis) {
+    return;
+  }
+  const bottom = plotTop + plotHeight;
+
+  const group = renderer.g("breakeven-column-decorations").attr({ zIndex: 5 }).add();
+  columnDecorations.set(chart, group);
+
+  // Yaxis
+  const xLeft = xAxis.toPixels(-0.5, false);
+  const path: SVGPathArray = [
+    ["M", xLeft, plotTop],
+    ["L", xLeft, bottom],
+  ];
+
+  renderer
+    .path(path)
+    .attr({ stroke: CHECK_STROKE_COLOR, "stroke-width": 1, fill: "none" })
+    .add(group);
+
+  if (bandIndex < 0) return;
+
+  // rectangle en pointillés autour de l'année
+  const x1 = xAxis.toPixels(bandIndex - 0.5, false);
+  const x2 = xAxis.toPixels(bandIndex + 0.5, false);
+  renderer
+    .rect(x1, plotTop + 8, x2 - x1, plotHeight - 8)
+    .attr({
+      stroke: CHECK_STROKE_COLOR,
+      "stroke-width": 1,
+      "stroke-dasharray": "4,4",
+      fill: "none",
+    })
+    .add(group);
+
+  // 3. badge check
+  const cx = x1;
+  const cy = plotTop + 8;
+  const size = BADGE_RADIUS * 2;
+
+  renderer
+    .circle(cx, cy, BADGE_RADIUS + BADGE_BORDER)
+    .attr({ fill: "#ffffff" })
+    .add(group);
+
+  renderer.image(svgCheckDataUrl, cx - size / 2, cy - size / 2, size, size).add(group);
+}
+
 export const useGetBreakEventLevelColumnChartProps = ({
   projectionYears,
   breakEvenIndex,
@@ -178,38 +248,11 @@ export const useGetBreakEventLevelColumnChartProps = ({
     [projectionYears, sampleIndices],
   );
 
-  const plotBands = useMemo(() => {
-    const bands: XAxisPlotBandsOptions[] = [
-      {
-        className: "breakeven-column-solid-plotband",
-        from: -0.5,
-        to: -0.5,
-      },
-    ];
-
-    if (breakEvenYear) {
-      bands.push({
-        className: "breakeven-column-dashed-plotband",
-        from: categories.indexOf(breakEvenYear) - 0.5,
-        to: categories.indexOf(breakEvenYear) + 0.5,
-        label: {
-          rotation: 0,
-          useHTML: true,
-          text: `<span class="breakeven-column-badge__check">✓</span>`,
-          verticalAlign: "top",
-          align: "left",
-          textAlign: "center",
-          y: 5,
-        },
-      });
-    }
-    return bands;
-  }, [categories, breakEvenYear]);
-
   const options: Highcharts.Options = useMemo(
     () =>
       withDefaultChartOptions({
         chart: {
+          className: "breakeven-column-graph",
           type: "column",
           styledMode: true,
           spacingBottom: 0,
@@ -239,6 +282,7 @@ export const useGetBreakEventLevelColumnChartProps = ({
                   legendItem.style.setProperty(`--highcharts-color-${colorIndex}`, color);
                 }
               });
+              drawColumnDecorations(this, breakEvenYear ? categories.indexOf(breakEvenYear) : -1);
             },
           },
         },
@@ -295,7 +339,6 @@ export const useGetBreakEventLevelColumnChartProps = ({
         xAxis: {
           categories: categories,
           minPadding: 0.05,
-          plotBands: plotBands,
         },
         series: [
           {
@@ -334,8 +377,8 @@ export const useGetBreakEventLevelColumnChartProps = ({
       cumulativeEconomicBalanceByYear,
       cumulativeIndirectEconomicImpactsByYear,
       categories,
-      plotBands,
       sampleIndices,
+      breakEvenYear,
     ],
   );
 

@@ -35,7 +35,7 @@ export default function PreserveSoilsSection() {
         </div>
         <div className="lg:col-span-5 lg:h-full overflow-hidden rounded-2xl">
           <img
-            src="/img/project-illustration.svg"
+            src="/img/project-illustration.webp"
             className="lg:h-full w-full lg:w-fit"
             alt=""
             aria-hidden="true"

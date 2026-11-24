@@ -5,9 +5,6 @@
     "../../.tooling/oxlint/architecture-boundaries.mjs",
     "../../.tooling/oxlint/api-conventions.mjs"
   ],
-  "options": {
-    "typeAware": true
-  },
   "categories": {
     "correctness": "error",
     "nursery": "error",

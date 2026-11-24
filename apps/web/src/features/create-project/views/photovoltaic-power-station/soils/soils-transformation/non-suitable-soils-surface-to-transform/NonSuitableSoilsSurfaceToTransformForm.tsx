@@ -86,8 +86,7 @@ function NonSuitableSoilsSurfaceToTransformForm({
               message: `La superficie de ce sol est de ${formatSurfaceArea(currentSurfaceArea)}.`,
             },
           });
-          const error =
-            formState.errors.soilsTransformation && formState.errors.soilsTransformation[soilType];
+          const error = formState.errors.soilsTransformation?.[soilType];
           return (
             <RowDecimalsNumericInput
               key={soilType}
