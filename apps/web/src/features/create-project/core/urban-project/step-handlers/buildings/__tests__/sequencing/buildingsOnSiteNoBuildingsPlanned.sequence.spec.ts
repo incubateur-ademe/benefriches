@@ -9,12 +9,13 @@ import { creationProjectFormUrbanActions } from "@/features/create-project/core/
 
 describe("Urban project buildings sequencing - buildings on site, no buildings planned in project", () => {
   describe("forward navigation", () => {
-    it("goes through reuse with zero footprint then demolition to the stakeholders introduction (non-contaminated)", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> STAKEHOLDERS_INTRO
+    it("goes from the soils carbon summary through demolition info to the stakeholders introduction (non-friche, non-contaminated)", () => {
+      // SOILS_CARBON_SUMMARY -> DEMOLITION_INFO -> STAKEHOLDERS_INTRO
       const store = new StoreBuilder()
-        .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
+        .withCurrentStep("URBAN_PROJECT_SOILS_CARBON_SUMMARY")
         .withSiteData({
           soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 2000 },
+          nature: "AGRICULTURAL_OPERATION",
           hasContaminatedSoils: false,
         })
         .withSteps({
@@ -31,40 +32,22 @@ describe("Urban project buildings sequencing - buildings on site, no buildings p
         })
         .build();
 
+      // The project plans no buildings footprint, so the buildings chapter is not part of the
+      // sequence: the demolition info of the existing buildings is the only buildings step asked.
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
-
-      store.dispatch(
-        creationProjectFormUrbanActions.stepCompletionRequested({
-          stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-          answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 2000 } },
-        }),
-      );
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
-
-      store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE");
-
-      store.dispatch(
-        creationProjectFormUrbanActions.stepCompletionRequested({
-          stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
-          answers: { buildingsFootprintToReuse: 0 },
-        }),
-      );
-      // FOOTPRINT_TO_REUSE has getDependencyRules — reducer requires confirmation before navigating
-      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
 
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
     });
 
-    it("exits to involves reinstatement when site is FRICHE (regardless of contamination)", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> INVOLVES_REINSTATEMENT
+    it("exits to involves reinstatement after demolition info when site is FRICHE (regardless of contamination)", () => {
+      // SOILS_CARBON_SUMMARY -> DEMOLITION_INFO -> INVOLVES_REINSTATEMENT
       const store = new StoreBuilder()
-        .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
+        .withCurrentStep("URBAN_PROJECT_SOILS_CARBON_SUMMARY")
         .withSiteData({
           soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 2000 },
+          nature: "FRICHE",
           hasContaminatedSoils: true,
         })
         .withSteps({
@@ -81,28 +64,9 @@ describe("Urban project buildings sequencing - buildings on site, no buildings p
         })
         .build();
 
+      // The project plans no buildings footprint, so the buildings chapter is not part of the
+      // sequence: the demolition info of the existing buildings is the only buildings step asked.
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
-
-      store.dispatch(
-        creationProjectFormUrbanActions.stepCompletionRequested({
-          stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-          answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 2000 } },
-        }),
-      );
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
-
-      store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE");
-
-      store.dispatch(
-        creationProjectFormUrbanActions.stepCompletionRequested({
-          stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
-          answers: { buildingsFootprintToReuse: 0 },
-        }),
-      );
-      // FOOTPRINT_TO_REUSE has getDependencyRules — reducer requires confirmation before navigating
-      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
 
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
