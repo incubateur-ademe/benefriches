@@ -39,6 +39,10 @@ export default function PreserveSoilsSection() {
             className="lg:h-full w-full lg:w-fit"
             alt=""
             aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            height={486}
+            width={552}
           />
         </div>
       </div>
