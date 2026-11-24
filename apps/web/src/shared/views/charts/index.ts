@@ -1,7 +1,13 @@
-import type { Options } from "highcharts/highcharts";
+import { setOptions, type Options } from "highcharts/highcharts";
 
 // oxlint-disable-next-line import/no-unassigned-import
 import "@/libs/highcharts";
+
+setOptions({
+  lang: {
+    locale: "fr-FR",
+  },
+});
 
 export function withDefaultChartOptions(options: Options): Options {
   return {
