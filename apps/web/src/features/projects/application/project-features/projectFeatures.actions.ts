@@ -8,16 +8,7 @@ export interface ProjectFeaturesGateway {
 
 export const fetchProjectFeatures = createAppAsyncThunk<ProjectFeatures, { projectId: string }>(
   "projectFeatures/fetchProjectFeatures",
-  async ({ projectId }, { extra, getState }) => {
-    const { projectFeatures } = getState();
-
-    const dataAlreadyFetched =
-      projectFeatures.dataLoadingState === "success" && projectFeatures.data?.id === projectId;
-
-    if (dataAlreadyFetched && projectFeatures.data) {
-      return Promise.resolve(projectFeatures.data);
-    }
-
+  async ({ projectId }, { extra }) => {
     return extra.projectFeaturesService.getById(projectId);
   },
 );

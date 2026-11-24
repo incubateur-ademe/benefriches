@@ -19,10 +19,8 @@ const ProjectFeaturesViewContainer = ({ projectId }: Props) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (projectFeatures?.id !== projectId) {
-      void dispatch(fetchProjectFeatures({ projectId }));
-    }
-  }, [dispatch, projectFeatures, projectId]);
+    void dispatch(fetchProjectFeatures({ projectId }));
+  }, [dispatch, projectId]);
 
   if (loadingState === "loading") {
     return (
