@@ -206,6 +206,103 @@ describe("SurfaceAreaDistributionForm", () => {
       });
     });
 
+    it("should read a percentage typed with a decimal comma", async () => {
+      const onSubmitSpy = vi.fn();
+
+      render(
+        <SurfaceAreaDistributionForm
+          title="Test form"
+          surfaces={[
+            { name: "field1", label: "Field1" },
+            { name: "field2", label: "Field2" },
+          ]}
+          inputMode="percentage"
+          onInputModeChange={vi.fn()}
+          totalSurfaceArea={10000}
+          onBack={() => {}}
+          onSubmit={onSubmitSpy}
+        />,
+      );
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
+      const controlInput = await screen.findByText("Total de toutes les surfaces");
+
+      fireEvent.input(input1, { target: { value: "60,5" } });
+      fireEvent.input(input2, { target: { value: "39.5" } });
+
+      expect(controlInput).toHaveTextContent("Le compte est bon");
+      fireEvent.submit(screen.getByRole("button", { name: "Valider" }));
+
+      await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
+        expect(onSubmitSpy).toHaveBeenCalledWith({ field1: 6050, field2: 3950 });
+      });
+    });
+
+    it("should read a decimal comma percentage with leading zeros", async () => {
+      const onSubmitSpy = vi.fn();
+
+      render(
+        <SurfaceAreaDistributionForm
+          title="Test form"
+          surfaces={[
+            { name: "field1", label: "Field1" },
+            { name: "field2", label: "Field2" },
+          ]}
+          inputMode="percentage"
+          onInputModeChange={vi.fn()}
+          totalSurfaceArea={10000}
+          onBack={() => {}}
+          onSubmit={onSubmitSpy}
+        />,
+      );
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
+      const controlInput = await screen.findByText("Total de toutes les surfaces");
+
+      fireEvent.input(input1, { target: { value: "0010,5" } });
+      fireEvent.input(input2, { target: { value: "89,5" } });
+
+      expect(controlInput).toHaveTextContent("Le compte est bon");
+      fireEvent.submit(screen.getByRole("button", { name: "Valider" }));
+
+      await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
+        expect(onSubmitSpy).toHaveBeenCalledWith({ field1: 1050, field2: 8950 });
+      });
+    });
+
+    it("should tell the user and not submit when a value is not a number", async () => {
+      const onSubmitSpy = vi.fn();
+
+      render(
+        <SurfaceAreaDistributionForm
+          title="Test form"
+          surfaces={[
+            { name: "field1", label: "Field1" },
+            { name: "field2", label: "Field2" },
+          ]}
+          inputMode="percentage"
+          onInputModeChange={vi.fn()}
+          totalSurfaceArea={10000}
+          onBack={() => {}}
+          onSubmit={onSubmitSpy}
+        />,
+      );
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
+      const controlInput = await screen.findByText("Total de toutes les surfaces");
+
+      fireEvent.input(input1, { target: { value: "100" } });
+      fireEvent.input(input2, { target: { value: "2,5,1" } });
+
+      expect(controlInput).toHaveTextContent("Le compte est bon");
+      fireEvent.submit(screen.getByRole("button", { name: "Valider" }));
+
+      expect(await screen.findByText("Veuillez entrer un nombre valide")).toBeInTheDocument();
+      expect(onSubmitSpy).not.toHaveBeenCalled();
+    });
+
     it("should only submit surface areas with positive values and convert percent values to square meters", async () => {
       const onSubmitSpy = vi.fn();
 
