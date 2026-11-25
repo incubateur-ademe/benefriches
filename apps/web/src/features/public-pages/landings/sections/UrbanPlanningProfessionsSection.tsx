@@ -8,8 +8,14 @@ type UrbanPlanningProfessionCardProps = {
 
 function UrbanPlanningProfessionCard({ title, text, imgSrc }: UrbanPlanningProfessionCardProps) {
   return (
-    <article className="flex rounded-xl bg-white dark:bg-grey-dark dark:border-blue-ultradark dark:border h-46">
-      <img src={imgSrc} loading="lazy" decoding="async" alt="" className="rounded-s-xl h-full" />
+    <article className="flex rounded-xl bg-white dark:bg-grey-dark dark:border-blue-ultradark dark:border min-h-46">
+      <img
+        src={imgSrc}
+        loading="lazy"
+        decoding="async"
+        alt=""
+        className="rounded-s-xl w-32 md:w-46 object-cover"
+      />
       <div className="p-6">
         <h3 className="text-xl mb-1">{title}</h3>
         <p className="text-sm leading-6 mb-0">{text}</p>

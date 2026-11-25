@@ -33,18 +33,16 @@ export default function PreserveSoilsSection() {
             <strong>en prennent conscience et les utilisent dans la prise de décision</strong>.
           </p>
         </div>
-        <div className="lg:col-span-5 lg:h-full overflow-hidden rounded-2xl">
-          <img
-            src="/img/project-illustration.webp"
-            className="lg:h-full w-full lg:w-fit"
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            decoding="async"
-            height={486}
-            width={552}
-          />
-        </div>
+        <img
+          src="/img/project-illustration.webp"
+          className="rounded-2xl w-full object-cover lg:col-span-5 lg:h-full overflow-hidden"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          height={486}
+          width={552}
+        />
       </div>
     </section>
   );

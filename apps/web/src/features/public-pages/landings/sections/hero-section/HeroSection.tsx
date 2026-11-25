@@ -6,29 +6,18 @@ import classNames from "@/shared/views/clsx";
 type Props = {
   title: string;
   children: ReactNode;
-  imgSrc: string;
   className?: ClassValue;
 };
 
-export default function HeroSection({ title, children, imgSrc, className }: Props) {
+export default function HeroSection({ title, children, className }: Props) {
   return (
-    <section className={classNames("lg:h-170", className)}>
-      <div className="fr-container text-white h-full">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center h-full">
-          <div className="flex flex-col justify-center py-10 lg:py-0">
-            <h1 className="text-5xl leading-tight font-bold text-white mb-6">{title}</h1>
-            {children}
-          </div>
-
-          <div className="lg:h-full text-center overflow-hidden">
-            <img
-              fetchPriority="high"
-              src={imgSrc}
-              className="w-full lg:h-full"
-              aria-hidden="true"
-              alt=""
-            />
-          </div>
+    <section className={classNames(className)}>
+      <div className="flex lg:items-center min-h-[70vh] max-h-screen fr-container h-full bg-[url('/img/homepage-hero.webp')] bg-size-[50%] lg:bg-size-[602px] bg-no-repeat bg-bottom-right">
+        <div className="flex flex-col md:w-1/2 mr-auto ml-0 text-white py-10">
+          <h1 className="text-[40px] md:text-5xl leading-tight font-bold text-white mb-6">
+            {title}
+          </h1>
+          {children}
         </div>
       </div>
     </section>

@@ -12,7 +12,7 @@ type TestimonyCardProps = {
 export default function TestimonyCard({ testimony, className }: TestimonyCardProps) {
   return (
     <div
-      className={`bg-white dark:bg-grey-dark rounded-2xl p-8 md:flex gap-8 min-w-175 h-auto ${className || ""}`}
+      className={`bg-white dark:bg-grey-dark rounded-2xl p-8 md:flex gap-8 min-w-full md:min-w-175 h-auto ${className || ""}`}
     >
       <div className="shrink-0 my-auto w-32">
         <img src={testimony.imgSrc} alt="" className="max-w-full object-contain" />

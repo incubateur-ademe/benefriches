@@ -10,7 +10,6 @@ export default function HeroHomeSection() {
     <HeroSection
       className="bg-[#007EAF]"
       title="Calculez les impacts socio-économiques de votre projet d'aménagement."
-      imgSrc="/img/homepage-hero.webp"
     >
       <>
         <p className="text-sm mb-8">+ de 400 projets évalués</p>
